@@ -1,0 +1,896 @@
+public abstract class org.codehaus.jackson.impl.JsonParserMinimalBase extends org.codehaus.jackson.JsonParser
+{
+    public static final int INT_APOSTROPHE;
+    public static final int INT_ASTERISK;
+    public static final int INT_BACKSLASH;
+    public static final int INT_COLON;
+    public static final int INT_COMMA;
+    public static final int INT_CR;
+    public static final int INT_LBRACKET;
+    public static final int INT_LCURLY;
+    public static final int INT_LF;
+    public static final int INT_QUOTE;
+    public static final int INT_RBRACKET;
+    public static final int INT_RCURLY;
+    public static final int INT_SLASH;
+    public static final int INT_SPACE;
+    public static final int INT_TAB;
+    public static final int INT_b;
+    public static final int INT_f;
+    public static final int INT_n;
+    public static final int INT_r;
+    public static final int INT_t;
+    public static final int INT_u;
+
+    public void <init>()
+    {
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        specialinvoke r0.<org.codehaus.jackson.JsonParser: void <init>()>();
+
+        return;
+    }
+
+    public void <init>(int)
+    {
+        int $i0;
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        $i0 := @parameter0: int;
+
+        specialinvoke r0.<org.codehaus.jackson.JsonParser: void <init>(int)>($i0);
+
+        return;
+    }
+
+    public static final java.lang.String _getCharDesc(int)
+    {
+        int $i0;
+        char $c1;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+        boolean $z0;
+
+        $i0 := @parameter0: int;
+
+        $c1 = (char) $i0;
+
+        $z0 = staticinvoke <java.lang.Character: boolean isISOControl(char)>($c1);
+
+        if $z0 == 0 goto label1;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(CTRL-CHAR, code ");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+
+     label1:
+        if $i0 <= 255 goto label2;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' (code ");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" / 0x");
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+
+     label2:
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' (code ");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+
+    public final org.codehaus.jackson.JsonParseException _constructError(java.lang.String, java.lang.Throwable)
+    {
+        java.lang.Throwable $r2;
+        org.codehaus.jackson.JsonParseException $r3;
+        java.lang.String $r1;
+        org.codehaus.jackson.JsonLocation $r4;
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.Throwable;
+
+        $r3 = new org.codehaus.jackson.JsonParseException;
+
+        $r4 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonLocation getCurrentLocation()>();
+
+        specialinvoke $r3.<org.codehaus.jackson.JsonParseException: void <init>(java.lang.String,org.codehaus.jackson.JsonLocation,java.lang.Throwable)>($r1, $r4, $r2);
+
+        return $r3;
+    }
+
+    public abstract void _handleEOF();
+
+    public char _handleUnrecognizedCharacterEscape(char)
+    {
+        char $c0;
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+        int $i1;
+        java.lang.StringBuilder $r2, $r4;
+        java.lang.String $r3;
+        org.codehaus.jackson.JsonParser$Feature $r1;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        $c0 := @parameter0: char;
+
+        $r1 = <org.codehaus.jackson.JsonParser$Feature: org.codehaus.jackson.JsonParser$Feature ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER>;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: boolean isEnabled(org.codehaus.jackson.JsonParser$Feature)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        return $c0;
+
+     label1:
+        $i1 = (int) $c0;
+
+        if $i1 != 39 goto label2;
+
+        $r1 = <org.codehaus.jackson.JsonParser$Feature: org.codehaus.jackson.JsonParser$Feature ALLOW_SINGLE_QUOTES>;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: boolean isEnabled(org.codehaus.jackson.JsonParser$Feature)>($r1);
+
+        if $z0 == 0 goto label2;
+
+        return $c0;
+
+     label2:
+        $r4 = new java.lang.StringBuilder;
+
+        $r2 = $r4;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unrecognized character escape ");
+
+        $i1 = (int) $c0;
+
+        $r3 = staticinvoke <org.codehaus.jackson.impl.JsonParserMinimalBase: java.lang.String _getCharDesc(int)>($i1);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _reportError(java.lang.String)>($r3);
+
+        return $c0;
+    }
+
+    public final void _reportError(java.lang.String)
+    {
+        java.lang.String $r2;
+        org.codehaus.jackson.JsonParseException $r1;
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonParseException _constructError(java.lang.String)>($r2);
+
+        throw $r1;
+    }
+
+    public void _reportInvalidEOF()
+    {
+        org.codehaus.jackson.JsonToken $r3;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r1;
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" in ");
+
+        $r3 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _reportInvalidEOF(java.lang.String)>($r1);
+
+        return;
+    }
+
+    public void _reportInvalidEOF(java.lang.String)
+    {
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2;
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected end-of-input");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _reportError(java.lang.String)>($r2);
+
+        return;
+    }
+
+    public void _reportInvalidEOFInValue()
+    {
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _reportInvalidEOF(java.lang.String)>(" in a value");
+
+        return;
+    }
+
+    public void _reportUnexpectedChar(int, java.lang.String)
+    {
+        int $i0;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r1, $r3, $r4;
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected character (");
+
+        $r3 = staticinvoke <org.codehaus.jackson.impl.JsonParserMinimalBase: java.lang.String _getCharDesc(int)>($i0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r4 = $r3;
+
+        if $r1 == null goto label1;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label1:
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _reportError(java.lang.String)>($r4);
+
+        return;
+    }
+
+    public final void _throwInternal()
+    {
+        java.lang.RuntimeException $r1;
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        $r1 = new java.lang.RuntimeException;
+
+        specialinvoke $r1.<java.lang.RuntimeException: void <init>(java.lang.String)>("Internal error: this code path should never get executed");
+
+        throw $r1;
+    }
+
+    public void _throwInvalidSpace(int)
+    {
+        int $i0;
+        java.lang.StringBuilder $r1, $r3;
+        char $c1;
+        java.lang.String $r2;
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        $i0 := @parameter0: int;
+
+        $c1 = (char) $i0;
+
+        $r3 = new java.lang.StringBuilder;
+
+        $r1 = $r3;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal character (");
+
+        $i0 = (int) $c1;
+
+        $r2 = staticinvoke <org.codehaus.jackson.impl.JsonParserMinimalBase: java.lang.String _getCharDesc(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("): only regular white space (\\r, \\n, \\t) is allowed between tokens");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _reportError(java.lang.String)>($r2);
+
+        return;
+    }
+
+    public void _throwUnquotedSpace(int, java.lang.String)
+    {
+        char $c1;
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+        int $i0;
+        java.lang.StringBuilder $r3, $r5;
+        java.lang.String $r1, $r4;
+        org.codehaus.jackson.JsonParser$Feature $r2;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = <org.codehaus.jackson.JsonParser$Feature: org.codehaus.jackson.JsonParser$Feature ALLOW_UNQUOTED_CONTROL_CHARS>;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: boolean isEnabled(org.codehaus.jackson.JsonParser$Feature)>($r2);
+
+        if $z0 == 0 goto label1;
+
+        if $i0 < 32 goto label2;
+
+     label1:
+        $c1 = (char) $i0;
+
+        $r5 = new java.lang.StringBuilder;
+
+        $r3 = $r5;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal unquoted character (");
+
+        $i0 = (int) $c1;
+
+        $r4 = staticinvoke <org.codehaus.jackson.impl.JsonParserMinimalBase: java.lang.String _getCharDesc(int)>($i0);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("): has to be escaped using backslash to be included in ");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _reportError(java.lang.String)>($r1);
+
+     label2:
+        return;
+    }
+
+    public final void _wrapError(java.lang.String, java.lang.Throwable)
+    {
+        java.lang.Throwable $r1;
+        org.codehaus.jackson.JsonParseException $r2;
+        java.lang.String $r3;
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: java.lang.Throwable;
+
+        $r2 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: org.codehaus.jackson.JsonParseException _constructError(java.lang.String,java.lang.Throwable)>($r3, $r1);
+
+        throw $r2;
+    }
+
+    public abstract void close();
+
+    public abstract byte[] getBinaryValue(org.codehaus.jackson.Base64Variant);
+
+    public abstract java.lang.String getCurrentName();
+
+    public abstract org.codehaus.jackson.JsonStreamContext getParsingContext();
+
+    public abstract java.lang.String getText();
+
+    public abstract char[] getTextCharacters();
+
+    public abstract int getTextLength();
+
+    public abstract int getTextOffset();
+
+    public boolean getValueAsBoolean(boolean)
+    {
+        org.codehaus.jackson.JsonToken $r1;
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+        int[] $r2;
+        int $i0;
+        java.lang.Boolean $r4;
+        java.lang.Object $r3;
+        java.lang.String $r5, $r6;
+        boolean $z0, $z1;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        if $r1 == null goto label7;
+
+        $r2 = <org.codehaus.jackson.impl.JsonParserMinimalBase$1: int[] $SwitchMap$org$codehaus$jackson$JsonToken>;
+
+        $i0 = virtualinvoke $r1.<java.lang.Enum: int ordinal()>();
+
+        $i0 = $r2[$i0];
+
+        lookupswitch($i0)
+        {
+            case 5: goto label6;
+            case 6: goto label5;
+            case 7: goto label4;
+            case 8: goto label4;
+            case 9: goto label2;
+            case 10: goto label3;
+            default: goto label1;
+        };
+
+     label1:
+        return $z0;
+
+     label2:
+        $r3 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: java.lang.Object getEmbeddedObject()>();
+
+        $z1 = $r3 instanceof java.lang.Boolean;
+
+        if $z1 == 0 goto label3;
+
+        $r4 = (java.lang.Boolean) $r3;
+
+        $z0 = virtualinvoke $r4.<java.lang.Boolean: boolean booleanValue()>();
+
+        return $z0;
+
+     label3:
+        $r5 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: java.lang.String getText()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.String: java.lang.String trim()>();
+
+        $r6 = "true";
+
+        $z1 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>($r5);
+
+        if $z1 == 0 goto label7;
+
+        return 1;
+
+     label4:
+        return 0;
+
+     label5:
+        return 1;
+
+     label6:
+        $i0 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: int getIntValue()>();
+
+        if $i0 == 0 goto label8;
+
+        return 1;
+
+     label7:
+        return $z0;
+
+     label8:
+        return 0;
+    }
+
+    public double getValueAsDouble(double)
+    {
+        org.codehaus.jackson.JsonToken $r1;
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+        int[] $r2;
+        int $i0;
+        java.lang.Object $r4;
+        java.lang.String $r3;
+        java.lang.Number $r5;
+        double $d0;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        $d0 := @parameter0: double;
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        if $r1 == null goto label7;
+
+        $r2 = <org.codehaus.jackson.impl.JsonParserMinimalBase$1: int[] $SwitchMap$org$codehaus$jackson$JsonToken>;
+
+        $i0 = virtualinvoke $r1.<java.lang.Enum: int ordinal()>();
+
+        $i0 = $r2[$i0];
+
+        lookupswitch($i0)
+        {
+            case 5: goto label6;
+            case 6: goto label5;
+            case 7: goto label4;
+            case 8: goto label4;
+            case 9: goto label3;
+            case 10: goto label2;
+            case 11: goto label6;
+            default: goto label1;
+        };
+
+     label1:
+        return $d0;
+
+     label2:
+        $r3 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: java.lang.String getText()>();
+
+        $d0 = staticinvoke <org.codehaus.jackson.io.NumberInput: double parseAsDouble(java.lang.String,double)>($r3, $d0);
+
+        return $d0;
+
+     label3:
+        $r4 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: java.lang.Object getEmbeddedObject()>();
+
+        $z0 = $r4 instanceof java.lang.Number;
+
+        if $z0 == 0 goto label7;
+
+        $r5 = (java.lang.Number) $r4;
+
+        $d0 = virtualinvoke $r5.<java.lang.Number: double doubleValue()>();
+
+        return $d0;
+
+     label4:
+        return 0.0;
+
+     label5:
+        return 1.0;
+
+     label6:
+        $d0 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: double getDoubleValue()>();
+
+     label7:
+        return $d0;
+    }
+
+    public int getValueAsInt(int)
+    {
+        org.codehaus.jackson.JsonToken $r1;
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+        int[] $r2;
+        int $i0, $i1;
+        java.lang.Object $r4;
+        java.lang.String $r3;
+        java.lang.Number $r5;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        if $r1 == null goto label7;
+
+        $r2 = <org.codehaus.jackson.impl.JsonParserMinimalBase$1: int[] $SwitchMap$org$codehaus$jackson$JsonToken>;
+
+        $i1 = virtualinvoke $r1.<java.lang.Enum: int ordinal()>();
+
+        $i1 = $r2[$i1];
+
+        lookupswitch($i1)
+        {
+            case 5: goto label6;
+            case 6: goto label5;
+            case 7: goto label4;
+            case 8: goto label4;
+            case 9: goto label3;
+            case 10: goto label2;
+            case 11: goto label6;
+            default: goto label1;
+        };
+
+     label1:
+        return $i0;
+
+     label2:
+        $r3 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: java.lang.String getText()>();
+
+        $i0 = staticinvoke <org.codehaus.jackson.io.NumberInput: int parseAsInt(java.lang.String,int)>($r3, $i0);
+
+        return $i0;
+
+     label3:
+        $r4 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: java.lang.Object getEmbeddedObject()>();
+
+        $z0 = $r4 instanceof java.lang.Number;
+
+        if $z0 == 0 goto label7;
+
+        $r5 = (java.lang.Number) $r4;
+
+        $i0 = virtualinvoke $r5.<java.lang.Number: int intValue()>();
+
+        return $i0;
+
+     label4:
+        return 0;
+
+     label5:
+        return 1;
+
+     label6:
+        $i0 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: int getIntValue()>();
+
+     label7:
+        return $i0;
+    }
+
+    public long getValueAsLong(long)
+    {
+        org.codehaus.jackson.JsonToken $r1;
+        long $l0;
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+        int[] $r2;
+        int $i1;
+        java.lang.Object $r4;
+        java.lang.String $r3;
+        java.lang.Number $r5;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        $l0 := @parameter0: long;
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        if $r1 == null goto label7;
+
+        $r2 = <org.codehaus.jackson.impl.JsonParserMinimalBase$1: int[] $SwitchMap$org$codehaus$jackson$JsonToken>;
+
+        $i1 = virtualinvoke $r1.<java.lang.Enum: int ordinal()>();
+
+        $i1 = $r2[$i1];
+
+        lookupswitch($i1)
+        {
+            case 5: goto label6;
+            case 6: goto label5;
+            case 7: goto label4;
+            case 8: goto label4;
+            case 9: goto label3;
+            case 10: goto label2;
+            case 11: goto label6;
+            default: goto label1;
+        };
+
+     label1:
+        return $l0;
+
+     label2:
+        $r3 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: java.lang.String getText()>();
+
+        $l0 = staticinvoke <org.codehaus.jackson.io.NumberInput: long parseAsLong(java.lang.String,long)>($r3, $l0);
+
+        return $l0;
+
+     label3:
+        $r4 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: java.lang.Object getEmbeddedObject()>();
+
+        $z0 = $r4 instanceof java.lang.Number;
+
+        if $z0 == 0 goto label7;
+
+        $r5 = (java.lang.Number) $r4;
+
+        $l0 = virtualinvoke $r5.<java.lang.Number: long longValue()>();
+
+        return $l0;
+
+     label4:
+        return 0L;
+
+     label5:
+        return 1L;
+
+     label6:
+        $l0 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: long getLongValue()>();
+
+     label7:
+        return $l0;
+    }
+
+    public abstract boolean hasTextCharacters();
+
+    public abstract boolean isClosed();
+
+    public abstract org.codehaus.jackson.JsonToken nextToken();
+
+    public org.codehaus.jackson.JsonParser skipChildren()
+    {
+        org.codehaus.jackson.JsonToken $r1, $r2;
+        int[] $r3;
+        int $i0, $i1;
+        org.codehaus.jackson.impl.JsonParserMinimalBase r0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserMinimalBase;
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        $r2 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken START_OBJECT>;
+
+        if $r1 == $r2 goto label1;
+
+        $r2 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken START_ARRAY>;
+
+        if $r1 == $r2 goto label1;
+
+        return r0;
+
+     label1:
+        $i0 = 1;
+
+     label2:
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: org.codehaus.jackson.JsonToken nextToken()>();
+
+        if $r1 != null goto label3;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _handleEOF()>();
+
+        return r0;
+
+     label3:
+        $r3 = <org.codehaus.jackson.impl.JsonParserMinimalBase$1: int[] $SwitchMap$org$codehaus$jackson$JsonToken>;
+
+        $i1 = virtualinvoke $r1.<java.lang.Enum: int ordinal()>();
+
+        $i1 = $r3[$i1];
+
+        if $i1 == 1 goto label5;
+
+        if $i1 == 2 goto label5;
+
+        if $i1 == 3 goto label4;
+
+        if $i1 == 4 goto label4;
+
+        goto label2;
+
+     label4:
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        if $i0 != 0 goto label2;
+
+        return r0;
+
+     label5:
+        $i0 = $i0 + 1;
+
+        goto label2;
+    }
+
+    public static void <clinit>()
+    {
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_u> = 117;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_t> = 116;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_r> = 114;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_n> = 110;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_f> = 102;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_b> = 98;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_TAB> = 9;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_SPACE> = 32;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_SLASH> = 47;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_RCURLY> = 125;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_RBRACKET> = 93;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_QUOTE> = 34;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_LF> = 10;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_LCURLY> = 123;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_LBRACKET> = 91;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_CR> = 13;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_COMMA> = 44;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_COLON> = 58;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_BACKSLASH> = 92;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_ASTERISK> = 42;
+
+        <org.codehaus.jackson.impl.JsonParserMinimalBase: int INT_APOSTROPHE> = 39;
+
+        return;
+    }
+}

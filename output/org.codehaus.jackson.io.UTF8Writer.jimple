@@ -1,0 +1,1264 @@
+public final class org.codehaus.jackson.io.UTF8Writer extends java.io.Writer
+{
+    public static final int SURR1_FIRST;
+    public static final int SURR1_LAST;
+    public static final int SURR2_FIRST;
+    public static final int SURR2_LAST;
+    public final org.codehaus.jackson.io.IOContext _context;
+    public java.io.OutputStream _out;
+    public byte[] _outBuffer;
+    public final int _outBufferEnd;
+    public int _outPtr;
+    public int _surrogate;
+
+    public void <init>(org.codehaus.jackson.io.IOContext, java.io.OutputStream)
+    {
+        java.io.OutputStream $r1;
+        byte[] $r2;
+        org.codehaus.jackson.io.IOContext $r3;
+        org.codehaus.jackson.io.UTF8Writer r0;
+        int $i0, $i1;
+
+        r0 := @this: org.codehaus.jackson.io.UTF8Writer;
+
+        $r3 := @parameter0: org.codehaus.jackson.io.IOContext;
+
+        $r1 := @parameter1: java.io.OutputStream;
+
+        specialinvoke r0.<java.io.Writer: void <init>()>();
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _surrogate> = 0;
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: org.codehaus.jackson.io.IOContext _context> = $r3;
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: java.io.OutputStream _out> = $r1;
+
+        $r2 = virtualinvoke $r3.<org.codehaus.jackson.io.IOContext: byte[] allocWriteEncodingBuffer()>();
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: byte[] _outBuffer> = $r2;
+
+        $r2 = r0.<org.codehaus.jackson.io.UTF8Writer: byte[] _outBuffer>;
+
+        $i0 = lengthof $r2;
+
+        $i1 = -4;
+
+        $i0 = $i0 + $i1;
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _outBufferEnd> = $i0;
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr> = 0;
+
+        return;
+    }
+
+    private int convertSurrogate(int)
+    {
+        java.io.IOException $r4;
+        org.codehaus.jackson.io.UTF8Writer r0;
+        int $i0, $i1, $i2;
+        java.lang.StringBuilder $r1, $r3;
+        java.lang.String $r2;
+
+        r0 := @this: org.codehaus.jackson.io.UTF8Writer;
+
+        $i0 := @parameter0: int;
+
+        $i1 = r0.<org.codehaus.jackson.io.UTF8Writer: int _surrogate>;
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _surrogate> = 0;
+
+        $i2 = 56320;
+
+        if $i0 < $i2 goto label1;
+
+        $i2 = 57343;
+
+        if $i0 > $i2 goto label1;
+
+        $i2 = 55296;
+
+        $i1 = $i1 - $i2;
+
+        $i1 = $i1 << 10;
+
+        $i1 = $i1 + 65536;
+
+        $i2 = 56320;
+
+        $i0 = $i0 - $i2;
+
+        $i0 = $i1 + $i0;
+
+        return $i0;
+
+     label1:
+        $r4 = new java.io.IOException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        $r1 = $r3;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Broken surrogate pair: first char 0x");
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i1);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", second 0x");
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; illegal combination");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>($r2);
+
+        throw $r4;
+    }
+
+    private void throwIllegal(int)
+    {
+        org.codehaus.jackson.io.UTF8Writer r0;
+        int $i0, $i1;
+        java.lang.StringBuilder $r1, $r3;
+        java.io.IOException $r4;
+        java.lang.String $r2;
+
+        r0 := @this: org.codehaus.jackson.io.UTF8Writer;
+
+        $i0 := @parameter0: int;
+
+        if $i0 > 1114111 goto label3;
+
+        $i1 = 55296;
+
+        if $i0 < $i1 goto label2;
+
+        $i1 = 56319;
+
+        if $i0 > $i1 goto label1;
+
+        $r4 = new java.io.IOException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        $r1 = $r3;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unmatched first part of surrogate pair (0x");
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>($r2);
+
+        throw $r4;
+
+     label1:
+        $r4 = new java.io.IOException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        $r1 = $r3;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unmatched second part of surrogate pair (0x");
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>($r2);
+
+        throw $r4;
+
+     label2:
+        $r4 = new java.io.IOException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        $r1 = $r3;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal character point (0x");
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") to output");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>($r2);
+
+        throw $r4;
+
+     label3:
+        $r4 = new java.io.IOException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        $r1 = $r3;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal character point (0x");
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") to output; max is 0x10FFFF as per RFC 4627");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>($r2);
+
+        throw $r4;
+    }
+
+    public java.io.Writer append(char)
+    {
+        int $i1;
+        char $c0;
+        org.codehaus.jackson.io.UTF8Writer r0;
+
+        r0 := @this: org.codehaus.jackson.io.UTF8Writer;
+
+        $c0 := @parameter0: char;
+
+        $i1 = (int) $c0;
+
+        virtualinvoke r0.<org.codehaus.jackson.io.UTF8Writer: void write(int)>($i1);
+
+        return r0;
+    }
+
+    public volatile java.lang.Appendable append(char)
+    {
+        java.io.Writer $r1;
+        char $c0;
+        org.codehaus.jackson.io.UTF8Writer r0;
+
+        r0 := @this: org.codehaus.jackson.io.UTF8Writer;
+
+        $c0 := @parameter0: char;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.io.UTF8Writer: java.io.Writer append(char)>($c0);
+
+        return $r1;
+    }
+
+    public void close()
+    {
+        java.io.OutputStream $r2;
+        org.codehaus.jackson.io.IOContext $r1;
+        byte[] $r3;
+        org.codehaus.jackson.io.UTF8Writer r0;
+        int $i0;
+        java.lang.NullPointerException r4;
+
+        r0 := @this: org.codehaus.jackson.io.UTF8Writer;
+
+        $r2 = r0.<org.codehaus.jackson.io.UTF8Writer: java.io.OutputStream _out>;
+
+        if $r2 == null goto label4;
+
+        $i0 = r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr>;
+
+        if $i0 <= 0 goto label1;
+
+        $r3 = r0.<org.codehaus.jackson.io.UTF8Writer: byte[] _outBuffer>;
+
+        virtualinvoke $r2.<java.io.OutputStream: void write(byte[],int,int)>($r3, 0, $i0);
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr> = 0;
+
+     label1:
+        $r2 = r0.<org.codehaus.jackson.io.UTF8Writer: java.io.OutputStream _out>;
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: java.io.OutputStream _out> = null;
+
+        $r3 = r0.<org.codehaus.jackson.io.UTF8Writer: byte[] _outBuffer>;
+
+        if $r3 == null goto label2;
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: byte[] _outBuffer> = null;
+
+        $r1 = r0.<org.codehaus.jackson.io.UTF8Writer: org.codehaus.jackson.io.IOContext _context>;
+
+        virtualinvoke $r1.<org.codehaus.jackson.io.IOContext: void releaseWriteEncodingBuffer(byte[])>($r3);
+
+     label2:
+        virtualinvoke $r2.<java.io.OutputStream: void close()>();
+
+        $i0 = r0.<org.codehaus.jackson.io.UTF8Writer: int _surrogate>;
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _surrogate> = 0;
+
+        if $i0 > 0 goto label3;
+
+        return;
+
+     label3:
+        specialinvoke r0.<org.codehaus.jackson.io.UTF8Writer: void throwIllegal(int)>($i0);
+
+        r4 = new java.lang.NullPointerException;
+
+        specialinvoke r4.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw r4;
+
+     label4:
+        return;
+    }
+
+    public void flush()
+    {
+        java.io.OutputStream $r2;
+        byte[] $r1;
+        org.codehaus.jackson.io.UTF8Writer r0;
+        int $i0;
+
+        r0 := @this: org.codehaus.jackson.io.UTF8Writer;
+
+        $r2 = r0.<org.codehaus.jackson.io.UTF8Writer: java.io.OutputStream _out>;
+
+        if $r2 == null goto label2;
+
+        $i0 = r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr>;
+
+        if $i0 <= 0 goto label1;
+
+        $r1 = r0.<org.codehaus.jackson.io.UTF8Writer: byte[] _outBuffer>;
+
+        virtualinvoke $r2.<java.io.OutputStream: void write(byte[],int,int)>($r1, 0, $i0);
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr> = 0;
+
+     label1:
+        $r2 = r0.<org.codehaus.jackson.io.UTF8Writer: java.io.OutputStream _out>;
+
+        virtualinvoke $r2.<java.io.OutputStream: void flush()>();
+
+     label2:
+        return;
+    }
+
+    public void write(int)
+    {
+        java.io.OutputStream $r1;
+        byte[] $r2;
+        java.lang.NullPointerException $r3;
+        byte $b3;
+        org.codehaus.jackson.io.UTF8Writer r0;
+        int $i0, $i1, $i2, $i4;
+
+        r0 := @this: org.codehaus.jackson.io.UTF8Writer;
+
+        $i0 := @parameter0: int;
+
+        $i1 = r0.<org.codehaus.jackson.io.UTF8Writer: int _surrogate>;
+
+        if $i1 <= 0 goto label1;
+
+        $i0 = specialinvoke r0.<org.codehaus.jackson.io.UTF8Writer: int convertSurrogate(int)>($i0);
+
+        goto label3;
+
+     label1:
+        $i1 = 55296;
+
+        if $i0 < $i1 goto label3;
+
+        $i1 = 57343;
+
+        if $i0 > $i1 goto label3;
+
+        $i1 = 56319;
+
+        if $i0 > $i1 goto label2;
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _surrogate> = $i0;
+
+        return;
+
+     label2:
+        specialinvoke r0.<org.codehaus.jackson.io.UTF8Writer: void throwIllegal(int)>($i0);
+
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r3;
+
+     label3:
+        $i1 = r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr>;
+
+        $i2 = r0.<org.codehaus.jackson.io.UTF8Writer: int _outBufferEnd>;
+
+        if $i1 < $i2 goto label4;
+
+        $r1 = r0.<org.codehaus.jackson.io.UTF8Writer: java.io.OutputStream _out>;
+
+        $r2 = r0.<org.codehaus.jackson.io.UTF8Writer: byte[] _outBuffer>;
+
+        virtualinvoke $r1.<java.io.OutputStream: void write(byte[],int,int)>($r2, 0, $i1);
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr> = 0;
+
+     label4:
+        if $i0 >= 128 goto label5;
+
+        $r2 = r0.<org.codehaus.jackson.io.UTF8Writer: byte[] _outBuffer>;
+
+        $i1 = r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr>;
+
+        $i2 = $i1 + 1;
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr> = $i2;
+
+        $b3 = (byte) $i0;
+
+        $r2[$i1] = $b3;
+
+        return;
+
+     label5:
+        $i1 = r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr>;
+
+        if $i0 >= 2048 goto label6;
+
+        $r2 = r0.<org.codehaus.jackson.io.UTF8Writer: byte[] _outBuffer>;
+
+        $i2 = $i1 + 1;
+
+        $i4 = $i0 >> 6;
+
+        $i4 = $i4 | 192;
+
+        $b3 = (byte) $i4;
+
+        $r2[$i1] = $b3;
+
+        $i1 = $i2 + 1;
+
+        $i0 = $i0 & 63;
+
+        $i0 = $i0 | 128;
+
+        $b3 = (byte) $i0;
+
+        $r2[$i2] = $b3;
+
+        goto label8;
+
+     label6:
+        $i2 = 65535;
+
+        if $i0 > $i2 goto label7;
+
+        $r2 = r0.<org.codehaus.jackson.io.UTF8Writer: byte[] _outBuffer>;
+
+        $i2 = $i1 + 1;
+
+        $i4 = $i0 >> 12;
+
+        $i4 = $i4 | 224;
+
+        $b3 = (byte) $i4;
+
+        $r2[$i1] = $b3;
+
+        $i1 = $i2 + 1;
+
+        $i4 = $i0 >> 6;
+
+        $i4 = $i4 & 63;
+
+        $i4 = $i4 | 128;
+
+        $b3 = (byte) $i4;
+
+        $r2[$i2] = $b3;
+
+        $i0 = $i0 & 63;
+
+        $i0 = $i0 | 128;
+
+        $b3 = (byte) $i0;
+
+        $r2[$i1] = $b3;
+
+        $i1 = $i1 + 1;
+
+        goto label8;
+
+     label7:
+        if $i0 > 1114111 goto label9;
+
+        $r2 = r0.<org.codehaus.jackson.io.UTF8Writer: byte[] _outBuffer>;
+
+        $i2 = $i1 + 1;
+
+        $i4 = $i0 >> 18;
+
+        $i4 = $i4 | 240;
+
+        $b3 = (byte) $i4;
+
+        $r2[$i1] = $b3;
+
+        $i1 = $i2 + 1;
+
+        $i4 = $i0 >> 12;
+
+        $i4 = $i4 & 63;
+
+        $i4 = $i4 | 128;
+
+        $b3 = (byte) $i4;
+
+        $r2[$i2] = $b3;
+
+        $i2 = $i1 + 1;
+
+        $i4 = $i0 >> 6;
+
+        $i4 = $i4 & 63;
+
+        $i4 = $i4 | 128;
+
+        $b3 = (byte) $i4;
+
+        $r2[$i1] = $b3;
+
+        $i1 = $i2 + 1;
+
+        $i0 = $i0 & 63;
+
+        $i0 = $i0 | 128;
+
+        $b3 = (byte) $i0;
+
+        $r2[$i2] = $b3;
+
+     label8:
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr> = $i1;
+
+        return;
+
+     label9:
+        specialinvoke r0.<org.codehaus.jackson.io.UTF8Writer: void throwIllegal(int)>($i0);
+
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r3;
+    }
+
+    public void write(java.lang.String)
+    {
+        int $i0;
+        java.lang.String $r1;
+        org.codehaus.jackson.io.UTF8Writer r0;
+
+        r0 := @this: org.codehaus.jackson.io.UTF8Writer;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.io.UTF8Writer: void write(java.lang.String,int,int)>($r1, 0, $i0);
+
+        return;
+    }
+
+    public void write(java.lang.String, int, int)
+    {
+        java.io.OutputStream $r3;
+        byte[] $r1;
+        char $c3, $c6;
+        java.lang.NullPointerException $r4;
+        byte $b8;
+        org.codehaus.jackson.io.UTF8Writer r0;
+        int $i0, $i1, $i2, $i4, $i5, $i7, $i9;
+        java.lang.String $r2;
+
+        r0 := @this: org.codehaus.jackson.io.UTF8Writer;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        if $i2 >= 2 goto label01;
+
+        if $i2 != 1 goto label17;
+
+        $c3 = virtualinvoke $r2.<java.lang.String: char charAt(int)>($i1);
+
+        $i1 = (int) $c3;
+
+        virtualinvoke r0.<org.codehaus.jackson.io.UTF8Writer: void write(int)>($i1);
+
+        return;
+
+     label01:
+        $i0 = r0.<org.codehaus.jackson.io.UTF8Writer: int _surrogate>;
+
+        if $i0 <= 0 goto label02;
+
+        $i0 = $i1 + 1;
+
+        $c3 = virtualinvoke $r2.<java.lang.String: char charAt(int)>($i1);
+
+        $i1 = -1;
+
+        $i2 = $i2 + $i1;
+
+        $i1 = (int) $c3;
+
+        $i1 = specialinvoke r0.<org.codehaus.jackson.io.UTF8Writer: int convertSurrogate(int)>($i1);
+
+        virtualinvoke r0.<org.codehaus.jackson.io.UTF8Writer: void write(int)>($i1);
+
+        $i1 = $i0;
+
+     label02:
+        $i4 = r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr>;
+
+        $r1 = r0.<org.codehaus.jackson.io.UTF8Writer: byte[] _outBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.io.UTF8Writer: int _outBufferEnd>;
+
+        $i2 = $i2 + $i1;
+
+     label03:
+        if $i1 >= $i2 goto label16;
+
+        if $i4 < $i0 goto label04;
+
+        $r3 = r0.<org.codehaus.jackson.io.UTF8Writer: java.io.OutputStream _out>;
+
+        virtualinvoke $r3.<java.io.OutputStream: void write(byte[],int,int)>($r1, 0, $i4);
+
+        $i4 = 0;
+
+     label04:
+        $i5 = $i1 + 1;
+
+        $c6 = virtualinvoke $r2.<java.lang.String: char charAt(int)>($i1);
+
+        $c3 = $c6;
+
+        $i1 = (int) $c6;
+
+        if $i1 >= 128 goto label09;
+
+        $i7 = $i4 + 1;
+
+        $b8 = (byte) $c6;
+
+        $r1[$i4] = $b8;
+
+        $i1 = $i2 - $i5;
+
+        $i4 = $i0 - $i7;
+
+        if $i1 <= $i4 goto label05;
+
+        $i1 = $i4;
+
+     label05:
+        $i9 = $i1 + $i5;
+
+     label06:
+        $i1 = $i5;
+
+        $i4 = $i7;
+
+        if $i5 < $i9 goto label07;
+
+        goto label03;
+
+     label07:
+        $i5 = $i5 + 1;
+
+        $c6 = virtualinvoke $r2.<java.lang.String: char charAt(int)>($i1);
+
+        $c3 = $c6;
+
+        $i1 = (int) $c6;
+
+        if $i1 < 128 goto label08;
+
+        goto label09;
+
+     label08:
+        $i7 = $i7 + 1;
+
+        $b8 = (byte) $c6;
+
+        $r1[$i4] = $b8;
+
+        goto label06;
+
+     label09:
+        $i1 = (int) $c3;
+
+        if $i1 >= 2048 goto label10;
+
+        $i1 = $i4 + 1;
+
+        $i7 = (int) $c3;
+
+        $i7 = $i7 >> 6;
+
+        $i7 = $i7 | 192;
+
+        $b8 = (byte) $i7;
+
+        $r1[$i4] = $b8;
+
+        $i4 = $i1 + 1;
+
+        $c3 = $c3 & 63;
+
+        $c3 = $c3 | 128;
+
+        $b8 = (byte) $c3;
+
+        $r1[$i1] = $b8;
+
+        $i1 = $i5;
+
+        goto label03;
+
+     label10:
+        $i1 = (int) $c3;
+
+        $i7 = 55296;
+
+        if $i1 < $i7 goto label15;
+
+        $i1 = (int) $c3;
+
+        $i7 = 57343;
+
+        if $i1 <= $i7 goto label11;
+
+        goto label15;
+
+     label11:
+        $i1 = (int) $c3;
+
+        $i7 = 56319;
+
+        if $i1 > $i7 goto label14;
+
+        $i1 = (int) $c3;
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _surrogate> = $i1;
+
+        if $i5 < $i2 goto label12;
+
+        goto label16;
+
+     label12:
+        $i1 = $i5 + 1;
+
+        $c3 = virtualinvoke $r2.<java.lang.String: char charAt(int)>($i5);
+
+        $i5 = (int) $c3;
+
+        $i5 = specialinvoke r0.<org.codehaus.jackson.io.UTF8Writer: int convertSurrogate(int)>($i5);
+
+        if $i5 > 1114111 goto label13;
+
+        $i7 = $i4 + 1;
+
+        $i9 = $i5 >> 18;
+
+        $i9 = $i9 | 240;
+
+        $b8 = (byte) $i9;
+
+        $r1[$i4] = $b8;
+
+        $i4 = $i7 + 1;
+
+        $i9 = $i5 >> 12;
+
+        $i9 = $i9 & 63;
+
+        $i9 = $i9 | 128;
+
+        $b8 = (byte) $i9;
+
+        $r1[$i7] = $b8;
+
+        $i7 = $i4 + 1;
+
+        $i9 = $i5 >> 6;
+
+        $i9 = $i9 & 63;
+
+        $i9 = $i9 | 128;
+
+        $b8 = (byte) $i9;
+
+        $r1[$i4] = $b8;
+
+        $i4 = $i7 + 1;
+
+        $i5 = $i5 & 63;
+
+        $i5 = $i5 | 128;
+
+        $b8 = (byte) $i5;
+
+        $r1[$i7] = $b8;
+
+        goto label03;
+
+     label13:
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr> = $i4;
+
+        specialinvoke r0.<org.codehaus.jackson.io.UTF8Writer: void throwIllegal(int)>($i5);
+
+        $r4 = new java.lang.NullPointerException;
+
+        specialinvoke $r4.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r4;
+
+     label14:
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr> = $i4;
+
+        $i1 = (int) $c3;
+
+        specialinvoke r0.<org.codehaus.jackson.io.UTF8Writer: void throwIllegal(int)>($i1);
+
+        $r4 = new java.lang.NullPointerException;
+
+        specialinvoke $r4.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r4;
+
+     label15:
+        $i1 = $i4 + 1;
+
+        $i7 = (int) $c3;
+
+        $i7 = $i7 >> 12;
+
+        $i7 = $i7 | 224;
+
+        $b8 = (byte) $i7;
+
+        $r1[$i4] = $b8;
+
+        $i4 = $i1 + 1;
+
+        $i7 = (int) $c3;
+
+        $i7 = $i7 >> 6;
+
+        $i7 = $i7 & 63;
+
+        $i7 = $i7 | 128;
+
+        $b8 = (byte) $i7;
+
+        $r1[$i1] = $b8;
+
+        $c3 = $c3 & 63;
+
+        $c3 = $c3 | 128;
+
+        $b8 = (byte) $c3;
+
+        $r1[$i4] = $b8;
+
+        $i1 = $i5;
+
+        $i4 = $i4 + 1;
+
+        goto label03;
+
+     label16:
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr> = $i4;
+
+     label17:
+        return;
+    }
+
+    public void write(char[])
+    {
+        int $i0;
+        char[] $r1;
+        org.codehaus.jackson.io.UTF8Writer r0;
+
+        r0 := @this: org.codehaus.jackson.io.UTF8Writer;
+
+        $r1 := @parameter0: char[];
+
+        $i0 = lengthof $r1;
+
+        virtualinvoke r0.<org.codehaus.jackson.io.UTF8Writer: void write(char[],int,int)>($r1, 0, $i0);
+
+        return;
+    }
+
+    public void write(char[], int, int)
+    {
+        java.io.OutputStream $r3;
+        byte[] $r1;
+        char $c3;
+        java.lang.NullPointerException $r4;
+        byte $b7;
+        org.codehaus.jackson.io.UTF8Writer r0;
+        int $i0, $i1, $i2, $i4, $i5, $i6, $i8;
+        char[] $r2;
+
+        r0 := @this: org.codehaus.jackson.io.UTF8Writer;
+
+        $r2 := @parameter0: char[];
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        if $i2 >= 2 goto label01;
+
+        if $i2 != 1 goto label17;
+
+        $c3 = $r2[$i1];
+
+        $i1 = (int) $c3;
+
+        virtualinvoke r0.<org.codehaus.jackson.io.UTF8Writer: void write(int)>($i1);
+
+        return;
+
+     label01:
+        $i0 = r0.<org.codehaus.jackson.io.UTF8Writer: int _surrogate>;
+
+        if $i0 <= 0 goto label02;
+
+        $i0 = $i1 + 1;
+
+        $c3 = $r2[$i1];
+
+        $i1 = -1;
+
+        $i2 = $i2 + $i1;
+
+        $i1 = (int) $c3;
+
+        $i1 = specialinvoke r0.<org.codehaus.jackson.io.UTF8Writer: int convertSurrogate(int)>($i1);
+
+        virtualinvoke r0.<org.codehaus.jackson.io.UTF8Writer: void write(int)>($i1);
+
+        $i1 = $i0;
+
+     label02:
+        $i4 = r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr>;
+
+        $r1 = r0.<org.codehaus.jackson.io.UTF8Writer: byte[] _outBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.io.UTF8Writer: int _outBufferEnd>;
+
+        $i2 = $i2 + $i1;
+
+     label03:
+        if $i1 >= $i2 goto label16;
+
+        if $i4 < $i0 goto label04;
+
+        $r3 = r0.<org.codehaus.jackson.io.UTF8Writer: java.io.OutputStream _out>;
+
+        virtualinvoke $r3.<java.io.OutputStream: void write(byte[],int,int)>($r1, 0, $i4);
+
+        $i4 = 0;
+
+     label04:
+        $i5 = $i1 + 1;
+
+        $c3 = $r2[$i1];
+
+        $i1 = (int) $c3;
+
+        if $i1 >= 128 goto label09;
+
+        $i6 = $i4 + 1;
+
+        $b7 = (byte) $c3;
+
+        $r1[$i4] = $b7;
+
+        $i1 = $i2 - $i5;
+
+        $i4 = $i0 - $i6;
+
+        if $i1 <= $i4 goto label05;
+
+        $i1 = $i4;
+
+     label05:
+        $i8 = $i1 + $i5;
+
+     label06:
+        $i1 = $i5;
+
+        $i4 = $i6;
+
+        if $i5 < $i8 goto label07;
+
+        goto label03;
+
+     label07:
+        $i5 = $i5 + 1;
+
+        $c3 = $r2[$i1];
+
+        $i1 = (int) $c3;
+
+        if $i1 < 128 goto label08;
+
+        goto label09;
+
+     label08:
+        $i6 = $i6 + 1;
+
+        $b7 = (byte) $c3;
+
+        $r1[$i4] = $b7;
+
+        goto label06;
+
+     label09:
+        $i1 = (int) $c3;
+
+        if $i1 >= 2048 goto label10;
+
+        $i1 = $i4 + 1;
+
+        $i6 = (int) $c3;
+
+        $i6 = $i6 >> 6;
+
+        $i6 = $i6 | 192;
+
+        $b7 = (byte) $i6;
+
+        $r1[$i4] = $b7;
+
+        $i4 = $i1 + 1;
+
+        $c3 = $c3 & 63;
+
+        $c3 = $c3 | 128;
+
+        $b7 = (byte) $c3;
+
+        $r1[$i1] = $b7;
+
+        $i1 = $i5;
+
+        goto label03;
+
+     label10:
+        $i1 = (int) $c3;
+
+        $i6 = 55296;
+
+        if $i1 < $i6 goto label15;
+
+        $i1 = (int) $c3;
+
+        $i6 = 57343;
+
+        if $i1 <= $i6 goto label11;
+
+        goto label15;
+
+     label11:
+        $i1 = (int) $c3;
+
+        $i6 = 56319;
+
+        if $i1 > $i6 goto label14;
+
+        $i1 = (int) $c3;
+
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _surrogate> = $i1;
+
+        if $i5 < $i2 goto label12;
+
+        goto label16;
+
+     label12:
+        $i1 = $i5 + 1;
+
+        $c3 = $r2[$i5];
+
+        $i5 = (int) $c3;
+
+        $i5 = specialinvoke r0.<org.codehaus.jackson.io.UTF8Writer: int convertSurrogate(int)>($i5);
+
+        if $i5 > 1114111 goto label13;
+
+        $i6 = $i4 + 1;
+
+        $i8 = $i5 >> 18;
+
+        $i8 = $i8 | 240;
+
+        $b7 = (byte) $i8;
+
+        $r1[$i4] = $b7;
+
+        $i4 = $i6 + 1;
+
+        $i8 = $i5 >> 12;
+
+        $i8 = $i8 & 63;
+
+        $i8 = $i8 | 128;
+
+        $b7 = (byte) $i8;
+
+        $r1[$i6] = $b7;
+
+        $i6 = $i4 + 1;
+
+        $i8 = $i5 >> 6;
+
+        $i8 = $i8 & 63;
+
+        $i8 = $i8 | 128;
+
+        $b7 = (byte) $i8;
+
+        $r1[$i4] = $b7;
+
+        $i4 = $i6 + 1;
+
+        $i5 = $i5 & 63;
+
+        $i5 = $i5 | 128;
+
+        $b7 = (byte) $i5;
+
+        $r1[$i6] = $b7;
+
+        goto label03;
+
+     label13:
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr> = $i4;
+
+        specialinvoke r0.<org.codehaus.jackson.io.UTF8Writer: void throwIllegal(int)>($i5);
+
+        $r4 = new java.lang.NullPointerException;
+
+        specialinvoke $r4.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r4;
+
+     label14:
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr> = $i4;
+
+        $i1 = (int) $c3;
+
+        specialinvoke r0.<org.codehaus.jackson.io.UTF8Writer: void throwIllegal(int)>($i1);
+
+        $r4 = new java.lang.NullPointerException;
+
+        specialinvoke $r4.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r4;
+
+     label15:
+        $i1 = $i4 + 1;
+
+        $i6 = (int) $c3;
+
+        $i6 = $i6 >> 12;
+
+        $i6 = $i6 | 224;
+
+        $b7 = (byte) $i6;
+
+        $r1[$i4] = $b7;
+
+        $i4 = $i1 + 1;
+
+        $i6 = (int) $c3;
+
+        $i6 = $i6 >> 6;
+
+        $i6 = $i6 & 63;
+
+        $i6 = $i6 | 128;
+
+        $b7 = (byte) $i6;
+
+        $r1[$i1] = $b7;
+
+        $c3 = $c3 & 63;
+
+        $c3 = $c3 | 128;
+
+        $b7 = (byte) $c3;
+
+        $r1[$i4] = $b7;
+
+        $i1 = $i5;
+
+        $i4 = $i4 + 1;
+
+        goto label03;
+
+     label16:
+        r0.<org.codehaus.jackson.io.UTF8Writer: int _outPtr> = $i4;
+
+     label17:
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <org.codehaus.jackson.io.UTF8Writer: int SURR2_LAST> = 57343;
+
+        <org.codehaus.jackson.io.UTF8Writer: int SURR2_FIRST> = 56320;
+
+        <org.codehaus.jackson.io.UTF8Writer: int SURR1_LAST> = 56319;
+
+        <org.codehaus.jackson.io.UTF8Writer: int SURR1_FIRST> = 55296;
+
+        return;
+    }
+}

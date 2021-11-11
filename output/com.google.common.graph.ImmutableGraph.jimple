@@ -1,0 +1,324 @@
+public class com.google.common.graph.ImmutableGraph extends com.google.common.graph.ForwardingGraph
+{
+    public final com.google.common.graph.BaseGraph backingGraph;
+
+    public void <init>(com.google.common.graph.BaseGraph)
+    {
+        com.google.common.graph.BaseGraph $r1;
+        com.google.common.graph.ImmutableGraph r0;
+
+        r0 := @this: com.google.common.graph.ImmutableGraph;
+
+        $r1 := @parameter0: com.google.common.graph.BaseGraph;
+
+        specialinvoke r0.<com.google.common.graph.ForwardingGraph: void <init>()>();
+
+        r0.<com.google.common.graph.ImmutableGraph: com.google.common.graph.BaseGraph backingGraph> = $r1;
+
+        return;
+    }
+
+    public static com.google.common.graph.GraphConnections connectionsOf(com.google.common.graph.Graph, java.lang.Object)
+    {
+        com.google.common.base.Function $r3;
+        java.util.Set $r4, $r5;
+        com.google.common.graph.UndirectedGraphConnections $r8;
+        com.google.common.graph.GraphConstants$Presence $r2;
+        java.util.Map $r6;
+        java.lang.Object $r0;
+        com.google.common.graph.Graph $r1;
+        com.google.common.graph.DirectedGraphConnections $r7;
+        boolean $z0;
+
+        $r1 := @parameter0: com.google.common.graph.Graph;
+
+        $r0 := @parameter1: java.lang.Object;
+
+        $r2 = <com.google.common.graph.GraphConstants$Presence: com.google.common.graph.GraphConstants$Presence EDGE_EXISTS>;
+
+        $r3 = staticinvoke <com.google.common.base.Functions: com.google.common.base.Function constant(java.lang.Object)>($r2);
+
+        $z0 = interfaceinvoke $r1.<com.google.common.graph.Graph: boolean isDirected()>();
+
+        if $z0 == 0 goto label1;
+
+        $r4 = interfaceinvoke $r1.<com.google.common.graph.Graph: java.util.Set predecessors(java.lang.Object)>($r0);
+
+        $r5 = interfaceinvoke $r1.<com.google.common.graph.Graph: java.util.Set successors(java.lang.Object)>($r0);
+
+        $r6 = staticinvoke <com.google.common.collect.Maps: java.util.Map asMap(java.util.Set,com.google.common.base.Function)>($r5, $r3);
+
+        $r7 = staticinvoke <com.google.common.graph.DirectedGraphConnections: com.google.common.graph.DirectedGraphConnections ofImmutable(java.util.Set,java.util.Map)>($r4, $r6);
+
+        return $r7;
+
+     label1:
+        $r4 = interfaceinvoke $r1.<com.google.common.graph.Graph: java.util.Set adjacentNodes(java.lang.Object)>($r0);
+
+        $r6 = staticinvoke <com.google.common.collect.Maps: java.util.Map asMap(java.util.Set,com.google.common.base.Function)>($r4, $r3);
+
+        $r8 = staticinvoke <com.google.common.graph.UndirectedGraphConnections: com.google.common.graph.UndirectedGraphConnections ofImmutable(java.util.Map)>($r6);
+
+        return $r8;
+    }
+
+    public static com.google.common.graph.ImmutableGraph copyOf(com.google.common.graph.Graph)
+    {
+        com.google.common.collect.ImmutableMap $r4;
+        com.google.common.graph.ImmutableGraph $r2;
+        com.google.common.graph.ConfigurableValueGraph $r0;
+        java.util.Set $r5;
+        long $l0;
+        com.google.common.graph.GraphBuilder $r3;
+        int $i1;
+        com.google.common.graph.Graph $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: com.google.common.graph.Graph;
+
+        $z0 = $r1 instanceof com.google.common.graph.ImmutableGraph;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (com.google.common.graph.ImmutableGraph) $r1;
+
+        return $r2;
+
+     label1:
+        $r2 = new com.google.common.graph.ImmutableGraph;
+
+        $r0 = new com.google.common.graph.ConfigurableValueGraph;
+
+        $r3 = staticinvoke <com.google.common.graph.GraphBuilder: com.google.common.graph.GraphBuilder 'from'(com.google.common.graph.Graph)>($r1);
+
+        $r4 = staticinvoke <com.google.common.graph.ImmutableGraph: com.google.common.collect.ImmutableMap getNodeConnections(com.google.common.graph.Graph)>($r1);
+
+        $r5 = interfaceinvoke $r1.<com.google.common.graph.Graph: java.util.Set edges()>();
+
+        $i1 = interfaceinvoke $r5.<java.util.Set: int size()>();
+
+        $l0 = (long) $i1;
+
+        specialinvoke $r0.<com.google.common.graph.ConfigurableValueGraph: void <init>(com.google.common.graph.AbstractGraphBuilder,java.util.Map,long)>($r3, $r4, $l0);
+
+        specialinvoke $r2.<com.google.common.graph.ImmutableGraph: void <init>(com.google.common.graph.BaseGraph)>($r0);
+
+        return $r2;
+    }
+
+    public static com.google.common.graph.ImmutableGraph copyOf(com.google.common.graph.ImmutableGraph)
+    {
+        com.google.common.graph.ImmutableGraph $r0;
+
+        $r0 := @parameter0: com.google.common.graph.ImmutableGraph;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        return $r0;
+    }
+
+    public static com.google.common.collect.ImmutableMap getNodeConnections(com.google.common.graph.Graph)
+    {
+        java.util.Iterator $r3;
+        com.google.common.collect.ImmutableMap $r6;
+        java.util.Set $r2;
+        com.google.common.collect.ImmutableMap$Builder $r1;
+        java.lang.Object $r4;
+        com.google.common.graph.Graph $r0;
+        boolean $z0;
+        com.google.common.graph.GraphConnections $r5;
+
+        $r0 := @parameter0: com.google.common.graph.Graph;
+
+        $r1 = staticinvoke <com.google.common.collect.ImmutableMap: com.google.common.collect.ImmutableMap$Builder builder()>();
+
+        $r2 = interfaceinvoke $r0.<com.google.common.graph.Graph: java.util.Set nodes()>();
+
+        $r3 = interfaceinvoke $r2.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = staticinvoke <com.google.common.graph.ImmutableGraph: com.google.common.graph.GraphConnections connectionsOf(com.google.common.graph.Graph,java.lang.Object)>($r0, $r4);
+
+        virtualinvoke $r1.<com.google.common.collect.ImmutableMap$Builder: com.google.common.collect.ImmutableMap$Builder put(java.lang.Object,java.lang.Object)>($r4, $r5);
+
+        goto label1;
+
+     label2:
+        $r6 = virtualinvoke $r1.<com.google.common.collect.ImmutableMap$Builder: com.google.common.collect.ImmutableMap build()>();
+
+        return $r6;
+    }
+
+    public volatile java.util.Set adjacentNodes(java.lang.Object)
+    {
+        java.util.Set $r1;
+        java.lang.Object $r2;
+        com.google.common.graph.ImmutableGraph r0;
+
+        r0 := @this: com.google.common.graph.ImmutableGraph;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 = specialinvoke r0.<com.google.common.graph.ForwardingGraph: java.util.Set adjacentNodes(java.lang.Object)>($r2);
+
+        return $r1;
+    }
+
+    public volatile boolean allowsSelfLoops()
+    {
+        com.google.common.graph.ImmutableGraph r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.ImmutableGraph;
+
+        $z0 = specialinvoke r0.<com.google.common.graph.ForwardingGraph: boolean allowsSelfLoops()>();
+
+        return $z0;
+    }
+
+    public volatile int degree(java.lang.Object)
+    {
+        int $i0;
+        java.lang.Object $r1;
+        com.google.common.graph.ImmutableGraph r0;
+
+        r0 := @this: com.google.common.graph.ImmutableGraph;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 = specialinvoke r0.<com.google.common.graph.ForwardingGraph: int degree(java.lang.Object)>($r1);
+
+        return $i0;
+    }
+
+    public com.google.common.graph.BaseGraph delegate()
+    {
+        com.google.common.graph.BaseGraph r1;
+        com.google.common.graph.ImmutableGraph r0;
+
+        r0 := @this: com.google.common.graph.ImmutableGraph;
+
+        r1 = r0.<com.google.common.graph.ImmutableGraph: com.google.common.graph.BaseGraph backingGraph>;
+
+        return r1;
+    }
+
+    public volatile boolean hasEdgeConnecting(java.lang.Object, java.lang.Object)
+    {
+        com.google.common.graph.ImmutableGraph r0;
+        java.lang.Object $r1, $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.ImmutableGraph;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 := @parameter1: java.lang.Object;
+
+        $z0 = specialinvoke r0.<com.google.common.graph.ForwardingGraph: boolean hasEdgeConnecting(java.lang.Object,java.lang.Object)>($r2, $r1);
+
+        return $z0;
+    }
+
+    public volatile int inDegree(java.lang.Object)
+    {
+        int $i0;
+        java.lang.Object $r1;
+        com.google.common.graph.ImmutableGraph r0;
+
+        r0 := @this: com.google.common.graph.ImmutableGraph;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 = specialinvoke r0.<com.google.common.graph.ForwardingGraph: int inDegree(java.lang.Object)>($r1);
+
+        return $i0;
+    }
+
+    public volatile boolean isDirected()
+    {
+        com.google.common.graph.ImmutableGraph r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.ImmutableGraph;
+
+        $z0 = specialinvoke r0.<com.google.common.graph.ForwardingGraph: boolean isDirected()>();
+
+        return $z0;
+    }
+
+    public volatile com.google.common.graph.ElementOrder nodeOrder()
+    {
+        com.google.common.graph.ElementOrder $r1;
+        com.google.common.graph.ImmutableGraph r0;
+
+        r0 := @this: com.google.common.graph.ImmutableGraph;
+
+        $r1 = specialinvoke r0.<com.google.common.graph.ForwardingGraph: com.google.common.graph.ElementOrder nodeOrder()>();
+
+        return $r1;
+    }
+
+    public volatile java.util.Set nodes()
+    {
+        java.util.Set $r1;
+        com.google.common.graph.ImmutableGraph r0;
+
+        r0 := @this: com.google.common.graph.ImmutableGraph;
+
+        $r1 = specialinvoke r0.<com.google.common.graph.ForwardingGraph: java.util.Set nodes()>();
+
+        return $r1;
+    }
+
+    public volatile int outDegree(java.lang.Object)
+    {
+        int $i0;
+        java.lang.Object $r1;
+        com.google.common.graph.ImmutableGraph r0;
+
+        r0 := @this: com.google.common.graph.ImmutableGraph;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 = specialinvoke r0.<com.google.common.graph.ForwardingGraph: int outDegree(java.lang.Object)>($r1);
+
+        return $i0;
+    }
+
+    public volatile java.util.Set predecessors(java.lang.Object)
+    {
+        java.util.Set $r1;
+        java.lang.Object $r2;
+        com.google.common.graph.ImmutableGraph r0;
+
+        r0 := @this: com.google.common.graph.ImmutableGraph;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 = specialinvoke r0.<com.google.common.graph.ForwardingGraph: java.util.Set predecessors(java.lang.Object)>($r2);
+
+        return $r1;
+    }
+
+    public volatile java.util.Set successors(java.lang.Object)
+    {
+        java.util.Set $r1;
+        java.lang.Object $r2;
+        com.google.common.graph.ImmutableGraph r0;
+
+        r0 := @this: com.google.common.graph.ImmutableGraph;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 = specialinvoke r0.<com.google.common.graph.ForwardingGraph: java.util.Set successors(java.lang.Object)>($r2);
+
+        return $r1;
+    }
+}

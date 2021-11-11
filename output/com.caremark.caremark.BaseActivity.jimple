@@ -1,0 +1,2650 @@
+public abstract class com.caremark.caremark.BaseActivity extends androidx.appcompat.app.AppCompatActivity implements android.view.View$OnClickListener, c.c.a.d.a.a, com.caremark.caremark.ui.ProgressDialogFragment$a, com.caremark.caremark.ui.AlertDialogFragment$a, com.caremark.caremark.ui.dialogs.RateDialog$a, com.caremark.caremark.HeaderLogoutFragment$a
+{
+    public static final java.lang.String CHECK_RATE_KEY;
+    public static final int DIALOG_APPINFO_FAILED;
+    public static final int DIALOG_RATE_ID;
+    public static final java.lang.String EXTRA_DISABLE_SESSION_LISTENER;
+    public static final java.lang.String EXTRA_PAGE_NAME;
+    public static final java.lang.String GREY_HEADER;
+    public static final java.lang.String HELP_CENTER_SCREEN;
+    public static final java.lang.String HTTPS;
+    public static final int INFO_DIALOG_REMEMBER_ME_ID;
+    public static final java.lang.String IS_GO_TO_LOGIN_AFTER_REG;
+    public static final java.lang.String IS_HELP_CENTER_LOGIN;
+    public static final java.lang.String IS_SWITCH_TO_LOGIN;
+    public static final java.lang.String JPMC_FLOW;
+    public static final java.lang.String MODULE_NAME;
+    public static final java.lang.String REMOVE_SIGNIN_BUTTON;
+    public static final int REQUEST_CODE_EXPIRED;
+    public static final java.lang.String TAG;
+    public static boolean isGoToBackground;
+    public static boolean isLoginSuccess;
+    public static boolean isRegistrationSuccess;
+    public final java.lang.String DEFAULT_DIALOG_TAG;
+    public c.d.b.b cvsWipJS;
+    public com.caremark.caremark.HeaderLogoutFragment fragment;
+    public com.caremark.caremark.BaseActivity$LogoutHeaderTask logoutTask;
+    public android.os.Handler sessionListener;
+    public c.c.a.d.l sessionManager;
+
+    static void <clinit>()
+    {
+        java.lang.Class $r1;
+        java.lang.String $r0;
+
+        <com.caremark.caremark.BaseActivity: int REQUEST_CODE_EXPIRED> = 601;
+
+        <com.caremark.caremark.BaseActivity: java.lang.String REMOVE_SIGNIN_BUTTON> = "remove_signin_button";
+
+        <com.caremark.caremark.BaseActivity: java.lang.String MODULE_NAME> = "module_name";
+
+        <com.caremark.caremark.BaseActivity: java.lang.String JPMC_FLOW> = "jpmc_navigation_flow";
+
+        <com.caremark.caremark.BaseActivity: java.lang.String IS_SWITCH_TO_LOGIN> = "switch_to_login";
+
+        <com.caremark.caremark.BaseActivity: java.lang.String IS_HELP_CENTER_LOGIN> = "help_center_login";
+
+        <com.caremark.caremark.BaseActivity: java.lang.String IS_GO_TO_LOGIN_AFTER_REG> = "login_after_reg";
+
+        <com.caremark.caremark.BaseActivity: int INFO_DIALOG_REMEMBER_ME_ID> = 31002;
+
+        <com.caremark.caremark.BaseActivity: java.lang.String HTTPS> = "https://";
+
+        <com.caremark.caremark.BaseActivity: java.lang.String HELP_CENTER_SCREEN> = "Help_center_screen_after_login";
+
+        <com.caremark.caremark.BaseActivity: java.lang.String GREY_HEADER> = "grey_header";
+
+        <com.caremark.caremark.BaseActivity: java.lang.String EXTRA_PAGE_NAME> = "page_name";
+
+        <com.caremark.caremark.BaseActivity: java.lang.String EXTRA_DISABLE_SESSION_LISTENER> = "disable_session_listener";
+
+        <com.caremark.caremark.BaseActivity: int DIALOG_RATE_ID> = 30001;
+
+        <com.caremark.caremark.BaseActivity: int DIALOG_APPINFO_FAILED> = 54321;
+
+        <com.caremark.caremark.BaseActivity: java.lang.String CHECK_RATE_KEY> = "check_rate";
+
+        $r1 = class "Lcom/caremark/caremark/CaremarkBaseActivity;";
+
+        $r0 = virtualinvoke $r1.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        <com.caremark.caremark.BaseActivity: java.lang.String TAG> = $r0;
+
+        <com.caremark.caremark.BaseActivity: boolean isLoginSuccess> = 0;
+
+        <com.caremark.caremark.BaseActivity: boolean isRegistrationSuccess> = 0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.caremark.caremark.BaseActivity r0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        specialinvoke r0.<androidx.appcompat.app.AppCompatActivity: void <init>()>();
+
+        r0.<com.caremark.caremark.BaseActivity: java.lang.String DEFAULT_DIALOG_TAG> = "dialog";
+
+        return;
+    }
+
+    public static java.lang.String access$000()
+    {
+        java.lang.String r0;
+
+        r0 = <com.caremark.caremark.BaseActivity: java.lang.String TAG>;
+
+        return r0;
+    }
+
+    public static void access$100(com.caremark.caremark.BaseActivity)
+    {
+        com.caremark.caremark.BaseActivity $r0;
+
+        $r0 := @parameter0: com.caremark.caremark.BaseActivity;
+
+        specialinvoke $r0.<com.caremark.caremark.BaseActivity: void openMenuScreen()>();
+
+        return;
+    }
+
+    private void callAppInfoService()
+    {
+        c.c.a.j $r3;
+        com.caremark.caremark.BaseActivity r0;
+        com.caremark.caremark.synclib.helper.VersionCheckTask $r2;
+        java.lang.String $r4;
+        java.lang.Exception $r1;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+     label01:
+        $z0 = staticinvoke <com.caremark.caremark.synclib.util.Util: boolean isNetworkAvailable(android.content.Context)>(r0);
+
+     label02:
+        if $z0 == 0 goto label11;
+
+     label03:
+        staticinvoke <com.caremark.caremark.util.firebasePerformance.CvsPerformanceImpUtil: void startFirebaseTrace(java.lang.String)>("and_mobileAppInfo_service");
+
+     label04:
+        $r2 = new com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+     label05:
+        specialinvoke $r2.<com.caremark.caremark.synclib.helper.VersionCheckTask: void <init>(android.app.Activity,boolean)>(r0, 0);
+
+     label06:
+        $r3 = new c.c.a.j;
+
+     label07:
+        specialinvoke $r3.<c.c.a.j: void <init>(com.caremark.caremark.BaseActivity,com.caremark.caremark.synclib.helper.VersionCheckTask)>(r0, $r2);
+
+        virtualinvoke $r2.<com.caremark.caremark.synclib.helper.VersionCheckTask: void setVersionCheckListener(com.caremark.caremark.synclib.helper.VersionCheckListener)>($r3);
+
+        $r4 = virtualinvoke r0.<com.caremark.caremark.BaseActivity: java.lang.String getVersionCheckUrl()>();
+
+        virtualinvoke $r2.<com.caremark.caremark.synclib.helper.VersionCheckTask: void execute(java.lang.String)>($r4);
+
+     label08:
+        return;
+
+     label09:
+        staticinvoke <com.caremark.caremark.util.firebasePerformance.CvsPerformanceImpUtil: void onEmptyResponseFirebaseImp(java.lang.String)>("and_mobileAppInfo_service");
+
+        staticinvoke <com.caremark.caremark.util.firebasePerformance.CvsPerformanceImpUtil: void stopFirebaseTrace(java.lang.String)>("and_mobileAppInfo_service");
+
+        return;
+
+     label10:
+        $r1 := @caughtexception;
+
+        goto label09;
+
+     label11:
+        return;
+
+        catch java.lang.Exception from label01 to label02 with label10;
+        catch java.lang.Exception from label03 to label04 with label10;
+        catch java.lang.Exception from label05 to label06 with label10;
+        catch java.lang.Exception from label07 to label08 with label10;
+    }
+
+    private android.app.Dialog createCoventryMembersDialog(int)
+    {
+        c.c.a.t $r3;
+        c.c.a.s $r2;
+        c.c.a.h $r4;
+        c.c.a.i $r5;
+        int $i0;
+        com.caremark.caremark.BaseActivity r0;
+        com.caremark.caremark.ui.dialogs.CoventryMembersDialog $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $i0 := @parameter0: int;
+
+        $r1 = new com.caremark.caremark.ui.dialogs.CoventryMembersDialog;
+
+        specialinvoke $r1.<com.caremark.caremark.ui.dialogs.CoventryMembersDialog: void <init>(android.content.Context)>(r0);
+
+        $r2 = new c.c.a.s;
+
+        specialinvoke $r2.<c.c.a.s: void <init>(com.caremark.caremark.BaseActivity,int)>(r0, $i0);
+
+        virtualinvoke $r1.<android.app.Dialog: void setOnCancelListener(android.content.DialogInterface$OnCancelListener)>($r2);
+
+        $r3 = new c.c.a.t;
+
+        specialinvoke $r3.<c.c.a.t: void <init>(com.caremark.caremark.BaseActivity,int)>(r0, $i0);
+
+        virtualinvoke $r1.<com.caremark.caremark.ui.dialogs.CoventryMembersDialog: void setOnCoventryMembersRetryClickListener(com.caremark.caremark.ui.dialogs.CoventryMembersDialog$a)>($r3);
+
+        $r4 = new c.c.a.h;
+
+        specialinvoke $r4.<c.c.a.h: void <init>(com.caremark.caremark.BaseActivity,int)>(r0, $i0);
+
+        virtualinvoke $r1.<com.caremark.caremark.ui.dialogs.CoventryMembersDialog: void setOnCoventryMembersRegClickListener(com.caremark.caremark.ui.dialogs.CoventryMembersDialog$b)>($r4);
+
+        $r5 = new c.c.a.i;
+
+        specialinvoke $r5.<c.c.a.i: void <init>(com.caremark.caremark.BaseActivity,int)>(r0, $i0);
+
+        virtualinvoke $r1.<com.caremark.caremark.ui.dialogs.CoventryMembersDialog: void setOnViewSiteClickListener(android.view.View$OnClickListener)>($r5);
+
+        virtualinvoke $r1.<android.app.Dialog: void setCancelable(boolean)>(0);
+
+        return $r1;
+    }
+
+    private void navigateToCorrectActivity(android.os.Bundle)
+    {
+        android.os.Bundle $r1;
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.String $r2;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        $z0 = r0 instanceof com.caremark.caremark.MaintenanceActivity;
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke r0.<android.app.Activity: void finish()>();
+
+        virtualinvoke r0.<com.caremark.caremark.BaseActivity: void navigateTo(java.lang.Class,android.os.Bundle)>(class "Lcom/caremark/caremark/MainActivity;", $r1);
+
+        return;
+
+     label1:
+        $z0 = r0 instanceof com.caremark.caremark.MainActivity;
+
+        if $z0 != 0 goto label2;
+
+        $r2 = virtualinvoke $r1.<android.os.Bundle: java.lang.String getString(java.lang.String)>("maintenance_string");
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r2);
+
+        if $z0 != 0 goto label3;
+
+     label2:
+        virtualinvoke r0.<com.caremark.caremark.BaseActivity: void navigateTo(java.lang.Class,android.os.Bundle)>(class "Lcom/caremark/caremark/MainActivity;", $r1);
+
+     label3:
+        return;
+    }
+
+    private void networkConnectionCustomDimension()
+    {
+        com.caremark.caremark.util.NetworkUtil$NetworkType $r2, $r3;
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.Exception $r1;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+     label1:
+        $r2 = staticinvoke <com.caremark.caremark.util.NetworkUtil: com.caremark.caremark.util.NetworkUtil$NetworkType getNetworkType()>();
+
+     label2:
+        $r3 = <com.caremark.caremark.util.NetworkUtil$NetworkType: com.caremark.caremark.util.NetworkUtil$NetworkType PHONE>;
+
+     label3:
+        $z0 = virtualinvoke $r2.<java.lang.Enum: boolean equals(java.lang.Object)>($r3);
+
+     label4:
+        if $z0 == 0 goto label5;
+
+        return;
+
+     label5:
+        $r2 = staticinvoke <com.caremark.caremark.util.NetworkUtil: com.caremark.caremark.util.NetworkUtil$NetworkType getNetworkType()>();
+
+     label6:
+        $r3 = <com.caremark.caremark.util.NetworkUtil$NetworkType: com.caremark.caremark.util.NetworkUtil$NetworkType WIFI>;
+
+     label7:
+        virtualinvoke $r2.<java.lang.Enum: boolean equals(java.lang.Object)>($r3);
+
+     label8:
+        return;
+
+     label9:
+        $r1 := @caughtexception;
+
+        return;
+
+        catch java.lang.Exception from label1 to label2 with label9;
+        catch java.lang.Exception from label3 to label4 with label9;
+        catch java.lang.Exception from label5 to label6 with label9;
+        catch java.lang.Exception from label7 to label8 with label9;
+    }
+
+    private void openMenuScreen()
+    {
+        android.content.Context $r1;
+        com.caremark.caremark.synclib.dao.ResponseData $r3;
+        com.caremark.caremark.BaseActivity r0;
+        android.content.Intent $r9;
+        com.caremark.caremark.core.OrdersAndPrescriptionsHolder $r8;
+        android.app.Application $r4;
+        java.lang.Thread $r11;
+        c.c.a.l $r10;
+        int $i0;
+        c.c.a.d.l $r5;
+        c.c.a.d.i $r6;
+        com.caremark.caremark.core.CaremarkApp $r2;
+        android.content.res.Resources $r7;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 = staticinvoke <com.caremark.caremark.core.CaremarkApp: android.content.Context getAppContext()>();
+
+        $r2 = (com.caremark.caremark.core.CaremarkApp) $r1;
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.synclib.dao.ResponseData getResponseData()>();
+
+        if $r3 == null goto label3;
+
+        $r4 = virtualinvoke r0.<android.app.Activity: android.app.Application getApplication()>();
+
+        $r2 = (com.caremark.caremark.core.CaremarkApp) $r4;
+
+        $r5 = virtualinvoke $r2.<com.caremark.caremark.core.CaremarkApp: c.c.a.d.l getSessionManager()>();
+
+        r0.<com.caremark.caremark.BaseActivity: c.c.a.d.l sessionManager> = $r5;
+
+        $r6 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $r7 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.content.res.Resources getResources()>();
+
+        $z0 = virtualinvoke $r7.<android.content.res.Resources: boolean getBoolean(int)>(2131034116);
+
+        virtualinvoke $r6.<c.c.a.d.i: void d(boolean)>($z0);
+
+        $r5 = r0.<com.caremark.caremark.BaseActivity: c.c.a.d.l sessionManager>;
+
+        $z0 = virtualinvoke $r5.<c.c.a.d.l: boolean d()>();
+
+        if $z0 == 0 goto label1;
+
+        $r9 = new android.content.Intent;
+
+        $r1 = virtualinvoke r0.<android.app.Activity: android.content.Context getApplicationContext()>();
+
+        specialinvoke $r9.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r1, class "Lcom/caremark/caremark/MainActivity;");
+
+        virtualinvoke r0.<android.app.Activity: void startActivity(android.content.Intent)>($r9);
+
+        virtualinvoke r0.<android.app.Activity: void finish()>();
+
+        goto label2;
+
+     label1:
+        $r11 = new java.lang.Thread;
+
+        $r10 = new c.c.a.l;
+
+        specialinvoke $r10.<c.c.a.l: void <init>(com.caremark.caremark.BaseActivity)>(r0);
+
+        specialinvoke $r11.<java.lang.Thread: void <init>(java.lang.Runnable)>($r10);
+
+        virtualinvoke $r11.<java.lang.Thread: void start()>();
+
+        $r8 = staticinvoke <com.caremark.caremark.core.OrdersAndPrescriptionsHolder: com.caremark.caremark.core.OrdersAndPrescriptionsHolder getInstance()>();
+
+        virtualinvoke $r8.<com.caremark.caremark.core.OrdersAndPrescriptionsHolder: void setCount(com.caremark.caremark.model.OrdersAndPrescriptions)>(null);
+
+     label2:
+        <com.caremark.caremark.BaseActivity: boolean isGoToBackground> = 1;
+
+        return;
+
+     label3:
+        $i0 = 54321;
+
+        virtualinvoke r0.<android.app.Activity: void showDialog(int)>($i0);
+
+        return;
+    }
+
+    private void updateRateVersion()
+    {
+        android.content.pm.PackageManager $r1;
+        android.content.pm.PackageManager$NameNotFoundException $r5;
+        com.caremark.caremark.BaseActivity r0;
+        com.google.firebase.crashlytics.FirebaseCrashlytics $r6;
+        android.content.pm.PackageInfo $r3;
+        java.lang.String $r2, $r7;
+        c.c.a.d.i $r4;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+     label1:
+        $r1 = virtualinvoke r0.<android.app.Activity: android.content.pm.PackageManager getPackageManager()>();
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getPackageName()>();
+
+        $r3 = virtualinvoke $r1.<android.content.pm.PackageManager: android.content.pm.PackageInfo getPackageInfo(java.lang.String,int)>($r2, 0);
+
+     label2:
+        $r2 = $r3.<android.content.pm.PackageInfo: java.lang.String versionName>;
+
+     label3:
+        $r4 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        virtualinvoke $r4.<c.c.a.d.i: void x(java.lang.String)>($r2);
+
+     label4:
+        return;
+
+     label5:
+        $r5 := @caughtexception;
+
+        $r6 = staticinvoke <com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.FirebaseCrashlytics getInstance()>();
+
+        virtualinvoke $r6.<com.google.firebase.crashlytics.FirebaseCrashlytics: void recordException(java.lang.Throwable)>($r5);
+
+        $r2 = <com.caremark.caremark.BaseActivity: java.lang.String TAG>;
+
+        $r7 = virtualinvoke $r5.<android.content.pm.PackageManager$NameNotFoundException: java.lang.String getMessage()>();
+
+        staticinvoke <com.caremark.caremark.util.L: void w(java.lang.String,java.lang.String,java.lang.Throwable)>($r2, $r7, $r5);
+
+        return;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label1 to label2 with label5;
+        catch android.content.pm.PackageManager$NameNotFoundException from label3 to label4 with label5;
+    }
+
+    public void addAutoStartWorkerFragment(com.caremark.caremark.core.async.fragment.WorkerFragment, java.lang.String)
+    {
+        com.caremark.caremark.core.async.fragment.WorkerFragment $r1;
+        b.m.a.l $r3;
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.String $r2;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: com.caremark.caremark.core.async.fragment.WorkerFragment;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 = virtualinvoke r0.<androidx.fragment.app.FragmentActivity: b.m.a.l getSupportFragmentManager()>();
+
+        staticinvoke <com.caremark.caremark.util.ViewUtils: void addAutoStartWorkerFragment(b.m.a.l,com.caremark.caremark.core.async.fragment.WorkerFragment,java.lang.String)>($r3, $r1, $r2);
+
+        return;
+    }
+
+    public void addUiFragmentIfNeeded(int, java.lang.String, androidx.fragment.app.Fragment)
+    {
+        b.m.a.l $r3;
+        b.m.a.z $r5;
+        int $i0;
+        androidx.fragment.app.Fragment $r2, $r4;
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 := @parameter2: androidx.fragment.app.Fragment;
+
+        $r3 = virtualinvoke r0.<androidx.fragment.app.FragmentActivity: b.m.a.l getSupportFragmentManager()>();
+
+        $r4 = virtualinvoke $r3.<b.m.a.l: androidx.fragment.app.Fragment a(java.lang.String)>($r1);
+
+        if $r4 != null goto label1;
+
+        $r5 = virtualinvoke $r3.<b.m.a.l: b.m.a.z a()>();
+
+        virtualinvoke $r5.<b.m.a.z: b.m.a.z a(int,androidx.fragment.app.Fragment,java.lang.String)>($i0, $r2, $r1);
+
+        virtualinvoke $r5.<b.m.a.z: int a()>();
+
+     label1:
+        return;
+    }
+
+    public void addWorkerFragment(com.caremark.caremark.core.async.fragment.WorkerFragment, java.lang.String)
+    {
+        com.caremark.caremark.core.async.fragment.WorkerFragment $r1;
+        b.m.a.l $r3;
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.String $r2;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: com.caremark.caremark.core.async.fragment.WorkerFragment;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 = virtualinvoke r0.<androidx.fragment.app.FragmentActivity: b.m.a.l getSupportFragmentManager()>();
+
+        staticinvoke <com.caremark.caremark.util.ViewUtils: void addWorkerFragment(b.m.a.l,com.caremark.caremark.core.async.fragment.WorkerFragment,java.lang.String)>($r3, $r1, $r2);
+
+        return;
+    }
+
+    public void cancelWorkerFragment(java.lang.String)
+    {
+        com.caremark.caremark.core.async.fragment.WorkerFragment $r4;
+        b.m.a.l $r2;
+        androidx.fragment.app.Fragment $r3;
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = virtualinvoke r0.<androidx.fragment.app.FragmentActivity: b.m.a.l getSupportFragmentManager()>();
+
+        $r3 = virtualinvoke $r2.<b.m.a.l: androidx.fragment.app.Fragment a(java.lang.String)>($r1);
+
+        $r4 = (com.caremark.caremark.core.async.fragment.WorkerFragment) $r3;
+
+        if $r4 == null goto label1;
+
+        virtualinvoke $r4.<com.caremark.caremark.core.async.fragment.WorkerFragment: void cancel()>();
+
+     label1:
+        return;
+    }
+
+    public void changeButtonVisibilityDependingOnSession(android.view.View)
+    {
+        android.app.Application $r2;
+        com.caremark.caremark.BaseActivity r0;
+        android.view.View $r1;
+        c.c.a.d.l $r4;
+        com.caremark.caremark.core.CaremarkApp $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: android.view.View;
+
+        $r2 = virtualinvoke r0.<android.app.Activity: android.app.Application getApplication()>();
+
+        $r3 = (com.caremark.caremark.core.CaremarkApp) $r2;
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.core.CaremarkApp: c.c.a.d.l getSessionManager()>();
+
+        $z0 = virtualinvoke $r4.<c.c.a.d.l: boolean d()>();
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke $r1.<android.view.View: void setVisibility(int)>(0);
+
+        return;
+
+     label1:
+        virtualinvoke $r1.<android.view.View: void setVisibility(int)>(8);
+
+        return;
+    }
+
+    public void checkRate()
+    {
+        android.content.pm.PackageManager $r1;
+        android.content.pm.PackageManager$NameNotFoundException $r6;
+        com.caremark.caremark.BaseActivity r0;
+        android.content.pm.PackageInfo $r3;
+        java.lang.String $r2, $r5;
+        c.c.a.d.i $r4;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+     label1:
+        $r1 = virtualinvoke r0.<android.app.Activity: android.content.pm.PackageManager getPackageManager()>();
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getPackageName()>();
+
+        $r3 = virtualinvoke $r1.<android.content.pm.PackageManager: android.content.pm.PackageInfo getPackageInfo(java.lang.String,int)>($r2, 0);
+
+     label2:
+        $r2 = $r3.<android.content.pm.PackageInfo: java.lang.String versionName>;
+
+     label3:
+        $r4 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $r5 = virtualinvoke $r4.<c.c.a.d.i: java.lang.String v()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r5);
+
+     label4:
+        if $z0 != 0 goto label8;
+
+     label5:
+        virtualinvoke r0.<android.app.Activity: void showDialog(int)>(30001);
+
+     label6:
+        return;
+
+     label7:
+        $r6 := @caughtexception;
+
+        staticinvoke <com.crashlytics.android.Crashlytics: void logException(java.lang.Throwable)>($r6);
+
+        $r2 = <com.caremark.caremark.BaseActivity: java.lang.String TAG>;
+
+        $r5 = virtualinvoke $r6.<android.content.pm.PackageManager$NameNotFoundException: java.lang.String getMessage()>();
+
+        staticinvoke <com.caremark.caremark.util.L: void w(java.lang.String,java.lang.String,java.lang.Throwable)>($r2, $r5, $r6);
+
+     label8:
+        return;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label1 to label2 with label7;
+        catch android.content.pm.PackageManager$NameNotFoundException from label3 to label4 with label7;
+        catch android.content.pm.PackageManager$NameNotFoundException from label5 to label6 with label7;
+    }
+
+    public void clickedRateApp()
+    {
+        android.content.ActivityNotFoundException $r2;
+        android.net.Uri $r5;
+        com.caremark.caremark.BaseActivity r0;
+        android.content.Intent $r1;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r4;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        virtualinvoke r0.<com.caremark.caremark.BaseActivity: void updateAppVersion()>();
+
+        $r1 = new android.content.Intent;
+
+        specialinvoke $r1.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.VIEW");
+
+        $r3 = new java.lang.StringBuilder;
+
+     label1:
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822105);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getPackageName()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r5 = staticinvoke <android.net.Uri: android.net.Uri parse(java.lang.String)>($r4);
+
+        virtualinvoke $r1.<android.content.Intent: android.content.Intent setData(android.net.Uri)>($r5);
+
+        virtualinvoke $r1.<android.content.Intent: android.content.Intent addFlags(int)>(1208483840);
+
+        virtualinvoke r0.<android.app.Activity: void startActivity(android.content.Intent)>($r1);
+
+     label2:
+        return;
+
+     label3:
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821609);
+
+        $r5 = staticinvoke <android.net.Uri: android.net.Uri parse(java.lang.String)>($r4);
+
+        virtualinvoke $r1.<android.content.Intent: android.content.Intent setData(android.net.Uri)>($r5);
+
+        virtualinvoke $r1.<android.content.Intent: android.content.Intent addFlags(int)>(1208483840);
+
+        virtualinvoke r0.<android.app.Activity: void startActivity(android.content.Intent)>($r1);
+
+        return;
+
+     label4:
+        $r2 := @caughtexception;
+
+        goto label3;
+
+        catch android.content.ActivityNotFoundException from label1 to label2 with label4;
+    }
+
+    public void clickedSendFeedback(java.lang.String)
+    {
+        com.caremark.caremark.util.NetworkUtil$NetworkType $r4;
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r1, $r2;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: java.lang.String;
+
+        virtualinvoke r0.<com.caremark.caremark.BaseActivity: void updateAppVersion()>();
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822410);
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r2);
+
+        if $z0 == 0 goto label1;
+
+        $r1 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821941);
+
+        goto label2;
+
+     label1:
+        $r1 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821942);
+
+     label2:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821943);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("&custom_var=");
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822614);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|");
+
+        $r4 = staticinvoke <com.caremark.caremark.util.NetworkUtil: com.caremark.caremark.util.NetworkUtil$NetworkType getNetworkType()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("&custom_source=");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820805);
+
+        virtualinvoke r0.<com.caremark.caremark.BaseActivity: void startWebBasedActivity(java.lang.String,java.lang.String,boolean)>($r1, $r2, 0);
+
+        return;
+    }
+
+    public void closeActivity()
+    {
+        com.caremark.caremark.BaseActivity r0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        return;
+    }
+
+    public void dismissDialog()
+    {
+        com.caremark.caremark.BaseActivity r0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        virtualinvoke r0.<com.caremark.caremark.BaseActivity: void dismissDialogWithTag(java.lang.String)>("dialog");
+
+        return;
+    }
+
+    public void dismissDialogWithTag(java.lang.String)
+    {
+        b.m.a.l $r2;
+        androidx.fragment.app.Fragment $r3;
+        com.caremark.caremark.BaseActivity r0;
+        com.caremark.caremark.ui.BaseDialogFragment $r4;
+        java.lang.String $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = virtualinvoke r0.<androidx.fragment.app.FragmentActivity: b.m.a.l getSupportFragmentManager()>();
+
+        $r3 = virtualinvoke $r2.<b.m.a.l: androidx.fragment.app.Fragment a(java.lang.String)>($r1);
+
+        $r4 = (com.caremark.caremark.ui.BaseDialogFragment) $r3;
+
+        if $r4 == null goto label1;
+
+        virtualinvoke $r4.<androidx.fragment.app.DialogFragment: void dismiss()>();
+
+     label1:
+        return;
+    }
+
+    public boolean dispatchTouchEvent(android.view.MotionEvent)
+    {
+        android.app.Application $r2;
+        android.view.MotionEvent $r1;
+        int $i0;
+        com.caremark.caremark.BaseActivity r0;
+        c.c.a.d.l $r4;
+        com.caremark.caremark.core.CaremarkApp $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: android.view.MotionEvent;
+
+        $i0 = virtualinvoke $r1.<android.view.MotionEvent: int getAction()>();
+
+        if $i0 != 0 goto label1;
+
+        $r2 = virtualinvoke r0.<android.app.Activity: android.app.Application getApplication()>();
+
+        $r3 = (com.caremark.caremark.core.CaremarkApp) $r2;
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.core.CaremarkApp: c.c.a.d.l getSessionManager()>();
+
+        $z0 = virtualinvoke $r4.<c.c.a.d.l: boolean d()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = virtualinvoke r0.<android.app.Activity: android.app.Application getApplication()>();
+
+        $r3 = (com.caremark.caremark.core.CaremarkApp) $r2;
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.core.CaremarkApp: c.c.a.d.l getSessionManager()>();
+
+        virtualinvoke $r4.<c.c.a.d.l: void g()>();
+
+     label1:
+        $z0 = specialinvoke r0.<android.app.Activity: boolean dispatchTouchEvent(android.view.MotionEvent)>($r1);
+
+        return $z0;
+    }
+
+    public abstract int getContentViewId();
+
+    public java.lang.String getErrorTextByException(java.lang.Exception)
+    {
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.String $r2;
+        java.lang.Exception $r1;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: java.lang.Exception;
+
+        $z0 = $r1 instanceof com.caremark.caremark.core.exceptions.NetworkException;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821901);
+
+        return $r2;
+
+     label1:
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821498);
+
+        return $r2;
+    }
+
+    public com.caremark.caremark.HeaderLogoutFragment getHeaderLogoFragment()
+    {
+        com.caremark.caremark.BaseActivity r0;
+        com.caremark.caremark.HeaderLogoutFragment r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        r1 = r0.<com.caremark.caremark.BaseActivity: com.caremark.caremark.HeaderLogoutFragment fragment>;
+
+        return r1;
+    }
+
+    public com.caremark.caremark.BaseActivity$LogoutHeaderTask getLogoutTask()
+    {
+        com.caremark.caremark.BaseActivity$LogoutHeaderTask r1;
+        com.caremark.caremark.BaseActivity r0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        r1 = r0.<com.caremark.caremark.BaseActivity: com.caremark.caremark.BaseActivity$LogoutHeaderTask logoutTask>;
+
+        return r1;
+    }
+
+    public int getScreenWidth()
+    {
+        int $i0;
+        com.caremark.caremark.BaseActivity r0;
+        android.content.Context $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 = virtualinvoke r0.<android.app.Activity: android.content.Context getApplicationContext()>();
+
+        $i0 = staticinvoke <com.caremark.caremark.util.ViewUtils: int getScreenWidth(android.content.Context)>($r1);
+
+        return $i0;
+    }
+
+    public int getScreenWidthForPortrait()
+    {
+        int $i0;
+        com.caremark.caremark.BaseActivity r0;
+        android.content.Context $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 = virtualinvoke r0.<android.app.Activity: android.content.Context getApplicationContext()>();
+
+        $i0 = staticinvoke <com.caremark.caremark.util.ViewUtils: int getScreenWidthForPortrait(android.content.Context)>($r1);
+
+        return $i0;
+    }
+
+    public java.lang.String getVersionCheckUrl()
+    {
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.String[] $r5;
+        int $i0;
+        java.lang.StringBuilder $r1, $r7;
+        java.lang.String $r2, $r3;
+        c.c.a.d.i $r6;
+        boolean $z0;
+        android.content.res.Resources $r4;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821184);
+
+        $r3 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821159);
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+
+        if $z0 == 0 goto label4;
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821046);
+
+        $r3 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821048);
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+
+        if $z0 == 0 goto label4;
+
+        $r4 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.content.res.Resources getResources()>();
+
+        $r5 = virtualinvoke $r4.<android.content.res.Resources: java.lang.String[] getStringArray(int)>(2130903040);
+
+        $r6 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $i0 = virtualinvoke $r6.<c.c.a.d.i: int k()>();
+
+        $r2 = $r5[$i0];
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>("prod");
+
+        if $z0 == 0 goto label1;
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822508);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        goto label5;
+
+     label1:
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>("sit1");
+
+        if $z0 == 0 goto label2;
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822509);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        goto label5;
+
+     label2:
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>("sit2");
+
+        if $z0 == 0 goto label3;
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822510);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        goto label5;
+
+     label3:
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>("sit3");
+
+        if $z0 == 0 goto label5;
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822509);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        goto label5;
+
+     label4:
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822507);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+     label5:
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("serviceName=MobileAppInfo&");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("appName=Caremark_ANDROID_Phone&");
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("version=");
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820750);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("&");
+
+        $r2 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r4 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.content.res.Resources getResources()>();
+
+        $r5 = virtualinvoke $r4.<android.content.res.Resources: java.lang.String[] getStringArray(int)>(2130903040);
+
+        $r6 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $i0 = virtualinvoke $r6.<c.c.a.d.i: int k()>();
+
+        $r2 = $r5[$i0];
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>("prod");
+
+        if $z0 == 0 goto label6;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("apiSecret=");
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820734);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("&");
+
+        $r2 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("apiKey=");
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820729);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        goto label9;
+
+     label6:
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>("sit1");
+
+        if $z0 == 0 goto label7;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("apiSecret=");
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820737);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("&");
+
+        $r2 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("apiKey=");
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820732);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        goto label9;
+
+     label7:
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>("sit2");
+
+        if $z0 == 0 goto label8;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("apiSecret=");
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820737);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("&");
+
+        $r2 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("apiKey=");
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820732);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        goto label9;
+
+     label8:
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>("sit3");
+
+        if $z0 == 0 goto label9;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("apiSecret=");
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820737);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("&");
+
+        $r2 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("apiKey=");
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820732);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+     label9:
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r2;
+    }
+
+    public void goToHome()
+    {
+        com.caremark.caremark.BaseActivity r0;
+        android.content.Context $r2;
+        android.content.Intent $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 = new android.content.Intent;
+
+        $r2 = virtualinvoke r0.<android.app.Activity: android.content.Context getApplicationContext()>();
+
+        specialinvoke $r1.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r2, class "Lcom/caremark/caremark/MainActivity;");
+
+        virtualinvoke $r1.<android.content.Intent: android.content.Intent addFlags(int)>(268468224);
+
+        virtualinvoke r0.<android.app.Activity: void startActivity(android.content.Intent)>($r1);
+
+        return;
+    }
+
+    public void goToRegistrationScreen()
+    {
+        c.c.a.n.c.d $r3;
+        com.caremark.caremark.BaseActivity r0;
+        c.c.a.n.c$a $r5;
+        c.c.a.d.c $r7;
+        android.webkit.CookieManager $r2;
+        android.widget.Toast $r9;
+        android.webkit.CookieSyncManager $r1;
+        java.lang.String $r4, $r8;
+        c.c.a.d.i $r6;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 = staticinvoke <android.webkit.CookieSyncManager: android.webkit.CookieSyncManager getInstance()>();
+
+        $r2 = staticinvoke <android.webkit.CookieManager: android.webkit.CookieManager getInstance()>();
+
+        virtualinvoke $r2.<android.webkit.CookieManager: void removeAllCookie()>();
+
+        virtualinvoke $r1.<android.webkit.CookieSyncManager: void sync()>();
+
+        $r3 = <c.c.a.n.c.d: c.c.a.n.c.d x>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.c.d: java.lang.String a()>();
+
+        $r5 = <c.c.a.n.c$a: c.c.a.n.c$a a>;
+
+        staticinvoke <c.c.a.n.c: void b(java.lang.String,c.c.a.n.c$a)>($r4, $r5);
+
+        $r6 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $r7 = <c.c.a.d.c: c.c.a.d.c J>;
+
+        $r4 = virtualinvoke $r6.<c.c.a.d.i: java.lang.String a(c.c.a.d.c)>($r7);
+
+        if $r4 == null goto label1;
+
+        $r4 = staticinvoke <com.caremark.caremark.util.SyncUtil: java.lang.String getURL(android.app.Activity,java.lang.String,java.lang.String,java.lang.String)>(r0, "registration", null, $r4);
+
+        $r8 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822142);
+
+        virtualinvoke r0.<com.caremark.caremark.BaseActivity: void startWebBasedActivity(java.lang.String,java.lang.String,boolean)>($r4, $r8, 0);
+
+        return;
+
+     label1:
+        $r9 = staticinvoke <android.widget.Toast: android.widget.Toast makeText(android.content.Context,java.lang.CharSequence,int)>(r0, "An error has occurred, Please try again later!", 0);
+
+        virtualinvoke $r9.<android.widget.Toast: void show()>();
+
+        return;
+    }
+
+    public void handleErStart()
+    {
+        c.c.a.n.c.c $r3;
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.String $r2;
+        c.c.a.n.c$a $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r3 = <c.c.a.n.c.c: c.c.a.n.c.c y>;
+
+        $r2 = virtualinvoke $r3.<c.c.a.n.c.c: java.lang.String a()>();
+
+        $r1 = <c.c.a.n.c$a: c.c.a.n.c$a a>;
+
+        staticinvoke <c.c.a.n.c: void a(java.lang.String,c.c.a.n.c$a)>($r2, $r1);
+
+        staticinvoke <com.caremark.caremark.EasyRefillBaseActivity$b: void c()>();
+
+        return;
+    }
+
+    public void launchAboutActivity(boolean)
+    {
+        java.lang.Throwable $r13;
+        byte[] $r6;
+        android.content.Context $r11;
+        android.content.pm.PackageManager $r7;
+        android.content.pm.PackageManager$NameNotFoundException $r14;
+        com.caremark.caremark.BaseActivity r0;
+        android.content.Intent $r10;
+        android.content.pm.PackageInfo $r9;
+        android.content.res.AssetManager $r3;
+        int $i0;
+        java.lang.String $r1, $r4, $r8, $r12;
+        boolean $z0;
+        java.io.IOException $r15, $r16, $r17;
+        java.io.InputStream $r2, $r5;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $z0 := @parameter0: boolean;
+
+        $r2 = null;
+
+     label01:
+        $r3 = virtualinvoke r0.<android.app.Activity: android.content.res.AssetManager getAssets()>();
+
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820636);
+
+        $r5 = virtualinvoke $r3.<android.content.res.AssetManager: java.io.InputStream open(java.lang.String)>($r4);
+
+     label02:
+        $r2 = $r5;
+
+     label03:
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820637);
+
+        $i0 = virtualinvoke $r5.<java.io.InputStream: int available()>();
+
+     label04:
+        $r6 = newarray (byte)[$i0];
+
+     label05:
+        virtualinvoke $r5.<java.io.InputStream: int read(byte[])>($r6);
+
+     label06:
+        $r1 = new java.lang.String;
+
+     label07:
+        specialinvoke $r1.<java.lang.String: void <init>(byte[])>($r6);
+
+        $r7 = virtualinvoke r0.<android.app.Activity: android.content.pm.PackageManager getPackageManager()>();
+
+        $r8 = virtualinvoke r0.<android.app.Activity: java.lang.String getPackageName()>();
+
+        $r9 = virtualinvoke $r7.<android.content.pm.PackageManager: android.content.pm.PackageInfo getPackageInfo(java.lang.String,int)>($r8, 0);
+
+     label08:
+        $r8 = $r9.<android.content.pm.PackageInfo: java.lang.String versionName>;
+
+        $r10 = new android.content.Intent;
+
+     label09:
+        $r11 = virtualinvoke r0.<android.app.Activity: android.content.Context getApplicationContext()>();
+
+        specialinvoke $r10.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r11, class "Lcom/caremark/caremark/WebBasedActivity;");
+
+        $r12 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822615);
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>($r12, $r8);
+
+        virtualinvoke $r10.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("content", $r1);
+
+        virtualinvoke $r10.<android.content.Intent: android.content.Intent putExtra(java.lang.String,boolean)>("disable_session_listener", $z0);
+
+        virtualinvoke $r10.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("page_name", $r4);
+
+        virtualinvoke $r10.<android.content.Intent: android.content.Intent putExtra(java.lang.String,boolean)>("single_column", 1);
+
+        virtualinvoke r0.<android.app.Activity: void startActivity(android.content.Intent)>($r10);
+
+     label10:
+        if $r5 == null goto label30;
+
+     label11:
+        virtualinvoke $r5.<java.io.InputStream: void close()>();
+
+     label12:
+        return;
+
+     label13:
+        $r13 := @caughtexception;
+
+        goto label25;
+
+     label14:
+        $r14 := @caughtexception;
+
+     label15:
+        $r4 = <com.caremark.caremark.BaseActivity: java.lang.String TAG>;
+
+        $r1 = virtualinvoke $r14.<android.content.pm.PackageManager$NameNotFoundException: java.lang.String getLocalizedMessage()>();
+
+        staticinvoke <com.caremark.caremark.util.L: void e(java.lang.String,java.lang.String,java.lang.Throwable)>($r4, $r1, $r14);
+
+        staticinvoke <com.crashlytics.android.Crashlytics: void logException(java.lang.Throwable)>($r14);
+
+     label16:
+        if $r2 == null goto label30;
+
+     label17:
+        virtualinvoke $r2.<java.io.InputStream: void close()>();
+
+     label18:
+        return;
+
+     label19:
+        $r15 := @caughtexception;
+
+     label20:
+        $r4 = <com.caremark.caremark.BaseActivity: java.lang.String TAG>;
+
+        $r1 = virtualinvoke $r15.<java.io.IOException: java.lang.String getLocalizedMessage()>();
+
+        staticinvoke <com.caremark.caremark.util.L: void e(java.lang.String,java.lang.String,java.lang.Throwable)>($r4, $r1, $r15);
+
+        staticinvoke <com.crashlytics.android.Crashlytics: void logException(java.lang.Throwable)>($r15);
+
+     label21:
+        if $r2 == null goto label30;
+
+     label22:
+        virtualinvoke $r2.<java.io.InputStream: void close()>();
+
+     label23:
+        return;
+
+     label24:
+        $r16 := @caughtexception;
+
+        $r4 = <com.caremark.caremark.BaseActivity: java.lang.String TAG>;
+
+        $r1 = virtualinvoke $r16.<java.io.IOException: java.lang.String getLocalizedMessage()>();
+
+        staticinvoke <com.caremark.caremark.util.L: void e(java.lang.String,java.lang.String,java.lang.Throwable)>($r4, $r1, $r16);
+
+        staticinvoke <com.crashlytics.android.Crashlytics: void logException(java.lang.Throwable)>($r16);
+
+        return;
+
+     label25:
+        if $r2 == null goto label29;
+
+     label26:
+        virtualinvoke $r2.<java.io.InputStream: void close()>();
+
+     label27:
+        goto label29;
+
+     label28:
+        $r17 := @caughtexception;
+
+        $r4 = <com.caremark.caremark.BaseActivity: java.lang.String TAG>;
+
+        $r1 = virtualinvoke $r17.<java.io.IOException: java.lang.String getLocalizedMessage()>();
+
+        staticinvoke <com.caremark.caremark.util.L: void e(java.lang.String,java.lang.String,java.lang.Throwable)>($r4, $r1, $r17);
+
+        staticinvoke <com.crashlytics.android.Crashlytics: void logException(java.lang.Throwable)>($r17);
+
+     label29:
+        throw $r13;
+
+     label30:
+        return;
+
+        catch java.io.IOException from label01 to label02 with label19;
+        catch java.io.IOException from label03 to label04 with label19;
+        catch java.io.IOException from label05 to label06 with label19;
+        catch java.io.IOException from label07 to label08 with label19;
+        catch java.io.IOException from label09 to label10 with label19;
+        catch android.content.pm.PackageManager$NameNotFoundException from label01 to label02 with label14;
+        catch android.content.pm.PackageManager$NameNotFoundException from label03 to label04 with label14;
+        catch android.content.pm.PackageManager$NameNotFoundException from label05 to label06 with label14;
+        catch android.content.pm.PackageManager$NameNotFoundException from label07 to label08 with label14;
+        catch android.content.pm.PackageManager$NameNotFoundException from label09 to label10 with label14;
+        catch java.lang.Throwable from label01 to label02 with label13;
+        catch java.lang.Throwable from label03 to label10 with label13;
+        catch java.io.IOException from label11 to label12 with label24;
+        catch java.lang.Throwable from label15 to label16 with label13;
+        catch java.io.IOException from label17 to label18 with label24;
+        catch java.lang.Throwable from label20 to label21 with label13;
+        catch java.io.IOException from label22 to label23 with label24;
+        catch java.io.IOException from label26 to label27 with label28;
+    }
+
+    public void navigateTo(java.lang.Class)
+    {
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.Class $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: java.lang.Class;
+
+        virtualinvoke r0.<com.caremark.caremark.BaseActivity: void navigateTo(java.lang.Class,android.os.Bundle)>($r1, null);
+
+        return;
+    }
+
+    public void navigateTo(java.lang.Class, android.os.Bundle)
+    {
+        android.os.Bundle $r1;
+        com.caremark.caremark.BaseActivity r0;
+        android.content.Intent $r2;
+        java.lang.Class $r3;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r3 := @parameter0: java.lang.Class;
+
+        $r1 := @parameter1: android.os.Bundle;
+
+        $r2 = new android.content.Intent;
+
+        specialinvoke $r2.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>(r0, $r3);
+
+        if $r1 == null goto label1;
+
+        virtualinvoke $r2.<android.content.Intent: android.content.Intent putExtras(android.os.Bundle)>($r1);
+
+     label1:
+        virtualinvoke $r2.<android.content.Intent: android.content.Intent addFlags(int)>(603979776);
+
+        virtualinvoke r0.<android.app.Activity: void startActivity(android.content.Intent)>($r2);
+
+        return;
+    }
+
+    public void navigateToLogin(boolean)
+    {
+        android.content.Context $r1;
+        com.caremark.caremark.BaseActivity r0;
+        android.content.Intent $r2;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 = staticinvoke <com.caremark.caremark.core.CaremarkApp: android.content.Context getAppContext()>();
+
+        $r2 = new android.content.Intent;
+
+        specialinvoke $r2.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>(r0, class "Lcom/caremark/caremark/network/RefreshService;");
+
+        virtualinvoke $r1.<android.content.Context: boolean stopService(android.content.Intent)>($r2);
+
+        $r2 = new android.content.Intent;
+
+        $r1 = virtualinvoke r0.<android.app.Activity: android.content.Context getApplicationContext()>();
+
+        specialinvoke $r2.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r1, class "Lcom/caremark/caremark/MainActivity;");
+
+        virtualinvoke $r2.<android.content.Intent: android.content.Intent putExtra(java.lang.String,boolean)>("logout", 1);
+
+        virtualinvoke $r2.<android.content.Intent: android.content.Intent putExtra(java.lang.String,boolean)>("expired_extra", $z0);
+
+        virtualinvoke r0.<android.app.Activity: void startActivity(android.content.Intent)>($r2);
+
+        virtualinvoke r0.<android.app.Activity: void finish()>();
+
+        return;
+    }
+
+    public void onAttachFragment(androidx.fragment.app.Fragment)
+    {
+        com.caremark.caremark.HeaderLogoutFragment $r2;
+        androidx.fragment.app.Fragment $r1;
+        com.caremark.caremark.BaseActivity r0;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: androidx.fragment.app.Fragment;
+
+        specialinvoke r0.<androidx.fragment.app.FragmentActivity: void onAttachFragment(androidx.fragment.app.Fragment)>($r1);
+
+        $z0 = $r1 instanceof com.caremark.caremark.HeaderLogoutFragment;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (com.caremark.caremark.HeaderLogoutFragment) $r1;
+
+        r0.<com.caremark.caremark.BaseActivity: com.caremark.caremark.HeaderLogoutFragment fragment> = $r2;
+
+        $r2 = r0.<com.caremark.caremark.BaseActivity: com.caremark.caremark.HeaderLogoutFragment fragment>;
+
+        virtualinvoke $r2.<com.caremark.caremark.HeaderLogoutFragment: void setListener(com.caremark.caremark.HeaderLogoutFragment$a)>(r0);
+
+     label1:
+        return;
+    }
+
+    public void onCancel(java.lang.String)
+    {
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: java.lang.String;
+
+        return;
+    }
+
+    public void onCancelProgressDialog(int)
+    {
+        int $i0;
+        com.caremark.caremark.BaseActivity r0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $i0 := @parameter0: int;
+
+        return;
+    }
+
+    public void onClick(android.view.View)
+    {
+        com.caremark.caremark.BaseActivity r0;
+        android.view.View $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: android.view.View;
+
+        virtualinvoke $r1.<android.view.View: int getId()>();
+
+        return;
+    }
+
+    public void onCreate(android.os.Bundle)
+    {
+        android.os.Bundle $r2;
+        com.crashlytics.android.core.CrashlyticsCore$Builder $r5;
+        com.crashlytics.android.Crashlytics$Builder $r4;
+        com.crashlytics.android.core.CrashlyticsCore $r6;
+        com.caremark.caremark.BaseActivity r0;
+        f.a.a.a.l[] $r1;
+        android.app.Application $r9;
+        com.crashlytics.android.Crashlytics $r7;
+        int $i0;
+        c.c.a.k $r12;
+        com.crashlytics.android.answers.Answers $r8;
+        android.view.Window $r3;
+        c.c.a.d.l $r11;
+        com.caremark.caremark.core.CaremarkApp $r10;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r2 := @parameter0: android.os.Bundle;
+
+        specialinvoke r0.<androidx.appcompat.app.AppCompatActivity: void onCreate(android.os.Bundle)>($r2);
+
+        $r3 = virtualinvoke r0.<android.app.Activity: android.view.Window getWindow()>();
+
+        virtualinvoke $r3.<android.view.Window: void setFlags(int,int)>(8192, 8192);
+
+        $r4 = new com.crashlytics.android.Crashlytics$Builder;
+
+        specialinvoke $r4.<com.crashlytics.android.Crashlytics$Builder: void <init>()>();
+
+        $r5 = new com.crashlytics.android.core.CrashlyticsCore$Builder;
+
+        specialinvoke $r5.<com.crashlytics.android.core.CrashlyticsCore$Builder: void <init>()>();
+
+        $r6 = virtualinvoke $r5.<com.crashlytics.android.core.CrashlyticsCore$Builder: com.crashlytics.android.core.CrashlyticsCore build()>();
+
+        $r4 = virtualinvoke $r4.<com.crashlytics.android.Crashlytics$Builder: com.crashlytics.android.Crashlytics$Builder core(com.crashlytics.android.core.CrashlyticsCore)>($r6);
+
+        $r7 = virtualinvoke $r4.<com.crashlytics.android.Crashlytics$Builder: com.crashlytics.android.Crashlytics build()>();
+
+        $r1 = newarray (f.a.a.a.l)[1];
+
+        $r1[0] = $r7;
+
+        staticinvoke <f.a.a.a.f: f.a.a.a.f a(android.content.Context,f.a.a.a.l[])>(r0, $r1);
+
+        $r1 = newarray (f.a.a.a.l)[1];
+
+        $r8 = new com.crashlytics.android.answers.Answers;
+
+        specialinvoke $r8.<com.crashlytics.android.answers.Answers: void <init>()>();
+
+        $r1[0] = $r8;
+
+        staticinvoke <f.a.a.a.f: f.a.a.a.f a(android.content.Context,f.a.a.a.l[])>(r0, $r1);
+
+        $i0 = virtualinvoke r0.<com.caremark.caremark.BaseActivity: int getContentViewId()>();
+
+        if $i0 == 0 goto label1;
+
+        $i0 = virtualinvoke r0.<com.caremark.caremark.BaseActivity: int getContentViewId()>();
+
+        virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: void setContentView(int)>($i0);
+
+     label1:
+        $r9 = virtualinvoke r0.<android.app.Activity: android.app.Application getApplication()>();
+
+        $r10 = (com.caremark.caremark.core.CaremarkApp) $r9;
+
+        $r11 = virtualinvoke $r10.<com.caremark.caremark.core.CaremarkApp: c.c.a.d.l getSessionManager()>();
+
+        r0.<com.caremark.caremark.BaseActivity: c.c.a.d.l sessionManager> = $r11;
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 < 21 goto label2;
+
+        $r3 = virtualinvoke r0.<android.app.Activity: android.view.Window getWindow()>();
+
+        virtualinvoke $r3.<android.view.Window: void addFlags(int)>(-2147483648);
+
+        virtualinvoke $r3.<android.view.Window: void clearFlags(int)>(67108864);
+
+        $i0 = staticinvoke <b.i.b.a: int a(android.content.Context,int)>(r0, 2131099935);
+
+        virtualinvoke $r3.<android.view.Window: void setStatusBarColor(int)>($i0);
+
+     label2:
+        $r12 = new c.c.a.k;
+
+        specialinvoke $r12.<c.c.a.k: void <init>(com.caremark.caremark.BaseActivity)>(r0);
+
+        r0.<com.caremark.caremark.BaseActivity: android.os.Handler sessionListener> = $r12;
+
+        return;
+    }
+
+    public android.app.Dialog onCreateDialog(int)
+    {
+        com.caremark.caremark.BaseActivity r0;
+        android.app.Dialog $r1;
+        int[] $r3;
+        int $i0;
+        com.caremark.caremark.ui.dialogs.CaremarkAlertDialog $r2, $r11;
+        c.c.a.n $r16;
+        java.lang.String $r4, $r8, $r9, $r10;
+        c.c.a.p $r15;
+        c.c.a.o $r17;
+        com.caremark.caremark.ui.dialogs.RateDialog $r19;
+        android.view.WindowManager$LayoutParams $r7;
+        c.c.a.r $r12;
+        c.c.a.q $r13;
+        android.app.ProgressDialog $r5, $r14;
+        com.caremark.caremark.ui.dialogs.InfoDialog $r18;
+        android.view.Window $r6;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $i0 := @parameter0: int;
+
+        lookupswitch($i0)
+        {
+            case 30001: goto label9;
+            case 31002: goto label8;
+            case 54321: goto label7;
+            case 2131296817: goto label6;
+            case 2131297214: goto label5;
+            case 2131297358: goto label4;
+            case 2131297359: goto label3;
+            case 2131297448: goto label2;
+            default: goto label1;
+        };
+
+     label1:
+        $r1 = specialinvoke r0.<android.app.Activity: android.app.Dialog onCreateDialog(int)>($i0);
+
+        return $r1;
+
+     label2:
+        $r11 = new com.caremark.caremark.ui.dialogs.CaremarkAlertDialog;
+
+        $r2 = $r11;
+
+        $r3 = newarray (int)[1];
+
+        $r3[0] = 2131820866;
+
+        specialinvoke $r11.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void <init>(android.content.Context,int[])>(r0, $r3);
+
+        virtualinvoke $r2.<android.app.Dialog: void setCancelable(boolean)>(0);
+
+        $r12 = new c.c.a.r;
+
+        specialinvoke $r12.<c.c.a.r: void <init>(com.caremark.caremark.BaseActivity)>(r0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setPositiveButton(com.caremark.caremark.ui.dialogs.CaremarkAlertDialog$a,int)>($r12, 2131820777);
+
+        return $r2;
+
+     label3:
+        $r11 = new com.caremark.caremark.ui.dialogs.CaremarkAlertDialog;
+
+        $r2 = $r11;
+
+        $r3 = newarray (int)[1];
+
+        $r3[0] = 2131821771;
+
+        specialinvoke $r11.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void <init>(android.content.Context,int[])>(r0, $r3);
+
+        virtualinvoke $r2.<android.app.Dialog: void setCancelable(boolean)>(1);
+
+        $r13 = new c.c.a.q;
+
+        specialinvoke $r13.<c.c.a.q: void <init>(com.caremark.caremark.BaseActivity)>(r0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setPositiveButton(com.caremark.caremark.ui.dialogs.CaremarkAlertDialog$a,int)>($r13, 2131821926);
+
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820773);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setCloseButtonText(java.lang.CharSequence)>($r4);
+
+        return $r2;
+
+     label4:
+        $r14 = new android.app.ProgressDialog;
+
+        $r5 = $r14;
+
+        specialinvoke $r14.<android.app.ProgressDialog: void <init>(android.content.Context)>(r0);
+
+        virtualinvoke $r5.<android.app.ProgressDialog: void setCancelable(boolean)>(0);
+
+        virtualinvoke $r5.<android.app.ProgressDialog: void setIndeterminate(boolean)>(1);
+
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822667);
+
+        virtualinvoke $r5.<android.app.ProgressDialog: void setMessage(java.lang.CharSequence)>($r4);
+
+        $r15 = new c.c.a.p;
+
+        specialinvoke $r15.<c.c.a.p: void <init>(com.caremark.caremark.BaseActivity)>(r0);
+
+        virtualinvoke $r5.<android.app.ProgressDialog: void setOnKeyListener(android.content.DialogInterface$OnKeyListener)>($r15);
+
+        return $r5;
+
+     label5:
+        $r14 = new android.app.ProgressDialog;
+
+        $r5 = $r14;
+
+        specialinvoke $r14.<android.app.ProgressDialog: void <init>(android.content.Context)>(r0);
+
+        virtualinvoke $r5.<android.app.ProgressDialog: void setCancelable(boolean)>(0);
+
+        virtualinvoke $r5.<android.app.ProgressDialog: void setIndeterminate(boolean)>(1);
+
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822667);
+
+        virtualinvoke $r5.<android.app.ProgressDialog: void setMessage(java.lang.CharSequence)>($r4);
+
+        return $r5;
+
+     label6:
+        $r1 = specialinvoke r0.<com.caremark.caremark.BaseActivity: android.app.Dialog createCoventryMembersDialog(int)>(2131296817);
+
+        $r6 = virtualinvoke $r1.<android.app.Dialog: android.view.Window getWindow()>();
+
+        $r7 = virtualinvoke $r6.<android.view.Window: android.view.WindowManager$LayoutParams getAttributes()>();
+
+        $i0 = -1;
+
+        $r7.<android.view.WindowManager$LayoutParams: int width> = $i0;
+
+        return $r1;
+
+     label7:
+        $r11 = new com.caremark.caremark.ui.dialogs.CaremarkAlertDialog;
+
+        $r2 = $r11;
+
+        $r3 = newarray (int)[1];
+
+        $r3[0] = 2131820604;
+
+        specialinvoke $r11.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void <init>(android.content.Context,int[])>(r0, $r3);
+
+        virtualinvoke $r2.<android.app.Dialog: void setCancelable(boolean)>(1);
+
+        $r16 = new c.c.a.n;
+
+        specialinvoke $r16.<c.c.a.n: void <init>(com.caremark.caremark.BaseActivity)>(r0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setPositiveButton(com.caremark.caremark.ui.dialogs.CaremarkAlertDialog$a,int)>($r16, 2131822171);
+
+        virtualinvoke $r2.<android.app.Dialog: void setCancelable(boolean)>(0);
+
+        $r17 = new c.c.a.o;
+
+        specialinvoke $r17.<c.c.a.o: void <init>(com.caremark.caremark.BaseActivity)>(r0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setOnCloseButtonListener(com.caremark.caremark.ui.dialogs.CaremarkAlertDialog$a)>($r17);
+
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820773);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setCloseButtonText(java.lang.CharSequence)>($r4);
+
+        return $r2;
+
+     label8:
+        $r18 = new com.caremark.caremark.ui.dialogs.InfoDialog;
+
+        specialinvoke $r18.<com.caremark.caremark.ui.dialogs.InfoDialog: void <init>(android.content.Context,int,int)>(r0, 2131822158, 2131822159);
+
+        return $r18;
+
+     label9:
+        $r19 = new com.caremark.caremark.ui.dialogs.RateDialog;
+
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822098);
+
+        $r8 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820816);
+
+        $r9 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820818);
+
+        $r10 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820803);
+
+        specialinvoke $r19.<com.caremark.caremark.ui.dialogs.RateDialog: void <init>(android.content.Context,java.lang.CharSequence,java.lang.CharSequence,java.lang.CharSequence,java.lang.CharSequence,com.caremark.caremark.ui.dialogs.RateDialog$a)>(r0, $r4, $r8, $r9, $r10, r0);
+
+        return $r19;
+    }
+
+    public void onDestroy()
+    {
+        com.caremark.caremark.BaseActivity r0;
+        android.content.Context $r1;
+        com.caremark.caremark.core.CaremarkApp $r2;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        specialinvoke r0.<androidx.appcompat.app.AppCompatActivity: void onDestroy()>();
+
+        $r1 = virtualinvoke r0.<android.app.Activity: android.content.Context getApplicationContext()>();
+
+        $r2 = (com.caremark.caremark.core.CaremarkApp) $r1;
+
+        return;
+    }
+
+    public void onEndLoading(java.lang.String)
+    {
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: java.lang.String;
+
+        return;
+    }
+
+    public void onError(java.lang.String)
+    {
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: java.lang.String;
+
+        return;
+    }
+
+    public void onException(java.lang.String, java.lang.Exception)
+    {
+        com.caremark.caremark.ui.AlertDialogFragment $r5;
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.String $r1, $r3, $r4;
+        java.lang.Exception $r2;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.Exception;
+
+        $z0 = $r2 instanceof com.caremark.caremark.core.exceptions.NetworkException;
+
+        if $z0 == 0 goto label1;
+
+        $r1 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821497);
+
+        $r3 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821496);
+
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820804);
+
+        $r5 = staticinvoke <com.caremark.caremark.ui.AlertDialogFragment: com.caremark.caremark.ui.AlertDialogFragment newInstance(int,java.lang.String,java.lang.String,java.lang.String,boolean)>(2131297440, $r1, $r3, $r4, 0);
+
+        virtualinvoke r0.<com.caremark.caremark.BaseActivity: void showDialog(com.caremark.caremark.ui.BaseDialogFragment)>($r5);
+
+        return;
+
+     label1:
+        $r1 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822441);
+
+        $r3 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822440);
+
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820804);
+
+        $r5 = staticinvoke <com.caremark.caremark.ui.AlertDialogFragment: com.caremark.caremark.ui.AlertDialogFragment newInstance(int,java.lang.String,java.lang.String,java.lang.String,boolean)>(2131297290, $r1, $r3, $r4, 0);
+
+        virtualinvoke r0.<com.caremark.caremark.BaseActivity: void showDialog(com.caremark.caremark.ui.BaseDialogFragment)>($r5);
+
+        return;
+    }
+
+    public void onHideAlert(int)
+    {
+        int $i0;
+        com.caremark.caremark.BaseActivity r0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $i0 := @parameter0: int;
+
+        return;
+    }
+
+    public void onLogoutButtonClick()
+    {
+        b.m.a.l $r4;
+        com.caremark.caremark.BaseActivity r0;
+        android.content.Intent $r6;
+        android.app.Application $r1;
+        androidx.fragment.app.Fragment $r5;
+        c.c.a.d.l $r3;
+        com.caremark.caremark.core.CaremarkApp $r2;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 = virtualinvoke r0.<android.app.Activity: android.app.Application getApplication()>();
+
+        $r2 = (com.caremark.caremark.core.CaremarkApp) $r1;
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.core.CaremarkApp: c.c.a.d.l getSessionManager()>();
+
+        $z0 = virtualinvoke $r3.<c.c.a.d.l: boolean d()>();
+
+        if $z0 == 0 goto label3;
+
+        $r4 = virtualinvoke r0.<androidx.fragment.app.FragmentActivity: b.m.a.l getSupportFragmentManager()>();
+
+        $r5 = virtualinvoke $r4.<b.m.a.l: androidx.fragment.app.Fragment a(int)>(2131297298);
+
+        $z0 = $r5 instanceof com.caremark.caremark.ui.JpmcMfaFragment;
+
+        if $z0 != 0 goto label2;
+
+        $z0 = $r5 instanceof com.caremark.caremark.ui.JpmcVerifyAccoutFragment;
+
+        if $z0 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        virtualinvoke r0.<android.app.Activity: void showDialog(int)>(2131297359);
+
+        return;
+
+     label2:
+        $r6 = new android.content.Intent;
+
+        specialinvoke $r6.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>(r0, class "Lcom/caremark/caremark/MainActivity;");
+
+        virtualinvoke $r6.<android.content.Intent: android.content.Intent addFlags(int)>(67108864);
+
+        virtualinvoke $r6.<android.content.Intent: android.content.Intent putExtra(java.lang.String,boolean)>("switch_to_login", 1);
+
+        virtualinvoke r0.<android.app.Activity: void startActivity(android.content.Intent)>($r6);
+
+        return;
+
+     label3:
+        $r6 = new android.content.Intent;
+
+        specialinvoke $r6.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>(r0, class "Lcom/caremark/caremark/MainActivity;");
+
+        virtualinvoke $r6.<android.content.Intent: android.content.Intent addFlags(int)>(67108864);
+
+        virtualinvoke $r6.<android.content.Intent: android.content.Intent putExtra(java.lang.String,boolean)>("switch_to_login", 1);
+
+        virtualinvoke r0.<android.app.Activity: void startActivity(android.content.Intent)>($r6);
+
+        return;
+    }
+
+    public void onNewIntent(android.content.Intent)
+    {
+        com.caremark.caremark.BaseActivity r0;
+        android.content.Intent $r1;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: android.content.Intent;
+
+        specialinvoke r0.<androidx.fragment.app.FragmentActivity: void onNewIntent(android.content.Intent)>($r1);
+
+        $z0 = virtualinvoke $r1.<android.content.Intent: boolean getBooleanExtra(java.lang.String,boolean)>("check_rate", 0);
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke r0.<com.caremark.caremark.BaseActivity: void checkRate()>();
+
+     label1:
+        return;
+    }
+
+    public void onNoClicked()
+    {
+        com.caremark.caremark.BaseActivity r0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        specialinvoke r0.<com.caremark.caremark.BaseActivity: void updateRateVersion()>();
+
+        return;
+    }
+
+    public void onPause()
+    {
+        com.caremark.caremark.BaseActivity r0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        specialinvoke r0.<androidx.fragment.app.FragmentActivity: void onPause()>();
+
+        staticinvoke <c.c.a.n.a.h: void b()>();
+
+        return;
+    }
+
+    public void onRateClicked()
+    {
+        android.net.Uri $r3;
+        com.caremark.caremark.BaseActivity r0;
+        android.content.Intent $r1;
+        java.lang.String $r2;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        specialinvoke r0.<com.caremark.caremark.BaseActivity: void updateRateVersion()>();
+
+        $r1 = new android.content.Intent;
+
+        specialinvoke $r1.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.VIEW");
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821609);
+
+        $r3 = staticinvoke <android.net.Uri: android.net.Uri parse(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<android.content.Intent: android.content.Intent setData(android.net.Uri)>($r3);
+
+        virtualinvoke r0.<android.app.Activity: void startActivity(android.content.Intent)>($r1);
+
+        return;
+    }
+
+    public void onRemindLaterClicked()
+    {
+        com.caremark.caremark.BaseActivity r0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        return;
+    }
+
+    public void onRequestPermissionsResult(int, java.lang.String[], int[])
+    {
+        java.util.Iterator $r5;
+        b.m.a.l $r3;
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.String[] $r1;
+        java.util.List $r4;
+        int[] $r2;
+        int $i0;
+        androidx.fragment.app.Fragment $r7;
+        java.lang.Object $r6;
+        java.lang.StringBuilder $r8;
+        java.lang.String $r9;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.lang.String[];
+
+        $r2 := @parameter2: int[];
+
+        specialinvoke r0.<androidx.fragment.app.FragmentActivity: void onRequestPermissionsResult(int,java.lang.String[],int[])>($i0, $r1, $r2);
+
+        $r3 = virtualinvoke r0.<androidx.fragment.app.FragmentActivity: b.m.a.l getSupportFragmentManager()>();
+
+        $r4 = virtualinvoke $r3.<b.m.a.l: java.util.List e()>();
+
+        $r5 = interfaceinvoke $r4.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r5.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r6 = interfaceinvoke $r5.<java.util.Iterator: java.lang.Object next()>();
+
+        $r7 = (androidx.fragment.app.Fragment) $r6;
+
+        virtualinvoke $r7.<androidx.fragment.app.Fragment: void onRequestPermissionsResult(int,java.lang.String[],int[])>($i0, $r1, $r2);
+
+        goto label1;
+
+     label2:
+        if $r1 == null goto label3;
+
+        $i0 = lengthof $r1;
+
+        if $i0 <= 0 goto label3;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("BaseActivity onRequestPermissionsResult :: ");
+
+        $r9 = $r1[0];
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r9);
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("BaseActivity", $r9);
+
+        return;
+
+     label3:
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("BaseActivity", "BaseActivity onRequestPermissionsResult :: Result was Null");
+
+        return;
+    }
+
+    public void onRestart()
+    {
+        com.caremark.caremark.BaseActivity r0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        specialinvoke r0.<android.app.Activity: void onRestart()>();
+
+        specialinvoke r0.<com.caremark.caremark.BaseActivity: void callAppInfoService()>();
+
+        return;
+    }
+
+    public void onResume()
+    {
+        com.caremark.caremark.BaseActivity r0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        specialinvoke r0.<androidx.fragment.app.FragmentActivity: void onResume()>();
+
+        staticinvoke <c.c.a.n.a.h: void a(android.app.Activity)>(r0);
+
+        return;
+    }
+
+    public void onStartLoading(java.lang.String)
+    {
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: java.lang.String;
+
+        return;
+    }
+
+    public void onStop()
+    {
+        com.caremark.caremark.BaseActivity r0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        specialinvoke r0.<androidx.appcompat.app.AppCompatActivity: void onStop()>();
+
+        return;
+    }
+
+    public void removeSignInButton()
+    {
+        com.caremark.caremark.BaseActivity r0;
+        com.caremark.caremark.HeaderLogoutFragment $r2;
+        android.widget.TextView $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r2 = r0.<com.caremark.caremark.BaseActivity: com.caremark.caremark.HeaderLogoutFragment fragment>;
+
+        $r1 = virtualinvoke $r2.<com.caremark.caremark.HeaderLogoutFragment: android.widget.TextView getBtnLogout()>();
+
+        virtualinvoke $r1.<android.widget.TextView: void setVisibility(int)>(8);
+
+        return;
+    }
+
+    public void removeWorkerFragment(java.lang.String)
+    {
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.String $r1;
+        b.m.a.l $r2;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = virtualinvoke r0.<androidx.fragment.app.FragmentActivity: b.m.a.l getSupportFragmentManager()>();
+
+        staticinvoke <com.caremark.caremark.util.ViewUtils: void removeWorkerFragment(b.m.a.l,java.lang.String)>($r2, $r1);
+
+        return;
+    }
+
+    public void resetEasyRefillAndCDCCount()
+    {
+        android.content.pm.PackageManager $r1;
+        android.content.pm.PackageManager$NameNotFoundException $r6;
+        com.caremark.caremark.BaseActivity r0;
+        com.google.firebase.crashlytics.FirebaseCrashlytics $r7;
+        android.content.pm.PackageInfo $r3;
+        java.lang.String $r2, $r5;
+        c.c.a.d.i $r4;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+     label01:
+        $r1 = virtualinvoke r0.<android.app.Activity: android.content.pm.PackageManager getPackageManager()>();
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getPackageName()>();
+
+        $r3 = virtualinvoke $r1.<android.content.pm.PackageManager: android.content.pm.PackageInfo getPackageInfo(java.lang.String,int)>($r2, 0);
+
+     label02:
+        $r2 = $r3.<android.content.pm.PackageInfo: java.lang.String versionName>;
+
+     label03:
+        $r4 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $r5 = virtualinvoke $r4.<c.c.a.d.i: java.lang.String f()>();
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r5);
+
+     label04:
+        if $z0 != 0 goto label10;
+
+     label05:
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r5);
+
+     label06:
+        if $z0 != 0 goto label10;
+
+     label07:
+        virtualinvoke $r4.<c.c.a.d.i: void b(int)>(0);
+
+        virtualinvoke $r4.<c.c.a.d.i: void d(int)>(0);
+
+     label08:
+        return;
+
+     label09:
+        $r6 := @caughtexception;
+
+        $r7 = staticinvoke <com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.FirebaseCrashlytics getInstance()>();
+
+        virtualinvoke $r7.<com.google.firebase.crashlytics.FirebaseCrashlytics: void recordException(java.lang.Throwable)>($r6);
+
+        $r2 = <com.caremark.caremark.BaseActivity: java.lang.String TAG>;
+
+        $r5 = virtualinvoke $r6.<android.content.pm.PackageManager$NameNotFoundException: java.lang.String getMessage()>();
+
+        staticinvoke <com.caremark.caremark.util.L: void w(java.lang.String,java.lang.String,java.lang.Throwable)>($r2, $r5, $r6);
+
+     label10:
+        return;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label01 to label02 with label09;
+        catch android.content.pm.PackageManager$NameNotFoundException from label03 to label04 with label09;
+        catch android.content.pm.PackageManager$NameNotFoundException from label05 to label06 with label09;
+        catch android.content.pm.PackageManager$NameNotFoundException from label07 to label08 with label09;
+    }
+
+    public void showDialog(android.app.Dialog)
+    {
+        com.caremark.caremark.BaseActivity r0;
+        android.app.Dialog $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: android.app.Dialog;
+
+        virtualinvoke $r1.<android.app.Dialog: void show()>();
+
+        return;
+    }
+
+    public void showDialog(com.caremark.caremark.ui.BaseDialogFragment)
+    {
+        com.caremark.caremark.BaseActivity r0;
+        com.caremark.caremark.ui.BaseDialogFragment $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: com.caremark.caremark.ui.BaseDialogFragment;
+
+        virtualinvoke r0.<com.caremark.caremark.BaseActivity: void showDialogWithTag(com.caremark.caremark.ui.BaseDialogFragment,java.lang.String)>($r1, "dialog");
+
+        return;
+    }
+
+    public void showDialogWithTag(com.caremark.caremark.ui.BaseDialogFragment, java.lang.String)
+    {
+        b.m.a.l $r3;
+        com.caremark.caremark.BaseActivity r0;
+        com.caremark.caremark.ui.BaseDialogFragment $r1;
+        java.lang.String $r2;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: com.caremark.caremark.ui.BaseDialogFragment;
+
+        $r2 := @parameter1: java.lang.String;
+
+        virtualinvoke r0.<com.caremark.caremark.BaseActivity: void dismissDialogWithTag(java.lang.String)>($r2);
+
+        $r3 = virtualinvoke r0.<androidx.fragment.app.FragmentActivity: b.m.a.l getSupportFragmentManager()>();
+
+        virtualinvoke $r1.<androidx.fragment.app.DialogFragment: void show(b.m.a.l,java.lang.String)>($r3, $r2);
+
+        return;
+    }
+
+    public void startWebBasedActivity(java.lang.String, java.lang.String, java.lang.String, boolean)
+    {
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.Boolean $r4;
+        java.lang.String $r1, $r2, $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: java.lang.String;
+
+        $z0 := @parameter3: boolean;
+
+        $r4 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(0);
+
+        virtualinvoke r0.<com.caremark.caremark.BaseActivity: void startWebBasedActivity(java.lang.String,java.lang.String,boolean,boolean,java.lang.String,java.lang.Boolean,java.lang.String)>($r1, $r2, 0, $z0, null, $r4, $r3);
+
+        return;
+    }
+
+    public void startWebBasedActivity(java.lang.String, java.lang.String, boolean)
+    {
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.Boolean $r3;
+        java.lang.String $r1, $r2;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $z0 := @parameter2: boolean;
+
+        $r3 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(0);
+
+        virtualinvoke r0.<com.caremark.caremark.BaseActivity: void startWebBasedActivity(java.lang.String,java.lang.String,boolean,boolean,java.lang.String,java.lang.Boolean,java.lang.String)>($r1, $r2, 0, $z0, null, $r3, "");
+
+        return;
+    }
+
+    public void startWebBasedActivity(java.lang.String, java.lang.String, boolean, boolean, java.lang.String, java.lang.Boolean, java.lang.String)
+    {
+        android.content.Context $r7;
+        com.caremark.caremark.BaseActivity r0;
+        android.content.Intent $r4;
+        java.lang.Boolean $r2;
+        java.lang.String $r1, $r3, $r5, $r6;
+        boolean $z0, $z1, $z2;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r5 := @parameter0: java.lang.String;
+
+        $r6 := @parameter1: java.lang.String;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 := @parameter3: boolean;
+
+        $r1 := @parameter4: java.lang.String;
+
+        $r2 := @parameter5: java.lang.Boolean;
+
+        $r3 := @parameter6: java.lang.String;
+
+        $r4 = new android.content.Intent;
+
+        $r7 = virtualinvoke r0.<android.app.Activity: android.content.Context getApplicationContext()>();
+
+        specialinvoke $r4.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r7, class "Lcom/caremark/caremark/WebBasedActivity;");
+
+        virtualinvoke $r4.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("load_url", $r5);
+
+        virtualinvoke $r4.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("page_name", $r6);
+
+        virtualinvoke $r4.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.io.Serializable)>("remove_signin_button", $r2);
+
+        virtualinvoke $r4.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("module_name", $r3);
+
+        $z2 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r1);
+
+        if $z2 != 0 goto label1;
+
+        virtualinvoke $r4.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("welcome_msg", $r1);
+
+     label1:
+        if $z0 == 0 goto label2;
+
+        virtualinvoke $r4.<android.content.Intent: android.content.Intent addFlags(int)>(603979776);
+
+     label2:
+        if $z1 != 0 goto label3;
+
+        virtualinvoke $r4.<android.content.Intent: android.content.Intent putExtra(java.lang.String,boolean)>("disable_session_listener", 1);
+
+     label3:
+        virtualinvoke r0.<androidx.fragment.app.FragmentActivity: void startActivityForResult(android.content.Intent,int)>($r4, 601);
+
+        return;
+    }
+
+    public void startWebBasedActivityWithNewWelcomeMsg(java.lang.String, java.lang.String, boolean, java.lang.String)
+    {
+        com.caremark.caremark.BaseActivity r0;
+        java.lang.Boolean $r4;
+        java.lang.String $r1, $r2, $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $z0 := @parameter2: boolean;
+
+        $r3 := @parameter3: java.lang.String;
+
+        $r4 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+        virtualinvoke r0.<com.caremark.caremark.BaseActivity: void startWebBasedActivity(java.lang.String,java.lang.String,boolean,boolean,java.lang.String,java.lang.Boolean,java.lang.String)>($r1, $r2, 0, $z0, $r3, $r4, "");
+
+        return;
+    }
+
+    public void updateAppVersion()
+    {
+        android.content.pm.PackageManager $r2;
+        android.content.pm.PackageManager$NameNotFoundException $r5;
+        com.caremark.caremark.BaseActivity r0;
+        com.google.firebase.crashlytics.FirebaseCrashlytics $r6;
+        android.content.pm.PackageInfo $r4;
+        int $i0;
+        java.lang.String $r3, $r7;
+        c.c.a.d.i $r1;
+
+        r0 := @this: com.caremark.caremark.BaseActivity;
+
+        $r1 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $i0 = virtualinvoke $r1.<c.c.a.d.i: int d()>();
+
+        if $i0 < 2 goto label6;
+
+        $r1 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $i0 = virtualinvoke $r1.<c.c.a.d.i: int j()>();
+
+        if $i0 < 2 goto label6;
+
+     label1:
+        $r2 = virtualinvoke r0.<android.app.Activity: android.content.pm.PackageManager getPackageManager()>();
+
+        $r3 = virtualinvoke r0.<android.app.Activity: java.lang.String getPackageName()>();
+
+        $r4 = virtualinvoke $r2.<android.content.pm.PackageManager: android.content.pm.PackageInfo getPackageInfo(java.lang.String,int)>($r3, 0);
+
+     label2:
+        $r3 = $r4.<android.content.pm.PackageInfo: java.lang.String versionName>;
+
+     label3:
+        $r1 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        virtualinvoke $r1.<c.c.a.d.i: void n(java.lang.String)>($r3);
+
+     label4:
+        return;
+
+     label5:
+        $r5 := @caughtexception;
+
+        $r6 = staticinvoke <com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.FirebaseCrashlytics getInstance()>();
+
+        virtualinvoke $r6.<com.google.firebase.crashlytics.FirebaseCrashlytics: void recordException(java.lang.Throwable)>($r5);
+
+        $r3 = <com.caremark.caremark.BaseActivity: java.lang.String TAG>;
+
+        $r7 = virtualinvoke $r5.<android.content.pm.PackageManager$NameNotFoundException: java.lang.String getMessage()>();
+
+        staticinvoke <com.caremark.caremark.util.L: void w(java.lang.String,java.lang.String,java.lang.Throwable)>($r3, $r7, $r5);
+
+     label6:
+        return;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label1 to label2 with label5;
+        catch android.content.pm.PackageManager$NameNotFoundException from label3 to label4 with label5;
+    }
+}

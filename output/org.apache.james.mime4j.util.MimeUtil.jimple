@@ -1,0 +1,872 @@
+public final class org.apache.james.mime4j.util.MimeUtil extends java.lang.Object
+{
+    public static final java.lang.String ENC_7BIT;
+    public static final java.lang.String ENC_8BIT;
+    public static final java.lang.String ENC_BASE64;
+    public static final java.lang.String ENC_BINARY;
+    public static final java.lang.String ENC_QUOTED_PRINTABLE;
+    public static final java.lang.String MIME_HEADER_CONTENT_DESCRIPTION;
+    public static final java.lang.String MIME_HEADER_CONTENT_DISPOSITION;
+    public static final java.lang.String MIME_HEADER_CONTENT_ID;
+    public static final java.lang.String MIME_HEADER_LANGAUGE;
+    public static final java.lang.String MIME_HEADER_LOCATION;
+    public static final java.lang.String MIME_HEADER_MD5;
+    public static final java.lang.String MIME_HEADER_MIME_VERSION;
+    public static final java.lang.String PARAM_CREATION_DATE;
+    public static final java.lang.String PARAM_FILENAME;
+    public static final java.lang.String PARAM_MODIFICATION_DATE;
+    public static final java.lang.String PARAM_READ_DATE;
+    public static final java.lang.String PARAM_SIZE;
+    public static final java.lang.ThreadLocal RFC822_DATE_FORMAT;
+    public static int counter;
+    public static final org.apache.commons.logging.Log log;
+    public static final java.util.Random random;
+
+    static void <clinit>()
+    {
+        org.apache.commons.logging.Log $r0;
+        java.util.Random $r1;
+        org.apache.james.mime4j.util.MimeUtil$1 $r2;
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String PARAM_SIZE> = "size";
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String PARAM_READ_DATE> = "read-date";
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String PARAM_MODIFICATION_DATE> = "modification-date";
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String PARAM_FILENAME> = "filename";
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String PARAM_CREATION_DATE> = "creation-date";
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String MIME_HEADER_MIME_VERSION> = "mime-version";
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String MIME_HEADER_MD5> = "content-md5";
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String MIME_HEADER_LOCATION> = "content-location";
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String MIME_HEADER_LANGAUGE> = "content-language";
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String MIME_HEADER_CONTENT_ID> = "content-id";
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String MIME_HEADER_CONTENT_DISPOSITION> = "content-disposition";
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String MIME_HEADER_CONTENT_DESCRIPTION> = "content-description";
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String ENC_QUOTED_PRINTABLE> = "quoted-printable";
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String ENC_BINARY> = "binary";
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String ENC_BASE64> = "base64";
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String ENC_8BIT> = "8bit";
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.String ENC_7BIT> = "7bit";
+
+        $r0 = staticinvoke <org.apache.commons.logging.LogFactory: org.apache.commons.logging.Log getLog(java.lang.Class)>(class "Lorg/apache/james/mime4j/util/MimeUtil;");
+
+        <org.apache.james.mime4j.util.MimeUtil: org.apache.commons.logging.Log log> = $r0;
+
+        $r1 = new java.util.Random;
+
+        specialinvoke $r1.<java.util.Random: void <init>()>();
+
+        <org.apache.james.mime4j.util.MimeUtil: java.util.Random random> = $r1;
+
+        <org.apache.james.mime4j.util.MimeUtil: int counter> = 0;
+
+        $r2 = new org.apache.james.mime4j.util.MimeUtil$1;
+
+        specialinvoke $r2.<org.apache.james.mime4j.util.MimeUtil$1: void <init>()>();
+
+        <org.apache.james.mime4j.util.MimeUtil: java.lang.ThreadLocal RFC822_DATE_FORMAT> = $r2;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.apache.james.mime4j.util.MimeUtil r0;
+
+        r0 := @this: org.apache.james.mime4j.util.MimeUtil;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.lang.String createUniqueBoundary()
+    {
+        int $i0;
+        java.lang.StringBuilder $r0;
+        java.util.Random $r2;
+        long $l1;
+        java.lang.String $r1;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("-=Part.");
+
+        $i0 = staticinvoke <org.apache.james.mime4j.util.MimeUtil: int nextCounterValue()>();
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(46);
+
+        $r2 = <org.apache.james.mime4j.util.MimeUtil: java.util.Random random>;
+
+        $l1 = virtualinvoke $r2.<java.util.Random: long nextLong()>();
+
+        $r1 = staticinvoke <java.lang.Long: java.lang.String toHexString(long)>($l1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(46);
+
+        $l1 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $r1 = staticinvoke <java.lang.Long: java.lang.String toHexString(long)>($l1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(46);
+
+        $r2 = <org.apache.james.mime4j.util.MimeUtil: java.util.Random random>;
+
+        $l1 = virtualinvoke $r2.<java.util.Random: long nextLong()>();
+
+        $r1 = staticinvoke <java.lang.Long: java.lang.String toHexString(long)>($l1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("=-");
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+
+    public static java.lang.String createUniqueMessageId(java.lang.String)
+    {
+        int $i0;
+        java.lang.StringBuilder $r0;
+        java.util.Random $r3;
+        long $l1;
+        java.lang.String $r1, $r2;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("<Mime4j.");
+
+        $i0 = staticinvoke <org.apache.james.mime4j.util.MimeUtil: int nextCounterValue()>();
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(46);
+
+        $r3 = <org.apache.james.mime4j.util.MimeUtil: java.util.Random random>;
+
+        $l1 = virtualinvoke $r3.<java.util.Random: long nextLong()>();
+
+        $r2 = staticinvoke <java.lang.Long: java.lang.String toHexString(long)>($l1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(46);
+
+        $l1 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $r2 = staticinvoke <java.lang.Long: java.lang.String toHexString(long)>($l1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        if $r1 == null goto label1;
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(64);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+     label1:
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(62);
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+
+    public static java.lang.String fold(java.lang.String, int)
+    {
+        int $i0, $i1, $i2, $i3, $i4;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r0, $r2;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $i1 := @parameter1: int;
+
+        $i2 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        $i3 = $i1 + $i2;
+
+        if $i3 > 76 goto label1;
+
+        return $r0;
+
+     label1:
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $i1 = neg $i1;
+
+        $i3 = staticinvoke <org.apache.james.mime4j.util.MimeUtil: int indexOfWsp(java.lang.String,int)>($r0, 0);
+
+     label2:
+        if $i3 != $i2 goto label3;
+
+        $i1 = staticinvoke <java.lang.Math: int max(int,int)>(0, $i1);
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String substring(int)>($i1);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r0);
+
+        $r0 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r0;
+
+     label3:
+        $i4 = $i3 + 1;
+
+        $i4 = staticinvoke <org.apache.james.mime4j.util.MimeUtil: int indexOfWsp(java.lang.String,int)>($r0, $i4);
+
+        $i0 = $i4 - $i1;
+
+        if $i0 <= 76 goto label4;
+
+        $i1 = staticinvoke <java.lang.Math: int max(int,int)>(0, $i1);
+
+        $r2 = virtualinvoke $r0.<java.lang.String: java.lang.String substring(int,int)>($i1, $i3);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\r\n");
+
+        $i1 = $i3;
+
+     label4:
+        $i3 = $i4;
+
+        goto label2;
+    }
+
+    public static java.lang.String formatDate(java.util.Date, java.util.TimeZone)
+    {
+        java.lang.ThreadLocal $r2;
+        java.util.Date $r0;
+        java.util.TimeZone $r1;
+        java.lang.Object $r3;
+        java.lang.String $r5;
+        java.text.DateFormat $r4;
+
+        $r0 := @parameter0: java.util.Date;
+
+        $r1 := @parameter1: java.util.TimeZone;
+
+        $r2 = <org.apache.james.mime4j.util.MimeUtil: java.lang.ThreadLocal RFC822_DATE_FORMAT>;
+
+        $r3 = virtualinvoke $r2.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        $r4 = (java.text.DateFormat) $r3;
+
+        if $r1 != null goto label1;
+
+        $r1 = staticinvoke <java.util.TimeZone: java.util.TimeZone getDefault()>();
+
+        virtualinvoke $r4.<java.text.DateFormat: void setTimeZone(java.util.TimeZone)>($r1);
+
+        goto label2;
+
+     label1:
+        virtualinvoke $r4.<java.text.DateFormat: void setTimeZone(java.util.TimeZone)>($r1);
+
+     label2:
+        $r5 = virtualinvoke $r4.<java.text.DateFormat: java.lang.String format(java.util.Date)>($r0);
+
+        return $r5;
+    }
+
+    public static java.util.Map getHeaderParams(java.lang.String)
+    {
+        java.util.HashMap $r1, $r7;
+        byte $b3;
+        int $i1, $i2, $i4;
+        java.lang.String $r0, $r2;
+        boolean $z0, $z1;
+        char $c0;
+        char[] $r3;
+        java.lang.StringBuilder $r4, $r5, $r8;
+        org.apache.commons.logging.Log $r6;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String trim()>();
+
+        $r2 = staticinvoke <org.apache.james.mime4j.util.MimeUtil: java.lang.String unfold(java.lang.String)>($r0);
+
+        $r0 = $r2;
+
+        $r7 = new java.util.HashMap;
+
+        $r1 = $r7;
+
+        specialinvoke $r7.<java.util.HashMap: void <init>()>();
+
+        $i1 = virtualinvoke $r2.<java.lang.String: int indexOf(java.lang.String)>(";");
+
+        $i2 = -1;
+
+        if $i1 != $i2 goto label01;
+
+        $r2 = null;
+
+        goto label02;
+
+     label01:
+        $i1 = virtualinvoke $r2.<java.lang.String: int indexOf(java.lang.String)>(";");
+
+        $r0 = virtualinvoke $r2.<java.lang.String: java.lang.String substring(int,int)>(0, $i1);
+
+        $i1 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        $i1 = $i1 + 1;
+
+        $r2 = virtualinvoke $r2.<java.lang.String: java.lang.String substring(int)>($i1);
+
+     label02:
+        interfaceinvoke $r1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("", $r0);
+
+        if $r2 == null goto label31;
+
+        $r3 = virtualinvoke $r2.<java.lang.String: char[] toCharArray()>();
+
+        $r5 = new java.lang.StringBuilder;
+
+        $r4 = $r5;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>(int)>(64);
+
+        $r8 = new java.lang.StringBuilder;
+
+        $r5 = $r8;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>(int)>(64);
+
+        $i1 = lengthof $r3;
+
+        $i2 = 0;
+
+        $b3 = 0;
+
+        $z0 = 0;
+
+     label03:
+        if $i2 >= $i1 goto label30;
+
+        $c0 = $r3[$i2];
+
+        if $b3 == 0 goto label24;
+
+        if $b3 == 1 goto label23;
+
+        if $b3 == 2 goto label13;
+
+        if $b3 == 3 goto label17;
+
+        if $b3 == 4 goto label06;
+
+        if $b3 == 5 goto label20;
+
+        if $b3 == 99 goto label04;
+
+        goto label05;
+
+     label04:
+        $i4 = (int) $c0;
+
+        if $i4 != 59 goto label05;
+
+        goto label22;
+
+     label05:
+        goto label29;
+
+     label06:
+        $i4 = (int) $c0;
+
+        if $i4 == 34 goto label11;
+
+        $i4 = (int) $c0;
+
+        if $i4 == 92 goto label09;
+
+        if $z0 == 0 goto label07;
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(92);
+
+     label07:
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+     label08:
+        $z0 = 0;
+
+        goto label29;
+
+     label09:
+        if $z0 == 0 goto label10;
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(92);
+
+     label10:
+        $z0 = $z0 ^ 1;
+
+        goto label05;
+
+     label11:
+        if $z0 != 0 goto label12;
+
+        $r0 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String trim()>();
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String toLowerCase()>();
+
+        $r2 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r0, $r2);
+
+        $b3 = 5;
+
+        goto label29;
+
+     label12:
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        goto label08;
+
+     label13:
+        $i4 = (int) $c0;
+
+        if $i4 == 9 goto label15;
+
+        $i4 = (int) $c0;
+
+        if $i4 == 32 goto label15;
+
+        $i4 = (int) $c0;
+
+        if $i4 == 34 goto label14;
+
+        $z1 = 1;
+
+        $b3 = 3;
+
+        goto label16;
+
+     label14:
+        $z1 = 0;
+
+        $b3 = 4;
+
+        goto label16;
+
+     label15:
+        $z1 = 0;
+
+     label16:
+        if $z1 != 0 goto label17;
+
+        goto label05;
+
+     label17:
+        $i4 = (int) $c0;
+
+        if $i4 == 9 goto label18;
+
+        $i4 = (int) $c0;
+
+        if $i4 == 32 goto label18;
+
+        $i4 = (int) $c0;
+
+        if $i4 == 59 goto label18;
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        $z1 = 0;
+
+        goto label19;
+
+     label18:
+        $r0 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String trim()>();
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String toLowerCase()>();
+
+        $r2 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.String: java.lang.String trim()>();
+
+        interfaceinvoke $r1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r0, $r2);
+
+        $z1 = 1;
+
+        $b3 = 5;
+
+     label19:
+        if $z1 != 0 goto label20;
+
+        goto label05;
+
+     label20:
+        $i4 = (int) $c0;
+
+        if $i4 == 9 goto label05;
+
+        $i4 = (int) $c0;
+
+        if $i4 == 32 goto label05;
+
+        $i4 = (int) $c0;
+
+        if $i4 == 59 goto label22;
+
+     label21:
+        $b3 = 99;
+
+        goto label29;
+
+     label22:
+        $b3 = 0;
+
+        goto label29;
+
+     label23:
+        goto label26;
+
+     label24:
+        $i4 = (int) $c0;
+
+        if $i4 != 61 goto label25;
+
+        $r6 = <org.apache.james.mime4j.util.MimeUtil: org.apache.commons.logging.Log log>;
+
+        interfaceinvoke $r6.<org.apache.commons.logging.Log: void error(java.lang.Object)>("Expected header param name, got \'=\'");
+
+        goto label21;
+
+     label25:
+        virtualinvoke $r4.<java.lang.StringBuilder: void setLength(int)>(0);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: void setLength(int)>(0);
+
+        $b3 = 1;
+
+     label26:
+        $i4 = (int) $c0;
+
+        if $i4 != 61 goto label28;
+
+        $i4 = virtualinvoke $r4.<java.lang.StringBuilder: int length()>();
+
+        if $i4 != 0 goto label27;
+
+        goto label21;
+
+     label27:
+        $b3 = 2;
+
+        goto label29;
+
+     label28:
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+     label29:
+        $i2 = $i2 + 1;
+
+        goto label03;
+
+     label30:
+        if $b3 != 3 goto label31;
+
+        $r0 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String trim()>();
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String toLowerCase()>();
+
+        $r2 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.String: java.lang.String trim()>();
+
+        interfaceinvoke $r1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r0, $r2);
+
+     label31:
+        return $r1;
+    }
+
+    public static int indexOfWsp(java.lang.String, int)
+    {
+        int $i0, $i1, $i3;
+        char $c2;
+        java.lang.String $r0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        $i1 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+     label1:
+        if $i0 >= $i1 goto label4;
+
+        $c2 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i0);
+
+        $i3 = (int) $c2;
+
+        if $i3 == 32 goto label3;
+
+        $i3 = (int) $c2;
+
+        if $i3 != 9 goto label2;
+
+        return $i0;
+
+     label2:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label3:
+        return $i0;
+
+     label4:
+        return $i1;
+    }
+
+    public static boolean isBase64Encoding(java.lang.String)
+    {
+        java.lang.String $r0, $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0 = "base64";
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r1);
+
+        return $z0;
+    }
+
+    public static boolean isMessage(java.lang.String)
+    {
+        java.lang.String $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        if $r0 == null goto label1;
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>("message/rfc822");
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static boolean isMultipart(java.lang.String)
+    {
+        java.lang.String $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        if $r0 == null goto label1;
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String toLowerCase()>();
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean startsWith(java.lang.String)>("multipart/");
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static boolean isQuotedPrintableEncoded(java.lang.String)
+    {
+        java.lang.String $r0, $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0 = "quoted-printable";
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r1);
+
+        return $z0;
+    }
+
+    public static boolean isSameMimeType(java.lang.String, java.lang.String)
+    {
+        java.lang.String $r0, $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0 := @parameter1: java.lang.String;
+
+        if $r1 == null goto label1;
+
+        if $r0 == null goto label1;
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r0);
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static int nextCounterValue()
+    {
+        int $i0, $i1;
+        java.lang.Throwable $r0;
+
+        entermonitor class "Lorg/apache/james/mime4j/util/MimeUtil;";
+
+     label1:
+        $i1 = <org.apache.james.mime4j.util.MimeUtil: int counter>;
+
+        $i0 = $i1 + 1;
+
+        <org.apache.james.mime4j.util.MimeUtil: int counter> = $i0;
+
+     label2:
+        exitmonitor class "Lorg/apache/james/mime4j/util/MimeUtil;";
+
+        return $i1;
+
+     label3:
+        $r0 := @caughtexception;
+
+        exitmonitor class "Lorg/apache/james/mime4j/util/MimeUtil;";
+
+        throw $r0;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public static java.lang.String unfold(java.lang.String)
+    {
+        int $i0, $i1, $i3;
+        char $c2;
+        java.lang.String $r0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label4;
+
+        $c2 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i1);
+
+        $i3 = (int) $c2;
+
+        if $i3 == 13 goto label3;
+
+        $i3 = (int) $c2;
+
+        if $i3 != 10 goto label2;
+
+        goto label3;
+
+     label2:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label3:
+        $r0 = staticinvoke <org.apache.james.mime4j.util.MimeUtil: java.lang.String unfold0(java.lang.String,int)>($r0, $i1);
+
+     label4:
+        return $r0;
+    }
+
+    public static java.lang.String unfold0(java.lang.String, int)
+    {
+        char $c2;
+        int $i0, $i1, $i3;
+        java.lang.StringBuilder $r0, $r3;
+        java.lang.String $r1, $r2;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        $i1 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        $r0 = $r3;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(int)>($i1);
+
+        if $i0 <= 0 goto label1;
+
+        $r2 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int,int)>(0, $i0);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+     label1:
+        $i0 = $i0 + 1;
+
+        if $i0 >= $i1 goto label2;
+
+        $c2 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i0);
+
+        $i3 = (int) $c2;
+
+        if $i3 == 13 goto label1;
+
+        $i3 = (int) $c2;
+
+        if $i3 == 10 goto label1;
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c2);
+
+        goto label1;
+
+     label2:
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+}

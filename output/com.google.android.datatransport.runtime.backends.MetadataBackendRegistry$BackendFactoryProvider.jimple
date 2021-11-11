@@ -1,0 +1,339 @@
+public class com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider extends java.lang.Object
+{
+    public final android.content.Context applicationContext;
+    public java.util.Map backendProviders;
+
+    public void <init>(android.content.Context)
+    {
+        android.content.Context $r1;
+        com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider r0;
+
+        r0 := @this: com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider;
+
+        $r1 := @parameter0: android.content.Context;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider: java.util.Map backendProviders> = null;
+
+        r0.<com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider: android.content.Context applicationContext> = $r1;
+
+        return;
+    }
+
+    private java.util.Map discover(android.content.Context)
+    {
+        android.content.Context $r1;
+        android.os.Bundle $r2;
+        com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider r0;
+        java.util.HashMap $r4, $r12;
+        java.lang.String[] $r10;
+        java.util.Map $r3;
+        int $i0, $i1;
+        java.lang.String $r8, $r9, $r11;
+        boolean $z0;
+        java.util.Iterator $r6;
+        java.util.Set $r5;
+        java.lang.Object $r7;
+
+        r0 := @this: com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 = staticinvoke <com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider: android.os.Bundle getMetadata(android.content.Context)>($r1);
+
+        if $r2 != null goto label1;
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("BackendRegistry", "Could not retrieve metadata, returning empty list of transport backends.");
+
+        $r3 = staticinvoke <java.util.Collections: java.util.Map emptyMap()>();
+
+        return $r3;
+
+     label1:
+        $r12 = new java.util.HashMap;
+
+        $r4 = $r12;
+
+        specialinvoke $r12.<java.util.HashMap: void <init>()>();
+
+        $r5 = virtualinvoke $r2.<android.os.Bundle: java.util.Set keySet()>();
+
+        $r6 = interfaceinvoke $r5.<java.util.Set: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r6.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label6;
+
+        $r7 = interfaceinvoke $r6.<java.util.Iterator: java.lang.Object next()>();
+
+        $r8 = (java.lang.String) $r7;
+
+        $r7 = virtualinvoke $r2.<android.os.Bundle: java.lang.Object get(java.lang.String)>($r8);
+
+        $z0 = $r7 instanceof java.lang.String;
+
+        if $z0 == 0 goto label2;
+
+        $z0 = virtualinvoke $r8.<java.lang.String: boolean startsWith(java.lang.String)>("backend:");
+
+        if $z0 == 0 goto label2;
+
+        $r9 = (java.lang.String) $r7;
+
+        $i0 = -1;
+
+        $r10 = virtualinvoke $r9.<java.lang.String: java.lang.String[] split(java.lang.String,int)>(",", $i0);
+
+        $i0 = lengthof $r10;
+
+        $i1 = 0;
+
+     label3:
+        if $i1 >= $i0 goto label2;
+
+        $r9 = $r10[$i1];
+
+        $r9 = virtualinvoke $r9.<java.lang.String: java.lang.String trim()>();
+
+        $z0 = virtualinvoke $r9.<java.lang.String: boolean isEmpty()>();
+
+        if $z0 == 0 goto label4;
+
+        goto label5;
+
+     label4:
+        $r11 = virtualinvoke $r8.<java.lang.String: java.lang.String substring(int)>(8);
+
+        interfaceinvoke $r4.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r9, $r11);
+
+     label5:
+        $i1 = $i1 + 1;
+
+        goto label3;
+
+     label6:
+        return $r4;
+    }
+
+    private java.util.Map getBackendProviders()
+    {
+        android.content.Context $r2;
+        com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider r0;
+        java.util.Map $r1;
+
+        r0 := @this: com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider;
+
+        $r1 = r0.<com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider: java.util.Map backendProviders>;
+
+        if $r1 != null goto label1;
+
+        $r2 = r0.<com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider: android.content.Context applicationContext>;
+
+        $r1 = specialinvoke r0.<com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider: java.util.Map discover(android.content.Context)>($r2);
+
+        r0.<com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider: java.util.Map backendProviders> = $r1;
+
+     label1:
+        $r1 = r0.<com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider: java.util.Map backendProviders>;
+
+        return $r1;
+    }
+
+    public static android.os.Bundle getMetadata(android.content.Context)
+    {
+        android.content.Context $r2;
+        android.os.Bundle r5;
+        android.content.pm.PackageManager $r3;
+        android.content.ComponentName $r0;
+        android.content.pm.PackageManager$NameNotFoundException $r1;
+        android.content.pm.ServiceInfo $r4;
+
+        $r2 := @parameter0: android.content.Context;
+
+     label01:
+        $r3 = virtualinvoke $r2.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+     label02:
+        if $r3 != null goto label05;
+
+     label03:
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("BackendRegistry", "Context has no PackageManager.");
+
+     label04:
+        return null;
+
+     label05:
+        $r0 = new android.content.ComponentName;
+
+     label06:
+        specialinvoke $r0.<android.content.ComponentName: void <init>(android.content.Context,java.lang.Class)>($r2, class "Lcom/google/android/datatransport/runtime/backends/TransportBackendDiscovery;");
+
+        $r4 = virtualinvoke $r3.<android.content.pm.PackageManager: android.content.pm.ServiceInfo getServiceInfo(android.content.ComponentName,int)>($r0, 128);
+
+     label07:
+        if $r4 != null goto label10;
+
+     label08:
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("BackendRegistry", "TransportBackendDiscovery has no service info.");
+
+     label09:
+        return null;
+
+     label10:
+        r5 = $r4.<android.content.pm.ServiceInfo: android.os.Bundle metaData>;
+
+        return r5;
+
+     label11:
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("BackendRegistry", "Application info not found.");
+
+        return null;
+
+     label12:
+        $r1 := @caughtexception;
+
+        goto label11;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label01 to label02 with label12;
+        catch android.content.pm.PackageManager$NameNotFoundException from label03 to label04 with label12;
+        catch android.content.pm.PackageManager$NameNotFoundException from label06 to label07 with label12;
+        catch android.content.pm.PackageManager$NameNotFoundException from label08 to label09 with label12;
+    }
+
+    public com.google.android.datatransport.runtime.backends.BackendFactory get(java.lang.String)
+    {
+        com.google.android.datatransport.runtime.backends.BackendFactory $r8;
+        java.lang.IllegalAccessException $r12;
+        java.lang.Object[] $r7;
+        java.lang.NoSuchMethodException $r10;
+        java.lang.Class[] $r5;
+        com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider r0;
+        java.lang.reflect.Constructor $r6;
+        java.lang.reflect.InvocationTargetException $r9;
+        java.util.Map $r2;
+        java.lang.InstantiationException $r11;
+        java.lang.Object $r3;
+        java.lang.Class $r4;
+        java.lang.ClassNotFoundException $r13;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = specialinvoke r0.<com.google.android.datatransport.runtime.backends.MetadataBackendRegistry$BackendFactoryProvider: java.util.Map getBackendProviders()>();
+
+        $r3 = interfaceinvoke $r2.<java.util.Map: java.lang.Object get(java.lang.Object)>($r1);
+
+        $r1 = (java.lang.String) $r3;
+
+        if $r1 != null goto label01;
+
+        return null;
+
+     label01:
+        $r4 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>($r1);
+
+        $r4 = virtualinvoke $r4.<java.lang.Class: java.lang.Class asSubclass(java.lang.Class)>(class "Lcom/google/android/datatransport/runtime/backends/BackendFactory;");
+
+     label02:
+        $r5 = newarray (java.lang.Class)[0];
+
+     label03:
+        $r6 = virtualinvoke $r4.<java.lang.Class: java.lang.reflect.Constructor getDeclaredConstructor(java.lang.Class[])>($r5);
+
+     label04:
+        $r7 = newarray (java.lang.Object)[0];
+
+     label05:
+        $r3 = virtualinvoke $r6.<java.lang.reflect.Constructor: java.lang.Object newInstance(java.lang.Object[])>($r7);
+
+     label06:
+        $r8 = (com.google.android.datatransport.runtime.backends.BackendFactory) $r3;
+
+        return $r8;
+
+     label07:
+        $r9 := @caughtexception;
+
+        $r7 = newarray (java.lang.Object)[1];
+
+        $r7[0] = $r1;
+
+        $r1 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Could not instantiate %s", $r7);
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("BackendRegistry", $r1, $r9);
+
+        return null;
+
+     label08:
+        $r10 := @caughtexception;
+
+        $r7 = newarray (java.lang.Object)[1];
+
+        $r7[0] = $r1;
+
+        $r1 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Could not instantiate %s", $r7);
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("BackendRegistry", $r1, $r10);
+
+        return null;
+
+     label09:
+        $r11 := @caughtexception;
+
+        $r7 = newarray (java.lang.Object)[1];
+
+        $r7[0] = $r1;
+
+        $r1 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Could not instantiate %s.", $r7);
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("BackendRegistry", $r1, $r11);
+
+        return null;
+
+     label10:
+        $r12 := @caughtexception;
+
+        $r7 = newarray (java.lang.Object)[1];
+
+        $r7[0] = $r1;
+
+        $r1 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Could not instantiate %s.", $r7);
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("BackendRegistry", $r1, $r12);
+
+        return null;
+
+     label11:
+        $r13 := @caughtexception;
+
+        $r7 = newarray (java.lang.Object)[1];
+
+        $r7[0] = $r1;
+
+        $r1 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Class %s is not found.", $r7);
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("BackendRegistry", $r1, $r13);
+
+        return null;
+
+        catch java.lang.ClassNotFoundException from label01 to label02 with label11;
+        catch java.lang.ClassNotFoundException from label03 to label04 with label11;
+        catch java.lang.ClassNotFoundException from label05 to label06 with label11;
+        catch java.lang.IllegalAccessException from label01 to label02 with label10;
+        catch java.lang.IllegalAccessException from label03 to label04 with label10;
+        catch java.lang.IllegalAccessException from label05 to label06 with label10;
+        catch java.lang.InstantiationException from label01 to label02 with label09;
+        catch java.lang.InstantiationException from label03 to label04 with label09;
+        catch java.lang.InstantiationException from label05 to label06 with label09;
+        catch java.lang.NoSuchMethodException from label01 to label02 with label08;
+        catch java.lang.NoSuchMethodException from label03 to label04 with label08;
+        catch java.lang.NoSuchMethodException from label05 to label06 with label08;
+        catch java.lang.reflect.InvocationTargetException from label01 to label02 with label07;
+        catch java.lang.reflect.InvocationTargetException from label03 to label04 with label07;
+        catch java.lang.reflect.InvocationTargetException from label05 to label06 with label07;
+    }
+}

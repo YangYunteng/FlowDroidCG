@@ -1,0 +1,207 @@
+public class org.codehaus.jackson.map.deser.EnumDeserializer extends org.codehaus.jackson.map.deser.StdScalarDeserializer
+{
+    public final org.codehaus.jackson.map.deser.EnumResolver _resolver;
+
+    public void <init>(org.codehaus.jackson.map.deser.EnumResolver)
+    {
+        org.codehaus.jackson.map.deser.EnumDeserializer r0;
+        org.codehaus.jackson.map.deser.EnumResolver $r1;
+
+        r0 := @this: org.codehaus.jackson.map.deser.EnumDeserializer;
+
+        $r1 := @parameter0: org.codehaus.jackson.map.deser.EnumResolver;
+
+        specialinvoke r0.<org.codehaus.jackson.map.deser.StdScalarDeserializer: void <init>(java.lang.Class)>(class "Ljava/lang/Enum;");
+
+        r0.<org.codehaus.jackson.map.deser.EnumDeserializer: org.codehaus.jackson.map.deser.EnumResolver _resolver> = $r1;
+
+        return;
+    }
+
+    public static org.codehaus.jackson.map.JsonDeserializer deserializerForCreator(org.codehaus.jackson.map.DeserializationConfig, java.lang.Class, org.codehaus.jackson.map.introspect.AnnotatedMethod)
+    {
+        org.codehaus.jackson.map.DeserializationConfig$Feature $r4;
+        java.lang.reflect.Member $r5;
+        org.codehaus.jackson.map.introspect.AnnotatedMethod $r2;
+        java.lang.IllegalArgumentException $r7;
+        org.codehaus.jackson.map.DeserializationConfig $r0;
+        org.codehaus.jackson.map.deser.EnumDeserializer$FactoryBasedDeserializer $r6;
+        java.lang.reflect.Type $r3;
+        java.lang.Class $r1;
+        java.lang.StringBuilder $r8;
+        java.lang.String $r9;
+        boolean $z0;
+
+        $r0 := @parameter0: org.codehaus.jackson.map.DeserializationConfig;
+
+        $r1 := @parameter1: java.lang.Class;
+
+        $r2 := @parameter2: org.codehaus.jackson.map.introspect.AnnotatedMethod;
+
+        $r3 = virtualinvoke $r2.<org.codehaus.jackson.map.introspect.AnnotatedMethod: java.lang.reflect.Type getParameterType(int)>(0);
+
+        if $r3 != class "Ljava/lang/String;" goto label2;
+
+        $r4 = <org.codehaus.jackson.map.DeserializationConfig$Feature: org.codehaus.jackson.map.DeserializationConfig$Feature CAN_OVERRIDE_ACCESS_MODIFIERS>;
+
+        $z0 = virtualinvoke $r0.<org.codehaus.jackson.map.DeserializationConfig: boolean isEnabled(org.codehaus.jackson.map.DeserializationConfig$Feature)>($r4);
+
+        if $z0 == 0 goto label1;
+
+        $r5 = virtualinvoke $r2.<org.codehaus.jackson.map.introspect.AnnotatedMethod: java.lang.reflect.Member getMember()>();
+
+        staticinvoke <org.codehaus.jackson.map.util.ClassUtil: void checkAndFixAccess(java.lang.reflect.Member)>($r5);
+
+     label1:
+        $r6 = new org.codehaus.jackson.map.deser.EnumDeserializer$FactoryBasedDeserializer;
+
+        specialinvoke $r6.<org.codehaus.jackson.map.deser.EnumDeserializer$FactoryBasedDeserializer: void <init>(java.lang.Class,org.codehaus.jackson.map.introspect.AnnotatedMethod)>($r1, $r2);
+
+        return $r6;
+
+     label2:
+        $r7 = new java.lang.IllegalArgumentException;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parameter #0 type for factory method (");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") not suitable, must be java.lang.String");
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r7.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r9);
+
+        throw $r7;
+    }
+
+    public java.lang.Enum deserialize(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        org.codehaus.jackson.JsonToken $r3, $r4;
+        org.codehaus.jackson.map.DeserializationConfig$Feature $r10;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.map.JsonMappingException $r9;
+        java.lang.Enum $r7;
+        int $i0;
+        java.lang.Class $r8;
+        java.lang.StringBuilder $r11;
+        java.lang.String $r5;
+        org.codehaus.jackson.map.deser.EnumDeserializer r0;
+        org.codehaus.jackson.JsonParser $r2;
+        org.codehaus.jackson.map.deser.EnumResolver $r6;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.map.deser.EnumDeserializer;
+
+        $r2 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r3 = virtualinvoke $r2.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken getCurrentToken()>();
+
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_STRING>;
+
+        if $r3 != $r4 goto label2;
+
+        $r5 = virtualinvoke $r2.<org.codehaus.jackson.JsonParser: java.lang.String getText()>();
+
+        $r6 = r0.<org.codehaus.jackson.map.deser.EnumDeserializer: org.codehaus.jackson.map.deser.EnumResolver _resolver>;
+
+        $r7 = virtualinvoke $r6.<org.codehaus.jackson.map.deser.EnumResolver: java.lang.Enum findEnum(java.lang.String)>($r5);
+
+        if $r7 == null goto label1;
+
+        return $r7;
+
+     label1:
+        $r6 = r0.<org.codehaus.jackson.map.deser.EnumDeserializer: org.codehaus.jackson.map.deser.EnumResolver _resolver>;
+
+        $r8 = virtualinvoke $r6.<org.codehaus.jackson.map.deser.EnumResolver: java.lang.Class getEnumClass()>();
+
+        $r9 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdStringException(java.lang.Class,java.lang.String)>($r8, "value not one of declared Enum instance names");
+
+        throw $r9;
+
+     label2:
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r3 != $r4 goto label5;
+
+        $r10 = <org.codehaus.jackson.map.DeserializationConfig$Feature: org.codehaus.jackson.map.DeserializationConfig$Feature FAIL_ON_NUMBERS_FOR_ENUMS>;
+
+        $z0 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: boolean isEnabled(org.codehaus.jackson.map.DeserializationConfig$Feature)>($r10);
+
+        if $z0 != 0 goto label4;
+
+        $i0 = virtualinvoke $r2.<org.codehaus.jackson.JsonParser: int getIntValue()>();
+
+        $r6 = r0.<org.codehaus.jackson.map.deser.EnumDeserializer: org.codehaus.jackson.map.deser.EnumResolver _resolver>;
+
+        $r7 = virtualinvoke $r6.<org.codehaus.jackson.map.deser.EnumResolver: java.lang.Enum getEnum(int)>($i0);
+
+        if $r7 == null goto label3;
+
+        return $r7;
+
+     label3:
+        $r6 = r0.<org.codehaus.jackson.map.deser.EnumDeserializer: org.codehaus.jackson.map.deser.EnumResolver _resolver>;
+
+        $r8 = virtualinvoke $r6.<org.codehaus.jackson.map.deser.EnumResolver: java.lang.Class getEnumClass()>();
+
+        $r11 = new java.lang.StringBuilder;
+
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("index value outside legal index range [0..");
+
+        $r6 = r0.<org.codehaus.jackson.map.deser.EnumDeserializer: org.codehaus.jackson.map.deser.EnumResolver _resolver>;
+
+        $i0 = virtualinvoke $r6.<org.codehaus.jackson.map.deser.EnumResolver: int lastValidIndex()>();
+
+        virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+
+        $r5 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r9 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdNumberException(java.lang.Class,java.lang.String)>($r8, $r5);
+
+        throw $r9;
+
+     label4:
+        $r9 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException mappingException(java.lang.String)>("Not allowed to deserialize Enum value out of JSON number (disable DeserializationConfig.Feature.FAIL_ON_NUMBERS_FOR_ENUMS to allow)");
+
+        throw $r9;
+
+     label5:
+        $r6 = r0.<org.codehaus.jackson.map.deser.EnumDeserializer: org.codehaus.jackson.map.deser.EnumResolver _resolver>;
+
+        $r8 = virtualinvoke $r6.<org.codehaus.jackson.map.deser.EnumResolver: java.lang.Class getEnumClass()>();
+
+        $r9 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException mappingException(java.lang.Class)>($r8);
+
+        throw $r9;
+    }
+
+    public volatile java.lang.Object deserialize(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        java.lang.Enum $r2;
+        org.codehaus.jackson.map.deser.EnumDeserializer r0;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.JsonParser $r3;
+
+        r0 := @this: org.codehaus.jackson.map.deser.EnumDeserializer;
+
+        $r3 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r2 = virtualinvoke r0.<org.codehaus.jackson.map.deser.EnumDeserializer: java.lang.Enum deserialize(org.codehaus.jackson.JsonParser,org.codehaus.jackson.map.DeserializationContext)>($r3, $r1);
+
+        return $r2;
+    }
+}

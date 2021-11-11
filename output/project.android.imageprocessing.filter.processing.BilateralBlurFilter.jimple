@@ -1,0 +1,75 @@
+public class project.android.imageprocessing.filter.processing.BilateralBlurFilter extends project.android.imageprocessing.filter.TwoPassMultiPixelFilter
+{
+    public static final java.lang.String UNIFORM_DISTANCE_NORMALIZATION;
+    public float distanceNormalization;
+    public int distanceNormalizationHandle;
+
+    public void <init>(float)
+    {
+        float $f0;
+        project.android.imageprocessing.filter.processing.BilateralBlurFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.BilateralBlurFilter;
+
+        $f0 := @parameter0: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.TwoPassMultiPixelFilter: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.processing.BilateralBlurFilter: float distanceNormalization> = $f0;
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.processing.BilateralBlurFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.BilateralBlurFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform float u_DistanceNormalization;\nuniform float u_TexelWidth;\nuniform float u_TexelHeight;\nvoid main(){\n   vec2 singleStepOffset = vec2(u_TexelWidth, u_TexelHeight);\n   int multiplier = 0;\n   vec2 blurStep = vec2(0,0);\n   vec2 blurCoordinates[9];   for(int i = 0; i < 9; i++) {\n     multiplier = (i - 4);\n     blurStep = float(multiplier) * singleStepOffset;\n     blurCoordinates[i] = v_TexCoord.xy + blurStep;\n   }\n   vec4 centralColor;\n   float gaussianWeightTotal;\n   vec4 sum;\n   vec4 sampleColor;\n   float distanceFromCentralColor;\n   float gaussianWeight;\n   centralColor = texture2D(u_Texture0, blurCoordinates[4]);\n   gaussianWeightTotal = 0.18;\n   sum = centralColor * 0.18;\n   sampleColor = texture2D(u_Texture0, blurCoordinates[0]);\n   distanceFromCentralColor = min(distance(centralColor, sampleColor) * u_DistanceNormalization, 1.0);\n   gaussianWeight = 0.05 * (1.0 - distanceFromCentralColor);\n   gaussianWeightTotal += gaussianWeight;\n   sum += sampleColor * gaussianWeight;\n   sampleColor = texture2D(u_Texture0, blurCoordinates[1]);\n   distanceFromCentralColor = min(distance(centralColor, sampleColor) * u_DistanceNormalization, 1.0);\n   gaussianWeight = 0.09 * (1.0 - distanceFromCentralColor);\n   gaussianWeightTotal += gaussianWeight;\n   sum += sampleColor * gaussianWeight;\n   sampleColor = texture2D(u_Texture0, blurCoordinates[2]);\n   distanceFromCentralColor = min(distance(centralColor, sampleColor) * u_DistanceNormalization, 1.0);\n   gaussianWeight = 0.12 * (1.0 - distanceFromCentralColor);\n   gaussianWeightTotal += gaussianWeight;\n   sum += sampleColor * gaussianWeight;\n   sampleColor = texture2D(u_Texture0, blurCoordinates[3]);\n   distanceFromCentralColor = min(distance(centralColor, sampleColor) * u_DistanceNormalization, 1.0);\n   gaussianWeight = 0.15 * (1.0 - distanceFromCentralColor);\n   gaussianWeightTotal += gaussianWeight;\n   sum += sampleColor * gaussianWeight;\n   sampleColor = texture2D(u_Texture0, blurCoordinates[5]);\n   distanceFromCentralColor = min(distance(centralColor, sampleColor) * u_DistanceNormalization, 1.0);\n   gaussianWeight = 0.15 * (1.0 - distanceFromCentralColor);\n   gaussianWeightTotal += gaussianWeight;\n   sum += sampleColor * gaussianWeight;\n   sampleColor = texture2D(u_Texture0, blurCoordinates[6]);\n   distanceFromCentralColor = min(distance(centralColor, sampleColor) * u_DistanceNormalization, 1.0);\n   gaussianWeight = 0.12 * (1.0 - distanceFromCentralColor);\n   gaussianWeightTotal += gaussianWeight;\n   sum += sampleColor * gaussianWeight;\n   sampleColor = texture2D(u_Texture0, blurCoordinates[7]);\n   distanceFromCentralColor = min(distance(centralColor, sampleColor) * u_DistanceNormalization, 1.0);\n   gaussianWeight = 0.09 * (1.0 - distanceFromCentralColor);\n   gaussianWeightTotal += gaussianWeight;\n   sum += sampleColor * gaussianWeight;\n   sampleColor = texture2D(u_Texture0, blurCoordinates[8]);\n   distanceFromCentralColor = min(distance(centralColor, sampleColor) * u_DistanceNormalization, 1.0);\n   gaussianWeight = 0.05 * (1.0 - distanceFromCentralColor);\n   gaussianWeightTotal += gaussianWeight;\n   sum += sampleColor * gaussianWeight;\n   gl_FragColor = sum / gaussianWeightTotal;\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.processing.BilateralBlurFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.BilateralBlurFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.TwoPassMultiPixelFilter: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_DistanceNormalization");
+
+        r0.<project.android.imageprocessing.filter.processing.BilateralBlurFilter: int distanceNormalizationHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        int $i0;
+        float $f0;
+        project.android.imageprocessing.filter.processing.BilateralBlurFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.BilateralBlurFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.TwoPassMultiPixelFilter: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.processing.BilateralBlurFilter: int distanceNormalizationHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.processing.BilateralBlurFilter: float distanceNormalization>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.processing.BilateralBlurFilter: java.lang.String UNIFORM_DISTANCE_NORMALIZATION> = "u_DistanceNormalization";
+
+        return;
+    }
+}

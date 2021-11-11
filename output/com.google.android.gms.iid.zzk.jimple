@@ -1,0 +1,463 @@
+public final class com.google.android.gms.iid.zzk extends java.lang.Object implements android.content.ServiceConnection
+{
+    public final android.content.Intent zzbp;
+    public final java.util.concurrent.ScheduledExecutorService zzbq;
+    public final java.util.Queue zzbr;
+    public com.google.android.gms.iid.zzi zzbs;
+    public boolean zzbt;
+    public final android.content.Context zzl;
+
+    public void <init>(android.content.Context, java.lang.String)
+    {
+        com.google.android.gms.iid.zzk r0;
+        android.content.Context $r1;
+        com.google.android.gms.common.util.concurrent.NamedThreadFactory $r4;
+        java.util.concurrent.ScheduledThreadPoolExecutor $r3;
+        java.lang.String $r2;
+
+        r0 := @this: com.google.android.gms.iid.zzk;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 = new java.util.concurrent.ScheduledThreadPoolExecutor;
+
+        $r4 = new com.google.android.gms.common.util.concurrent.NamedThreadFactory;
+
+        specialinvoke $r4.<com.google.android.gms.common.util.concurrent.NamedThreadFactory: void <init>(java.lang.String)>("EnhancedIntentService");
+
+        specialinvoke $r3.<java.util.concurrent.ScheduledThreadPoolExecutor: void <init>(int,java.util.concurrent.ThreadFactory)>(0, $r4);
+
+        specialinvoke r0.<com.google.android.gms.iid.zzk: void <init>(android.content.Context,java.lang.String,java.util.concurrent.ScheduledExecutorService)>($r1, $r2, $r3);
+
+        return;
+    }
+
+    public void <init>(android.content.Context, java.lang.String, java.util.concurrent.ScheduledExecutorService)
+    {
+        com.google.android.gms.iid.zzk r0;
+        android.content.Context $r2;
+        java.util.concurrent.ScheduledExecutorService $r1;
+        android.content.Intent $r5;
+        java.lang.String $r3;
+        java.util.ArrayDeque $r4;
+
+        r0 := @this: com.google.android.gms.iid.zzk;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r3 := @parameter1: java.lang.String;
+
+        $r1 := @parameter2: java.util.concurrent.ScheduledExecutorService;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r4 = new java.util.ArrayDeque;
+
+        specialinvoke $r4.<java.util.ArrayDeque: void <init>()>();
+
+        r0.<com.google.android.gms.iid.zzk: java.util.Queue zzbr> = $r4;
+
+        r0.<com.google.android.gms.iid.zzk: boolean zzbt> = 0;
+
+        $r2 = virtualinvoke $r2.<android.content.Context: android.content.Context getApplicationContext()>();
+
+        r0.<com.google.android.gms.iid.zzk: android.content.Context zzl> = $r2;
+
+        $r5 = new android.content.Intent;
+
+        specialinvoke $r5.<android.content.Intent: void <init>(java.lang.String)>($r3);
+
+        $r2 = r0.<com.google.android.gms.iid.zzk: android.content.Context zzl>;
+
+        $r3 = virtualinvoke $r2.<android.content.Context: java.lang.String getPackageName()>();
+
+        $r5 = virtualinvoke $r5.<android.content.Intent: android.content.Intent setPackage(java.lang.String)>($r3);
+
+        r0.<com.google.android.gms.iid.zzk: android.content.Intent zzbp> = $r5;
+
+        r0.<com.google.android.gms.iid.zzk: java.util.concurrent.ScheduledExecutorService zzbq> = $r1;
+
+        return;
+    }
+
+    private final void zzm()
+    {
+        java.lang.Throwable $r11;
+        android.content.Context $r8;
+        android.content.Intent $r9;
+        com.google.android.gms.iid.zzk r0;
+        com.google.android.gms.common.stats.ConnectionTracker $r7;
+        java.lang.StringBuilder $r1;
+        java.lang.Object $r4;
+        java.lang.SecurityException $r10;
+        java.util.Queue $r2;
+        java.lang.String $r6;
+        com.google.android.gms.iid.zzg $r5;
+        com.google.android.gms.iid.zzi $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.android.gms.iid.zzk;
+
+        entermonitor r0;
+
+     label01:
+        $z0 = staticinvoke <android.util.Log: boolean isLoggable(java.lang.String,int)>("EnhancedIntentService", 3);
+
+        if $z0 == 0 goto label02;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("EnhancedIntentService", "flush queue called");
+
+     label02:
+        $r2 = r0.<com.google.android.gms.iid.zzk: java.util.Queue zzbr>;
+
+        $z0 = interfaceinvoke $r2.<java.util.Queue: boolean isEmpty()>();
+
+        if $z0 != 0 goto label19;
+
+        $z0 = staticinvoke <android.util.Log: boolean isLoggable(java.lang.String,int)>("EnhancedIntentService", 3);
+
+        if $z0 == 0 goto label03;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("EnhancedIntentService", "found intent to be delivered");
+
+     label03:
+        $r3 = r0.<com.google.android.gms.iid.zzk: com.google.android.gms.iid.zzi zzbs>;
+
+        if $r3 == null goto label05;
+
+        $r3 = r0.<com.google.android.gms.iid.zzk: com.google.android.gms.iid.zzi zzbs>;
+
+        $z0 = virtualinvoke $r3.<android.os.Binder: boolean isBinderAlive()>();
+
+        if $z0 == 0 goto label05;
+
+        $z0 = staticinvoke <android.util.Log: boolean isLoggable(java.lang.String,int)>("EnhancedIntentService", 3);
+
+        if $z0 == 0 goto label04;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("EnhancedIntentService", "binder is alive, sending the intent.");
+
+     label04:
+        $r2 = r0.<com.google.android.gms.iid.zzk: java.util.Queue zzbr>;
+
+        $r4 = interfaceinvoke $r2.<java.util.Queue: java.lang.Object poll()>();
+
+        $r5 = (com.google.android.gms.iid.zzg) $r4;
+
+        $r3 = r0.<com.google.android.gms.iid.zzk: com.google.android.gms.iid.zzi zzbs>;
+
+        virtualinvoke $r3.<com.google.android.gms.iid.zzi: void zzd(com.google.android.gms.iid.zzg)>($r5);
+
+        goto label02;
+
+     label05:
+        $z0 = staticinvoke <android.util.Log: boolean isLoggable(java.lang.String,int)>("EnhancedIntentService", 3);
+
+        if $z0 == 0 goto label08;
+
+        $z0 = r0.<com.google.android.gms.iid.zzk: boolean zzbt>;
+
+        if $z0 != 0 goto label06;
+
+        $z0 = 1;
+
+        goto label07;
+
+     label06:
+        $z0 = 0;
+
+     label07:
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(int)>(39);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("binder is dead. start connection? ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>($z0);
+
+        $r6 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("EnhancedIntentService", $r6);
+
+     label08:
+        $z0 = r0.<com.google.android.gms.iid.zzk: boolean zzbt>;
+
+        if $z0 != 0 goto label18;
+
+        r0.<com.google.android.gms.iid.zzk: boolean zzbt> = 1;
+
+     label09:
+        $r7 = staticinvoke <com.google.android.gms.common.stats.ConnectionTracker: com.google.android.gms.common.stats.ConnectionTracker getInstance()>();
+
+     label10:
+        $r8 = r0.<com.google.android.gms.iid.zzk: android.content.Context zzl>;
+
+        $r9 = r0.<com.google.android.gms.iid.zzk: android.content.Intent zzbp>;
+
+     label11:
+        $z0 = virtualinvoke $r7.<com.google.android.gms.common.stats.ConnectionTracker: boolean bindService(android.content.Context,android.content.Intent,android.content.ServiceConnection,int)>($r8, $r9, r0, 65);
+
+     label12:
+        if $z0 == 0 goto label13;
+
+        exitmonitor r0;
+
+        return;
+
+     label13:
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("EnhancedIntentService", "binding to the service failed");
+
+     label14:
+        goto label17;
+
+     label15:
+        $r10 := @caughtexception;
+
+     label16:
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("EnhancedIntentService", "Exception while binding the service", $r10);
+
+     label17:
+        r0.<com.google.android.gms.iid.zzk: boolean zzbt> = 0;
+
+        specialinvoke r0.<com.google.android.gms.iid.zzk: void zzn()>();
+
+     label18:
+        exitmonitor r0;
+
+        return;
+
+     label19:
+        exitmonitor r0;
+
+        return;
+
+     label20:
+        $r11 := @caughtexception;
+
+        exitmonitor r0;
+
+        goto label21;
+
+     label21:
+        throw $r11;
+
+        catch java.lang.Throwable from label01 to label09 with label20;
+        catch java.lang.SecurityException from label09 to label10 with label15;
+        catch java.lang.SecurityException from label11 to label12 with label15;
+        catch java.lang.Throwable from label09 to label12 with label20;
+        catch java.lang.SecurityException from label13 to label14 with label15;
+        catch java.lang.Throwable from label13 to label14 with label20;
+        catch java.lang.Throwable from label16 to label18 with label20;
+    }
+
+    private final void zzn()
+    {
+        com.google.android.gms.iid.zzk r0;
+        java.lang.Object $r2;
+        java.util.Queue $r1;
+        com.google.android.gms.iid.zzg $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.android.gms.iid.zzk;
+
+     label1:
+        $r1 = r0.<com.google.android.gms.iid.zzk: java.util.Queue zzbr>;
+
+        $z0 = interfaceinvoke $r1.<java.util.Queue: boolean isEmpty()>();
+
+        if $z0 != 0 goto label2;
+
+        $r1 = r0.<com.google.android.gms.iid.zzk: java.util.Queue zzbr>;
+
+        $r2 = interfaceinvoke $r1.<java.util.Queue: java.lang.Object poll()>();
+
+        $r3 = (com.google.android.gms.iid.zzg) $r2;
+
+        virtualinvoke $r3.<com.google.android.gms.iid.zzg: void finish()>();
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public final void onServiceConnected(android.content.ComponentName, android.os.IBinder)
+    {
+        java.lang.Throwable $r7;
+        android.content.ComponentName $r2;
+        android.os.IBinder $r3;
+        com.google.android.gms.iid.zzk r0;
+        int $i0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r5, $r6;
+        com.google.android.gms.iid.zzi $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.android.gms.iid.zzk;
+
+        $r2 := @parameter0: android.content.ComponentName;
+
+        $r3 := @parameter1: android.os.IBinder;
+
+        entermonitor r0;
+
+     label1:
+        r0.<com.google.android.gms.iid.zzk: boolean zzbt> = 0;
+
+        $r4 = (com.google.android.gms.iid.zzi) $r3;
+
+        r0.<com.google.android.gms.iid.zzk: com.google.android.gms.iid.zzi zzbs> = $r4;
+
+        $z0 = staticinvoke <android.util.Log: boolean isLoggable(java.lang.String,int)>("EnhancedIntentService", 3);
+
+        if $z0 == 0 goto label2;
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r2);
+
+        $r6 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r5);
+
+        $i0 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+        $i0 = $i0 + 20;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("onServiceConnected: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r5 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("EnhancedIntentService", $r5);
+
+     label2:
+        if $r3 != null goto label3;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("EnhancedIntentService", "Null service connection");
+
+        specialinvoke r0.<com.google.android.gms.iid.zzk: void zzn()>();
+
+        goto label4;
+
+     label3:
+        specialinvoke r0.<com.google.android.gms.iid.zzk: void zzm()>();
+
+     label4:
+        exitmonitor r0;
+
+     label5:
+        return;
+
+     label6:
+        $r7 := @caughtexception;
+
+        exitmonitor r0;
+
+     label7:
+        throw $r7;
+
+        catch java.lang.Throwable from label1 to label5 with label6;
+        catch java.lang.Throwable from label6 to label7 with label6;
+    }
+
+    public final void onServiceDisconnected(android.content.ComponentName)
+    {
+        com.google.android.gms.iid.zzk r0;
+        android.content.ComponentName $r2;
+        int $i0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r3, $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.android.gms.iid.zzk;
+
+        $r2 := @parameter0: android.content.ComponentName;
+
+        $z0 = staticinvoke <android.util.Log: boolean isLoggable(java.lang.String,int)>("EnhancedIntentService", 3);
+
+        if $z0 == 0 goto label1;
+
+        $r3 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r2);
+
+        $r4 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r3);
+
+        $i0 = virtualinvoke $r4.<java.lang.String: int length()>();
+
+        $i0 = $i0 + 23;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("onServiceDisconnected: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("EnhancedIntentService", $r3);
+
+     label1:
+        specialinvoke r0.<com.google.android.gms.iid.zzk: void zzm()>();
+
+        return;
+    }
+
+    public final void zzd(android.content.Intent, android.content.BroadcastReceiver$PendingResult)
+    {
+        java.lang.Throwable $r6;
+        android.content.Intent $r3;
+        com.google.android.gms.iid.zzk r0;
+        android.content.BroadcastReceiver$PendingResult $r1;
+        java.util.concurrent.ScheduledExecutorService $r2;
+        java.util.Queue $r4;
+        com.google.android.gms.iid.zzg $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.android.gms.iid.zzk;
+
+        $r3 := @parameter0: android.content.Intent;
+
+        $r1 := @parameter1: android.content.BroadcastReceiver$PendingResult;
+
+        entermonitor r0;
+
+     label1:
+        $z0 = staticinvoke <android.util.Log: boolean isLoggable(java.lang.String,int)>("EnhancedIntentService", 3);
+
+        if $z0 == 0 goto label2;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("EnhancedIntentService", "new intent queued in the bind-strategy delivery");
+
+     label2:
+        $r4 = r0.<com.google.android.gms.iid.zzk: java.util.Queue zzbr>;
+
+        $r5 = new com.google.android.gms.iid.zzg;
+
+        $r2 = r0.<com.google.android.gms.iid.zzk: java.util.concurrent.ScheduledExecutorService zzbq>;
+
+        specialinvoke $r5.<com.google.android.gms.iid.zzg: void <init>(android.content.Intent,android.content.BroadcastReceiver$PendingResult,java.util.concurrent.ScheduledExecutorService)>($r3, $r1, $r2);
+
+        interfaceinvoke $r4.<java.util.Queue: boolean add(java.lang.Object)>($r5);
+
+        specialinvoke r0.<com.google.android.gms.iid.zzk: void zzm()>();
+
+     label3:
+        exitmonitor r0;
+
+        return;
+
+     label4:
+        $r6 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r6;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+    }
+}

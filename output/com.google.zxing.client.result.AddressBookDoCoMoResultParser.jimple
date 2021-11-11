@@ -1,0 +1,132 @@
+public final class com.google.zxing.client.result.AddressBookDoCoMoResultParser extends com.google.zxing.client.result.AbstractDoCoMoResultParser
+{
+
+    public void <init>()
+    {
+        com.google.zxing.client.result.AddressBookDoCoMoResultParser r0;
+
+        r0 := @this: com.google.zxing.client.result.AddressBookDoCoMoResultParser;
+
+        specialinvoke r0.<com.google.zxing.client.result.AbstractDoCoMoResultParser: void <init>()>();
+
+        return;
+    }
+
+    public static java.lang.String parseName(java.lang.String)
+    {
+        int $i0, $i1;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1, $r2;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int indexOf(int)>(44);
+
+        if $i0 < 0 goto label1;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $i1 = $i0 + 1;
+
+        $r2 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int)>($i1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int,int)>(0, $i0);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label1:
+        return $r1;
+    }
+
+    public com.google.zxing.client.result.AddressBookParsedResult parse(com.google.zxing.Result)
+    {
+        com.google.zxing.Result $r1;
+        java.lang.String[] $r3, $r6, $r8, $r10, $r12;
+        com.google.zxing.client.result.AddressBookDoCoMoResultParser r0;
+        com.google.zxing.client.result.AddressBookParsedResult $r11;
+        java.lang.String $r2, $r4, $r5, $r7, $r9;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.client.result.AddressBookDoCoMoResultParser;
+
+        $r1 := @parameter0: com.google.zxing.Result;
+
+        $r2 = staticinvoke <com.google.zxing.client.result.ResultParser: java.lang.String getMassagedText(com.google.zxing.Result)>($r1);
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean startsWith(java.lang.String)>("MECARD:");
+
+        if $z0 != 0 goto label1;
+
+        return null;
+
+     label1:
+        $r3 = staticinvoke <com.google.zxing.client.result.AbstractDoCoMoResultParser: java.lang.String[] matchDoCoMoPrefixedField(java.lang.String,java.lang.String,boolean)>("N:", $r2, 1);
+
+        if $r3 != null goto label2;
+
+        return null;
+
+     label2:
+        $r4 = $r3[0];
+
+        $r4 = staticinvoke <com.google.zxing.client.result.AddressBookDoCoMoResultParser: java.lang.String parseName(java.lang.String)>($r4);
+
+        $r5 = staticinvoke <com.google.zxing.client.result.AbstractDoCoMoResultParser: java.lang.String matchSingleDoCoMoPrefixedField(java.lang.String,java.lang.String,boolean)>("SOUND:", $r2, 1);
+
+        $r3 = staticinvoke <com.google.zxing.client.result.AbstractDoCoMoResultParser: java.lang.String[] matchDoCoMoPrefixedField(java.lang.String,java.lang.String,boolean)>("TEL:", $r2, 1);
+
+        $r6 = staticinvoke <com.google.zxing.client.result.AbstractDoCoMoResultParser: java.lang.String[] matchDoCoMoPrefixedField(java.lang.String,java.lang.String,boolean)>("EMAIL:", $r2, 1);
+
+        $r7 = staticinvoke <com.google.zxing.client.result.AbstractDoCoMoResultParser: java.lang.String matchSingleDoCoMoPrefixedField(java.lang.String,java.lang.String,boolean)>("NOTE:", $r2, 0);
+
+        $r8 = staticinvoke <com.google.zxing.client.result.AbstractDoCoMoResultParser: java.lang.String[] matchDoCoMoPrefixedField(java.lang.String,java.lang.String,boolean)>("ADR:", $r2, 1);
+
+        $r9 = staticinvoke <com.google.zxing.client.result.AbstractDoCoMoResultParser: java.lang.String matchSingleDoCoMoPrefixedField(java.lang.String,java.lang.String,boolean)>("BDAY:", $r2, 1);
+
+        if $r9 == null goto label3;
+
+        $z0 = staticinvoke <com.google.zxing.client.result.ResultParser: boolean isStringOfDigits(java.lang.CharSequence,int)>($r9, 8);
+
+        if $z0 != 0 goto label3;
+
+        $r9 = null;
+
+        goto label3;
+
+     label3:
+        $r10 = staticinvoke <com.google.zxing.client.result.AbstractDoCoMoResultParser: java.lang.String[] matchDoCoMoPrefixedField(java.lang.String,java.lang.String,boolean)>("URL:", $r2, 1);
+
+        $r2 = staticinvoke <com.google.zxing.client.result.AbstractDoCoMoResultParser: java.lang.String matchSingleDoCoMoPrefixedField(java.lang.String,java.lang.String,boolean)>("ORG:", $r2, 1);
+
+        $r11 = new com.google.zxing.client.result.AddressBookParsedResult;
+
+        $r12 = staticinvoke <com.google.zxing.client.result.ResultParser: java.lang.String[] maybeWrap(java.lang.String)>($r4);
+
+        specialinvoke $r11.<com.google.zxing.client.result.AddressBookParsedResult: void <init>(java.lang.String[],java.lang.String[],java.lang.String,java.lang.String[],java.lang.String[],java.lang.String[],java.lang.String[],java.lang.String,java.lang.String,java.lang.String[],java.lang.String[],java.lang.String,java.lang.String,java.lang.String,java.lang.String[],java.lang.String[])>($r12, null, $r5, $r3, null, $r6, null, null, $r7, $r8, null, $r2, $r9, null, $r10, null);
+
+        return $r11;
+    }
+
+    public volatile com.google.zxing.client.result.ParsedResult parse(com.google.zxing.Result)
+    {
+        com.google.zxing.Result $r2;
+        com.google.zxing.client.result.AddressBookParsedResult $r1;
+        com.google.zxing.client.result.AddressBookDoCoMoResultParser r0;
+
+        r0 := @this: com.google.zxing.client.result.AddressBookDoCoMoResultParser;
+
+        $r2 := @parameter0: com.google.zxing.Result;
+
+        $r1 = virtualinvoke r0.<com.google.zxing.client.result.AddressBookDoCoMoResultParser: com.google.zxing.client.result.AddressBookParsedResult parse(com.google.zxing.Result)>($r2);
+
+        return $r1;
+    }
+}

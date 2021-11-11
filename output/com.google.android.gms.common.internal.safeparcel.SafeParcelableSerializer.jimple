@@ -1,0 +1,346 @@
+public final class com.google.android.gms.common.internal.safeparcel.SafeParcelableSerializer extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        com.google.android.gms.common.internal.safeparcel.SafeParcelableSerializer r0;
+
+        r0 := @this: com.google.android.gms.common.internal.safeparcel.SafeParcelableSerializer;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static com.google.android.gms.common.internal.safeparcel.SafeParcelable deserializeFromBytes(byte[], android.os.Parcelable$Creator)
+    {
+        byte[] $r1;
+        com.google.android.gms.common.internal.safeparcel.SafeParcelable $r4;
+        int $i0;
+        java.lang.Object $r3;
+        android.os.Parcelable$Creator $r0;
+        android.os.Parcel $r2;
+
+        $r1 := @parameter0: byte[];
+
+        $r0 := @parameter1: android.os.Parcelable$Creator;
+
+        staticinvoke <com.google.android.gms.common.internal.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        $r2 = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        $i0 = lengthof $r1;
+
+        virtualinvoke $r2.<android.os.Parcel: void unmarshall(byte[],int,int)>($r1, 0, $i0);
+
+        virtualinvoke $r2.<android.os.Parcel: void setDataPosition(int)>(0);
+
+        $r3 = interfaceinvoke $r0.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>($r2);
+
+        $r4 = (com.google.android.gms.common.internal.safeparcel.SafeParcelable) $r3;
+
+        virtualinvoke $r2.<android.os.Parcel: void recycle()>();
+
+        return $r4;
+    }
+
+    public static com.google.android.gms.common.internal.safeparcel.SafeParcelable deserializeFromIntentExtra(android.content.Intent, java.lang.String, android.os.Parcelable$Creator)
+    {
+        byte[] $r3;
+        com.google.android.gms.common.internal.safeparcel.SafeParcelable $r4;
+        android.content.Intent $r2;
+        java.lang.String $r0;
+        android.os.Parcelable$Creator $r1;
+
+        $r2 := @parameter0: android.content.Intent;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $r1 := @parameter2: android.os.Parcelable$Creator;
+
+        $r3 = virtualinvoke $r2.<android.content.Intent: byte[] getByteArrayExtra(java.lang.String)>($r0);
+
+        if $r3 != null goto label1;
+
+        return null;
+
+     label1:
+        $r4 = staticinvoke <com.google.android.gms.common.internal.safeparcel.SafeParcelableSerializer: com.google.android.gms.common.internal.safeparcel.SafeParcelable deserializeFromBytes(byte[],android.os.Parcelable$Creator)>($r3, $r1);
+
+        return $r4;
+    }
+
+    public static com.google.android.gms.common.internal.safeparcel.SafeParcelable deserializeFromString(java.lang.String, android.os.Parcelable$Creator)
+    {
+        byte[] $r2;
+        com.google.android.gms.common.internal.safeparcel.SafeParcelable $r3;
+        java.lang.String $r1;
+        android.os.Parcelable$Creator $r0;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0 := @parameter1: android.os.Parcelable$Creator;
+
+        $r2 = staticinvoke <com.google.android.gms.common.util.Base64Utils: byte[] decodeUrlSafe(java.lang.String)>($r1);
+
+        $r3 = staticinvoke <com.google.android.gms.common.internal.safeparcel.SafeParcelableSerializer: com.google.android.gms.common.internal.safeparcel.SafeParcelable deserializeFromBytes(byte[],android.os.Parcelable$Creator)>($r2, $r0);
+
+        return $r3;
+    }
+
+    public static java.util.ArrayList deserializeIterableFromBundle(android.os.Bundle, java.lang.String, android.os.Parcelable$Creator)
+    {
+        byte[] $r7;
+        com.google.android.gms.common.internal.safeparcel.SafeParcelable $r8;
+        android.os.Bundle $r1;
+        android.os.Parcelable$Creator $r0;
+        java.io.Serializable $r3;
+        java.util.ArrayList $r4, $r5;
+        int $i0, $i1;
+        java.lang.Object $r6;
+        java.lang.String $r2;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r0 := @parameter2: android.os.Parcelable$Creator;
+
+        $r3 = virtualinvoke $r1.<android.os.Bundle: java.io.Serializable getSerializable(java.lang.String)>($r2);
+
+        $r4 = (java.util.ArrayList) $r3;
+
+        if $r4 != null goto label1;
+
+        return null;
+
+     label1:
+        $r5 = new java.util.ArrayList;
+
+        $i0 = virtualinvoke $r4.<java.util.ArrayList: int size()>();
+
+        specialinvoke $r5.<java.util.ArrayList: void <init>(int)>($i0);
+
+        $i0 = virtualinvoke $r4.<java.util.ArrayList: int size()>();
+
+        $i1 = 0;
+
+     label2:
+        if $i1 >= $i0 goto label3;
+
+        $r6 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>($i1);
+
+        $i1 = $i1 + 1;
+
+        $r7 = (byte[]) $r6;
+
+        $r8 = staticinvoke <com.google.android.gms.common.internal.safeparcel.SafeParcelableSerializer: com.google.android.gms.common.internal.safeparcel.SafeParcelable deserializeFromBytes(byte[],android.os.Parcelable$Creator)>($r7, $r0);
+
+        virtualinvoke $r5.<java.util.ArrayList: boolean add(java.lang.Object)>($r8);
+
+        goto label2;
+
+     label3:
+        return $r5;
+    }
+
+    public static java.util.ArrayList deserializeIterableFromIntentExtra(android.content.Intent, java.lang.String, android.os.Parcelable$Creator)
+    {
+        byte[] $r7;
+        com.google.android.gms.common.internal.safeparcel.SafeParcelable $r8;
+        android.content.Intent $r1;
+        android.os.Parcelable$Creator $r0;
+        java.io.Serializable $r3;
+        java.util.ArrayList $r4, $r5;
+        int $i0, $i1;
+        java.lang.Object $r6;
+        java.lang.String $r2;
+
+        $r1 := @parameter0: android.content.Intent;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r0 := @parameter2: android.os.Parcelable$Creator;
+
+        $r3 = virtualinvoke $r1.<android.content.Intent: java.io.Serializable getSerializableExtra(java.lang.String)>($r2);
+
+        $r4 = (java.util.ArrayList) $r3;
+
+        if $r4 != null goto label1;
+
+        return null;
+
+     label1:
+        $r5 = new java.util.ArrayList;
+
+        $i0 = virtualinvoke $r4.<java.util.ArrayList: int size()>();
+
+        specialinvoke $r5.<java.util.ArrayList: void <init>(int)>($i0);
+
+        $i0 = virtualinvoke $r4.<java.util.ArrayList: int size()>();
+
+        $i1 = 0;
+
+     label2:
+        if $i1 >= $i0 goto label3;
+
+        $r6 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>($i1);
+
+        $i1 = $i1 + 1;
+
+        $r7 = (byte[]) $r6;
+
+        $r8 = staticinvoke <com.google.android.gms.common.internal.safeparcel.SafeParcelableSerializer: com.google.android.gms.common.internal.safeparcel.SafeParcelable deserializeFromBytes(byte[],android.os.Parcelable$Creator)>($r7, $r0);
+
+        virtualinvoke $r5.<java.util.ArrayList: boolean add(java.lang.Object)>($r8);
+
+        goto label2;
+
+     label3:
+        return $r5;
+    }
+
+    public static void serializeIterableToBundle(java.lang.Iterable, android.os.Bundle, java.lang.String)
+    {
+        byte[] $r7;
+        com.google.android.gms.common.internal.safeparcel.SafeParcelable $r6;
+        android.os.Bundle $r0;
+        java.util.Iterator $r4;
+        java.lang.Iterable $r3;
+        java.util.ArrayList $r2;
+        java.lang.Object $r5;
+        java.lang.String $r1;
+        boolean $z0;
+
+        $r3 := @parameter0: java.lang.Iterable;
+
+        $r0 := @parameter1: android.os.Bundle;
+
+        $r1 := @parameter2: java.lang.String;
+
+        $r2 = new java.util.ArrayList;
+
+        specialinvoke $r2.<java.util.ArrayList: void <init>()>();
+
+        $r4 = interfaceinvoke $r3.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (com.google.android.gms.common.internal.safeparcel.SafeParcelable) $r5;
+
+        $r7 = staticinvoke <com.google.android.gms.common.internal.safeparcel.SafeParcelableSerializer: byte[] serializeToBytes(com.google.android.gms.common.internal.safeparcel.SafeParcelable)>($r6);
+
+        virtualinvoke $r2.<java.util.ArrayList: boolean add(java.lang.Object)>($r7);
+
+        goto label1;
+
+     label2:
+        virtualinvoke $r0.<android.os.Bundle: void putSerializable(java.lang.String,java.io.Serializable)>($r1, $r2);
+
+        return;
+    }
+
+    public static void serializeIterableToIntentExtra(java.lang.Iterable, android.content.Intent, java.lang.String)
+    {
+        byte[] $r7;
+        com.google.android.gms.common.internal.safeparcel.SafeParcelable $r6;
+        java.util.Iterator $r4;
+        android.content.Intent $r0;
+        java.lang.Iterable $r3;
+        java.util.ArrayList $r2;
+        java.lang.Object $r5;
+        java.lang.String $r1;
+        boolean $z0;
+
+        $r3 := @parameter0: java.lang.Iterable;
+
+        $r0 := @parameter1: android.content.Intent;
+
+        $r1 := @parameter2: java.lang.String;
+
+        $r2 = new java.util.ArrayList;
+
+        specialinvoke $r2.<java.util.ArrayList: void <init>()>();
+
+        $r4 = interfaceinvoke $r3.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (com.google.android.gms.common.internal.safeparcel.SafeParcelable) $r5;
+
+        $r7 = staticinvoke <com.google.android.gms.common.internal.safeparcel.SafeParcelableSerializer: byte[] serializeToBytes(com.google.android.gms.common.internal.safeparcel.SafeParcelable)>($r6);
+
+        virtualinvoke $r2.<java.util.ArrayList: boolean add(java.lang.Object)>($r7);
+
+        goto label1;
+
+     label2:
+        virtualinvoke $r0.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.io.Serializable)>($r1, $r2);
+
+        return;
+    }
+
+    public static byte[] serializeToBytes(com.google.android.gms.common.internal.safeparcel.SafeParcelable)
+    {
+        byte[] $r2;
+        com.google.android.gms.common.internal.safeparcel.SafeParcelable $r0;
+        android.os.Parcel $r1;
+
+        $r0 := @parameter0: com.google.android.gms.common.internal.safeparcel.SafeParcelable;
+
+        $r1 = staticinvoke <android.os.Parcel: android.os.Parcel obtain()>();
+
+        interfaceinvoke $r0.<android.os.Parcelable: void writeToParcel(android.os.Parcel,int)>($r1, 0);
+
+        $r2 = virtualinvoke $r1.<android.os.Parcel: byte[] marshall()>();
+
+        virtualinvoke $r1.<android.os.Parcel: void recycle()>();
+
+        return $r2;
+    }
+
+    public static void serializeToIntentExtra(com.google.android.gms.common.internal.safeparcel.SafeParcelable, android.content.Intent, java.lang.String)
+    {
+        byte[] $r2;
+        com.google.android.gms.common.internal.safeparcel.SafeParcelable $r3;
+        android.content.Intent $r0;
+        java.lang.String $r1;
+
+        $r3 := @parameter0: com.google.android.gms.common.internal.safeparcel.SafeParcelable;
+
+        $r0 := @parameter1: android.content.Intent;
+
+        $r1 := @parameter2: java.lang.String;
+
+        $r2 = staticinvoke <com.google.android.gms.common.internal.safeparcel.SafeParcelableSerializer: byte[] serializeToBytes(com.google.android.gms.common.internal.safeparcel.SafeParcelable)>($r3);
+
+        virtualinvoke $r0.<android.content.Intent: android.content.Intent putExtra(java.lang.String,byte[])>($r1, $r2);
+
+        return;
+    }
+
+    public static java.lang.String serializeToString(com.google.android.gms.common.internal.safeparcel.SafeParcelable)
+    {
+        byte[] $r1;
+        com.google.android.gms.common.internal.safeparcel.SafeParcelable $r0;
+        java.lang.String $r2;
+
+        $r0 := @parameter0: com.google.android.gms.common.internal.safeparcel.SafeParcelable;
+
+        $r1 = staticinvoke <com.google.android.gms.common.internal.safeparcel.SafeParcelableSerializer: byte[] serializeToBytes(com.google.android.gms.common.internal.safeparcel.SafeParcelable)>($r0);
+
+        $r2 = staticinvoke <com.google.android.gms.common.util.Base64Utils: java.lang.String encodeUrlSafe(byte[])>($r1);
+
+        return $r2;
+    }
+}

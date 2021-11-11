@@ -1,0 +1,2038 @@
+public class com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore extends java.lang.Object implements com.google.android.datatransport.runtime.scheduling.persistence.EventStore, com.google.android.datatransport.runtime.synchronization.SynchronizationGuard
+{
+    public static final int LOCK_RETRY_BACK_OFF_MILLIS;
+    public static final java.lang.String LOG_TAG;
+    public static final int MAX_RETRIES;
+    public static final com.google.android.datatransport.Encoding PROTOBUF_ENCODING;
+    public final com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig config;
+    public final com.google.android.datatransport.runtime.time.Clock monotonicClock;
+    public final com.google.android.datatransport.runtime.scheduling.persistence.SchemaManager schemaManager;
+    public final com.google.android.datatransport.runtime.time.Clock wallClock;
+
+    static void <clinit>()
+    {
+        com.google.android.datatransport.Encoding $r0;
+
+        <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: int MAX_RETRIES> = 16;
+
+        <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.String LOG_TAG> = "SQLiteEventStore";
+
+        <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: int LOCK_RETRY_BACK_OFF_MILLIS> = 50;
+
+        $r0 = staticinvoke <com.google.android.datatransport.Encoding: com.google.android.datatransport.Encoding of(java.lang.String)>("proto");
+
+        <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.Encoding PROTOBUF_ENCODING> = $r0;
+
+        return;
+    }
+
+    public void <init>(com.google.android.datatransport.runtime.time.Clock, com.google.android.datatransport.runtime.time.Clock, com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig, com.google.android.datatransport.runtime.scheduling.persistence.SchemaManager)
+    {
+        com.google.android.datatransport.runtime.time.Clock $r1, $r2;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        com.google.android.datatransport.runtime.scheduling.persistence.SchemaManager $r4;
+        com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig $r3;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 := @parameter0: com.google.android.datatransport.runtime.time.Clock;
+
+        $r2 := @parameter1: com.google.android.datatransport.runtime.time.Clock;
+
+        $r3 := @parameter2: com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig;
+
+        $r4 := @parameter3: com.google.android.datatransport.runtime.scheduling.persistence.SchemaManager;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.runtime.scheduling.persistence.SchemaManager schemaManager> = $r4;
+
+        r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.runtime.time.Clock wallClock> = $r1;
+
+        r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.runtime.time.Clock monotonicClock> = $r2;
+
+        r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig config> = $r3;
+
+        return;
+    }
+
+    private void ensureBeginTransaction(android.database.sqlite.SQLiteDatabase)
+    {
+        android.database.sqlite.SQLiteDatabase $r1;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r3;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Producer $r2;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        $r2 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$18: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Producer lambdaFactory$(android.database.sqlite.SQLiteDatabase)>($r1);
+
+        $r3 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$19: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$()>();
+
+        specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object retryIfDbLocked(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Producer,com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r2, $r3);
+
+        return;
+    }
+
+    private long ensureTransportContext(android.database.sqlite.SQLiteDatabase, com.google.android.datatransport.runtime.TransportContext)
+    {
+        byte[] $r8;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        com.google.android.datatransport.Priority $r6;
+        long $l0;
+        java.lang.Integer $r7;
+        com.google.android.datatransport.runtime.TransportContext $r2;
+        android.database.sqlite.SQLiteDatabase $r1;
+        java.lang.Long $r3;
+        int $i1;
+        android.content.ContentValues $r4;
+        java.lang.String $r5;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        $r2 := @parameter1: com.google.android.datatransport.runtime.TransportContext;
+
+        $r3 = specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Long getTransportContextId(android.database.sqlite.SQLiteDatabase,com.google.android.datatransport.runtime.TransportContext)>($r1, $r2);
+
+        if $r3 == null goto label1;
+
+        $l0 = virtualinvoke $r3.<java.lang.Long: long longValue()>();
+
+        return $l0;
+
+     label1:
+        $r4 = new android.content.ContentValues;
+
+        specialinvoke $r4.<android.content.ContentValues: void <init>()>();
+
+        $r5 = virtualinvoke $r2.<com.google.android.datatransport.runtime.TransportContext: java.lang.String getBackendName()>();
+
+        virtualinvoke $r4.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("backend_name", $r5);
+
+        $r6 = virtualinvoke $r2.<com.google.android.datatransport.runtime.TransportContext: com.google.android.datatransport.Priority getPriority()>();
+
+        $i1 = staticinvoke <com.google.android.datatransport.runtime.util.PriorityMapping: int toInt(com.google.android.datatransport.Priority)>($r6);
+
+        $r7 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i1);
+
+        virtualinvoke $r4.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("priority", $r7);
+
+        $r7 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(0);
+
+        virtualinvoke $r4.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("next_request_ms", $r7);
+
+        $r8 = virtualinvoke $r2.<com.google.android.datatransport.runtime.TransportContext: byte[] getExtras()>();
+
+        if $r8 == null goto label2;
+
+        $r8 = virtualinvoke $r2.<com.google.android.datatransport.runtime.TransportContext: byte[] getExtras()>();
+
+        $r5 = staticinvoke <android.util.Base64: java.lang.String encodeToString(byte[],int)>($r8, 0);
+
+        virtualinvoke $r4.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("extras", $r5);
+
+     label2:
+        $l0 = virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: long insert(java.lang.String,java.lang.String,android.content.ContentValues)>("transport_contexts", null, $r4);
+
+        return $l0;
+    }
+
+    private long getPageCount()
+    {
+        android.database.sqlite.SQLiteDatabase $r1;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        long $l0;
+        android.database.sqlite.SQLiteStatement $r2;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 = virtualinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: android.database.sqlite.SQLiteDatabase getDb()>();
+
+        $r2 = virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: android.database.sqlite.SQLiteStatement compileStatement(java.lang.String)>("PRAGMA page_count");
+
+        $l0 = virtualinvoke $r2.<android.database.sqlite.SQLiteStatement: long simpleQueryForLong()>();
+
+        return $l0;
+    }
+
+    private long getPageSize()
+    {
+        android.database.sqlite.SQLiteDatabase $r1;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        long $l0;
+        android.database.sqlite.SQLiteStatement $r2;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 = virtualinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: android.database.sqlite.SQLiteDatabase getDb()>();
+
+        $r2 = virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: android.database.sqlite.SQLiteStatement compileStatement(java.lang.String)>("PRAGMA page_size");
+
+        $l0 = virtualinvoke $r2.<android.database.sqlite.SQLiteStatement: long simpleQueryForLong()>();
+
+        return $l0;
+    }
+
+    private java.lang.Long getTransportContextId(android.database.sqlite.SQLiteDatabase, com.google.android.datatransport.runtime.TransportContext)
+    {
+        byte[] $r9;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        java.lang.Object[] $r11;
+        java.lang.String[] $r5, $r10;
+        java.util.ArrayList $r4;
+        com.google.android.datatransport.runtime.TransportContext $r3;
+        android.database.sqlite.SQLiteDatabase $r2;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r13;
+        java.lang.Long $r15;
+        int $i0;
+        java.lang.String $r6;
+        android.database.Cursor $r12;
+        com.google.android.datatransport.Priority $r7;
+        java.util.List $r8;
+        java.lang.StringBuilder $r1;
+        java.lang.Object $r14;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r2 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        $r3 := @parameter1: com.google.android.datatransport.runtime.TransportContext;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("backend_name = ? and priority = ?");
+
+        $r4 = new java.util.ArrayList;
+
+        $r5 = newarray (java.lang.String)[2];
+
+        $r6 = virtualinvoke $r3.<com.google.android.datatransport.runtime.TransportContext: java.lang.String getBackendName()>();
+
+        $r5[0] = $r6;
+
+        $r7 = virtualinvoke $r3.<com.google.android.datatransport.runtime.TransportContext: com.google.android.datatransport.Priority getPriority()>();
+
+        $i0 = staticinvoke <com.google.android.datatransport.runtime.util.PriorityMapping: int toInt(com.google.android.datatransport.Priority)>($r7);
+
+        $r6 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i0);
+
+        $r5[1] = $r6;
+
+        $r8 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($r5);
+
+        specialinvoke $r4.<java.util.ArrayList: void <init>(java.util.Collection)>($r8);
+
+        $r9 = virtualinvoke $r3.<com.google.android.datatransport.runtime.TransportContext: byte[] getExtras()>();
+
+        if $r9 == null goto label1;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" and extras = ?");
+
+        $r9 = virtualinvoke $r3.<com.google.android.datatransport.runtime.TransportContext: byte[] getExtras()>();
+
+        $r6 = staticinvoke <android.util.Base64: java.lang.String encodeToString(byte[],int)>($r9, 0);
+
+        virtualinvoke $r4.<java.util.ArrayList: boolean add(java.lang.Object)>($r6);
+
+     label1:
+        $r5 = newarray (java.lang.String)[1];
+
+        $r5[0] = "_id";
+
+        $r6 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r10 = newarray (java.lang.String)[0];
+
+        $r11 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object[] toArray(java.lang.Object[])>($r10);
+
+        $r10 = (java.lang.String[]) $r11;
+
+        $r12 = virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: android.database.Cursor query(java.lang.String,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String,java.lang.String)>("transport_contexts", $r5, $r6, $r10, null, null, null);
+
+        $r13 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$6: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$()>();
+
+        $r14 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object tryWithCursor(android.database.Cursor,com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r12, $r13);
+
+        $r15 = (java.lang.Long) $r14;
+
+        return $r15;
+    }
+
+    private java.lang.Object inTransaction(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)
+    {
+        java.lang.Throwable $r4;
+        android.database.sqlite.SQLiteDatabase $r2;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r1;
+        java.lang.Object $r3;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 := @parameter0: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function;
+
+        $r2 = virtualinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: android.database.sqlite.SQLiteDatabase getDb()>();
+
+        virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: void beginTransaction()>();
+
+     label1:
+        $r3 = interfaceinvoke $r1.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function: java.lang.Object apply(java.lang.Object)>($r2);
+
+        virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: void setTransactionSuccessful()>();
+
+     label2:
+        virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: void endTransaction()>();
+
+        return $r3;
+
+     label3:
+        $r4 := @caughtexception;
+
+        virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: void endTransaction()>();
+
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    private boolean isStorageAtLimit()
+    {
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        byte $b0;
+        com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig $r1;
+        int $i3;
+        long $l1, $l2;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $l1 = specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: long getPageCount()>();
+
+        $l2 = specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: long getPageSize()>();
+
+        $l1 = $l1 * $l2;
+
+        $r1 = r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig config>;
+
+        $l2 = virtualinvoke $r1.<com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig: long getMaxStorageSizeInBytes()>();
+
+        $b0 = $l1 cmp $l2;
+
+        $i3 = (int) $b0;
+
+        if $i3 < 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    private java.util.List join(java.util.List, java.util.Map)
+    {
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        java.util.ListIterator $r4;
+        com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent $r6;
+        long $l0;
+        com.google.android.datatransport.runtime.TransportContext $r14;
+        com.google.android.datatransport.runtime.EventInternal $r8;
+        java.lang.Long $r7;
+        java.util.Map $r2;
+        java.lang.String $r3, $r13;
+        boolean $z0;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Metadata $r12;
+        com.google.android.datatransport.runtime.EventInternal$Builder $r9;
+        java.util.Iterator $r11;
+        java.util.Set $r10;
+        java.util.List $r1;
+        java.lang.Object $r5;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 := @parameter0: java.util.List;
+
+        $r2 := @parameter1: java.util.Map;
+
+        $r4 = interfaceinvoke $r1.<java.util.List: java.util.ListIterator listIterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.ListIterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label5;
+
+        $r5 = interfaceinvoke $r4.<java.util.ListIterator: java.lang.Object next()>();
+
+        $r6 = (com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent) $r5;
+
+        $l0 = virtualinvoke $r6.<com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent: long getId()>();
+
+        $r7 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+
+        $z0 = interfaceinvoke $r2.<java.util.Map: boolean containsKey(java.lang.Object)>($r7);
+
+        if $z0 != 0 goto label2;
+
+        goto label1;
+
+     label2:
+        $r8 = virtualinvoke $r6.<com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent: com.google.android.datatransport.runtime.EventInternal getEvent()>();
+
+        $r9 = virtualinvoke $r8.<com.google.android.datatransport.runtime.EventInternal: com.google.android.datatransport.runtime.EventInternal$Builder toBuilder()>();
+
+        $l0 = virtualinvoke $r6.<com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent: long getId()>();
+
+        $r7 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+
+        $r5 = interfaceinvoke $r2.<java.util.Map: java.lang.Object get(java.lang.Object)>($r7);
+
+        $r10 = (java.util.Set) $r5;
+
+        $r11 = interfaceinvoke $r10.<java.util.Set: java.util.Iterator iterator()>();
+
+     label3:
+        $z0 = interfaceinvoke $r11.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label4;
+
+        $r5 = interfaceinvoke $r11.<java.util.Iterator: java.lang.Object next()>();
+
+        $r12 = (com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Metadata) $r5;
+
+        $r3 = $r12.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Metadata: java.lang.String key>;
+
+        $r13 = $r12.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Metadata: java.lang.String value>;
+
+        virtualinvoke $r9.<com.google.android.datatransport.runtime.EventInternal$Builder: com.google.android.datatransport.runtime.EventInternal$Builder addMetadata(java.lang.String,java.lang.String)>($r3, $r13);
+
+        goto label3;
+
+     label4:
+        $l0 = virtualinvoke $r6.<com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent: long getId()>();
+
+        $r14 = virtualinvoke $r6.<com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent: com.google.android.datatransport.runtime.TransportContext getTransportContext()>();
+
+        $r8 = virtualinvoke $r9.<com.google.android.datatransport.runtime.EventInternal$Builder: com.google.android.datatransport.runtime.EventInternal build()>();
+
+        $r6 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent: com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent create(long,com.google.android.datatransport.runtime.TransportContext,com.google.android.datatransport.runtime.EventInternal)>($l0, $r14, $r8);
+
+        interfaceinvoke $r4.<java.util.ListIterator: void set(java.lang.Object)>($r6);
+
+        goto label1;
+
+     label5:
+        return $r1;
+    }
+
+    public static java.lang.Integer lambda$cleanUp$10(long, android.database.sqlite.SQLiteDatabase)
+    {
+        android.database.sqlite.SQLiteDatabase $r0;
+        int $i1;
+        long $l0;
+        java.lang.String[] $r1;
+        java.lang.String $r2;
+        java.lang.Integer $r3;
+
+        $l0 := @parameter0: long;
+
+        $r0 := @parameter1: android.database.sqlite.SQLiteDatabase;
+
+        $r1 = newarray (java.lang.String)[1];
+
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(long)>($l0);
+
+        $r1[0] = $r2;
+
+        $i1 = virtualinvoke $r0.<android.database.sqlite.SQLiteDatabase: int delete(java.lang.String,java.lang.String,java.lang.String[])>("events", "timestamp_ms < ?", $r1);
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i1);
+
+        return $r3;
+    }
+
+    public static java.lang.Object lambda$clearDb$11(android.database.sqlite.SQLiteDatabase)
+    {
+        android.database.sqlite.SQLiteDatabase $r0;
+        java.lang.String[] $r1;
+
+        $r0 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        $r1 = newarray (java.lang.String)[0];
+
+        virtualinvoke $r0.<android.database.sqlite.SQLiteDatabase: int delete(java.lang.String,java.lang.String,java.lang.String[])>("events", null, $r1);
+
+        $r1 = newarray (java.lang.String)[0];
+
+        virtualinvoke $r0.<android.database.sqlite.SQLiteDatabase: int delete(java.lang.String,java.lang.String,java.lang.String[])>("transport_contexts", null, $r1);
+
+        return null;
+    }
+
+    public static java.lang.Object lambda$ensureBeginTransaction$15(android.database.sqlite.SQLiteDatabase)
+    {
+        android.database.sqlite.SQLiteDatabase $r0;
+
+        $r0 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        virtualinvoke $r0.<android.database.sqlite.SQLiteDatabase: void beginTransaction()>();
+
+        return null;
+    }
+
+    public static java.lang.Object lambda$ensureBeginTransaction$16(java.lang.Throwable)
+    {
+        java.lang.Throwable $r0;
+        com.google.android.datatransport.runtime.synchronization.SynchronizationException $r1;
+
+        $r0 := @parameter0: java.lang.Throwable;
+
+        $r1 = new com.google.android.datatransport.runtime.synchronization.SynchronizationException;
+
+        specialinvoke $r1.<com.google.android.datatransport.runtime.synchronization.SynchronizationException: void <init>(java.lang.String,java.lang.Throwable)>("Timed out while trying to acquire the lock.", $r0);
+
+        throw $r1;
+    }
+
+    public static android.database.sqlite.SQLiteDatabase lambda$getDb$0(java.lang.Throwable)
+    {
+        java.lang.Throwable $r0;
+        com.google.android.datatransport.runtime.synchronization.SynchronizationException $r1;
+
+        $r0 := @parameter0: java.lang.Throwable;
+
+        $r1 = new com.google.android.datatransport.runtime.synchronization.SynchronizationException;
+
+        specialinvoke $r1.<com.google.android.datatransport.runtime.synchronization.SynchronizationException: void <init>(java.lang.String,java.lang.Throwable)>("Timed out while trying to open db.", $r0);
+
+        throw $r1;
+    }
+
+    public static java.lang.Long lambda$getNextCallTime$4(android.database.Cursor)
+    {
+        java.lang.Long $r1;
+        long $l0;
+        android.database.Cursor $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: android.database.Cursor;
+
+        $z0 = interfaceinvoke $r0.<android.database.Cursor: boolean moveToNext()>();
+
+        if $z0 == 0 goto label1;
+
+        $l0 = interfaceinvoke $r0.<android.database.Cursor: long getLong(int)>(0);
+
+        $r1 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+
+        return $r1;
+
+     label1:
+        $r1 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>(0L);
+
+        return $r1;
+    }
+
+    public static java.lang.Long lambda$getTransportContextId$2(android.database.Cursor)
+    {
+        java.lang.Long $r1;
+        long $l0;
+        android.database.Cursor $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: android.database.Cursor;
+
+        $z0 = interfaceinvoke $r0.<android.database.Cursor: boolean moveToNext()>();
+
+        if $z0 != 0 goto label1;
+
+        return null;
+
+     label1:
+        $l0 = interfaceinvoke $r0.<android.database.Cursor: long getLong(int)>(0);
+
+        $r1 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+
+        return $r1;
+    }
+
+    public static java.lang.Boolean lambda$hasPendingEventsFor$5(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore, com.google.android.datatransport.runtime.TransportContext, android.database.sqlite.SQLiteDatabase)
+    {
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore $r0;
+        java.lang.String[] $r5;
+        com.google.android.datatransport.runtime.TransportContext $r1;
+        android.database.sqlite.SQLiteDatabase $r2;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r8;
+        java.lang.Long $r3;
+        java.lang.Boolean $r4;
+        java.lang.Object $r9;
+        java.lang.String $r6;
+        android.database.Cursor $r7;
+
+        $r0 := @parameter0: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 := @parameter1: com.google.android.datatransport.runtime.TransportContext;
+
+        $r2 := @parameter2: android.database.sqlite.SQLiteDatabase;
+
+        $r3 = specialinvoke $r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Long getTransportContextId(android.database.sqlite.SQLiteDatabase,com.google.android.datatransport.runtime.TransportContext)>($r2, $r1);
+
+        if $r3 != null goto label1;
+
+        $r4 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(0);
+
+        return $r4;
+
+     label1:
+        $r2 = virtualinvoke $r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: android.database.sqlite.SQLiteDatabase getDb()>();
+
+        $r5 = newarray (java.lang.String)[1];
+
+        $r6 = virtualinvoke $r3.<java.lang.Long: java.lang.String toString()>();
+
+        $r5[0] = $r6;
+
+        $r7 = virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: android.database.Cursor rawQuery(java.lang.String,java.lang.String[])>("SELECT 1 FROM events WHERE context_id = ? LIMIT 1", $r5);
+
+        $r8 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$21: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$()>();
+
+        $r9 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object tryWithCursor(android.database.Cursor,com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r7, $r8);
+
+        $r4 = (java.lang.Boolean) $r9;
+
+        return $r4;
+    }
+
+    public static java.util.List lambda$loadActiveContexts$8(android.database.Cursor)
+    {
+        byte[] $r5;
+        com.google.android.datatransport.runtime.TransportContext$Builder $r2;
+        com.google.android.datatransport.Priority $r4;
+        java.util.ArrayList $r1;
+        com.google.android.datatransport.runtime.TransportContext $r6;
+        int $i0;
+        java.lang.String $r3;
+        android.database.Cursor $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: android.database.Cursor;
+
+        $r1 = new java.util.ArrayList;
+
+        specialinvoke $r1.<java.util.ArrayList: void <init>()>();
+
+     label1:
+        $z0 = interfaceinvoke $r0.<android.database.Cursor: boolean moveToNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r2 = staticinvoke <com.google.android.datatransport.runtime.TransportContext: com.google.android.datatransport.runtime.TransportContext$Builder builder()>();
+
+        $r3 = interfaceinvoke $r0.<android.database.Cursor: java.lang.String getString(int)>(1);
+
+        $r2 = virtualinvoke $r2.<com.google.android.datatransport.runtime.TransportContext$Builder: com.google.android.datatransport.runtime.TransportContext$Builder setBackendName(java.lang.String)>($r3);
+
+        $i0 = interfaceinvoke $r0.<android.database.Cursor: int getInt(int)>(2);
+
+        $r4 = staticinvoke <com.google.android.datatransport.runtime.util.PriorityMapping: com.google.android.datatransport.Priority valueOf(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<com.google.android.datatransport.runtime.TransportContext$Builder: com.google.android.datatransport.runtime.TransportContext$Builder setPriority(com.google.android.datatransport.Priority)>($r4);
+
+        $r3 = interfaceinvoke $r0.<android.database.Cursor: java.lang.String getString(int)>(3);
+
+        $r5 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: byte[] maybeBase64Decode(java.lang.String)>($r3);
+
+        $r2 = virtualinvoke $r2.<com.google.android.datatransport.runtime.TransportContext$Builder: com.google.android.datatransport.runtime.TransportContext$Builder setExtras(byte[])>($r5);
+
+        $r6 = virtualinvoke $r2.<com.google.android.datatransport.runtime.TransportContext$Builder: com.google.android.datatransport.runtime.TransportContext build()>();
+
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>($r6);
+
+        goto label1;
+
+     label2:
+        return $r1;
+    }
+
+    public static java.util.List lambda$loadActiveContexts$9(android.database.sqlite.SQLiteDatabase)
+    {
+        android.database.sqlite.SQLiteDatabase $r0;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r3;
+        java.util.List $r5;
+        java.lang.String[] $r1;
+        java.lang.Object $r4;
+        android.database.Cursor $r2;
+
+        $r0 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        $r1 = newarray (java.lang.String)[0];
+
+        $r2 = virtualinvoke $r0.<android.database.sqlite.SQLiteDatabase: android.database.Cursor rawQuery(java.lang.String,java.lang.String[])>("SELECT distinct t._id, t.backend_name, t.priority, t.extras FROM transport_contexts AS t, events AS e WHERE e.context_id = t._id", $r1);
+
+        $r3 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$20: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$()>();
+
+        $r4 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object tryWithCursor(android.database.Cursor,com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r2, $r3);
+
+        $r5 = (java.util.List) $r4;
+
+        return $r5;
+    }
+
+    public static java.util.List lambda$loadBatch$7(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore, com.google.android.datatransport.runtime.TransportContext, android.database.sqlite.SQLiteDatabase)
+    {
+        com.google.android.datatransport.runtime.TransportContext $r1;
+        android.database.sqlite.SQLiteDatabase $r2;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore $r0;
+        java.util.List $r3;
+        java.util.Map $r4;
+
+        $r0 := @parameter0: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 := @parameter1: com.google.android.datatransport.runtime.TransportContext;
+
+        $r2 := @parameter2: android.database.sqlite.SQLiteDatabase;
+
+        $r3 = specialinvoke $r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.util.List loadEvents(android.database.sqlite.SQLiteDatabase,com.google.android.datatransport.runtime.TransportContext)>($r2, $r1);
+
+        $r4 = specialinvoke $r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.util.Map loadMetadata(android.database.sqlite.SQLiteDatabase,java.util.List)>($r2, $r3);
+
+        specialinvoke $r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.util.List join(java.util.List,java.util.Map)>($r3, $r4);
+
+        return $r3;
+    }
+
+    public static java.lang.Object lambda$loadEvents$12(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore, java.util.List, com.google.android.datatransport.runtime.TransportContext, android.database.Cursor)
+    {
+        byte[] $r8;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore $r3;
+        long $l0, $l2;
+        com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent $r11;
+        java.lang.Integer $r9;
+        com.google.android.datatransport.runtime.TransportContext $r1;
+        com.google.android.datatransport.runtime.EventInternal $r10;
+        int $i1;
+        java.lang.String $r5;
+        android.database.Cursor $r2;
+        boolean $z0;
+        com.google.android.datatransport.runtime.EventInternal$Builder $r4;
+        java.util.List $r0;
+        com.google.android.datatransport.runtime.EncodedPayload $r6;
+        com.google.android.datatransport.Encoding $r7;
+
+        $r3 := @parameter0: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r0 := @parameter1: java.util.List;
+
+        $r1 := @parameter2: com.google.android.datatransport.runtime.TransportContext;
+
+        $r2 := @parameter3: android.database.Cursor;
+
+     label1:
+        $z0 = interfaceinvoke $r2.<android.database.Cursor: boolean moveToNext()>();
+
+        if $z0 == 0 goto label6;
+
+        $z0 = 0;
+
+        $l0 = interfaceinvoke $r2.<android.database.Cursor: long getLong(int)>(0);
+
+        $i1 = interfaceinvoke $r2.<android.database.Cursor: int getInt(int)>(7);
+
+        if $i1 == 0 goto label2;
+
+        $z0 = 1;
+
+     label2:
+        $r4 = staticinvoke <com.google.android.datatransport.runtime.EventInternal: com.google.android.datatransport.runtime.EventInternal$Builder builder()>();
+
+        $r5 = interfaceinvoke $r2.<android.database.Cursor: java.lang.String getString(int)>(1);
+
+        $r4 = virtualinvoke $r4.<com.google.android.datatransport.runtime.EventInternal$Builder: com.google.android.datatransport.runtime.EventInternal$Builder setTransportName(java.lang.String)>($r5);
+
+        $l2 = interfaceinvoke $r2.<android.database.Cursor: long getLong(int)>(2);
+
+        $r4 = virtualinvoke $r4.<com.google.android.datatransport.runtime.EventInternal$Builder: com.google.android.datatransport.runtime.EventInternal$Builder setEventMillis(long)>($l2);
+
+        $l2 = interfaceinvoke $r2.<android.database.Cursor: long getLong(int)>(3);
+
+        $r4 = virtualinvoke $r4.<com.google.android.datatransport.runtime.EventInternal$Builder: com.google.android.datatransport.runtime.EventInternal$Builder setUptimeMillis(long)>($l2);
+
+        if $z0 == 0 goto label3;
+
+        $r6 = new com.google.android.datatransport.runtime.EncodedPayload;
+
+        $r5 = interfaceinvoke $r2.<android.database.Cursor: java.lang.String getString(int)>(4);
+
+        $r7 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.Encoding toEncoding(java.lang.String)>($r5);
+
+        $r8 = interfaceinvoke $r2.<android.database.Cursor: byte[] getBlob(int)>(5);
+
+        specialinvoke $r6.<com.google.android.datatransport.runtime.EncodedPayload: void <init>(com.google.android.datatransport.Encoding,byte[])>($r7, $r8);
+
+        virtualinvoke $r4.<com.google.android.datatransport.runtime.EventInternal$Builder: com.google.android.datatransport.runtime.EventInternal$Builder setEncodedPayload(com.google.android.datatransport.runtime.EncodedPayload)>($r6);
+
+        goto label4;
+
+     label3:
+        $r6 = new com.google.android.datatransport.runtime.EncodedPayload;
+
+        $r5 = interfaceinvoke $r2.<android.database.Cursor: java.lang.String getString(int)>(4);
+
+        $r7 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.Encoding toEncoding(java.lang.String)>($r5);
+
+        $r8 = specialinvoke $r3.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: byte[] readPayload(long)>($l0);
+
+        specialinvoke $r6.<com.google.android.datatransport.runtime.EncodedPayload: void <init>(com.google.android.datatransport.Encoding,byte[])>($r7, $r8);
+
+        virtualinvoke $r4.<com.google.android.datatransport.runtime.EventInternal$Builder: com.google.android.datatransport.runtime.EventInternal$Builder setEncodedPayload(com.google.android.datatransport.runtime.EncodedPayload)>($r6);
+
+     label4:
+        $z0 = interfaceinvoke $r2.<android.database.Cursor: boolean isNull(int)>(6);
+
+        if $z0 != 0 goto label5;
+
+        $i1 = interfaceinvoke $r2.<android.database.Cursor: int getInt(int)>(6);
+
+        $r9 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i1);
+
+        virtualinvoke $r4.<com.google.android.datatransport.runtime.EventInternal$Builder: com.google.android.datatransport.runtime.EventInternal$Builder setCode(java.lang.Integer)>($r9);
+
+     label5:
+        $r10 = virtualinvoke $r4.<com.google.android.datatransport.runtime.EventInternal$Builder: com.google.android.datatransport.runtime.EventInternal build()>();
+
+        $r11 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent: com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent create(long,com.google.android.datatransport.runtime.TransportContext,com.google.android.datatransport.runtime.EventInternal)>($l0, $r1, $r10);
+
+        interfaceinvoke $r0.<java.util.List: boolean add(java.lang.Object)>($r11);
+
+        goto label1;
+
+     label6:
+        return null;
+    }
+
+    public static java.lang.Object lambda$loadMetadata$14(java.util.Map, android.database.Cursor)
+    {
+        java.util.Set $r4;
+        long $l0;
+        java.util.HashSet $r7;
+        java.lang.Long $r2;
+        java.util.Map $r0;
+        java.lang.Object $r3;
+        java.lang.String $r5, $r6;
+        android.database.Cursor $r1;
+        boolean $z0;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Metadata $r8;
+
+        $r0 := @parameter0: java.util.Map;
+
+        $r1 := @parameter1: android.database.Cursor;
+
+     label1:
+        $z0 = interfaceinvoke $r1.<android.database.Cursor: boolean moveToNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $l0 = interfaceinvoke $r1.<android.database.Cursor: long getLong(int)>(0);
+
+        $r2 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+
+        $r3 = interfaceinvoke $r0.<java.util.Map: java.lang.Object get(java.lang.Object)>($r2);
+
+        $r4 = (java.util.Set) $r3;
+
+        if $r4 != null goto label2;
+
+        $r7 = new java.util.HashSet;
+
+        $r4 = $r7;
+
+        specialinvoke $r7.<java.util.HashSet: void <init>()>();
+
+        $r2 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+
+        interfaceinvoke $r0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r2, $r4);
+
+     label2:
+        $r8 = new com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Metadata;
+
+        $r5 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>(1);
+
+        $r6 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>(2);
+
+        specialinvoke $r8.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Metadata: void <init>(java.lang.String,java.lang.String,com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$1)>($r5, $r6, null);
+
+        interfaceinvoke $r4.<java.util.Set: boolean add(java.lang.Object)>($r8);
+
+        goto label1;
+
+     label3:
+        return null;
+    }
+
+    public static java.lang.Long lambda$persist$1(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore, com.google.android.datatransport.runtime.TransportContext, com.google.android.datatransport.runtime.EventInternal, android.database.sqlite.SQLiteDatabase)
+    {
+        byte[] $r7, $r13;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore $r1;
+        long $l0;
+        java.lang.Integer $r11;
+        com.google.android.datatransport.runtime.TransportContext $r2;
+        android.database.sqlite.SQLiteDatabase $r0;
+        com.google.android.datatransport.runtime.EventInternal $r3;
+        java.lang.Long $r4;
+        com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig $r5;
+        java.util.Map $r14;
+        int $i1, $i2, $i3, $i4, $i5, $i6;
+        java.lang.Boolean $r12;
+        java.lang.String $r9;
+        boolean $z0;
+        double $d0, $d1;
+        java.util.Map$Entry $r18;
+        java.util.Iterator $r16;
+        java.util.Set $r15;
+        com.google.android.datatransport.runtime.EncodedPayload $r6;
+        com.google.android.datatransport.Encoding $r10;
+        java.lang.Object $r17;
+        android.content.ContentValues $r8, $r19;
+
+        $r1 := @parameter0: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r2 := @parameter1: com.google.android.datatransport.runtime.TransportContext;
+
+        $r3 := @parameter2: com.google.android.datatransport.runtime.EventInternal;
+
+        $r0 := @parameter3: android.database.sqlite.SQLiteDatabase;
+
+        $z0 = specialinvoke $r1.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: boolean isStorageAtLimit()>();
+
+        if $z0 == 0 goto label1;
+
+        $r4 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>(-1L);
+
+        return $r4;
+
+     label1:
+        $l0 = specialinvoke $r1.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: long ensureTransportContext(android.database.sqlite.SQLiteDatabase,com.google.android.datatransport.runtime.TransportContext)>($r0, $r2);
+
+        $r5 = $r1.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig config>;
+
+        $i1 = virtualinvoke $r5.<com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig: int getMaxBlobByteSizePerRow()>();
+
+        $r6 = virtualinvoke $r3.<com.google.android.datatransport.runtime.EventInternal: com.google.android.datatransport.runtime.EncodedPayload getEncodedPayload()>();
+
+        $r7 = virtualinvoke $r6.<com.google.android.datatransport.runtime.EncodedPayload: byte[] getBytes()>();
+
+        $i2 = lengthof $r7;
+
+        $i3 = 1;
+
+        if $i2 > $i1 goto label2;
+
+        $z0 = 1;
+
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        $r19 = new android.content.ContentValues;
+
+        $r8 = $r19;
+
+        specialinvoke $r19.<android.content.ContentValues: void <init>()>();
+
+        $r4 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+
+        virtualinvoke $r8.<android.content.ContentValues: void put(java.lang.String,java.lang.Long)>("context_id", $r4);
+
+        $r9 = virtualinvoke $r3.<com.google.android.datatransport.runtime.EventInternal: java.lang.String getTransportName()>();
+
+        virtualinvoke $r8.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("transport_name", $r9);
+
+        $l0 = virtualinvoke $r3.<com.google.android.datatransport.runtime.EventInternal: long getEventMillis()>();
+
+        $r4 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+
+        virtualinvoke $r8.<android.content.ContentValues: void put(java.lang.String,java.lang.Long)>("timestamp_ms", $r4);
+
+        $l0 = virtualinvoke $r3.<com.google.android.datatransport.runtime.EventInternal: long getUptimeMillis()>();
+
+        $r4 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+
+        virtualinvoke $r8.<android.content.ContentValues: void put(java.lang.String,java.lang.Long)>("uptime_ms", $r4);
+
+        $r6 = virtualinvoke $r3.<com.google.android.datatransport.runtime.EventInternal: com.google.android.datatransport.runtime.EncodedPayload getEncodedPayload()>();
+
+        $r10 = virtualinvoke $r6.<com.google.android.datatransport.runtime.EncodedPayload: com.google.android.datatransport.Encoding getEncoding()>();
+
+        $r9 = virtualinvoke $r10.<com.google.android.datatransport.Encoding: java.lang.String getName()>();
+
+        virtualinvoke $r8.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("payload_encoding", $r9);
+
+        $r11 = virtualinvoke $r3.<com.google.android.datatransport.runtime.EventInternal: java.lang.Integer getCode()>();
+
+        virtualinvoke $r8.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("code", $r11);
+
+        $r11 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(0);
+
+        virtualinvoke $r8.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("num_attempts", $r11);
+
+        $r12 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>($z0);
+
+        virtualinvoke $r8.<android.content.ContentValues: void put(java.lang.String,java.lang.Boolean)>("inline", $r12);
+
+        if $z0 == 0 goto label4;
+
+        $r13 = $r7;
+
+        goto label5;
+
+     label4:
+        $r13 = newarray (byte)[0];
+
+     label5:
+        virtualinvoke $r8.<android.content.ContentValues: void put(java.lang.String,byte[])>("payload", $r13);
+
+        $l0 = virtualinvoke $r0.<android.database.sqlite.SQLiteDatabase: long insert(java.lang.String,java.lang.String,android.content.ContentValues)>("events", null, $r8);
+
+        if $z0 != 0 goto label7;
+
+        $i2 = lengthof $r7;
+
+        $d0 = (double) $i2;
+
+        $d1 = (double) $i1;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d1);
+
+        $d0 = $d0 / $d1;
+
+        $d0 = staticinvoke <java.lang.Math: double ceil(double)>($d0);
+
+        $i2 = (int) $d0;
+
+     label6:
+        if $i3 > $i2 goto label7;
+
+        $i4 = -1;
+
+        $i4 = $i3 + $i4;
+
+        $i4 = $i4 * $i1;
+
+        $i5 = $i3 * $i1;
+
+        $i6 = lengthof $r7;
+
+        $i5 = staticinvoke <java.lang.Math: int min(int,int)>($i5, $i6);
+
+        $r13 = staticinvoke <java.util.Arrays: byte[] copyOfRange(byte[],int,int)>($r7, $i4, $i5);
+
+        $r19 = new android.content.ContentValues;
+
+        $r8 = $r19;
+
+        specialinvoke $r19.<android.content.ContentValues: void <init>()>();
+
+        $r4 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+
+        virtualinvoke $r8.<android.content.ContentValues: void put(java.lang.String,java.lang.Long)>("event_id", $r4);
+
+        $r11 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i3);
+
+        virtualinvoke $r8.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("sequence_num", $r11);
+
+        virtualinvoke $r8.<android.content.ContentValues: void put(java.lang.String,byte[])>("bytes", $r13);
+
+        virtualinvoke $r0.<android.database.sqlite.SQLiteDatabase: long insert(java.lang.String,java.lang.String,android.content.ContentValues)>("event_payloads", null, $r8);
+
+        $i3 = $i3 + 1;
+
+        goto label6;
+
+     label7:
+        $r14 = virtualinvoke $r3.<com.google.android.datatransport.runtime.EventInternal: java.util.Map getMetadata()>();
+
+        $r15 = interfaceinvoke $r14.<java.util.Map: java.util.Set entrySet()>();
+
+        $r16 = interfaceinvoke $r15.<java.util.Set: java.util.Iterator iterator()>();
+
+     label8:
+        $z0 = interfaceinvoke $r16.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label9;
+
+        $r17 = interfaceinvoke $r16.<java.util.Iterator: java.lang.Object next()>();
+
+        $r18 = (java.util.Map$Entry) $r17;
+
+        $r19 = new android.content.ContentValues;
+
+        $r8 = $r19;
+
+        specialinvoke $r19.<android.content.ContentValues: void <init>()>();
+
+        $r4 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+
+        virtualinvoke $r8.<android.content.ContentValues: void put(java.lang.String,java.lang.Long)>("event_id", $r4);
+
+        $r17 = interfaceinvoke $r18.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r9 = (java.lang.String) $r17;
+
+        virtualinvoke $r8.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("name", $r9);
+
+        $r17 = interfaceinvoke $r18.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r9 = (java.lang.String) $r17;
+
+        virtualinvoke $r8.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("value", $r9);
+
+        virtualinvoke $r0.<android.database.sqlite.SQLiteDatabase: long insert(java.lang.String,java.lang.String,android.content.ContentValues)>("event_metadata", null, $r8);
+
+        goto label8;
+
+     label9:
+        $r4 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+
+        return $r4;
+    }
+
+    public static byte[] lambda$readPayload$13(android.database.Cursor)
+    {
+        byte[] $r2, $r4;
+        java.util.ArrayList $r0;
+        int $i0, $i1, $i2;
+        java.lang.Object $r3;
+        android.database.Cursor $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: android.database.Cursor;
+
+        $r0 = new java.util.ArrayList;
+
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+
+        $i1 = 0;
+
+     label1:
+        $z0 = interfaceinvoke $r1.<android.database.Cursor: boolean moveToNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r2 = interfaceinvoke $r1.<android.database.Cursor: byte[] getBlob(int)>(0);
+
+        interfaceinvoke $r0.<java.util.List: boolean add(java.lang.Object)>($r2);
+
+        $i2 = lengthof $r2;
+
+        $i1 = $i1 + $i2;
+
+        goto label1;
+
+     label2:
+        $r2 = newarray (byte)[$i1];
+
+        $i1 = 0;
+
+        $i2 = 0;
+
+     label3:
+        $i0 = interfaceinvoke $r0.<java.util.List: int size()>();
+
+        if $i1 >= $i0 goto label4;
+
+        $r3 = interfaceinvoke $r0.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r4 = (byte[]) $r3;
+
+        $i0 = lengthof $r4;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r4, 0, $r2, $i2, $i0);
+
+        $i0 = lengthof $r4;
+
+        $i2 = $i2 + $i0;
+
+        $i1 = $i1 + 1;
+
+        goto label3;
+
+     label4:
+        return $r2;
+    }
+
+    public static java.lang.Object lambda$recordFailure$3(java.lang.String, android.database.sqlite.SQLiteDatabase)
+    {
+        android.database.sqlite.SQLiteDatabase $r0;
+        java.lang.String $r1;
+        android.database.sqlite.SQLiteStatement $r2;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0 := @parameter1: android.database.sqlite.SQLiteDatabase;
+
+        $r2 = virtualinvoke $r0.<android.database.sqlite.SQLiteDatabase: android.database.sqlite.SQLiteStatement compileStatement(java.lang.String)>($r1);
+
+        virtualinvoke $r2.<android.database.sqlite.SQLiteStatement: void execute()>();
+
+        $r2 = virtualinvoke $r0.<android.database.sqlite.SQLiteDatabase: android.database.sqlite.SQLiteStatement compileStatement(java.lang.String)>("DELETE FROM events WHERE num_attempts >= 16");
+
+        virtualinvoke $r2.<android.database.sqlite.SQLiteStatement: void execute()>();
+
+        return null;
+    }
+
+    public static java.lang.Object lambda$recordNextCallTime$6(long, com.google.android.datatransport.runtime.TransportContext, android.database.sqlite.SQLiteDatabase)
+    {
+        com.google.android.datatransport.Priority $r6;
+        long $l0;
+        java.lang.String[] $r4;
+        java.lang.Integer $r7;
+        com.google.android.datatransport.runtime.TransportContext $r2;
+        android.database.sqlite.SQLiteDatabase $r0;
+        java.lang.Long $r3;
+        int $i1;
+        android.content.ContentValues $r1;
+        java.lang.String $r5;
+
+        $l0 := @parameter0: long;
+
+        $r2 := @parameter1: com.google.android.datatransport.runtime.TransportContext;
+
+        $r0 := @parameter2: android.database.sqlite.SQLiteDatabase;
+
+        $r1 = new android.content.ContentValues;
+
+        specialinvoke $r1.<android.content.ContentValues: void <init>()>();
+
+        $r3 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Long)>("next_request_ms", $r3);
+
+        $r4 = newarray (java.lang.String)[2];
+
+        $r5 = virtualinvoke $r2.<com.google.android.datatransport.runtime.TransportContext: java.lang.String getBackendName()>();
+
+        $r4[0] = $r5;
+
+        $r6 = virtualinvoke $r2.<com.google.android.datatransport.runtime.TransportContext: com.google.android.datatransport.Priority getPriority()>();
+
+        $i1 = staticinvoke <com.google.android.datatransport.runtime.util.PriorityMapping: int toInt(com.google.android.datatransport.Priority)>($r6);
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i1);
+
+        $r4[1] = $r5;
+
+        $i1 = virtualinvoke $r0.<android.database.sqlite.SQLiteDatabase: int update(java.lang.String,android.content.ContentValues,java.lang.String,java.lang.String[])>("transport_contexts", $r1, "backend_name = ? and priority = ?", $r4);
+
+        if $i1 >= 1 goto label1;
+
+        $r5 = virtualinvoke $r2.<com.google.android.datatransport.runtime.TransportContext: java.lang.String getBackendName()>();
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("backend_name", $r5);
+
+        $r6 = virtualinvoke $r2.<com.google.android.datatransport.runtime.TransportContext: com.google.android.datatransport.Priority getPriority()>();
+
+        $i1 = staticinvoke <com.google.android.datatransport.runtime.util.PriorityMapping: int toInt(com.google.android.datatransport.Priority)>($r6);
+
+        $r7 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i1);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("priority", $r7);
+
+        virtualinvoke $r0.<android.database.sqlite.SQLiteDatabase: long insert(java.lang.String,java.lang.String,android.content.ContentValues)>("transport_contexts", null, $r1);
+
+     label1:
+        return null;
+    }
+
+    private java.util.List loadEvents(android.database.sqlite.SQLiteDatabase, com.google.android.datatransport.runtime.TransportContext)
+    {
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        java.lang.String[] $r4, $r6;
+        java.util.ArrayList $r3;
+        com.google.android.datatransport.runtime.TransportContext $r2;
+        android.database.sqlite.SQLiteDatabase $r1;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r10;
+        java.lang.Long $r5;
+        com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig $r8;
+        int $i0;
+        java.lang.String $r7;
+        android.database.Cursor $r9;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        $r2 := @parameter1: com.google.android.datatransport.runtime.TransportContext;
+
+        $r3 = new java.util.ArrayList;
+
+        specialinvoke $r3.<java.util.ArrayList: void <init>()>();
+
+        $r5 = specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Long getTransportContextId(android.database.sqlite.SQLiteDatabase,com.google.android.datatransport.runtime.TransportContext)>($r1, $r2);
+
+        if $r5 != null goto label1;
+
+        return $r3;
+
+     label1:
+        $r6 = newarray (java.lang.String)[8];
+
+        $r6[0] = "_id";
+
+        $r6[1] = "transport_name";
+
+        $r6[2] = "timestamp_ms";
+
+        $r6[3] = "uptime_ms";
+
+        $r6[4] = "payload_encoding";
+
+        $r6[5] = "payload";
+
+        $r6[6] = "code";
+
+        $r6[7] = "inline";
+
+        $r4 = newarray (java.lang.String)[1];
+
+        $r7 = virtualinvoke $r5.<java.lang.Long: java.lang.String toString()>();
+
+        $r4[0] = $r7;
+
+        $r8 = r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig config>;
+
+        $i0 = virtualinvoke $r8.<com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig: int getLoadBatchSize()>();
+
+        $r7 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i0);
+
+        $r9 = virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: android.database.Cursor query(java.lang.String,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String,java.lang.String,java.lang.String)>("events", $r6, "context_id = ?", $r4, null, null, null, $r7);
+
+        $r10 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$15: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore,java.util.List,com.google.android.datatransport.runtime.TransportContext)>(r0, $r3, $r2);
+
+        staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object tryWithCursor(android.database.Cursor,com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r9, $r10);
+
+        return $r3;
+    }
+
+    private java.util.Map loadMetadata(android.database.sqlite.SQLiteDatabase, java.util.List)
+    {
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        java.util.HashMap $r1, $r11;
+        com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent $r6;
+        long $l2;
+        java.lang.String[] $r7;
+        android.database.sqlite.SQLiteDatabase $r3;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r10;
+        int $i0, $i1, $i3;
+        java.lang.String $r8;
+        android.database.Cursor $r9;
+        java.util.List $r4;
+        java.lang.StringBuilder $r2, $r12;
+        java.lang.Object $r5;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r3 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        $r4 := @parameter1: java.util.List;
+
+        $r11 = new java.util.HashMap;
+
+        $r1 = $r11;
+
+        specialinvoke $r11.<java.util.HashMap: void <init>()>();
+
+        $r12 = new java.lang.StringBuilder;
+
+        $r2 = $r12;
+
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>(java.lang.String)>("event_id IN (");
+
+        $i0 = 0;
+
+     label1:
+        $i1 = interfaceinvoke $r4.<java.util.List: int size()>();
+
+        if $i0 >= $i1 goto label3;
+
+        $r5 = interfaceinvoke $r4.<java.util.List: java.lang.Object get(int)>($i0);
+
+        $r6 = (com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent) $r5;
+
+        $l2 = virtualinvoke $r6.<com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent: long getId()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l2);
+
+        $i1 = interfaceinvoke $r4.<java.util.List: int size()>();
+
+        $i3 = -1;
+
+        $i1 = $i1 + $i3;
+
+        if $i0 >= $i1 goto label2;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(44);
+
+     label2:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label3:
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(41);
+
+        $r7 = newarray (java.lang.String)[3];
+
+        $r7[0] = "event_id";
+
+        $r7[1] = "name";
+
+        $r7[2] = "value";
+
+        $r8 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r9 = virtualinvoke $r3.<android.database.sqlite.SQLiteDatabase: android.database.Cursor query(java.lang.String,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String,java.lang.String)>("event_metadata", $r7, $r8, null, null, null, null);
+
+        $r10 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$17: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$(java.util.Map)>($r1);
+
+        staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object tryWithCursor(android.database.Cursor,com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r9, $r10);
+
+        return $r1;
+    }
+
+    public static byte[] maybeBase64Decode(java.lang.String)
+    {
+        byte[] $r0;
+        java.lang.String $r1;
+
+        $r1 := @parameter0: java.lang.String;
+
+        if $r1 != null goto label1;
+
+        return null;
+
+     label1:
+        $r0 = staticinvoke <android.util.Base64: byte[] decode(java.lang.String,int)>($r1, 0);
+
+        return $r0;
+    }
+
+    private byte[] readPayload(long)
+    {
+        byte[] $r8;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        java.lang.String[] $r1, $r3;
+        long $l0;
+        android.database.sqlite.SQLiteDatabase $r2;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r6;
+        java.lang.Object $r7;
+        java.lang.String $r4;
+        android.database.Cursor $r5;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $l0 := @parameter0: long;
+
+        $r2 = virtualinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: android.database.sqlite.SQLiteDatabase getDb()>();
+
+        $r3 = newarray (java.lang.String)[1];
+
+        $r3[0] = "bytes";
+
+        $r1 = newarray (java.lang.String)[1];
+
+        $r4 = staticinvoke <java.lang.String: java.lang.String valueOf(long)>($l0);
+
+        $r1[0] = $r4;
+
+        $r5 = virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: android.database.Cursor query(java.lang.String,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String,java.lang.String)>("event_payloads", $r3, "event_id = ?", $r1, null, null, "sequence_num");
+
+        $r6 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$16: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$()>();
+
+        $r7 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object tryWithCursor(android.database.Cursor,com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r5, $r6);
+
+        $r8 = (byte[]) $r7;
+
+        return $r8;
+    }
+
+    private java.lang.Object retryIfDbLocked(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Producer, com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)
+    {
+        com.google.android.datatransport.runtime.time.Clock $r3;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        long $l1, $l2, $l4;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r1;
+        byte $b0;
+        com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig $r6;
+        int $i3;
+        java.lang.Object $r4;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Producer $r2;
+        android.database.sqlite.SQLiteDatabaseLockedException $r5;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r2 := @parameter0: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Producer;
+
+        $r1 := @parameter1: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function;
+
+        $r3 = r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.runtime.time.Clock monotonicClock>;
+
+        $l1 = interfaceinvoke $r3.<com.google.android.datatransport.runtime.time.Clock: long getTime()>();
+
+     label1:
+        $r4 = interfaceinvoke $r2.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Producer: java.lang.Object produce()>();
+
+     label2:
+        return $r4;
+
+     label3:
+        $r5 := @caughtexception;
+
+        $r3 = r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.runtime.time.Clock monotonicClock>;
+
+        $l2 = interfaceinvoke $r3.<com.google.android.datatransport.runtime.time.Clock: long getTime()>();
+
+        $r6 = r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig config>;
+
+        $i3 = virtualinvoke $r6.<com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig: int getCriticalSectionEnterTimeoutMs()>();
+
+        $l4 = (long) $i3;
+
+        $l4 = $l4 + $l1;
+
+        $b0 = $l2 cmp $l4;
+
+        $i3 = (int) $b0;
+
+        if $i3 < 0 goto label4;
+
+        $r4 = interfaceinvoke $r1.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function: java.lang.Object apply(java.lang.Object)>($r5);
+
+        return $r4;
+
+     label4:
+        staticinvoke <android.os.SystemClock: void sleep(long)>(50L);
+
+        goto label1;
+
+        catch android.database.sqlite.SQLiteDatabaseLockedException from label1 to label2 with label3;
+    }
+
+    public static com.google.android.datatransport.Encoding toEncoding(java.lang.String)
+    {
+        com.google.android.datatransport.Encoding $r0;
+        java.lang.String $r1;
+
+        $r1 := @parameter0: java.lang.String;
+
+        if $r1 != null goto label1;
+
+        $r0 = <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.Encoding PROTOBUF_ENCODING>;
+
+        return $r0;
+
+     label1:
+        $r0 = staticinvoke <com.google.android.datatransport.Encoding: com.google.android.datatransport.Encoding of(java.lang.String)>($r1);
+
+        return $r0;
+    }
+
+    public static java.lang.String toIdList(java.lang.Iterable)
+    {
+        java.util.Iterator $r2;
+        com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent $r4;
+        long $l0;
+        java.lang.Iterable $r1;
+        java.lang.StringBuilder $r0;
+        java.lang.Object $r3;
+        java.lang.String $r5;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.Iterable;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("(");
+
+        $r2 = interfaceinvoke $r1.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r3 = interfaceinvoke $r2.<java.util.Iterator: java.lang.Object next()>();
+
+        $r4 = (com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent) $r3;
+
+        $l0 = virtualinvoke $r4.<com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent: long getId()>();
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l0);
+
+        $z0 = interfaceinvoke $r2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(44);
+
+        goto label1;
+
+     label2:
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(41);
+
+        $r5 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r5;
+    }
+
+    public static java.lang.Object tryWithCursor(android.database.Cursor, com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)
+    {
+        java.lang.Throwable $r3;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r2;
+        java.lang.Object $r1;
+        android.database.Cursor $r0;
+
+        $r0 := @parameter0: android.database.Cursor;
+
+        $r2 := @parameter1: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function;
+
+     label1:
+        $r1 = interfaceinvoke $r2.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function: java.lang.Object apply(java.lang.Object)>($r0);
+
+     label2:
+        interfaceinvoke $r0.<android.database.Cursor: void close()>();
+
+        return $r1;
+
+     label3:
+        $r3 := @caughtexception;
+
+        interfaceinvoke $r0.<android.database.Cursor: void close()>();
+
+        throw $r3;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public int cleanUp()
+    {
+        com.google.android.datatransport.runtime.time.Clock $r1;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        long $l0, $l1;
+        java.lang.Integer $r5;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r3;
+        com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig $r2;
+        int $i2;
+        java.lang.Object $r4;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 = r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.runtime.time.Clock wallClock>;
+
+        $l0 = interfaceinvoke $r1.<com.google.android.datatransport.runtime.time.Clock: long getTime()>();
+
+        $r2 = r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig config>;
+
+        $l1 = virtualinvoke $r2.<com.google.android.datatransport.runtime.scheduling.persistence.EventStoreConfig: long getEventCleanUpAge()>();
+
+        $l0 = $l0 - $l1;
+
+        $r3 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$13: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$(long)>($l0);
+
+        $r4 = specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object inTransaction(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r3);
+
+        $r5 = (java.lang.Integer) $r4;
+
+        $i2 = virtualinvoke $r5.<java.lang.Integer: int intValue()>();
+
+        return $i2;
+    }
+
+    public void clearDb()
+    {
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r1;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$14: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$()>();
+
+        specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object inTransaction(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r1);
+
+        return;
+    }
+
+    public void close()
+    {
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        com.google.android.datatransport.runtime.scheduling.persistence.SchemaManager $r1;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 = r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.runtime.scheduling.persistence.SchemaManager schemaManager>;
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteOpenHelper: void close()>();
+
+        return;
+    }
+
+    public long getByteSize()
+    {
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        long $l0, $l1;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $l0 = specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: long getPageCount()>();
+
+        $l1 = specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: long getPageSize()>();
+
+        $l0 = $l0 * $l1;
+
+        return $l0;
+    }
+
+    public android.database.sqlite.SQLiteDatabase getDb()
+    {
+        android.database.sqlite.SQLiteDatabase $r5;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r3;
+        com.google.android.datatransport.runtime.scheduling.persistence.SchemaManager $r1;
+        java.lang.Object $r4;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Producer $r2;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 = r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: com.google.android.datatransport.runtime.scheduling.persistence.SchemaManager schemaManager>;
+
+        virtualinvoke $r1.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r2 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$1: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Producer lambdaFactory$(com.google.android.datatransport.runtime.scheduling.persistence.SchemaManager)>($r1);
+
+        $r3 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$4: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$()>();
+
+        $r4 = specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object retryIfDbLocked(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Producer,com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r2, $r3);
+
+        $r5 = (android.database.sqlite.SQLiteDatabase) $r4;
+
+        return $r5;
+    }
+
+    public long getNextCallTime(com.google.android.datatransport.runtime.TransportContext)
+    {
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        com.google.android.datatransport.Priority $r5;
+        java.lang.String[] $r3;
+        long $l1;
+        com.google.android.datatransport.runtime.TransportContext $r1;
+        android.database.sqlite.SQLiteDatabase $r2;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r7;
+        java.lang.Long $r9;
+        int $i0;
+        java.lang.Object $r8;
+        java.lang.String $r4;
+        android.database.Cursor $r6;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 := @parameter0: com.google.android.datatransport.runtime.TransportContext;
+
+        $r2 = virtualinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: android.database.sqlite.SQLiteDatabase getDb()>();
+
+        $r3 = newarray (java.lang.String)[2];
+
+        $r4 = virtualinvoke $r1.<com.google.android.datatransport.runtime.TransportContext: java.lang.String getBackendName()>();
+
+        $r3[0] = $r4;
+
+        $r5 = virtualinvoke $r1.<com.google.android.datatransport.runtime.TransportContext: com.google.android.datatransport.Priority getPriority()>();
+
+        $i0 = staticinvoke <com.google.android.datatransport.runtime.util.PriorityMapping: int toInt(com.google.android.datatransport.Priority)>($r5);
+
+        $r4 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i0);
+
+        $r3[1] = $r4;
+
+        $r6 = virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: android.database.Cursor rawQuery(java.lang.String,java.lang.String[])>("SELECT next_request_ms FROM transport_contexts WHERE backend_name = ? and priority = ?", $r3);
+
+        $r7 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$8: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$()>();
+
+        $r8 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object tryWithCursor(android.database.Cursor,com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r6, $r7);
+
+        $r9 = (java.lang.Long) $r8;
+
+        $l1 = virtualinvoke $r9.<java.lang.Long: long longValue()>();
+
+        return $l1;
+    }
+
+    public boolean hasPendingEventsFor(com.google.android.datatransport.runtime.TransportContext)
+    {
+        com.google.android.datatransport.runtime.TransportContext $r1;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r2;
+        java.lang.Boolean $r4;
+        java.lang.Object $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 := @parameter0: com.google.android.datatransport.runtime.TransportContext;
+
+        $r2 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$9: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore,com.google.android.datatransport.runtime.TransportContext)>(r0, $r1);
+
+        $r3 = specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object inTransaction(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r2);
+
+        $r4 = (java.lang.Boolean) $r3;
+
+        $z0 = virtualinvoke $r4.<java.lang.Boolean: boolean booleanValue()>();
+
+        return $z0;
+    }
+
+    public java.lang.Iterable loadActiveContexts()
+    {
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r1;
+        java.lang.Object $r2;
+        java.lang.Iterable $r3;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$12: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$()>();
+
+        $r2 = specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object inTransaction(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r1);
+
+        $r3 = (java.lang.Iterable) $r2;
+
+        return $r3;
+    }
+
+    public java.lang.Iterable loadBatch(com.google.android.datatransport.runtime.TransportContext)
+    {
+        com.google.android.datatransport.runtime.TransportContext $r1;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r2;
+        java.lang.Object $r3;
+        java.lang.Iterable $r4;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 := @parameter0: com.google.android.datatransport.runtime.TransportContext;
+
+        $r2 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$11: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore,com.google.android.datatransport.runtime.TransportContext)>(r0, $r1);
+
+        $r3 = specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object inTransaction(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r2);
+
+        $r4 = (java.lang.Iterable) $r3;
+
+        return $r4;
+    }
+
+    public com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent persist(com.google.android.datatransport.runtime.TransportContext, com.google.android.datatransport.runtime.EventInternal)
+    {
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        java.lang.Object[] $r3;
+        com.google.android.datatransport.Priority $r4;
+        long $l1;
+        com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent $r9;
+        com.google.android.datatransport.runtime.TransportContext $r2;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r6;
+        com.google.android.datatransport.runtime.EventInternal $r1;
+        byte $b0;
+        java.lang.Long $r8;
+        int $i2;
+        java.lang.Object $r7;
+        java.lang.String $r5;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r2 := @parameter0: com.google.android.datatransport.runtime.TransportContext;
+
+        $r1 := @parameter1: com.google.android.datatransport.runtime.EventInternal;
+
+        $r3 = newarray (java.lang.Object)[3];
+
+        $r4 = virtualinvoke $r2.<com.google.android.datatransport.runtime.TransportContext: com.google.android.datatransport.Priority getPriority()>();
+
+        $r3[0] = $r4;
+
+        $r5 = virtualinvoke $r1.<com.google.android.datatransport.runtime.EventInternal: java.lang.String getTransportName()>();
+
+        $r3[1] = $r5;
+
+        $r5 = virtualinvoke $r2.<com.google.android.datatransport.runtime.TransportContext: java.lang.String getBackendName()>();
+
+        $r3[2] = $r5;
+
+        staticinvoke <com.google.android.datatransport.runtime.logging.Logging: void d(java.lang.String,java.lang.String,java.lang.Object[])>("SQLiteEventStore", "Storing event with priority=%s, name=%s for destination %s", $r3);
+
+        $r6 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$5: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore,com.google.android.datatransport.runtime.TransportContext,com.google.android.datatransport.runtime.EventInternal)>(r0, $r2, $r1);
+
+        $r7 = specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object inTransaction(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r6);
+
+        $r8 = (java.lang.Long) $r7;
+
+        $l1 = virtualinvoke $r8.<java.lang.Long: long longValue()>();
+
+        $b0 = $l1 cmp 1L;
+
+        $i2 = (int) $b0;
+
+        if $i2 >= 0 goto label1;
+
+        return null;
+
+     label1:
+        $r9 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent: com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent create(long,com.google.android.datatransport.runtime.TransportContext,com.google.android.datatransport.runtime.EventInternal)>($l1, $r2, $r1);
+
+        return $r9;
+    }
+
+    public void recordFailure(java.lang.Iterable)
+    {
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r5;
+        java.util.Iterator $r2;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r4;
+        java.lang.Iterable $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 := @parameter0: java.lang.Iterable;
+
+        $r2 = interfaceinvoke $r1.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+        $z0 = interfaceinvoke $r2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 != 0 goto label1;
+
+        return;
+
+     label1:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("UPDATE events SET num_attempts = num_attempts + 1 WHERE _id in ");
+
+        $r4 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.String toIdList(java.lang.Iterable)>($r1);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r5 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$7: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$(java.lang.String)>($r4);
+
+        specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object inTransaction(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r5);
+
+        return;
+    }
+
+    public void recordNextCallTime(com.google.android.datatransport.runtime.TransportContext, long)
+    {
+        com.google.android.datatransport.runtime.TransportContext $r2;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function $r1;
+        long $l0;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r2 := @parameter0: com.google.android.datatransport.runtime.TransportContext;
+
+        $l0 := @parameter1: long;
+
+        $r1 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$$Lambda$10: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function lambdaFactory$(long,com.google.android.datatransport.runtime.TransportContext)>($l0, $r2);
+
+        specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.Object inTransaction(com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore$Function)>($r1);
+
+        return;
+    }
+
+    public void recordSuccess(java.lang.Iterable)
+    {
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        java.util.Iterator $r2;
+        java.lang.Iterable $r1;
+        android.database.sqlite.SQLiteDatabase $r5;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r4;
+        android.database.sqlite.SQLiteStatement $r6;
+        boolean $z0;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 := @parameter0: java.lang.Iterable;
+
+        $r2 = interfaceinvoke $r1.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+        $z0 = interfaceinvoke $r2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 != 0 goto label1;
+
+        return;
+
+     label1:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("DELETE FROM events WHERE _id in ");
+
+        $r4 = staticinvoke <com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: java.lang.String toIdList(java.lang.Iterable)>($r1);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r5 = virtualinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: android.database.sqlite.SQLiteDatabase getDb()>();
+
+        $r6 = virtualinvoke $r5.<android.database.sqlite.SQLiteDatabase: android.database.sqlite.SQLiteStatement compileStatement(java.lang.String)>($r4);
+
+        virtualinvoke $r6.<android.database.sqlite.SQLiteStatement: void execute()>();
+
+        return;
+    }
+
+    public java.lang.Object runCriticalSection(com.google.android.datatransport.runtime.synchronization.SynchronizationGuard$CriticalSection)
+    {
+        java.lang.Throwable $r4;
+        android.database.sqlite.SQLiteDatabase $r2;
+        com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore r0;
+        com.google.android.datatransport.runtime.synchronization.SynchronizationGuard$CriticalSection $r1;
+        java.lang.Object $r3;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore;
+
+        $r1 := @parameter0: com.google.android.datatransport.runtime.synchronization.SynchronizationGuard$CriticalSection;
+
+        $r2 = virtualinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: android.database.sqlite.SQLiteDatabase getDb()>();
+
+        specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.persistence.SQLiteEventStore: void ensureBeginTransaction(android.database.sqlite.SQLiteDatabase)>($r2);
+
+     label1:
+        $r3 = interfaceinvoke $r1.<com.google.android.datatransport.runtime.synchronization.SynchronizationGuard$CriticalSection: java.lang.Object execute()>();
+
+        virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: void setTransactionSuccessful()>();
+
+     label2:
+        virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: void endTransaction()>();
+
+        return $r3;
+
+     label3:
+        $r4 := @caughtexception;
+
+        virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: void endTransaction()>();
+
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+}

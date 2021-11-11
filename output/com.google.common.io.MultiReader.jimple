@@ -1,0 +1,210 @@
+public class com.google.common.io.MultiReader extends java.io.Reader
+{
+    public java.io.Reader current;
+    public final java.util.Iterator it;
+
+    public void <init>(java.util.Iterator)
+    {
+        com.google.common.io.MultiReader r0;
+        java.util.Iterator $r1;
+
+        r0 := @this: com.google.common.io.MultiReader;
+
+        $r1 := @parameter0: java.util.Iterator;
+
+        specialinvoke r0.<java.io.Reader: void <init>()>();
+
+        r0.<com.google.common.io.MultiReader: java.util.Iterator it> = $r1;
+
+        specialinvoke r0.<com.google.common.io.MultiReader: void advance()>();
+
+        return;
+    }
+
+    private void advance()
+    {
+        com.google.common.io.MultiReader r0;
+        java.util.Iterator $r1;
+        java.lang.Object $r2;
+        com.google.common.io.CharSource $r3;
+        java.io.Reader $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.common.io.MultiReader;
+
+        virtualinvoke r0.<com.google.common.io.MultiReader: void close()>();
+
+        $r1 = r0.<com.google.common.io.MultiReader: java.util.Iterator it>;
+
+        $z0 = interfaceinvoke $r1.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = r0.<com.google.common.io.MultiReader: java.util.Iterator it>;
+
+        $r2 = interfaceinvoke $r1.<java.util.Iterator: java.lang.Object next()>();
+
+        $r3 = (com.google.common.io.CharSource) $r2;
+
+        $r4 = virtualinvoke $r3.<com.google.common.io.CharSource: java.io.Reader openStream()>();
+
+        r0.<com.google.common.io.MultiReader: java.io.Reader current> = $r4;
+
+     label1:
+        return;
+    }
+
+    public void close()
+    {
+        java.lang.Throwable $r2;
+        com.google.common.io.MultiReader r0;
+        java.io.Reader $r1;
+
+        r0 := @this: com.google.common.io.MultiReader;
+
+        $r1 = r0.<com.google.common.io.MultiReader: java.io.Reader current>;
+
+        if $r1 == null goto label4;
+
+     label1:
+        virtualinvoke $r1.<java.io.Reader: void close()>();
+
+     label2:
+        r0.<com.google.common.io.MultiReader: java.io.Reader current> = null;
+
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        r0.<com.google.common.io.MultiReader: java.io.Reader current> = null;
+
+        throw $r2;
+
+     label4:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public int read(char[], int, int)
+    {
+        com.google.common.io.MultiReader r0;
+        int $i0, $i1, $i2, $i3;
+        char[] $r1;
+        java.io.Reader $r2;
+
+        r0 := @this: com.google.common.io.MultiReader;
+
+        $r1 := @parameter0: char[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 = r0.<com.google.common.io.MultiReader: java.io.Reader current>;
+
+        if $r2 != null goto label1;
+
+        $i0 = -1;
+
+        return $i0;
+
+     label1:
+        $i2 = virtualinvoke $r2.<java.io.Reader: int read(char[],int,int)>($r1, $i0, $i1);
+
+        $i3 = -1;
+
+        if $i2 != $i3 goto label2;
+
+        specialinvoke r0.<com.google.common.io.MultiReader: void advance()>();
+
+        $i0 = virtualinvoke r0.<com.google.common.io.MultiReader: int read(char[],int,int)>($r1, $i0, $i1);
+
+        return $i0;
+
+     label2:
+        return $i2;
+    }
+
+    public boolean ready()
+    {
+        com.google.common.io.MultiReader r0;
+        java.io.Reader $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.io.MultiReader;
+
+        $r1 = r0.<com.google.common.io.MultiReader: java.io.Reader current>;
+
+        if $r1 == null goto label1;
+
+        $z0 = virtualinvoke $r1.<java.io.Reader: boolean ready()>();
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public long skip(long)
+    {
+        com.google.common.io.MultiReader r0;
+        byte $b1;
+        int $i3;
+        long $l0, $l2;
+        java.io.Reader $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.io.MultiReader;
+
+        $l0 := @parameter0: long;
+
+        $b1 = $l0 cmp 0L;
+
+        $i3 = (int) $b1;
+
+        if $i3 < 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.Object)>($z0, "n is negative");
+
+        $b1 = $l0 cmp 0L;
+
+        $i3 = (int) $b1;
+
+        if $i3 <= 0 goto label5;
+
+     label3:
+        $r1 = r0.<com.google.common.io.MultiReader: java.io.Reader current>;
+
+        if $r1 == null goto label5;
+
+        $l2 = virtualinvoke $r1.<java.io.Reader: long skip(long)>($l0);
+
+        $b1 = $l2 cmp 0L;
+
+        $i3 = (int) $b1;
+
+        if $i3 <= 0 goto label4;
+
+        return $l2;
+
+     label4:
+        specialinvoke r0.<com.google.common.io.MultiReader: void advance()>();
+
+        goto label3;
+
+     label5:
+        return 0L;
+    }
+}

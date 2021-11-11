@@ -1,0 +1,581 @@
+public final class com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher extends com.google.common.hash.AbstractStreamingHasher
+{
+    public static final long C1;
+    public static final long C2;
+    public static final int CHUNK_SIZE;
+    public long h1;
+    public long h2;
+    public int length;
+
+    public void <init>(int)
+    {
+        int $i0;
+        long $l1;
+        com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher r0;
+
+        r0 := @this: com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher;
+
+        $i0 := @parameter0: int;
+
+        specialinvoke r0.<com.google.common.hash.AbstractStreamingHasher: void <init>(int)>(16);
+
+        $l1 = (long) $i0;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1> = $l1;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2> = $l1;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: int length> = 0;
+
+        return;
+    }
+
+    private void bmix64(long, long)
+    {
+        long $l0, $l1, $l2;
+        com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher r0;
+
+        r0 := @this: com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher;
+
+        $l0 := @parameter0: long;
+
+        $l1 := @parameter1: long;
+
+        $l2 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1>;
+
+        $l0 = staticinvoke <com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long mixK1(long)>($l0);
+
+        $l0 = $l0 ^ $l2;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1> = $l0;
+
+        $l0 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1>;
+
+        $l0 = staticinvoke <java.lang.Long: long rotateLeft(long,int)>($l0, 27);
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1> = $l0;
+
+        $l2 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1>;
+
+        $l0 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2>;
+
+        $l2 = $l2 + $l0;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1> = $l2;
+
+        $l2 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1>;
+
+        $l2 = $l2 * 5L;
+
+        $l2 = $l2 + 1390208809L;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1> = $l2;
+
+        $l1 = staticinvoke <com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long mixK2(long)>($l1);
+
+        $l0 = $l1 ^ $l0;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2> = $l0;
+
+        $l0 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2>;
+
+        $l0 = staticinvoke <java.lang.Long: long rotateLeft(long,int)>($l0, 31);
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2> = $l0;
+
+        $l0 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2>;
+
+        $l1 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1>;
+
+        $l0 = $l0 + $l1;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2> = $l0;
+
+        $l0 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2>;
+
+        $l0 = $l0 * 5L;
+
+        $l0 = $l0 + 944331445L;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2> = $l0;
+
+        return;
+    }
+
+    public static long fmix64(long)
+    {
+        long $l0, $l1;
+
+        $l0 := @parameter0: long;
+
+        $l1 = $l0 >>> 33;
+
+        $l0 = $l0 ^ $l1;
+
+        $l0 = $l0 * -49064778989728563L;
+
+        $l1 = $l0 >>> 33;
+
+        $l0 = $l0 ^ $l1;
+
+        $l0 = $l0 * -4265267296055464877L;
+
+        $l1 = $l0 >>> 33;
+
+        $l0 = $l0 ^ $l1;
+
+        return $l0;
+    }
+
+    public static long mixK1(long)
+    {
+        long $l0;
+
+        $l0 := @parameter0: long;
+
+        $l0 = $l0 * -8663945395140668459L;
+
+        $l0 = staticinvoke <java.lang.Long: long rotateLeft(long,int)>($l0, 31);
+
+        $l0 = $l0 * 5545529020109919103L;
+
+        return $l0;
+    }
+
+    public static long mixK2(long)
+    {
+        long $l0;
+
+        $l0 := @parameter0: long;
+
+        $l0 = $l0 * 5545529020109919103L;
+
+        $l0 = staticinvoke <java.lang.Long: long rotateLeft(long,int)>($l0, 33);
+
+        $l0 = $l0 * -8663945395140668459L;
+
+        return $l0;
+    }
+
+    public com.google.common.hash.HashCode makeHash()
+    {
+        byte[] $r1;
+        com.google.common.hash.HashCode $r4;
+        long $l0, $l1;
+        java.nio.ByteBuffer $r2;
+        com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher r0;
+        java.nio.ByteOrder $r3;
+        int $i2;
+
+        r0 := @this: com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher;
+
+        $l1 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1>;
+
+        $i2 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: int length>;
+
+        $l0 = (long) $i2;
+
+        $l0 = $l1 ^ $l0;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1> = $l0;
+
+        $l0 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2>;
+
+        $l1 = (long) $i2;
+
+        $l0 = $l0 ^ $l1;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2> = $l0;
+
+        $l1 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1>;
+
+        $l0 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2>;
+
+        $l1 = $l1 + $l0;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1> = $l1;
+
+        $l1 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1>;
+
+        $l0 = $l0 + $l1;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2> = $l0;
+
+        $l0 = staticinvoke <com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long fmix64(long)>($l1);
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1> = $l0;
+
+        $l0 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2>;
+
+        $l0 = staticinvoke <com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long fmix64(long)>($l0);
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2> = $l0;
+
+        $l1 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1>;
+
+        $l0 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2>;
+
+        $l1 = $l1 + $l0;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1> = $l1;
+
+        $l1 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1>;
+
+        $l0 = $l0 + $l1;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2> = $l0;
+
+        $r1 = newarray (byte)[16];
+
+        $r2 = staticinvoke <java.nio.ByteBuffer: java.nio.ByteBuffer wrap(byte[])>($r1);
+
+        $r3 = <java.nio.ByteOrder: java.nio.ByteOrder LITTLE_ENDIAN>;
+
+        $r2 = virtualinvoke $r2.<java.nio.ByteBuffer: java.nio.ByteBuffer order(java.nio.ByteOrder)>($r3);
+
+        $l0 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1>;
+
+        $r2 = virtualinvoke $r2.<java.nio.ByteBuffer: java.nio.ByteBuffer putLong(long)>($l0);
+
+        $l0 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2>;
+
+        $r2 = virtualinvoke $r2.<java.nio.ByteBuffer: java.nio.ByteBuffer putLong(long)>($l0);
+
+        $r1 = virtualinvoke $r2.<java.nio.ByteBuffer: byte[] array()>();
+
+        $r4 = staticinvoke <com.google.common.hash.HashCode: com.google.common.hash.HashCode fromBytesNoCopy(byte[])>($r1);
+
+        return $r4;
+    }
+
+    public void process(java.nio.ByteBuffer)
+    {
+        int $i2;
+        long $l0, $l1;
+        java.nio.ByteBuffer $r1;
+        com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher r0;
+
+        r0 := @this: com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher;
+
+        $r1 := @parameter0: java.nio.ByteBuffer;
+
+        $l0 = virtualinvoke $r1.<java.nio.ByteBuffer: long getLong()>();
+
+        $l1 = virtualinvoke $r1.<java.nio.ByteBuffer: long getLong()>();
+
+        specialinvoke r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: void bmix64(long,long)>($l0, $l1);
+
+        $i2 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: int length>;
+
+        $i2 = $i2 + 16;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: int length> = $i2;
+
+        return;
+    }
+
+    public void processRemaining(java.nio.ByteBuffer)
+    {
+        long $l3, $l4, $l5;
+        java.lang.AssertionError $r2;
+        java.nio.ByteBuffer $r1;
+        com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher r0;
+        byte $b2;
+        int $i0, $i1;
+
+        r0 := @this: com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher;
+
+        $r1 := @parameter0: java.nio.ByteBuffer;
+
+        $i0 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: int length>;
+
+        $i1 = virtualinvoke $r1.<java.nio.ByteBuffer: int remaining()>();
+
+        $i0 = $i0 + $i1;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: int length> = $i0;
+
+        $i0 = virtualinvoke $r1.<java.nio.ByteBuffer: int remaining()>();
+
+        lookupswitch($i0)
+        {
+            case 1: goto label28;
+            case 2: goto label26;
+            case 3: goto label24;
+            case 4: goto label22;
+            case 5: goto label20;
+            case 6: goto label18;
+            case 7: goto label17;
+            case 8: goto label15;
+            case 9: goto label13;
+            case 10: goto label11;
+            case 11: goto label09;
+            case 12: goto label07;
+            case 13: goto label05;
+            case 14: goto label03;
+            case 15: goto label02;
+            default: goto label01;
+        };
+
+     label01:
+        $r2 = new java.lang.AssertionError;
+
+        specialinvoke $r2.<java.lang.AssertionError: void <init>(java.lang.Object)>("Should never get here.");
+
+        throw $r2;
+
+     label02:
+        $b2 = virtualinvoke $r1.<java.nio.ByteBuffer: byte get(int)>(14);
+
+        $i0 = staticinvoke <com.google.common.primitives.UnsignedBytes: int toInt(byte)>($b2);
+
+        $l3 = (long) $i0;
+
+        $l3 = $l3 << 48;
+
+        $l3 = $l3 ^ 0L;
+
+        goto label04;
+
+     label03:
+        $l3 = 0L;
+
+     label04:
+        $b2 = virtualinvoke $r1.<java.nio.ByteBuffer: byte get(int)>(13);
+
+        $i0 = staticinvoke <com.google.common.primitives.UnsignedBytes: int toInt(byte)>($b2);
+
+        $l4 = (long) $i0;
+
+        $l4 = $l4 << 40;
+
+        $l3 = $l3 ^ $l4;
+
+        goto label06;
+
+     label05:
+        $l3 = 0L;
+
+     label06:
+        $b2 = virtualinvoke $r1.<java.nio.ByteBuffer: byte get(int)>(12);
+
+        $i0 = staticinvoke <com.google.common.primitives.UnsignedBytes: int toInt(byte)>($b2);
+
+        $l4 = (long) $i0;
+
+        $l4 = $l4 << 32;
+
+        $l3 = $l3 ^ $l4;
+
+        goto label08;
+
+     label07:
+        $l3 = 0L;
+
+     label08:
+        $b2 = virtualinvoke $r1.<java.nio.ByteBuffer: byte get(int)>(11);
+
+        $i0 = staticinvoke <com.google.common.primitives.UnsignedBytes: int toInt(byte)>($b2);
+
+        $l4 = (long) $i0;
+
+        $l4 = $l4 << 24;
+
+        $l3 = $l3 ^ $l4;
+
+        goto label10;
+
+     label09:
+        $l3 = 0L;
+
+     label10:
+        $b2 = virtualinvoke $r1.<java.nio.ByteBuffer: byte get(int)>(10);
+
+        $i0 = staticinvoke <com.google.common.primitives.UnsignedBytes: int toInt(byte)>($b2);
+
+        $l4 = (long) $i0;
+
+        $l4 = $l4 << 16;
+
+        $l3 = $l3 ^ $l4;
+
+        goto label12;
+
+     label11:
+        $l3 = 0L;
+
+     label12:
+        $b2 = virtualinvoke $r1.<java.nio.ByteBuffer: byte get(int)>(9);
+
+        $i0 = staticinvoke <com.google.common.primitives.UnsignedBytes: int toInt(byte)>($b2);
+
+        $l4 = (long) $i0;
+
+        $l4 = $l4 << 8;
+
+        $l3 = $l3 ^ $l4;
+
+        goto label14;
+
+     label13:
+        $l3 = 0L;
+
+     label14:
+        $b2 = virtualinvoke $r1.<java.nio.ByteBuffer: byte get(int)>(8);
+
+        $i0 = staticinvoke <com.google.common.primitives.UnsignedBytes: int toInt(byte)>($b2);
+
+        $l4 = (long) $i0;
+
+        $l3 = $l3 ^ $l4;
+
+        goto label16;
+
+     label15:
+        $l3 = 0L;
+
+     label16:
+        $l4 = virtualinvoke $r1.<java.nio.ByteBuffer: long getLong()>();
+
+        $l5 = $l4 ^ 0L;
+
+        goto label30;
+
+     label17:
+        $b2 = virtualinvoke $r1.<java.nio.ByteBuffer: byte get(int)>(6);
+
+        $i0 = staticinvoke <com.google.common.primitives.UnsignedBytes: int toInt(byte)>($b2);
+
+        $l3 = (long) $i0;
+
+        $l3 = $l3 << 48;
+
+        $l3 = $l3 ^ 0L;
+
+        goto label19;
+
+     label18:
+        $l3 = 0L;
+
+     label19:
+        $b2 = virtualinvoke $r1.<java.nio.ByteBuffer: byte get(int)>(5);
+
+        $i0 = staticinvoke <com.google.common.primitives.UnsignedBytes: int toInt(byte)>($b2);
+
+        $l4 = (long) $i0;
+
+        $l4 = $l4 << 40;
+
+        $l3 = $l3 ^ $l4;
+
+        goto label21;
+
+     label20:
+        $l3 = 0L;
+
+     label21:
+        $b2 = virtualinvoke $r1.<java.nio.ByteBuffer: byte get(int)>(4);
+
+        $i0 = staticinvoke <com.google.common.primitives.UnsignedBytes: int toInt(byte)>($b2);
+
+        $l4 = (long) $i0;
+
+        $l4 = $l4 << 32;
+
+        $l3 = $l3 ^ $l4;
+
+        goto label23;
+
+     label22:
+        $l3 = 0L;
+
+     label23:
+        $b2 = virtualinvoke $r1.<java.nio.ByteBuffer: byte get(int)>(3);
+
+        $i0 = staticinvoke <com.google.common.primitives.UnsignedBytes: int toInt(byte)>($b2);
+
+        $l4 = (long) $i0;
+
+        $l4 = $l4 << 24;
+
+        $l3 = $l3 ^ $l4;
+
+        goto label25;
+
+     label24:
+        $l3 = 0L;
+
+     label25:
+        $b2 = virtualinvoke $r1.<java.nio.ByteBuffer: byte get(int)>(2);
+
+        $i0 = staticinvoke <com.google.common.primitives.UnsignedBytes: int toInt(byte)>($b2);
+
+        $l4 = (long) $i0;
+
+        $l4 = $l4 << 16;
+
+        $l3 = $l3 ^ $l4;
+
+        goto label27;
+
+     label26:
+        $l3 = 0L;
+
+     label27:
+        $b2 = virtualinvoke $r1.<java.nio.ByteBuffer: byte get(int)>(1);
+
+        $i0 = staticinvoke <com.google.common.primitives.UnsignedBytes: int toInt(byte)>($b2);
+
+        $l4 = (long) $i0;
+
+        $l4 = $l4 << 8;
+
+        $l3 = $l3 ^ $l4;
+
+        goto label29;
+
+     label28:
+        $l3 = 0L;
+
+     label29:
+        $b2 = virtualinvoke $r1.<java.nio.ByteBuffer: byte get(int)>(0);
+
+        $i0 = staticinvoke <com.google.common.primitives.UnsignedBytes: int toInt(byte)>($b2);
+
+        $l4 = (long) $i0;
+
+        $l5 = $l4 ^ $l3;
+
+        $l3 = 0L;
+
+     label30:
+        $l4 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1>;
+
+        $l5 = staticinvoke <com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long mixK1(long)>($l5);
+
+        $l4 = $l5 ^ $l4;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h1> = $l4;
+
+        $l4 = r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2>;
+
+        $l3 = staticinvoke <com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long mixK2(long)>($l3);
+
+        $l3 = $l3 ^ $l4;
+
+        r0.<com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long h2> = $l3;
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: int CHUNK_SIZE> = 16;
+
+        <com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long C2> = 5545529020109919103L;
+
+        <com.google.common.hash.Murmur3_128HashFunction$Murmur3_128Hasher: long C1> = -8663945395140668459L;
+
+        return;
+    }
+}

@@ -1,0 +1,326 @@
+public class com.google.android.gms.security.ProviderInstaller extends java.lang.Object
+{
+    public static final java.lang.String PROVIDER_NAME;
+    public static final java.lang.Object lock;
+    public static final com.google.android.gms.common.GoogleApiAvailabilityLight zzjp;
+    public static java.lang.reflect.Method zzjq;
+
+    static void <clinit>()
+    {
+        java.lang.Object $r1;
+        com.google.android.gms.common.GoogleApiAvailabilityLight $r0;
+
+        <com.google.android.gms.security.ProviderInstaller: java.lang.String PROVIDER_NAME> = "GmsCore_OpenSSL";
+
+        $r0 = staticinvoke <com.google.android.gms.common.GoogleApiAvailabilityLight: com.google.android.gms.common.GoogleApiAvailabilityLight getInstance()>();
+
+        <com.google.android.gms.security.ProviderInstaller: com.google.android.gms.common.GoogleApiAvailabilityLight zzjp> = $r0;
+
+        $r1 = new java.lang.Object;
+
+        specialinvoke $r1.<java.lang.Object: void <init>()>();
+
+        <com.google.android.gms.security.ProviderInstaller: java.lang.Object lock> = $r1;
+
+        <com.google.android.gms.security.ProviderInstaller: java.lang.reflect.Method zzjq> = null;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.android.gms.security.ProviderInstaller r0;
+
+        r0 := @this: com.google.android.gms.security.ProviderInstaller;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void installIfNeeded(android.content.Context)
+    {
+        java.lang.Throwable $r10;
+        android.content.Context $r0, $r2, $r3;
+        java.lang.Object[] $r9;
+        int $i0;
+        java.lang.String $r12, $r13;
+        java.lang.reflect.Method $r5;
+        boolean $z0;
+        com.google.android.gms.common.GoogleApiAvailabilityLight $r1;
+        java.lang.Class[] $r8;
+        java.lang.Exception $r11;
+        com.google.android.gms.common.GooglePlayServicesNotAvailableException $r14;
+        java.lang.Object $r4;
+        java.lang.Class $r7;
+        java.lang.ClassLoader $r6;
+
+        $r0 := @parameter0: android.content.Context;
+
+        staticinvoke <com.google.android.gms.common.internal.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r0, "Context must not be null");
+
+        $r1 = <com.google.android.gms.security.ProviderInstaller: com.google.android.gms.common.GoogleApiAvailabilityLight zzjp>;
+
+        virtualinvoke $r1.<com.google.android.gms.common.GoogleApiAvailabilityLight: void verifyGooglePlayServicesIsAvailable(android.content.Context,int)>($r0, 11925000);
+
+        $r2 = staticinvoke <com.google.android.gms.security.ProviderInstaller: android.content.Context zzm(android.content.Context)>($r0);
+
+        $r3 = $r2;
+
+        if $r2 != null goto label01;
+
+        $r3 = staticinvoke <com.google.android.gms.security.ProviderInstaller: android.content.Context zzn(android.content.Context)>($r0);
+
+     label01:
+        if $r3 == null goto label20;
+
+        $r4 = <com.google.android.gms.security.ProviderInstaller: java.lang.Object lock>;
+
+        entermonitor $r4;
+
+     label02:
+        $r5 = <com.google.android.gms.security.ProviderInstaller: java.lang.reflect.Method zzjq>;
+
+        if $r5 != null goto label07;
+
+     label03:
+        $r6 = virtualinvoke $r3.<android.content.Context: java.lang.ClassLoader getClassLoader()>();
+
+        $r7 = virtualinvoke $r6.<java.lang.ClassLoader: java.lang.Class loadClass(java.lang.String)>("com.google.android.gms.common.security.ProviderInstallerImpl");
+
+     label04:
+        $r8 = newarray (java.lang.Class)[1];
+
+     label05:
+        $r8[0] = class "Landroid/content/Context;";
+
+        $r5 = virtualinvoke $r7.<java.lang.Class: java.lang.reflect.Method getMethod(java.lang.String,java.lang.Class[])>("insertProvider", $r8);
+
+     label06:
+        <com.google.android.gms.security.ProviderInstaller: java.lang.reflect.Method zzjq> = $r5;
+
+     label07:
+        $r5 = <com.google.android.gms.security.ProviderInstaller: java.lang.reflect.Method zzjq>;
+
+        $r9 = newarray (java.lang.Object)[1];
+
+     label08:
+        $r9[0] = $r3;
+
+        virtualinvoke $r5.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>(null, $r9);
+
+     label09:
+        exitmonitor $r4;
+
+     label10:
+        return;
+
+     label11:
+        $r10 := @caughtexception;
+
+        goto label18;
+
+     label12:
+        $r11 := @caughtexception;
+
+        $r10 = virtualinvoke $r11.<java.lang.Exception: java.lang.Throwable getCause()>();
+
+        $z0 = staticinvoke <android.util.Log: boolean isLoggable(java.lang.String,int)>("ProviderInstaller", 6);
+
+        if $z0 == 0 goto label17;
+
+        if $r10 != null goto label13;
+
+        $r13 = virtualinvoke $r11.<java.lang.Exception: java.lang.String getMessage()>();
+
+        goto label14;
+
+     label13:
+        $r13 = virtualinvoke $r10.<java.lang.Throwable: java.lang.String getMessage()>();
+
+     label14:
+        $r12 = "Failed to install provider: ";
+
+        $r13 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r13);
+
+        $i0 = virtualinvoke $r13.<java.lang.String: int length()>();
+
+        if $i0 == 0 goto label15;
+
+        $r12 = virtualinvoke $r12.<java.lang.String: java.lang.String concat(java.lang.String)>($r13);
+
+        goto label16;
+
+     label15:
+        $r12 = new java.lang.String;
+
+        specialinvoke $r12.<java.lang.String: void <init>(java.lang.String)>("Failed to install provider: ");
+
+     label16:
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("ProviderInstaller", $r12);
+
+     label17:
+        $r14 = new com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+
+        specialinvoke $r14.<com.google.android.gms.common.GooglePlayServicesNotAvailableException: void <init>(int)>(8);
+
+        throw $r14;
+
+     label18:
+        exitmonitor $r4;
+
+     label19:
+        throw $r10;
+
+     label20:
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("ProviderInstaller", "Failed to get remote context");
+
+        $r14 = new com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+
+        specialinvoke $r14.<com.google.android.gms.common.GooglePlayServicesNotAvailableException: void <init>(int)>(8);
+
+        throw $r14;
+
+        catch java.lang.Exception from label03 to label04 with label12;
+        catch java.lang.Exception from label05 to label06 with label12;
+        catch java.lang.Exception from label08 to label09 with label12;
+        catch java.lang.Throwable from label02 to label09 with label11;
+        catch java.lang.Throwable from label09 to label10 with label11;
+        catch java.lang.Throwable from label11 to label19 with label11;
+    }
+
+    public static void installIfNeededAsync(android.content.Context, com.google.android.gms.security.ProviderInstaller$ProviderInstallListener)
+    {
+        android.content.Context $r1;
+        com.google.android.gms.security.ProviderInstaller$ProviderInstallListener $r0;
+        com.google.android.gms.security.zza $r2;
+        java.lang.Void[] $r3;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r0 := @parameter1: com.google.android.gms.security.ProviderInstaller$ProviderInstallListener;
+
+        staticinvoke <com.google.android.gms.common.internal.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r1, "Context must not be null");
+
+        staticinvoke <com.google.android.gms.common.internal.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r0, "Listener must not be null");
+
+        staticinvoke <com.google.android.gms.common.internal.Preconditions: void checkMainThread(java.lang.String)>("Must be called on the UI thread");
+
+        $r2 = new com.google.android.gms.security.zza;
+
+        specialinvoke $r2.<com.google.android.gms.security.zza: void <init>(android.content.Context,com.google.android.gms.security.ProviderInstaller$ProviderInstallListener)>($r1, $r0);
+
+        $r3 = newarray (java.lang.Void)[0];
+
+        virtualinvoke $r2.<android.os.AsyncTask: android.os.AsyncTask execute(java.lang.Object[])>($r3);
+
+        return;
+    }
+
+    public static com.google.android.gms.common.GoogleApiAvailabilityLight zzal()
+    {
+        com.google.android.gms.common.GoogleApiAvailabilityLight r0;
+
+        r0 = <com.google.android.gms.security.ProviderInstaller: com.google.android.gms.common.GoogleApiAvailabilityLight zzjp>;
+
+        return r0;
+    }
+
+    public static android.content.Context zzm(android.content.Context)
+    {
+        android.content.Context $r0;
+        int $i0;
+        com.google.android.gms.dynamite.DynamiteModule$VersionPolicy $r1;
+        com.google.android.gms.dynamite.DynamiteModule$LoadingException $r3;
+        java.lang.String $r4, $r5;
+        com.google.android.gms.dynamite.DynamiteModule $r2;
+
+        $r0 := @parameter0: android.content.Context;
+
+        $r1 = <com.google.android.gms.dynamite.DynamiteModule: com.google.android.gms.dynamite.DynamiteModule$VersionPolicy PREFER_HIGHEST_OR_LOCAL_VERSION_NO_FORCE_STAGING>;
+
+     label1:
+        $r2 = staticinvoke <com.google.android.gms.dynamite.DynamiteModule: com.google.android.gms.dynamite.DynamiteModule load(android.content.Context,com.google.android.gms.dynamite.DynamiteModule$VersionPolicy,java.lang.String)>($r0, $r1, "providerinstaller");
+
+        $r0 = virtualinvoke $r2.<com.google.android.gms.dynamite.DynamiteModule: android.content.Context getModuleContext()>();
+
+     label2:
+        return $r0;
+
+     label3:
+        $r3 := @caughtexception;
+
+        $r4 = "Failed to load providerinstaller module: ";
+
+        $r5 = virtualinvoke $r3.<java.lang.Exception: java.lang.String getMessage()>();
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r5);
+
+        $i0 = virtualinvoke $r5.<java.lang.String: int length()>();
+
+        if $i0 == 0 goto label4;
+
+        $r4 = virtualinvoke $r4.<java.lang.String: java.lang.String concat(java.lang.String)>($r5);
+
+        goto label5;
+
+     label4:
+        $r4 = new java.lang.String;
+
+        specialinvoke $r4.<java.lang.String: void <init>(java.lang.String)>("Failed to load providerinstaller module: ");
+
+     label5:
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ProviderInstaller", $r4);
+
+        return null;
+
+        catch com.google.android.gms.dynamite.DynamiteModule$LoadingException from label1 to label2 with label3;
+    }
+
+    public static android.content.Context zzn(android.content.Context)
+    {
+        android.content.Context $r1, $r2;
+        android.content.res.Resources$NotFoundException $r0;
+        int $i0;
+        java.lang.String $r3, $r4;
+
+        $r1 := @parameter0: android.content.Context;
+
+     label1:
+        $r2 = staticinvoke <com.google.android.gms.common.GooglePlayServicesUtilLight: android.content.Context getRemoteContext(android.content.Context)>($r1);
+
+     label2:
+        return $r2;
+
+     label3:
+        $r0 := @caughtexception;
+
+        $r3 = "Failed to load GMS Core context for providerinstaller: ";
+
+        $r4 = virtualinvoke $r0.<android.content.res.Resources$NotFoundException: java.lang.String getMessage()>();
+
+        $r4 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r4);
+
+        $i0 = virtualinvoke $r4.<java.lang.String: int length()>();
+
+        if $i0 == 0 goto label4;
+
+        $r3 = virtualinvoke $r3.<java.lang.String: java.lang.String concat(java.lang.String)>($r4);
+
+        goto label5;
+
+     label4:
+        $r3 = new java.lang.String;
+
+        specialinvoke $r3.<java.lang.String: void <init>(java.lang.String)>("Failed to load GMS Core context for providerinstaller: ");
+
+     label5:
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ProviderInstaller", $r3);
+
+        staticinvoke <com.google.android.gms.common.util.CrashUtils: boolean addDynamiteErrorToDropBox(android.content.Context,java.lang.Throwable)>($r1, $r0);
+
+        return null;
+
+        catch android.content.res.Resources$NotFoundException from label1 to label2 with label3;
+    }
+}

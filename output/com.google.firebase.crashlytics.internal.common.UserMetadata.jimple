@@ -1,0 +1,163 @@
+public class com.google.firebase.crashlytics.internal.common.UserMetadata extends java.lang.Object
+{
+    public static final int MAX_ATTRIBUTES;
+    public static final int MAX_ATTRIBUTE_SIZE;
+    public final java.util.concurrent.ConcurrentHashMap attributes;
+    public java.lang.String userId;
+
+    public void <init>()
+    {
+        java.util.concurrent.ConcurrentHashMap $r1;
+        com.google.firebase.crashlytics.internal.common.UserMetadata r0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.UserMetadata;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.crashlytics.internal.common.UserMetadata: java.lang.String userId> = null;
+
+        $r1 = new java.util.concurrent.ConcurrentHashMap;
+
+        specialinvoke $r1.<java.util.concurrent.ConcurrentHashMap: void <init>()>();
+
+        r0.<com.google.firebase.crashlytics.internal.common.UserMetadata: java.util.concurrent.ConcurrentHashMap attributes> = $r1;
+
+        return;
+    }
+
+    public static java.lang.String sanitizeAttribute(java.lang.String)
+    {
+        int $i0;
+        java.lang.String $r0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        if $r0 == null goto label1;
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String trim()>();
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if $i0 <= 1024 goto label1;
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String substring(int,int)>(0, 1024);
+
+     label1:
+        return $r0;
+    }
+
+    public java.util.Map getCustomKeys()
+    {
+        java.util.concurrent.ConcurrentHashMap $r2;
+        com.google.firebase.crashlytics.internal.common.UserMetadata r0;
+        java.util.Map $r1;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.UserMetadata;
+
+        $r2 = r0.<com.google.firebase.crashlytics.internal.common.UserMetadata: java.util.concurrent.ConcurrentHashMap attributes>;
+
+        $r1 = staticinvoke <java.util.Collections: java.util.Map unmodifiableMap(java.util.Map)>($r2);
+
+        return $r1;
+    }
+
+    public java.lang.String getUserId()
+    {
+        java.lang.String r1;
+        com.google.firebase.crashlytics.internal.common.UserMetadata r0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.UserMetadata;
+
+        r1 = r0.<com.google.firebase.crashlytics.internal.common.UserMetadata: java.lang.String userId>;
+
+        return r1;
+    }
+
+    public void setCustomKey(java.lang.String, java.lang.String)
+    {
+        java.util.concurrent.ConcurrentHashMap $r3;
+        java.lang.IllegalArgumentException $r5;
+        com.google.firebase.crashlytics.internal.Logger $r4;
+        int $i0;
+        java.lang.String $r1, $r2;
+        com.google.firebase.crashlytics.internal.common.UserMetadata r0;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.UserMetadata;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        if $r1 == null goto label4;
+
+        $r1 = staticinvoke <com.google.firebase.crashlytics.internal.common.UserMetadata: java.lang.String sanitizeAttribute(java.lang.String)>($r1);
+
+        $r3 = r0.<com.google.firebase.crashlytics.internal.common.UserMetadata: java.util.concurrent.ConcurrentHashMap attributes>;
+
+        $i0 = virtualinvoke $r3.<java.util.concurrent.ConcurrentHashMap: int size()>();
+
+        if $i0 < 64 goto label1;
+
+        $r3 = r0.<com.google.firebase.crashlytics.internal.common.UserMetadata: java.util.concurrent.ConcurrentHashMap attributes>;
+
+        $z0 = virtualinvoke $r3.<java.util.concurrent.ConcurrentHashMap: boolean containsKey(java.lang.Object)>($r1);
+
+        if $z0 != 0 goto label1;
+
+        $r4 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        virtualinvoke $r4.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>("Exceeded maximum number of custom attributes (64)");
+
+        return;
+
+     label1:
+        if $r2 != null goto label2;
+
+        $r2 = "";
+
+        goto label3;
+
+     label2:
+        $r2 = staticinvoke <com.google.firebase.crashlytics.internal.common.UserMetadata: java.lang.String sanitizeAttribute(java.lang.String)>($r2);
+
+     label3:
+        $r3 = r0.<com.google.firebase.crashlytics.internal.common.UserMetadata: java.util.concurrent.ConcurrentHashMap attributes>;
+
+        virtualinvoke $r3.<java.util.concurrent.ConcurrentHashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r1, $r2);
+
+        return;
+
+     label4:
+        $r5 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r5.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Custom attribute key must not be null.");
+
+        throw $r5;
+    }
+
+    public void setUserId(java.lang.String)
+    {
+        java.lang.String $r1;
+        com.google.firebase.crashlytics.internal.common.UserMetadata r0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.UserMetadata;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r1 = staticinvoke <com.google.firebase.crashlytics.internal.common.UserMetadata: java.lang.String sanitizeAttribute(java.lang.String)>($r1);
+
+        r0.<com.google.firebase.crashlytics.internal.common.UserMetadata: java.lang.String userId> = $r1;
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.firebase.crashlytics.internal.common.UserMetadata: int MAX_ATTRIBUTE_SIZE> = 1024;
+
+        <com.google.firebase.crashlytics.internal.common.UserMetadata: int MAX_ATTRIBUTES> = 64;
+
+        return;
+    }
+}

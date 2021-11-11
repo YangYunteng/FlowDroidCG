@@ -1,0 +1,122 @@
+public class org.apache.james.mime4j.storage.CipherStorageProvider extends org.apache.james.mime4j.storage.AbstractStorageProvider
+{
+    public final java.lang.String algorithm;
+    public final org.apache.james.mime4j.storage.StorageProvider backend;
+    public final javax.crypto.KeyGenerator keygen;
+
+    public void <init>(org.apache.james.mime4j.storage.StorageProvider)
+    {
+        org.apache.james.mime4j.storage.StorageProvider $r1;
+        org.apache.james.mime4j.storage.CipherStorageProvider r0;
+
+        r0 := @this: org.apache.james.mime4j.storage.CipherStorageProvider;
+
+        $r1 := @parameter0: org.apache.james.mime4j.storage.StorageProvider;
+
+        specialinvoke r0.<org.apache.james.mime4j.storage.CipherStorageProvider: void <init>(org.apache.james.mime4j.storage.StorageProvider,java.lang.String)>($r1, "Blowfish");
+
+        return;
+    }
+
+    public void <init>(org.apache.james.mime4j.storage.StorageProvider, java.lang.String)
+    {
+        org.apache.james.mime4j.storage.CipherStorageProvider r0;
+        java.security.NoSuchAlgorithmException $r4;
+        org.apache.james.mime4j.storage.StorageProvider $r2;
+        java.lang.String $r3;
+        java.lang.IllegalArgumentException $r5;
+        javax.crypto.KeyGenerator $r1;
+
+        r0 := @this: org.apache.james.mime4j.storage.CipherStorageProvider;
+
+        $r2 := @parameter0: org.apache.james.mime4j.storage.StorageProvider;
+
+        $r3 := @parameter1: java.lang.String;
+
+        specialinvoke r0.<org.apache.james.mime4j.storage.AbstractStorageProvider: void <init>()>();
+
+        if $r2 == null goto label4;
+
+        r0.<org.apache.james.mime4j.storage.CipherStorageProvider: org.apache.james.mime4j.storage.StorageProvider backend> = $r2;
+
+        r0.<org.apache.james.mime4j.storage.CipherStorageProvider: java.lang.String algorithm> = $r3;
+
+     label1:
+        $r1 = staticinvoke <javax.crypto.KeyGenerator: javax.crypto.KeyGenerator getInstance(java.lang.String)>($r3);
+
+     label2:
+        r0.<org.apache.james.mime4j.storage.CipherStorageProvider: javax.crypto.KeyGenerator keygen> = $r1;
+
+        return;
+
+     label3:
+        $r4 := @caughtexception;
+
+        $r5 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r5.<java.lang.IllegalArgumentException: void <init>(java.lang.Throwable)>($r4);
+
+        throw $r5;
+
+     label4:
+        $r5 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r5.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r5;
+
+        catch java.security.NoSuchAlgorithmException from label1 to label2 with label3;
+    }
+
+    private javax.crypto.spec.SecretKeySpec getSecretKeySpec()
+    {
+        byte[] $r5;
+        org.apache.james.mime4j.storage.CipherStorageProvider r0;
+        javax.crypto.spec.SecretKeySpec $r1;
+        java.lang.String $r2;
+        javax.crypto.SecretKey $r4;
+        javax.crypto.KeyGenerator $r3;
+
+        r0 := @this: org.apache.james.mime4j.storage.CipherStorageProvider;
+
+        $r3 = r0.<org.apache.james.mime4j.storage.CipherStorageProvider: javax.crypto.KeyGenerator keygen>;
+
+        $r4 = virtualinvoke $r3.<javax.crypto.KeyGenerator: javax.crypto.SecretKey generateKey()>();
+
+        $r5 = interfaceinvoke $r4.<javax.crypto.SecretKey: byte[] getEncoded()>();
+
+        $r1 = new javax.crypto.spec.SecretKeySpec;
+
+        $r2 = r0.<org.apache.james.mime4j.storage.CipherStorageProvider: java.lang.String algorithm>;
+
+        specialinvoke $r1.<javax.crypto.spec.SecretKeySpec: void <init>(byte[],java.lang.String)>($r5, $r2);
+
+        return $r1;
+    }
+
+    public org.apache.james.mime4j.storage.StorageOutputStream createStorageOutputStream()
+    {
+        org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorageOutputStream $r1;
+        org.apache.james.mime4j.storage.CipherStorageProvider r0;
+        javax.crypto.spec.SecretKeySpec $r3;
+        org.apache.james.mime4j.storage.StorageProvider $r4;
+        org.apache.james.mime4j.storage.StorageOutputStream $r5;
+        java.lang.String $r2;
+
+        r0 := @this: org.apache.james.mime4j.storage.CipherStorageProvider;
+
+        $r3 = specialinvoke r0.<org.apache.james.mime4j.storage.CipherStorageProvider: javax.crypto.spec.SecretKeySpec getSecretKeySpec()>();
+
+        $r1 = new org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorageOutputStream;
+
+        $r4 = r0.<org.apache.james.mime4j.storage.CipherStorageProvider: org.apache.james.mime4j.storage.StorageProvider backend>;
+
+        $r5 = interfaceinvoke $r4.<org.apache.james.mime4j.storage.StorageProvider: org.apache.james.mime4j.storage.StorageOutputStream createStorageOutputStream()>();
+
+        $r2 = r0.<org.apache.james.mime4j.storage.CipherStorageProvider: java.lang.String algorithm>;
+
+        specialinvoke $r1.<org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorageOutputStream: void <init>(org.apache.james.mime4j.storage.StorageOutputStream,java.lang.String,javax.crypto.spec.SecretKeySpec)>($r5, $r2, $r3);
+
+        return $r1;
+    }
+}

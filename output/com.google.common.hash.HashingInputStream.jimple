@@ -1,0 +1,140 @@
+public final class com.google.common.hash.HashingInputStream extends java.io.FilterInputStream
+{
+    public final com.google.common.hash.Hasher hasher;
+
+    public void <init>(com.google.common.hash.HashFunction, java.io.InputStream)
+    {
+        com.google.common.hash.HashingInputStream r0;
+        com.google.common.hash.Hasher $r1;
+        com.google.common.hash.HashFunction $r2;
+        java.io.InputStream $r3;
+
+        r0 := @this: com.google.common.hash.HashingInputStream;
+
+        $r2 := @parameter0: com.google.common.hash.HashFunction;
+
+        $r3 := @parameter1: java.io.InputStream;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r3);
+
+        specialinvoke r0.<java.io.FilterInputStream: void <init>(java.io.InputStream)>($r3);
+
+        $r1 = interfaceinvoke $r2.<com.google.common.hash.HashFunction: com.google.common.hash.Hasher newHasher()>();
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        r0.<com.google.common.hash.HashingInputStream: com.google.common.hash.Hasher hasher> = $r1;
+
+        return;
+    }
+
+    public com.google.common.hash.HashCode hash()
+    {
+        com.google.common.hash.HashingInputStream r0;
+        com.google.common.hash.Hasher $r2;
+        com.google.common.hash.HashCode $r1;
+
+        r0 := @this: com.google.common.hash.HashingInputStream;
+
+        $r2 = r0.<com.google.common.hash.HashingInputStream: com.google.common.hash.Hasher hasher>;
+
+        $r1 = interfaceinvoke $r2.<com.google.common.hash.Hasher: com.google.common.hash.HashCode hash()>();
+
+        return $r1;
+    }
+
+    public void mark(int)
+    {
+        int $i0;
+        com.google.common.hash.HashingInputStream r0;
+
+        r0 := @this: com.google.common.hash.HashingInputStream;
+
+        $i0 := @parameter0: int;
+
+        return;
+    }
+
+    public boolean markSupported()
+    {
+        com.google.common.hash.HashingInputStream r0;
+
+        r0 := @this: com.google.common.hash.HashingInputStream;
+
+        return 0;
+    }
+
+    public int read()
+    {
+        byte $b0;
+        int $i1, $i2;
+        com.google.common.hash.HashingInputStream r0;
+        com.google.common.hash.Hasher $r2;
+        java.io.InputStream $r1;
+
+        r0 := @this: com.google.common.hash.HashingInputStream;
+
+        $r1 = r0.<java.io.FilterInputStream: java.io.InputStream in>;
+
+        $i1 = virtualinvoke $r1.<java.io.InputStream: int read()>();
+
+        $i2 = -1;
+
+        if $i1 == $i2 goto label1;
+
+        $r2 = r0.<com.google.common.hash.HashingInputStream: com.google.common.hash.Hasher hasher>;
+
+        $b0 = (byte) $i1;
+
+        interfaceinvoke $r2.<com.google.common.hash.Hasher: com.google.common.hash.Hasher putByte(byte)>($b0);
+
+     label1:
+        return $i1;
+    }
+
+    public int read(byte[], int, int)
+    {
+        byte[] $r1;
+        int $i0, $i1, $i2;
+        com.google.common.hash.HashingInputStream r0;
+        com.google.common.hash.Hasher $r3;
+        java.io.InputStream $r2;
+
+        r0 := @this: com.google.common.hash.HashingInputStream;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 = r0.<java.io.FilterInputStream: java.io.InputStream in>;
+
+        $i1 = virtualinvoke $r2.<java.io.InputStream: int read(byte[],int,int)>($r1, $i0, $i1);
+
+        $i2 = -1;
+
+        if $i1 == $i2 goto label1;
+
+        $r3 = r0.<com.google.common.hash.HashingInputStream: com.google.common.hash.Hasher hasher>;
+
+        interfaceinvoke $r3.<com.google.common.hash.Hasher: com.google.common.hash.Hasher putBytes(byte[],int,int)>($r1, $i0, $i1);
+
+     label1:
+        return $i1;
+    }
+
+    public void reset()
+    {
+        com.google.common.hash.HashingInputStream r0;
+        java.io.IOException $r1;
+
+        r0 := @this: com.google.common.hash.HashingInputStream;
+
+        $r1 = new java.io.IOException;
+
+        specialinvoke $r1.<java.io.IOException: void <init>(java.lang.String)>("reset not supported");
+
+        throw $r1;
+    }
+}

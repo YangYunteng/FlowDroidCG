@@ -1,0 +1,135 @@
+public abstract class project.android.imageprocessing.filter.TwoPassMultiPixelFilter extends project.android.imageprocessing.filter.TwoPassFilter
+{
+    public static final java.lang.String UNIFORM_TEXELHEIGHT;
+    public static final java.lang.String UNIFORM_TEXELWIDTH;
+    public float texelHeight;
+    public int texelHeightHandle;
+    public float texelWidth;
+    public int texelWidthHandle;
+
+    public void <init>()
+    {
+        project.android.imageprocessing.filter.TwoPassMultiPixelFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.TwoPassMultiPixelFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.TwoPassFilter: void <init>()>();
+
+        return;
+    }
+
+    public void handleSizeChange()
+    {
+        int $i0;
+        float $f0;
+        project.android.imageprocessing.filter.TwoPassMultiPixelFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.TwoPassMultiPixelFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.input.GLTextureOutputRenderer: void handleSizeChange()>();
+
+        $i0 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getWidth()>();
+
+        $f0 = (float) $i0;
+
+        $f0 = 1.0F / $f0;
+
+        r0.<project.android.imageprocessing.filter.TwoPassMultiPixelFilter: float texelWidth> = $f0;
+
+        $i0 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getHeight()>();
+
+        $f0 = (float) $i0;
+
+        $f0 = 1.0F / $f0;
+
+        r0.<project.android.imageprocessing.filter.TwoPassMultiPixelFilter: float texelHeight> = $f0;
+
+        return;
+    }
+
+    public void initShaderHandles()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.TwoPassMultiPixelFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.TwoPassMultiPixelFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_TexelWidth");
+
+        r0.<project.android.imageprocessing.filter.TwoPassMultiPixelFilter: int texelWidthHandle> = $i0;
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_TexelHeight");
+
+        r0.<project.android.imageprocessing.filter.TwoPassMultiPixelFilter: int texelHeightHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        int $i0;
+        float $f0;
+        project.android.imageprocessing.filter.TwoPassMultiPixelFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.TwoPassMultiPixelFilter;
+
+        $i0 = virtualinvoke r0.<project.android.imageprocessing.filter.TwoPassFilter: int getCurrentPass()>();
+
+        if $i0 != 1 goto label1;
+
+        $i0 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getWidth()>();
+
+        $f0 = (float) $i0;
+
+        $f0 = 1.0F / $f0;
+
+        r0.<project.android.imageprocessing.filter.TwoPassMultiPixelFilter: float texelWidth> = $f0;
+
+        r0.<project.android.imageprocessing.filter.TwoPassMultiPixelFilter: float texelHeight> = 0.0F;
+
+        goto label2;
+
+     label1:
+        r0.<project.android.imageprocessing.filter.TwoPassMultiPixelFilter: float texelWidth> = 0.0F;
+
+        $i0 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getHeight()>();
+
+        $f0 = (float) $i0;
+
+        $f0 = 1.0F / $f0;
+
+        r0.<project.android.imageprocessing.filter.TwoPassMultiPixelFilter: float texelHeight> = $f0;
+
+     label2:
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.TwoPassMultiPixelFilter: int texelWidthHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.TwoPassMultiPixelFilter: float texelWidth>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        $i0 = r0.<project.android.imageprocessing.filter.TwoPassMultiPixelFilter: int texelHeightHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.TwoPassMultiPixelFilter: float texelHeight>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.TwoPassMultiPixelFilter: java.lang.String UNIFORM_TEXELWIDTH> = "u_TexelWidth";
+
+        <project.android.imageprocessing.filter.TwoPassMultiPixelFilter: java.lang.String UNIFORM_TEXELHEIGHT> = "u_TexelHeight";
+
+        return;
+    }
+}

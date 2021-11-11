@@ -1,0 +1,1352 @@
+public abstract class com.google.common.util.concurrent.AbstractService extends java.lang.Object implements com.google.common.util.concurrent.Service
+{
+    public static final com.google.common.util.concurrent.ListenerCallQueue$Event RUNNING_EVENT;
+    public static final com.google.common.util.concurrent.ListenerCallQueue$Event STARTING_EVENT;
+    public static final com.google.common.util.concurrent.ListenerCallQueue$Event STOPPING_FROM_RUNNING_EVENT;
+    public static final com.google.common.util.concurrent.ListenerCallQueue$Event STOPPING_FROM_STARTING_EVENT;
+    public static final com.google.common.util.concurrent.ListenerCallQueue$Event TERMINATED_FROM_NEW_EVENT;
+    public static final com.google.common.util.concurrent.ListenerCallQueue$Event TERMINATED_FROM_RUNNING_EVENT;
+    public static final com.google.common.util.concurrent.ListenerCallQueue$Event TERMINATED_FROM_STOPPING_EVENT;
+    public final com.google.common.util.concurrent.Monitor$Guard hasReachedRunning;
+    public final com.google.common.util.concurrent.Monitor$Guard isStartable;
+    public final com.google.common.util.concurrent.Monitor$Guard isStoppable;
+    public final com.google.common.util.concurrent.Monitor$Guard isStopped;
+    public final com.google.common.util.concurrent.ListenerCallQueue listeners;
+    public final com.google.common.util.concurrent.Monitor monitor;
+    public volatile com.google.common.util.concurrent.AbstractService$StateSnapshot snapshot;
+
+    static void <clinit>()
+    {
+        com.google.common.util.concurrent.AbstractService$2 $r1;
+        com.google.common.util.concurrent.AbstractService$1 $r0;
+        com.google.common.util.concurrent.ListenerCallQueue$Event $r3;
+        com.google.common.util.concurrent.Service$State $r2;
+
+        $r0 = new com.google.common.util.concurrent.AbstractService$1;
+
+        specialinvoke $r0.<com.google.common.util.concurrent.AbstractService$1: void <init>()>();
+
+        <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event STARTING_EVENT> = $r0;
+
+        $r1 = new com.google.common.util.concurrent.AbstractService$2;
+
+        specialinvoke $r1.<com.google.common.util.concurrent.AbstractService$2: void <init>()>();
+
+        <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event RUNNING_EVENT> = $r1;
+
+        $r2 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State STARTING>;
+
+        $r3 = staticinvoke <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event stoppingEvent(com.google.common.util.concurrent.Service$State)>($r2);
+
+        <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event STOPPING_FROM_STARTING_EVENT> = $r3;
+
+        $r2 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State RUNNING>;
+
+        $r3 = staticinvoke <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event stoppingEvent(com.google.common.util.concurrent.Service$State)>($r2);
+
+        <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event STOPPING_FROM_RUNNING_EVENT> = $r3;
+
+        $r2 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State NEW>;
+
+        $r3 = staticinvoke <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event terminatedEvent(com.google.common.util.concurrent.Service$State)>($r2);
+
+        <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event TERMINATED_FROM_NEW_EVENT> = $r3;
+
+        $r2 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State RUNNING>;
+
+        $r3 = staticinvoke <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event terminatedEvent(com.google.common.util.concurrent.Service$State)>($r2);
+
+        <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event TERMINATED_FROM_RUNNING_EVENT> = $r3;
+
+        $r2 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State STOPPING>;
+
+        $r3 = staticinvoke <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event terminatedEvent(com.google.common.util.concurrent.Service$State)>($r2);
+
+        <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event TERMINATED_FROM_STOPPING_EVENT> = $r3;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.common.util.concurrent.AbstractService$IsStartableGuard $r3;
+        com.google.common.util.concurrent.AbstractService$StateSnapshot $r8;
+        com.google.common.util.concurrent.AbstractService$IsStoppableGuard $r4;
+        com.google.common.util.concurrent.AbstractService$IsStoppedGuard $r6;
+        com.google.common.util.concurrent.Service$State $r1;
+        com.google.common.util.concurrent.AbstractService$HasReachedRunningGuard $r5;
+        com.google.common.util.concurrent.ListenerCallQueue $r7;
+        com.google.common.util.concurrent.AbstractService r0;
+        com.google.common.util.concurrent.Monitor $r2;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r2 = new com.google.common.util.concurrent.Monitor;
+
+        specialinvoke $r2.<com.google.common.util.concurrent.Monitor: void <init>()>();
+
+        r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor> = $r2;
+
+        $r3 = new com.google.common.util.concurrent.AbstractService$IsStartableGuard;
+
+        specialinvoke $r3.<com.google.common.util.concurrent.AbstractService$IsStartableGuard: void <init>(com.google.common.util.concurrent.AbstractService)>(r0);
+
+        r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor$Guard isStartable> = $r3;
+
+        $r4 = new com.google.common.util.concurrent.AbstractService$IsStoppableGuard;
+
+        specialinvoke $r4.<com.google.common.util.concurrent.AbstractService$IsStoppableGuard: void <init>(com.google.common.util.concurrent.AbstractService)>(r0);
+
+        r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor$Guard isStoppable> = $r4;
+
+        $r5 = new com.google.common.util.concurrent.AbstractService$HasReachedRunningGuard;
+
+        specialinvoke $r5.<com.google.common.util.concurrent.AbstractService$HasReachedRunningGuard: void <init>(com.google.common.util.concurrent.AbstractService)>(r0);
+
+        r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor$Guard hasReachedRunning> = $r5;
+
+        $r6 = new com.google.common.util.concurrent.AbstractService$IsStoppedGuard;
+
+        specialinvoke $r6.<com.google.common.util.concurrent.AbstractService$IsStoppedGuard: void <init>(com.google.common.util.concurrent.AbstractService)>(r0);
+
+        r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor$Guard isStopped> = $r6;
+
+        $r7 = new com.google.common.util.concurrent.ListenerCallQueue;
+
+        specialinvoke $r7.<com.google.common.util.concurrent.ListenerCallQueue: void <init>()>();
+
+        r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue listeners> = $r7;
+
+        $r8 = new com.google.common.util.concurrent.AbstractService$StateSnapshot;
+
+        $r1 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State NEW>;
+
+        specialinvoke $r8.<com.google.common.util.concurrent.AbstractService$StateSnapshot: void <init>(com.google.common.util.concurrent.Service$State)>($r1);
+
+        r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.AbstractService$StateSnapshot snapshot> = $r8;
+
+        return;
+    }
+
+    public static com.google.common.util.concurrent.Monitor access$000(com.google.common.util.concurrent.AbstractService)
+    {
+        com.google.common.util.concurrent.AbstractService $r0;
+        com.google.common.util.concurrent.Monitor r1;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.AbstractService;
+
+        r1 = $r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        return r1;
+    }
+
+    private void checkCurrentState(com.google.common.util.concurrent.Service$State)
+    {
+        java.lang.Throwable $r7;
+        java.lang.IllegalStateException $r5;
+        com.google.common.util.concurrent.Service$State $r2, $r3, $r4;
+        com.google.common.util.concurrent.AbstractService r0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r6;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r2 := @parameter0: com.google.common.util.concurrent.Service$State;
+
+        $r3 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Service$State state()>();
+
+        if $r3 == $r2 goto label2;
+
+        $r4 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State FAILED>;
+
+        if $r3 != $r4 goto label1;
+
+        $r5 = new java.lang.IllegalStateException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected the service ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(r0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" to be ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", but the service has FAILED");
+
+        $r6 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r7 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractService: java.lang.Throwable failureCause()>();
+
+        specialinvoke $r5.<java.lang.IllegalStateException: void <init>(java.lang.String,java.lang.Throwable)>($r6, $r7);
+
+        throw $r5;
+
+     label1:
+        $r5 = new java.lang.IllegalStateException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected the service ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(r0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" to be ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", but was ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        $r6 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r6);
+
+        throw $r5;
+
+     label2:
+        return;
+    }
+
+    private void dispatchListenerEvents()
+    {
+        com.google.common.util.concurrent.ListenerCallQueue $r2;
+        com.google.common.util.concurrent.AbstractService r0;
+        com.google.common.util.concurrent.Monitor $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: boolean isOccupiedByCurrentThread()>();
+
+        if $z0 != 0 goto label1;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue listeners>;
+
+        virtualinvoke $r2.<com.google.common.util.concurrent.ListenerCallQueue: void dispatch()>();
+
+     label1:
+        return;
+    }
+
+    private void enqueueFailedEvent(com.google.common.util.concurrent.Service$State, java.lang.Throwable)
+    {
+        java.lang.Throwable $r2;
+        com.google.common.util.concurrent.Service$State $r1;
+        com.google.common.util.concurrent.AbstractService$5 $r4;
+        com.google.common.util.concurrent.ListenerCallQueue $r3;
+        com.google.common.util.concurrent.AbstractService r0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Service$State;
+
+        $r2 := @parameter1: java.lang.Throwable;
+
+        $r3 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue listeners>;
+
+        $r4 = new com.google.common.util.concurrent.AbstractService$5;
+
+        specialinvoke $r4.<com.google.common.util.concurrent.AbstractService$5: void <init>(com.google.common.util.concurrent.AbstractService,com.google.common.util.concurrent.Service$State,java.lang.Throwable)>(r0, $r1, $r2);
+
+        virtualinvoke $r3.<com.google.common.util.concurrent.ListenerCallQueue: void enqueue(com.google.common.util.concurrent.ListenerCallQueue$Event)>($r4);
+
+        return;
+    }
+
+    private void enqueueRunningEvent()
+    {
+        com.google.common.util.concurrent.AbstractService r0;
+        com.google.common.util.concurrent.ListenerCallQueue$Event $r2;
+        com.google.common.util.concurrent.ListenerCallQueue $r1;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue listeners>;
+
+        $r2 = <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event RUNNING_EVENT>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.ListenerCallQueue: void enqueue(com.google.common.util.concurrent.ListenerCallQueue$Event)>($r2);
+
+        return;
+    }
+
+    private void enqueueStartingEvent()
+    {
+        com.google.common.util.concurrent.AbstractService r0;
+        com.google.common.util.concurrent.ListenerCallQueue$Event $r2;
+        com.google.common.util.concurrent.ListenerCallQueue $r1;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue listeners>;
+
+        $r2 = <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event STARTING_EVENT>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.ListenerCallQueue: void enqueue(com.google.common.util.concurrent.ListenerCallQueue$Event)>($r2);
+
+        return;
+    }
+
+    private void enqueueStoppingEvent(com.google.common.util.concurrent.Service$State)
+    {
+        com.google.common.util.concurrent.ListenerCallQueue$Event $r4;
+        com.google.common.util.concurrent.Service$State $r1, $r2;
+        com.google.common.util.concurrent.ListenerCallQueue $r3;
+        com.google.common.util.concurrent.AbstractService r0;
+        java.lang.AssertionError $r5;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Service$State;
+
+        $r2 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State STARTING>;
+
+        if $r1 != $r2 goto label1;
+
+        $r3 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue listeners>;
+
+        $r4 = <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event STOPPING_FROM_STARTING_EVENT>;
+
+        virtualinvoke $r3.<com.google.common.util.concurrent.ListenerCallQueue: void enqueue(com.google.common.util.concurrent.ListenerCallQueue$Event)>($r4);
+
+        return;
+
+     label1:
+        $r2 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State RUNNING>;
+
+        if $r1 != $r2 goto label2;
+
+        $r3 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue listeners>;
+
+        $r4 = <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event STOPPING_FROM_RUNNING_EVENT>;
+
+        virtualinvoke $r3.<com.google.common.util.concurrent.ListenerCallQueue: void enqueue(com.google.common.util.concurrent.ListenerCallQueue$Event)>($r4);
+
+        return;
+
+     label2:
+        $r5 = new java.lang.AssertionError;
+
+        specialinvoke $r5.<java.lang.AssertionError: void <init>()>();
+
+        throw $r5;
+    }
+
+    private void enqueueTerminatedEvent(com.google.common.util.concurrent.Service$State)
+    {
+        com.google.common.util.concurrent.ListenerCallQueue$Event $r4;
+        com.google.common.util.concurrent.Service$State $r1;
+        int[] $r2;
+        com.google.common.util.concurrent.ListenerCallQueue $r3;
+        com.google.common.util.concurrent.AbstractService r0;
+        int $i0;
+        java.lang.AssertionError $r5;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Service$State;
+
+        $r2 = <com.google.common.util.concurrent.AbstractService$6: int[] $SwitchMap$com$google$common$util$concurrent$Service$State>;
+
+        $i0 = virtualinvoke $r1.<java.lang.Enum: int ordinal()>();
+
+        $i0 = $r2[$i0];
+
+        if $i0 == 1 goto label3;
+
+        if $i0 == 3 goto label2;
+
+        if $i0 != 4 goto label1;
+
+        $r3 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue listeners>;
+
+        $r4 = <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event TERMINATED_FROM_STOPPING_EVENT>;
+
+        virtualinvoke $r3.<com.google.common.util.concurrent.ListenerCallQueue: void enqueue(com.google.common.util.concurrent.ListenerCallQueue$Event)>($r4);
+
+        return;
+
+     label1:
+        $r5 = new java.lang.AssertionError;
+
+        specialinvoke $r5.<java.lang.AssertionError: void <init>()>();
+
+        throw $r5;
+
+     label2:
+        $r3 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue listeners>;
+
+        $r4 = <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event TERMINATED_FROM_RUNNING_EVENT>;
+
+        virtualinvoke $r3.<com.google.common.util.concurrent.ListenerCallQueue: void enqueue(com.google.common.util.concurrent.ListenerCallQueue$Event)>($r4);
+
+        return;
+
+     label3:
+        $r3 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue listeners>;
+
+        $r4 = <com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue$Event TERMINATED_FROM_NEW_EVENT>;
+
+        virtualinvoke $r3.<com.google.common.util.concurrent.ListenerCallQueue: void enqueue(com.google.common.util.concurrent.ListenerCallQueue$Event)>($r4);
+
+        return;
+    }
+
+    public static com.google.common.util.concurrent.ListenerCallQueue$Event stoppingEvent(com.google.common.util.concurrent.Service$State)
+    {
+        com.google.common.util.concurrent.Service$State $r0;
+        com.google.common.util.concurrent.AbstractService$4 $r1;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.Service$State;
+
+        $r1 = new com.google.common.util.concurrent.AbstractService$4;
+
+        specialinvoke $r1.<com.google.common.util.concurrent.AbstractService$4: void <init>(com.google.common.util.concurrent.Service$State)>($r0);
+
+        return $r1;
+    }
+
+    public static com.google.common.util.concurrent.ListenerCallQueue$Event terminatedEvent(com.google.common.util.concurrent.Service$State)
+    {
+        com.google.common.util.concurrent.Service$State $r0;
+        com.google.common.util.concurrent.AbstractService$3 $r1;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.Service$State;
+
+        $r1 = new com.google.common.util.concurrent.AbstractService$3;
+
+        specialinvoke $r1.<com.google.common.util.concurrent.AbstractService$3: void <init>(com.google.common.util.concurrent.Service$State)>($r0);
+
+        return $r1;
+    }
+
+    public final void addListener(com.google.common.util.concurrent.Service$Listener, java.util.concurrent.Executor)
+    {
+        java.util.concurrent.Executor $r2;
+        com.google.common.util.concurrent.ListenerCallQueue $r3;
+        com.google.common.util.concurrent.AbstractService r0;
+        com.google.common.util.concurrent.Service$Listener $r1;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Service$Listener;
+
+        $r2 := @parameter1: java.util.concurrent.Executor;
+
+        $r3 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.ListenerCallQueue listeners>;
+
+        virtualinvoke $r3.<com.google.common.util.concurrent.ListenerCallQueue: void addListener(java.lang.Object,java.util.concurrent.Executor)>($r1, $r2);
+
+        return;
+    }
+
+    public final void awaitRunning()
+    {
+        java.lang.Throwable $r4;
+        com.google.common.util.concurrent.Monitor$Guard $r2;
+        com.google.common.util.concurrent.Service$State $r3;
+        com.google.common.util.concurrent.AbstractService r0;
+        com.google.common.util.concurrent.Monitor $r1;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor$Guard hasReachedRunning>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: void enterWhenUninterruptibly(com.google.common.util.concurrent.Monitor$Guard)>($r2);
+
+     label1:
+        $r3 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State RUNNING>;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void checkCurrentState(com.google.common.util.concurrent.Service$State)>($r3);
+
+     label2:
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        return;
+
+     label3:
+        $r4 := @caughtexception;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public final void awaitRunning(long, java.util.concurrent.TimeUnit)
+    {
+        java.lang.Throwable $r5;
+        java.util.concurrent.TimeoutException $r6;
+        long $l0;
+        java.util.concurrent.TimeUnit $r3;
+        com.google.common.util.concurrent.Monitor$Guard $r2;
+        com.google.common.util.concurrent.Service$State $r4;
+        com.google.common.util.concurrent.AbstractService r0;
+        com.google.common.util.concurrent.Monitor $r1;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r8;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $l0 := @parameter0: long;
+
+        $r3 := @parameter1: java.util.concurrent.TimeUnit;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor$Guard hasReachedRunning>;
+
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: boolean enterWhenUninterruptibly(com.google.common.util.concurrent.Monitor$Guard,long,java.util.concurrent.TimeUnit)>($r2, $l0, $r3);
+
+        if $z0 == 0 goto label4;
+
+     label1:
+        $r4 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State RUNNING>;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void checkCurrentState(com.google.common.util.concurrent.Service$State)>($r4);
+
+     label2:
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        return;
+
+     label3:
+        $r5 := @caughtexception;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        throw $r5;
+
+     label4:
+        $r6 = new java.util.concurrent.TimeoutException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Timed out waiting for ");
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(r0);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" to reach the RUNNING state.");
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.util.concurrent.TimeoutException: void <init>(java.lang.String)>($r8);
+
+        throw $r6;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public final void awaitTerminated()
+    {
+        java.lang.Throwable $r4;
+        com.google.common.util.concurrent.Monitor$Guard $r2;
+        com.google.common.util.concurrent.Service$State $r3;
+        com.google.common.util.concurrent.AbstractService r0;
+        com.google.common.util.concurrent.Monitor $r1;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor$Guard isStopped>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: void enterWhenUninterruptibly(com.google.common.util.concurrent.Monitor$Guard)>($r2);
+
+     label1:
+        $r3 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State TERMINATED>;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void checkCurrentState(com.google.common.util.concurrent.Service$State)>($r3);
+
+     label2:
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        return;
+
+     label3:
+        $r4 := @caughtexception;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public final void awaitTerminated(long, java.util.concurrent.TimeUnit)
+    {
+        java.lang.Throwable $r5;
+        java.util.concurrent.TimeoutException $r6;
+        long $l0;
+        java.util.concurrent.TimeUnit $r3;
+        com.google.common.util.concurrent.Monitor$Guard $r2;
+        com.google.common.util.concurrent.Service$State $r4;
+        com.google.common.util.concurrent.AbstractService r0;
+        com.google.common.util.concurrent.Monitor $r1;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r8;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $l0 := @parameter0: long;
+
+        $r3 := @parameter1: java.util.concurrent.TimeUnit;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor$Guard isStopped>;
+
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: boolean enterWhenUninterruptibly(com.google.common.util.concurrent.Monitor$Guard,long,java.util.concurrent.TimeUnit)>($r2, $l0, $r3);
+
+        if $z0 == 0 goto label4;
+
+     label1:
+        $r4 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State TERMINATED>;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void checkCurrentState(com.google.common.util.concurrent.Service$State)>($r4);
+
+     label2:
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        return;
+
+     label3:
+        $r5 := @caughtexception;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        throw $r5;
+
+     label4:
+        $r6 = new java.util.concurrent.TimeoutException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Timed out waiting for ");
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(r0);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" to reach a terminal state. Current state: ");
+
+        $r4 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Service$State state()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.util.concurrent.TimeoutException: void <init>(java.lang.String)>($r8);
+
+        throw $r6;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public abstract void doStart();
+
+    public abstract void doStop();
+
+    public final java.lang.Throwable failureCause()
+    {
+        com.google.common.util.concurrent.AbstractService r0;
+        java.lang.Throwable $r1;
+        com.google.common.util.concurrent.AbstractService$StateSnapshot $r2;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.AbstractService$StateSnapshot snapshot>;
+
+        $r1 = virtualinvoke $r2.<com.google.common.util.concurrent.AbstractService$StateSnapshot: java.lang.Throwable failureCause()>();
+
+        return $r1;
+    }
+
+    public final boolean isRunning()
+    {
+        com.google.common.util.concurrent.AbstractService r0;
+        com.google.common.util.concurrent.Service$State $r1, $r2;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r2 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Service$State state()>();
+
+        $r1 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State RUNNING>;
+
+        if $r2 != $r1 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public final void notifyFailed(java.lang.Throwable)
+    {
+        java.lang.Throwable $r1, $r11;
+        java.lang.IllegalStateException $r8;
+        com.google.common.util.concurrent.AbstractService$StateSnapshot $r6;
+        java.lang.AssertionError $r5;
+        com.google.common.util.concurrent.Service$State $r3, $r7;
+        int[] $r4;
+        com.google.common.util.concurrent.AbstractService r0;
+        int $i0;
+        com.google.common.util.concurrent.Monitor $r2;
+        java.lang.StringBuilder $r9;
+        java.lang.String $r10;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r1 := @parameter0: java.lang.Throwable;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r2.<com.google.common.util.concurrent.Monitor: void enter()>();
+
+     label1:
+        $r3 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Service$State state()>();
+
+        $r4 = <com.google.common.util.concurrent.AbstractService$6: int[] $SwitchMap$com$google$common$util$concurrent$Service$State>;
+
+        $i0 = virtualinvoke $r3.<java.lang.Enum: int ordinal()>();
+
+        $i0 = $r4[$i0];
+
+     label2:
+        lookupswitch($i0)
+        {
+            case 1: goto label7;
+            case 2: goto label5;
+            case 3: goto label5;
+            case 4: goto label5;
+            case 5: goto label7;
+            case 6: goto label6;
+            default: goto label3;
+        };
+
+     label3:
+        $r5 = new java.lang.AssertionError;
+
+     label4:
+        goto label8;
+
+     label5:
+        $r6 = new com.google.common.util.concurrent.AbstractService$StateSnapshot;
+
+        $r7 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State FAILED>;
+
+        specialinvoke $r6.<com.google.common.util.concurrent.AbstractService$StateSnapshot: void <init>(com.google.common.util.concurrent.Service$State,boolean,java.lang.Throwable)>($r7, 0, $r1);
+
+        r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.AbstractService$StateSnapshot snapshot> = $r6;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void enqueueFailedEvent(com.google.common.util.concurrent.Service$State,java.lang.Throwable)>($r3, $r1);
+
+     label6:
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r2.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void dispatchListenerEvents()>();
+
+        return;
+
+     label7:
+        $r8 = new java.lang.IllegalStateException;
+
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed while in state:");
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r8.<java.lang.IllegalStateException: void <init>(java.lang.String,java.lang.Throwable)>($r10, $r1);
+
+        throw $r8;
+
+     label8:
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected state: ");
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.lang.AssertionError: void <init>(java.lang.Object)>($r10);
+
+        throw $r5;
+
+     label9:
+        $r11 := @caughtexception;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r2.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void dispatchListenerEvents()>();
+
+        throw $r11;
+
+        catch java.lang.Throwable from label1 to label2 with label9;
+        catch java.lang.Throwable from label3 to label4 with label9;
+        catch java.lang.Throwable from label5 to label6 with label9;
+        catch java.lang.Throwable from label7 to label9 with label9;
+    }
+
+    public final void notifyStarted()
+    {
+        java.lang.Throwable $r8;
+        java.lang.IllegalStateException $r6;
+        com.google.common.util.concurrent.AbstractService$StateSnapshot $r3;
+        com.google.common.util.concurrent.Service$State $r4, $r5;
+        com.google.common.util.concurrent.AbstractService r0;
+        com.google.common.util.concurrent.Monitor $r2;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r2.<com.google.common.util.concurrent.Monitor: void enter()>();
+
+     label01:
+        $r3 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.AbstractService$StateSnapshot snapshot>;
+
+        $r4 = $r3.<com.google.common.util.concurrent.AbstractService$StateSnapshot: com.google.common.util.concurrent.Service$State state>;
+
+        $r5 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State STARTING>;
+
+     label02:
+        if $r4 != $r5 goto label09;
+
+     label03:
+        $r3 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.AbstractService$StateSnapshot snapshot>;
+
+        $z0 = $r3.<com.google.common.util.concurrent.AbstractService$StateSnapshot: boolean shutdownWhenStartupFinishes>;
+
+     label04:
+        if $z0 == 0 goto label07;
+
+     label05:
+        $r3 = new com.google.common.util.concurrent.AbstractService$StateSnapshot;
+
+        $r4 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State STOPPING>;
+
+        specialinvoke $r3.<com.google.common.util.concurrent.AbstractService$StateSnapshot: void <init>(com.google.common.util.concurrent.Service$State)>($r4);
+
+        r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.AbstractService$StateSnapshot snapshot> = $r3;
+
+        virtualinvoke r0.<com.google.common.util.concurrent.AbstractService: void doStop()>();
+
+     label06:
+        goto label08;
+
+     label07:
+        $r3 = new com.google.common.util.concurrent.AbstractService$StateSnapshot;
+
+        $r4 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State RUNNING>;
+
+        specialinvoke $r3.<com.google.common.util.concurrent.AbstractService$StateSnapshot: void <init>(com.google.common.util.concurrent.Service$State)>($r4);
+
+        r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.AbstractService$StateSnapshot snapshot> = $r3;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void enqueueRunningEvent()>();
+
+     label08:
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r2.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void dispatchListenerEvents()>();
+
+        return;
+
+     label09:
+        $r6 = new java.lang.IllegalStateException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot notifyStarted() when the service is ");
+
+        $r3 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.AbstractService$StateSnapshot snapshot>;
+
+        $r4 = $r3.<com.google.common.util.concurrent.AbstractService$StateSnapshot: com.google.common.util.concurrent.Service$State state>;
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        $r1 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r1);
+
+        virtualinvoke r0.<com.google.common.util.concurrent.AbstractService: void notifyFailed(java.lang.Throwable)>($r6);
+
+        throw $r6;
+
+     label10:
+        $r8 := @caughtexception;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r2.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void dispatchListenerEvents()>();
+
+        throw $r8;
+
+        catch java.lang.Throwable from label01 to label02 with label10;
+        catch java.lang.Throwable from label03 to label04 with label10;
+        catch java.lang.Throwable from label05 to label06 with label10;
+        catch java.lang.Throwable from label07 to label08 with label10;
+        catch java.lang.Throwable from label09 to label10 with label10;
+    }
+
+    public final void notifyStopped()
+    {
+        java.lang.Throwable $r8;
+        java.lang.IllegalStateException $r6;
+        com.google.common.util.concurrent.AbstractService$StateSnapshot $r3;
+        com.google.common.util.concurrent.Service$State $r4, $r5;
+        com.google.common.util.concurrent.AbstractService r0;
+        com.google.common.util.concurrent.Monitor $r2;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r2.<com.google.common.util.concurrent.Monitor: void enter()>();
+
+     label1:
+        $r3 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.AbstractService$StateSnapshot snapshot>;
+
+        $r4 = $r3.<com.google.common.util.concurrent.AbstractService$StateSnapshot: com.google.common.util.concurrent.Service$State state>;
+
+        $r5 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State STOPPING>;
+
+     label2:
+        if $r4 == $r5 goto label6;
+
+     label3:
+        $r5 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State RUNNING>;
+
+     label4:
+        if $r4 != $r5 goto label5;
+
+        goto label6;
+
+     label5:
+        $r6 = new java.lang.IllegalStateException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot notifyStopped() when the service is ");
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        $r1 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r1);
+
+        virtualinvoke r0.<com.google.common.util.concurrent.AbstractService: void notifyFailed(java.lang.Throwable)>($r6);
+
+        throw $r6;
+
+     label6:
+        $r3 = new com.google.common.util.concurrent.AbstractService$StateSnapshot;
+
+        $r5 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State TERMINATED>;
+
+        specialinvoke $r3.<com.google.common.util.concurrent.AbstractService$StateSnapshot: void <init>(com.google.common.util.concurrent.Service$State)>($r5);
+
+        r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.AbstractService$StateSnapshot snapshot> = $r3;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void enqueueTerminatedEvent(com.google.common.util.concurrent.Service$State)>($r4);
+
+     label7:
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r2.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void dispatchListenerEvents()>();
+
+        return;
+
+     label8:
+        $r8 := @caughtexception;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r2.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void dispatchListenerEvents()>();
+
+        throw $r8;
+
+        catch java.lang.Throwable from label1 to label2 with label8;
+        catch java.lang.Throwable from label3 to label4 with label8;
+        catch java.lang.Throwable from label5 to label7 with label8;
+    }
+
+    public final com.google.common.util.concurrent.Service startAsync()
+    {
+        java.lang.Throwable $r5, $r6;
+        java.lang.IllegalStateException $r7;
+        com.google.common.util.concurrent.AbstractService$StateSnapshot $r3;
+        com.google.common.util.concurrent.Monitor$Guard $r2;
+        com.google.common.util.concurrent.Service$State $r4;
+        com.google.common.util.concurrent.AbstractService r0;
+        com.google.common.util.concurrent.Monitor $r1;
+        java.lang.StringBuilder $r8;
+        java.lang.String $r9;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor$Guard isStartable>;
+
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: boolean enterIf(com.google.common.util.concurrent.Monitor$Guard)>($r2);
+
+        if $z0 == 0 goto label8;
+
+     label1:
+        $r3 = new com.google.common.util.concurrent.AbstractService$StateSnapshot;
+
+        $r4 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State STARTING>;
+
+        specialinvoke $r3.<com.google.common.util.concurrent.AbstractService$StateSnapshot: void <init>(com.google.common.util.concurrent.Service$State)>($r4);
+
+        r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.AbstractService$StateSnapshot snapshot> = $r3;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void enqueueStartingEvent()>();
+
+        virtualinvoke r0.<com.google.common.util.concurrent.AbstractService: void doStart()>();
+
+     label2:
+        goto label6;
+
+     label3:
+        $r5 := @caughtexception;
+
+        goto label7;
+
+     label4:
+        $r6 := @caughtexception;
+
+     label5:
+        virtualinvoke r0.<com.google.common.util.concurrent.AbstractService: void notifyFailed(java.lang.Throwable)>($r6);
+
+     label6:
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void dispatchListenerEvents()>();
+
+        return r0;
+
+     label7:
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void dispatchListenerEvents()>();
+
+        throw $r5;
+
+     label8:
+        $r7 = new java.lang.IllegalStateException;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Service ");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(r0);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" has already been started");
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r7.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r9);
+
+        throw $r7;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label5 to label6 with label3;
+    }
+
+    public final com.google.common.util.concurrent.Service$State state()
+    {
+        com.google.common.util.concurrent.AbstractService r0;
+        com.google.common.util.concurrent.AbstractService$StateSnapshot $r2;
+        com.google.common.util.concurrent.Service$State $r1;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.AbstractService$StateSnapshot snapshot>;
+
+        $r1 = virtualinvoke $r2.<com.google.common.util.concurrent.AbstractService$StateSnapshot: com.google.common.util.concurrent.Service$State externalState()>();
+
+        return $r1;
+    }
+
+    public final com.google.common.util.concurrent.Service stopAsync()
+    {
+        java.lang.Throwable $r9, $r10;
+        com.google.common.util.concurrent.AbstractService$StateSnapshot $r8;
+        java.lang.AssertionError $r5;
+        com.google.common.util.concurrent.Monitor$Guard $r2;
+        com.google.common.util.concurrent.Service$State $r3;
+        int[] $r4;
+        com.google.common.util.concurrent.AbstractService r0;
+        int $i0;
+        com.google.common.util.concurrent.Monitor $r1;
+        java.lang.StringBuilder $r6;
+        java.lang.String $r7;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor$Guard isStoppable>;
+
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: boolean enterIf(com.google.common.util.concurrent.Monitor$Guard)>($r2);
+
+        if $z0 == 0 goto label18;
+
+     label01:
+        $r3 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Service$State state()>();
+
+        $r4 = <com.google.common.util.concurrent.AbstractService$6: int[] $SwitchMap$com$google$common$util$concurrent$Service$State>;
+
+        $i0 = virtualinvoke $r3.<java.lang.Enum: int ordinal()>();
+
+        $i0 = $r4[$i0];
+
+     label02:
+        lookupswitch($i0)
+        {
+            case 1: goto label10;
+            case 2: goto label08;
+            case 3: goto label06;
+            case 4: goto label05;
+            case 5: goto label05;
+            case 6: goto label05;
+            default: goto label03;
+        };
+
+     label03:
+        $r5 = new java.lang.AssertionError;
+
+     label04:
+        goto label12;
+
+     label05:
+        $r5 = new java.lang.AssertionError;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("isStoppable is incorrectly implemented, saw: ");
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.lang.AssertionError: void <init>(java.lang.Object)>($r7);
+
+        throw $r5;
+
+     label06:
+        $r8 = new com.google.common.util.concurrent.AbstractService$StateSnapshot;
+
+        $r3 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State STOPPING>;
+
+        specialinvoke $r8.<com.google.common.util.concurrent.AbstractService$StateSnapshot: void <init>(com.google.common.util.concurrent.Service$State)>($r3);
+
+        r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.AbstractService$StateSnapshot snapshot> = $r8;
+
+        $r3 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State RUNNING>;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void enqueueStoppingEvent(com.google.common.util.concurrent.Service$State)>($r3);
+
+        virtualinvoke r0.<com.google.common.util.concurrent.AbstractService: void doStop()>();
+
+     label07:
+        goto label16;
+
+     label08:
+        $r8 = new com.google.common.util.concurrent.AbstractService$StateSnapshot;
+
+        $r3 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State STARTING>;
+
+        specialinvoke $r8.<com.google.common.util.concurrent.AbstractService$StateSnapshot: void <init>(com.google.common.util.concurrent.Service$State,boolean,java.lang.Throwable)>($r3, 1, null);
+
+        r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.AbstractService$StateSnapshot snapshot> = $r8;
+
+        $r3 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State STARTING>;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void enqueueStoppingEvent(com.google.common.util.concurrent.Service$State)>($r3);
+
+     label09:
+        goto label16;
+
+     label10:
+        $r8 = new com.google.common.util.concurrent.AbstractService$StateSnapshot;
+
+        $r3 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State TERMINATED>;
+
+        specialinvoke $r8.<com.google.common.util.concurrent.AbstractService$StateSnapshot: void <init>(com.google.common.util.concurrent.Service$State)>($r3);
+
+        r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.AbstractService$StateSnapshot snapshot> = $r8;
+
+        $r3 = <com.google.common.util.concurrent.Service$State: com.google.common.util.concurrent.Service$State NEW>;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void enqueueTerminatedEvent(com.google.common.util.concurrent.Service$State)>($r3);
+
+     label11:
+        goto label16;
+
+     label12:
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected state: ");
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.lang.AssertionError: void <init>(java.lang.Object)>($r7);
+
+        throw $r5;
+
+     label13:
+        $r9 := @caughtexception;
+
+        goto label17;
+
+     label14:
+        $r10 := @caughtexception;
+
+     label15:
+        virtualinvoke r0.<com.google.common.util.concurrent.AbstractService: void notifyFailed(java.lang.Throwable)>($r10);
+
+     label16:
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void dispatchListenerEvents()>();
+
+        return r0;
+
+     label17:
+        $r1 = r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Monitor monitor>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractService: void dispatchListenerEvents()>();
+
+        throw $r9;
+
+     label18:
+        return r0;
+
+        catch java.lang.Throwable from label01 to label02 with label14;
+        catch java.lang.Throwable from label03 to label04 with label14;
+        catch java.lang.Throwable from label05 to label07 with label14;
+        catch java.lang.Throwable from label08 to label09 with label14;
+        catch java.lang.Throwable from label10 to label11 with label14;
+        catch java.lang.Throwable from label12 to label13 with label14;
+        catch java.lang.Throwable from label15 to label16 with label13;
+    }
+
+    public java.lang.String toString()
+    {
+        com.google.common.util.concurrent.Service$State $r4;
+        com.google.common.util.concurrent.AbstractService r0;
+        java.lang.StringBuilder $r1;
+        java.lang.Class $r2;
+        java.lang.String $r3;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractService;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke r0.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r3 = virtualinvoke $r2.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" [");
+
+        $r4 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractService: com.google.common.util.concurrent.Service$State state()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r3;
+    }
+}

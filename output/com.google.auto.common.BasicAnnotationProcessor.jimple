@@ -1,0 +1,1041 @@
+public abstract class com.google.auto.common.BasicAnnotationProcessor extends javax.'annotation'.processing.AbstractProcessor
+{
+    public final java.util.Set deferredElementNames;
+    public javax.lang.model.util.Elements elements;
+    public final com.google.common.collect.SetMultimap elementsDeferredBySteps;
+    public javax.'annotation'.processing.Messager messager;
+    public com.google.common.collect.ImmutableList steps;
+
+    public void <init>()
+    {
+        com.google.auto.common.BasicAnnotationProcessor r0;
+        com.google.common.collect.LinkedHashMultimap $r1;
+        java.util.LinkedHashSet $r2;
+
+        r0 := @this: com.google.auto.common.BasicAnnotationProcessor;
+
+        specialinvoke r0.<javax.'annotation'.processing.AbstractProcessor: void <init>()>();
+
+        $r2 = new java.util.LinkedHashSet;
+
+        specialinvoke $r2.<java.util.LinkedHashSet: void <init>()>();
+
+        r0.<com.google.auto.common.BasicAnnotationProcessor: java.util.Set deferredElementNames> = $r2;
+
+        $r1 = staticinvoke <com.google.common.collect.LinkedHashMultimap: com.google.common.collect.LinkedHashMultimap create()>();
+
+        r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.SetMultimap elementsDeferredBySteps> = $r1;
+
+        return;
+    }
+
+    public static javax.lang.model.element.TypeElement access$000(javax.lang.model.element.Element)
+    {
+        javax.lang.model.element.TypeElement $r0;
+        javax.lang.model.element.Element $r1;
+
+        $r1 := @parameter0: javax.lang.model.element.Element;
+
+        $r0 = staticinvoke <com.google.auto.common.BasicAnnotationProcessor: javax.lang.model.element.TypeElement getEnclosingType(javax.lang.model.element.Element)>($r1);
+
+        return $r0;
+    }
+
+    private com.google.common.collect.ImmutableMap deferredElements()
+    {
+        java.util.Iterator $r4;
+        com.google.common.collect.ImmutableMap $r9;
+        java.util.Set $r3;
+        javax.lang.model.util.Elements $r1;
+        com.google.common.collect.ImmutableMap$Builder $r2;
+        com.google.common.base.Optional $r8;
+        java.lang.Object $r5;
+        com.google.auto.common.BasicAnnotationProcessor$ElementName $r6;
+        com.google.auto.common.BasicAnnotationProcessor r0;
+        java.lang.String $r7;
+        boolean $z0;
+
+        r0 := @this: com.google.auto.common.BasicAnnotationProcessor;
+
+        $r2 = staticinvoke <com.google.common.collect.ImmutableMap: com.google.common.collect.ImmutableMap$Builder builder()>();
+
+        $r3 = r0.<com.google.auto.common.BasicAnnotationProcessor: java.util.Set deferredElementNames>;
+
+        $r4 = interfaceinvoke $r3.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (com.google.auto.common.BasicAnnotationProcessor$ElementName) $r5;
+
+        $r7 = virtualinvoke $r6.<com.google.auto.common.BasicAnnotationProcessor$ElementName: java.lang.String name()>();
+
+        $r1 = r0.<com.google.auto.common.BasicAnnotationProcessor: javax.lang.model.util.Elements elements>;
+
+        $r8 = virtualinvoke $r6.<com.google.auto.common.BasicAnnotationProcessor$ElementName: com.google.common.base.Optional getElement(javax.lang.model.util.Elements)>($r1);
+
+        virtualinvoke $r2.<com.google.common.collect.ImmutableMap$Builder: com.google.common.collect.ImmutableMap$Builder put(java.lang.Object,java.lang.Object)>($r7, $r8);
+
+        goto label1;
+
+     label2:
+        $r9 = virtualinvoke $r2.<com.google.common.collect.ImmutableMap$Builder: com.google.common.collect.ImmutableMap build()>();
+
+        return $r9;
+    }
+
+    public static void findAnnotatedElements(javax.lang.model.element.Element, com.google.common.collect.ImmutableSet, com.google.common.collect.ImmutableSetMultimap$Builder)
+    {
+        com.google.common.collect.ImmutableSet $r2;
+        java.util.Iterator $r4;
+        javax.lang.model.element.ElementKind $r7;
+        javax.lang.model.element.ExecutableElement $r8;
+        javax.lang.model.element.Element $r0, $r6;
+        com.google.common.collect.ImmutableSetMultimap$Builder $r1;
+        java.util.List $r3;
+        java.lang.Object $r5;
+        java.lang.Class $r10;
+        com.google.common.collect.UnmodifiableIterator $r9;
+        boolean $z0;
+
+        $r0 := @parameter0: javax.lang.model.element.Element;
+
+        $r2 := @parameter1: com.google.common.collect.ImmutableSet;
+
+        $r1 := @parameter2: com.google.common.collect.ImmutableSetMultimap$Builder;
+
+        $r3 = interfaceinvoke $r0.<javax.lang.model.element.Element: java.util.List getEnclosedElements()>();
+
+        $r4 = interfaceinvoke $r3.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (javax.lang.model.element.Element) $r5;
+
+        $r7 = interfaceinvoke $r6.<javax.lang.model.element.Element: javax.lang.model.element.ElementKind getKind()>();
+
+        $z0 = virtualinvoke $r7.<javax.lang.model.element.ElementKind: boolean isClass()>();
+
+        if $z0 != 0 goto label1;
+
+        $r7 = interfaceinvoke $r6.<javax.lang.model.element.Element: javax.lang.model.element.ElementKind getKind()>();
+
+        $z0 = virtualinvoke $r7.<javax.lang.model.element.ElementKind: boolean isInterface()>();
+
+        if $z0 != 0 goto label1;
+
+        staticinvoke <com.google.auto.common.BasicAnnotationProcessor: void findAnnotatedElements(javax.lang.model.element.Element,com.google.common.collect.ImmutableSet,com.google.common.collect.ImmutableSetMultimap$Builder)>($r6, $r2, $r1);
+
+        goto label1;
+
+     label2:
+        $z0 = $r0 instanceof javax.lang.model.element.ExecutableElement;
+
+        if $z0 == 0 goto label4;
+
+        $r8 = (javax.lang.model.element.ExecutableElement) $r0;
+
+        $r3 = interfaceinvoke $r8.<javax.lang.model.element.ExecutableElement: java.util.List getParameters()>();
+
+        $r4 = interfaceinvoke $r3.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label4;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (javax.lang.model.element.Element) $r5;
+
+        staticinvoke <com.google.auto.common.BasicAnnotationProcessor: void findAnnotatedElements(javax.lang.model.element.Element,com.google.common.collect.ImmutableSet,com.google.common.collect.ImmutableSetMultimap$Builder)>($r6, $r2, $r1);
+
+        goto label3;
+
+     label4:
+        $r9 = virtualinvoke $r2.<com.google.common.collect.ImmutableSet: com.google.common.collect.UnmodifiableIterator iterator()>();
+
+     label5:
+        $z0 = interfaceinvoke $r9.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label6;
+
+        $r5 = interfaceinvoke $r9.<java.util.Iterator: java.lang.Object next()>();
+
+        $r10 = (java.lang.Class) $r5;
+
+        $z0 = staticinvoke <com.google.auto.common.MoreElements: boolean isAnnotationPresent(javax.lang.model.element.Element,java.lang.Class)>($r0, $r10);
+
+        if $z0 == 0 goto label5;
+
+        virtualinvoke $r1.<com.google.common.collect.ImmutableSetMultimap$Builder: com.google.common.collect.ImmutableSetMultimap$Builder put(java.lang.Object,java.lang.Object)>($r10, $r0);
+
+        goto label5;
+
+     label6:
+        return;
+    }
+
+    public static javax.lang.model.element.TypeElement getEnclosingType(javax.lang.model.element.Element)
+    {
+        com.google.auto.common.BasicAnnotationProcessor$2 $r3;
+        java.lang.Object $r0;
+        javax.lang.model.element.Element $r1;
+        javax.lang.model.element.TypeElement $r2;
+        javax.lang.model.element.ElementVisitor $r4;
+
+        $r1 := @parameter0: javax.lang.model.element.Element;
+
+        $r3 = new com.google.auto.common.BasicAnnotationProcessor$2;
+
+        specialinvoke $r3.<com.google.auto.common.BasicAnnotationProcessor$2: void <init>()>();
+
+        $r4 = (javax.lang.model.element.ElementVisitor) $r3;
+
+        $r0 = interfaceinvoke $r1.<javax.lang.model.element.Element: java.lang.Object accept(javax.lang.model.element.ElementVisitor,java.lang.Object)>($r4, null);
+
+        $r2 = (javax.lang.model.element.TypeElement) $r0;
+
+        return $r2;
+    }
+
+    private com.google.common.collect.ImmutableSet getSupportedAnnotationClasses()
+    {
+        com.google.auto.common.BasicAnnotationProcessor$ProcessingStep $r5;
+        com.google.common.collect.ImmutableSet $r7;
+        com.google.common.collect.ImmutableSet$Builder $r2;
+        java.util.Set $r6;
+        com.google.common.collect.ImmutableList $r1;
+        java.lang.Object $r4;
+        com.google.auto.common.BasicAnnotationProcessor r0;
+        com.google.common.collect.UnmodifiableIterator $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.auto.common.BasicAnnotationProcessor;
+
+        $r1 = r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.ImmutableList steps>;
+
+        if $r1 == null goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        staticinvoke <com.google.common.base.Preconditions: void checkState(boolean)>($z0);
+
+        $r2 = staticinvoke <com.google.common.collect.ImmutableSet: com.google.common.collect.ImmutableSet$Builder builder()>();
+
+        $r1 = r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.ImmutableList steps>;
+
+        $r3 = virtualinvoke $r1.<com.google.common.collect.ImmutableList: com.google.common.collect.UnmodifiableIterator iterator()>();
+
+     label3:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label4;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (com.google.auto.common.BasicAnnotationProcessor$ProcessingStep) $r4;
+
+        $r6 = interfaceinvoke $r5.<com.google.auto.common.BasicAnnotationProcessor$ProcessingStep: java.util.Set annotations()>();
+
+        virtualinvoke $r2.<com.google.common.collect.ImmutableSet$Builder: com.google.common.collect.ImmutableSet$Builder addAll(java.lang.Iterable)>($r6);
+
+        goto label3;
+
+     label4:
+        $r7 = virtualinvoke $r2.<com.google.common.collect.ImmutableSet$Builder: com.google.common.collect.ImmutableSet build()>();
+
+        return $r7;
+    }
+
+    private com.google.common.collect.ImmutableSetMultimap indexByAnnotation(java.util.Set)
+    {
+        com.google.common.collect.ImmutableSet $r2;
+        java.util.Iterator $r4;
+        java.util.Set $r1;
+        javax.lang.model.element.Element $r9;
+        javax.lang.model.util.Elements $r7;
+        com.google.common.collect.ImmutableSetMultimap$Builder $r3;
+        com.google.common.base.Optional $r8;
+        java.lang.Object $r5;
+        com.google.auto.common.BasicAnnotationProcessor$ElementName $r6;
+        com.google.auto.common.BasicAnnotationProcessor r0;
+        boolean $z0;
+        com.google.common.collect.ImmutableSetMultimap $r10;
+
+        r0 := @this: com.google.auto.common.BasicAnnotationProcessor;
+
+        $r1 := @parameter0: java.util.Set;
+
+        $r2 = specialinvoke r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.ImmutableSet getSupportedAnnotationClasses()>();
+
+        $r3 = staticinvoke <com.google.common.collect.ImmutableSetMultimap: com.google.common.collect.ImmutableSetMultimap$Builder builder()>();
+
+        $r4 = interfaceinvoke $r1.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (com.google.auto.common.BasicAnnotationProcessor$ElementName) $r5;
+
+        $r7 = r0.<com.google.auto.common.BasicAnnotationProcessor: javax.lang.model.util.Elements elements>;
+
+        $r8 = virtualinvoke $r6.<com.google.auto.common.BasicAnnotationProcessor$ElementName: com.google.common.base.Optional getElement(javax.lang.model.util.Elements)>($r7);
+
+        $z0 = virtualinvoke $r8.<com.google.common.base.Optional: boolean isPresent()>();
+
+        if $z0 == 0 goto label1;
+
+        $r5 = virtualinvoke $r8.<com.google.common.base.Optional: java.lang.Object get()>();
+
+        $r9 = (javax.lang.model.element.Element) $r5;
+
+        staticinvoke <com.google.auto.common.BasicAnnotationProcessor: void findAnnotatedElements(javax.lang.model.element.Element,com.google.common.collect.ImmutableSet,com.google.common.collect.ImmutableSetMultimap$Builder)>($r9, $r2, $r3);
+
+        goto label1;
+
+     label2:
+        $r10 = virtualinvoke $r3.<com.google.common.collect.ImmutableSetMultimap$Builder: com.google.common.collect.ImmutableSetMultimap build()>();
+
+        return $r10;
+    }
+
+    private void process(com.google.common.collect.ImmutableSetMultimap)
+    {
+        com.google.auto.common.BasicAnnotationProcessor$ProcessingStep $r6;
+        java.util.Set $r9;
+        com.google.common.collect.ImmutableSetMultimap$Builder $r7;
+        com.google.common.collect.SetMultimap $r8;
+        java.lang.Iterable $r12;
+        com.google.auto.common.BasicAnnotationProcessor$1 $r2;
+        com.google.common.collect.ImmutableList $r3;
+        com.google.common.base.Predicate $r11;
+        java.lang.Object $r5;
+        com.google.auto.common.BasicAnnotationProcessor r0;
+        com.google.common.collect.UnmodifiableIterator $r4;
+        com.google.common.collect.ImmutableSetMultimap $r1, $r10;
+        boolean $z0;
+
+        r0 := @this: com.google.auto.common.BasicAnnotationProcessor;
+
+        $r1 := @parameter0: com.google.common.collect.ImmutableSetMultimap;
+
+        $r3 = r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.ImmutableList steps>;
+
+        $r4 = virtualinvoke $r3.<com.google.common.collect.ImmutableList: com.google.common.collect.UnmodifiableIterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (com.google.auto.common.BasicAnnotationProcessor$ProcessingStep) $r5;
+
+        $r7 = new com.google.common.collect.ImmutableSetMultimap$Builder;
+
+        specialinvoke $r7.<com.google.common.collect.ImmutableSetMultimap$Builder: void <init>()>();
+
+        $r8 = r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.SetMultimap elementsDeferredBySteps>;
+
+        $r9 = interfaceinvoke $r8.<com.google.common.collect.SetMultimap: java.util.Set get(java.lang.Object)>($r6);
+
+        $r10 = specialinvoke r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.ImmutableSetMultimap indexByAnnotation(java.util.Set)>($r9);
+
+        $r7 = virtualinvoke $r7.<com.google.common.collect.ImmutableSetMultimap$Builder: com.google.common.collect.ImmutableSetMultimap$Builder putAll(com.google.common.collect.Multimap)>($r10);
+
+        $r9 = interfaceinvoke $r6.<com.google.auto.common.BasicAnnotationProcessor$ProcessingStep: java.util.Set annotations()>();
+
+        $r11 = staticinvoke <com.google.common.base.Predicates: com.google.common.base.Predicate in(java.util.Collection)>($r9);
+
+        $r8 = staticinvoke <com.google.common.collect.Multimaps: com.google.common.collect.SetMultimap filterKeys(com.google.common.collect.SetMultimap,com.google.common.base.Predicate)>($r1, $r11);
+
+        $r7 = virtualinvoke $r7.<com.google.common.collect.ImmutableSetMultimap$Builder: com.google.common.collect.ImmutableSetMultimap$Builder putAll(com.google.common.collect.Multimap)>($r8);
+
+        $r10 = virtualinvoke $r7.<com.google.common.collect.ImmutableSetMultimap$Builder: com.google.common.collect.ImmutableSetMultimap build()>();
+
+        $z0 = virtualinvoke $r10.<com.google.common.collect.ImmutableMultimap: boolean isEmpty()>();
+
+        if $z0 == 0 goto label2;
+
+        $r8 = r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.SetMultimap elementsDeferredBySteps>;
+
+        interfaceinvoke $r8.<com.google.common.collect.SetMultimap: java.util.Set removeAll(java.lang.Object)>($r6);
+
+        goto label1;
+
+     label2:
+        $r9 = interfaceinvoke $r6.<com.google.auto.common.BasicAnnotationProcessor$ProcessingStep: java.util.Set process(com.google.common.collect.SetMultimap)>($r10);
+
+        $r8 = r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.SetMultimap elementsDeferredBySteps>;
+
+        $r2 = new com.google.auto.common.BasicAnnotationProcessor$1;
+
+        specialinvoke $r2.<com.google.auto.common.BasicAnnotationProcessor$1: void <init>(com.google.auto.common.BasicAnnotationProcessor)>(r0);
+
+        $r12 = staticinvoke <com.google.common.collect.Iterables: java.lang.Iterable transform(java.lang.Iterable,com.google.common.base.Function)>($r9, $r2);
+
+        interfaceinvoke $r8.<com.google.common.collect.SetMultimap: java.util.Set replaceValues(java.lang.Object,java.lang.Iterable)>($r6, $r12);
+
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    private java.lang.String processingErrorMessage(java.lang.String)
+    {
+        java.lang.Object[] $r2;
+        java.lang.Class $r3;
+        com.google.auto.common.BasicAnnotationProcessor r0;
+        java.lang.String $r1, $r4;
+
+        r0 := @this: com.google.auto.common.BasicAnnotationProcessor;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = newarray (java.lang.Object)[3];
+
+        $r3 = class "Lcom/google/auto/common/BasicAnnotationProcessor;";
+
+        $r4 = virtualinvoke $r3.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        $r2[0] = $r4;
+
+        $r3 = class "Lcom/google/auto/common/BasicAnnotationProcessor;";
+
+        $r4 = virtualinvoke $r3.<java.lang.Class: java.lang.String getCanonicalName()>();
+
+        $r2[1] = $r4;
+
+        $r2[2] = $r1;
+
+        $r1 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("[%s:MiscError] %s was unable to process %s because not all of its dependencies could be resolved. Check for compilation errors or a circular dependency with generated code.", $r2);
+
+        return $r1;
+    }
+
+    private void reportMissingElements(java.util.Map, java.util.Collection)
+    {
+        javax.lang.model.util.Elements $r8;
+        com.google.common.base.Optional $r9;
+        java.util.Map $r1;
+        java.lang.String $r7;
+        javax.'annotation'.processing.Messager $r13;
+        boolean $z0;
+        java.util.Map$Entry $r11;
+        java.util.Iterator $r4;
+        javax.lang.model.element.ElementKind $r17;
+        java.util.Collection $r2;
+        java.util.Set $r10;
+        javax.lang.model.element.Element $r16;
+        com.google.common.collect.ImmutableMap$Builder $r3;
+        javax.tools.Diagnostic$Kind $r14;
+        javax.'annotation'.processing.ProcessingEnvironment $r12;
+        java.lang.Object $r5;
+        com.google.auto.common.BasicAnnotationProcessor$ElementName $r6;
+        java.lang.StringBuilder $r15;
+        com.google.auto.common.BasicAnnotationProcessor r0;
+
+        r0 := @this: com.google.auto.common.BasicAnnotationProcessor;
+
+        $r1 := @parameter0: java.util.Map;
+
+        $r2 := @parameter1: java.util.Collection;
+
+        $z0 = interfaceinvoke $r2.<java.util.Collection: boolean isEmpty()>();
+
+        if $z0 != 0 goto label3;
+
+        $r3 = staticinvoke <com.google.common.collect.ImmutableMap: com.google.common.collect.ImmutableMap$Builder builder()>();
+
+        virtualinvoke $r3.<com.google.common.collect.ImmutableMap$Builder: com.google.common.collect.ImmutableMap$Builder putAll(java.util.Map)>($r1);
+
+        $r4 = interfaceinvoke $r2.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (com.google.auto.common.BasicAnnotationProcessor$ElementName) $r5;
+
+        $r7 = virtualinvoke $r6.<com.google.auto.common.BasicAnnotationProcessor$ElementName: java.lang.String name()>();
+
+        $z0 = interfaceinvoke $r1.<java.util.Map: boolean containsKey(java.lang.Object)>($r7);
+
+        if $z0 != 0 goto label1;
+
+        $r7 = virtualinvoke $r6.<com.google.auto.common.BasicAnnotationProcessor$ElementName: java.lang.String name()>();
+
+        $r8 = r0.<com.google.auto.common.BasicAnnotationProcessor: javax.lang.model.util.Elements elements>;
+
+        $r9 = virtualinvoke $r6.<com.google.auto.common.BasicAnnotationProcessor$ElementName: com.google.common.base.Optional getElement(javax.lang.model.util.Elements)>($r8);
+
+        virtualinvoke $r3.<com.google.common.collect.ImmutableMap$Builder: com.google.common.collect.ImmutableMap$Builder put(java.lang.Object,java.lang.Object)>($r7, $r9);
+
+        goto label1;
+
+     label2:
+        $r1 = virtualinvoke $r3.<com.google.common.collect.ImmutableMap$Builder: com.google.common.collect.ImmutableMap build()>();
+
+     label3:
+        $r10 = interfaceinvoke $r1.<java.util.Map: java.util.Set entrySet()>();
+
+        $r4 = interfaceinvoke $r10.<java.util.Set: java.util.Iterator iterator()>();
+
+     label4:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label6;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r11 = (java.util.Map$Entry) $r5;
+
+        $r5 = interfaceinvoke $r11.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r9 = (com.google.common.base.Optional) $r5;
+
+        $z0 = virtualinvoke $r9.<com.google.common.base.Optional: boolean isPresent()>();
+
+        if $z0 == 0 goto label5;
+
+        $r12 = r0.<com.google.auto.common.BasicAnnotationProcessor: javax.'annotation'.processing.ProcessingEnvironment processingEnv>;
+
+        $r13 = interfaceinvoke $r12.<javax.'annotation'.processing.ProcessingEnvironment: javax.'annotation'.processing.Messager getMessager()>();
+
+        $r14 = <javax.tools.Diagnostic$Kind: javax.tools.Diagnostic$Kind ERROR>;
+
+        $r15 = new java.lang.StringBuilder;
+
+        specialinvoke $r15.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("this ");
+
+        $r5 = virtualinvoke $r9.<com.google.common.base.Optional: java.lang.Object get()>();
+
+        $r16 = (javax.lang.model.element.Element) $r5;
+
+        $r17 = interfaceinvoke $r16.<javax.lang.model.element.Element: javax.lang.model.element.ElementKind getKind()>();
+
+        $r7 = virtualinvoke $r17.<javax.lang.model.element.ElementKind: java.lang.String name()>();
+
+        $r7 = staticinvoke <com.google.common.base.Ascii: java.lang.String toLowerCase(java.lang.String)>($r7);
+
+        virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r7 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r7 = specialinvoke r0.<com.google.auto.common.BasicAnnotationProcessor: java.lang.String processingErrorMessage(java.lang.String)>($r7);
+
+        $r5 = virtualinvoke $r9.<com.google.common.base.Optional: java.lang.Object get()>();
+
+        $r16 = (javax.lang.model.element.Element) $r5;
+
+        interfaceinvoke $r13.<javax.'annotation'.processing.Messager: void printMessage(javax.tools.Diagnostic$Kind,java.lang.CharSequence,javax.lang.model.element.Element)>($r14, $r7, $r16);
+
+        goto label4;
+
+     label5:
+        $r12 = r0.<com.google.auto.common.BasicAnnotationProcessor: javax.'annotation'.processing.ProcessingEnvironment processingEnv>;
+
+        $r13 = interfaceinvoke $r12.<javax.'annotation'.processing.ProcessingEnvironment: javax.'annotation'.processing.Messager getMessager()>();
+
+        $r14 = <javax.tools.Diagnostic$Kind: javax.tools.Diagnostic$Kind ERROR>;
+
+        $r5 = interfaceinvoke $r11.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r7 = (java.lang.String) $r5;
+
+        $r7 = specialinvoke r0.<com.google.auto.common.BasicAnnotationProcessor: java.lang.String processingErrorMessage(java.lang.String)>($r7);
+
+        interfaceinvoke $r13.<javax.'annotation'.processing.Messager: void printMessage(javax.tools.Diagnostic$Kind,java.lang.CharSequence)>($r14, $r7);
+
+        goto label4;
+
+     label6:
+        return;
+    }
+
+    private com.google.common.collect.ImmutableSetMultimap validElements(com.google.common.collect.ImmutableMap, javax.'annotation'.processing.RoundEnvironment)
+    {
+        javax.lang.model.element.PackageElement $r22;
+        com.google.common.collect.Sets$SetView $r18;
+        javax.lang.model.element.TypeElement $r17;
+        javax.lang.model.util.Elements $r16;
+        com.google.common.collect.ImmutableSetMultimap$Builder $r3;
+        com.google.common.base.Optional $r8;
+        java.lang.String $r11;
+        java.util.LinkedHashSet $r14, $r24;
+        boolean $z0, $z1;
+        com.google.common.collect.ImmutableSetMultimap $r13;
+        javax.lang.model.element.Name $r23;
+        java.util.Map$Entry $r7;
+        com.google.common.collect.ImmutableSet $r4;
+        javax.lang.model.element.ElementKind $r20, $r21;
+        com.google.common.collect.ImmutableMap $r2;
+        java.util.Set $r10;
+        javax.lang.model.element.Element $r9, $r25;
+        javax.'annotation'.processing.RoundEnvironment $r1;
+        java.lang.Object $r6;
+        com.google.auto.common.BasicAnnotationProcessor$ElementName $r12;
+        java.lang.Class $r15;
+        com.google.auto.common.BasicAnnotationProcessor r0;
+        com.google.common.collect.UnmodifiableIterator $r5, $r19;
+
+        r0 := @this: com.google.auto.common.BasicAnnotationProcessor;
+
+        $r2 := @parameter0: com.google.common.collect.ImmutableMap;
+
+        $r1 := @parameter1: javax.'annotation'.processing.RoundEnvironment;
+
+        $r3 = staticinvoke <com.google.common.collect.ImmutableSetMultimap: com.google.common.collect.ImmutableSetMultimap$Builder builder()>();
+
+        $r4 = virtualinvoke $r2.<com.google.common.collect.ImmutableMap: com.google.common.collect.ImmutableSet entrySet()>();
+
+        $r5 = virtualinvoke $r4.<com.google.common.collect.ImmutableSet: com.google.common.collect.UnmodifiableIterator iterator()>();
+
+     label01:
+        $z0 = interfaceinvoke $r5.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label03;
+
+        $r6 = interfaceinvoke $r5.<java.util.Iterator: java.lang.Object next()>();
+
+        $r7 = (java.util.Map$Entry) $r6;
+
+        $r6 = interfaceinvoke $r7.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r8 = (com.google.common.base.Optional) $r6;
+
+        $z0 = virtualinvoke $r8.<com.google.common.base.Optional: boolean isPresent()>();
+
+        if $z0 == 0 goto label02;
+
+        $r6 = virtualinvoke $r8.<com.google.common.base.Optional: java.lang.Object get()>();
+
+        $r9 = (javax.lang.model.element.Element) $r6;
+
+        $r4 = specialinvoke r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.ImmutableSet getSupportedAnnotationClasses()>();
+
+        staticinvoke <com.google.auto.common.BasicAnnotationProcessor: void findAnnotatedElements(javax.lang.model.element.Element,com.google.common.collect.ImmutableSet,com.google.common.collect.ImmutableSetMultimap$Builder)>($r9, $r4, $r3);
+
+        goto label01;
+
+     label02:
+        $r10 = r0.<com.google.auto.common.BasicAnnotationProcessor: java.util.Set deferredElementNames>;
+
+        $r6 = interfaceinvoke $r7.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r11 = (java.lang.String) $r6;
+
+        $r12 = staticinvoke <com.google.auto.common.BasicAnnotationProcessor$ElementName: com.google.auto.common.BasicAnnotationProcessor$ElementName forTypeName(java.lang.String)>($r11);
+
+        interfaceinvoke $r10.<java.util.Set: boolean add(java.lang.Object)>($r12);
+
+        goto label01;
+
+     label03:
+        $r13 = virtualinvoke $r3.<com.google.common.collect.ImmutableSetMultimap$Builder: com.google.common.collect.ImmutableSetMultimap build()>();
+
+        $r3 = staticinvoke <com.google.common.collect.ImmutableSetMultimap: com.google.common.collect.ImmutableSetMultimap$Builder builder()>();
+
+        $r24 = new java.util.LinkedHashSet;
+
+        $r14 = $r24;
+
+        specialinvoke $r24.<java.util.LinkedHashSet: void <init>()>();
+
+        $r4 = specialinvoke r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.ImmutableSet getSupportedAnnotationClasses()>();
+
+        $r5 = virtualinvoke $r4.<com.google.common.collect.ImmutableSet: com.google.common.collect.UnmodifiableIterator iterator()>();
+
+     label04:
+        $z0 = interfaceinvoke $r5.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label15;
+
+        $r6 = interfaceinvoke $r5.<java.util.Iterator: java.lang.Object next()>();
+
+        $r15 = (java.lang.Class) $r6;
+
+        $r16 = r0.<com.google.auto.common.BasicAnnotationProcessor: javax.lang.model.util.Elements elements>;
+
+        $r11 = virtualinvoke $r15.<java.lang.Class: java.lang.String getCanonicalName()>();
+
+        $r17 = interfaceinvoke $r16.<javax.lang.model.util.Elements: javax.lang.model.element.TypeElement getTypeElement(java.lang.CharSequence)>($r11);
+
+        if $r17 != null goto label05;
+
+        $r10 = staticinvoke <com.google.common.collect.ImmutableSet: com.google.common.collect.ImmutableSet of()>();
+
+        goto label06;
+
+     label05:
+        $r10 = interfaceinvoke $r1.<javax.'annotation'.processing.RoundEnvironment: java.util.Set getElementsAnnotatedWith(javax.lang.model.element.TypeElement)>($r17);
+
+     label06:
+        $r4 = virtualinvoke $r13.<com.google.common.collect.ImmutableSetMultimap: com.google.common.collect.ImmutableSet get(java.lang.Object)>($r15);
+
+        $r18 = staticinvoke <com.google.common.collect.Sets: com.google.common.collect.Sets$SetView union(java.util.Set,java.util.Set)>($r10, $r4);
+
+        $r19 = virtualinvoke $r18.<com.google.common.collect.Sets$SetView: com.google.common.collect.UnmodifiableIterator iterator()>();
+
+     label07:
+        $z0 = interfaceinvoke $r19.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label04;
+
+        $r6 = interfaceinvoke $r19.<java.util.Iterator: java.lang.Object next()>();
+
+        $r9 = (javax.lang.model.element.Element) $r6;
+
+        $r20 = interfaceinvoke $r9.<javax.lang.model.element.Element: javax.lang.model.element.ElementKind getKind()>();
+
+        $r21 = <javax.lang.model.element.ElementKind: javax.lang.model.element.ElementKind PACKAGE>;
+
+        $z1 = virtualinvoke $r20.<javax.lang.model.element.ElementKind: boolean equals(java.lang.Object)>($r21);
+
+        $z0 = 0;
+
+        if $z1 == 0 goto label11;
+
+        $r22 = (javax.lang.model.element.PackageElement) $r9;
+
+        $r23 = interfaceinvoke $r22.<javax.lang.model.element.PackageElement: javax.lang.model.element.Name getQualifiedName()>();
+
+        $r11 = virtualinvoke $r23.<java.lang.Object: java.lang.String toString()>();
+
+        $r12 = staticinvoke <com.google.auto.common.BasicAnnotationProcessor$ElementName: com.google.auto.common.BasicAnnotationProcessor$ElementName forPackageName(java.lang.String)>($r11);
+
+        $z1 = interfaceinvoke $r14.<java.util.Set: boolean contains(java.lang.Object)>($r12);
+
+        if $z1 != 0 goto label08;
+
+        $r10 = r0.<com.google.auto.common.BasicAnnotationProcessor: java.util.Set deferredElementNames>;
+
+        $z1 = interfaceinvoke $r10.<java.util.Set: boolean contains(java.lang.Object)>($r12);
+
+        if $z1 != 0 goto label09;
+
+        $r9 = (javax.lang.model.element.Element) $r22;
+
+        $z1 = staticinvoke <com.google.auto.common.SuperficialValidation: boolean validateElement(javax.lang.model.element.Element)>($r9);
+
+        if $z1 == 0 goto label09;
+
+     label08:
+        $z0 = 1;
+
+     label09:
+        if $z0 == 0 goto label10;
+
+        virtualinvoke $r3.<com.google.common.collect.ImmutableSetMultimap$Builder: com.google.common.collect.ImmutableSetMultimap$Builder put(java.lang.Object,java.lang.Object)>($r15, $r22);
+
+        interfaceinvoke $r14.<java.util.Set: boolean add(java.lang.Object)>($r12);
+
+        goto label07;
+
+     label10:
+        $r10 = r0.<com.google.auto.common.BasicAnnotationProcessor: java.util.Set deferredElementNames>;
+
+        interfaceinvoke $r10.<java.util.Set: boolean add(java.lang.Object)>($r12);
+
+        goto label07;
+
+     label11:
+        $r17 = staticinvoke <com.google.auto.common.BasicAnnotationProcessor: javax.lang.model.element.TypeElement getEnclosingType(javax.lang.model.element.Element)>($r9);
+
+        $r23 = interfaceinvoke $r17.<javax.lang.model.element.TypeElement: javax.lang.model.element.Name getQualifiedName()>();
+
+        $r11 = virtualinvoke $r23.<java.lang.Object: java.lang.String toString()>();
+
+        $r12 = staticinvoke <com.google.auto.common.BasicAnnotationProcessor$ElementName: com.google.auto.common.BasicAnnotationProcessor$ElementName forTypeName(java.lang.String)>($r11);
+
+        $z1 = interfaceinvoke $r14.<java.util.Set: boolean contains(java.lang.Object)>($r12);
+
+        if $z1 != 0 goto label12;
+
+        $r10 = r0.<com.google.auto.common.BasicAnnotationProcessor: java.util.Set deferredElementNames>;
+
+        $z1 = interfaceinvoke $r10.<java.util.Set: boolean contains(java.lang.Object)>($r12);
+
+        if $z1 != 0 goto label13;
+
+        $r25 = (javax.lang.model.element.Element) $r17;
+
+        $z1 = staticinvoke <com.google.auto.common.SuperficialValidation: boolean validateElement(javax.lang.model.element.Element)>($r25);
+
+        if $z1 == 0 goto label13;
+
+     label12:
+        $z0 = 1;
+
+     label13:
+        if $z0 == 0 goto label14;
+
+        virtualinvoke $r3.<com.google.common.collect.ImmutableSetMultimap$Builder: com.google.common.collect.ImmutableSetMultimap$Builder put(java.lang.Object,java.lang.Object)>($r15, $r9);
+
+        interfaceinvoke $r14.<java.util.Set: boolean add(java.lang.Object)>($r12);
+
+        goto label07;
+
+     label14:
+        $r10 = r0.<com.google.auto.common.BasicAnnotationProcessor: java.util.Set deferredElementNames>;
+
+        interfaceinvoke $r10.<java.util.Set: boolean add(java.lang.Object)>($r12);
+
+        goto label07;
+
+     label15:
+        $r13 = virtualinvoke $r3.<com.google.common.collect.ImmutableSetMultimap$Builder: com.google.common.collect.ImmutableSetMultimap build()>();
+
+        return $r13;
+    }
+
+    public final com.google.common.collect.ImmutableSet getSupportedAnnotationTypes()
+    {
+        com.google.common.collect.ImmutableSet $r2;
+        com.google.common.collect.ImmutableSet$Builder $r1;
+        java.lang.Object $r4;
+        java.lang.Class $r5;
+        com.google.auto.common.BasicAnnotationProcessor r0;
+        com.google.common.collect.UnmodifiableIterator $r3;
+        java.lang.String $r6;
+        boolean $z0;
+
+        r0 := @this: com.google.auto.common.BasicAnnotationProcessor;
+
+        $r1 = staticinvoke <com.google.common.collect.ImmutableSet: com.google.common.collect.ImmutableSet$Builder builder()>();
+
+        $r2 = specialinvoke r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.ImmutableSet getSupportedAnnotationClasses()>();
+
+        $r3 = virtualinvoke $r2.<com.google.common.collect.ImmutableSet: com.google.common.collect.UnmodifiableIterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (java.lang.Class) $r4;
+
+        $r6 = virtualinvoke $r5.<java.lang.Class: java.lang.String getCanonicalName()>();
+
+        virtualinvoke $r1.<com.google.common.collect.ImmutableSet$Builder: com.google.common.collect.ImmutableSet$Builder add(java.lang.Object)>($r6);
+
+        goto label1;
+
+     label2:
+        $r2 = virtualinvoke $r1.<com.google.common.collect.ImmutableSet$Builder: com.google.common.collect.ImmutableSet build()>();
+
+        return $r2;
+    }
+
+    public volatile java.util.Set getSupportedAnnotationTypes()
+    {
+        com.google.auto.common.BasicAnnotationProcessor r0;
+        com.google.common.collect.ImmutableSet $r1;
+
+        r0 := @this: com.google.auto.common.BasicAnnotationProcessor;
+
+        $r1 = virtualinvoke r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.ImmutableSet getSupportedAnnotationTypes()>();
+
+        return $r1;
+    }
+
+    public final void init(javax.'annotation'.processing.ProcessingEnvironment)
+    {
+        java.lang.Throwable $r6;
+        com.google.common.collect.ImmutableList $r5;
+        javax.'annotation'.processing.ProcessingEnvironment $r1;
+        com.google.auto.common.BasicAnnotationProcessor r0;
+        javax.lang.model.util.Elements $r2;
+        javax.'annotation'.processing.Messager $r3;
+        java.lang.Iterable $r4;
+
+        r0 := @this: com.google.auto.common.BasicAnnotationProcessor;
+
+        $r1 := @parameter0: javax.'annotation'.processing.ProcessingEnvironment;
+
+        entermonitor r0;
+
+     label1:
+        specialinvoke r0.<javax.'annotation'.processing.AbstractProcessor: void init(javax.'annotation'.processing.ProcessingEnvironment)>($r1);
+
+        $r2 = interfaceinvoke $r1.<javax.'annotation'.processing.ProcessingEnvironment: javax.lang.model.util.Elements getElementUtils()>();
+
+        r0.<com.google.auto.common.BasicAnnotationProcessor: javax.lang.model.util.Elements elements> = $r2;
+
+        $r3 = interfaceinvoke $r1.<javax.'annotation'.processing.ProcessingEnvironment: javax.'annotation'.processing.Messager getMessager()>();
+
+        r0.<com.google.auto.common.BasicAnnotationProcessor: javax.'annotation'.processing.Messager messager> = $r3;
+
+        $r4 = virtualinvoke r0.<com.google.auto.common.BasicAnnotationProcessor: java.lang.Iterable initSteps()>();
+
+        $r5 = staticinvoke <com.google.common.collect.ImmutableList: com.google.common.collect.ImmutableList copyOf(java.lang.Iterable)>($r4);
+
+        r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.ImmutableList steps> = $r5;
+
+     label2:
+        exitmonitor r0;
+
+        return;
+
+     label3:
+        $r6 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r6;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public abstract java.lang.Iterable initSteps();
+
+    public void postProcess()
+    {
+        com.google.auto.common.BasicAnnotationProcessor r0;
+
+        r0 := @this: com.google.auto.common.BasicAnnotationProcessor;
+
+        return;
+    }
+
+    public void postRound(javax.'annotation'.processing.RoundEnvironment)
+    {
+        com.google.auto.common.BasicAnnotationProcessor r0;
+        javax.'annotation'.processing.RoundEnvironment $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.auto.common.BasicAnnotationProcessor;
+
+        $r1 := @parameter0: javax.'annotation'.processing.RoundEnvironment;
+
+        $z0 = interfaceinvoke $r1.<javax.'annotation'.processing.RoundEnvironment: boolean processingOver()>();
+
+        if $z0 != 0 goto label1;
+
+        virtualinvoke r0.<com.google.auto.common.BasicAnnotationProcessor: void postProcess()>();
+
+     label1:
+        return;
+    }
+
+    public final boolean process(java.util.Set, javax.'annotation'.processing.RoundEnvironment)
+    {
+        com.google.common.collect.ImmutableMap $r6;
+        java.util.Collection $r8;
+        java.util.Set $r1;
+        javax.lang.model.util.Elements $r3;
+        com.google.common.collect.SetMultimap $r7;
+        com.google.common.collect.ImmutableList $r5;
+        javax.'annotation'.processing.RoundEnvironment $r2;
+        com.google.auto.common.BasicAnnotationProcessor r0;
+        javax.'annotation'.processing.Messager $r4;
+        boolean $z0, $z1;
+        com.google.common.collect.ImmutableSetMultimap $r9;
+
+        r0 := @this: com.google.auto.common.BasicAnnotationProcessor;
+
+        $r1 := @parameter0: java.util.Set;
+
+        $r2 := @parameter1: javax.'annotation'.processing.RoundEnvironment;
+
+        $r3 = r0.<com.google.auto.common.BasicAnnotationProcessor: javax.lang.model.util.Elements elements>;
+
+        $z0 = 1;
+
+        if $r3 == null goto label1;
+
+        $z1 = 1;
+
+        goto label2;
+
+     label1:
+        $z1 = 0;
+
+     label2:
+        staticinvoke <com.google.common.base.Preconditions: void checkState(boolean)>($z1);
+
+        $r4 = r0.<com.google.auto.common.BasicAnnotationProcessor: javax.'annotation'.processing.Messager messager>;
+
+        if $r4 == null goto label3;
+
+        $z1 = 1;
+
+        goto label4;
+
+     label3:
+        $z1 = 0;
+
+     label4:
+        staticinvoke <com.google.common.base.Preconditions: void checkState(boolean)>($z1);
+
+        $r5 = r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.ImmutableList steps>;
+
+        if $r5 == null goto label5;
+
+        goto label6;
+
+     label5:
+        $z0 = 0;
+
+     label6:
+        staticinvoke <com.google.common.base.Preconditions: void checkState(boolean)>($z0);
+
+        $r6 = specialinvoke r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.ImmutableMap deferredElements()>();
+
+        $r1 = r0.<com.google.auto.common.BasicAnnotationProcessor: java.util.Set deferredElementNames>;
+
+        interfaceinvoke $r1.<java.util.Set: void clear()>();
+
+        $z0 = interfaceinvoke $r2.<javax.'annotation'.processing.RoundEnvironment: boolean processingOver()>();
+
+        if $z0 == 0 goto label7;
+
+        virtualinvoke r0.<com.google.auto.common.BasicAnnotationProcessor: void postRound(javax.'annotation'.processing.RoundEnvironment)>($r2);
+
+        $r7 = r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.SetMultimap elementsDeferredBySteps>;
+
+        $r8 = interfaceinvoke $r7.<com.google.common.collect.Multimap: java.util.Collection values()>();
+
+        specialinvoke r0.<com.google.auto.common.BasicAnnotationProcessor: void reportMissingElements(java.util.Map,java.util.Collection)>($r6, $r8);
+
+        return 0;
+
+     label7:
+        $r9 = specialinvoke r0.<com.google.auto.common.BasicAnnotationProcessor: com.google.common.collect.ImmutableSetMultimap validElements(com.google.common.collect.ImmutableMap,javax.'annotation'.processing.RoundEnvironment)>($r6, $r2);
+
+        specialinvoke r0.<com.google.auto.common.BasicAnnotationProcessor: void process(com.google.common.collect.ImmutableSetMultimap)>($r9);
+
+        virtualinvoke r0.<com.google.auto.common.BasicAnnotationProcessor: void postRound(javax.'annotation'.processing.RoundEnvironment)>($r2);
+
+        return 0;
+    }
+}

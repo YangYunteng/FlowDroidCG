@@ -1,0 +1,1087 @@
+public final class com.google.zxing.datamatrix.decoder.BitMatrixParser extends java.lang.Object
+{
+    public final com.google.zxing.common.BitMatrix mappingBitMatrix;
+    public final com.google.zxing.common.BitMatrix readMappingMatrix;
+    public final com.google.zxing.datamatrix.decoder.Version version;
+
+    public void <init>(com.google.zxing.common.BitMatrix)
+    {
+        int $i0, $i1;
+        com.google.zxing.datamatrix.decoder.Version $r2;
+        com.google.zxing.common.BitMatrix $r1, $r3;
+        com.google.zxing.datamatrix.decoder.BitMatrixParser r0;
+        com.google.zxing.FormatException $r4;
+
+        r0 := @this: com.google.zxing.datamatrix.decoder.BitMatrixParser;
+
+        $r1 := @parameter0: com.google.zxing.common.BitMatrix;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.common.BitMatrix: int getHeight()>();
+
+        if $i0 < 8 goto label1;
+
+        if $i0 > 144 goto label1;
+
+        $i0 = $i0 & 1;
+
+        if $i0 != 0 goto label1;
+
+        $r2 = staticinvoke <com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.datamatrix.decoder.Version readVersion(com.google.zxing.common.BitMatrix)>($r1);
+
+        r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.datamatrix.decoder.Version version> = $r2;
+
+        $r1 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix extractDataRegion(com.google.zxing.common.BitMatrix)>($r1);
+
+        r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix mappingBitMatrix> = $r1;
+
+        $r1 = new com.google.zxing.common.BitMatrix;
+
+        $r3 = r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix mappingBitMatrix>;
+
+        $i0 = virtualinvoke $r3.<com.google.zxing.common.BitMatrix: int getWidth()>();
+
+        $r3 = r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix mappingBitMatrix>;
+
+        $i1 = virtualinvoke $r3.<com.google.zxing.common.BitMatrix: int getHeight()>();
+
+        specialinvoke $r1.<com.google.zxing.common.BitMatrix: void <init>(int,int)>($i0, $i1);
+
+        r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix readMappingMatrix> = $r1;
+
+        return;
+
+     label1:
+        $r4 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        throw $r4;
+    }
+
+    public static com.google.zxing.datamatrix.decoder.Version readVersion(com.google.zxing.common.BitMatrix)
+    {
+        int $i0, $i1;
+        com.google.zxing.datamatrix.decoder.Version $r1;
+        com.google.zxing.common.BitMatrix $r0;
+
+        $r0 := @parameter0: com.google.zxing.common.BitMatrix;
+
+        $i0 = virtualinvoke $r0.<com.google.zxing.common.BitMatrix: int getHeight()>();
+
+        $i1 = virtualinvoke $r0.<com.google.zxing.common.BitMatrix: int getWidth()>();
+
+        $r1 = staticinvoke <com.google.zxing.datamatrix.decoder.Version: com.google.zxing.datamatrix.decoder.Version getVersionForDimensions(int,int)>($i0, $i1);
+
+        return $r1;
+    }
+
+    public com.google.zxing.common.BitMatrix extractDataRegion(com.google.zxing.common.BitMatrix)
+    {
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10, $i11, $i12;
+        com.google.zxing.datamatrix.decoder.Version $r3;
+        boolean $z0;
+        com.google.zxing.datamatrix.decoder.BitMatrixParser r0;
+        java.lang.IllegalArgumentException $r4;
+        com.google.zxing.common.BitMatrix $r1, $r2;
+
+        r0 := @this: com.google.zxing.datamatrix.decoder.BitMatrixParser;
+
+        $r1 := @parameter0: com.google.zxing.common.BitMatrix;
+
+        $r3 = r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.datamatrix.decoder.Version version>;
+
+        $i3 = virtualinvoke $r3.<com.google.zxing.datamatrix.decoder.Version: int getSymbolSizeRows()>();
+
+        $r3 = r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.datamatrix.decoder.Version version>;
+
+        $i4 = virtualinvoke $r3.<com.google.zxing.datamatrix.decoder.Version: int getSymbolSizeColumns()>();
+
+        $i5 = virtualinvoke $r1.<com.google.zxing.common.BitMatrix: int getHeight()>();
+
+        if $i5 != $i3 goto label10;
+
+        $r3 = r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.datamatrix.decoder.Version version>;
+
+        $i5 = virtualinvoke $r3.<com.google.zxing.datamatrix.decoder.Version: int getDataRegionSizeRows()>();
+
+        $r3 = r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.datamatrix.decoder.Version version>;
+
+        $i6 = virtualinvoke $r3.<com.google.zxing.datamatrix.decoder.Version: int getDataRegionSizeColumns()>();
+
+        $i3 = $i3 / $i5;
+
+        $i4 = $i4 / $i6;
+
+        $i0 = $i3 * $i5;
+
+        $i1 = $i4 * $i6;
+
+        $r2 = new com.google.zxing.common.BitMatrix;
+
+        specialinvoke $r2.<com.google.zxing.common.BitMatrix: void <init>(int,int)>($i1, $i0);
+
+        $i7 = 0;
+
+     label01:
+        if $i7 >= $i3 goto label09;
+
+        $i0 = $i7 * $i5;
+
+        $i8 = 0;
+
+     label02:
+        if $i8 >= $i4 goto label08;
+
+        $i1 = $i8 * $i6;
+
+        $i9 = 0;
+
+     label03:
+        if $i9 >= $i5 goto label07;
+
+        $i2 = $i5 + 2;
+
+        $i2 = $i2 * $i7;
+
+        $i2 = $i2 + 1;
+
+        $i10 = $i2 + $i9;
+
+        $i2 = $i0 + $i9;
+
+        $i11 = 0;
+
+     label04:
+        if $i11 >= $i6 goto label06;
+
+        $i12 = $i6 + 2;
+
+        $i12 = $i12 * $i8;
+
+        $i12 = $i12 + 1;
+
+        $i12 = $i12 + $i11;
+
+        $z0 = virtualinvoke $r1.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i12, $i10);
+
+        if $z0 == 0 goto label05;
+
+        $i12 = $i1 + $i11;
+
+        virtualinvoke $r2.<com.google.zxing.common.BitMatrix: void set(int,int)>($i12, $i2);
+
+     label05:
+        $i11 = $i11 + 1;
+
+        goto label04;
+
+     label06:
+        $i9 = $i9 + 1;
+
+        goto label03;
+
+     label07:
+        $i8 = $i8 + 1;
+
+        goto label02;
+
+     label08:
+        $i7 = $i7 + 1;
+
+        goto label01;
+
+     label09:
+        return $r2;
+
+     label10:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Dimension of bitMarix must match the version size");
+
+        goto label11;
+
+     label11:
+        throw $r4;
+    }
+
+    public com.google.zxing.datamatrix.decoder.Version getVersion()
+    {
+        com.google.zxing.datamatrix.decoder.Version r1;
+        com.google.zxing.datamatrix.decoder.BitMatrixParser r0;
+
+        r0 := @this: com.google.zxing.datamatrix.decoder.BitMatrixParser;
+
+        r1 = r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.datamatrix.decoder.Version version>;
+
+        return r1;
+    }
+
+    public byte[] readCodewords()
+    {
+        byte[] $r2;
+        byte $b7;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6;
+        com.google.zxing.datamatrix.decoder.Version $r1;
+        com.google.zxing.FormatException $r4;
+        boolean $z0, $z1, $z2, $z3, $z4;
+        com.google.zxing.datamatrix.decoder.BitMatrixParser r0;
+        com.google.zxing.common.BitMatrix $r3;
+
+        r0 := @this: com.google.zxing.datamatrix.decoder.BitMatrixParser;
+
+        $r1 = r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.datamatrix.decoder.Version version>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.datamatrix.decoder.Version: int getTotalCodewords()>();
+
+        $r2 = newarray (byte)[$i0];
+
+        $r3 = r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix mappingBitMatrix>;
+
+        $i0 = virtualinvoke $r3.<com.google.zxing.common.BitMatrix: int getHeight()>();
+
+        $r3 = r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix mappingBitMatrix>;
+
+        $i1 = virtualinvoke $r3.<com.google.zxing.common.BitMatrix: int getWidth()>();
+
+        $i2 = 4;
+
+        $i3 = 0;
+
+        $z0 = 0;
+
+        $i4 = 0;
+
+        $z1 = 0;
+
+        $z2 = 0;
+
+        $z3 = 0;
+
+     label01:
+        if $i2 != $i0 goto label02;
+
+        if $i3 != 0 goto label02;
+
+        if $z0 != 0 goto label02;
+
+        $i5 = $i4 + 1;
+
+        $i6 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: int readCorner1(int,int)>($i0, $i1);
+
+        $b7 = (byte) $i6;
+
+        $r2[$i4] = $b7;
+
+        $i4 = -2;
+
+        $i2 = $i2 + $i4;
+
+        $i3 = $i3 + 2;
+
+        $i4 = $i5;
+
+        $z0 = 1;
+
+        goto label11;
+
+     label02:
+        $i5 = -2;
+
+        $i5 = $i0 + $i5;
+
+        if $i2 != $i5 goto label03;
+
+        if $i3 != 0 goto label03;
+
+        $i6 = $i1 & 3;
+
+        if $i6 == 0 goto label03;
+
+        if $z1 != 0 goto label03;
+
+        $i5 = $i4 + 1;
+
+        $i6 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: int readCorner2(int,int)>($i0, $i1);
+
+        $b7 = (byte) $i6;
+
+        $r2[$i4] = $b7;
+
+        $i4 = -2;
+
+        $i2 = $i2 + $i4;
+
+        $i3 = $i3 + 2;
+
+        $i4 = $i5;
+
+        $z1 = 1;
+
+        goto label11;
+
+     label03:
+        $i6 = $i0 + 4;
+
+        if $i2 != $i6 goto label04;
+
+        if $i3 != 2 goto label04;
+
+        $i6 = $i1 & 7;
+
+        if $i6 != 0 goto label04;
+
+        if $z2 != 0 goto label04;
+
+        $i5 = $i4 + 1;
+
+        $i6 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: int readCorner3(int,int)>($i0, $i1);
+
+        $b7 = (byte) $i6;
+
+        $r2[$i4] = $b7;
+
+        $i4 = -2;
+
+        $i2 = $i2 + $i4;
+
+        $i3 = $i3 + 2;
+
+        $i4 = $i5;
+
+        $z2 = 1;
+
+        goto label11;
+
+     label04:
+        if $i2 != $i5 goto label05;
+
+        if $i3 != 0 goto label05;
+
+        $i5 = $i1 & 7;
+
+        if $i5 != 4 goto label05;
+
+        if $z3 != 0 goto label05;
+
+        $i5 = $i4 + 1;
+
+        $i6 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: int readCorner4(int,int)>($i0, $i1);
+
+        $b7 = (byte) $i6;
+
+        $r2[$i4] = $b7;
+
+        $i4 = -2;
+
+        $i2 = $i2 + $i4;
+
+        $i3 = $i3 + 2;
+
+        $i4 = $i5;
+
+        $z3 = 1;
+
+        goto label11;
+
+     label05:
+        if $i2 >= $i0 goto label06;
+
+        if $i3 < 0 goto label06;
+
+        $r3 = r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix readMappingMatrix>;
+
+        $z4 = virtualinvoke $r3.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i3, $i2);
+
+        if $z4 != 0 goto label06;
+
+        $i6 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: int readUtah(int,int,int,int)>($i2, $i3, $i0, $i1);
+
+        $b7 = (byte) $i6;
+
+        $r2[$i4] = $b7;
+
+        $i4 = $i4 + 1;
+
+     label06:
+        $i5 = -2;
+
+        $i2 = $i2 + $i5;
+
+        $i3 = $i3 + 2;
+
+        if $i2 < 0 goto label07;
+
+        if $i3 < $i1 goto label05;
+
+     label07:
+        $i2 = $i2 + 1;
+
+        $i3 = $i3 + 3;
+
+     label08:
+        if $i2 < 0 goto label09;
+
+        if $i3 >= $i1 goto label09;
+
+        $r3 = r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix readMappingMatrix>;
+
+        $z4 = virtualinvoke $r3.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i3, $i2);
+
+        if $z4 != 0 goto label09;
+
+        $i6 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: int readUtah(int,int,int,int)>($i2, $i3, $i0, $i1);
+
+        $b7 = (byte) $i6;
+
+        $r2[$i4] = $b7;
+
+        $i4 = $i4 + 1;
+
+     label09:
+        $i2 = $i2 + 2;
+
+        $i5 = -2;
+
+        $i3 = $i3 + $i5;
+
+        if $i2 >= $i0 goto label10;
+
+        if $i3 >= 0 goto label08;
+
+     label10:
+        $i2 = $i2 + 3;
+
+        $i3 = $i3 + 1;
+
+     label11:
+        if $i2 < $i0 goto label01;
+
+        if $i3 < $i1 goto label01;
+
+        $r1 = r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.datamatrix.decoder.Version version>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.datamatrix.decoder.Version: int getTotalCodewords()>();
+
+        if $i4 != $i0 goto label12;
+
+        return $r2;
+
+     label12:
+        $r4 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        goto label13;
+
+     label13:
+        throw $r4;
+    }
+
+    public int readCorner1(int, int)
+    {
+        int $i0, $i1, $i2, $i3;
+        com.google.zxing.datamatrix.decoder.BitMatrixParser r0;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.datamatrix.decoder.BitMatrixParser;
+
+        $i1 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $i2 = -1;
+
+        $i2 = $i1 + $i2;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i2, 0, $i1, $i0);
+
+        if $z0 == 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        $i3 = $z0 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i2, 1, $i1, $i0);
+
+        if $z0 == 0 goto label3;
+
+        $i3 = $i3 | 1;
+
+     label3:
+        $i3 = $i3 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i2, 2, $i1, $i0);
+
+        if $z0 == 0 goto label4;
+
+        $i3 = $i3 | 1;
+
+     label4:
+        $i2 = $i3 << 1;
+
+        $i3 = -2;
+
+        $i3 = $i0 + $i3;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(0, $i3, $i1, $i0);
+
+        if $z0 == 0 goto label5;
+
+        $i2 = $i2 | 1;
+
+     label5:
+        $i3 = $i2 << 1;
+
+        $i2 = -1;
+
+        $i2 = $i0 + $i2;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(0, $i2, $i1, $i0);
+
+        if $z0 == 0 goto label6;
+
+        $i3 = $i3 | 1;
+
+     label6:
+        $i3 = $i3 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(1, $i2, $i1, $i0);
+
+        if $z0 == 0 goto label7;
+
+        $i3 = $i3 | 1;
+
+     label7:
+        $i3 = $i3 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(2, $i2, $i1, $i0);
+
+        if $z0 == 0 goto label8;
+
+        $i3 = $i3 | 1;
+
+     label8:
+        $i3 = $i3 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(3, $i2, $i1, $i0);
+
+        if $z0 == 0 goto label9;
+
+        $i1 = $i3 | 1;
+
+        return $i1;
+
+     label9:
+        return $i3;
+    }
+
+    public int readCorner2(int, int)
+    {
+        int $i0, $i1, $i2, $i3;
+        com.google.zxing.datamatrix.decoder.BitMatrixParser r0;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.datamatrix.decoder.BitMatrixParser;
+
+        $i1 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $i2 = -3;
+
+        $i2 = $i1 + $i2;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i2, 0, $i1, $i0);
+
+        if $z0 == 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        $i2 = $z0 << 1;
+
+        $i3 = -2;
+
+        $i3 = $i1 + $i3;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i3, 0, $i1, $i0);
+
+        if $z0 == 0 goto label3;
+
+        $i2 = $i2 | 1;
+
+     label3:
+        $i2 = $i2 << 1;
+
+        $i3 = -1;
+
+        $i3 = $i1 + $i3;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i3, 0, $i1, $i0);
+
+        if $z0 == 0 goto label4;
+
+        $i2 = $i2 | 1;
+
+     label4:
+        $i2 = $i2 << 1;
+
+        $i3 = -4;
+
+        $i3 = $i0 + $i3;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(0, $i3, $i1, $i0);
+
+        if $z0 == 0 goto label5;
+
+        $i2 = $i2 | 1;
+
+     label5:
+        $i2 = $i2 << 1;
+
+        $i3 = -3;
+
+        $i3 = $i0 + $i3;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(0, $i3, $i1, $i0);
+
+        if $z0 == 0 goto label6;
+
+        $i2 = $i2 | 1;
+
+     label6:
+        $i2 = $i2 << 1;
+
+        $i3 = -2;
+
+        $i3 = $i0 + $i3;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(0, $i3, $i1, $i0);
+
+        if $z0 == 0 goto label7;
+
+        $i2 = $i2 | 1;
+
+     label7:
+        $i2 = $i2 << 1;
+
+        $i3 = -1;
+
+        $i3 = $i0 + $i3;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(0, $i3, $i1, $i0);
+
+        if $z0 == 0 goto label8;
+
+        $i2 = $i2 | 1;
+
+     label8:
+        $i2 = $i2 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(1, $i3, $i1, $i0);
+
+        if $z0 == 0 goto label9;
+
+        $i1 = $i2 | 1;
+
+        return $i1;
+
+     label9:
+        return $i2;
+    }
+
+    public int readCorner3(int, int)
+    {
+        com.google.zxing.datamatrix.decoder.BitMatrixParser r0;
+        int $i0, $i1, $i2, $i3, $i4, $i5;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.datamatrix.decoder.BitMatrixParser;
+
+        $i2 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $i1 = -1;
+
+        $i3 = $i2 + $i1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i3, 0, $i2, $i0);
+
+        if $z0 == 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        $i4 = $z0 << 1;
+
+        $i1 = -1;
+
+        $i1 = $i0 + $i1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i3, $i1, $i2, $i0);
+
+        if $z0 == 0 goto label3;
+
+        $i4 = $i4 | 1;
+
+     label3:
+        $i4 = $i4 << 1;
+
+        $i3 = -3;
+
+        $i3 = $i0 + $i3;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(0, $i3, $i2, $i0);
+
+        if $z0 == 0 goto label4;
+
+        $i4 = $i4 | 1;
+
+     label4:
+        $i5 = $i4 << 1;
+
+        $i4 = -2;
+
+        $i4 = $i0 + $i4;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(0, $i4, $i2, $i0);
+
+        if $z0 == 0 goto label5;
+
+        $i5 = $i5 | 1;
+
+     label5:
+        $i5 = $i5 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(0, $i1, $i2, $i0);
+
+        if $z0 == 0 goto label6;
+
+        $i5 = $i5 | 1;
+
+     label6:
+        $i5 = $i5 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(1, $i3, $i2, $i0);
+
+        if $z0 == 0 goto label7;
+
+        $i5 = $i5 | 1;
+
+     label7:
+        $i3 = $i5 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(1, $i4, $i2, $i0);
+
+        if $z0 == 0 goto label8;
+
+        $i3 = $i3 | 1;
+
+     label8:
+        $i3 = $i3 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(1, $i1, $i2, $i0);
+
+        if $z0 == 0 goto label9;
+
+        $i2 = $i3 | 1;
+
+        return $i2;
+
+     label9:
+        return $i3;
+    }
+
+    public int readCorner4(int, int)
+    {
+        int $i0, $i1, $i2, $i3;
+        com.google.zxing.datamatrix.decoder.BitMatrixParser r0;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.datamatrix.decoder.BitMatrixParser;
+
+        $i1 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $i2 = -3;
+
+        $i2 = $i1 + $i2;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i2, 0, $i1, $i0);
+
+        if $z0 == 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        $i2 = $z0 << 1;
+
+        $i3 = -2;
+
+        $i3 = $i1 + $i3;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i3, 0, $i1, $i0);
+
+        if $z0 == 0 goto label3;
+
+        $i2 = $i2 | 1;
+
+     label3:
+        $i2 = $i2 << 1;
+
+        $i3 = -1;
+
+        $i3 = $i1 + $i3;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i3, 0, $i1, $i0);
+
+        if $z0 == 0 goto label4;
+
+        $i2 = $i2 | 1;
+
+     label4:
+        $i2 = $i2 << 1;
+
+        $i3 = -2;
+
+        $i3 = $i0 + $i3;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(0, $i3, $i1, $i0);
+
+        if $z0 == 0 goto label5;
+
+        $i2 = $i2 | 1;
+
+     label5:
+        $i3 = $i2 << 1;
+
+        $i2 = -1;
+
+        $i2 = $i0 + $i2;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(0, $i2, $i1, $i0);
+
+        if $z0 == 0 goto label6;
+
+        $i3 = $i3 | 1;
+
+     label6:
+        $i3 = $i3 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(1, $i2, $i1, $i0);
+
+        if $z0 == 0 goto label7;
+
+        $i3 = $i3 | 1;
+
+     label7:
+        $i3 = $i3 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(2, $i2, $i1, $i0);
+
+        if $z0 == 0 goto label8;
+
+        $i3 = $i3 | 1;
+
+     label8:
+        $i3 = $i3 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>(3, $i2, $i1, $i0);
+
+        if $z0 == 0 goto label9;
+
+        $i1 = $i3 | 1;
+
+        return $i1;
+
+     label9:
+        return $i3;
+    }
+
+    public boolean readModule(int, int, int, int)
+    {
+        int $i0, $i1, $i2, $i3;
+        com.google.zxing.common.BitMatrix $r1;
+        com.google.zxing.datamatrix.decoder.BitMatrixParser r0;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.datamatrix.decoder.BitMatrixParser;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $i3 := @parameter3: int;
+
+        if $i0 >= 0 goto label1;
+
+        $i0 = $i0 + $i2;
+
+        $i2 = $i2 + 4;
+
+        $i2 = $i2 & 7;
+
+        $i2 = 4 - $i2;
+
+        $i1 = $i1 + $i2;
+
+     label1:
+        if $i1 >= 0 goto label2;
+
+        $i1 = $i1 + $i3;
+
+        $i2 = $i3 + 4;
+
+        $i2 = $i2 & 7;
+
+        $i2 = 4 - $i2;
+
+        $i0 = $i0 + $i2;
+
+     label2:
+        $r1 = r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix readMappingMatrix>;
+
+        virtualinvoke $r1.<com.google.zxing.common.BitMatrix: void set(int,int)>($i1, $i0);
+
+        $r1 = r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix mappingBitMatrix>;
+
+        $z0 = virtualinvoke $r1.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i1, $i0);
+
+        return $z0;
+    }
+
+    public int readUtah(int, int, int, int)
+    {
+        com.google.zxing.datamatrix.decoder.BitMatrixParser r0;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.datamatrix.decoder.BitMatrixParser;
+
+        $i4 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        $i3 = -2;
+
+        $i5 = $i4 + $i3;
+
+        $i3 = -2;
+
+        $i6 = $i0 + $i3;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i5, $i6, $i1, $i2);
+
+        if $z0 == 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        $i7 = $z0 << 1;
+
+        $i3 = -1;
+
+        $i3 = $i0 + $i3;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i5, $i3, $i1, $i2);
+
+        if $z0 == 0 goto label3;
+
+        $i7 = $i7 | 1;
+
+     label3:
+        $i7 = $i7 << 1;
+
+        $i5 = -1;
+
+        $i5 = $i4 + $i5;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i5, $i6, $i1, $i2);
+
+        if $z0 == 0 goto label4;
+
+        $i7 = $i7 | 1;
+
+     label4:
+        $i7 = $i7 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i5, $i3, $i1, $i2);
+
+        if $z0 == 0 goto label5;
+
+        $i7 = $i7 | 1;
+
+     label5:
+        $i7 = $i7 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i5, $i0, $i1, $i2);
+
+        if $z0 == 0 goto label6;
+
+        $i7 = $i7 | 1;
+
+     label6:
+        $i5 = $i7 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i4, $i6, $i1, $i2);
+
+        if $z0 == 0 goto label7;
+
+        $i5 = $i5 | 1;
+
+     label7:
+        $i6 = $i5 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i4, $i3, $i1, $i2);
+
+        if $z0 == 0 goto label8;
+
+        $i6 = $i6 | 1;
+
+     label8:
+        $i3 = $i6 << 1;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.BitMatrixParser: boolean readModule(int,int,int,int)>($i4, $i0, $i1, $i2);
+
+        if $z0 == 0 goto label9;
+
+        $i4 = $i3 | 1;
+
+        return $i4;
+
+     label9:
+        return $i3;
+    }
+}

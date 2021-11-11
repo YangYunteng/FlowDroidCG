@@ -1,0 +1,96 @@
+public class project.android.imageprocessing.filter.colour.HighlightShadowFilter extends project.android.imageprocessing.filter.BasicFilter
+{
+    public static final java.lang.String UNIFORM_HIGHLIGHT;
+    public static final java.lang.String UNIFORM_SHADOW;
+    public float highlight;
+    public int highlightHandle;
+    public float shadow;
+    public int shadowHandle;
+
+    public void <init>(float, float)
+    {
+        project.android.imageprocessing.filter.colour.HighlightShadowFilter r0;
+        float $f0, $f1;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.HighlightShadowFilter;
+
+        $f0 := @parameter0: float;
+
+        $f1 := @parameter1: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.BasicFilter: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.colour.HighlightShadowFilter: float highlight> = $f0;
+
+        r0.<project.android.imageprocessing.filter.colour.HighlightShadowFilter: float shadow> = $f1;
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.colour.HighlightShadowFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.HighlightShadowFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nuniform float u_Highlight;\nuniform float u_Shadow;\nvarying vec2 v_TexCoord;\nconst vec3 luminanceWeighting = vec3(0.3, 0.3, 0.3);\nvoid main(){\n   vec4 texColour = texture2D(u_Texture0,v_TexCoord);\n   float luminance = dot(texColour.rgb, luminanceWeighting);\n   float s = clamp((pow(luminance, 1.0/(u_Shadow+1.0)) + (-0.76)*pow(luminance, 2.0/(u_Shadow+1.0))) - luminance, 0.0, 1.0);\n   float h = clamp((1.0 - (pow(1.0-luminance, 1.0/(2.0-u_Highlight)) + (-0.8)*pow(1.0-luminance, 2.0/(2.0-u_Highlight)))) - luminance, -1.0, 0.0);\n   vec3 result = vec3(0.0, 0.0, 0.0) + ((luminance + s + h) - 0.0) * ((texColour.rgb - vec3(0.0, 0.0, 0.0))/(luminance - 0.0));\n   gl_FragColor = vec4(result, texColour.a);\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.colour.HighlightShadowFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.HighlightShadowFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_Highlight");
+
+        r0.<project.android.imageprocessing.filter.colour.HighlightShadowFilter: int highlightHandle> = $i0;
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_Shadow");
+
+        r0.<project.android.imageprocessing.filter.colour.HighlightShadowFilter: int shadowHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.colour.HighlightShadowFilter r0;
+        float $f0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.HighlightShadowFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.HighlightShadowFilter: int highlightHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.colour.HighlightShadowFilter: float highlight>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.HighlightShadowFilter: int shadowHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.colour.HighlightShadowFilter: float shadow>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.colour.HighlightShadowFilter: java.lang.String UNIFORM_SHADOW> = "u_Shadow";
+
+        <project.android.imageprocessing.filter.colour.HighlightShadowFilter: java.lang.String UNIFORM_HIGHLIGHT> = "u_Highlight";
+
+        return;
+    }
+}

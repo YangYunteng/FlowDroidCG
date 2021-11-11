@@ -1,0 +1,123 @@
+public final class org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorage extends java.lang.Object implements org.apache.james.mime4j.storage.Storage
+{
+    public final java.lang.String algorithm;
+    public org.apache.james.mime4j.storage.Storage encrypted;
+    public final javax.crypto.spec.SecretKeySpec skeySpec;
+
+    public void <init>(org.apache.james.mime4j.storage.Storage, java.lang.String, javax.crypto.spec.SecretKeySpec)
+    {
+        org.apache.james.mime4j.storage.Storage $r1;
+        javax.crypto.spec.SecretKeySpec $r3;
+        java.lang.String $r2;
+        org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorage r0;
+
+        r0 := @this: org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorage;
+
+        $r1 := @parameter0: org.apache.james.mime4j.storage.Storage;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: javax.crypto.spec.SecretKeySpec;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorage: org.apache.james.mime4j.storage.Storage encrypted> = $r1;
+
+        r0.<org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorage: java.lang.String algorithm> = $r2;
+
+        r0.<org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorage: javax.crypto.spec.SecretKeySpec skeySpec> = $r3;
+
+        return;
+    }
+
+    public void delete()
+    {
+        org.apache.james.mime4j.storage.Storage $r1;
+        org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorage r0;
+
+        r0 := @this: org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorage;
+
+        $r1 = r0.<org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorage: org.apache.james.mime4j.storage.Storage encrypted>;
+
+        if $r1 == null goto label1;
+
+        interfaceinvoke $r1.<org.apache.james.mime4j.storage.Storage: void delete()>();
+
+        r0.<org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorage: org.apache.james.mime4j.storage.Storage encrypted> = null;
+
+     label1:
+        return;
+    }
+
+    public java.io.InputStream getInputStream()
+    {
+        java.lang.Throwable $r9;
+        java.lang.IllegalStateException $r10;
+        javax.crypto.spec.SecretKeySpec $r4;
+        java.io.IOException $r8;
+        javax.crypto.Cipher $r3;
+        javax.crypto.CipherInputStream $r6;
+        java.security.GeneralSecurityException $r7;
+        org.apache.james.mime4j.storage.Storage $r1;
+        java.lang.String $r2;
+        org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorage r0;
+        java.io.InputStream $r5;
+
+        r0 := @this: org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorage;
+
+        $r1 = r0.<org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorage: org.apache.james.mime4j.storage.Storage encrypted>;
+
+        if $r1 == null goto label10;
+
+        $r2 = r0.<org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorage: java.lang.String algorithm>;
+
+     label01:
+        $r3 = staticinvoke <javax.crypto.Cipher: javax.crypto.Cipher getInstance(java.lang.String)>($r2);
+
+     label02:
+        $r4 = r0.<org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorage: javax.crypto.spec.SecretKeySpec skeySpec>;
+
+     label03:
+        virtualinvoke $r3.<javax.crypto.Cipher: void init(int,java.security.Key)>(2, $r4);
+
+     label04:
+        $r1 = r0.<org.apache.james.mime4j.storage.CipherStorageProvider$CipherStorage: org.apache.james.mime4j.storage.Storage encrypted>;
+
+     label05:
+        $r5 = interfaceinvoke $r1.<org.apache.james.mime4j.storage.Storage: java.io.InputStream getInputStream()>();
+
+     label06:
+        $r6 = new javax.crypto.CipherInputStream;
+
+     label07:
+        specialinvoke $r6.<javax.crypto.CipherInputStream: void <init>(java.io.InputStream,javax.crypto.Cipher)>($r5, $r3);
+
+     label08:
+        return $r6;
+
+     label09:
+        $r7 := @caughtexception;
+
+        $r8 = new java.io.IOException;
+
+        specialinvoke $r8.<java.io.IOException: void <init>()>();
+
+        $r9 = virtualinvoke $r8.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r7);
+
+        $r8 = (java.io.IOException) $r9;
+
+        throw $r8;
+
+     label10:
+        $r10 = new java.lang.IllegalStateException;
+
+        specialinvoke $r10.<java.lang.IllegalStateException: void <init>(java.lang.String)>("storage has been deleted");
+
+        throw $r10;
+
+        catch java.security.GeneralSecurityException from label01 to label02 with label09;
+        catch java.security.GeneralSecurityException from label03 to label04 with label09;
+        catch java.security.GeneralSecurityException from label05 to label06 with label09;
+        catch java.security.GeneralSecurityException from label07 to label08 with label09;
+    }
+}

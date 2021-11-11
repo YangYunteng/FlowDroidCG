@@ -1,0 +1,33 @@
+public class project.android.imageprocessing.filter.effect.PinchDistortionFilter extends project.android.imageprocessing.filter.effect.BulgeDistortionFilter
+{
+
+    public void <init>(android.graphics.PointF, float, float, float)
+    {
+        android.graphics.PointF $r1;
+        project.android.imageprocessing.filter.effect.PinchDistortionFilter r0;
+        float $f0, $f1, $f2;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.PinchDistortionFilter;
+
+        $r1 := @parameter0: android.graphics.PointF;
+
+        $f0 := @parameter1: float;
+
+        $f1 := @parameter2: float;
+
+        $f2 := @parameter3: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.effect.BulgeDistortionFilter: void <init>(android.graphics.PointF,float,float,float)>($r1, $f0, $f1, $f2);
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.effect.PinchDistortionFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.PinchDistortionFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform vec2 u_Center;\nuniform float u_Radius;\nuniform float u_DistortionAmount;\nuniform float u_AspectRatio;\nvoid main(){\n   highp vec2 textureCoordinateToUse = vec2(v_TexCoord.x, (v_TexCoord.y * u_AspectRatio + 0.5 - 0.5 * u_AspectRatio));\n   highp float dist = distance(u_Center, textureCoordinateToUse);\n   textureCoordinateToUse = v_TexCoord;\n   if (dist < u_Radius) {\n     textureCoordinateToUse -= u_Center;\n     highp float percent = 1.0 + (u_Radius - dist) / u_Radius * u_DistortionAmount;\n     textureCoordinateToUse = textureCoordinateToUse * percent;\n     textureCoordinateToUse += u_Center;\n   }\n   gl_FragColor = texture2D(u_Texture0, textureCoordinateToUse);\n}\n";
+    }
+}

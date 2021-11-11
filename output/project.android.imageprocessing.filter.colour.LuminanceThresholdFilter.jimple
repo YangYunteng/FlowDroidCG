@@ -1,0 +1,75 @@
+public class project.android.imageprocessing.filter.colour.LuminanceThresholdFilter extends project.android.imageprocessing.filter.BasicFilter
+{
+    public static final java.lang.String UNIFORM_THRESHOLD;
+    public float threshold;
+    public int thresholdHandle;
+
+    public void <init>(float)
+    {
+        project.android.imageprocessing.filter.colour.LuminanceThresholdFilter r0;
+        float $f0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.LuminanceThresholdFilter;
+
+        $f0 := @parameter0: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.BasicFilter: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.colour.LuminanceThresholdFilter: float threshold> = $f0;
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.colour.LuminanceThresholdFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.LuminanceThresholdFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform float u_Threshold;\nvec3 luminanceWeighting = vec3(0.2125, 0.7154, 0.0721);\nvoid main(){\n   vec4 color = texture2D(u_Texture0,v_TexCoord);\n   float luminance = dot(color.rgb, luminanceWeighting);\n   gl_FragColor = vec4(vec3(step(u_Threshold, luminance)), color.a);\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        project.android.imageprocessing.filter.colour.LuminanceThresholdFilter r0;
+        int $i0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.LuminanceThresholdFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_Threshold");
+
+        r0.<project.android.imageprocessing.filter.colour.LuminanceThresholdFilter: int thresholdHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        project.android.imageprocessing.filter.colour.LuminanceThresholdFilter r0;
+        int $i0;
+        float $f0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.LuminanceThresholdFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.LuminanceThresholdFilter: int thresholdHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.colour.LuminanceThresholdFilter: float threshold>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.colour.LuminanceThresholdFilter: java.lang.String UNIFORM_THRESHOLD> = "u_Threshold";
+
+        return;
+    }
+}

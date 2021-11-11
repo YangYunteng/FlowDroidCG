@@ -1,0 +1,1882 @@
+public abstract class com.google.common.util.concurrent.AbstractFuture extends com.google.common.util.concurrent.FluentFuture
+{
+    public static final com.google.common.util.concurrent.AbstractFuture$AtomicHelper ATOMIC_HELPER;
+    public static final boolean GENERATE_CANCELLATION_CAUSES;
+    public static final java.lang.Object NULL;
+    public static final long SPIN_THRESHOLD_NANOS;
+    public static final java.util.logging.Logger log;
+    public volatile com.google.common.util.concurrent.AbstractFuture$Listener listeners;
+    public volatile java.lang.Object value;
+    public volatile com.google.common.util.concurrent.AbstractFuture$Waiter waiters;
+
+    static void <clinit>()
+    {
+        java.lang.Throwable $r3, $r5;
+        com.google.common.util.concurrent.AbstractFuture$AtomicHelper $r4;
+        java.util.logging.Level $r11;
+        com.google.common.util.concurrent.AbstractFuture$SynchronizedHelper $r14;
+        com.google.common.util.concurrent.AbstractFuture$SafeAtomicHelper $r13;
+        com.google.common.util.concurrent.AbstractFuture$UnsafeAtomicHelper $r12;
+        java.lang.String $r0;
+        boolean $z0;
+        java.util.concurrent.atomic.AtomicReferenceFieldUpdater $r6, $r7, $r8, $r9, $r10;
+        java.util.logging.Logger $r2;
+        java.lang.Class $r1;
+        java.lang.Object $r15;
+
+        <com.google.common.util.concurrent.AbstractFuture: long SPIN_THRESHOLD_NANOS> = 1000L;
+
+        <com.google.common.util.concurrent.AbstractFuture: boolean GENERATE_CANCELLATION_CAUSES> = 0;
+
+        $r0 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String,java.lang.String)>("guava.concurrent.generate_cancellation_cause", "false");
+
+        $z0 = staticinvoke <java.lang.Boolean: boolean parseBoolean(java.lang.String)>($r0);
+
+        <com.google.common.util.concurrent.AbstractFuture: boolean GENERATE_CANCELLATION_CAUSES> = $z0;
+
+        $r1 = class "Lcom/google/common/util/concurrent/AbstractFuture;";
+
+        $r0 = virtualinvoke $r1.<java.lang.Class: java.lang.String getName()>();
+
+        $r2 = staticinvoke <java.util.logging.Logger: java.util.logging.Logger getLogger(java.lang.String)>($r0);
+
+        <com.google.common.util.concurrent.AbstractFuture: java.util.logging.Logger log> = $r2;
+
+        $r3 = null;
+
+     label01:
+        $r12 = new com.google.common.util.concurrent.AbstractFuture$UnsafeAtomicHelper;
+
+     label02:
+        $r4 = $r12;
+
+     label03:
+        specialinvoke $r12.<com.google.common.util.concurrent.AbstractFuture$UnsafeAtomicHelper: void <init>(com.google.common.util.concurrent.AbstractFuture$1)>(null);
+
+     label04:
+        $r5 = null;
+
+        goto label14;
+
+     label05:
+        $r5 := @caughtexception;
+
+     label06:
+        $r13 = new com.google.common.util.concurrent.AbstractFuture$SafeAtomicHelper;
+
+     label07:
+        $r6 = staticinvoke <java.util.concurrent.atomic.AtomicReferenceFieldUpdater: java.util.concurrent.atomic.AtomicReferenceFieldUpdater newUpdater(java.lang.Class,java.lang.Class,java.lang.String)>(class "Lcom/google/common/util/concurrent/AbstractFuture$Waiter;", class "Ljava/lang/Thread;", "thread");
+
+     label08:
+        $r7 = staticinvoke <java.util.concurrent.atomic.AtomicReferenceFieldUpdater: java.util.concurrent.atomic.AtomicReferenceFieldUpdater newUpdater(java.lang.Class,java.lang.Class,java.lang.String)>(class "Lcom/google/common/util/concurrent/AbstractFuture$Waiter;", class "Lcom/google/common/util/concurrent/AbstractFuture$Waiter;", "next");
+
+     label09:
+        $r8 = staticinvoke <java.util.concurrent.atomic.AtomicReferenceFieldUpdater: java.util.concurrent.atomic.AtomicReferenceFieldUpdater newUpdater(java.lang.Class,java.lang.Class,java.lang.String)>(class "Lcom/google/common/util/concurrent/AbstractFuture;", class "Lcom/google/common/util/concurrent/AbstractFuture$Waiter;", "waiters");
+
+     label10:
+        $r9 = staticinvoke <java.util.concurrent.atomic.AtomicReferenceFieldUpdater: java.util.concurrent.atomic.AtomicReferenceFieldUpdater newUpdater(java.lang.Class,java.lang.Class,java.lang.String)>(class "Lcom/google/common/util/concurrent/AbstractFuture;", class "Lcom/google/common/util/concurrent/AbstractFuture$Listener;", "listeners");
+
+     label11:
+        $r10 = staticinvoke <java.util.concurrent.atomic.AtomicReferenceFieldUpdater: java.util.concurrent.atomic.AtomicReferenceFieldUpdater newUpdater(java.lang.Class,java.lang.Class,java.lang.String)>(class "Lcom/google/common/util/concurrent/AbstractFuture;", class "Ljava/lang/Object;", "value");
+
+        specialinvoke $r13.<com.google.common.util.concurrent.AbstractFuture$SafeAtomicHelper: void <init>(java.util.concurrent.atomic.AtomicReferenceFieldUpdater,java.util.concurrent.atomic.AtomicReferenceFieldUpdater,java.util.concurrent.atomic.AtomicReferenceFieldUpdater,java.util.concurrent.atomic.AtomicReferenceFieldUpdater,java.util.concurrent.atomic.AtomicReferenceFieldUpdater)>($r6, $r7, $r8, $r9, $r10);
+
+     label12:
+        $r4 = $r13;
+
+        goto label14;
+
+     label13:
+        $r3 := @caughtexception;
+
+        $r14 = new com.google.common.util.concurrent.AbstractFuture$SynchronizedHelper;
+
+        specialinvoke $r14.<com.google.common.util.concurrent.AbstractFuture$SynchronizedHelper: void <init>(com.google.common.util.concurrent.AbstractFuture$1)>(null);
+
+        $r4 = $r14;
+
+     label14:
+        <com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$AtomicHelper ATOMIC_HELPER> = $r4;
+
+        if $r3 == null goto label15;
+
+        $r2 = <com.google.common.util.concurrent.AbstractFuture: java.util.logging.Logger log>;
+
+        $r11 = <java.util.logging.Level: java.util.logging.Level SEVERE>;
+
+        virtualinvoke $r2.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r11, "UnsafeAtomicHelper is broken!", $r5);
+
+        $r2 = <com.google.common.util.concurrent.AbstractFuture: java.util.logging.Logger log>;
+
+        $r11 = <java.util.logging.Level: java.util.logging.Level SEVERE>;
+
+        virtualinvoke $r2.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r11, "SafeAtomicHelper is broken!", $r3);
+
+     label15:
+        $r15 = new java.lang.Object;
+
+        specialinvoke $r15.<java.lang.Object: void <init>()>();
+
+        <com.google.common.util.concurrent.AbstractFuture: java.lang.Object NULL> = $r15;
+
+        return;
+
+        catch java.lang.Throwable from label01 to label02 with label05;
+        catch java.lang.Throwable from label03 to label04 with label05;
+        catch java.lang.Throwable from label06 to label07 with label13;
+        catch java.lang.Throwable from label07 to label08 with label13;
+        catch java.lang.Throwable from label08 to label09 with label13;
+        catch java.lang.Throwable from label09 to label10 with label13;
+        catch java.lang.Throwable from label10 to label11 with label13;
+        catch java.lang.Throwable from label11 to label12 with label13;
+    }
+
+    public void <init>()
+    {
+        com.google.common.util.concurrent.AbstractFuture r0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        specialinvoke r0.<com.google.common.util.concurrent.FluentFuture: void <init>()>();
+
+        return;
+    }
+
+    public static com.google.common.util.concurrent.AbstractFuture$AtomicHelper access$200()
+    {
+        com.google.common.util.concurrent.AbstractFuture$AtomicHelper r0;
+
+        r0 = <com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$AtomicHelper ATOMIC_HELPER>;
+
+        return r0;
+    }
+
+    public static boolean access$300()
+    {
+        boolean z0;
+
+        z0 = <com.google.common.util.concurrent.AbstractFuture: boolean GENERATE_CANCELLATION_CAUSES>;
+
+        return z0;
+    }
+
+    public static java.lang.Object access$400(com.google.common.util.concurrent.AbstractFuture)
+    {
+        java.lang.Object r1;
+        com.google.common.util.concurrent.AbstractFuture $r0;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.AbstractFuture;
+
+        r1 = $r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        return r1;
+    }
+
+    public static java.lang.Object access$402(com.google.common.util.concurrent.AbstractFuture, java.lang.Object)
+    {
+        java.lang.Object $r1;
+        com.google.common.util.concurrent.AbstractFuture $r0;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.AbstractFuture;
+
+        $r1 := @parameter1: java.lang.Object;
+
+        $r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value> = $r1;
+
+        return $r1;
+    }
+
+    public static java.lang.Object access$500(com.google.common.util.concurrent.ListenableFuture)
+    {
+        java.lang.Object $r0;
+        com.google.common.util.concurrent.ListenableFuture $r1;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.ListenableFuture;
+
+        $r0 = staticinvoke <com.google.common.util.concurrent.AbstractFuture: java.lang.Object getFutureValue(com.google.common.util.concurrent.ListenableFuture)>($r1);
+
+        return $r0;
+    }
+
+    public static void access$600(com.google.common.util.concurrent.AbstractFuture)
+    {
+        com.google.common.util.concurrent.AbstractFuture $r0;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.AbstractFuture;
+
+        staticinvoke <com.google.common.util.concurrent.AbstractFuture: void complete(com.google.common.util.concurrent.AbstractFuture)>($r0);
+
+        return;
+    }
+
+    public static com.google.common.util.concurrent.AbstractFuture$Waiter access$800(com.google.common.util.concurrent.AbstractFuture)
+    {
+        com.google.common.util.concurrent.AbstractFuture$Waiter r1;
+        com.google.common.util.concurrent.AbstractFuture $r0;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.AbstractFuture;
+
+        r1 = $r0.<com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$Waiter waiters>;
+
+        return r1;
+    }
+
+    public static com.google.common.util.concurrent.AbstractFuture$Waiter access$802(com.google.common.util.concurrent.AbstractFuture, com.google.common.util.concurrent.AbstractFuture$Waiter)
+    {
+        com.google.common.util.concurrent.AbstractFuture$Waiter $r1;
+        com.google.common.util.concurrent.AbstractFuture $r0;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.AbstractFuture;
+
+        $r1 := @parameter1: com.google.common.util.concurrent.AbstractFuture$Waiter;
+
+        $r0.<com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$Waiter waiters> = $r1;
+
+        return $r1;
+    }
+
+    public static com.google.common.util.concurrent.AbstractFuture$Listener access$900(com.google.common.util.concurrent.AbstractFuture)
+    {
+        com.google.common.util.concurrent.AbstractFuture $r0;
+        com.google.common.util.concurrent.AbstractFuture$Listener r1;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.AbstractFuture;
+
+        r1 = $r0.<com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$Listener listeners>;
+
+        return r1;
+    }
+
+    public static com.google.common.util.concurrent.AbstractFuture$Listener access$902(com.google.common.util.concurrent.AbstractFuture, com.google.common.util.concurrent.AbstractFuture$Listener)
+    {
+        com.google.common.util.concurrent.AbstractFuture $r0;
+        com.google.common.util.concurrent.AbstractFuture$Listener $r1;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.AbstractFuture;
+
+        $r1 := @parameter1: com.google.common.util.concurrent.AbstractFuture$Listener;
+
+        $r0.<com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$Listener listeners> = $r1;
+
+        return $r1;
+    }
+
+    private void addDoneString(java.lang.StringBuilder)
+    {
+        java.lang.Throwable $r7;
+        java.util.concurrent.CancellationException $r2;
+        java.lang.RuntimeException $r4;
+        java.util.concurrent.ExecutionException $r6;
+        java.lang.StringBuilder $r1;
+        java.lang.Object $r3;
+        java.lang.Class $r5;
+        com.google.common.util.concurrent.AbstractFuture r0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $r1 := @parameter0: java.lang.StringBuilder;
+
+     label1:
+        $r3 = staticinvoke <com.google.common.util.concurrent.Futures: java.lang.Object getDone(java.util.concurrent.Future)>(r0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SUCCESS, result=[");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+
+     label2:
+        return;
+
+     label3:
+        $r4 := @caughtexception;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("UNKNOWN, cause=[");
+
+        $r5 = virtualinvoke $r4.<java.lang.Object: java.lang.Class getClass()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r5);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" thrown from get()]");
+
+        return;
+
+     label4:
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("CANCELLED");
+
+        return;
+
+     label5:
+        $r6 := @caughtexception;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("FAILURE, cause=[");
+
+        $r7 = virtualinvoke $r6.<java.util.concurrent.ExecutionException: java.lang.Throwable getCause()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r7);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+
+        return;
+
+     label6:
+        $r2 := @caughtexception;
+
+        goto label4;
+
+        catch java.util.concurrent.ExecutionException from label1 to label2 with label5;
+        catch java.util.concurrent.CancellationException from label1 to label2 with label6;
+        catch java.lang.RuntimeException from label1 to label2 with label3;
+    }
+
+    public static java.util.concurrent.CancellationException cancellationExceptionWithCause(java.lang.String, java.lang.Throwable)
+    {
+        java.lang.Throwable $r1;
+        java.lang.String $r0;
+        java.util.concurrent.CancellationException $r2;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: java.lang.Throwable;
+
+        $r2 = new java.util.concurrent.CancellationException;
+
+        specialinvoke $r2.<java.util.concurrent.CancellationException: void <init>(java.lang.String)>($r0);
+
+        virtualinvoke $r2.<java.util.concurrent.CancellationException: java.lang.Throwable initCause(java.lang.Throwable)>($r1);
+
+        return $r2;
+    }
+
+    private com.google.common.util.concurrent.AbstractFuture$Listener clearListeners(com.google.common.util.concurrent.AbstractFuture$Listener)
+    {
+        com.google.common.util.concurrent.AbstractFuture$AtomicHelper $r4;
+        com.google.common.util.concurrent.AbstractFuture$Listener $r1, $r2, $r3;
+        com.google.common.util.concurrent.AbstractFuture r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $r2 := @parameter0: com.google.common.util.concurrent.AbstractFuture$Listener;
+
+     label1:
+        $r3 = r0.<com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$Listener listeners>;
+
+        $r4 = <com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$AtomicHelper ATOMIC_HELPER>;
+
+        $r1 = <com.google.common.util.concurrent.AbstractFuture$Listener: com.google.common.util.concurrent.AbstractFuture$Listener TOMBSTONE>;
+
+        $z0 = virtualinvoke $r4.<com.google.common.util.concurrent.AbstractFuture$AtomicHelper: boolean casListeners(com.google.common.util.concurrent.AbstractFuture,com.google.common.util.concurrent.AbstractFuture$Listener,com.google.common.util.concurrent.AbstractFuture$Listener)>(r0, $r3, $r1);
+
+        if $z0 == 0 goto label1;
+
+     label2:
+        if $r3 == null goto label3;
+
+        $r1 = $r3.<com.google.common.util.concurrent.AbstractFuture$Listener: com.google.common.util.concurrent.AbstractFuture$Listener next>;
+
+        $r3.<com.google.common.util.concurrent.AbstractFuture$Listener: com.google.common.util.concurrent.AbstractFuture$Listener next> = $r2;
+
+        $r2 = $r3;
+
+        $r3 = $r1;
+
+        goto label2;
+
+     label3:
+        return $r2;
+    }
+
+    public static void complete(com.google.common.util.concurrent.AbstractFuture)
+    {
+        com.google.common.util.concurrent.AbstractFuture$AtomicHelper $r0;
+        com.google.common.util.concurrent.ListenableFuture $r7;
+        java.util.concurrent.Executor $r8;
+        com.google.common.util.concurrent.AbstractFuture$SetFuture $r5;
+        java.lang.Runnable $r4;
+        com.google.common.util.concurrent.AbstractFuture$Listener $r2, $r3;
+        java.lang.Object $r6;
+        com.google.common.util.concurrent.AbstractFuture $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.AbstractFuture;
+
+        $r2 = null;
+
+     label1:
+        specialinvoke $r1.<com.google.common.util.concurrent.AbstractFuture: void releaseWaiters()>();
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.AbstractFuture: void afterDone()>();
+
+        $r3 = specialinvoke $r1.<com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$Listener clearListeners(com.google.common.util.concurrent.AbstractFuture$Listener)>($r2);
+
+     label2:
+        if $r3 == null goto label5;
+
+        $r2 = $r3.<com.google.common.util.concurrent.AbstractFuture$Listener: com.google.common.util.concurrent.AbstractFuture$Listener next>;
+
+        $r4 = $r3.<com.google.common.util.concurrent.AbstractFuture$Listener: java.lang.Runnable task>;
+
+        $z0 = $r4 instanceof com.google.common.util.concurrent.AbstractFuture$SetFuture;
+
+        if $z0 == 0 goto label3;
+
+        $r5 = (com.google.common.util.concurrent.AbstractFuture$SetFuture) $r4;
+
+        $r1 = $r5.<com.google.common.util.concurrent.AbstractFuture$SetFuture: com.google.common.util.concurrent.AbstractFuture owner>;
+
+        $r6 = $r1.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        if $r6 != $r5 goto label4;
+
+        $r7 = $r5.<com.google.common.util.concurrent.AbstractFuture$SetFuture: com.google.common.util.concurrent.ListenableFuture future>;
+
+        $r6 = staticinvoke <com.google.common.util.concurrent.AbstractFuture: java.lang.Object getFutureValue(com.google.common.util.concurrent.ListenableFuture)>($r7);
+
+        $r0 = <com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$AtomicHelper ATOMIC_HELPER>;
+
+        $z0 = virtualinvoke $r0.<com.google.common.util.concurrent.AbstractFuture$AtomicHelper: boolean casValue(com.google.common.util.concurrent.AbstractFuture,java.lang.Object,java.lang.Object)>($r1, $r5, $r6);
+
+        if $z0 == 0 goto label4;
+
+        goto label1;
+
+     label3:
+        $r8 = $r3.<com.google.common.util.concurrent.AbstractFuture$Listener: java.util.concurrent.Executor executor>;
+
+        staticinvoke <com.google.common.util.concurrent.AbstractFuture: void executeListener(java.lang.Runnable,java.util.concurrent.Executor)>($r4, $r8);
+
+     label4:
+        $r3 = $r2;
+
+        goto label2;
+
+     label5:
+        return;
+    }
+
+    public static void executeListener(java.lang.Runnable, java.util.concurrent.Executor)
+    {
+        java.util.concurrent.Executor $r0;
+        java.lang.StringBuilder $r4;
+        java.lang.RuntimeException $r1;
+        java.lang.String $r5;
+        java.util.logging.Logger $r2;
+        java.lang.Runnable $r6;
+        java.util.logging.Level $r3;
+
+        $r6 := @parameter0: java.lang.Runnable;
+
+        $r0 := @parameter1: java.util.concurrent.Executor;
+
+     label1:
+        interfaceinvoke $r0.<java.util.concurrent.Executor: void execute(java.lang.Runnable)>($r6);
+
+     label2:
+        return;
+
+     label3:
+        $r1 := @caughtexception;
+
+        $r2 = <com.google.common.util.concurrent.AbstractFuture: java.util.logging.Logger log>;
+
+        $r3 = <java.util.logging.Level: java.util.logging.Level SEVERE>;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("RuntimeException while executing runnable ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r6);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" with executor ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r0);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r2.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r3, $r5, $r1);
+
+        return;
+
+        catch java.lang.RuntimeException from label1 to label2 with label3;
+    }
+
+    private java.lang.Object getDoneValue(java.lang.Object)
+    {
+        java.lang.Throwable $r6;
+        java.util.concurrent.CancellationException $r1;
+        com.google.common.util.concurrent.AbstractFuture$Cancellation $r7;
+        java.util.concurrent.ExecutionException $r4;
+        com.google.common.util.concurrent.AbstractFuture$Failure $r5;
+        java.lang.Object $r2, $r3;
+        com.google.common.util.concurrent.AbstractFuture r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $z0 = $r2 instanceof com.google.common.util.concurrent.AbstractFuture$Cancellation;
+
+        if $z0 != 0 goto label2;
+
+        $z0 = $r2 instanceof com.google.common.util.concurrent.AbstractFuture$Failure;
+
+        if $z0 != 0 goto label1;
+
+        $r3 = <com.google.common.util.concurrent.AbstractFuture: java.lang.Object NULL>;
+
+        if $r2 != $r3 goto label3;
+
+        return null;
+
+     label1:
+        $r4 = new java.util.concurrent.ExecutionException;
+
+        $r5 = (com.google.common.util.concurrent.AbstractFuture$Failure) $r2;
+
+        $r6 = $r5.<com.google.common.util.concurrent.AbstractFuture$Failure: java.lang.Throwable exception>;
+
+        specialinvoke $r4.<java.util.concurrent.ExecutionException: void <init>(java.lang.Throwable)>($r6);
+
+        throw $r4;
+
+     label2:
+        $r7 = (com.google.common.util.concurrent.AbstractFuture$Cancellation) $r2;
+
+        $r6 = $r7.<com.google.common.util.concurrent.AbstractFuture$Cancellation: java.lang.Throwable cause>;
+
+        $r1 = staticinvoke <com.google.common.util.concurrent.AbstractFuture: java.util.concurrent.CancellationException cancellationExceptionWithCause(java.lang.String,java.lang.Throwable)>("Task was cancelled.", $r6);
+
+        throw $r1;
+
+     label3:
+        return $r2;
+    }
+
+    public static java.lang.Object getFutureValue(com.google.common.util.concurrent.ListenableFuture)
+    {
+        java.lang.Throwable $r4;
+        com.google.common.util.concurrent.ListenableFuture $r0;
+        java.util.concurrent.CancellationException $r7;
+        com.google.common.util.concurrent.AbstractFuture$Cancellation $r3;
+        java.util.concurrent.ExecutionException $r8;
+        com.google.common.util.concurrent.AbstractFuture$Failure $r6;
+        java.lang.Object $r2, $r5;
+        com.google.common.util.concurrent.AbstractFuture $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.ListenableFuture;
+
+        $z0 = $r0 instanceof com.google.common.util.concurrent.AbstractFuture$TrustedFuture;
+
+        if $z0 == 0 goto label2;
+
+        $r1 = (com.google.common.util.concurrent.AbstractFuture) $r0;
+
+        $r2 = $r1.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        $z0 = $r2 instanceof com.google.common.util.concurrent.AbstractFuture$Cancellation;
+
+        if $z0 == 0 goto label9;
+
+        $r3 = (com.google.common.util.concurrent.AbstractFuture$Cancellation) $r2;
+
+        $z0 = $r3.<com.google.common.util.concurrent.AbstractFuture$Cancellation: boolean wasInterrupted>;
+
+        if $z0 == 0 goto label9;
+
+        $r4 = $r3.<com.google.common.util.concurrent.AbstractFuture$Cancellation: java.lang.Throwable cause>;
+
+        if $r4 == null goto label1;
+
+        $r3 = new com.google.common.util.concurrent.AbstractFuture$Cancellation;
+
+        specialinvoke $r3.<com.google.common.util.concurrent.AbstractFuture$Cancellation: void <init>(boolean,java.lang.Throwable)>(0, $r4);
+
+        return $r3;
+
+     label1:
+        $r3 = <com.google.common.util.concurrent.AbstractFuture$Cancellation: com.google.common.util.concurrent.AbstractFuture$Cancellation CAUSELESS_CANCELLED>;
+
+        return $r3;
+
+     label2:
+        $r2 = staticinvoke <com.google.common.util.concurrent.Futures: java.lang.Object getDone(java.util.concurrent.Future)>($r0);
+
+     label3:
+        $r5 = $r2;
+
+        if $r2 != null goto label5;
+
+     label4:
+        $r5 = <com.google.common.util.concurrent.AbstractFuture: java.lang.Object NULL>;
+
+     label5:
+        return $r5;
+
+     label6:
+        $r4 := @caughtexception;
+
+        $r6 = new com.google.common.util.concurrent.AbstractFuture$Failure;
+
+        specialinvoke $r6.<com.google.common.util.concurrent.AbstractFuture$Failure: void <init>(java.lang.Throwable)>($r4);
+
+        return $r6;
+
+     label7:
+        $r7 := @caughtexception;
+
+        $r3 = new com.google.common.util.concurrent.AbstractFuture$Cancellation;
+
+        specialinvoke $r3.<com.google.common.util.concurrent.AbstractFuture$Cancellation: void <init>(boolean,java.lang.Throwable)>(0, $r7);
+
+        return $r3;
+
+     label8:
+        $r8 := @caughtexception;
+
+        $r6 = new com.google.common.util.concurrent.AbstractFuture$Failure;
+
+        $r4 = virtualinvoke $r8.<java.util.concurrent.ExecutionException: java.lang.Throwable getCause()>();
+
+        specialinvoke $r6.<com.google.common.util.concurrent.AbstractFuture$Failure: void <init>(java.lang.Throwable)>($r4);
+
+        return $r6;
+
+     label9:
+        return $r2;
+
+        catch java.util.concurrent.ExecutionException from label2 to label3 with label8;
+        catch java.util.concurrent.CancellationException from label2 to label3 with label7;
+        catch java.lang.Throwable from label2 to label3 with label6;
+        catch java.lang.Throwable from label4 to label5 with label6;
+    }
+
+    private void releaseWaiters()
+    {
+        com.google.common.util.concurrent.AbstractFuture$AtomicHelper $r3;
+        com.google.common.util.concurrent.AbstractFuture$Waiter $r1, $r2;
+        com.google.common.util.concurrent.AbstractFuture r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+     label1:
+        $r2 = r0.<com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$Waiter waiters>;
+
+        $r3 = <com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$AtomicHelper ATOMIC_HELPER>;
+
+        $r1 = <com.google.common.util.concurrent.AbstractFuture$Waiter: com.google.common.util.concurrent.AbstractFuture$Waiter TOMBSTONE>;
+
+        $z0 = virtualinvoke $r3.<com.google.common.util.concurrent.AbstractFuture$AtomicHelper: boolean casWaiters(com.google.common.util.concurrent.AbstractFuture,com.google.common.util.concurrent.AbstractFuture$Waiter,com.google.common.util.concurrent.AbstractFuture$Waiter)>(r0, $r2, $r1);
+
+        if $z0 == 0 goto label1;
+
+     label2:
+        if $r2 == null goto label3;
+
+        virtualinvoke $r2.<com.google.common.util.concurrent.AbstractFuture$Waiter: void unpark()>();
+
+        $r2 = $r2.<com.google.common.util.concurrent.AbstractFuture$Waiter: com.google.common.util.concurrent.AbstractFuture$Waiter next>;
+
+        goto label2;
+
+     label3:
+        return;
+    }
+
+    private void removeWaiter(com.google.common.util.concurrent.AbstractFuture$Waiter)
+    {
+        com.google.common.util.concurrent.AbstractFuture$AtomicHelper $r5;
+        java.lang.Thread $r4;
+        com.google.common.util.concurrent.AbstractFuture$Waiter $r1, $r2, $r3;
+        com.google.common.util.concurrent.AbstractFuture r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $r2 := @parameter0: com.google.common.util.concurrent.AbstractFuture$Waiter;
+
+        $r2.<com.google.common.util.concurrent.AbstractFuture$Waiter: java.lang.Thread thread> = null;
+
+     label1:
+        $r2 = r0.<com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$Waiter waiters>;
+
+        $r1 = <com.google.common.util.concurrent.AbstractFuture$Waiter: com.google.common.util.concurrent.AbstractFuture$Waiter TOMBSTONE>;
+
+        if $r2 != $r1 goto label2;
+
+        return;
+
+     label2:
+        $r3 = null;
+
+     label3:
+        if $r2 == null goto label7;
+
+        $r1 = $r2.<com.google.common.util.concurrent.AbstractFuture$Waiter: com.google.common.util.concurrent.AbstractFuture$Waiter next>;
+
+        $r4 = $r2.<com.google.common.util.concurrent.AbstractFuture$Waiter: java.lang.Thread thread>;
+
+        if $r4 == null goto label4;
+
+        $r3 = $r2;
+
+        goto label6;
+
+     label4:
+        if $r3 == null goto label5;
+
+        $r3.<com.google.common.util.concurrent.AbstractFuture$Waiter: com.google.common.util.concurrent.AbstractFuture$Waiter next> = $r1;
+
+        $r4 = $r3.<com.google.common.util.concurrent.AbstractFuture$Waiter: java.lang.Thread thread>;
+
+        if $r4 != null goto label6;
+
+        goto label1;
+
+     label5:
+        $r5 = <com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$AtomicHelper ATOMIC_HELPER>;
+
+        $z0 = virtualinvoke $r5.<com.google.common.util.concurrent.AbstractFuture$AtomicHelper: boolean casWaiters(com.google.common.util.concurrent.AbstractFuture,com.google.common.util.concurrent.AbstractFuture$Waiter,com.google.common.util.concurrent.AbstractFuture$Waiter)>(r0, $r2, $r1);
+
+        if $z0 != 0 goto label6;
+
+        goto label1;
+
+     label6:
+        $r2 = $r1;
+
+        goto label3;
+
+     label7:
+        return;
+    }
+
+    public void addListener(java.lang.Runnable, java.util.concurrent.Executor)
+    {
+        com.google.common.util.concurrent.AbstractFuture$AtomicHelper $r5;
+        java.util.concurrent.Executor $r2;
+        java.lang.Runnable $r1;
+        com.google.common.util.concurrent.AbstractFuture$Listener $r3, $r4, $r6;
+        com.google.common.util.concurrent.AbstractFuture r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $r1 := @parameter0: java.lang.Runnable;
+
+        $r2 := @parameter1: java.util.concurrent.Executor;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r1, "Runnable was null.");
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r2, "Executor was null.");
+
+        $r3 = r0.<com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$Listener listeners>;
+
+        $r4 = <com.google.common.util.concurrent.AbstractFuture$Listener: com.google.common.util.concurrent.AbstractFuture$Listener TOMBSTONE>;
+
+        if $r3 == $r4 goto label3;
+
+        $r4 = new com.google.common.util.concurrent.AbstractFuture$Listener;
+
+        specialinvoke $r4.<com.google.common.util.concurrent.AbstractFuture$Listener: void <init>(java.lang.Runnable,java.util.concurrent.Executor)>($r1, $r2);
+
+     label1:
+        $r4.<com.google.common.util.concurrent.AbstractFuture$Listener: com.google.common.util.concurrent.AbstractFuture$Listener next> = $r3;
+
+        $r5 = <com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$AtomicHelper ATOMIC_HELPER>;
+
+        $z0 = virtualinvoke $r5.<com.google.common.util.concurrent.AbstractFuture$AtomicHelper: boolean casListeners(com.google.common.util.concurrent.AbstractFuture,com.google.common.util.concurrent.AbstractFuture$Listener,com.google.common.util.concurrent.AbstractFuture$Listener)>(r0, $r3, $r4);
+
+        if $z0 == 0 goto label2;
+
+        return;
+
+     label2:
+        $r3 = r0.<com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$Listener listeners>;
+
+        $r6 = <com.google.common.util.concurrent.AbstractFuture$Listener: com.google.common.util.concurrent.AbstractFuture$Listener TOMBSTONE>;
+
+        if $r3 != $r6 goto label1;
+
+     label3:
+        staticinvoke <com.google.common.util.concurrent.AbstractFuture: void executeListener(java.lang.Runnable,java.util.concurrent.Executor)>($r1, $r2);
+
+        return;
+    }
+
+    public void afterDone()
+    {
+        com.google.common.util.concurrent.AbstractFuture r0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        return;
+    }
+
+    public boolean cancel(boolean)
+    {
+        com.google.common.util.concurrent.AbstractFuture$AtomicHelper $r4;
+        com.google.common.util.concurrent.ListenableFuture $r6;
+        java.util.concurrent.CancellationException $r3;
+        com.google.common.util.concurrent.AbstractFuture$SetFuture $r5;
+        com.google.common.util.concurrent.AbstractFuture$Cancellation $r2;
+        java.lang.Object $r1;
+        com.google.common.util.concurrent.AbstractFuture r0;
+        boolean $z0, $z1, $z2;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        if $r1 != null goto label01;
+
+        $z2 = 1;
+
+        goto label02;
+
+     label01:
+        $z2 = 0;
+
+     label02:
+        $z1 = $r1 instanceof com.google.common.util.concurrent.AbstractFuture$SetFuture;
+
+        $z2 = $z2 | $z1;
+
+        if $z2 == 0 goto label12;
+
+        $z2 = <com.google.common.util.concurrent.AbstractFuture: boolean GENERATE_CANCELLATION_CAUSES>;
+
+        if $z2 == 0 goto label03;
+
+        $r2 = new com.google.common.util.concurrent.AbstractFuture$Cancellation;
+
+        $r3 = new java.util.concurrent.CancellationException;
+
+        specialinvoke $r3.<java.util.concurrent.CancellationException: void <init>(java.lang.String)>("Future.cancel() was called.");
+
+        specialinvoke $r2.<com.google.common.util.concurrent.AbstractFuture$Cancellation: void <init>(boolean,java.lang.Throwable)>($z0, $r3);
+
+        goto label05;
+
+     label03:
+        if $z0 == 0 goto label04;
+
+        $r2 = <com.google.common.util.concurrent.AbstractFuture$Cancellation: com.google.common.util.concurrent.AbstractFuture$Cancellation CAUSELESS_INTERRUPTED>;
+
+        goto label05;
+
+     label04:
+        $r2 = <com.google.common.util.concurrent.AbstractFuture$Cancellation: com.google.common.util.concurrent.AbstractFuture$Cancellation CAUSELESS_CANCELLED>;
+
+     label05:
+        $z2 = 0;
+
+     label06:
+        $r4 = <com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$AtomicHelper ATOMIC_HELPER>;
+
+        $z1 = virtualinvoke $r4.<com.google.common.util.concurrent.AbstractFuture$AtomicHelper: boolean casValue(com.google.common.util.concurrent.AbstractFuture,java.lang.Object,java.lang.Object)>(r0, $r1, $r2);
+
+        if $z1 == 0 goto label11;
+
+        if $z0 == 0 goto label07;
+
+        virtualinvoke r0.<com.google.common.util.concurrent.AbstractFuture: void interruptTask()>();
+
+     label07:
+        staticinvoke <com.google.common.util.concurrent.AbstractFuture: void complete(com.google.common.util.concurrent.AbstractFuture)>(r0);
+
+        $z2 = $r1 instanceof com.google.common.util.concurrent.AbstractFuture$SetFuture;
+
+        if $z2 == 0 goto label13;
+
+        $r5 = (com.google.common.util.concurrent.AbstractFuture$SetFuture) $r1;
+
+        $r6 = $r5.<com.google.common.util.concurrent.AbstractFuture$SetFuture: com.google.common.util.concurrent.ListenableFuture future>;
+
+        $z2 = $r6 instanceof com.google.common.util.concurrent.AbstractFuture$TrustedFuture;
+
+        if $z2 == 0 goto label10;
+
+        r0 = (com.google.common.util.concurrent.AbstractFuture) $r6;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        if $r1 != null goto label08;
+
+        $z2 = 1;
+
+        goto label09;
+
+     label08:
+        $z2 = 0;
+
+     label09:
+        $z1 = $r1 instanceof com.google.common.util.concurrent.AbstractFuture$SetFuture;
+
+        $z2 = $z2 | $z1;
+
+        if $z2 == 0 goto label13;
+
+        $z2 = 1;
+
+        goto label06;
+
+     label10:
+        interfaceinvoke $r6.<java.util.concurrent.Future: boolean cancel(boolean)>($z0);
+
+        return 1;
+
+     label11:
+        $r1 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        $z1 = $r1 instanceof com.google.common.util.concurrent.AbstractFuture$SetFuture;
+
+        if $z1 != 0 goto label06;
+
+        return $z2;
+
+     label12:
+        return 0;
+
+     label13:
+        return 1;
+    }
+
+    public java.lang.Object get()
+    {
+        com.google.common.util.concurrent.AbstractFuture$AtomicHelper $r4;
+        java.lang.InterruptedException $r5;
+        java.lang.Object $r1;
+        com.google.common.util.concurrent.AbstractFuture$Waiter $r2, $r3, $r6;
+        com.google.common.util.concurrent.AbstractFuture r0;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $z0 = staticinvoke <java.lang.Thread: boolean interrupted()>();
+
+        if $z0 != 0 goto label15;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        if $r1 == null goto label01;
+
+        $z0 = 1;
+
+        goto label02;
+
+     label01:
+        $z0 = 0;
+
+     label02:
+        $z1 = $r1 instanceof com.google.common.util.concurrent.AbstractFuture$SetFuture;
+
+        if $z1 != 0 goto label03;
+
+        $z1 = 1;
+
+        goto label04;
+
+     label03:
+        $z1 = 0;
+
+     label04:
+        $z0 = $z0 & $z1;
+
+        if $z0 == 0 goto label05;
+
+        $r1 = specialinvoke r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object getDoneValue(java.lang.Object)>($r1);
+
+        return $r1;
+
+     label05:
+        $r2 = r0.<com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$Waiter waiters>;
+
+        $r3 = <com.google.common.util.concurrent.AbstractFuture$Waiter: com.google.common.util.concurrent.AbstractFuture$Waiter TOMBSTONE>;
+
+        if $r2 == $r3 goto label14;
+
+        $r3 = new com.google.common.util.concurrent.AbstractFuture$Waiter;
+
+        specialinvoke $r3.<com.google.common.util.concurrent.AbstractFuture$Waiter: void <init>()>();
+
+     label06:
+        virtualinvoke $r3.<com.google.common.util.concurrent.AbstractFuture$Waiter: void setNext(com.google.common.util.concurrent.AbstractFuture$Waiter)>($r2);
+
+        $r4 = <com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$AtomicHelper ATOMIC_HELPER>;
+
+        $z0 = virtualinvoke $r4.<com.google.common.util.concurrent.AbstractFuture$AtomicHelper: boolean casWaiters(com.google.common.util.concurrent.AbstractFuture,com.google.common.util.concurrent.AbstractFuture$Waiter,com.google.common.util.concurrent.AbstractFuture$Waiter)>(r0, $r2, $r3);
+
+        if $z0 == 0 goto label13;
+
+     label07:
+        staticinvoke <java.util.concurrent.locks.LockSupport: void park(java.lang.Object)>(r0);
+
+        $z0 = staticinvoke <java.lang.Thread: boolean interrupted()>();
+
+        if $z0 != 0 goto label12;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        if $r1 == null goto label08;
+
+        $z0 = 1;
+
+        goto label09;
+
+     label08:
+        $z0 = 0;
+
+     label09:
+        $z1 = $r1 instanceof com.google.common.util.concurrent.AbstractFuture$SetFuture;
+
+        if $z1 != 0 goto label10;
+
+        $z1 = 1;
+
+        goto label11;
+
+     label10:
+        $z1 = 0;
+
+     label11:
+        $z0 = $z0 & $z1;
+
+        if $z0 == 0 goto label07;
+
+        $r1 = specialinvoke r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object getDoneValue(java.lang.Object)>($r1);
+
+        return $r1;
+
+     label12:
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractFuture: void removeWaiter(com.google.common.util.concurrent.AbstractFuture$Waiter)>($r3);
+
+        $r5 = new java.lang.InterruptedException;
+
+        specialinvoke $r5.<java.lang.InterruptedException: void <init>()>();
+
+        throw $r5;
+
+     label13:
+        $r2 = r0.<com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$Waiter waiters>;
+
+        $r6 = <com.google.common.util.concurrent.AbstractFuture$Waiter: com.google.common.util.concurrent.AbstractFuture$Waiter TOMBSTONE>;
+
+        if $r2 != $r6 goto label06;
+
+     label14:
+        $r1 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        $r1 = specialinvoke r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object getDoneValue(java.lang.Object)>($r1);
+
+        return $r1;
+
+     label15:
+        $r5 = new java.lang.InterruptedException;
+
+        specialinvoke $r5.<java.lang.InterruptedException: void <init>()>();
+
+        goto label16;
+
+     label16:
+        throw $r5;
+    }
+
+    public java.lang.Object get(long, java.util.concurrent.TimeUnit)
+    {
+        com.google.common.util.concurrent.AbstractFuture$AtomicHelper $r5;
+        java.util.concurrent.TimeoutException $r12;
+        long $l0, $l1, $l2, $l4;
+        byte $b3;
+        int $i5;
+        java.lang.String $r7, $r9;
+        com.google.common.util.concurrent.AbstractFuture$Waiter $r3, $r4, $r6;
+        boolean $z0, $z1;
+        java.util.concurrent.TimeUnit $r1;
+        java.lang.InterruptedException $r10;
+        java.lang.Object $r2;
+        java.lang.StringBuilder $r8, $r11;
+        com.google.common.util.concurrent.AbstractFuture r0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $l0 := @parameter0: long;
+
+        $r1 := @parameter1: java.util.concurrent.TimeUnit;
+
+        $l1 = virtualinvoke $r1.<java.util.concurrent.TimeUnit: long toNanos(long)>($l0);
+
+        $l2 = $l1;
+
+        $z0 = staticinvoke <java.lang.Thread: boolean interrupted()>();
+
+        if $z0 != 0 goto label27;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        if $r2 == null goto label01;
+
+        $z0 = 1;
+
+        goto label02;
+
+     label01:
+        $z0 = 0;
+
+     label02:
+        $z1 = $r2 instanceof com.google.common.util.concurrent.AbstractFuture$SetFuture;
+
+        if $z1 != 0 goto label03;
+
+        $z1 = 1;
+
+        goto label04;
+
+     label03:
+        $z1 = 0;
+
+     label04:
+        $z0 = $z0 & $z1;
+
+        if $z0 == 0 goto label05;
+
+        $r2 = specialinvoke r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object getDoneValue(java.lang.Object)>($r2);
+
+        return $r2;
+
+     label05:
+        $b3 = $l1 cmp 0L;
+
+        $i5 = (int) $b3;
+
+        if $i5 <= 0 goto label06;
+
+        $l4 = staticinvoke <java.lang.System: long nanoTime()>();
+
+        $l4 = $l4 + $l1;
+
+        goto label07;
+
+     label06:
+        $l4 = 0L;
+
+     label07:
+        $b3 = $l1 cmp 1000L;
+
+        $i5 = (int) $b3;
+
+        if $i5 < 0 goto label18;
+
+        $r3 = r0.<com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$Waiter waiters>;
+
+        $r4 = <com.google.common.util.concurrent.AbstractFuture$Waiter: com.google.common.util.concurrent.AbstractFuture$Waiter TOMBSTONE>;
+
+        if $r3 == $r4 goto label17;
+
+        $r6 = new com.google.common.util.concurrent.AbstractFuture$Waiter;
+
+        $r4 = $r6;
+
+        specialinvoke $r6.<com.google.common.util.concurrent.AbstractFuture$Waiter: void <init>()>();
+
+     label08:
+        virtualinvoke $r4.<com.google.common.util.concurrent.AbstractFuture$Waiter: void setNext(com.google.common.util.concurrent.AbstractFuture$Waiter)>($r3);
+
+        $r5 = <com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$AtomicHelper ATOMIC_HELPER>;
+
+        $z0 = virtualinvoke $r5.<com.google.common.util.concurrent.AbstractFuture$AtomicHelper: boolean casWaiters(com.google.common.util.concurrent.AbstractFuture,com.google.common.util.concurrent.AbstractFuture$Waiter,com.google.common.util.concurrent.AbstractFuture$Waiter)>(r0, $r3, $r4);
+
+        if $z0 == 0 goto label16;
+
+     label09:
+        staticinvoke <java.util.concurrent.locks.LockSupport: void parkNanos(java.lang.Object,long)>(r0, $l2);
+
+        $z0 = staticinvoke <java.lang.Thread: boolean interrupted()>();
+
+        if $z0 != 0 goto label15;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        if $r2 == null goto label10;
+
+        $z0 = 1;
+
+        goto label11;
+
+     label10:
+        $z0 = 0;
+
+     label11:
+        $z1 = $r2 instanceof com.google.common.util.concurrent.AbstractFuture$SetFuture;
+
+        if $z1 != 0 goto label12;
+
+        $z1 = 1;
+
+        goto label13;
+
+     label12:
+        $z1 = 0;
+
+     label13:
+        $z0 = $z0 & $z1;
+
+        if $z0 == 0 goto label14;
+
+        $r2 = specialinvoke r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object getDoneValue(java.lang.Object)>($r2);
+
+        return $r2;
+
+     label14:
+        $l1 = staticinvoke <java.lang.System: long nanoTime()>();
+
+        $l2 = $l4 - $l1;
+
+        $b3 = $l2 cmp 1000L;
+
+        $i5 = (int) $b3;
+
+        if $i5 >= 0 goto label09;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractFuture: void removeWaiter(com.google.common.util.concurrent.AbstractFuture$Waiter)>($r4);
+
+        goto label18;
+
+     label15:
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractFuture: void removeWaiter(com.google.common.util.concurrent.AbstractFuture$Waiter)>($r4);
+
+        $r10 = new java.lang.InterruptedException;
+
+        specialinvoke $r10.<java.lang.InterruptedException: void <init>()>();
+
+        throw $r10;
+
+     label16:
+        $r3 = r0.<com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$Waiter waiters>;
+
+        $r6 = <com.google.common.util.concurrent.AbstractFuture$Waiter: com.google.common.util.concurrent.AbstractFuture$Waiter TOMBSTONE>;
+
+        if $r3 != $r6 goto label08;
+
+     label17:
+        $r2 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        $r2 = specialinvoke r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object getDoneValue(java.lang.Object)>($r2);
+
+        return $r2;
+
+     label18:
+        $b3 = $l2 cmp 0L;
+
+        $i5 = (int) $b3;
+
+        if $i5 <= 0 goto label25;
+
+        $r2 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        if $r2 == null goto label19;
+
+        $z0 = 1;
+
+        goto label20;
+
+     label19:
+        $z0 = 0;
+
+     label20:
+        $z1 = $r2 instanceof com.google.common.util.concurrent.AbstractFuture$SetFuture;
+
+        if $z1 != 0 goto label21;
+
+        $z1 = 1;
+
+        goto label22;
+
+     label21:
+        $z1 = 0;
+
+     label22:
+        $z0 = $z0 & $z1;
+
+        if $z0 == 0 goto label23;
+
+        $r2 = specialinvoke r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object getDoneValue(java.lang.Object)>($r2);
+
+        return $r2;
+
+     label23:
+        $z0 = staticinvoke <java.lang.Thread: boolean interrupted()>();
+
+        if $z0 != 0 goto label24;
+
+        $l1 = staticinvoke <java.lang.System: long nanoTime()>();
+
+        $l2 = $l4 - $l1;
+
+        goto label18;
+
+     label24:
+        $r10 = new java.lang.InterruptedException;
+
+        specialinvoke $r10.<java.lang.InterruptedException: void <init>()>();
+
+        throw $r10;
+
+     label25:
+        $r7 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.String toString()>();
+
+        $z0 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractFuture: boolean isDone()>();
+
+        if $z0 == 0 goto label26;
+
+        $r12 = new java.util.concurrent.TimeoutException;
+
+        $r11 = new java.lang.StringBuilder;
+
+        $r8 = $r11;
+
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Waited ");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l0);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $r7 = virtualinvoke $r1.<java.util.concurrent.TimeUnit: java.lang.String toString()>();
+
+        $r7 = staticinvoke <com.google.common.base.Ascii: java.lang.String toLowerCase(java.lang.String)>($r7);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" but future completed as timeout expired");
+
+        $r7 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r12.<java.util.concurrent.TimeoutException: void <init>(java.lang.String)>($r7);
+
+        throw $r12;
+
+     label26:
+        $r12 = new java.util.concurrent.TimeoutException;
+
+        $r11 = new java.lang.StringBuilder;
+
+        $r8 = $r11;
+
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Waited ");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l0);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $r9 = virtualinvoke $r1.<java.util.concurrent.TimeUnit: java.lang.String toString()>();
+
+        $r9 = staticinvoke <com.google.common.base.Ascii: java.lang.String toLowerCase(java.lang.String)>($r9);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r9);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" for ");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r7 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r12.<java.util.concurrent.TimeoutException: void <init>(java.lang.String)>($r7);
+
+        throw $r12;
+
+     label27:
+        $r10 = new java.lang.InterruptedException;
+
+        specialinvoke $r10.<java.lang.InterruptedException: void <init>()>();
+
+        goto label28;
+
+     label28:
+        throw $r10;
+    }
+
+    public void interruptTask()
+    {
+        com.google.common.util.concurrent.AbstractFuture r0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        return;
+    }
+
+    public boolean isCancelled()
+    {
+        java.lang.Object $r1;
+        com.google.common.util.concurrent.AbstractFuture r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        $z0 = $r1 instanceof com.google.common.util.concurrent.AbstractFuture$Cancellation;
+
+        return $z0;
+    }
+
+    public boolean isDone()
+    {
+        java.lang.Object $r1;
+        com.google.common.util.concurrent.AbstractFuture r0;
+        boolean $z0, $z1, $z2;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        $z0 = 1;
+
+        if $r1 == null goto label1;
+
+        $z1 = 1;
+
+        goto label2;
+
+     label1:
+        $z1 = 0;
+
+     label2:
+        $z2 = $r1 instanceof com.google.common.util.concurrent.AbstractFuture$SetFuture;
+
+        if $z2 != 0 goto label3;
+
+        goto label4;
+
+     label3:
+        $z0 = 0;
+
+     label4:
+        $z0 = $z1 & $z0;
+
+        return $z0;
+    }
+
+    public final void maybePropagateCancellationTo(java.util.concurrent.Future)
+    {
+        java.util.concurrent.Future $r1;
+        com.google.common.util.concurrent.AbstractFuture r0;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $r1 := @parameter0: java.util.concurrent.Future;
+
+        if $r1 == null goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        $z1 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractFuture: boolean isCancelled()>();
+
+        $z0 = $z0 & $z1;
+
+        if $z0 == 0 goto label3;
+
+        $z0 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractFuture: boolean wasInterrupted()>();
+
+        interfaceinvoke $r1.<java.util.concurrent.Future: boolean cancel(boolean)>($z0);
+
+     label3:
+        return;
+    }
+
+    public java.lang.String pendingToString()
+    {
+        java.util.concurrent.ScheduledFuture $r6;
+        com.google.common.util.concurrent.ListenableFuture $r4;
+        com.google.common.util.concurrent.AbstractFuture$SetFuture $r3;
+        long $l0;
+        java.util.concurrent.TimeUnit $r7;
+        java.lang.Object $r1;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r5;
+        com.google.common.util.concurrent.AbstractFuture r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        $z0 = $r1 instanceof com.google.common.util.concurrent.AbstractFuture$SetFuture;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("setFuture=[");
+
+        $r3 = (com.google.common.util.concurrent.AbstractFuture$SetFuture) $r1;
+
+        $r4 = $r3.<com.google.common.util.concurrent.AbstractFuture$SetFuture: com.google.common.util.concurrent.ListenableFuture future>;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+
+        $r5 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r5;
+
+     label1:
+        $z0 = r0 instanceof java.util.concurrent.ScheduledFuture;
+
+        if $z0 == 0 goto label2;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("remaining delay=[");
+
+        $r6 = (java.util.concurrent.ScheduledFuture) r0;
+
+        $r7 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit MILLISECONDS>;
+
+        $l0 = interfaceinvoke $r6.<java.util.concurrent.ScheduledFuture: long getDelay(java.util.concurrent.TimeUnit)>($r7);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ms]");
+
+        $r5 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r5;
+
+     label2:
+        return null;
+    }
+
+    public boolean set(java.lang.Object)
+    {
+        com.google.common.util.concurrent.AbstractFuture$AtomicHelper $r1;
+        java.lang.Object $r2;
+        com.google.common.util.concurrent.AbstractFuture r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        if $r2 != null goto label1;
+
+        $r2 = <com.google.common.util.concurrent.AbstractFuture: java.lang.Object NULL>;
+
+     label1:
+        $r1 = <com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$AtomicHelper ATOMIC_HELPER>;
+
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.AbstractFuture$AtomicHelper: boolean casValue(com.google.common.util.concurrent.AbstractFuture,java.lang.Object,java.lang.Object)>(r0, null, $r2);
+
+        if $z0 == 0 goto label2;
+
+        staticinvoke <com.google.common.util.concurrent.AbstractFuture: void complete(com.google.common.util.concurrent.AbstractFuture)>(r0);
+
+        return 1;
+
+     label2:
+        return 0;
+    }
+
+    public boolean setException(java.lang.Throwable)
+    {
+        java.lang.Throwable $r2;
+        com.google.common.util.concurrent.AbstractFuture$AtomicHelper $r3;
+        com.google.common.util.concurrent.AbstractFuture$Failure $r1;
+        com.google.common.util.concurrent.AbstractFuture r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $r2 := @parameter0: java.lang.Throwable;
+
+        $r1 = new com.google.common.util.concurrent.AbstractFuture$Failure;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        specialinvoke $r1.<com.google.common.util.concurrent.AbstractFuture$Failure: void <init>(java.lang.Throwable)>($r2);
+
+        $r3 = <com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$AtomicHelper ATOMIC_HELPER>;
+
+        $z0 = virtualinvoke $r3.<com.google.common.util.concurrent.AbstractFuture$AtomicHelper: boolean casValue(com.google.common.util.concurrent.AbstractFuture,java.lang.Object,java.lang.Object)>(r0, null, $r1);
+
+        if $z0 == 0 goto label1;
+
+        staticinvoke <com.google.common.util.concurrent.AbstractFuture: void complete(com.google.common.util.concurrent.AbstractFuture)>(r0);
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean setFuture(com.google.common.util.concurrent.ListenableFuture)
+    {
+        com.google.common.util.concurrent.AbstractFuture$AtomicHelper $r1;
+        java.lang.Throwable $r2, $r7;
+        com.google.common.util.concurrent.ListenableFuture $r3;
+        java.util.concurrent.Executor $r6;
+        com.google.common.util.concurrent.AbstractFuture$SetFuture $r5;
+        com.google.common.util.concurrent.AbstractFuture$Cancellation $r9;
+        com.google.common.util.concurrent.AbstractFuture$Failure $r8;
+        java.lang.Object $r4;
+        com.google.common.util.concurrent.AbstractFuture r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $r3 := @parameter0: com.google.common.util.concurrent.ListenableFuture;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r3);
+
+        $r4 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        if $r4 != null goto label11;
+
+        $z0 = interfaceinvoke $r3.<java.util.concurrent.Future: boolean isDone()>();
+
+        if $z0 == 0 goto label02;
+
+        $r4 = staticinvoke <com.google.common.util.concurrent.AbstractFuture: java.lang.Object getFutureValue(com.google.common.util.concurrent.ListenableFuture)>($r3);
+
+        $r1 = <com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$AtomicHelper ATOMIC_HELPER>;
+
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.AbstractFuture$AtomicHelper: boolean casValue(com.google.common.util.concurrent.AbstractFuture,java.lang.Object,java.lang.Object)>(r0, null, $r4);
+
+        if $z0 == 0 goto label01;
+
+        staticinvoke <com.google.common.util.concurrent.AbstractFuture: void complete(com.google.common.util.concurrent.AbstractFuture)>(r0);
+
+        return 1;
+
+     label01:
+        return 0;
+
+     label02:
+        $r5 = new com.google.common.util.concurrent.AbstractFuture$SetFuture;
+
+        specialinvoke $r5.<com.google.common.util.concurrent.AbstractFuture$SetFuture: void <init>(com.google.common.util.concurrent.AbstractFuture,com.google.common.util.concurrent.ListenableFuture)>(r0, $r3);
+
+        $r1 = <com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$AtomicHelper ATOMIC_HELPER>;
+
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.AbstractFuture$AtomicHelper: boolean casValue(com.google.common.util.concurrent.AbstractFuture,java.lang.Object,java.lang.Object)>(r0, null, $r5);
+
+        if $z0 == 0 goto label10;
+
+     label03:
+        $r6 = staticinvoke <com.google.common.util.concurrent.MoreExecutors: java.util.concurrent.Executor directExecutor()>();
+
+        interfaceinvoke $r3.<com.google.common.util.concurrent.ListenableFuture: void addListener(java.lang.Runnable,java.util.concurrent.Executor)>($r5, $r6);
+
+     label04:
+        return 1;
+
+     label05:
+        $r7 := @caughtexception;
+
+     label06:
+        $r8 = new com.google.common.util.concurrent.AbstractFuture$Failure;
+
+        specialinvoke $r8.<com.google.common.util.concurrent.AbstractFuture$Failure: void <init>(java.lang.Throwable)>($r7);
+
+     label07:
+        goto label09;
+
+     label08:
+        $r8 = <com.google.common.util.concurrent.AbstractFuture$Failure: com.google.common.util.concurrent.AbstractFuture$Failure FALLBACK_INSTANCE>;
+
+     label09:
+        $r1 = <com.google.common.util.concurrent.AbstractFuture: com.google.common.util.concurrent.AbstractFuture$AtomicHelper ATOMIC_HELPER>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.AbstractFuture$AtomicHelper: boolean casValue(com.google.common.util.concurrent.AbstractFuture,java.lang.Object,java.lang.Object)>(r0, $r5, $r8);
+
+        return 1;
+
+     label10:
+        $r4 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+     label11:
+        $z0 = $r4 instanceof com.google.common.util.concurrent.AbstractFuture$Cancellation;
+
+        if $z0 == 0 goto label13;
+
+        $r9 = (com.google.common.util.concurrent.AbstractFuture$Cancellation) $r4;
+
+        $z0 = $r9.<com.google.common.util.concurrent.AbstractFuture$Cancellation: boolean wasInterrupted>;
+
+        interfaceinvoke $r3.<java.util.concurrent.Future: boolean cancel(boolean)>($z0);
+
+        return 0;
+
+     label12:
+        $r2 := @caughtexception;
+
+        goto label08;
+
+     label13:
+        return 0;
+
+        catch java.lang.Throwable from label03 to label04 with label05;
+        catch java.lang.Throwable from label06 to label07 with label12;
+    }
+
+    public java.lang.String toString()
+    {
+        java.lang.StringBuilder $r1, $r4;
+        java.lang.Class $r5;
+        java.lang.String $r2;
+        java.lang.RuntimeException $r3;
+        com.google.common.util.concurrent.AbstractFuture r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = specialinvoke r0.<java.lang.Object: java.lang.String toString()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[status=");
+
+        $z0 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractFuture: boolean isCancelled()>();
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("CANCELLED");
+
+        goto label8;
+
+     label1:
+        $z0 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractFuture: boolean isDone()>();
+
+        if $z0 == 0 goto label2;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractFuture: void addDoneString(java.lang.StringBuilder)>($r1);
+
+        goto label8;
+
+     label2:
+        $r2 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.String pendingToString()>();
+
+     label3:
+        goto label5;
+
+     label4:
+        $r3 := @caughtexception;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Exception thrown from implementation: ");
+
+        $r5 = virtualinvoke $r3.<java.lang.Object: java.lang.Class getClass()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r5);
+
+        $r2 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label5:
+        $z0 = staticinvoke <com.google.common.base.Strings: boolean isNullOrEmpty(java.lang.String)>($r2);
+
+        if $z0 != 0 goto label6;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("PENDING, info=[");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+
+        goto label8;
+
+     label6:
+        $z0 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractFuture: boolean isDone()>();
+
+        if $z0 == 0 goto label7;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractFuture: void addDoneString(java.lang.StringBuilder)>($r1);
+
+        goto label8;
+
+     label7:
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("PENDING");
+
+     label8:
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r2;
+
+        catch java.lang.RuntimeException from label2 to label3 with label4;
+    }
+
+    public final java.lang.Throwable trustedGetException()
+    {
+        java.lang.Throwable r3;
+        com.google.common.util.concurrent.AbstractFuture$Failure $r2;
+        java.lang.Object $r1;
+        com.google.common.util.concurrent.AbstractFuture r0;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        $r2 = (com.google.common.util.concurrent.AbstractFuture$Failure) $r1;
+
+        r3 = $r2.<com.google.common.util.concurrent.AbstractFuture$Failure: java.lang.Throwable exception>;
+
+        return r3;
+    }
+
+    public final boolean wasInterrupted()
+    {
+        java.lang.Object $r1;
+        com.google.common.util.concurrent.AbstractFuture r0;
+        boolean $z0;
+        com.google.common.util.concurrent.AbstractFuture$Cancellation $r2;
+
+        r0 := @this: com.google.common.util.concurrent.AbstractFuture;
+
+        $r1 = r0.<com.google.common.util.concurrent.AbstractFuture: java.lang.Object value>;
+
+        $z0 = $r1 instanceof com.google.common.util.concurrent.AbstractFuture$Cancellation;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (com.google.common.util.concurrent.AbstractFuture$Cancellation) $r1;
+
+        $z0 = $r2.<com.google.common.util.concurrent.AbstractFuture$Cancellation: boolean wasInterrupted>;
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+}

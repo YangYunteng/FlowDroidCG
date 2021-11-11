@@ -1,0 +1,989 @@
+public final class com.google.common.collect.ConcurrentHashMultiset extends com.google.common.collect.AbstractMultiset implements java.io.Serializable
+{
+    public static final long serialVersionUID;
+    public final transient java.util.concurrent.ConcurrentMap countMap;
+
+    public void <init>(java.util.concurrent.ConcurrentMap)
+    {
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        java.util.concurrent.ConcurrentMap $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 := @parameter0: java.util.concurrent.ConcurrentMap;
+
+        specialinvoke r0.<com.google.common.collect.AbstractMultiset: void <init>()>();
+
+        $z0 = interfaceinvoke $r1.<java.util.concurrent.ConcurrentMap: boolean isEmpty()>();
+
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.String,java.lang.Object)>($z0, "the backing map (%s) must be empty", $r1);
+
+        r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap> = $r1;
+
+        return;
+    }
+
+    public static java.util.concurrent.ConcurrentMap access$100(com.google.common.collect.ConcurrentHashMultiset)
+    {
+        com.google.common.collect.ConcurrentHashMultiset $r0;
+        java.util.concurrent.ConcurrentMap r1;
+
+        $r0 := @parameter0: com.google.common.collect.ConcurrentHashMultiset;
+
+        r1 = $r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        return r1;
+    }
+
+    public static com.google.common.collect.ConcurrentHashMultiset create()
+    {
+        java.util.concurrent.ConcurrentHashMap $r1;
+        com.google.common.collect.ConcurrentHashMultiset $r0;
+
+        $r0 = new com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 = new java.util.concurrent.ConcurrentHashMap;
+
+        specialinvoke $r1.<java.util.concurrent.ConcurrentHashMap: void <init>()>();
+
+        specialinvoke $r0.<com.google.common.collect.ConcurrentHashMultiset: void <init>(java.util.concurrent.ConcurrentMap)>($r1);
+
+        return $r0;
+    }
+
+    public static com.google.common.collect.ConcurrentHashMultiset create(java.lang.Iterable)
+    {
+        com.google.common.collect.ConcurrentHashMultiset $r1;
+        java.lang.Iterable $r0;
+
+        $r0 := @parameter0: java.lang.Iterable;
+
+        $r1 = staticinvoke <com.google.common.collect.ConcurrentHashMultiset: com.google.common.collect.ConcurrentHashMultiset create()>();
+
+        staticinvoke <com.google.common.collect.Iterables: boolean addAll(java.util.Collection,java.lang.Iterable)>($r1, $r0);
+
+        return $r1;
+    }
+
+    public static com.google.common.collect.ConcurrentHashMultiset create(java.util.concurrent.ConcurrentMap)
+    {
+        com.google.common.collect.ConcurrentHashMultiset $r1;
+        java.util.concurrent.ConcurrentMap $r0;
+
+        $r0 := @parameter0: java.util.concurrent.ConcurrentMap;
+
+        $r1 = new com.google.common.collect.ConcurrentHashMultiset;
+
+        specialinvoke $r1.<com.google.common.collect.ConcurrentHashMultiset: void <init>(java.util.concurrent.ConcurrentMap)>($r0);
+
+        return $r1;
+    }
+
+    private void readObject(java.io.ObjectInputStream)
+    {
+        com.google.common.collect.Serialization$FieldSetter $r1;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        java.io.ObjectInputStream $r3;
+        java.lang.Object $r2;
+        java.util.concurrent.ConcurrentMap $r4;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r3 := @parameter0: java.io.ObjectInputStream;
+
+        virtualinvoke $r3.<java.io.ObjectInputStream: void defaultReadObject()>();
+
+        $r2 = virtualinvoke $r3.<java.io.ObjectInputStream: java.lang.Object readObject()>();
+
+        $r4 = (java.util.concurrent.ConcurrentMap) $r2;
+
+        $r1 = <com.google.common.collect.ConcurrentHashMultiset$FieldSettersHolder: com.google.common.collect.Serialization$FieldSetter COUNT_MAP_FIELD_SETTER>;
+
+        virtualinvoke $r1.<com.google.common.collect.Serialization$FieldSetter: void set(java.lang.Object,java.lang.Object)>(r0, $r4);
+
+        return;
+    }
+
+    private java.util.List snapshot()
+    {
+        java.util.Iterator $r3;
+        java.util.Set $r2;
+        com.google.common.collect.Multiset$Entry $r5;
+        java.util.ArrayList $r1;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        int $i0, $i1;
+        java.lang.Object $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $i0 = virtualinvoke r0.<com.google.common.collect.ConcurrentHashMultiset: int size()>();
+
+        $r1 = staticinvoke <com.google.common.collect.Lists: java.util.ArrayList newArrayListWithExpectedSize(int)>($i0);
+
+        $r2 = virtualinvoke r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.Set entrySet()>();
+
+        $r3 = interfaceinvoke $r2.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (com.google.common.collect.Multiset$Entry) $r4;
+
+        $r4 = interfaceinvoke $r5.<com.google.common.collect.Multiset$Entry: java.lang.Object getElement()>();
+
+        $i0 = interfaceinvoke $r5.<com.google.common.collect.Multiset$Entry: int getCount()>();
+
+     label2:
+        if $i0 <= 0 goto label1;
+
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>($r4);
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        goto label2;
+
+     label3:
+        return $r1;
+    }
+
+    private void writeObject(java.io.ObjectOutputStream)
+    {
+        java.io.ObjectOutputStream $r1;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        java.util.concurrent.ConcurrentMap $r2;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 := @parameter0: java.io.ObjectOutputStream;
+
+        virtualinvoke $r1.<java.io.ObjectOutputStream: void defaultWriteObject()>();
+
+        $r2 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        virtualinvoke $r1.<java.io.ObjectOutputStream: void writeObject(java.lang.Object)>($r2);
+
+        return;
+    }
+
+    public int add(java.lang.Object, int)
+    {
+        java.lang.IllegalArgumentException $r6;
+        java.util.concurrent.ConcurrentMap $r3;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        java.util.concurrent.atomic.AtomicInteger $r5, $r9;
+        int $i0, $i1, $i2;
+        java.lang.ArithmeticException $r1;
+        java.lang.Object $r2, $r4;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r8;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        if $i0 != 0 goto label1;
+
+        $i0 = virtualinvoke r0.<com.google.common.collect.ConcurrentHashMultiset: int count(java.lang.Object)>($r2);
+
+        return $i0;
+
+     label1:
+        staticinvoke <com.google.common.collect.CollectPreconditions: void checkPositive(int,java.lang.String)>($i0, "occurences");
+
+     label2:
+        $r3 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $r4 = staticinvoke <com.google.common.collect.Maps: java.lang.Object safeGet(java.util.Map,java.lang.Object)>($r3, $r2);
+
+        $r5 = (java.util.concurrent.atomic.AtomicInteger) $r4;
+
+        if $r5 != null goto label3;
+
+        $r3 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $r5 = new java.util.concurrent.atomic.AtomicInteger;
+
+        specialinvoke $r5.<java.util.concurrent.atomic.AtomicInteger: void <init>(int)>($i0);
+
+        $r4 = interfaceinvoke $r3.<java.util.concurrent.ConcurrentMap: java.lang.Object putIfAbsent(java.lang.Object,java.lang.Object)>($r2, $r5);
+
+        $r5 = (java.util.concurrent.atomic.AtomicInteger) $r4;
+
+        if $r5 != null goto label3;
+
+        return 0;
+
+     label3:
+        $i1 = virtualinvoke $r5.<java.util.concurrent.atomic.AtomicInteger: int get()>();
+
+        if $i1 == 0 goto label7;
+
+     label4:
+        $i2 = staticinvoke <com.google.common.math.IntMath: int checkedAdd(int,int)>($i1, $i0);
+
+        $z0 = virtualinvoke $r5.<java.util.concurrent.atomic.AtomicInteger: boolean compareAndSet(int,int)>($i1, $i2);
+
+     label5:
+        if $z0 == 0 goto label3;
+
+        return $i1;
+
+     label6:
+        $r6 = new java.lang.IllegalArgumentException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Overflow adding ");
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" occurrences to a count of ");
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r8);
+
+        throw $r6;
+
+     label7:
+        $r9 = new java.util.concurrent.atomic.AtomicInteger;
+
+        specialinvoke $r9.<java.util.concurrent.atomic.AtomicInteger: void <init>(int)>($i0);
+
+        $r3 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $r4 = interfaceinvoke $r3.<java.util.concurrent.ConcurrentMap: java.lang.Object putIfAbsent(java.lang.Object,java.lang.Object)>($r2, $r9);
+
+        if $r4 == null goto label9;
+
+        $r3 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $z0 = interfaceinvoke $r3.<java.util.concurrent.ConcurrentMap: boolean replace(java.lang.Object,java.lang.Object,java.lang.Object)>($r2, $r5, $r9);
+
+        if $z0 == 0 goto label2;
+
+        return 0;
+
+     label8:
+        $r1 := @caughtexception;
+
+        goto label6;
+
+     label9:
+        return 0;
+
+        catch java.lang.ArithmeticException from label4 to label5 with label8;
+    }
+
+    public volatile boolean add(java.lang.Object)
+    {
+        java.lang.Object $r1;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $z0 = specialinvoke r0.<com.google.common.collect.AbstractMultiset: boolean add(java.lang.Object)>($r1);
+
+        return $z0;
+    }
+
+    public volatile boolean addAll(java.util.Collection)
+    {
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        boolean $z0;
+        java.util.Collection $r1;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 := @parameter0: java.util.Collection;
+
+        $z0 = specialinvoke r0.<com.google.common.collect.AbstractMultiset: boolean addAll(java.util.Collection)>($r1);
+
+        return $z0;
+    }
+
+    public void clear()
+    {
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        java.util.concurrent.ConcurrentMap $r1;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        interfaceinvoke $r1.<java.util.concurrent.ConcurrentMap: void clear()>();
+
+        return;
+    }
+
+    public volatile boolean contains(java.lang.Object)
+    {
+        java.lang.Object $r1;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $z0 = specialinvoke r0.<com.google.common.collect.AbstractMultiset: boolean contains(java.lang.Object)>($r1);
+
+        return $z0;
+    }
+
+    public int count(java.lang.Object)
+    {
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        java.util.concurrent.atomic.AtomicInteger $r3;
+        int $i0;
+        java.lang.Object $r2;
+        java.util.concurrent.ConcurrentMap $r1;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $r2 = staticinvoke <com.google.common.collect.Maps: java.lang.Object safeGet(java.util.Map,java.lang.Object)>($r1, $r2);
+
+        $r3 = (java.util.concurrent.atomic.AtomicInteger) $r2;
+
+        if $r3 != null goto label1;
+
+        return 0;
+
+     label1:
+        $i0 = virtualinvoke $r3.<java.util.concurrent.atomic.AtomicInteger: int get()>();
+
+        return $i0;
+    }
+
+    public java.util.Set createElementSet()
+    {
+        com.google.common.collect.ConcurrentHashMultiset$1 $r1;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        java.util.Set $r2;
+        java.util.concurrent.ConcurrentMap $r3;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r3 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $r2 = interfaceinvoke $r3.<java.util.concurrent.ConcurrentMap: java.util.Set keySet()>();
+
+        $r1 = new com.google.common.collect.ConcurrentHashMultiset$1;
+
+        specialinvoke $r1.<com.google.common.collect.ConcurrentHashMultiset$1: void <init>(com.google.common.collect.ConcurrentHashMultiset,java.util.Set)>(r0, $r2);
+
+        return $r1;
+    }
+
+    public java.util.Set createEntrySet()
+    {
+        com.google.common.collect.ConcurrentHashMultiset$EntrySet $r1;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 = new com.google.common.collect.ConcurrentHashMultiset$EntrySet;
+
+        specialinvoke $r1.<com.google.common.collect.ConcurrentHashMultiset$EntrySet: void <init>(com.google.common.collect.ConcurrentHashMultiset,com.google.common.collect.ConcurrentHashMultiset$1)>(r0, null);
+
+        return $r1;
+    }
+
+    public int distinctElements()
+    {
+        int $i0;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        java.util.concurrent.ConcurrentMap $r1;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $i0 = interfaceinvoke $r1.<java.util.concurrent.ConcurrentMap: int size()>();
+
+        return $i0;
+    }
+
+    public volatile java.util.Set elementSet()
+    {
+        java.util.Set $r1;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 = specialinvoke r0.<com.google.common.collect.AbstractMultiset: java.util.Set elementSet()>();
+
+        return $r1;
+    }
+
+    public java.util.Iterator entryIterator()
+    {
+        com.google.common.collect.ConcurrentHashMultiset$2 $r1;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        com.google.common.collect.ConcurrentHashMultiset$3 $r2;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 = new com.google.common.collect.ConcurrentHashMultiset$2;
+
+        specialinvoke $r1.<com.google.common.collect.ConcurrentHashMultiset$2: void <init>(com.google.common.collect.ConcurrentHashMultiset)>(r0);
+
+        $r2 = new com.google.common.collect.ConcurrentHashMultiset$3;
+
+        specialinvoke $r2.<com.google.common.collect.ConcurrentHashMultiset$3: void <init>(com.google.common.collect.ConcurrentHashMultiset,java.util.Iterator)>(r0, $r1);
+
+        return $r2;
+    }
+
+    public volatile java.util.Set entrySet()
+    {
+        java.util.Set $r1;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 = specialinvoke r0.<com.google.common.collect.AbstractMultiset: java.util.Set entrySet()>();
+
+        return $r1;
+    }
+
+    public volatile boolean equals(java.lang.Object)
+    {
+        java.lang.Object $r1;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $z0 = specialinvoke r0.<com.google.common.collect.AbstractMultiset: boolean equals(java.lang.Object)>($r1);
+
+        return $z0;
+    }
+
+    public volatile int hashCode()
+    {
+        int $i0;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $i0 = specialinvoke r0.<com.google.common.collect.AbstractMultiset: int hashCode()>();
+
+        return $i0;
+    }
+
+    public boolean isEmpty()
+    {
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        boolean $z0;
+        java.util.concurrent.ConcurrentMap $r1;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $z0 = interfaceinvoke $r1.<java.util.concurrent.ConcurrentMap: boolean isEmpty()>();
+
+        return $z0;
+    }
+
+    public volatile java.util.Iterator iterator()
+    {
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        java.util.Iterator $r1;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 = specialinvoke r0.<com.google.common.collect.AbstractMultiset: java.util.Iterator iterator()>();
+
+        return $r1;
+    }
+
+    public int remove(java.lang.Object, int)
+    {
+        java.util.concurrent.ConcurrentMap $r2;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        java.util.concurrent.atomic.AtomicInteger $r4;
+        int $i0, $i1, $i2;
+        java.lang.Object $r1, $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        if $i0 != 0 goto label1;
+
+        $i0 = virtualinvoke r0.<com.google.common.collect.ConcurrentHashMultiset: int count(java.lang.Object)>($r1);
+
+        return $i0;
+
+     label1:
+        staticinvoke <com.google.common.collect.CollectPreconditions: void checkPositive(int,java.lang.String)>($i0, "occurences");
+
+        $r2 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $r3 = staticinvoke <com.google.common.collect.Maps: java.lang.Object safeGet(java.util.Map,java.lang.Object)>($r2, $r1);
+
+        $r4 = (java.util.concurrent.atomic.AtomicInteger) $r3;
+
+        if $r4 != null goto label2;
+
+        return 0;
+
+     label2:
+        $i1 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicInteger: int get()>();
+
+        if $i1 == 0 goto label3;
+
+        $i2 = $i1 - $i0;
+
+        $i2 = staticinvoke <java.lang.Math: int max(int,int)>(0, $i2);
+
+        $z0 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicInteger: boolean compareAndSet(int,int)>($i1, $i2);
+
+        if $z0 == 0 goto label2;
+
+        if $i2 != 0 goto label4;
+
+        $r2 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        interfaceinvoke $r2.<java.util.concurrent.ConcurrentMap: boolean remove(java.lang.Object,java.lang.Object)>($r1, $r4);
+
+        return $i1;
+
+     label3:
+        return 0;
+
+     label4:
+        return $i1;
+    }
+
+    public volatile boolean remove(java.lang.Object)
+    {
+        java.lang.Object $r1;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $z0 = specialinvoke r0.<com.google.common.collect.AbstractMultiset: boolean remove(java.lang.Object)>($r1);
+
+        return $z0;
+    }
+
+    public volatile boolean removeAll(java.util.Collection)
+    {
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        boolean $z0;
+        java.util.Collection $r1;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 := @parameter0: java.util.Collection;
+
+        $z0 = specialinvoke r0.<com.google.common.collect.AbstractMultiset: boolean removeAll(java.util.Collection)>($r1);
+
+        return $z0;
+    }
+
+    public boolean removeExactly(java.lang.Object, int)
+    {
+        java.util.concurrent.ConcurrentMap $r2;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        java.util.concurrent.atomic.AtomicInteger $r4;
+        int $i0, $i1, $i2;
+        java.lang.Object $r1, $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i1 := @parameter1: int;
+
+        if $i1 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        staticinvoke <com.google.common.collect.CollectPreconditions: void checkPositive(int,java.lang.String)>($i1, "occurences");
+
+        $r2 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $r3 = staticinvoke <com.google.common.collect.Maps: java.lang.Object safeGet(java.util.Map,java.lang.Object)>($r2, $r1);
+
+        $r4 = (java.util.concurrent.atomic.AtomicInteger) $r3;
+
+        if $r4 != null goto label2;
+
+        return 0;
+
+     label2:
+        $i2 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicInteger: int get()>();
+
+        if $i2 >= $i1 goto label3;
+
+        return 0;
+
+     label3:
+        $i0 = $i2 - $i1;
+
+        $z0 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicInteger: boolean compareAndSet(int,int)>($i2, $i0);
+
+        if $z0 == 0 goto label2;
+
+        if $i0 != 0 goto label4;
+
+        $r2 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        interfaceinvoke $r2.<java.util.concurrent.ConcurrentMap: boolean remove(java.lang.Object,java.lang.Object)>($r1, $r4);
+
+     label4:
+        return 1;
+    }
+
+    public volatile boolean retainAll(java.util.Collection)
+    {
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        boolean $z0;
+        java.util.Collection $r1;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 := @parameter0: java.util.Collection;
+
+        $z0 = specialinvoke r0.<com.google.common.collect.AbstractMultiset: boolean retainAll(java.util.Collection)>($r1);
+
+        return $z0;
+    }
+
+    public int setCount(java.lang.Object, int)
+    {
+        java.util.concurrent.ConcurrentMap $r2;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        java.util.concurrent.atomic.AtomicInteger $r4, $r5;
+        int $i0, $i1;
+        java.lang.Object $r1, $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        staticinvoke <com.google.common.collect.CollectPreconditions: int checkNonnegative(int,java.lang.String)>($i0, "count");
+
+     label1:
+        $r2 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $r3 = staticinvoke <com.google.common.collect.Maps: java.lang.Object safeGet(java.util.Map,java.lang.Object)>($r2, $r1);
+
+        $r4 = (java.util.concurrent.atomic.AtomicInteger) $r3;
+
+        if $r4 != null goto label3;
+
+        if $i0 != 0 goto label2;
+
+        return 0;
+
+     label2:
+        $r2 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $r4 = new java.util.concurrent.atomic.AtomicInteger;
+
+        specialinvoke $r4.<java.util.concurrent.atomic.AtomicInteger: void <init>(int)>($i0);
+
+        $r3 = interfaceinvoke $r2.<java.util.concurrent.ConcurrentMap: java.lang.Object putIfAbsent(java.lang.Object,java.lang.Object)>($r1, $r4);
+
+        $r4 = (java.util.concurrent.atomic.AtomicInteger) $r3;
+
+        if $r4 != null goto label3;
+
+        return 0;
+
+     label3:
+        $i1 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicInteger: int get()>();
+
+        if $i1 != 0 goto label5;
+
+        if $i0 != 0 goto label4;
+
+        return 0;
+
+     label4:
+        $r5 = new java.util.concurrent.atomic.AtomicInteger;
+
+        specialinvoke $r5.<java.util.concurrent.atomic.AtomicInteger: void <init>(int)>($i0);
+
+        $r2 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $r3 = interfaceinvoke $r2.<java.util.concurrent.ConcurrentMap: java.lang.Object putIfAbsent(java.lang.Object,java.lang.Object)>($r1, $r5);
+
+        if $r3 == null goto label6;
+
+        $r2 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $z0 = interfaceinvoke $r2.<java.util.concurrent.ConcurrentMap: boolean replace(java.lang.Object,java.lang.Object,java.lang.Object)>($r1, $r4, $r5);
+
+        if $z0 == 0 goto label1;
+
+        return 0;
+
+     label5:
+        $z0 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicInteger: boolean compareAndSet(int,int)>($i1, $i0);
+
+        if $z0 == 0 goto label3;
+
+        if $i0 != 0 goto label7;
+
+        $r2 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        interfaceinvoke $r2.<java.util.concurrent.ConcurrentMap: boolean remove(java.lang.Object,java.lang.Object)>($r1, $r4);
+
+        return $i1;
+
+     label6:
+        return 0;
+
+     label7:
+        return $i1;
+    }
+
+    public boolean setCount(java.lang.Object, int, int)
+    {
+        java.util.concurrent.ConcurrentMap $r2;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        java.util.concurrent.atomic.AtomicInteger $r4, $r5;
+        int $i0, $i1, $i2;
+        java.lang.Object $r1, $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        staticinvoke <com.google.common.collect.CollectPreconditions: int checkNonnegative(int,java.lang.String)>($i0, "oldCount");
+
+        staticinvoke <com.google.common.collect.CollectPreconditions: int checkNonnegative(int,java.lang.String)>($i1, "newCount");
+
+        $r2 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $r3 = staticinvoke <com.google.common.collect.Maps: java.lang.Object safeGet(java.util.Map,java.lang.Object)>($r2, $r1);
+
+        $r4 = (java.util.concurrent.atomic.AtomicInteger) $r3;
+
+        if $r4 != null goto label3;
+
+        if $i0 == 0 goto label1;
+
+        return 0;
+
+     label1:
+        if $i1 != 0 goto label2;
+
+        return 1;
+
+     label2:
+        $r2 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $r4 = new java.util.concurrent.atomic.AtomicInteger;
+
+        specialinvoke $r4.<java.util.concurrent.atomic.AtomicInteger: void <init>(int)>($i1);
+
+        $r1 = interfaceinvoke $r2.<java.util.concurrent.ConcurrentMap: java.lang.Object putIfAbsent(java.lang.Object,java.lang.Object)>($r1, $r4);
+
+        if $r1 != null goto label7;
+
+        return 1;
+
+     label3:
+        $i2 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicInteger: int get()>();
+
+        if $i2 != $i0 goto label7;
+
+        if $i2 != 0 goto label6;
+
+        if $i1 != 0 goto label4;
+
+        $r2 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        interfaceinvoke $r2.<java.util.concurrent.ConcurrentMap: boolean remove(java.lang.Object,java.lang.Object)>($r1, $r4);
+
+        return 1;
+
+     label4:
+        $r5 = new java.util.concurrent.atomic.AtomicInteger;
+
+        specialinvoke $r5.<java.util.concurrent.atomic.AtomicInteger: void <init>(int)>($i1);
+
+        $r2 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $r3 = interfaceinvoke $r2.<java.util.concurrent.ConcurrentMap: java.lang.Object putIfAbsent(java.lang.Object,java.lang.Object)>($r1, $r5);
+
+        if $r3 == null goto label5;
+
+        $r2 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $z0 = interfaceinvoke $r2.<java.util.concurrent.ConcurrentMap: boolean replace(java.lang.Object,java.lang.Object,java.lang.Object)>($r1, $r4, $r5);
+
+        if $z0 == 0 goto label7;
+
+     label5:
+        return 1;
+
+     label6:
+        $z0 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicInteger: boolean compareAndSet(int,int)>($i2, $i1);
+
+        if $z0 == 0 goto label7;
+
+        if $i1 != 0 goto label8;
+
+        $r2 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        interfaceinvoke $r2.<java.util.concurrent.ConcurrentMap: boolean remove(java.lang.Object,java.lang.Object)>($r1, $r4);
+
+        return 1;
+
+     label7:
+        return 0;
+
+     label8:
+        return 1;
+    }
+
+    public int size()
+    {
+        java.util.Iterator $r3;
+        java.util.Collection $r2;
+        long $l0, $l2;
+        java.util.concurrent.ConcurrentMap $r1;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+        java.util.concurrent.atomic.AtomicInteger $r5;
+        int $i1;
+        java.lang.Object $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 = r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.concurrent.ConcurrentMap countMap>;
+
+        $r2 = interfaceinvoke $r1.<java.util.concurrent.ConcurrentMap: java.util.Collection values()>();
+
+        $r3 = interfaceinvoke $r2.<java.util.Collection: java.util.Iterator iterator()>();
+
+        $l0 = 0L;
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (java.util.concurrent.atomic.AtomicInteger) $r4;
+
+        $i1 = virtualinvoke $r5.<java.util.concurrent.atomic.AtomicInteger: int get()>();
+
+        $l2 = (long) $i1;
+
+        $l0 = $l0 + $l2;
+
+        goto label1;
+
+     label2:
+        $i1 = staticinvoke <com.google.common.primitives.Ints: int saturatedCast(long)>($l0);
+
+        return $i1;
+    }
+
+    public java.lang.Object[] toArray()
+    {
+        java.util.List $r1;
+        java.lang.Object[] $r2;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 = specialinvoke r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.List snapshot()>();
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object[] toArray()>();
+
+        return $r2;
+    }
+
+    public java.lang.Object[] toArray(java.lang.Object[])
+    {
+        java.util.List $r2;
+        java.lang.Object[] $r1;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 := @parameter0: java.lang.Object[];
+
+        $r2 = specialinvoke r0.<com.google.common.collect.ConcurrentHashMultiset: java.util.List snapshot()>();
+
+        $r1 = interfaceinvoke $r2.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($r1);
+
+        return $r1;
+    }
+
+    public volatile java.lang.String toString()
+    {
+        java.lang.String $r1;
+        com.google.common.collect.ConcurrentHashMultiset r0;
+
+        r0 := @this: com.google.common.collect.ConcurrentHashMultiset;
+
+        $r1 = specialinvoke r0.<com.google.common.collect.AbstractMultiset: java.lang.String toString()>();
+
+        return $r1;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.common.collect.ConcurrentHashMultiset: long serialVersionUID> = 1L;
+
+        return;
+    }
+}

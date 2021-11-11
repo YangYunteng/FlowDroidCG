@@ -1,0 +1,75 @@
+public class project.android.imageprocessing.filter.colour.HueFilter extends project.android.imageprocessing.filter.BasicFilter
+{
+    public static final java.lang.String UNIFORM_HUEADJUST;
+    public float hueAdjust;
+    public int hueAdjustHandle;
+
+    public void <init>(float)
+    {
+        float $f0;
+        project.android.imageprocessing.filter.colour.HueFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.HueFilter;
+
+        $f0 := @parameter0: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.BasicFilter: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.colour.HueFilter: float hueAdjust> = $f0;
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.colour.HueFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.HueFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform float u_HueAdjust;\nconst vec4  kRGBToYPrime = vec4 (0.299, 0.587, 0.114, 0.0);\nconst vec4  kRGBToI = vec4 (0.595716, -0.274453, -0.321263, 0.0);\nconst vec4  kRGBToQ = vec4 (0.211456, -0.522591, 0.31135, 0.0);\nconst vec4  kYIQToR = vec4 (1.0, 0.9563, 0.6210, 0.0);\nconst vec4  kYIQToG = vec4 (1.0, -0.2721, -0.6474, 0.0);\nconst vec4  kYIQToB = vec4 (1.0, -1.1070, 1.7046, 0.0);\nvoid main() {\n   vec4 color = texture2D(u_Texture0,v_TexCoord);\n   float YPrime = dot(color, kRGBToYPrime);\n   float I = dot(color, kRGBToI);\n   float Q = dot(color, kRGBToQ);\n   float hue = atan(Q, I);\n   float chroma = sqrt(I * I + Q * Q);\n   hue += (-u_HueAdjust);\n   Q = chroma * sin(hue);   I = chroma * cos(hue);   vec4 yIQ = vec4(YPrime, I, Q, 0.0);\n   color.r = dot(yIQ, kYIQToR);\n   color.g = dot(yIQ, kYIQToG);\n   color.b = dot(yIQ, kYIQToB);\n   gl_FragColor = color;\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.colour.HueFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.HueFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_HueAdjust");
+
+        r0.<project.android.imageprocessing.filter.colour.HueFilter: int hueAdjustHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        int $i0;
+        float $f0;
+        project.android.imageprocessing.filter.colour.HueFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.HueFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.HueFilter: int hueAdjustHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.colour.HueFilter: float hueAdjust>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.colour.HueFilter: java.lang.String UNIFORM_HUEADJUST> = "u_HueAdjust";
+
+        return;
+    }
+}

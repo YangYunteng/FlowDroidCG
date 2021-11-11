@@ -1,0 +1,238 @@
+public abstract class com.google.common.reflect.TypeVisitor extends java.lang.Object
+{
+    public final java.util.Set visited;
+
+    public void <init>()
+    {
+        java.util.HashSet $r1;
+        com.google.common.reflect.TypeVisitor r0;
+
+        r0 := @this: com.google.common.reflect.TypeVisitor;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r1 = staticinvoke <com.google.common.collect.Sets: java.util.HashSet newHashSet()>();
+
+        r0.<com.google.common.reflect.TypeVisitor: java.util.Set visited> = $r1;
+
+        return;
+    }
+
+    public final transient void visit(java.lang.reflect.Type[])
+    {
+        java.lang.reflect.GenericArrayType $r8;
+        java.lang.Throwable $r12;
+        java.lang.reflect.WildcardType $r5;
+        java.lang.AssertionError $r9;
+        int $i0, $i1;
+        java.lang.String $r11;
+        boolean $z0;
+        java.lang.reflect.TypeVariable $r4;
+        java.util.Set $r3;
+        java.lang.reflect.ParameterizedType $r6;
+        java.lang.reflect.Type $r1;
+        java.lang.reflect.Type[] $r2;
+        java.lang.Class $r7;
+        java.lang.StringBuilder $r10;
+        com.google.common.reflect.TypeVisitor r0;
+
+        r0 := @this: com.google.common.reflect.TypeVisitor;
+
+        $r2 := @parameter0: java.lang.reflect.Type[];
+
+        $i0 = lengthof $r2;
+
+        $i1 = 0;
+
+     label01:
+        if $i1 >= $i0 goto label25;
+
+        $r1 = $r2[$i1];
+
+        if $r1 == null goto label24;
+
+        $r3 = r0.<com.google.common.reflect.TypeVisitor: java.util.Set visited>;
+
+        $z0 = interfaceinvoke $r3.<java.util.Set: boolean add(java.lang.Object)>($r1);
+
+        if $z0 != 0 goto label02;
+
+        goto label24;
+
+     label02:
+        $z0 = $r1 instanceof java.lang.reflect.TypeVariable;
+
+     label03:
+        if $z0 == 0 goto label06;
+
+     label04:
+        $r4 = (java.lang.reflect.TypeVariable) $r1;
+
+        virtualinvoke r0.<com.google.common.reflect.TypeVisitor: void visitTypeVariable(java.lang.reflect.TypeVariable)>($r4);
+
+     label05:
+        goto label24;
+
+     label06:
+        $z0 = $r1 instanceof java.lang.reflect.WildcardType;
+
+     label07:
+        if $z0 == 0 goto label10;
+
+     label08:
+        $r5 = (java.lang.reflect.WildcardType) $r1;
+
+        virtualinvoke r0.<com.google.common.reflect.TypeVisitor: void visitWildcardType(java.lang.reflect.WildcardType)>($r5);
+
+     label09:
+        goto label24;
+
+     label10:
+        $z0 = $r1 instanceof java.lang.reflect.ParameterizedType;
+
+     label11:
+        if $z0 == 0 goto label14;
+
+     label12:
+        $r6 = (java.lang.reflect.ParameterizedType) $r1;
+
+        virtualinvoke r0.<com.google.common.reflect.TypeVisitor: void visitParameterizedType(java.lang.reflect.ParameterizedType)>($r6);
+
+     label13:
+        goto label24;
+
+     label14:
+        $z0 = $r1 instanceof java.lang.Class;
+
+     label15:
+        if $z0 == 0 goto label18;
+
+     label16:
+        $r7 = (java.lang.Class) $r1;
+
+        virtualinvoke r0.<com.google.common.reflect.TypeVisitor: void visitClass(java.lang.Class)>($r7);
+
+     label17:
+        goto label24;
+
+     label18:
+        $z0 = $r1 instanceof java.lang.reflect.GenericArrayType;
+
+     label19:
+        if $z0 == 0 goto label22;
+
+     label20:
+        $r8 = (java.lang.reflect.GenericArrayType) $r1;
+
+        virtualinvoke r0.<com.google.common.reflect.TypeVisitor: void visitGenericArrayType(java.lang.reflect.GenericArrayType)>($r8);
+
+     label21:
+        goto label24;
+
+     label22:
+        $r9 = new java.lang.AssertionError;
+
+        $r10 = new java.lang.StringBuilder;
+
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown type: ");
+
+        virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r1);
+
+        $r11 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r9.<java.lang.AssertionError: void <init>(java.lang.Object)>($r11);
+
+        throw $r9;
+
+     label23:
+        $r12 := @caughtexception;
+
+        $r3 = r0.<com.google.common.reflect.TypeVisitor: java.util.Set visited>;
+
+        interfaceinvoke $r3.<java.util.Set: boolean remove(java.lang.Object)>($r1);
+
+        throw $r12;
+
+     label24:
+        $i1 = $i1 + 1;
+
+        goto label01;
+
+     label25:
+        return;
+
+        catch java.lang.Throwable from label02 to label03 with label23;
+        catch java.lang.Throwable from label04 to label05 with label23;
+        catch java.lang.Throwable from label06 to label07 with label23;
+        catch java.lang.Throwable from label08 to label09 with label23;
+        catch java.lang.Throwable from label10 to label11 with label23;
+        catch java.lang.Throwable from label12 to label13 with label23;
+        catch java.lang.Throwable from label14 to label15 with label23;
+        catch java.lang.Throwable from label16 to label17 with label23;
+        catch java.lang.Throwable from label18 to label19 with label23;
+        catch java.lang.Throwable from label20 to label21 with label23;
+        catch java.lang.Throwable from label22 to label23 with label23;
+    }
+
+    public void visitClass(java.lang.Class)
+    {
+        java.lang.Class $r1;
+        com.google.common.reflect.TypeVisitor r0;
+
+        r0 := @this: com.google.common.reflect.TypeVisitor;
+
+        $r1 := @parameter0: java.lang.Class;
+
+        return;
+    }
+
+    public void visitGenericArrayType(java.lang.reflect.GenericArrayType)
+    {
+        java.lang.reflect.GenericArrayType $r1;
+        com.google.common.reflect.TypeVisitor r0;
+
+        r0 := @this: com.google.common.reflect.TypeVisitor;
+
+        $r1 := @parameter0: java.lang.reflect.GenericArrayType;
+
+        return;
+    }
+
+    public void visitParameterizedType(java.lang.reflect.ParameterizedType)
+    {
+        com.google.common.reflect.TypeVisitor r0;
+        java.lang.reflect.ParameterizedType $r1;
+
+        r0 := @this: com.google.common.reflect.TypeVisitor;
+
+        $r1 := @parameter0: java.lang.reflect.ParameterizedType;
+
+        return;
+    }
+
+    public void visitTypeVariable(java.lang.reflect.TypeVariable)
+    {
+        com.google.common.reflect.TypeVisitor r0;
+        java.lang.reflect.TypeVariable $r1;
+
+        r0 := @this: com.google.common.reflect.TypeVisitor;
+
+        $r1 := @parameter0: java.lang.reflect.TypeVariable;
+
+        return;
+    }
+
+    public void visitWildcardType(java.lang.reflect.WildcardType)
+    {
+        com.google.common.reflect.TypeVisitor r0;
+        java.lang.reflect.WildcardType $r1;
+
+        r0 := @this: com.google.common.reflect.TypeVisitor;
+
+        $r1 := @parameter0: java.lang.reflect.WildcardType;
+
+        return;
+    }
+}

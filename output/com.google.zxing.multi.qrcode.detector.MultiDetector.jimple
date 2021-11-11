@@ -1,0 +1,138 @@
+public final class com.google.zxing.multi.qrcode.detector.MultiDetector extends com.google.zxing.qrcode.detector.Detector
+{
+    public static final com.google.zxing.common.DetectorResult[] EMPTY_DETECTOR_RESULTS;
+
+    static void <clinit>()
+    {
+        com.google.zxing.common.DetectorResult[] $r0;
+
+        $r0 = newarray (com.google.zxing.common.DetectorResult)[0];
+
+        <com.google.zxing.multi.qrcode.detector.MultiDetector: com.google.zxing.common.DetectorResult[] EMPTY_DETECTOR_RESULTS> = $r0;
+
+        return;
+    }
+
+    public void <init>(com.google.zxing.common.BitMatrix)
+    {
+        com.google.zxing.multi.qrcode.detector.MultiDetector r0;
+        com.google.zxing.common.BitMatrix $r1;
+
+        r0 := @this: com.google.zxing.multi.qrcode.detector.MultiDetector;
+
+        $r1 := @parameter0: com.google.zxing.common.BitMatrix;
+
+        specialinvoke r0.<com.google.zxing.qrcode.detector.Detector: void <init>(com.google.zxing.common.BitMatrix)>($r1);
+
+        return;
+    }
+
+    public com.google.zxing.common.DetectorResult[] detectMulti(java.util.Map)
+    {
+        com.google.zxing.qrcode.detector.FinderPatternInfo $r10;
+        java.lang.Object[] $r13;
+        java.util.ArrayList $r9;
+        com.google.zxing.qrcode.detector.FinderPatternInfo[] $r8;
+        java.util.Map $r2;
+        com.google.zxing.ResultPointCallback $r4;
+        int $i0, $i1;
+        com.google.zxing.multi.qrcode.detector.MultiDetector r0;
+        boolean $z0;
+        com.google.zxing.multi.qrcode.detector.MultiFinderPatternFinder $r7;
+        com.google.zxing.common.DetectorResult $r11;
+        com.google.zxing.DecodeHintType $r5;
+        com.google.zxing.common.DetectorResult[] $r12;
+        com.google.zxing.NotFoundException $r14;
+        com.google.zxing.common.BitMatrix $r3;
+        java.lang.Object $r6;
+        com.google.zxing.ReaderException $r1;
+
+        r0 := @this: com.google.zxing.multi.qrcode.detector.MultiDetector;
+
+        $r2 := @parameter0: java.util.Map;
+
+        $r3 = virtualinvoke r0.<com.google.zxing.qrcode.detector.Detector: com.google.zxing.common.BitMatrix getImage()>();
+
+        if $r2 != null goto label01;
+
+        $r4 = null;
+
+        goto label02;
+
+     label01:
+        $r5 = <com.google.zxing.DecodeHintType: com.google.zxing.DecodeHintType NEED_RESULT_POINT_CALLBACK>;
+
+        $r6 = interfaceinvoke $r2.<java.util.Map: java.lang.Object get(java.lang.Object)>($r5);
+
+        $r4 = (com.google.zxing.ResultPointCallback) $r6;
+
+     label02:
+        $r7 = new com.google.zxing.multi.qrcode.detector.MultiFinderPatternFinder;
+
+        specialinvoke $r7.<com.google.zxing.multi.qrcode.detector.MultiFinderPatternFinder: void <init>(com.google.zxing.common.BitMatrix,com.google.zxing.ResultPointCallback)>($r3, $r4);
+
+        $r8 = virtualinvoke $r7.<com.google.zxing.multi.qrcode.detector.MultiFinderPatternFinder: com.google.zxing.qrcode.detector.FinderPatternInfo[] findMulti(java.util.Map)>($r2);
+
+        $i0 = lengthof $r8;
+
+        if $i0 == 0 goto label08;
+
+        $r9 = new java.util.ArrayList;
+
+        specialinvoke $r9.<java.util.ArrayList: void <init>()>();
+
+        $i0 = lengthof $r8;
+
+        $i1 = 0;
+
+     label03:
+        if $i1 >= $i0 goto label06;
+
+        $r10 = $r8[$i1];
+
+     label04:
+        $r11 = virtualinvoke r0.<com.google.zxing.qrcode.detector.Detector: com.google.zxing.common.DetectorResult processFinderPatternInfo(com.google.zxing.qrcode.detector.FinderPatternInfo)>($r10);
+
+        interfaceinvoke $r9.<java.util.List: boolean add(java.lang.Object)>($r11);
+
+     label05:
+        $i1 = $i1 + 1;
+
+        goto label03;
+
+     label06:
+        $z0 = interfaceinvoke $r9.<java.util.List: boolean isEmpty()>();
+
+        if $z0 == 0 goto label07;
+
+        $r12 = <com.google.zxing.multi.qrcode.detector.MultiDetector: com.google.zxing.common.DetectorResult[] EMPTY_DETECTOR_RESULTS>;
+
+        return $r12;
+
+     label07:
+        $i0 = interfaceinvoke $r9.<java.util.List: int size()>();
+
+        $r12 = newarray (com.google.zxing.common.DetectorResult)[$i0];
+
+        $r13 = interfaceinvoke $r9.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($r12);
+
+        $r12 = (com.google.zxing.common.DetectorResult[]) $r13;
+
+        return $r12;
+
+     label08:
+        $r14 = staticinvoke <com.google.zxing.NotFoundException: com.google.zxing.NotFoundException getNotFoundInstance()>();
+
+        goto label09;
+
+     label09:
+        throw $r14;
+
+     label10:
+        $r1 := @caughtexception;
+
+        goto label05;
+
+        catch com.google.zxing.ReaderException from label04 to label05 with label10;
+    }
+}

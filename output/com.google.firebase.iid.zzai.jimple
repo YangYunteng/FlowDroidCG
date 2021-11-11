@@ -1,0 +1,479 @@
+public final class com.google.firebase.iid.zzai extends java.lang.Object
+{
+    public final android.content.Context zza;
+    public java.lang.String zzb;
+    public java.lang.String zzc;
+    public int zzd;
+    public int zze;
+
+    public void <init>(android.content.Context)
+    {
+        android.content.Context $r1;
+        com.google.firebase.iid.zzai r0;
+
+        r0 := @this: com.google.firebase.iid.zzai;
+
+        $r1 := @parameter0: android.content.Context;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.iid.zzai: int zze> = 0;
+
+        r0.<com.google.firebase.iid.zzai: android.content.Context zza> = $r1;
+
+        return;
+    }
+
+    private final android.content.pm.PackageInfo zza(java.lang.String)
+    {
+        android.content.Context $r2;
+        com.google.firebase.iid.zzai r0;
+        android.content.pm.PackageManager $r3;
+        android.content.pm.PackageManager$NameNotFoundException $r5;
+        android.content.pm.PackageInfo $r4;
+        int $i0;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r1, $r6;
+
+        r0 := @this: com.google.firebase.iid.zzai;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = r0.<com.google.firebase.iid.zzai: android.content.Context zza>;
+
+     label1:
+        $r3 = virtualinvoke $r2.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+        $r4 = virtualinvoke $r3.<android.content.pm.PackageManager: android.content.pm.PackageInfo getPackageInfo(java.lang.String,int)>($r1, 0);
+
+     label2:
+        return $r4;
+
+     label3:
+        $r5 := @caughtexception;
+
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r5);
+
+        $r6 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r1);
+
+        $i0 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+        $i0 = $i0 + 23;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>(int)>($i0);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to find package ");
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("FirebaseInstanceId", $r1);
+
+        return null;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label1 to label2 with label3;
+    }
+
+    public static java.lang.String zza(com.google.firebase.FirebaseApp)
+    {
+        com.google.firebase.FirebaseOptions $r1;
+        int $i0;
+        java.lang.String[] $r3;
+        java.lang.String $r2;
+        com.google.firebase.FirebaseApp $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: com.google.firebase.FirebaseApp;
+
+        $r1 = virtualinvoke $r0.<com.google.firebase.FirebaseApp: com.google.firebase.FirebaseOptions getOptions()>();
+
+        $r2 = virtualinvoke $r1.<com.google.firebase.FirebaseOptions: java.lang.String getGcmSenderId()>();
+
+        if $r2 == null goto label1;
+
+        return $r2;
+
+     label1:
+        $r1 = virtualinvoke $r0.<com.google.firebase.FirebaseApp: com.google.firebase.FirebaseOptions getOptions()>();
+
+        $r2 = virtualinvoke $r1.<com.google.firebase.FirebaseOptions: java.lang.String getApplicationId()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean startsWith(java.lang.String)>("1:");
+
+        if $z0 != 0 goto label2;
+
+        return $r2;
+
+     label2:
+        $r3 = virtualinvoke $r2.<java.lang.String: java.lang.String[] split(java.lang.String)>(":");
+
+        $i0 = lengthof $r3;
+
+        if $i0 >= 2 goto label3;
+
+        return null;
+
+     label3:
+        $r2 = $r3[1];
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean isEmpty()>();
+
+        if $z0 == 0 goto label4;
+
+        return null;
+
+     label4:
+        return $r2;
+    }
+
+    public static java.lang.String zza(java.security.PublicKey)
+    {
+        byte[] $r2;
+        byte $b0;
+        java.security.MessageDigest $r3;
+        java.security.NoSuchAlgorithmException $r0;
+        int $i1;
+        java.security.PublicKey $r1;
+        java.lang.String $r4;
+
+        $r1 := @parameter0: java.security.PublicKey;
+
+        $r2 = interfaceinvoke $r1.<java.security.PublicKey: byte[] getEncoded()>();
+
+     label1:
+        $r3 = staticinvoke <java.security.MessageDigest: java.security.MessageDigest getInstance(java.lang.String)>("SHA1");
+
+        $r2 = virtualinvoke $r3.<java.security.MessageDigest: byte[] digest(byte[])>($r2);
+
+     label2:
+        $b0 = $r2[0];
+
+        $b0 = $b0 & 15;
+
+        $i1 = (int) $b0;
+
+        $i1 = $i1 + 112;
+
+        $b0 = (byte) $i1;
+
+        $r2[0] = $b0;
+
+     label3:
+        $r4 = staticinvoke <android.util.Base64: java.lang.String encodeToString(byte[],int,int,int)>($r2, 0, 8, 11);
+
+     label4:
+        return $r4;
+
+     label5:
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("FirebaseInstanceId", "Unexpected error, device missing required algorithms");
+
+        return null;
+
+     label6:
+        $r0 := @caughtexception;
+
+        goto label5;
+
+        catch java.security.NoSuchAlgorithmException from label1 to label2 with label6;
+        catch java.security.NoSuchAlgorithmException from label3 to label4 with label6;
+    }
+
+    private final void zze()
+    {
+        java.lang.Throwable $r4;
+        android.content.Context $r1;
+        com.google.firebase.iid.zzai r0;
+        int $i0;
+        java.lang.String $r2;
+        android.content.pm.PackageInfo $r3;
+
+        r0 := @this: com.google.firebase.iid.zzai;
+
+        entermonitor r0;
+
+     label1:
+        $r1 = r0.<com.google.firebase.iid.zzai: android.content.Context zza>;
+
+        $r2 = virtualinvoke $r1.<android.content.Context: java.lang.String getPackageName()>();
+
+        $r3 = specialinvoke r0.<com.google.firebase.iid.zzai: android.content.pm.PackageInfo zza(java.lang.String)>($r2);
+
+        if $r3 == null goto label2;
+
+        $i0 = $r3.<android.content.pm.PackageInfo: int versionCode>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toString(int)>($i0);
+
+        r0.<com.google.firebase.iid.zzai: java.lang.String zzb> = $r2;
+
+        $r2 = $r3.<android.content.pm.PackageInfo: java.lang.String versionName>;
+
+        r0.<com.google.firebase.iid.zzai: java.lang.String zzc> = $r2;
+
+     label2:
+        exitmonitor r0;
+
+        return;
+
+     label3:
+        $r4 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public final int zza()
+    {
+        java.lang.Throwable $r5;
+        android.content.Context $r1;
+        com.google.firebase.iid.zzai r0;
+        android.content.pm.PackageManager $r2;
+        android.content.Intent $r3, $r6;
+        java.util.List $r4;
+        int $i0, $i1;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.iid.zzai;
+
+        entermonitor r0;
+
+     label01:
+        $i0 = r0.<com.google.firebase.iid.zzai: int zze>;
+
+        if $i0 == 0 goto label03;
+
+        $i0 = r0.<com.google.firebase.iid.zzai: int zze>;
+
+     label02:
+        exitmonitor r0;
+
+        return $i0;
+
+     label03:
+        $r1 = r0.<com.google.firebase.iid.zzai: android.content.Context zza>;
+
+        $r2 = virtualinvoke $r1.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+        $i0 = virtualinvoke $r2.<android.content.pm.PackageManager: int checkPermission(java.lang.String,java.lang.String)>("com.google.android.c2dm.permission.SEND", "com.google.android.gms");
+
+        $i1 = -1;
+
+        if $i0 != $i1 goto label05;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("FirebaseInstanceId", "Google Play services missing or without correct permission.");
+
+     label04:
+        exitmonitor r0;
+
+        return 0;
+
+     label05:
+        $z0 = staticinvoke <com.google.android.gms.common.util.PlatformVersion: boolean isAtLeastO()>();
+
+        if $z0 != 0 goto label07;
+
+        $r6 = new android.content.Intent;
+
+        $r3 = $r6;
+
+        specialinvoke $r6.<android.content.Intent: void <init>(java.lang.String)>("com.google.android.c2dm.intent.REGISTER");
+
+        virtualinvoke $r3.<android.content.Intent: android.content.Intent setPackage(java.lang.String)>("com.google.android.gms");
+
+        $r4 = virtualinvoke $r2.<android.content.pm.PackageManager: java.util.List queryIntentServices(android.content.Intent,int)>($r3, 0);
+
+        if $r4 == null goto label07;
+
+        $i0 = interfaceinvoke $r4.<java.util.List: int size()>();
+
+        if $i0 <= 0 goto label07;
+
+        r0.<com.google.firebase.iid.zzai: int zze> = 1;
+
+        $i0 = r0.<com.google.firebase.iid.zzai: int zze>;
+
+     label06:
+        exitmonitor r0;
+
+        return $i0;
+
+     label07:
+        $r6 = new android.content.Intent;
+
+        $r3 = $r6;
+
+        specialinvoke $r6.<android.content.Intent: void <init>(java.lang.String)>("com.google.iid.TOKEN_REQUEST");
+
+        virtualinvoke $r3.<android.content.Intent: android.content.Intent setPackage(java.lang.String)>("com.google.android.gms");
+
+        $r4 = virtualinvoke $r2.<android.content.pm.PackageManager: java.util.List queryBroadcastReceivers(android.content.Intent,int)>($r3, 0);
+
+        if $r4 == null goto label09;
+
+        $i0 = interfaceinvoke $r4.<java.util.List: int size()>();
+
+        if $i0 <= 0 goto label09;
+
+        r0.<com.google.firebase.iid.zzai: int zze> = 2;
+
+        $i0 = r0.<com.google.firebase.iid.zzai: int zze>;
+
+     label08:
+        exitmonitor r0;
+
+        return $i0;
+
+     label09:
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("FirebaseInstanceId", "Failed to resolve IID implementation package, falling back");
+
+        $z0 = staticinvoke <com.google.android.gms.common.util.PlatformVersion: boolean isAtLeastO()>();
+
+        if $z0 == 0 goto label10;
+
+        r0.<com.google.firebase.iid.zzai: int zze> = 2;
+
+        goto label11;
+
+     label10:
+        r0.<com.google.firebase.iid.zzai: int zze> = 1;
+
+     label11:
+        $i0 = r0.<com.google.firebase.iid.zzai: int zze>;
+
+     label12:
+        exitmonitor r0;
+
+        return $i0;
+
+     label13:
+        $r5 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r5;
+
+        catch java.lang.Throwable from label01 to label02 with label13;
+        catch java.lang.Throwable from label03 to label04 with label13;
+        catch java.lang.Throwable from label05 to label06 with label13;
+        catch java.lang.Throwable from label07 to label08 with label13;
+        catch java.lang.Throwable from label09 to label12 with label13;
+    }
+
+    public final java.lang.String zzb()
+    {
+        java.lang.Throwable $r2;
+        com.google.firebase.iid.zzai r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.firebase.iid.zzai;
+
+        entermonitor r0;
+
+     label1:
+        $r1 = r0.<com.google.firebase.iid.zzai: java.lang.String zzb>;
+
+        if $r1 != null goto label2;
+
+        specialinvoke r0.<com.google.firebase.iid.zzai: void zze()>();
+
+     label2:
+        $r1 = r0.<com.google.firebase.iid.zzai: java.lang.String zzb>;
+
+     label3:
+        exitmonitor r0;
+
+        return $r1;
+
+     label4:
+        $r2 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+    }
+
+    public final java.lang.String zzc()
+    {
+        java.lang.Throwable $r2;
+        com.google.firebase.iid.zzai r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.firebase.iid.zzai;
+
+        entermonitor r0;
+
+     label1:
+        $r1 = r0.<com.google.firebase.iid.zzai: java.lang.String zzc>;
+
+        if $r1 != null goto label2;
+
+        specialinvoke r0.<com.google.firebase.iid.zzai: void zze()>();
+
+     label2:
+        $r1 = r0.<com.google.firebase.iid.zzai: java.lang.String zzc>;
+
+     label3:
+        exitmonitor r0;
+
+        return $r1;
+
+     label4:
+        $r2 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+    }
+
+    public final int zzd()
+    {
+        java.lang.Throwable $r2;
+        com.google.firebase.iid.zzai r0;
+        int $i0;
+        android.content.pm.PackageInfo $r1;
+
+        r0 := @this: com.google.firebase.iid.zzai;
+
+        entermonitor r0;
+
+     label1:
+        $i0 = r0.<com.google.firebase.iid.zzai: int zzd>;
+
+        if $i0 != 0 goto label2;
+
+        $r1 = specialinvoke r0.<com.google.firebase.iid.zzai: android.content.pm.PackageInfo zza(java.lang.String)>("com.google.android.gms");
+
+        if $r1 == null goto label2;
+
+        $i0 = $r1.<android.content.pm.PackageInfo: int versionCode>;
+
+        r0.<com.google.firebase.iid.zzai: int zzd> = $i0;
+
+     label2:
+        $i0 = r0.<com.google.firebase.iid.zzai: int zzd>;
+
+     label3:
+        exitmonitor r0;
+
+        return $i0;
+
+     label4:
+        $r2 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+    }
+}

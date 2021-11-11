@@ -1,0 +1,132 @@
+public class com.google.firebase.installations.Utils extends java.lang.Object
+{
+    public static final java.util.regex.Pattern API_KEY_FORMAT;
+    public static final java.lang.String APP_ID_IDENTIFICATION_SUBSTRING;
+    public static final long AUTH_TOKEN_EXPIRATION_BUFFER_IN_SECS;
+
+    static void <clinit>()
+    {
+        java.util.concurrent.TimeUnit $r0;
+        long $l0;
+        java.util.regex.Pattern $r1;
+
+        <com.google.firebase.installations.Utils: java.lang.String APP_ID_IDENTIFICATION_SUBSTRING> = ":";
+
+        $r0 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit HOURS>;
+
+        $l0 = virtualinvoke $r0.<java.util.concurrent.TimeUnit: long toSeconds(long)>(1L);
+
+        <com.google.firebase.installations.Utils: long AUTH_TOKEN_EXPIRATION_BUFFER_IN_SECS> = $l0;
+
+        $r1 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>("\\AA[\\w-]{38}\\z");
+
+        <com.google.firebase.installations.Utils: java.util.regex.Pattern API_KEY_FORMAT> = $r1;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.firebase.installations.Utils r0;
+
+        r0 := @this: com.google.firebase.installations.Utils;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static boolean isValidApiKeyFormat(java.lang.String)
+    {
+        java.util.regex.Matcher $r2;
+        java.util.regex.Pattern $r0;
+        java.lang.String $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0 = <com.google.firebase.installations.Utils: java.util.regex.Pattern API_KEY_FORMAT>;
+
+        $r2 = virtualinvoke $r0.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r1);
+
+        $z0 = virtualinvoke $r2.<java.util.regex.Matcher: boolean matches()>();
+
+        return $z0;
+    }
+
+    public static boolean isValidAppIdFormat(java.lang.String)
+    {
+        java.lang.String $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean contains(java.lang.CharSequence)>(":");
+
+        return $z0;
+    }
+
+    public long currentTimeInSecs()
+    {
+        java.util.concurrent.TimeUnit $r1;
+        com.google.firebase.installations.Utils r0;
+        long $l0;
+
+        r0 := @this: com.google.firebase.installations.Utils;
+
+        $r1 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit MILLISECONDS>;
+
+        $l0 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $l0 = virtualinvoke $r1.<java.util.concurrent.TimeUnit: long toSeconds(long)>($l0);
+
+        return $l0;
+    }
+
+    public boolean isAuthTokenExpired(com.google.firebase.installations.local.PersistedInstallationEntry)
+    {
+        long $l0, $l1, $l2;
+        byte $b3;
+        int $i4;
+        com.google.firebase.installations.Utils r0;
+        com.google.firebase.installations.local.PersistedInstallationEntry $r1;
+        java.lang.String $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.installations.Utils;
+
+        $r1 := @parameter0: com.google.firebase.installations.local.PersistedInstallationEntry;
+
+        $r2 = virtualinvoke $r1.<com.google.firebase.installations.local.PersistedInstallationEntry: java.lang.String getAuthToken()>();
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r2);
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        $l1 = virtualinvoke $r1.<com.google.firebase.installations.local.PersistedInstallationEntry: long getTokenCreationEpochInSecs()>();
+
+        $l0 = virtualinvoke $r1.<com.google.firebase.installations.local.PersistedInstallationEntry: long getExpiresInSecs()>();
+
+        $l1 = $l1 + $l0;
+
+        $l2 = virtualinvoke r0.<com.google.firebase.installations.Utils: long currentTimeInSecs()>();
+
+        $l0 = <com.google.firebase.installations.Utils: long AUTH_TOKEN_EXPIRATION_BUFFER_IN_SECS>;
+
+        $l0 = $l2 + $l0;
+
+        $b3 = $l1 cmp $l0;
+
+        $i4 = (int) $b3;
+
+        if $i4 >= 0 goto label2;
+
+        return 1;
+
+     label2:
+        return 0;
+    }
+}

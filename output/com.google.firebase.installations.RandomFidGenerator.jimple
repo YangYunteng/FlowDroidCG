@@ -1,0 +1,120 @@
+public class com.google.firebase.installations.RandomFidGenerator extends java.lang.Object
+{
+    public static final byte FID_4BIT_PREFIX;
+    public static final int FID_LENGTH;
+    public static final byte REMOVE_PREFIX_MASK;
+
+    static void <clinit>()
+    {
+        byte $b0;
+
+        <com.google.firebase.installations.RandomFidGenerator: int FID_LENGTH> = 22;
+
+        <com.google.firebase.installations.RandomFidGenerator: byte FID_4BIT_PREFIX> = 0;
+
+        $b0 = staticinvoke <java.lang.Byte: byte parseByte(java.lang.String,int)>("01110000", 2);
+
+        <com.google.firebase.installations.RandomFidGenerator: byte FID_4BIT_PREFIX> = $b0;
+
+        $b0 = staticinvoke <java.lang.Byte: byte parseByte(java.lang.String,int)>("00001111", 2);
+
+        <com.google.firebase.installations.RandomFidGenerator: byte REMOVE_PREFIX_MASK> = $b0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.firebase.installations.RandomFidGenerator r0;
+
+        r0 := @this: com.google.firebase.installations.RandomFidGenerator;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.lang.String encodeFidBase64UrlSafe(byte[])
+    {
+        byte[] $r1;
+        java.lang.String $r0;
+        java.nio.charset.Charset $r2;
+
+        $r1 := @parameter0: byte[];
+
+        $r0 = new java.lang.String;
+
+        $r1 = staticinvoke <android.util.Base64: byte[] encode(byte[],int)>($r1, 11);
+
+        $r2 = staticinvoke <java.nio.charset.Charset: java.nio.charset.Charset defaultCharset()>();
+
+        specialinvoke $r0.<java.lang.String: void <init>(byte[],java.nio.charset.Charset)>($r1, $r2);
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String substring(int,int)>(0, 22);
+
+        return $r0;
+    }
+
+    public static byte[] getBytesFromUUID(java.util.UUID, byte[])
+    {
+        byte[] $r1;
+        long $l0;
+        java.util.UUID $r0;
+        java.nio.ByteBuffer $r2;
+
+        $r0 := @parameter0: java.util.UUID;
+
+        $r1 := @parameter1: byte[];
+
+        $r2 = staticinvoke <java.nio.ByteBuffer: java.nio.ByteBuffer wrap(byte[])>($r1);
+
+        $l0 = virtualinvoke $r0.<java.util.UUID: long getMostSignificantBits()>();
+
+        virtualinvoke $r2.<java.nio.ByteBuffer: java.nio.ByteBuffer putLong(long)>($l0);
+
+        $l0 = virtualinvoke $r0.<java.util.UUID: long getLeastSignificantBits()>();
+
+        virtualinvoke $r2.<java.nio.ByteBuffer: java.nio.ByteBuffer putLong(long)>($l0);
+
+        $r1 = virtualinvoke $r2.<java.nio.ByteBuffer: byte[] array()>();
+
+        return $r1;
+    }
+
+    public java.lang.String createRandomFid()
+    {
+        byte[] $r2;
+        com.google.firebase.installations.RandomFidGenerator r0;
+        byte $b0, $b1;
+        java.util.UUID $r1;
+        java.lang.String $r3;
+
+        r0 := @this: com.google.firebase.installations.RandomFidGenerator;
+
+        $r1 = staticinvoke <java.util.UUID: java.util.UUID randomUUID()>();
+
+        $r2 = newarray (byte)[17];
+
+        $r2 = staticinvoke <com.google.firebase.installations.RandomFidGenerator: byte[] getBytesFromUUID(java.util.UUID,byte[])>($r1, $r2);
+
+        $b0 = $r2[0];
+
+        $r2[16] = $b0;
+
+        $b0 = <com.google.firebase.installations.RandomFidGenerator: byte REMOVE_PREFIX_MASK>;
+
+        $b1 = $r2[0];
+
+        $b0 = $b0 & $b1;
+
+        $b1 = <com.google.firebase.installations.RandomFidGenerator: byte FID_4BIT_PREFIX>;
+
+        $b0 = $b0 | $b1;
+
+        $r2[0] = $b0;
+
+        $r3 = staticinvoke <com.google.firebase.installations.RandomFidGenerator: java.lang.String encodeFidBase64UrlSafe(byte[])>($r2);
+
+        return $r3;
+    }
+}

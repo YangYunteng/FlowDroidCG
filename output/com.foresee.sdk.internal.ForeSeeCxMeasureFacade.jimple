@@ -1,0 +1,417 @@
+public class com.foresee.sdk.internal.ForeSeeCxMeasureFacade extends java.lang.Object implements com.foresee.sdk.common.events.f, com.foresee.sdk.common.events.g, com.foresee.sdk.common.f.a
+{
+    public static java.util.Locale prevLocale;
+    public android.app.Application application;
+    public com.foresee.sdk.common.g.f stateManager;
+    public com.foresee.sdk.cxMeasure.tracker.TrackingContext trackingContext;
+
+    public void <init>()
+    {
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void <init>(android.app.Application, com.foresee.sdk.cxMeasure.tracker.TrackingContext)
+    {
+        android.app.Application $r1;
+        com.foresee.sdk.internal.DebugCommandHelper $r4;
+        com.foresee.sdk.common.g.f $r3;
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        com.foresee.sdk.cxMeasure.tracker.TrackingContext $r2;
+        com.foresee.sdk.internal.DebugCommandCallbackImpl $r5;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: android.app.Application;
+
+        $r2 := @parameter1: com.foresee.sdk.cxMeasure.tracker.TrackingContext;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade: android.app.Application application> = $r1;
+
+        r0.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade: com.foresee.sdk.cxMeasure.tracker.TrackingContext trackingContext> = $r2;
+
+        $r3 = staticinvoke <com.foresee.sdk.common.g.f: com.foresee.sdk.common.g.f a(android.app.Application)>($r1);
+
+        r0.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade: com.foresee.sdk.common.g.f stateManager> = $r3;
+
+        $r3 = r0.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade: com.foresee.sdk.common.g.f stateManager>;
+
+        virtualinvoke $r3.<com.foresee.sdk.common.g.f: void a(com.foresee.sdk.common.f.a)>(r0);
+
+        $r2 = r0.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade: com.foresee.sdk.cxMeasure.tracker.TrackingContext trackingContext>;
+
+        virtualinvoke $r2.<com.foresee.sdk.cxMeasure.tracker.TrackingContext: void addObserver(com.foresee.sdk.common.events.g)>(r0);
+
+        staticinvoke <com.foresee.sdk.ForeSeeLifecycleCallbacks: void registerActivityLifecycleCallbacks(com.foresee.sdk.common.events.f)>(r0);
+
+        $r4 = staticinvoke <com.foresee.sdk.internal.DebugCommandHelper: com.foresee.sdk.internal.DebugCommandHelper getInstance()>();
+
+        $r2 = virtualinvoke r0.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade: com.foresee.sdk.cxMeasure.tracker.TrackingContext getTracker()>();
+
+        $r1 = virtualinvoke $r2.<com.foresee.sdk.cxMeasure.tracker.TrackingContext: android.app.Application getContext()>();
+
+        virtualinvoke $r4.<com.foresee.sdk.internal.DebugCommandHelper: void initialize(android.content.Context)>($r1);
+
+        $r4 = staticinvoke <com.foresee.sdk.internal.DebugCommandHelper: com.foresee.sdk.internal.DebugCommandHelper getInstance()>();
+
+        $r5 = new com.foresee.sdk.internal.DebugCommandCallbackImpl;
+
+        specialinvoke $r5.<com.foresee.sdk.internal.DebugCommandCallbackImpl: void <init>()>();
+
+        virtualinvoke $r4.<com.foresee.sdk.internal.DebugCommandHelper: void registerCallback(com.foresee.sdk.internal.DebugCommandCallback,android.os.Handler)>($r5, null);
+
+        return;
+    }
+
+    public static void checkLocale(android.app.Activity)
+    {
+        android.app.Application $r7;
+        java.util.Locale $r4, $r5;
+        android.content.res.Configuration $r3;
+        com.foresee.sdk.common.b$a $r6;
+        java.lang.String $r0;
+        android.app.Activity $r1;
+        android.content.res.Resources $r2;
+        boolean $z0;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        $r2 = virtualinvoke $r1.<android.app.Activity: android.content.res.Resources getResources()>();
+
+        $r3 = virtualinvoke $r2.<android.content.res.Resources: android.content.res.Configuration getConfiguration()>();
+
+        $r4 = $r3.<android.content.res.Configuration: java.util.Locale locale>;
+
+        $r5 = <com.foresee.sdk.internal.ForeSeeCxMeasureFacade: java.util.Locale prevLocale>;
+
+        if $r5 == null goto label1;
+
+        $z0 = virtualinvoke $r5.<java.util.Locale: boolean equals(java.lang.Object)>($r4);
+
+        if $z0 != 0 goto label1;
+
+        $r6 = <com.foresee.sdk.common.b$a: com.foresee.sdk.common.b$a INFO>;
+
+        $r0 = <com.foresee.sdk.common.constants.LogTags: java.lang.String CONFIG>;
+
+        staticinvoke <com.foresee.sdk.common.b: void a(com.foresee.sdk.common.b$a,java.lang.String,java.lang.String)>($r6, $r0, "Updating config for locale change");
+
+        $r7 = virtualinvoke $r1.<android.app.Activity: android.app.Application getApplication()>();
+
+        staticinvoke <com.foresee.sdk.ForeSee: com.foresee.sdk.common.configuration.Configuration useLocalConfig(android.app.Application)>($r7);
+
+     label1:
+        <com.foresee.sdk.internal.ForeSeeCxMeasureFacade: java.util.Locale prevLocale> = $r4;
+
+        return;
+    }
+
+    public void J()
+    {
+        java.util.concurrent.ScheduledThreadPoolExecutor $r2;
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade$1 $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r2 = staticinvoke <com.foresee.sdk.common.h.c: java.util.concurrent.ScheduledThreadPoolExecutor P()>();
+
+        $r1 = new com.foresee.sdk.internal.ForeSeeCxMeasureFacade$1;
+
+        specialinvoke $r1.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade$1: void <init>(com.foresee.sdk.internal.ForeSeeCxMeasureFacade)>(r0);
+
+        virtualinvoke $r2.<java.util.concurrent.ScheduledThreadPoolExecutor: java.util.concurrent.Future submit(java.lang.Runnable)>($r1);
+
+        return;
+    }
+
+    public void K()
+    {
+        com.foresee.sdk.common.b$a $r2;
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        java.lang.String $r1;
+        com.foresee.sdk.cxMeasure.tracker.TrackingContext $r3;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r2 = <com.foresee.sdk.common.b$a: com.foresee.sdk.common.b$a INFO>;
+
+        $r1 = <com.foresee.sdk.common.constants.LogTags: java.lang.String SDK_COMMON>;
+
+        staticinvoke <com.foresee.sdk.common.b: void a(com.foresee.sdk.common.b$a,java.lang.String,java.lang.String)>($r2, $r1, "ForeSee session ended");
+
+        $r3 = r0.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade: com.foresee.sdk.cxMeasure.tracker.TrackingContext trackingContext>;
+
+        virtualinvoke $r3.<com.foresee.sdk.cxMeasure.tracker.TrackingContext: void applicationExited()>();
+
+        return;
+    }
+
+    public void a(android.app.Activity)
+    {
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        com.foresee.sdk.cxMeasure.tracker.TrackingContext $r2;
+        android.app.Activity $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        $r2 = r0.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade: com.foresee.sdk.cxMeasure.tracker.TrackingContext trackingContext>;
+
+        virtualinvoke $r2.<com.foresee.sdk.cxMeasure.tracker.TrackingContext: void onActivityStarted(android.app.Activity)>($r1);
+
+        return;
+    }
+
+    public void a(android.app.Activity, android.os.Bundle)
+    {
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        android.os.Bundle $r2;
+        android.app.Activity $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        $r2 := @parameter1: android.os.Bundle;
+
+        return;
+    }
+
+    public void b(android.app.Activity)
+    {
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        com.foresee.sdk.cxMeasure.tracker.TrackingContext $r2;
+        android.app.Activity $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        staticinvoke <com.foresee.sdk.internal.ForeSeeCxMeasureFacade: void checkLocale(android.app.Activity)>($r1);
+
+        $r2 = r0.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade: com.foresee.sdk.cxMeasure.tracker.TrackingContext trackingContext>;
+
+        virtualinvoke $r2.<com.foresee.sdk.cxMeasure.tracker.TrackingContext: void onActivityResumed(android.app.Activity)>($r1);
+
+        return;
+    }
+
+    public void b(android.app.Activity, android.os.Bundle)
+    {
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        android.os.Bundle $r2;
+        android.app.Activity $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        $r2 := @parameter1: android.os.Bundle;
+
+        return;
+    }
+
+    public void c(android.app.Activity)
+    {
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        com.foresee.sdk.cxMeasure.tracker.TrackingContext $r2;
+        android.app.Activity $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        $r2 = r0.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade: com.foresee.sdk.cxMeasure.tracker.TrackingContext trackingContext>;
+
+        virtualinvoke $r2.<com.foresee.sdk.cxMeasure.tracker.TrackingContext: void onActivityPaused(android.app.Activity)>($r1);
+
+        return;
+    }
+
+    public void d(android.app.Activity)
+    {
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        com.foresee.sdk.cxMeasure.tracker.TrackingContext $r2;
+        android.app.Activity $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        $r2 = r0.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade: com.foresee.sdk.cxMeasure.tracker.TrackingContext trackingContext>;
+
+        virtualinvoke $r2.<com.foresee.sdk.cxMeasure.tracker.TrackingContext: void onActivityStopped(android.app.Activity)>($r1);
+
+        return;
+    }
+
+    public void e(android.app.Activity)
+    {
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        android.app.Activity $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        return;
+    }
+
+    public com.foresee.sdk.cxMeasure.tracker.TrackingContext getTracker()
+    {
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        com.foresee.sdk.cxMeasure.tracker.TrackingContext r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        r1 = r0.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade: com.foresee.sdk.cxMeasure.tracker.TrackingContext trackingContext>;
+
+        return r1;
+    }
+
+    public void l(java.lang.String)
+    {
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: java.lang.String;
+
+        return;
+    }
+
+    public void m(java.lang.String)
+    {
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: java.lang.String;
+
+        return;
+    }
+
+    public void n(java.lang.String)
+    {
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: java.lang.String;
+
+        return;
+    }
+
+    public void o(java.lang.String)
+    {
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: java.lang.String;
+
+        return;
+    }
+
+    public void onActivityPaused(android.app.Activity)
+    {
+        com.foresee.sdk.common.g.f $r2;
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        android.app.Activity $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        $r2 = r0.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade: com.foresee.sdk.common.g.f stateManager>;
+
+        virtualinvoke $r2.<com.foresee.sdk.common.g.f: void onActivityPaused(android.app.Activity)>($r1);
+
+        return;
+    }
+
+    public void onActivityResumed(android.app.Activity)
+    {
+        com.foresee.sdk.common.g.f $r2;
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        android.app.Activity $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        $r2 = r0.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade: com.foresee.sdk.common.g.f stateManager>;
+
+        virtualinvoke $r2.<com.foresee.sdk.common.g.f: void onActivityResumed(android.app.Activity)>($r1);
+
+        return;
+    }
+
+    public void onActivityStarted(android.app.Activity)
+    {
+        com.foresee.sdk.common.g.f $r2;
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        android.app.Activity $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        $r2 = r0.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade: com.foresee.sdk.common.g.f stateManager>;
+
+        virtualinvoke $r2.<com.foresee.sdk.common.g.f: void onActivityStarted(android.app.Activity)>($r1);
+
+        return;
+    }
+
+    public void onActivityStopped(android.app.Activity)
+    {
+        com.foresee.sdk.common.g.f $r2;
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        android.app.Activity $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        $r2 = r0.<com.foresee.sdk.internal.ForeSeeCxMeasureFacade: com.foresee.sdk.common.g.f stateManager>;
+
+        virtualinvoke $r2.<com.foresee.sdk.common.g.f: void onActivityStopped(android.app.Activity)>($r1);
+
+        return;
+    }
+
+    public void onReactivated()
+    {
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        return;
+    }
+
+    public void p(java.lang.String)
+    {
+        com.foresee.sdk.internal.ForeSeeCxMeasureFacade r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.foresee.sdk.internal.ForeSeeCxMeasureFacade;
+
+        $r1 := @parameter0: java.lang.String;
+
+        return;
+    }
+}

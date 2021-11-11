@@ -1,0 +1,2313 @@
+public final class com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder extends com.google.protobuf.CodedInputStream
+{
+    public final long address;
+    public final java.nio.ByteBuffer buffer;
+    public int bufferSizeAfterLimit;
+    public int currentLimit;
+    public boolean enableAliasing;
+    public final boolean immutable;
+    public int lastTag;
+    public long limit;
+    public long pos;
+    public long startPos;
+
+    public void <init>(java.nio.ByteBuffer, boolean)
+    {
+        int $i1;
+        long $l0, $l2;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        java.nio.ByteBuffer $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $r1 := @parameter0: java.nio.ByteBuffer;
+
+        $z0 := @parameter1: boolean;
+
+        specialinvoke r0.<com.google.protobuf.CodedInputStream: void <init>(com.google.protobuf.CodedInputStream$1)>(null);
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int currentLimit> = 2147483647;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: java.nio.ByteBuffer buffer> = $r1;
+
+        $l0 = staticinvoke <com.google.protobuf.UnsafeUtil: long addressOffset(java.nio.ByteBuffer)>($r1);
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long address> = $l0;
+
+        $l0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long address>;
+
+        $i1 = virtualinvoke $r1.<java.nio.ByteBuffer: int limit()>();
+
+        $l2 = (long) $i1;
+
+        $l0 = $l0 + $l2;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long limit> = $l0;
+
+        $l0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long address>;
+
+        $i1 = virtualinvoke $r1.<java.nio.ByteBuffer: int position()>();
+
+        $l2 = (long) $i1;
+
+        $l0 = $l0 + $l2;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l0;
+
+        $l0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long startPos> = $l0;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: boolean immutable> = $z0;
+
+        return;
+    }
+
+    public void <init>(java.nio.ByteBuffer, boolean, com.google.protobuf.CodedInputStream$1)
+    {
+        com.google.protobuf.CodedInputStream$1 $r2;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        java.nio.ByteBuffer $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $r1 := @parameter0: java.nio.ByteBuffer;
+
+        $z0 := @parameter1: boolean;
+
+        $r2 := @parameter2: com.google.protobuf.CodedInputStream$1;
+
+        specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void <init>(java.nio.ByteBuffer,boolean)>($r1, $z0);
+
+        return;
+    }
+
+    private int bufferPos(long)
+    {
+        int $i0;
+        long $l1, $l2;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l2 := @parameter0: long;
+
+        $l1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long address>;
+
+        $l2 = $l2 - $l1;
+
+        $i0 = (int) $l2;
+
+        return $i0;
+    }
+
+    public static boolean isSupported()
+    {
+        boolean $z0;
+
+        $z0 = staticinvoke <com.google.protobuf.UnsafeUtil: boolean hasUnsafeByteBufferOperations()>();
+
+        return $z0;
+    }
+
+    private void recomputeBufferSizeAfterLimit()
+    {
+        int $i1, $i3;
+        long $l0, $l2;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long limit>;
+
+        $i1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int bufferSizeAfterLimit>;
+
+        $l2 = (long) $i1;
+
+        $l0 = $l0 + $l2;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long limit> = $l0;
+
+        $l0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long limit>;
+
+        $l2 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long startPos>;
+
+        $l2 = $l0 - $l2;
+
+        $i1 = (int) $l2;
+
+        $i3 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int currentLimit>;
+
+        if $i1 <= $i3 goto label1;
+
+        $i1 = $i1 - $i3;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int bufferSizeAfterLimit> = $i1;
+
+        $i1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int bufferSizeAfterLimit>;
+
+        $l2 = (long) $i1;
+
+        $l0 = $l0 - $l2;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long limit> = $l0;
+
+        return;
+
+     label1:
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int bufferSizeAfterLimit> = 0;
+
+        return;
+    }
+
+    private int remaining()
+    {
+        int $i0;
+        long $l1, $l2;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l2 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long limit>;
+
+        $l1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l1 = $l2 - $l1;
+
+        $i0 = (int) $l1;
+
+        return $i0;
+    }
+
+    private void skipRawVarint()
+    {
+        int $i0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i0 = specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int remaining()>();
+
+        if $i0 < 10 goto label1;
+
+        specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void skipRawVarintFastPath()>();
+
+        return;
+
+     label1:
+        specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void skipRawVarintSlowPath()>();
+
+        return;
+    }
+
+    private void skipRawVarintFastPath()
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r1;
+        byte $b3;
+        int $i0, $i4;
+        long $l1, $l2;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i0 = 0;
+
+     label1:
+        if $i0 >= 10 goto label3;
+
+        $l1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l2 = 1L + $l1;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l2;
+
+        $b3 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l1);
+
+        $i4 = (int) $b3;
+
+        if $i4 < 0 goto label2;
+
+        return;
+
+     label2:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label3:
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException malformedVarint()>();
+
+        goto label4;
+
+     label4:
+        throw $r1;
+    }
+
+    private void skipRawVarintSlowPath()
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r1;
+        byte $b1;
+        int $i0, $i2;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i0 = 0;
+
+     label1:
+        if $i0 >= 10 goto label3;
+
+        $b1 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: byte readRawByte()>();
+
+        $i2 = (int) $b1;
+
+        if $i2 < 0 goto label2;
+
+        return;
+
+     label2:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label3:
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException malformedVarint()>();
+
+        goto label4;
+
+     label4:
+        throw $r1;
+    }
+
+    private java.nio.ByteBuffer slice(long, long)
+    {
+        java.lang.Throwable $r4;
+        com.google.protobuf.InvalidProtocolBufferException $r5;
+        long $l0, $l1;
+        java.lang.IllegalArgumentException $r2;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        java.nio.ByteBuffer $r1, $r3;
+        int $i2, $i3, $i4;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l1 := @parameter0: long;
+
+        $l0 := @parameter1: long;
+
+        $r1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: java.nio.ByteBuffer buffer>;
+
+        $i2 = virtualinvoke $r1.<java.nio.ByteBuffer: int position()>();
+
+        $r1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: java.nio.ByteBuffer buffer>;
+
+        $i3 = virtualinvoke $r1.<java.nio.ByteBuffer: int limit()>();
+
+     label01:
+        $r1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: java.nio.ByteBuffer buffer>;
+
+     label02:
+        $i4 = specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int bufferPos(long)>($l1);
+
+        virtualinvoke $r1.<java.nio.ByteBuffer: java.nio.Buffer position(int)>($i4);
+
+     label03:
+        $r1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: java.nio.ByteBuffer buffer>;
+
+     label04:
+        $i4 = specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int bufferPos(long)>($l0);
+
+        virtualinvoke $r1.<java.nio.ByteBuffer: java.nio.Buffer limit(int)>($i4);
+
+     label05:
+        $r1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: java.nio.ByteBuffer buffer>;
+
+     label06:
+        $r1 = virtualinvoke $r1.<java.nio.ByteBuffer: java.nio.ByteBuffer slice()>();
+
+     label07:
+        $r3 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: java.nio.ByteBuffer buffer>;
+
+        virtualinvoke $r3.<java.nio.ByteBuffer: java.nio.Buffer position(int)>($i2);
+
+        $r3 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: java.nio.ByteBuffer buffer>;
+
+        virtualinvoke $r3.<java.nio.ByteBuffer: java.nio.Buffer limit(int)>($i3);
+
+        return $r1;
+
+     label08:
+        $r4 := @caughtexception;
+
+        goto label10;
+
+     label09:
+        $r5 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException truncatedMessage()>();
+
+        throw $r5;
+
+     label10:
+        $r1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: java.nio.ByteBuffer buffer>;
+
+        virtualinvoke $r1.<java.nio.ByteBuffer: java.nio.Buffer position(int)>($i2);
+
+        $r1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: java.nio.ByteBuffer buffer>;
+
+        virtualinvoke $r1.<java.nio.ByteBuffer: java.nio.Buffer limit(int)>($i3);
+
+        throw $r4;
+
+     label11:
+        $r2 := @caughtexception;
+
+        goto label09;
+
+        catch java.lang.IllegalArgumentException from label02 to label03 with label11;
+        catch java.lang.IllegalArgumentException from label04 to label05 with label11;
+        catch java.lang.IllegalArgumentException from label06 to label07 with label11;
+        catch java.lang.Throwable from label01 to label07 with label08;
+        catch java.lang.Throwable from label09 to label10 with label08;
+    }
+
+    public void checkLastTagWas(int)
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r1;
+        int $i0, $i1;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i1 := @parameter0: int;
+
+        $i0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int lastTag>;
+
+        if $i0 != $i1 goto label1;
+
+        return;
+
+     label1:
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException invalidEndTag()>();
+
+        throw $r1;
+    }
+
+    public void enableAliasing(boolean)
+    {
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $z0 := @parameter0: boolean;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: boolean enableAliasing> = $z0;
+
+        return;
+    }
+
+    public int getBytesUntilLimit()
+    {
+        int $i0, $i1;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int currentLimit>;
+
+        if $i1 != 2147483647 goto label1;
+
+        $i0 = -1;
+
+        return $i0;
+
+     label1:
+        $i0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int getTotalBytesRead()>();
+
+        $i0 = $i1 - $i0;
+
+        return $i0;
+    }
+
+    public int getLastTag()
+    {
+        int i0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        i0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int lastTag>;
+
+        return i0;
+    }
+
+    public int getTotalBytesRead()
+    {
+        int $i0;
+        long $l1, $l2;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l2 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long startPos>;
+
+        $l1 = $l2 - $l1;
+
+        $i0 = (int) $l1;
+
+        return $i0;
+    }
+
+    public boolean isAtEnd()
+    {
+        byte $b1;
+        long $l0, $l2;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l2 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long limit>;
+
+        $b1 = $l2 cmp $l0;
+
+        if $b1 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public void popLimit(int)
+    {
+        int $i0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i0 := @parameter0: int;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int currentLimit> = $i0;
+
+        specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void recomputeBufferSizeAfterLimit()>();
+
+        return;
+    }
+
+    public int pushLimit(int)
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r1;
+        int $i0, $i1;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i0 := @parameter0: int;
+
+        if $i0 < 0 goto label2;
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int getTotalBytesRead()>();
+
+        $i0 = $i0 + $i1;
+
+        $i1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int currentLimit>;
+
+        if $i0 > $i1 goto label1;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int currentLimit> = $i0;
+
+        specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void recomputeBufferSizeAfterLimit()>();
+
+        return $i1;
+
+     label1:
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException truncatedMessage()>();
+
+        throw $r1;
+
+     label2:
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException negativeSize()>();
+
+        throw $r1;
+    }
+
+    public boolean readBool()
+    {
+        long $l1;
+        byte $b0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l1 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long readRawVarint64()>();
+
+        $b0 = $l1 cmp 0L;
+
+        if $b0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public byte[] readByteArray()
+    {
+        int $i0;
+        byte[] $r1;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawVarint32()>();
+
+        $r1 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: byte[] readRawBytes(int)>($i0);
+
+        return $r1;
+    }
+
+    public java.nio.ByteBuffer readByteBuffer()
+    {
+        byte[] $r2;
+        com.google.protobuf.InvalidProtocolBufferException $r3;
+        long $l0, $l3, $l4;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        java.nio.ByteBuffer $r1;
+        int $i1, $i2;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawVarint32()>();
+
+        if $i1 <= 0 goto label2;
+
+        $i2 = specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int remaining()>();
+
+        if $i1 > $i2 goto label2;
+
+        $z0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: boolean immutable>;
+
+        if $z0 != 0 goto label1;
+
+        $z0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: boolean enableAliasing>;
+
+        if $z0 == 0 goto label1;
+
+        $l3 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l0 = (long) $i1;
+
+        $l4 = $l3 + $l0;
+
+        $r1 = specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: java.nio.ByteBuffer slice(long,long)>($l3, $l4);
+
+        $l3 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l0 = $l3 + $l0;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l0;
+
+        return $r1;
+
+     label1:
+        $r2 = newarray (byte)[$i1];
+
+        $l3 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l0 = (long) $i1;
+
+        staticinvoke <com.google.protobuf.UnsafeUtil: void copyMemory(long,byte[],long,long)>($l3, $r2, 0L, $l0);
+
+        $l3 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l0 = $l3 + $l0;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l0;
+
+        $r1 = staticinvoke <java.nio.ByteBuffer: java.nio.ByteBuffer wrap(byte[])>($r2);
+
+        return $r1;
+
+     label2:
+        if $i1 != 0 goto label3;
+
+        $r1 = <com.google.protobuf.Internal: java.nio.ByteBuffer EMPTY_BYTE_BUFFER>;
+
+        return $r1;
+
+     label3:
+        if $i1 >= 0 goto label4;
+
+        $r3 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException negativeSize()>();
+
+        throw $r3;
+
+     label4:
+        $r3 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException truncatedMessage()>();
+
+        throw $r3;
+    }
+
+    public com.google.protobuf.ByteString readBytes()
+    {
+        byte[] $r1;
+        com.google.protobuf.InvalidProtocolBufferException $r4;
+        long $l0, $l1, $l4;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        java.nio.ByteBuffer $r2;
+        com.google.protobuf.ByteString $r3;
+        int $i2, $i3;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i2 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawVarint32()>();
+
+        if $i2 <= 0 goto label2;
+
+        $i3 = specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int remaining()>();
+
+        if $i2 > $i3 goto label2;
+
+        $z0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: boolean immutable>;
+
+        if $z0 == 0 goto label1;
+
+        $z0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: boolean enableAliasing>;
+
+        if $z0 == 0 goto label1;
+
+        $l4 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l1 = (long) $i2;
+
+        $l0 = $l4 + $l1;
+
+        $r2 = specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: java.nio.ByteBuffer slice(long,long)>($l4, $l0);
+
+        $l0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l1 = $l0 + $l1;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l1;
+
+        $r3 = staticinvoke <com.google.protobuf.ByteString: com.google.protobuf.ByteString wrap(java.nio.ByteBuffer)>($r2);
+
+        return $r3;
+
+     label1:
+        $r1 = newarray (byte)[$i2];
+
+        $l0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l1 = (long) $i2;
+
+        staticinvoke <com.google.protobuf.UnsafeUtil: void copyMemory(long,byte[],long,long)>($l0, $r1, 0L, $l1);
+
+        $l0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l1 = $l0 + $l1;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l1;
+
+        $r3 = staticinvoke <com.google.protobuf.ByteString: com.google.protobuf.ByteString wrap(byte[])>($r1);
+
+        return $r3;
+
+     label2:
+        if $i2 != 0 goto label3;
+
+        $r3 = <com.google.protobuf.ByteString: com.google.protobuf.ByteString EMPTY>;
+
+        return $r3;
+
+     label3:
+        if $i2 >= 0 goto label4;
+
+        $r4 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException negativeSize()>();
+
+        throw $r4;
+
+     label4:
+        $r4 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException truncatedMessage()>();
+
+        throw $r4;
+    }
+
+    public double readDouble()
+    {
+        long $l0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        double $d0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long readRawLittleEndian64()>();
+
+        $d0 = staticinvoke <java.lang.Double: double longBitsToDouble(long)>($l0);
+
+        return $d0;
+    }
+
+    public int readEnum()
+    {
+        int $i0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawVarint32()>();
+
+        return $i0;
+    }
+
+    public int readFixed32()
+    {
+        int $i0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawLittleEndian32()>();
+
+        return $i0;
+    }
+
+    public long readFixed64()
+    {
+        long $l0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long readRawLittleEndian64()>();
+
+        return $l0;
+    }
+
+    public float readFloat()
+    {
+        int $i0;
+        float $f0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawLittleEndian32()>();
+
+        $f0 = staticinvoke <java.lang.Float: float intBitsToFloat(int)>($i0);
+
+        return $f0;
+    }
+
+    public com.google.protobuf.MessageLite readGroup(int, com.google.protobuf.Parser, com.google.protobuf.ExtensionRegistryLite)
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r5;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        com.google.protobuf.Parser $r1;
+        com.google.protobuf.MessageLite $r4;
+        com.google.protobuf.ExtensionRegistryLite $r2;
+        int $i0, $i1, $i2;
+        java.lang.Object $r3;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i1 := @parameter0: int;
+
+        $r1 := @parameter1: com.google.protobuf.Parser;
+
+        $r2 := @parameter2: com.google.protobuf.ExtensionRegistryLite;
+
+        $i2 = r0.<com.google.protobuf.CodedInputStream: int recursionDepth>;
+
+        $i0 = r0.<com.google.protobuf.CodedInputStream: int recursionLimit>;
+
+        if $i2 >= $i0 goto label1;
+
+        $i0 = $i2 + 1;
+
+        r0.<com.google.protobuf.CodedInputStream: int recursionDepth> = $i0;
+
+        $r3 = interfaceinvoke $r1.<com.google.protobuf.Parser: java.lang.Object parsePartialFrom(com.google.protobuf.CodedInputStream,com.google.protobuf.ExtensionRegistryLite)>(r0, $r2);
+
+        $r4 = (com.google.protobuf.MessageLite) $r3;
+
+        $i1 = staticinvoke <com.google.protobuf.WireFormat: int makeTag(int,int)>($i1, 4);
+
+        virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void checkLastTagWas(int)>($i1);
+
+        $i1 = r0.<com.google.protobuf.CodedInputStream: int recursionDepth>;
+
+        $i0 = -1;
+
+        $i1 = $i1 + $i0;
+
+        r0.<com.google.protobuf.CodedInputStream: int recursionDepth> = $i1;
+
+        return $r4;
+
+     label1:
+        $r5 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException recursionLimitExceeded()>();
+
+        throw $r5;
+    }
+
+    public void readGroup(int, com.google.protobuf.MessageLite$Builder, com.google.protobuf.ExtensionRegistryLite)
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r3;
+        com.google.protobuf.ExtensionRegistryLite $r1;
+        com.google.protobuf.MessageLite$Builder $r2;
+        int $i0, $i1, $i2;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i1 := @parameter0: int;
+
+        $r2 := @parameter1: com.google.protobuf.MessageLite$Builder;
+
+        $r1 := @parameter2: com.google.protobuf.ExtensionRegistryLite;
+
+        $i2 = r0.<com.google.protobuf.CodedInputStream: int recursionDepth>;
+
+        $i0 = r0.<com.google.protobuf.CodedInputStream: int recursionLimit>;
+
+        if $i2 >= $i0 goto label1;
+
+        $i0 = $i2 + 1;
+
+        r0.<com.google.protobuf.CodedInputStream: int recursionDepth> = $i0;
+
+        interfaceinvoke $r2.<com.google.protobuf.MessageLite$Builder: com.google.protobuf.MessageLite$Builder mergeFrom(com.google.protobuf.CodedInputStream,com.google.protobuf.ExtensionRegistryLite)>(r0, $r1);
+
+        $i1 = staticinvoke <com.google.protobuf.WireFormat: int makeTag(int,int)>($i1, 4);
+
+        virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void checkLastTagWas(int)>($i1);
+
+        $i1 = r0.<com.google.protobuf.CodedInputStream: int recursionDepth>;
+
+        $i0 = -1;
+
+        $i1 = $i1 + $i0;
+
+        r0.<com.google.protobuf.CodedInputStream: int recursionDepth> = $i1;
+
+        return;
+
+     label1:
+        $r3 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException recursionLimitExceeded()>();
+
+        throw $r3;
+    }
+
+    public int readInt32()
+    {
+        int $i0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawVarint32()>();
+
+        return $i0;
+    }
+
+    public long readInt64()
+    {
+        long $l0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long readRawVarint64()>();
+
+        return $l0;
+    }
+
+    public com.google.protobuf.MessageLite readMessage(com.google.protobuf.Parser, com.google.protobuf.ExtensionRegistryLite)
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r5;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        com.google.protobuf.Parser $r1;
+        com.google.protobuf.MessageLite $r4;
+        com.google.protobuf.ExtensionRegistryLite $r2;
+        int $i0, $i1, $i2;
+        java.lang.Object $r3;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $r1 := @parameter0: com.google.protobuf.Parser;
+
+        $r2 := @parameter1: com.google.protobuf.ExtensionRegistryLite;
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawVarint32()>();
+
+        $i2 = r0.<com.google.protobuf.CodedInputStream: int recursionDepth>;
+
+        $i0 = r0.<com.google.protobuf.CodedInputStream: int recursionLimit>;
+
+        if $i2 >= $i0 goto label1;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int pushLimit(int)>($i1);
+
+        $i1 = r0.<com.google.protobuf.CodedInputStream: int recursionDepth>;
+
+        $i1 = $i1 + 1;
+
+        r0.<com.google.protobuf.CodedInputStream: int recursionDepth> = $i1;
+
+        $r3 = interfaceinvoke $r1.<com.google.protobuf.Parser: java.lang.Object parsePartialFrom(com.google.protobuf.CodedInputStream,com.google.protobuf.ExtensionRegistryLite)>(r0, $r2);
+
+        $r4 = (com.google.protobuf.MessageLite) $r3;
+
+        virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void checkLastTagWas(int)>(0);
+
+        $i1 = r0.<com.google.protobuf.CodedInputStream: int recursionDepth>;
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        r0.<com.google.protobuf.CodedInputStream: int recursionDepth> = $i1;
+
+        virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void popLimit(int)>($i0);
+
+        return $r4;
+
+     label1:
+        $r5 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException recursionLimitExceeded()>();
+
+        throw $r5;
+    }
+
+    public void readMessage(com.google.protobuf.MessageLite$Builder, com.google.protobuf.ExtensionRegistryLite)
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r3;
+        com.google.protobuf.ExtensionRegistryLite $r1;
+        com.google.protobuf.MessageLite$Builder $r2;
+        int $i0, $i1, $i2;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $r2 := @parameter0: com.google.protobuf.MessageLite$Builder;
+
+        $r1 := @parameter1: com.google.protobuf.ExtensionRegistryLite;
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawVarint32()>();
+
+        $i2 = r0.<com.google.protobuf.CodedInputStream: int recursionDepth>;
+
+        $i0 = r0.<com.google.protobuf.CodedInputStream: int recursionLimit>;
+
+        if $i2 >= $i0 goto label1;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int pushLimit(int)>($i1);
+
+        $i1 = r0.<com.google.protobuf.CodedInputStream: int recursionDepth>;
+
+        $i1 = $i1 + 1;
+
+        r0.<com.google.protobuf.CodedInputStream: int recursionDepth> = $i1;
+
+        interfaceinvoke $r2.<com.google.protobuf.MessageLite$Builder: com.google.protobuf.MessageLite$Builder mergeFrom(com.google.protobuf.CodedInputStream,com.google.protobuf.ExtensionRegistryLite)>(r0, $r1);
+
+        virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void checkLastTagWas(int)>(0);
+
+        $i1 = r0.<com.google.protobuf.CodedInputStream: int recursionDepth>;
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        r0.<com.google.protobuf.CodedInputStream: int recursionDepth> = $i1;
+
+        virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void popLimit(int)>($i0);
+
+        return;
+
+     label1:
+        $r3 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException recursionLimitExceeded()>();
+
+        throw $r3;
+    }
+
+    public byte readRawByte()
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r1;
+        byte $b0;
+        long $l1, $l2;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l2 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long limit>;
+
+        $b0 = $l1 cmp $l2;
+
+        if $b0 == 0 goto label1;
+
+        $l2 = 1L + $l1;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l2;
+
+        $b0 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l1);
+
+        return $b0;
+
+     label1:
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException truncatedMessage()>();
+
+        throw $r1;
+    }
+
+    public byte[] readRawBytes(int)
+    {
+        byte[] $r1;
+        com.google.protobuf.InvalidProtocolBufferException $r3;
+        long $l0, $l1, $l4;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        java.nio.ByteBuffer $r2;
+        int $i2, $i3;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i2 := @parameter0: int;
+
+        if $i2 < 0 goto label1;
+
+        $i3 = specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int remaining()>();
+
+        if $i2 > $i3 goto label1;
+
+        $r1 = newarray (byte)[$i2];
+
+        $l4 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l0 = (long) $i2;
+
+        $l1 = $l4 + $l0;
+
+        $r2 = specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: java.nio.ByteBuffer slice(long,long)>($l4, $l1);
+
+        virtualinvoke $r2.<java.nio.ByteBuffer: java.nio.ByteBuffer get(byte[])>($r1);
+
+        $l1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l0 = $l1 + $l0;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l0;
+
+        return $r1;
+
+     label1:
+        if $i2 > 0 goto label3;
+
+        if $i2 != 0 goto label2;
+
+        $r1 = <com.google.protobuf.Internal: byte[] EMPTY_BYTE_ARRAY>;
+
+        return $r1;
+
+     label2:
+        $r3 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException negativeSize()>();
+
+        throw $r3;
+
+     label3:
+        $r3 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException truncatedMessage()>();
+
+        throw $r3;
+    }
+
+    public int readRawLittleEndian32()
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r1;
+        long $l1, $l2;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        short $s3, $s4;
+        byte $b0;
+        int $i5, $i6;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l2 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long limit>;
+
+        $l2 = $l2 - $l1;
+
+        $b0 = $l2 cmp 4L;
+
+        $i5 = (int) $b0;
+
+        if $i5 < 0 goto label1;
+
+        $l2 = 4L + $l1;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l2;
+
+        $b0 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l1);
+
+        $s3 = (short) $b0;
+
+        $s3 = $s3 & 255;
+
+        $l2 = 1L + $l1;
+
+        $b0 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l2);
+
+        $s4 = (short) $b0;
+
+        $s4 = $s4 & 255;
+
+        $i5 = (int) $s4;
+
+        $i5 = $i5 << 8;
+
+        $i6 = (int) $s3;
+
+        $i5 = $i6 | $i5;
+
+        $l2 = 2L + $l1;
+
+        $b0 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l2);
+
+        $s3 = (short) $b0;
+
+        $s3 = $s3 & 255;
+
+        $i6 = (int) $s3;
+
+        $i6 = $i6 << 16;
+
+        $i5 = $i5 | $i6;
+
+        $l1 = $l1 + 3L;
+
+        $b0 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l1);
+
+        $s3 = (short) $b0;
+
+        $s3 = $s3 & 255;
+
+        $i6 = (int) $s3;
+
+        $i6 = $i6 << 24;
+
+        $i5 = $i6 | $i5;
+
+        return $i5;
+
+     label1:
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException truncatedMessage()>();
+
+        throw $r1;
+    }
+
+    public long readRawLittleEndian64()
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r1;
+        byte $b2;
+        int $i4;
+        long $l0, $l1, $l3;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long limit>;
+
+        $l1 = $l1 - $l0;
+
+        $b2 = $l1 cmp 8L;
+
+        $i4 = (int) $b2;
+
+        if $i4 < 0 goto label1;
+
+        $l1 = 8L + $l0;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l1;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l0);
+
+        $l1 = (long) $b2;
+
+        $l1 = $l1 & 255L;
+
+        $l3 = 1L + $l0;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l3);
+
+        $l3 = (long) $b2;
+
+        $l3 = $l3 & 255L;
+
+        $l3 = $l3 << 8;
+
+        $l1 = $l1 | $l3;
+
+        $l3 = 2L + $l0;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l3);
+
+        $l3 = (long) $b2;
+
+        $l3 = $l3 & 255L;
+
+        $l3 = $l3 << 16;
+
+        $l1 = $l1 | $l3;
+
+        $l3 = 3L + $l0;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l3);
+
+        $l3 = (long) $b2;
+
+        $l3 = $l3 & 255L;
+
+        $l3 = $l3 << 24;
+
+        $l1 = $l1 | $l3;
+
+        $l3 = 4L + $l0;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l3);
+
+        $l3 = (long) $b2;
+
+        $l3 = $l3 & 255L;
+
+        $l3 = $l3 << 32;
+
+        $l1 = $l1 | $l3;
+
+        $l3 = 5L + $l0;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l3);
+
+        $l3 = (long) $b2;
+
+        $l3 = $l3 & 255L;
+
+        $l3 = $l3 << 40;
+
+        $l1 = $l1 | $l3;
+
+        $l3 = 6L + $l0;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l3);
+
+        $l3 = (long) $b2;
+
+        $l3 = $l3 & 255L;
+
+        $l3 = $l3 << 48;
+
+        $l1 = $l1 | $l3;
+
+        $l0 = $l0 + 7L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l0);
+
+        $l0 = (long) $b2;
+
+        $l0 = $l0 & 255L;
+
+        $l0 = $l0 << 56;
+
+        $l0 = $l0 | $l1;
+
+        return $l0;
+
+     label1:
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException truncatedMessage()>();
+
+        throw $r1;
+    }
+
+    public int readRawVarint32()
+    {
+        byte $b2, $b3;
+        int $i4, $i5;
+        long $l0, $l1;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long limit>;
+
+        $b2 = $l1 cmp $l0;
+
+        if $b2 != 0 goto label1;
+
+        goto label8;
+
+     label1:
+        $l1 = $l0 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l0);
+
+        $i4 = (int) $b2;
+
+        if $i4 < 0 goto label2;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l1;
+
+        $i4 = (int) $b2;
+
+        return $i4;
+
+     label2:
+        $l0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long limit>;
+
+        $l0 = $l0 - $l1;
+
+        $b3 = $l0 cmp 9L;
+
+        $i4 = (int) $b3;
+
+        if $i4 >= 0 goto label3;
+
+        goto label8;
+
+     label3:
+        $l0 = $l1 + 1L;
+
+        $b3 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l1);
+
+        $i4 = (int) $b3;
+
+        $i4 = $i4 << 7;
+
+        $i5 = (int) $b2;
+
+        $i4 = $i5 ^ $i4;
+
+        if $i4 >= 0 goto label4;
+
+        $i5 = -128;
+
+        $i4 = $i4 ^ $i5;
+
+        goto label9;
+
+     label4:
+        $l1 = $l0 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l0);
+
+        $i5 = (int) $b2;
+
+        $i5 = $i5 << 14;
+
+        $i4 = $i4 ^ $i5;
+
+        if $i4 < 0 goto label6;
+
+        $i4 = $i4 ^ 16256;
+
+     label5:
+        $l0 = $l1;
+
+        goto label9;
+
+     label6:
+        $l0 = $l1 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l1);
+
+        $i5 = (int) $b2;
+
+        $i5 = $i5 << 21;
+
+        $i4 = $i4 ^ $i5;
+
+        if $i4 >= 0 goto label7;
+
+        $i4 = $i4 ^ -2080896;
+
+        goto label9;
+
+     label7:
+        $l1 = $l0 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l0);
+
+        $i5 = (int) $b2;
+
+        $i5 = $i5 << 28;
+
+        $i4 = $i4 ^ $i5;
+
+        $i4 = $i4 ^ 266354560;
+
+        $i5 = (int) $b2;
+
+        if $i5 >= 0 goto label5;
+
+        $l0 = $l1 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l1);
+
+        $i5 = (int) $b2;
+
+        if $i5 >= 0 goto label9;
+
+        $l1 = $l0 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l0);
+
+        $i5 = (int) $b2;
+
+        if $i5 >= 0 goto label5;
+
+        $l0 = $l1 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l1);
+
+        $i5 = (int) $b2;
+
+        if $i5 >= 0 goto label9;
+
+        $l1 = $l0 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l0);
+
+        $i5 = (int) $b2;
+
+        if $i5 >= 0 goto label5;
+
+        $l0 = $l1 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l1);
+
+        $i5 = (int) $b2;
+
+        if $i5 >= 0 goto label9;
+
+     label8:
+        $l1 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long readRawVarint64SlowPath()>();
+
+        $i4 = (int) $l1;
+
+        return $i4;
+
+     label9:
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l0;
+
+        return $i4;
+    }
+
+    public long readRawVarint64()
+    {
+        long $l0, $l1, $l5;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        byte $b2, $b3;
+        int $i4, $i6;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long limit>;
+
+        $b2 = $l1 cmp $l0;
+
+        if $b2 != 0 goto label01;
+
+        goto label14;
+
+     label01:
+        $l1 = $l0 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l0);
+
+        $i4 = (int) $b2;
+
+        if $i4 < 0 goto label02;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l1;
+
+        $l1 = (long) $b2;
+
+        return $l1;
+
+     label02:
+        $l0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long limit>;
+
+        $l0 = $l0 - $l1;
+
+        $b3 = $l0 cmp 9L;
+
+        $i4 = (int) $b3;
+
+        if $i4 >= 0 goto label03;
+
+        goto label14;
+
+     label03:
+        $l0 = $l1 + 1L;
+
+        $b3 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l1);
+
+        $i4 = (int) $b3;
+
+        $i4 = $i4 << 7;
+
+        $i6 = (int) $b2;
+
+        $i4 = $i6 ^ $i4;
+
+        if $i4 >= 0 goto label05;
+
+        $i6 = -128;
+
+        $i4 = $i4 ^ $i6;
+
+     label04:
+        $l5 = (long) $i4;
+
+        $l1 = $l0;
+
+        goto label16;
+
+     label05:
+        $l1 = $l0 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l0);
+
+        $i6 = (int) $b2;
+
+        $i6 = $i6 << 14;
+
+        $i4 = $i4 ^ $i6;
+
+        if $i4 < 0 goto label06;
+
+        $i4 = $i4 ^ 16256;
+
+        $l5 = (long) $i4;
+
+        goto label16;
+
+     label06:
+        $l0 = $l1 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l1);
+
+        $i6 = (int) $b2;
+
+        $i6 = $i6 << 21;
+
+        $i4 = $i4 ^ $i6;
+
+        if $i4 >= 0 goto label07;
+
+        $i4 = $i4 ^ -2080896;
+
+        goto label04;
+
+     label07:
+        $l5 = (long) $i4;
+
+        $l1 = $l0 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l0);
+
+        $l0 = (long) $b2;
+
+        $l0 = $l0 << 28;
+
+        $l5 = $l5 ^ $l0;
+
+        $b2 = $l5 cmp 0L;
+
+        $i4 = (int) $b2;
+
+        if $i4 < 0 goto label09;
+
+        $l0 = 266354560L;
+
+     label08:
+        $l5 = $l5 ^ $l0;
+
+        goto label16;
+
+     label09:
+        $l0 = $l1 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l1);
+
+        $l1 = (long) $b2;
+
+        $l1 = $l1 << 35;
+
+        $l5 = $l5 ^ $l1;
+
+        $b2 = $l5 cmp 0L;
+
+        $i4 = (int) $b2;
+
+        if $i4 >= 0 goto label11;
+
+        $l1 = -34093383808L;
+
+     label10:
+        $l5 = $l5 ^ $l1;
+
+        $l1 = $l0;
+
+        goto label16;
+
+     label11:
+        $l1 = $l0 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l0);
+
+        $l0 = (long) $b2;
+
+        $l0 = $l0 << 42;
+
+        $l5 = $l5 ^ $l0;
+
+        $b2 = $l5 cmp 0L;
+
+        $i4 = (int) $b2;
+
+        if $i4 < 0 goto label12;
+
+        $l0 = 4363953127296L;
+
+        goto label08;
+
+     label12:
+        $l0 = $l1 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l1);
+
+        $l1 = (long) $b2;
+
+        $l1 = $l1 << 49;
+
+        $l5 = $l5 ^ $l1;
+
+        $b2 = $l5 cmp 0L;
+
+        $i4 = (int) $b2;
+
+        if $i4 >= 0 goto label13;
+
+        $l1 = -558586000294016L;
+
+        goto label10;
+
+     label13:
+        $l1 = $l0 + 1L;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l0);
+
+        $l0 = (long) $b2;
+
+        $l0 = $l0 << 56;
+
+        $l0 = $l5 ^ $l0;
+
+        $l5 = $l0 ^ 71499008037633920L;
+
+        $b2 = $l5 cmp 0L;
+
+        $i4 = (int) $b2;
+
+        if $i4 >= 0 goto label16;
+
+        $l0 = 1L + $l1;
+
+        $b2 = staticinvoke <com.google.protobuf.UnsafeUtil: byte getByte(long)>($l1);
+
+        $l1 = (long) $b2;
+
+        $b2 = $l1 cmp 0L;
+
+        $i4 = (int) $b2;
+
+        if $i4 >= 0 goto label15;
+
+     label14:
+        $l1 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long readRawVarint64SlowPath()>();
+
+        return $l1;
+
+     label15:
+        $l1 = $l0;
+
+     label16:
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l1;
+
+        return $l5;
+    }
+
+    public long readRawVarint64SlowPath()
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r1;
+        long $l0, $l4;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        short $s5;
+        byte $b2, $b3;
+        int $i1;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l0 = 0L;
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= 64 goto label3;
+
+        $b2 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: byte readRawByte()>();
+
+        $b3 = $b2 & 127;
+
+        $l4 = (long) $b3;
+
+        $l4 = $l4 << $i1;
+
+        $l0 = $l0 | $l4;
+
+        $s5 = (short) $b2;
+
+        $s5 = $s5 & 128;
+
+        if $s5 != 0 goto label2;
+
+        return $l0;
+
+     label2:
+        $i1 = $i1 + 7;
+
+        goto label1;
+
+     label3:
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException malformedVarint()>();
+
+        goto label4;
+
+     label4:
+        throw $r1;
+    }
+
+    public int readSFixed32()
+    {
+        int $i0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawLittleEndian32()>();
+
+        return $i0;
+    }
+
+    public long readSFixed64()
+    {
+        long $l0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long readRawLittleEndian64()>();
+
+        return $l0;
+    }
+
+    public int readSInt32()
+    {
+        int $i0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawVarint32()>();
+
+        $i0 = staticinvoke <com.google.protobuf.CodedInputStream: int decodeZigZag32(int)>($i0);
+
+        return $i0;
+    }
+
+    public long readSInt64()
+    {
+        long $l0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long readRawVarint64()>();
+
+        $l0 = staticinvoke <com.google.protobuf.CodedInputStream: long decodeZigZag64(long)>($l0);
+
+        return $l0;
+    }
+
+    public java.lang.String readString()
+    {
+        byte[] $r1;
+        com.google.protobuf.InvalidProtocolBufferException $r4;
+        long $l0, $l3;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        java.nio.charset.Charset $r3;
+        int $i1, $i2;
+        java.lang.String $r2;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawVarint32()>();
+
+        if $i1 <= 0 goto label1;
+
+        $i2 = specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int remaining()>();
+
+        if $i1 > $i2 goto label1;
+
+        $r1 = newarray (byte)[$i1];
+
+        $l3 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l0 = (long) $i1;
+
+        staticinvoke <com.google.protobuf.UnsafeUtil: void copyMemory(long,byte[],long,long)>($l3, $r1, 0L, $l0);
+
+        $r2 = new java.lang.String;
+
+        $r3 = <com.google.protobuf.Internal: java.nio.charset.Charset UTF_8>;
+
+        specialinvoke $r2.<java.lang.String: void <init>(byte[],java.nio.charset.Charset)>($r1, $r3);
+
+        $l3 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l0 = $l3 + $l0;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l0;
+
+        return $r2;
+
+     label1:
+        if $i1 != 0 goto label2;
+
+        return "";
+
+     label2:
+        if $i1 >= 0 goto label3;
+
+        $r4 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException negativeSize()>();
+
+        throw $r4;
+
+     label3:
+        $r4 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException truncatedMessage()>();
+
+        throw $r4;
+    }
+
+    public java.lang.String readStringRequireUtf8()
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r3;
+        long $l0, $l3;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        java.nio.ByteBuffer $r1;
+        int $i1, $i2;
+        java.lang.String $r2;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawVarint32()>();
+
+        if $i1 <= 0 goto label1;
+
+        $i2 = specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int remaining()>();
+
+        if $i1 > $i2 goto label1;
+
+        $l0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $i2 = specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int bufferPos(long)>($l0);
+
+        $r1 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: java.nio.ByteBuffer buffer>;
+
+        $r2 = staticinvoke <com.google.protobuf.Utf8: java.lang.String decodeUtf8(java.nio.ByteBuffer,int,int)>($r1, $i2, $i1);
+
+        $l3 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l0 = (long) $i1;
+
+        $l0 = $l3 + $l0;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l0;
+
+        return $r2;
+
+     label1:
+        if $i1 != 0 goto label2;
+
+        return "";
+
+     label2:
+        if $i1 > 0 goto label3;
+
+        $r3 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException negativeSize()>();
+
+        throw $r3;
+
+     label3:
+        $r3 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException truncatedMessage()>();
+
+        throw $r3;
+    }
+
+    public int readTag()
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r1;
+        int $i0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $z0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: boolean isAtEnd()>();
+
+        if $z0 == 0 goto label1;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int lastTag> = 0;
+
+        return 0;
+
+     label1:
+        $i0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawVarint32()>();
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int lastTag> = $i0;
+
+        $i0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int lastTag>;
+
+        $i0 = staticinvoke <com.google.protobuf.WireFormat: int getTagFieldNumber(int)>($i0);
+
+        if $i0 == 0 goto label2;
+
+        $i0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int lastTag>;
+
+        return $i0;
+
+     label2:
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException invalidTag()>();
+
+        throw $r1;
+    }
+
+    public int readUInt32()
+    {
+        int $i0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawVarint32()>();
+
+        return $i0;
+    }
+
+    public long readUInt64()
+    {
+        long $l0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long readRawVarint64()>();
+
+        return $l0;
+    }
+
+    public void readUnknownGroup(int, com.google.protobuf.MessageLite$Builder)
+    {
+        com.google.protobuf.MessageLite$Builder $r1;
+        com.google.protobuf.ExtensionRegistryLite $r2;
+        int $i0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: com.google.protobuf.MessageLite$Builder;
+
+        $r2 = staticinvoke <com.google.protobuf.ExtensionRegistryLite: com.google.protobuf.ExtensionRegistryLite getEmptyRegistry()>();
+
+        virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void readGroup(int,com.google.protobuf.MessageLite$Builder,com.google.protobuf.ExtensionRegistryLite)>($i0, $r1, $r2);
+
+        return;
+    }
+
+    public void resetSizeCounter()
+    {
+        long $l0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $l0 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long startPos> = $l0;
+
+        return;
+    }
+
+    public boolean skipField(int)
+    {
+        com.google.protobuf.InvalidProtocolBufferException$InvalidWireTypeException $r1;
+        int $i0, $i1;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i0 := @parameter0: int;
+
+        $i1 = staticinvoke <com.google.protobuf.WireFormat: int getTagWireType(int)>($i0);
+
+        if $i1 == 0 goto label6;
+
+        if $i1 == 1 goto label5;
+
+        if $i1 == 2 goto label4;
+
+        if $i1 == 3 goto label3;
+
+        if $i1 == 4 goto label2;
+
+        if $i1 != 5 goto label1;
+
+        virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void skipRawBytes(int)>(4);
+
+        return 1;
+
+     label1:
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException$InvalidWireTypeException invalidWireType()>();
+
+        throw $r1;
+
+     label2:
+        return 0;
+
+     label3:
+        virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void skipMessage()>();
+
+        $i0 = staticinvoke <com.google.protobuf.WireFormat: int getTagFieldNumber(int)>($i0);
+
+        $i0 = staticinvoke <com.google.protobuf.WireFormat: int makeTag(int,int)>($i0, 4);
+
+        virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void checkLastTagWas(int)>($i0);
+
+        return 1;
+
+     label4:
+        $i0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawVarint32()>();
+
+        virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void skipRawBytes(int)>($i0);
+
+        return 1;
+
+     label5:
+        virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void skipRawBytes(int)>(8);
+
+        return 1;
+
+     label6:
+        specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void skipRawVarint()>();
+
+        return 1;
+    }
+
+    public boolean skipField(int, com.google.protobuf.CodedOutputStream)
+    {
+        com.google.protobuf.ByteString $r3;
+        com.google.protobuf.InvalidProtocolBufferException$InvalidWireTypeException $r2;
+        int $i0, $i1;
+        long $l2;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        com.google.protobuf.CodedOutputStream $r1;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: com.google.protobuf.CodedOutputStream;
+
+        $i1 = staticinvoke <com.google.protobuf.WireFormat: int getTagWireType(int)>($i0);
+
+        if $i1 == 0 goto label6;
+
+        if $i1 == 1 goto label5;
+
+        if $i1 == 2 goto label4;
+
+        if $i1 == 3 goto label3;
+
+        if $i1 == 4 goto label2;
+
+        if $i1 != 5 goto label1;
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readRawLittleEndian32()>();
+
+        virtualinvoke $r1.<com.google.protobuf.CodedOutputStream: void writeRawVarint32(int)>($i0);
+
+        virtualinvoke $r1.<com.google.protobuf.CodedOutputStream: void writeFixed32NoTag(int)>($i1);
+
+        return 1;
+
+     label1:
+        $r2 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException$InvalidWireTypeException invalidWireType()>();
+
+        throw $r2;
+
+     label2:
+        return 0;
+
+     label3:
+        virtualinvoke $r1.<com.google.protobuf.CodedOutputStream: void writeRawVarint32(int)>($i0);
+
+        virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void skipMessage(com.google.protobuf.CodedOutputStream)>($r1);
+
+        $i0 = staticinvoke <com.google.protobuf.WireFormat: int getTagFieldNumber(int)>($i0);
+
+        $i0 = staticinvoke <com.google.protobuf.WireFormat: int makeTag(int,int)>($i0, 4);
+
+        virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void checkLastTagWas(int)>($i0);
+
+        virtualinvoke $r1.<com.google.protobuf.CodedOutputStream: void writeRawVarint32(int)>($i0);
+
+        return 1;
+
+     label4:
+        $r3 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: com.google.protobuf.ByteString readBytes()>();
+
+        virtualinvoke $r1.<com.google.protobuf.CodedOutputStream: void writeRawVarint32(int)>($i0);
+
+        virtualinvoke $r1.<com.google.protobuf.CodedOutputStream: void writeBytesNoTag(com.google.protobuf.ByteString)>($r3);
+
+        return 1;
+
+     label5:
+        $l2 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long readRawLittleEndian64()>();
+
+        virtualinvoke $r1.<com.google.protobuf.CodedOutputStream: void writeRawVarint32(int)>($i0);
+
+        virtualinvoke $r1.<com.google.protobuf.CodedOutputStream: void writeFixed64NoTag(long)>($l2);
+
+        return 1;
+
+     label6:
+        $l2 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long readInt64()>();
+
+        virtualinvoke $r1.<com.google.protobuf.CodedOutputStream: void writeRawVarint32(int)>($i0);
+
+        virtualinvoke $r1.<com.google.protobuf.CodedOutputStream: void writeUInt64NoTag(long)>($l2);
+
+        return 1;
+    }
+
+    public void skipMessage()
+    {
+        int $i0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+     label1:
+        $i0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readTag()>();
+
+        if $i0 == 0 goto label2;
+
+        $z0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: boolean skipField(int)>($i0);
+
+        if $z0 != 0 goto label1;
+
+     label2:
+        return;
+    }
+
+    public void skipMessage(com.google.protobuf.CodedOutputStream)
+    {
+        int $i0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+        com.google.protobuf.CodedOutputStream $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $r1 := @parameter0: com.google.protobuf.CodedOutputStream;
+
+     label1:
+        $i0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int readTag()>();
+
+        if $i0 == 0 goto label2;
+
+        $z0 = virtualinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: boolean skipField(int,com.google.protobuf.CodedOutputStream)>($i0, $r1);
+
+        if $z0 != 0 goto label1;
+
+     label2:
+        return;
+    }
+
+    public void skipRawBytes(int)
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r1;
+        int $i1, $i2;
+        long $l0, $l3;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        $i1 := @parameter0: int;
+
+        if $i1 < 0 goto label1;
+
+        $i2 = specialinvoke r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: int remaining()>();
+
+        if $i1 > $i2 goto label1;
+
+        $l3 = r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos>;
+
+        $l0 = (long) $i1;
+
+        $l0 = $l3 + $l0;
+
+        r0.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: long pos> = $l0;
+
+        return;
+
+     label1:
+        if $i1 >= 0 goto label2;
+
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException negativeSize()>();
+
+        throw $r1;
+
+     label2:
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException truncatedMessage()>();
+
+        throw $r1;
+    }
+}

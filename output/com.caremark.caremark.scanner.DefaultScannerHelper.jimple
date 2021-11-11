@@ -1,0 +1,750 @@
+public class com.caremark.caremark.scanner.DefaultScannerHelper extends java.lang.Object implements android.view.SurfaceHolder$Callback
+{
+    public static final java.lang.String HAS_RESULT_KEY;
+    public c.c.a.m.g cameraManager;
+    public com.caremark.caremark.scanner.DecodeHandler decodeHandler;
+    public android.os.HandlerThread decodeThread;
+    public float frameHeightScale;
+    public float frameWidthScale;
+    public boolean hasResult;
+    public boolean hasSurface;
+    public com.google.android.gms.vision.CameraSource mCameraSource;
+    public android.content.Context mContext;
+    public float partOfSurfaceViewToShow;
+    public com.caremark.caremark.scanner.DefaultScannerHelper$a receiver;
+    public android.os.Messenger scanResultMessenger;
+    public com.caremark.caremark.scanner.BaseScannerView scannerOverlay;
+    public android.graphics.Point screenResolution;
+    public android.view.SurfaceHolder surfaceHolder;
+
+    public void <init>(android.content.Context)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        android.content.Context $r1;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 := @parameter0: android.content.Context;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: float frameWidthScale> = 1.0F;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: float frameHeightScale> = 1.0F;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: float partOfSurfaceViewToShow> = 1.0F;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.content.Context mContext> = $r1;
+
+        return;
+    }
+
+    private android.graphics.Rect calcRealScannerFrame(android.graphics.Point, android.graphics.Point)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        android.graphics.Rect $r1, $r2;
+        android.graphics.Point $r3, $r4;
+        int $i0, $i1, $i2;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r3 := @parameter0: android.graphics.Point;
+
+        $r4 := @parameter1: android.graphics.Point;
+
+        $r1 = new android.graphics.Rect;
+
+        $r2 = virtualinvoke r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.graphics.Rect calcVisibleScannerFrame(android.graphics.Point)>($r4);
+
+        specialinvoke $r1.<android.graphics.Rect: void <init>(android.graphics.Rect)>($r2);
+
+        $i1 = $r1.<android.graphics.Rect: int left>;
+
+        $i0 = $r3.<android.graphics.Point: int x>;
+
+        $i2 = $i1 * $i0;
+
+        $i1 = $r4.<android.graphics.Point: int x>;
+
+        $i2 = $i2 / $i1;
+
+        $r1.<android.graphics.Rect: int left> = $i2;
+
+        $i2 = $r1.<android.graphics.Rect: int right>;
+
+        $i0 = $i2 * $i0;
+
+        $i0 = $i0 / $i1;
+
+        $r1.<android.graphics.Rect: int right> = $i0;
+
+        $i1 = $r1.<android.graphics.Rect: int top>;
+
+        $i0 = $r3.<android.graphics.Point: int y>;
+
+        $i2 = $i1 * $i0;
+
+        $i1 = $r4.<android.graphics.Point: int y>;
+
+        $i2 = $i2 / $i1;
+
+        $r1.<android.graphics.Rect: int top> = $i2;
+
+        $i2 = $r1.<android.graphics.Rect: int bottom>;
+
+        $i0 = $i2 * $i0;
+
+        $i0 = $i0 / $i1;
+
+        $r1.<android.graphics.Rect: int bottom> = $i0;
+
+        return $r1;
+    }
+
+    private void initScanner(android.view.SurfaceHolder)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        c.c.a.m.g $r3;
+        android.graphics.Rect $r5, $r7;
+        android.graphics.Point $r4, $r6;
+        com.caremark.caremark.scanner.BaseScannerView $r8;
+        java.lang.Exception $r1;
+        com.caremark.caremark.scanner.DecodeHandler $r9;
+        com.caremark.caremark.scanner.DefaultScannerHelper$a $r10;
+        android.view.SurfaceHolder $r2;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r2 := @parameter0: android.view.SurfaceHolder;
+
+     label1:
+        $r3 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: c.c.a.m.g cameraManager>;
+
+        virtualinvoke $r3.<c.c.a.m.g: void a(android.view.SurfaceHolder)>($r2);
+
+        $r3 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: c.c.a.m.g cameraManager>;
+
+        virtualinvoke $r3.<c.c.a.m.g: void g()>();
+
+        specialinvoke r0.<com.caremark.caremark.scanner.DefaultScannerHelper: void startCameraSource()>();
+
+        $r4 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.graphics.Point screenResolution>;
+
+        $r5 = virtualinvoke r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.graphics.Rect calcVisibleScannerFrame(android.graphics.Point)>($r4);
+
+        $r3 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: c.c.a.m.g cameraManager>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.m.g: android.graphics.Point c()>();
+
+        $r6 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.graphics.Point screenResolution>;
+
+        $r7 = specialinvoke r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.graphics.Rect calcRealScannerFrame(android.graphics.Point,android.graphics.Point)>($r4, $r6);
+
+        $r8 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: com.caremark.caremark.scanner.BaseScannerView scannerOverlay>;
+
+        virtualinvoke $r8.<com.caremark.caremark.scanner.BaseScannerView: void setScannerFrame(android.graphics.Rect)>($r5);
+
+        $r9 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: com.caremark.caremark.scanner.DecodeHandler decodeHandler>;
+
+        virtualinvoke $r9.<com.caremark.caremark.scanner.DecodeHandler: void setScannerFrame(android.graphics.Rect)>($r7);
+
+        $z0 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: boolean hasResult>;
+
+     label2:
+        if $z0 != 0 goto label7;
+
+     label3:
+        virtualinvoke r0.<com.caremark.caremark.scanner.DefaultScannerHelper: void requestScan(boolean)>(1);
+
+     label4:
+        return;
+
+     label5:
+        $r10 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: com.caremark.caremark.scanner.DefaultScannerHelper$a receiver>;
+
+        interfaceinvoke $r10.<com.caremark.caremark.scanner.DefaultScannerHelper$a: void onCameraProblem()>();
+
+        return;
+
+     label6:
+        $r1 := @caughtexception;
+
+        goto label5;
+
+     label7:
+        return;
+
+        catch java.lang.Exception from label1 to label2 with label6;
+        catch java.lang.Exception from label3 to label4 with label6;
+    }
+
+    private void startCameraSource()
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        android.content.Context $r2;
+        com.google.android.gms.vision.text.TextRecognizer $r3;
+        c.c.a.m.i $r8;
+        com.google.android.gms.vision.text.TextRecognizer$Builder $r1;
+        java.lang.Exception $r7;
+        int $i0;
+        android.view.SurfaceHolder $r6;
+        com.google.android.gms.vision.CameraSource $r5;
+        boolean $z0;
+        com.google.android.gms.vision.CameraSource$Builder $r4;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 = new com.google.android.gms.vision.text.TextRecognizer$Builder;
+
+        $r2 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.content.Context mContext>;
+
+        specialinvoke $r1.<com.google.android.gms.vision.text.TextRecognizer$Builder: void <init>(android.content.Context)>($r2);
+
+        $r3 = virtualinvoke $r1.<com.google.android.gms.vision.text.TextRecognizer$Builder: com.google.android.gms.vision.text.TextRecognizer build()>();
+
+        $z0 = virtualinvoke $r3.<com.google.android.gms.vision.text.TextRecognizer: boolean isOperational()>();
+
+        if $z0 == 0 goto label7;
+
+        $r4 = new com.google.android.gms.vision.CameraSource$Builder;
+
+        $r2 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.content.Context mContext>;
+
+        specialinvoke $r4.<com.google.android.gms.vision.CameraSource$Builder: void <init>(android.content.Context,com.google.android.gms.vision.Detector)>($r2, $r3);
+
+        $r4 = virtualinvoke $r4.<com.google.android.gms.vision.CameraSource$Builder: com.google.android.gms.vision.CameraSource$Builder setFacing(int)>(0);
+
+        $r4 = virtualinvoke $r4.<com.google.android.gms.vision.CameraSource$Builder: com.google.android.gms.vision.CameraSource$Builder setRequestedPreviewSize(int,int)>(1280, 1024);
+
+        $r4 = virtualinvoke $r4.<com.google.android.gms.vision.CameraSource$Builder: com.google.android.gms.vision.CameraSource$Builder setAutoFocusEnabled(boolean)>(1);
+
+        $r4 = virtualinvoke $r4.<com.google.android.gms.vision.CameraSource$Builder: com.google.android.gms.vision.CameraSource$Builder setRequestedFps(float)>(2.0F);
+
+        $r5 = virtualinvoke $r4.<com.google.android.gms.vision.CameraSource$Builder: com.google.android.gms.vision.CameraSource build()>();
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: com.google.android.gms.vision.CameraSource mCameraSource> = $r5;
+
+        $r2 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.content.Context mContext>;
+
+        $i0 = staticinvoke <b.i.b.a: int a(android.content.Context,java.lang.String)>($r2, "android.permission.CAMERA");
+
+        if $i0 != 0 goto label6;
+
+     label1:
+        $r5 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: com.google.android.gms.vision.CameraSource mCameraSource>;
+
+     label2:
+        if $r5 == null goto label6;
+
+     label3:
+        $r5 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: com.google.android.gms.vision.CameraSource mCameraSource>;
+
+        $r6 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.view.SurfaceHolder surfaceHolder>;
+
+        virtualinvoke $r5.<com.google.android.gms.vision.CameraSource: com.google.android.gms.vision.CameraSource start(android.view.SurfaceHolder)>($r6);
+
+     label4:
+        goto label6;
+
+     label5:
+        $r7 := @caughtexception;
+
+        virtualinvoke $r7.<java.lang.Exception: void printStackTrace()>();
+
+     label6:
+        $r8 = new c.c.a.m.i;
+
+        specialinvoke $r8.<c.c.a.m.i: void <init>(com.caremark.caremark.scanner.DefaultScannerHelper)>(r0);
+
+        virtualinvoke $r3.<com.google.android.gms.vision.Detector: void setProcessor(com.google.android.gms.vision.Detector$Processor)>($r8);
+
+     label7:
+        return;
+
+        catch java.lang.Exception from label1 to label2 with label5;
+        catch java.lang.Exception from label3 to label4 with label5;
+    }
+
+    public android.graphics.Rect calcVisibleScannerFrame(android.graphics.Point)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        android.graphics.Rect $r2;
+        android.graphics.Point $r1;
+        int $i0, $i1, $i2;
+        float $f0, $f1;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 := @parameter0: android.graphics.Point;
+
+        $i0 = $r1.<android.graphics.Point: int x>;
+
+        $f0 = (float) $i0;
+
+        $f1 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: float frameWidthScale>;
+
+        $f0 = $f0 * $f1;
+
+        $i1 = (int) $f0;
+
+        $i2 = $r1.<android.graphics.Point: int y>;
+
+        $f0 = (float) $i2;
+
+        $f1 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: float frameHeightScale>;
+
+        $f0 = $f0 * $f1;
+
+        $i2 = (int) $f0;
+
+        $i0 = $i0 - $i1;
+
+        $i0 = $i0 / 2;
+
+        $f0 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: float partOfSurfaceViewToShow>;
+
+        $r2 = new android.graphics.Rect;
+
+        $i1 = $i1 + $i0;
+
+        $f1 = (float) $i2;
+
+        $f0 = $f1 * $f0;
+
+        $f0 = $f0 + 100.0F;
+
+        $i2 = (int) $f0;
+
+        specialinvoke $r2.<android.graphics.Rect: void <init>(int,int,int,int)>($i0, 100, $i1, $i2);
+
+        return $r2;
+    }
+
+    public void cleanUpResources()
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        android.os.HandlerThread $r1;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.os.HandlerThread decodeThread>;
+
+        virtualinvoke $r1.<android.os.HandlerThread: boolean quit()>();
+
+        return;
+    }
+
+    public void createDefaultScannerEngine(com.caremark.caremark.scanner.DefaultScannerHelper$a, android.graphics.Point, boolean, c.c.a.m.a)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        c.c.a.m.g $r5;
+        android.graphics.Point $r4;
+        com.caremark.caremark.scanner.DecodeHandler $r7;
+        android.os.HandlerThread $r6;
+        android.os.Looper $r2;
+        com.caremark.caremark.scanner.DefaultScannerHelper$a $r3;
+        c.c.a.m.a $r1;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r3 := @parameter0: com.caremark.caremark.scanner.DefaultScannerHelper$a;
+
+        $r4 := @parameter1: android.graphics.Point;
+
+        $z0 := @parameter2: boolean;
+
+        $r1 := @parameter3: c.c.a.m.a;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: com.caremark.caremark.scanner.DefaultScannerHelper$a receiver> = $r3;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.graphics.Point screenResolution> = $r4;
+
+        $r5 = new c.c.a.m.g;
+
+        specialinvoke $r5.<c.c.a.m.g: void <init>(android.graphics.Point,boolean)>($r4, 1);
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: c.c.a.m.g cameraManager> = $r5;
+
+        $r6 = new android.os.HandlerThread;
+
+        specialinvoke $r6.<android.os.HandlerThread: void <init>(java.lang.String)>("Barcode Decoder");
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.os.HandlerThread decodeThread> = $r6;
+
+        $r6 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.os.HandlerThread decodeThread>;
+
+        virtualinvoke $r6.<android.os.HandlerThread: void start()>();
+
+        $r7 = new com.caremark.caremark.scanner.DecodeHandler;
+
+        $r6 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.os.HandlerThread decodeThread>;
+
+        $r2 = virtualinvoke $r6.<android.os.HandlerThread: android.os.Looper getLooper()>();
+
+        specialinvoke $r7.<com.caremark.caremark.scanner.DecodeHandler: void <init>(c.c.a.m.a,android.os.Looper)>($r1, $r2);
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: com.caremark.caremark.scanner.DecodeHandler decodeHandler> = $r7;
+
+        $r7 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: com.caremark.caremark.scanner.DecodeHandler decodeHandler>;
+
+        virtualinvoke $r7.<com.caremark.caremark.scanner.DecodeHandler: void setIsPortrait(boolean)>(1);
+
+        return;
+    }
+
+    public boolean hasResult()
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        boolean z0;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        z0 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: boolean hasResult>;
+
+        return z0;
+    }
+
+    public void requestScan(boolean)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        com.caremark.caremark.scanner.DecodeHandler $r1;
+        c.c.a.m.g $r3;
+        android.os.Messenger $r2;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $z0 := @parameter0: boolean;
+
+        if $z0 == 0 goto label1;
+
+        $r3 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: c.c.a.m.g cameraManager>;
+
+        virtualinvoke $r3.<c.c.a.m.g: void f()>();
+
+     label1:
+        $r3 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: c.c.a.m.g cameraManager>;
+
+        $r1 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: com.caremark.caremark.scanner.DecodeHandler decodeHandler>;
+
+        $r2 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.os.Messenger scanResultMessenger>;
+
+        virtualinvoke $r3.<c.c.a.m.g: void a(android.os.Handler,android.os.Messenger)>($r1, $r2);
+
+        return;
+    }
+
+    public void rescan()
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: boolean hasResult> = 0;
+
+        virtualinvoke r0.<com.caremark.caremark.scanner.DefaultScannerHelper: void requestScan(boolean)>(1);
+
+        return;
+    }
+
+    public void restoreState(android.os.Bundle)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        android.os.Bundle $r1;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        $z0 = virtualinvoke $r1.<android.os.Bundle: boolean getBoolean(java.lang.String)>("has_result");
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: boolean hasResult> = $z0;
+
+        return;
+    }
+
+    public void saveState(android.os.Bundle)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        android.os.Bundle $r1;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        $z0 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: boolean hasResult>;
+
+        virtualinvoke $r1.<android.os.Bundle: void putBoolean(java.lang.String,boolean)>("has_result", $z0);
+
+        return;
+    }
+
+    public void setCameraManager(c.c.a.m.g)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        c.c.a.m.g $r1;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 := @parameter0: c.c.a.m.g;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: c.c.a.m.g cameraManager> = $r1;
+
+        return;
+    }
+
+    public void setDecodeHandler(com.caremark.caremark.scanner.DecodeHandler)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        com.caremark.caremark.scanner.DecodeHandler $r1;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 := @parameter0: com.caremark.caremark.scanner.DecodeHandler;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: com.caremark.caremark.scanner.DecodeHandler decodeHandler> = $r1;
+
+        return;
+    }
+
+    public void setDecodeThread(android.os.HandlerThread)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        android.os.HandlerThread $r1;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 := @parameter0: android.os.HandlerThread;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.os.HandlerThread decodeThread> = $r1;
+
+        return;
+    }
+
+    public void setFrameHeightScale(float)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        float $f0;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $f0 := @parameter0: float;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: float frameHeightScale> = $f0;
+
+        return;
+    }
+
+    public void setFrameWidthScale(float)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        float $f0;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $f0 := @parameter0: float;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: float frameWidthScale> = $f0;
+
+        return;
+    }
+
+    public void setHasResult(boolean)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $z0 := @parameter0: boolean;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: boolean hasResult> = $z0;
+
+        return;
+    }
+
+    public void setPartOfSurfaceViewToShow(float)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        float $f0;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $f0 := @parameter0: float;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: float partOfSurfaceViewToShow> = $f0;
+
+        return;
+    }
+
+    public void setScanResultMessenger(android.os.Messenger)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        android.os.Messenger $r1;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 := @parameter0: android.os.Messenger;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.os.Messenger scanResultMessenger> = $r1;
+
+        return;
+    }
+
+    public void setScannerOverlay(com.caremark.caremark.scanner.BaseScannerView)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        com.caremark.caremark.scanner.BaseScannerView $r1;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 := @parameter0: com.caremark.caremark.scanner.BaseScannerView;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: com.caremark.caremark.scanner.BaseScannerView scannerOverlay> = $r1;
+
+        return;
+    }
+
+    public void setScreenResolution(android.graphics.Point)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        android.graphics.Point $r1;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 := @parameter0: android.graphics.Point;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.graphics.Point screenResolution> = $r1;
+
+        return;
+    }
+
+    public void setSurfaceHolder(android.view.SurfaceHolder)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        android.view.SurfaceHolder $r1;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 := @parameter0: android.view.SurfaceHolder;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.view.SurfaceHolder surfaceHolder> = $r1;
+
+        return;
+    }
+
+    public void startScanning()
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        android.view.SurfaceHolder $r1;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: android.view.SurfaceHolder surfaceHolder>;
+
+        specialinvoke r0.<com.caremark.caremark.scanner.DefaultScannerHelper: void initScanner(android.view.SurfaceHolder)>($r1);
+
+        return;
+    }
+
+    public void stopCameraSource()
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        com.google.android.gms.vision.CameraSource $r1;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: com.google.android.gms.vision.CameraSource mCameraSource>;
+
+        if $r1 == null goto label1;
+
+        virtualinvoke $r1.<com.google.android.gms.vision.CameraSource: void stop()>();
+
+     label1:
+        return;
+    }
+
+    public void stopScanning()
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        c.c.a.m.g $r1;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: c.c.a.m.g cameraManager>;
+
+        virtualinvoke $r1.<c.c.a.m.g: void h()>();
+
+        $r1 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: c.c.a.m.g cameraManager>;
+
+        virtualinvoke $r1.<c.c.a.m.g: void b()>();
+
+        return;
+    }
+
+    public void surfaceChanged(android.view.SurfaceHolder, int, int, int)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        int $i0, $i1, $i2;
+        android.view.SurfaceHolder $r1;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 := @parameter0: android.view.SurfaceHolder;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        return;
+    }
+
+    public void surfaceCreated(android.view.SurfaceHolder)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        android.view.SurfaceHolder $r1;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 := @parameter0: android.view.SurfaceHolder;
+
+        $z0 = r0.<com.caremark.caremark.scanner.DefaultScannerHelper: boolean hasSurface>;
+
+        if $z0 != 0 goto label1;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: boolean hasSurface> = 1;
+
+        specialinvoke r0.<com.caremark.caremark.scanner.DefaultScannerHelper: void initScanner(android.view.SurfaceHolder)>($r1);
+
+     label1:
+        return;
+    }
+
+    public void surfaceDestroyed(android.view.SurfaceHolder)
+    {
+        com.caremark.caremark.scanner.DefaultScannerHelper r0;
+        android.view.SurfaceHolder $r1;
+
+        r0 := @this: com.caremark.caremark.scanner.DefaultScannerHelper;
+
+        $r1 := @parameter0: android.view.SurfaceHolder;
+
+        r0.<com.caremark.caremark.scanner.DefaultScannerHelper: boolean hasSurface> = 0;
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.caremark.caremark.scanner.DefaultScannerHelper: java.lang.String HAS_RESULT_KEY> = "has_result";
+
+        return;
+    }
+}

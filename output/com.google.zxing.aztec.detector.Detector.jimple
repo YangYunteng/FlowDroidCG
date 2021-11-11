@@ -1,0 +1,1813 @@
+public final class com.google.zxing.aztec.detector.Detector extends java.lang.Object
+{
+    public static final int[] EXPECTED_CORNER_BITS;
+    public boolean compact;
+    public final com.google.zxing.common.BitMatrix image;
+    public int nbCenterLayers;
+    public int nbDataBlocks;
+    public int nbLayers;
+    public int shift;
+
+    static void <clinit>()
+    {
+        int[] $r0;
+
+        $r0 = newarray (int)[4];
+
+        $r0[0] = 3808;
+
+        $r0[1] = 476;
+
+        $r0[2] = 2107;
+
+        $r0[3] = 1799;
+
+        <com.google.zxing.aztec.detector.Detector: int[] EXPECTED_CORNER_BITS> = $r0;
+
+        return;
+    }
+
+    public void <init>(com.google.zxing.common.BitMatrix)
+    {
+        com.google.zxing.aztec.detector.Detector r0;
+        com.google.zxing.common.BitMatrix $r1;
+
+        r0 := @this: com.google.zxing.aztec.detector.Detector;
+
+        $r1 := @parameter0: com.google.zxing.common.BitMatrix;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.common.BitMatrix image> = $r1;
+
+        return;
+    }
+
+    public static float distance(com.google.zxing.ResultPoint, com.google.zxing.ResultPoint)
+    {
+        com.google.zxing.ResultPoint $r0, $r1;
+        float $f0, $f1, $f2, $f3;
+
+        $r0 := @parameter0: com.google.zxing.ResultPoint;
+
+        $r1 := @parameter1: com.google.zxing.ResultPoint;
+
+        $f0 = virtualinvoke $r0.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f1 = virtualinvoke $r0.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f2 = virtualinvoke $r1.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f3 = virtualinvoke $r1.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f0 = staticinvoke <com.google.zxing.common.detector.MathUtils: float distance(float,float,float,float)>($f0, $f1, $f2, $f3);
+
+        return $f0;
+    }
+
+    public static float distance(com.google.zxing.aztec.detector.Detector$Point, com.google.zxing.aztec.detector.Detector$Point)
+    {
+        int $i0, $i1, $i2, $i3;
+        float $f0;
+        com.google.zxing.aztec.detector.Detector$Point $r0, $r1;
+
+        $r0 := @parameter0: com.google.zxing.aztec.detector.Detector$Point;
+
+        $r1 := @parameter1: com.google.zxing.aztec.detector.Detector$Point;
+
+        $i0 = virtualinvoke $r0.<com.google.zxing.aztec.detector.Detector$Point: int getX()>();
+
+        $i1 = virtualinvoke $r0.<com.google.zxing.aztec.detector.Detector$Point: int getY()>();
+
+        $i2 = virtualinvoke $r1.<com.google.zxing.aztec.detector.Detector$Point: int getX()>();
+
+        $i3 = virtualinvoke $r1.<com.google.zxing.aztec.detector.Detector$Point: int getY()>();
+
+        $f0 = staticinvoke <com.google.zxing.common.detector.MathUtils: float distance(int,int,int,int)>($i0, $i1, $i2, $i3);
+
+        return $f0;
+    }
+
+    public static com.google.zxing.ResultPoint[] expandSquare(com.google.zxing.ResultPoint[], float, float)
+    {
+        com.google.zxing.ResultPoint $r1, $r2, $r3, $r4;
+        com.google.zxing.ResultPoint[] $r0;
+        float $f0, $f1, $f2, $f3, $f4, $f5, $f6;
+
+        $r0 := @parameter0: com.google.zxing.ResultPoint[];
+
+        $f0 := @parameter1: float;
+
+        $f1 := @parameter2: float;
+
+        $f0 = $f0 * 2.0F;
+
+        $f0 = $f1 / $f0;
+
+        $r1 = $r0[0];
+
+        $f1 = virtualinvoke $r1.<com.google.zxing.ResultPoint: float getX()>();
+
+        $r1 = $r0[2];
+
+        $f2 = virtualinvoke $r1.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f1 = $f1 - $f2;
+
+        $r1 = $r0[0];
+
+        $f2 = virtualinvoke $r1.<com.google.zxing.ResultPoint: float getY()>();
+
+        $r1 = $r0[2];
+
+        $f3 = virtualinvoke $r1.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f2 = $f2 - $f3;
+
+        $r1 = $r0[0];
+
+        $f3 = virtualinvoke $r1.<com.google.zxing.ResultPoint: float getX()>();
+
+        $r1 = $r0[2];
+
+        $f4 = virtualinvoke $r1.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f3 = $f3 + $f4;
+
+        $f3 = $f3 / 2.0F;
+
+        $r1 = $r0[0];
+
+        $f4 = virtualinvoke $r1.<com.google.zxing.ResultPoint: float getY()>();
+
+        $r1 = $r0[2];
+
+        $f5 = virtualinvoke $r1.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f4 = $f4 + $f5;
+
+        $f4 = $f4 / 2.0F;
+
+        $r1 = new com.google.zxing.ResultPoint;
+
+        $f1 = $f1 * $f0;
+
+        $f5 = $f3 + $f1;
+
+        $f2 = $f2 * $f0;
+
+        $f6 = $f4 + $f2;
+
+        specialinvoke $r1.<com.google.zxing.ResultPoint: void <init>(float,float)>($f5, $f6);
+
+        $r2 = new com.google.zxing.ResultPoint;
+
+        $f1 = $f3 - $f1;
+
+        $f2 = $f4 - $f2;
+
+        specialinvoke $r2.<com.google.zxing.ResultPoint: void <init>(float,float)>($f1, $f2);
+
+        $r3 = $r0[1];
+
+        $f1 = virtualinvoke $r3.<com.google.zxing.ResultPoint: float getX()>();
+
+        $r3 = $r0[3];
+
+        $f2 = virtualinvoke $r3.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f1 = $f1 - $f2;
+
+        $r3 = $r0[1];
+
+        $f2 = virtualinvoke $r3.<com.google.zxing.ResultPoint: float getY()>();
+
+        $r3 = $r0[3];
+
+        $f3 = virtualinvoke $r3.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f2 = $f2 - $f3;
+
+        $r3 = $r0[1];
+
+        $f3 = virtualinvoke $r3.<com.google.zxing.ResultPoint: float getX()>();
+
+        $r3 = $r0[3];
+
+        $f4 = virtualinvoke $r3.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f3 = $f3 + $f4;
+
+        $f3 = $f3 / 2.0F;
+
+        $r3 = $r0[1];
+
+        $f4 = virtualinvoke $r3.<com.google.zxing.ResultPoint: float getY()>();
+
+        $r3 = $r0[3];
+
+        $f5 = virtualinvoke $r3.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f4 = $f4 + $f5;
+
+        $f4 = $f4 / 2.0F;
+
+        $r3 = new com.google.zxing.ResultPoint;
+
+        $f1 = $f1 * $f0;
+
+        $f5 = $f3 + $f1;
+
+        $f0 = $f0 * $f2;
+
+        $f2 = $f4 + $f0;
+
+        specialinvoke $r3.<com.google.zxing.ResultPoint: void <init>(float,float)>($f5, $f2);
+
+        $r4 = new com.google.zxing.ResultPoint;
+
+        $f1 = $f3 - $f1;
+
+        $f0 = $f4 - $f0;
+
+        specialinvoke $r4.<com.google.zxing.ResultPoint: void <init>(float,float)>($f1, $f0);
+
+        $r0 = newarray (com.google.zxing.ResultPoint)[4];
+
+        $r0[0] = $r1;
+
+        $r0[1] = $r3;
+
+        $r0[2] = $r2;
+
+        $r0[3] = $r4;
+
+        return $r0;
+    }
+
+    private void extractParameters(com.google.zxing.ResultPoint[])
+    {
+        com.google.zxing.ResultPoint $r3, $r4;
+        long $l3, $l4;
+        com.google.zxing.aztec.detector.Detector r0;
+        com.google.zxing.ResultPoint[] $r2;
+        int[] $r1;
+        com.google.zxing.NotFoundException $r5;
+        int $i0, $i1, $i2;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.aztec.detector.Detector;
+
+        $r2 := @parameter0: com.google.zxing.ResultPoint[];
+
+        $i0 = 0;
+
+        $r3 = $r2[0];
+
+        $z0 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: boolean isValid(com.google.zxing.ResultPoint)>($r3);
+
+        if $z0 == 0 goto label6;
+
+        $r3 = $r2[1];
+
+        $z0 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: boolean isValid(com.google.zxing.ResultPoint)>($r3);
+
+        if $z0 == 0 goto label6;
+
+        $r3 = $r2[2];
+
+        $z0 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: boolean isValid(com.google.zxing.ResultPoint)>($r3);
+
+        if $z0 == 0 goto label6;
+
+        $r3 = $r2[3];
+
+        $z0 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: boolean isValid(com.google.zxing.ResultPoint)>($r3);
+
+        if $z0 == 0 goto label6;
+
+        $i1 = r0.<com.google.zxing.aztec.detector.Detector: int nbCenterLayers>;
+
+        $i1 = $i1 * 2;
+
+        $r1 = newarray (int)[4];
+
+        $r3 = $r2[0];
+
+        $r4 = $r2[1];
+
+        $i2 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: int sampleLine(com.google.zxing.ResultPoint,com.google.zxing.ResultPoint,int)>($r3, $r4, $i1);
+
+        $r1[0] = $i2;
+
+        $r3 = $r2[1];
+
+        $r4 = $r2[2];
+
+        $i2 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: int sampleLine(com.google.zxing.ResultPoint,com.google.zxing.ResultPoint,int)>($r3, $r4, $i1);
+
+        $r1[1] = $i2;
+
+        $r3 = $r2[2];
+
+        $r4 = $r2[3];
+
+        $i2 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: int sampleLine(com.google.zxing.ResultPoint,com.google.zxing.ResultPoint,int)>($r3, $r4, $i1);
+
+        $r1[2] = $i2;
+
+        $r3 = $r2[3];
+
+        $r4 = $r2[0];
+
+        $i2 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: int sampleLine(com.google.zxing.ResultPoint,com.google.zxing.ResultPoint,int)>($r3, $r4, $i1);
+
+        $r1[3] = $i2;
+
+        $i1 = staticinvoke <com.google.zxing.aztec.detector.Detector: int getRotation(int[],int)>($r1, $i1);
+
+        r0.<com.google.zxing.aztec.detector.Detector: int shift> = $i1;
+
+        $l3 = 0L;
+
+     label1:
+        if $i0 >= 4 goto label4;
+
+        $i1 = r0.<com.google.zxing.aztec.detector.Detector: int shift>;
+
+        $i1 = $i1 + $i0;
+
+        $i1 = $i1 % 4;
+
+        $i2 = $r1[$i1];
+
+        $z0 = r0.<com.google.zxing.aztec.detector.Detector: boolean compact>;
+
+        if $z0 == 0 goto label2;
+
+        $l3 = $l3 << 7;
+
+        $i1 = $i2 >> 1;
+
+        $i1 = $i1 & 127;
+
+        $l4 = (long) $i1;
+
+        goto label3;
+
+     label2:
+        $l3 = $l3 << 10;
+
+        $i1 = $i2 >> 2;
+
+        $i1 = $i1 & 992;
+
+        $i2 = $i2 >> 1;
+
+        $i2 = $i2 & 31;
+
+        $i1 = $i1 + $i2;
+
+        $l4 = (long) $i1;
+
+     label3:
+        $l3 = $l3 + $l4;
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label4:
+        $z0 = r0.<com.google.zxing.aztec.detector.Detector: boolean compact>;
+
+        $i0 = staticinvoke <com.google.zxing.aztec.detector.Detector: int getCorrectedParameterData(long,boolean)>($l3, $z0);
+
+        $z0 = r0.<com.google.zxing.aztec.detector.Detector: boolean compact>;
+
+        if $z0 == 0 goto label5;
+
+        $i1 = $i0 >> 6;
+
+        $i1 = $i1 + 1;
+
+        r0.<com.google.zxing.aztec.detector.Detector: int nbLayers> = $i1;
+
+        $i0 = $i0 & 63;
+
+        $i0 = $i0 + 1;
+
+        r0.<com.google.zxing.aztec.detector.Detector: int nbDataBlocks> = $i0;
+
+        return;
+
+     label5:
+        $i1 = $i0 >> 11;
+
+        $i1 = $i1 + 1;
+
+        r0.<com.google.zxing.aztec.detector.Detector: int nbLayers> = $i1;
+
+        $i0 = $i0 & 2047;
+
+        $i0 = $i0 + 1;
+
+        r0.<com.google.zxing.aztec.detector.Detector: int nbDataBlocks> = $i0;
+
+        return;
+
+     label6:
+        $r5 = staticinvoke <com.google.zxing.NotFoundException: com.google.zxing.NotFoundException getNotFoundInstance()>();
+
+        goto label7;
+
+     label7:
+        throw $r5;
+    }
+
+    private com.google.zxing.ResultPoint[] getBullsEyeCorners(com.google.zxing.aztec.detector.Detector$Point)
+    {
+        com.google.zxing.ResultPoint $r10, $r11, $r12, $r14;
+        com.google.zxing.aztec.detector.Detector$Point $r1, $r2, $r3, $r4, $r5, $r6, $r7, $r8;
+        com.google.zxing.aztec.detector.Detector r0;
+        byte $b1;
+        int $i0, $i2;
+        boolean $z0, $z1;
+        double $d0;
+        com.google.zxing.ResultPoint[] $r13;
+        com.google.zxing.NotFoundException $r9;
+        float $f0, $f1, $f2;
+
+        r0 := @this: com.google.zxing.aztec.detector.Detector;
+
+        $r1 := @parameter0: com.google.zxing.aztec.detector.Detector$Point;
+
+        r0.<com.google.zxing.aztec.detector.Detector: int nbCenterLayers> = 1;
+
+        $r2 = $r1;
+
+        $r3 = $r1;
+
+        $r4 = $r1;
+
+        $z0 = 1;
+
+     label1:
+        $i0 = r0.<com.google.zxing.aztec.detector.Detector: int nbCenterLayers>;
+
+        if $i0 >= 9 goto label3;
+
+        $i0 = -1;
+
+        $r5 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.aztec.detector.Detector$Point getFirstDifferent(com.google.zxing.aztec.detector.Detector$Point,boolean,int,int)>($r2, $z0, 1, $i0);
+
+        $r6 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.aztec.detector.Detector$Point getFirstDifferent(com.google.zxing.aztec.detector.Detector$Point,boolean,int,int)>($r3, $z0, 1, 1);
+
+        $i0 = -1;
+
+        $r7 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.aztec.detector.Detector$Point getFirstDifferent(com.google.zxing.aztec.detector.Detector$Point,boolean,int,int)>($r4, $z0, $i0, 1);
+
+        $i0 = -1;
+
+        $i2 = -1;
+
+        $r8 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.aztec.detector.Detector$Point getFirstDifferent(com.google.zxing.aztec.detector.Detector$Point,boolean,int,int)>($r1, $z0, $i0, $i2);
+
+        $i0 = r0.<com.google.zxing.aztec.detector.Detector: int nbCenterLayers>;
+
+        if $i0 <= 2 goto label2;
+
+        $f0 = staticinvoke <com.google.zxing.aztec.detector.Detector: float distance(com.google.zxing.aztec.detector.Detector$Point,com.google.zxing.aztec.detector.Detector$Point)>($r8, $r5);
+
+        $i0 = r0.<com.google.zxing.aztec.detector.Detector: int nbCenterLayers>;
+
+        $f1 = (float) $i0;
+
+        $f0 = $f0 * $f1;
+
+        $f1 = staticinvoke <com.google.zxing.aztec.detector.Detector: float distance(com.google.zxing.aztec.detector.Detector$Point,com.google.zxing.aztec.detector.Detector$Point)>($r1, $r2);
+
+        $i0 = r0.<com.google.zxing.aztec.detector.Detector: int nbCenterLayers>;
+
+        $i0 = $i0 + 2;
+
+        $f2 = (float) $i0;
+
+        $f1 = $f1 * $f2;
+
+        $f0 = $f0 / $f1;
+
+        $d0 = (double) $f0;
+
+        $b1 = $d0 cmpg 0.75;
+
+        $i0 = (int) $b1;
+
+        if $i0 < 0 goto label3;
+
+        $b1 = $d0 cmpl 1.25;
+
+        $i0 = (int) $b1;
+
+        if $i0 > 0 goto label3;
+
+        $z1 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: boolean isWhiteOrBlackRectangle(com.google.zxing.aztec.detector.Detector$Point,com.google.zxing.aztec.detector.Detector$Point,com.google.zxing.aztec.detector.Detector$Point,com.google.zxing.aztec.detector.Detector$Point)>($r5, $r6, $r7, $r8);
+
+        if $z1 != 0 goto label2;
+
+        goto label3;
+
+     label2:
+        $z0 = $z0 ^ 1;
+
+        $i0 = r0.<com.google.zxing.aztec.detector.Detector: int nbCenterLayers>;
+
+        $i0 = $i0 + 1;
+
+        r0.<com.google.zxing.aztec.detector.Detector: int nbCenterLayers> = $i0;
+
+        $r1 = $r8;
+
+        $r2 = $r5;
+
+        $r3 = $r6;
+
+        $r4 = $r7;
+
+        goto label1;
+
+     label3:
+        $i0 = r0.<com.google.zxing.aztec.detector.Detector: int nbCenterLayers>;
+
+        if $i0 == 5 goto label5;
+
+        if $i0 != 7 goto label4;
+
+        goto label5;
+
+     label4:
+        $r9 = staticinvoke <com.google.zxing.NotFoundException: com.google.zxing.NotFoundException getNotFoundInstance()>();
+
+        throw $r9;
+
+     label5:
+        $i0 = r0.<com.google.zxing.aztec.detector.Detector: int nbCenterLayers>;
+
+        if $i0 != 5 goto label6;
+
+        $z0 = 1;
+
+        goto label7;
+
+     label6:
+        $z0 = 0;
+
+     label7:
+        r0.<com.google.zxing.aztec.detector.Detector: boolean compact> = $z0;
+
+        $r10 = new com.google.zxing.ResultPoint;
+
+        $i0 = virtualinvoke $r2.<com.google.zxing.aztec.detector.Detector$Point: int getX()>();
+
+        $f0 = (float) $i0;
+
+        $f0 = $f0 + 0.5F;
+
+        $i0 = virtualinvoke $r2.<com.google.zxing.aztec.detector.Detector$Point: int getY()>();
+
+        $f1 = (float) $i0;
+
+        $f1 = $f1 - 0.5F;
+
+        specialinvoke $r10.<com.google.zxing.ResultPoint: void <init>(float,float)>($f0, $f1);
+
+        $r11 = new com.google.zxing.ResultPoint;
+
+        $i0 = virtualinvoke $r3.<com.google.zxing.aztec.detector.Detector$Point: int getX()>();
+
+        $f0 = (float) $i0;
+
+        $f0 = $f0 + 0.5F;
+
+        $i0 = virtualinvoke $r3.<com.google.zxing.aztec.detector.Detector$Point: int getY()>();
+
+        $f1 = (float) $i0;
+
+        $f1 = $f1 + 0.5F;
+
+        specialinvoke $r11.<com.google.zxing.ResultPoint: void <init>(float,float)>($f0, $f1);
+
+        $r12 = new com.google.zxing.ResultPoint;
+
+        $i0 = virtualinvoke $r4.<com.google.zxing.aztec.detector.Detector$Point: int getX()>();
+
+        $f0 = (float) $i0;
+
+        $f0 = $f0 - 0.5F;
+
+        $i0 = virtualinvoke $r4.<com.google.zxing.aztec.detector.Detector$Point: int getY()>();
+
+        $f1 = (float) $i0;
+
+        $f1 = $f1 + 0.5F;
+
+        specialinvoke $r12.<com.google.zxing.ResultPoint: void <init>(float,float)>($f0, $f1);
+
+        $r14 = new com.google.zxing.ResultPoint;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.aztec.detector.Detector$Point: int getX()>();
+
+        $f0 = (float) $i0;
+
+        $f0 = $f0 - 0.5F;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.aztec.detector.Detector$Point: int getY()>();
+
+        $f1 = (float) $i0;
+
+        $f1 = $f1 - 0.5F;
+
+        specialinvoke $r14.<com.google.zxing.ResultPoint: void <init>(float,float)>($f0, $f1);
+
+        $r13 = newarray (com.google.zxing.ResultPoint)[4];
+
+        $r13[0] = $r10;
+
+        $r13[1] = $r11;
+
+        $r13[2] = $r12;
+
+        $r13[3] = $r14;
+
+        $i0 = r0.<com.google.zxing.aztec.detector.Detector: int nbCenterLayers>;
+
+        $i2 = $i0 * 2;
+
+        $i2 = $i2 - 3;
+
+        $f0 = (float) $i2;
+
+        $i0 = $i0 * 2;
+
+        $f1 = (float) $i0;
+
+        $r13 = staticinvoke <com.google.zxing.aztec.detector.Detector: com.google.zxing.ResultPoint[] expandSquare(com.google.zxing.ResultPoint[],float,float)>($r13, $f0, $f1);
+
+        return $r13;
+    }
+
+    private int getColor(com.google.zxing.aztec.detector.Detector$Point, com.google.zxing.aztec.detector.Detector$Point)
+    {
+        com.google.zxing.aztec.detector.Detector$Point $r1, $r2;
+        com.google.zxing.aztec.detector.Detector r0;
+        byte $b2;
+        int $i0, $i1, $i3, $i4;
+        boolean $z0, $z1, $z2;
+        float $f0, $f1, $f2, $f3, $f4, $f5;
+        com.google.zxing.common.BitMatrix $r3;
+
+        r0 := @this: com.google.zxing.aztec.detector.Detector;
+
+        $r1 := @parameter0: com.google.zxing.aztec.detector.Detector$Point;
+
+        $r2 := @parameter1: com.google.zxing.aztec.detector.Detector$Point;
+
+        $f0 = staticinvoke <com.google.zxing.aztec.detector.Detector: float distance(com.google.zxing.aztec.detector.Detector$Point,com.google.zxing.aztec.detector.Detector$Point)>($r1, $r2);
+
+        $i0 = virtualinvoke $r2.<com.google.zxing.aztec.detector.Detector$Point: int getX()>();
+
+        $i1 = virtualinvoke $r1.<com.google.zxing.aztec.detector.Detector$Point: int getX()>();
+
+        $i0 = $i0 - $i1;
+
+        $f1 = (float) $i0;
+
+        $f1 = $f1 / $f0;
+
+        $i0 = virtualinvoke $r2.<com.google.zxing.aztec.detector.Detector$Point: int getY()>();
+
+        $i1 = virtualinvoke $r1.<com.google.zxing.aztec.detector.Detector$Point: int getY()>();
+
+        $i0 = $i0 - $i1;
+
+        $f2 = (float) $i0;
+
+        $f2 = $f2 / $f0;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.aztec.detector.Detector$Point: int getX()>();
+
+        $f3 = (float) $i0;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.aztec.detector.Detector$Point: int getY()>();
+
+        $f4 = (float) $i0;
+
+        $r3 = r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.common.BitMatrix image>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.aztec.detector.Detector$Point: int getX()>();
+
+        $i1 = virtualinvoke $r1.<com.google.zxing.aztec.detector.Detector$Point: int getY()>();
+
+        $z0 = virtualinvoke $r3.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i0, $i1);
+
+        $z1 = 0;
+
+        $i0 = 0;
+
+        $i1 = 0;
+
+     label1:
+        $f5 = (float) $i0;
+
+        $b2 = $f5 cmpg $f0;
+
+        $i3 = (int) $b2;
+
+        if $i3 >= 0 goto label3;
+
+        $f3 = $f3 + $f1;
+
+        $f4 = $f4 + $f2;
+
+        $r3 = r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.common.BitMatrix image>;
+
+        $i3 = staticinvoke <com.google.zxing.common.detector.MathUtils: int round(float)>($f3);
+
+        $i4 = staticinvoke <com.google.zxing.common.detector.MathUtils: int round(float)>($f4);
+
+        $z2 = virtualinvoke $r3.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i3, $i4);
+
+        if $z2 == $z0 goto label2;
+
+        $i1 = $i1 + 1;
+
+     label2:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label3:
+        $f1 = (float) $i1;
+
+        $f0 = $f1 / $f0;
+
+        $b2 = $f0 cmpl 0.1F;
+
+        $i0 = (int) $b2;
+
+        if $i0 <= 0 goto label4;
+
+        $b2 = $f0 cmpg 0.9F;
+
+        $i0 = (int) $b2;
+
+        if $i0 >= 0 goto label4;
+
+        return 0;
+
+     label4:
+        $b2 = $f0 cmpg 0.1F;
+
+        $i0 = (int) $b2;
+
+        if $i0 > 0 goto label5;
+
+        $z1 = 1;
+
+     label5:
+        if $z1 != $z0 goto label6;
+
+        return 1;
+
+     label6:
+        $i0 = -1;
+
+        return $i0;
+    }
+
+    public static int getCorrectedParameterData(long, boolean)
+    {
+        long $l1;
+        byte $b2, $b3;
+        int[] $r0;
+        com.google.zxing.NotFoundException $r1;
+        com.google.zxing.common.reedsolomon.ReedSolomonDecoder $r3, $r5;
+        int $i0, $i4, $i5;
+        com.google.zxing.common.reedsolomon.ReedSolomonException $r2;
+        com.google.zxing.common.reedsolomon.GenericGF $r4;
+        boolean $z0;
+
+        $l1 := @parameter0: long;
+
+        $z0 := @parameter1: boolean;
+
+        if $z0 == 0 goto label01;
+
+        $b2 = 7;
+
+        $b3 = 2;
+
+        goto label02;
+
+     label01:
+        $b2 = 10;
+
+        $b3 = 4;
+
+     label02:
+        $i0 = $b2 - $b3;
+
+        $r0 = newarray (int)[$b2];
+
+        $i4 = -1;
+
+        $i4 = $b2 + $i4;
+
+     label03:
+        if $i4 < 0 goto label04;
+
+        $i5 = (int) $l1;
+
+        $i5 = $i5 & 15;
+
+        $r0[$i4] = $i5;
+
+        $l1 = $l1 >> 4;
+
+        $i5 = -1;
+
+        $i4 = $i4 + $i5;
+
+        goto label03;
+
+     label04:
+        $r5 = new com.google.zxing.common.reedsolomon.ReedSolomonDecoder;
+
+        $r3 = $r5;
+
+        $r4 = <com.google.zxing.common.reedsolomon.GenericGF: com.google.zxing.common.reedsolomon.GenericGF AZTEC_PARAM>;
+
+     label05:
+        specialinvoke $r5.<com.google.zxing.common.reedsolomon.ReedSolomonDecoder: void <init>(com.google.zxing.common.reedsolomon.GenericGF)>($r4);
+
+        virtualinvoke $r3.<com.google.zxing.common.reedsolomon.ReedSolomonDecoder: void decode(int[],int)>($r0, $i0);
+
+     label06:
+        $i0 = 0;
+
+        $i4 = 0;
+
+     label07:
+        if $i0 >= $b3 goto label08;
+
+        $i4 = $i4 << 4;
+
+        $i5 = $r0[$i0];
+
+        $i4 = $i4 + $i5;
+
+        $i0 = $i0 + 1;
+
+        goto label07;
+
+     label08:
+        return $i4;
+
+     label09:
+        $r1 = staticinvoke <com.google.zxing.NotFoundException: com.google.zxing.NotFoundException getNotFoundInstance()>();
+
+        goto label10;
+
+     label10:
+        throw $r1;
+
+     label11:
+        $r2 := @caughtexception;
+
+        goto label09;
+
+        catch com.google.zxing.common.reedsolomon.ReedSolomonException from label05 to label06 with label11;
+    }
+
+    private int getDimension()
+    {
+        com.google.zxing.aztec.detector.Detector r0;
+        int $i0, $i1;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.aztec.detector.Detector;
+
+        $z0 = r0.<com.google.zxing.aztec.detector.Detector: boolean compact>;
+
+        if $z0 == 0 goto label1;
+
+        $i0 = r0.<com.google.zxing.aztec.detector.Detector: int nbLayers>;
+
+        $i0 = $i0 * 4;
+
+        $i0 = $i0 + 11;
+
+        return $i0;
+
+     label1:
+        $i1 = r0.<com.google.zxing.aztec.detector.Detector: int nbLayers>;
+
+        if $i1 > 4 goto label2;
+
+        $i0 = $i1 * 4;
+
+        $i0 = $i0 + 15;
+
+        return $i0;
+
+     label2:
+        $i0 = $i1 * 4;
+
+        $i1 = $i1 - 4;
+
+        $i1 = $i1 / 8;
+
+        $i1 = $i1 + 1;
+
+        $i1 = $i1 * 2;
+
+        $i0 = $i0 + $i1;
+
+        $i0 = $i0 + 15;
+
+        return $i0;
+    }
+
+    private com.google.zxing.aztec.detector.Detector$Point getFirstDifferent(com.google.zxing.aztec.detector.Detector$Point, boolean, int, int)
+    {
+        com.google.zxing.aztec.detector.Detector$Point $r1;
+        com.google.zxing.aztec.detector.Detector r0;
+        int $i0, $i1, $i2, $i3;
+        com.google.zxing.common.BitMatrix $r2;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.zxing.aztec.detector.Detector;
+
+        $r1 := @parameter0: com.google.zxing.aztec.detector.Detector$Point;
+
+        $z0 := @parameter1: boolean;
+
+        $i1 := @parameter2: int;
+
+        $i0 := @parameter3: int;
+
+        $i2 = virtualinvoke $r1.<com.google.zxing.aztec.detector.Detector$Point: int getX()>();
+
+        $i2 = $i2 + $i1;
+
+        $i3 = virtualinvoke $r1.<com.google.zxing.aztec.detector.Detector$Point: int getY()>();
+
+     label1:
+        $i3 = $i3 + $i0;
+
+        $z1 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: boolean isValid(int,int)>($i2, $i3);
+
+        if $z1 == 0 goto label2;
+
+        $r2 = r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.common.BitMatrix image>;
+
+        $z1 = virtualinvoke $r2.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i2, $i3);
+
+        if $z1 != $z0 goto label2;
+
+        $i2 = $i2 + $i1;
+
+        goto label1;
+
+     label2:
+        $i2 = $i2 - $i1;
+
+        $i3 = $i3 - $i0;
+
+     label3:
+        $z1 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: boolean isValid(int,int)>($i2, $i3);
+
+        if $z1 == 0 goto label4;
+
+        $r2 = r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.common.BitMatrix image>;
+
+        $z1 = virtualinvoke $r2.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i2, $i3);
+
+        if $z1 != $z0 goto label4;
+
+        $i2 = $i2 + $i1;
+
+        goto label3;
+
+     label4:
+        $i1 = $i2 - $i1;
+
+     label5:
+        $z1 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: boolean isValid(int,int)>($i1, $i3);
+
+        if $z1 == 0 goto label6;
+
+        $r2 = r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.common.BitMatrix image>;
+
+        $z1 = virtualinvoke $r2.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i1, $i3);
+
+        if $z1 != $z0 goto label6;
+
+        $i3 = $i3 + $i0;
+
+        goto label5;
+
+     label6:
+        $i0 = $i3 - $i0;
+
+        $r1 = new com.google.zxing.aztec.detector.Detector$Point;
+
+        specialinvoke $r1.<com.google.zxing.aztec.detector.Detector$Point: void <init>(int,int)>($i1, $i0);
+
+        return $r1;
+    }
+
+    private com.google.zxing.aztec.detector.Detector$Point getMatrixCenter()
+    {
+        com.google.zxing.ResultPoint $r6, $r7, $r8, $r9;
+        com.google.zxing.common.detector.WhiteRectangleDetector $r3, $r11;
+        com.google.zxing.aztec.detector.Detector$Point $r10, $r12;
+        com.google.zxing.aztec.detector.Detector r0;
+        int $i0, $i1, $i2, $i3, $i4;
+        com.google.zxing.ResultPoint[] $r5;
+        com.google.zxing.NotFoundException $r1, $r2;
+        float $f0, $f1;
+        com.google.zxing.common.BitMatrix $r4;
+
+        r0 := @this: com.google.zxing.aztec.detector.Detector;
+
+        $r11 = new com.google.zxing.common.detector.WhiteRectangleDetector;
+
+        $r3 = $r11;
+
+        $r4 = r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.common.BitMatrix image>;
+
+     label01:
+        specialinvoke $r11.<com.google.zxing.common.detector.WhiteRectangleDetector: void <init>(com.google.zxing.common.BitMatrix)>($r4);
+
+        $r5 = virtualinvoke $r3.<com.google.zxing.common.detector.WhiteRectangleDetector: com.google.zxing.ResultPoint[] detect()>();
+
+     label02:
+        $r6 = $r5[0];
+
+        $r7 = $r5[1];
+
+        $r8 = $r5[2];
+
+        $r9 = $r5[3];
+
+        goto label04;
+
+     label03:
+        $r4 = r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.common.BitMatrix image>;
+
+        $i0 = virtualinvoke $r4.<com.google.zxing.common.BitMatrix: int getWidth()>();
+
+        $i0 = $i0 / 2;
+
+        $r4 = r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.common.BitMatrix image>;
+
+        $i1 = virtualinvoke $r4.<com.google.zxing.common.BitMatrix: int getHeight()>();
+
+        $i2 = $i1 / 2;
+
+        $r12 = new com.google.zxing.aztec.detector.Detector$Point;
+
+        $i3 = $i0 + 7;
+
+        $i1 = -7;
+
+        $i1 = $i2 + $i1;
+
+        specialinvoke $r12.<com.google.zxing.aztec.detector.Detector$Point: void <init>(int,int)>($i3, $i1);
+
+        $i4 = -1;
+
+        $r10 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.aztec.detector.Detector$Point getFirstDifferent(com.google.zxing.aztec.detector.Detector$Point,boolean,int,int)>($r12, 0, 1, $i4);
+
+        $r6 = virtualinvoke $r10.<com.google.zxing.aztec.detector.Detector$Point: com.google.zxing.ResultPoint toResultPoint()>();
+
+        $r12 = new com.google.zxing.aztec.detector.Detector$Point;
+
+        $i2 = $i2 + 7;
+
+        specialinvoke $r12.<com.google.zxing.aztec.detector.Detector$Point: void <init>(int,int)>($i3, $i2);
+
+        $r10 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.aztec.detector.Detector$Point getFirstDifferent(com.google.zxing.aztec.detector.Detector$Point,boolean,int,int)>($r12, 0, 1, 1);
+
+        $r7 = virtualinvoke $r10.<com.google.zxing.aztec.detector.Detector$Point: com.google.zxing.ResultPoint toResultPoint()>();
+
+        $r12 = new com.google.zxing.aztec.detector.Detector$Point;
+
+        $i3 = -7;
+
+        $i0 = $i0 + $i3;
+
+        specialinvoke $r12.<com.google.zxing.aztec.detector.Detector$Point: void <init>(int,int)>($i0, $i2);
+
+        $i3 = -1;
+
+        $r10 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.aztec.detector.Detector$Point getFirstDifferent(com.google.zxing.aztec.detector.Detector$Point,boolean,int,int)>($r12, 0, $i3, 1);
+
+        $r8 = virtualinvoke $r10.<com.google.zxing.aztec.detector.Detector$Point: com.google.zxing.ResultPoint toResultPoint()>();
+
+        $r12 = new com.google.zxing.aztec.detector.Detector$Point;
+
+        specialinvoke $r12.<com.google.zxing.aztec.detector.Detector$Point: void <init>(int,int)>($i0, $i1);
+
+        $i0 = -1;
+
+        $i1 = -1;
+
+        $r10 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.aztec.detector.Detector$Point getFirstDifferent(com.google.zxing.aztec.detector.Detector$Point,boolean,int,int)>($r12, 0, $i0, $i1);
+
+        $r9 = virtualinvoke $r10.<com.google.zxing.aztec.detector.Detector$Point: com.google.zxing.ResultPoint toResultPoint()>();
+
+     label04:
+        $f0 = virtualinvoke $r6.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f1 = virtualinvoke $r9.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f0 = $f0 + $f1;
+
+        $f1 = virtualinvoke $r7.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f0 = $f0 + $f1;
+
+        $f1 = virtualinvoke $r8.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f0 = $f0 + $f1;
+
+        $f0 = $f0 / 4.0F;
+
+        $i1 = staticinvoke <com.google.zxing.common.detector.MathUtils: int round(float)>($f0);
+
+        $f0 = virtualinvoke $r6.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f1 = virtualinvoke $r9.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f0 = $f0 + $f1;
+
+        $f1 = virtualinvoke $r7.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f0 = $f0 + $f1;
+
+        $f1 = virtualinvoke $r8.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f0 = $f0 + $f1;
+
+        $f0 = $f0 / 4.0F;
+
+        $i2 = staticinvoke <com.google.zxing.common.detector.MathUtils: int round(float)>($f0);
+
+        $r11 = new com.google.zxing.common.detector.WhiteRectangleDetector;
+
+        $r3 = $r11;
+
+        $r4 = r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.common.BitMatrix image>;
+
+     label05:
+        specialinvoke $r11.<com.google.zxing.common.detector.WhiteRectangleDetector: void <init>(com.google.zxing.common.BitMatrix,int,int,int)>($r4, 15, $i1, $i2);
+
+        $r5 = virtualinvoke $r3.<com.google.zxing.common.detector.WhiteRectangleDetector: com.google.zxing.ResultPoint[] detect()>();
+
+     label06:
+        $r9 = $r5[0];
+
+        $r7 = $r5[1];
+
+        $r8 = $r5[2];
+
+        $r6 = $r5[3];
+
+        goto label08;
+
+     label07:
+        $r12 = new com.google.zxing.aztec.detector.Detector$Point;
+
+        $i3 = $i1 + 7;
+
+        $i0 = -7;
+
+        $i0 = $i2 + $i0;
+
+        specialinvoke $r12.<com.google.zxing.aztec.detector.Detector$Point: void <init>(int,int)>($i3, $i0);
+
+        $i4 = -1;
+
+        $r10 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.aztec.detector.Detector$Point getFirstDifferent(com.google.zxing.aztec.detector.Detector$Point,boolean,int,int)>($r12, 0, 1, $i4);
+
+        $r9 = virtualinvoke $r10.<com.google.zxing.aztec.detector.Detector$Point: com.google.zxing.ResultPoint toResultPoint()>();
+
+        $r12 = new com.google.zxing.aztec.detector.Detector$Point;
+
+        $i2 = $i2 + 7;
+
+        specialinvoke $r12.<com.google.zxing.aztec.detector.Detector$Point: void <init>(int,int)>($i3, $i2);
+
+        $r10 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.aztec.detector.Detector$Point getFirstDifferent(com.google.zxing.aztec.detector.Detector$Point,boolean,int,int)>($r12, 0, 1, 1);
+
+        $r7 = virtualinvoke $r10.<com.google.zxing.aztec.detector.Detector$Point: com.google.zxing.ResultPoint toResultPoint()>();
+
+        $r12 = new com.google.zxing.aztec.detector.Detector$Point;
+
+        $i3 = -7;
+
+        $i1 = $i1 + $i3;
+
+        specialinvoke $r12.<com.google.zxing.aztec.detector.Detector$Point: void <init>(int,int)>($i1, $i2);
+
+        $i3 = -1;
+
+        $r10 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.aztec.detector.Detector$Point getFirstDifferent(com.google.zxing.aztec.detector.Detector$Point,boolean,int,int)>($r12, 0, $i3, 1);
+
+        $r8 = virtualinvoke $r10.<com.google.zxing.aztec.detector.Detector$Point: com.google.zxing.ResultPoint toResultPoint()>();
+
+        $r12 = new com.google.zxing.aztec.detector.Detector$Point;
+
+        specialinvoke $r12.<com.google.zxing.aztec.detector.Detector$Point: void <init>(int,int)>($i1, $i0);
+
+        $i0 = -1;
+
+        $i1 = -1;
+
+        $r10 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.aztec.detector.Detector$Point getFirstDifferent(com.google.zxing.aztec.detector.Detector$Point,boolean,int,int)>($r12, 0, $i0, $i1);
+
+        $r6 = virtualinvoke $r10.<com.google.zxing.aztec.detector.Detector$Point: com.google.zxing.ResultPoint toResultPoint()>();
+
+     label08:
+        $f0 = virtualinvoke $r9.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f1 = virtualinvoke $r6.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f0 = $f0 + $f1;
+
+        $f1 = virtualinvoke $r7.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f0 = $f0 + $f1;
+
+        $f1 = virtualinvoke $r8.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f0 = $f0 + $f1;
+
+        $f0 = $f0 / 4.0F;
+
+        $i0 = staticinvoke <com.google.zxing.common.detector.MathUtils: int round(float)>($f0);
+
+        $f0 = virtualinvoke $r9.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f1 = virtualinvoke $r6.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f0 = $f0 + $f1;
+
+        $f1 = virtualinvoke $r7.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f0 = $f0 + $f1;
+
+        $f1 = virtualinvoke $r8.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f0 = $f0 + $f1;
+
+        $f0 = $f0 / 4.0F;
+
+        $i1 = staticinvoke <com.google.zxing.common.detector.MathUtils: int round(float)>($f0);
+
+        $r12 = new com.google.zxing.aztec.detector.Detector$Point;
+
+        specialinvoke $r12.<com.google.zxing.aztec.detector.Detector$Point: void <init>(int,int)>($i0, $i1);
+
+        return $r12;
+
+     label09:
+        $r1 := @caughtexception;
+
+        goto label03;
+
+     label10:
+        $r2 := @caughtexception;
+
+        goto label07;
+
+        catch com.google.zxing.NotFoundException from label01 to label02 with label09;
+        catch com.google.zxing.NotFoundException from label05 to label06 with label10;
+    }
+
+    private com.google.zxing.ResultPoint[] getMatrixCornerPoints(com.google.zxing.ResultPoint[])
+    {
+        com.google.zxing.aztec.detector.Detector r0;
+        com.google.zxing.ResultPoint[] $r1;
+        int $i0;
+        float $f0, $f1;
+
+        r0 := @this: com.google.zxing.aztec.detector.Detector;
+
+        $r1 := @parameter0: com.google.zxing.ResultPoint[];
+
+        $i0 = r0.<com.google.zxing.aztec.detector.Detector: int nbCenterLayers>;
+
+        $i0 = $i0 * 2;
+
+        $f0 = (float) $i0;
+
+        $i0 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: int getDimension()>();
+
+        $f1 = (float) $i0;
+
+        $r1 = staticinvoke <com.google.zxing.aztec.detector.Detector: com.google.zxing.ResultPoint[] expandSquare(com.google.zxing.ResultPoint[],float,float)>($r1, $f0, $f1);
+
+        return $r1;
+    }
+
+    public static int getRotation(int[], int)
+    {
+        int[] $r0;
+        com.google.zxing.NotFoundException $r1;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6;
+
+        $r0 := @parameter0: int[];
+
+        $i1 := @parameter1: int;
+
+        $i0 = lengthof $r0;
+
+        $i2 = 0;
+
+        $i3 = 0;
+
+        $i4 = 0;
+
+     label1:
+        if $i3 >= $i0 goto label2;
+
+        $i5 = $r0[$i3];
+
+        $i6 = -2;
+
+        $i6 = $i1 + $i6;
+
+        $i6 = $i5 >> $i6;
+
+        $i6 = $i6 << 1;
+
+        $i5 = $i5 & 1;
+
+        $i5 = $i6 + $i5;
+
+        $i4 = $i4 << 3;
+
+        $i4 = $i4 + $i5;
+
+        $i3 = $i3 + 1;
+
+        goto label1;
+
+     label2:
+        $i1 = $i4 & 1;
+
+        $i1 = $i1 << 11;
+
+        $i4 = $i4 >> 1;
+
+        $i1 = $i1 + $i4;
+
+     label3:
+        if $i2 >= 4 goto label5;
+
+        $r0 = <com.google.zxing.aztec.detector.Detector: int[] EXPECTED_CORNER_BITS>;
+
+        $i4 = $r0[$i2];
+
+        $i4 = $i4 ^ $i1;
+
+        $i4 = staticinvoke <java.lang.Integer: int bitCount(int)>($i4);
+
+        if $i4 > 2 goto label4;
+
+        return $i2;
+
+     label4:
+        $i2 = $i2 + 1;
+
+        goto label3;
+
+     label5:
+        $r1 = staticinvoke <com.google.zxing.NotFoundException: com.google.zxing.NotFoundException getNotFoundInstance()>();
+
+        goto label6;
+
+     label6:
+        throw $r1;
+    }
+
+    private boolean isValid(int, int)
+    {
+        com.google.zxing.aztec.detector.Detector r0;
+        int $i0, $i1, $i2;
+        com.google.zxing.common.BitMatrix $r1;
+
+        r0 := @this: com.google.zxing.aztec.detector.Detector;
+
+        $i1 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        if $i1 < 0 goto label1;
+
+        $r1 = r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.common.BitMatrix image>;
+
+        $i2 = virtualinvoke $r1.<com.google.zxing.common.BitMatrix: int getWidth()>();
+
+        if $i1 >= $i2 goto label1;
+
+        if $i0 <= 0 goto label1;
+
+        $r1 = r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.common.BitMatrix image>;
+
+        $i1 = virtualinvoke $r1.<com.google.zxing.common.BitMatrix: int getHeight()>();
+
+        if $i0 >= $i1 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    private boolean isValid(com.google.zxing.ResultPoint)
+    {
+        com.google.zxing.aztec.detector.Detector r0;
+        com.google.zxing.ResultPoint $r1;
+        int $i0, $i1;
+        float $f0;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.aztec.detector.Detector;
+
+        $r1 := @parameter0: com.google.zxing.ResultPoint;
+
+        $f0 = virtualinvoke $r1.<com.google.zxing.ResultPoint: float getX()>();
+
+        $i0 = staticinvoke <com.google.zxing.common.detector.MathUtils: int round(float)>($f0);
+
+        $f0 = virtualinvoke $r1.<com.google.zxing.ResultPoint: float getY()>();
+
+        $i1 = staticinvoke <com.google.zxing.common.detector.MathUtils: int round(float)>($f0);
+
+        $z0 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: boolean isValid(int,int)>($i0, $i1);
+
+        return $z0;
+    }
+
+    private boolean isWhiteOrBlackRectangle(com.google.zxing.aztec.detector.Detector$Point, com.google.zxing.aztec.detector.Detector$Point, com.google.zxing.aztec.detector.Detector$Point, com.google.zxing.aztec.detector.Detector$Point)
+    {
+        com.google.zxing.aztec.detector.Detector$Point $r1, $r2, $r3, $r4, $r5, $r6;
+        com.google.zxing.aztec.detector.Detector r0;
+        int $i0, $i1, $i2;
+
+        r0 := @this: com.google.zxing.aztec.detector.Detector;
+
+        $r1 := @parameter0: com.google.zxing.aztec.detector.Detector$Point;
+
+        $r2 := @parameter1: com.google.zxing.aztec.detector.Detector$Point;
+
+        $r3 := @parameter2: com.google.zxing.aztec.detector.Detector$Point;
+
+        $r4 := @parameter3: com.google.zxing.aztec.detector.Detector$Point;
+
+        $r6 = new com.google.zxing.aztec.detector.Detector$Point;
+
+        $r5 = $r6;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.aztec.detector.Detector$Point: int getX()>();
+
+        $i1 = -3;
+
+        $i0 = $i0 + $i1;
+
+        $i1 = virtualinvoke $r1.<com.google.zxing.aztec.detector.Detector$Point: int getY()>();
+
+        $i1 = $i1 + 3;
+
+        specialinvoke $r6.<com.google.zxing.aztec.detector.Detector$Point: void <init>(int,int)>($i0, $i1);
+
+        $r6 = new com.google.zxing.aztec.detector.Detector$Point;
+
+        $r1 = $r6;
+
+        $i0 = virtualinvoke $r2.<com.google.zxing.aztec.detector.Detector$Point: int getX()>();
+
+        $i1 = -3;
+
+        $i0 = $i0 + $i1;
+
+        $i1 = virtualinvoke $r2.<com.google.zxing.aztec.detector.Detector$Point: int getY()>();
+
+        $i2 = -3;
+
+        $i1 = $i1 + $i2;
+
+        specialinvoke $r6.<com.google.zxing.aztec.detector.Detector$Point: void <init>(int,int)>($i0, $i1);
+
+        $r6 = new com.google.zxing.aztec.detector.Detector$Point;
+
+        $r2 = $r6;
+
+        $i0 = virtualinvoke $r3.<com.google.zxing.aztec.detector.Detector$Point: int getX()>();
+
+        $i0 = $i0 + 3;
+
+        $i1 = virtualinvoke $r3.<com.google.zxing.aztec.detector.Detector$Point: int getY()>();
+
+        $i2 = -3;
+
+        $i1 = $i1 + $i2;
+
+        specialinvoke $r6.<com.google.zxing.aztec.detector.Detector$Point: void <init>(int,int)>($i0, $i1);
+
+        $r6 = new com.google.zxing.aztec.detector.Detector$Point;
+
+        $r3 = $r6;
+
+        $i0 = virtualinvoke $r4.<com.google.zxing.aztec.detector.Detector$Point: int getX()>();
+
+        $i0 = $i0 + 3;
+
+        $i1 = virtualinvoke $r4.<com.google.zxing.aztec.detector.Detector$Point: int getY()>();
+
+        $i1 = $i1 + 3;
+
+        specialinvoke $r6.<com.google.zxing.aztec.detector.Detector$Point: void <init>(int,int)>($i0, $i1);
+
+        $i0 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: int getColor(com.google.zxing.aztec.detector.Detector$Point,com.google.zxing.aztec.detector.Detector$Point)>($r3, $r5);
+
+        if $i0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $i1 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: int getColor(com.google.zxing.aztec.detector.Detector$Point,com.google.zxing.aztec.detector.Detector$Point)>($r5, $r1);
+
+        if $i1 == $i0 goto label2;
+
+        return 0;
+
+     label2:
+        $i1 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: int getColor(com.google.zxing.aztec.detector.Detector$Point,com.google.zxing.aztec.detector.Detector$Point)>($r1, $r2);
+
+        if $i1 == $i0 goto label3;
+
+        return 0;
+
+     label3:
+        $i1 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: int getColor(com.google.zxing.aztec.detector.Detector$Point,com.google.zxing.aztec.detector.Detector$Point)>($r2, $r3);
+
+        if $i1 != $i0 goto label4;
+
+        return 1;
+
+     label4:
+        return 0;
+    }
+
+    private com.google.zxing.common.BitMatrix sampleGrid(com.google.zxing.common.BitMatrix, com.google.zxing.ResultPoint, com.google.zxing.ResultPoint, com.google.zxing.ResultPoint, com.google.zxing.ResultPoint)
+    {
+        com.google.zxing.ResultPoint $r2, $r3, $r4, $r5;
+        com.google.zxing.aztec.detector.Detector r0;
+        int $i0, $i1;
+        com.google.zxing.common.GridSampler $r6;
+        float $f0, $f1, $f2, $f3, $f4, $f5, $f6, $f7, $f8, $f9;
+        com.google.zxing.common.BitMatrix $r1;
+
+        r0 := @this: com.google.zxing.aztec.detector.Detector;
+
+        $r1 := @parameter0: com.google.zxing.common.BitMatrix;
+
+        $r2 := @parameter1: com.google.zxing.ResultPoint;
+
+        $r3 := @parameter2: com.google.zxing.ResultPoint;
+
+        $r4 := @parameter3: com.google.zxing.ResultPoint;
+
+        $r5 := @parameter4: com.google.zxing.ResultPoint;
+
+        $r6 = staticinvoke <com.google.zxing.common.GridSampler: com.google.zxing.common.GridSampler getInstance()>();
+
+        $i0 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: int getDimension()>();
+
+        $f0 = (float) $i0;
+
+        $f1 = $f0 / 2.0F;
+
+        $i1 = r0.<com.google.zxing.aztec.detector.Detector: int nbCenterLayers>;
+
+        $f0 = (float) $i1;
+
+        $f0 = $f1 - $f0;
+
+        $f2 = (float) $i1;
+
+        $f1 = $f1 + $f2;
+
+        $f2 = virtualinvoke $r2.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f3 = virtualinvoke $r2.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f4 = virtualinvoke $r3.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f5 = virtualinvoke $r3.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f6 = virtualinvoke $r4.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f7 = virtualinvoke $r4.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f8 = virtualinvoke $r5.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f9 = virtualinvoke $r5.<com.google.zxing.ResultPoint: float getY()>();
+
+        $r1 = virtualinvoke $r6.<com.google.zxing.common.GridSampler: com.google.zxing.common.BitMatrix sampleGrid(com.google.zxing.common.BitMatrix,int,int,float,float,float,float,float,float,float,float,float,float,float,float,float,float,float,float)>($r1, $i0, $i0, $f0, $f0, $f1, $f0, $f1, $f1, $f0, $f1, $f2, $f3, $f4, $f5, $f6, $f7, $f8, $f9);
+
+        return $r1;
+    }
+
+    private int sampleLine(com.google.zxing.ResultPoint, com.google.zxing.ResultPoint, int)
+    {
+        com.google.zxing.ResultPoint $r1, $r2;
+        com.google.zxing.aztec.detector.Detector r0;
+        int $i0, $i1, $i2, $i3, $i4;
+        boolean $z0;
+        float $f0, $f1, $f2, $f3, $f4, $f5, $f6;
+        com.google.zxing.common.BitMatrix $r3;
+
+        r0 := @this: com.google.zxing.aztec.detector.Detector;
+
+        $r1 := @parameter0: com.google.zxing.ResultPoint;
+
+        $r2 := @parameter1: com.google.zxing.ResultPoint;
+
+        $i0 := @parameter2: int;
+
+        $f0 = staticinvoke <com.google.zxing.aztec.detector.Detector: float distance(com.google.zxing.ResultPoint,com.google.zxing.ResultPoint)>($r1, $r2);
+
+        $f1 = (float) $i0;
+
+        $f2 = $f0 / $f1;
+
+        $f1 = virtualinvoke $r1.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f3 = virtualinvoke $r1.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f4 = virtualinvoke $r2.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f5 = virtualinvoke $r1.<com.google.zxing.ResultPoint: float getX()>();
+
+        $f4 = $f4 - $f5;
+
+        $f4 = $f4 * $f2;
+
+        $f4 = $f4 / $f0;
+
+        $f5 = virtualinvoke $r2.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f6 = virtualinvoke $r1.<com.google.zxing.ResultPoint: float getY()>();
+
+        $f5 = $f5 - $f6;
+
+        $f2 = $f2 * $f5;
+
+        $f0 = $f2 / $f0;
+
+        $i1 = 0;
+
+        $i2 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label3;
+
+        $r3 = r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.common.BitMatrix image>;
+
+        $f2 = (float) $i1;
+
+        $f5 = $f2 * $f4;
+
+        $f5 = $f5 + $f1;
+
+        $i3 = staticinvoke <com.google.zxing.common.detector.MathUtils: int round(float)>($f5);
+
+        $f2 = $f2 * $f0;
+
+        $f2 = $f2 + $f3;
+
+        $i4 = staticinvoke <com.google.zxing.common.detector.MathUtils: int round(float)>($f2);
+
+        $z0 = virtualinvoke $r3.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i3, $i4);
+
+        if $z0 == 0 goto label2;
+
+        $i3 = $i0 - $i1;
+
+        $i3 = $i3 - 1;
+
+        $i3 = 1 << $i3;
+
+        $i2 = $i2 | $i3;
+
+     label2:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label3:
+        return $i2;
+    }
+
+    public com.google.zxing.aztec.AztecDetectorResult detect()
+    {
+        com.google.zxing.aztec.detector.Detector r0;
+        com.google.zxing.aztec.AztecDetectorResult $r1;
+
+        r0 := @this: com.google.zxing.aztec.detector.Detector;
+
+        $r1 = virtualinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.aztec.AztecDetectorResult detect(boolean)>(0);
+
+        return $r1;
+    }
+
+    public com.google.zxing.aztec.AztecDetectorResult detect(boolean)
+    {
+        com.google.zxing.ResultPoint $r1, $r4, $r6, $r7;
+        com.google.zxing.aztec.AztecDetectorResult $r8;
+        com.google.zxing.aztec.detector.Detector$Point $r2;
+        com.google.zxing.aztec.detector.Detector r0;
+        com.google.zxing.ResultPoint[] $r3;
+        int $i0, $i1;
+        com.google.zxing.common.BitMatrix $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.aztec.detector.Detector;
+
+        $z0 := @parameter0: boolean;
+
+        $r2 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.aztec.detector.Detector$Point getMatrixCenter()>();
+
+        $r3 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.ResultPoint[] getBullsEyeCorners(com.google.zxing.aztec.detector.Detector$Point)>($r2);
+
+        if $z0 == 0 goto label1;
+
+        $r1 = $r3[0];
+
+        $r4 = $r3[2];
+
+        $r3[0] = $r4;
+
+        $r3[2] = $r1;
+
+     label1:
+        specialinvoke r0.<com.google.zxing.aztec.detector.Detector: void extractParameters(com.google.zxing.ResultPoint[])>($r3);
+
+        $r5 = r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.common.BitMatrix image>;
+
+        $i0 = r0.<com.google.zxing.aztec.detector.Detector: int shift>;
+
+        $i1 = $i0 % 4;
+
+        $r4 = $r3[$i1];
+
+        $i1 = $i0 + 1;
+
+        $i1 = $i1 % 4;
+
+        $r6 = $r3[$i1];
+
+        $i1 = $i0 + 2;
+
+        $i1 = $i1 % 4;
+
+        $r7 = $r3[$i1];
+
+        $i0 = $i0 + 3;
+
+        $i0 = $i0 % 4;
+
+        $r1 = $r3[$i0];
+
+        $r5 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.common.BitMatrix sampleGrid(com.google.zxing.common.BitMatrix,com.google.zxing.ResultPoint,com.google.zxing.ResultPoint,com.google.zxing.ResultPoint,com.google.zxing.ResultPoint)>($r5, $r4, $r6, $r7, $r1);
+
+        $r3 = specialinvoke r0.<com.google.zxing.aztec.detector.Detector: com.google.zxing.ResultPoint[] getMatrixCornerPoints(com.google.zxing.ResultPoint[])>($r3);
+
+        $r8 = new com.google.zxing.aztec.AztecDetectorResult;
+
+        $z0 = r0.<com.google.zxing.aztec.detector.Detector: boolean compact>;
+
+        $i0 = r0.<com.google.zxing.aztec.detector.Detector: int nbDataBlocks>;
+
+        $i1 = r0.<com.google.zxing.aztec.detector.Detector: int nbLayers>;
+
+        specialinvoke $r8.<com.google.zxing.aztec.AztecDetectorResult: void <init>(com.google.zxing.common.BitMatrix,com.google.zxing.ResultPoint[],boolean,int,int)>($r5, $r3, $z0, $i0, $i1);
+
+        return $r8;
+    }
+}

@@ -1,0 +1,276 @@
+public class com.google.common.io.BaseEncoding$StandardBaseEncoding$2 extends java.io.InputStream
+{
+    public int bitBuffer;
+    public int bitBufferLength;
+    public boolean hitPadding;
+    public int readChars;
+    public final com.google.common.io.BaseEncoding$StandardBaseEncoding this$0;
+    public final java.io.Reader val$reader;
+
+    public void <init>(com.google.common.io.BaseEncoding$StandardBaseEncoding, java.io.Reader)
+    {
+        com.google.common.io.BaseEncoding$StandardBaseEncoding$2 r0;
+        java.io.Reader $r1;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding $r2;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding$2;
+
+        $r2 := @parameter0: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r1 := @parameter1: java.io.Reader;
+
+        r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: com.google.common.io.BaseEncoding$StandardBaseEncoding this$0> = $r2;
+
+        r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: java.io.Reader val$reader> = $r1;
+
+        specialinvoke r0.<java.io.InputStream: void <init>()>();
+
+        r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int bitBuffer> = 0;
+
+        r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int bitBufferLength> = 0;
+
+        r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int readChars> = 0;
+
+        r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: boolean hitPadding> = 0;
+
+        return;
+    }
+
+    public void close()
+    {
+        com.google.common.io.BaseEncoding$StandardBaseEncoding$2 r0;
+        java.io.Reader $r1;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding$2;
+
+        $r1 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: java.io.Reader val$reader>;
+
+        virtualinvoke $r1.<java.io.Reader: void close()>();
+
+        return;
+    }
+
+    public int read()
+    {
+        com.google.common.io.BaseEncoding$Alphabet $r3;
+        com.google.common.io.BaseEncoding$DecodingException $r8;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding$2 r0;
+        char $c2, $c3;
+        java.io.Reader $r1;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding $r2;
+        java.lang.Character $r6;
+        int $i0, $i1;
+        java.lang.StringBuilder $r4, $r7;
+        java.lang.String $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding$2;
+
+     label1:
+        $r1 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: java.io.Reader val$reader>;
+
+        $i0 = virtualinvoke $r1.<java.io.Reader: int read()>();
+
+        $i1 = -1;
+
+        if $i0 != $i1 goto label3;
+
+        $z0 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: boolean hitPadding>;
+
+        if $z0 != 0 goto label9;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: com.google.common.io.BaseEncoding$StandardBaseEncoding this$0>;
+
+        $r3 = $r2.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i0 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int readChars>;
+
+        $z0 = virtualinvoke $r3.<com.google.common.io.BaseEncoding$Alphabet: boolean isValidPaddingStartPosition(int)>($i0);
+
+        if $z0 == 0 goto label2;
+
+        $i0 = -1;
+
+        return $i0;
+
+     label2:
+        $r8 = new com.google.common.io.BaseEncoding$DecodingException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        $r4 = $r7;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid input length ");
+
+        $i0 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int readChars>;
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r8.<com.google.common.io.BaseEncoding$DecodingException: void <init>(java.lang.String)>($r5);
+
+        throw $r8;
+
+     label3:
+        $i1 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int readChars>;
+
+        $i1 = $i1 + 1;
+
+        r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int readChars> = $i1;
+
+        $c2 = (char) $i0;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: com.google.common.io.BaseEncoding$StandardBaseEncoding this$0>;
+
+        $r6 = $r2.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.Character paddingChar>;
+
+        if $r6 == null goto label6;
+
+        $c3 = virtualinvoke $r6.<java.lang.Character: char charValue()>();
+
+        $i0 = (int) $c3;
+
+        $i1 = (int) $c2;
+
+        if $i0 != $i1 goto label6;
+
+        $z0 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: boolean hitPadding>;
+
+        if $z0 != 0 goto label5;
+
+        $i0 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int readChars>;
+
+        if $i0 == 1 goto label4;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: com.google.common.io.BaseEncoding$StandardBaseEncoding this$0>;
+
+        $r3 = $r2.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        $z0 = virtualinvoke $r3.<com.google.common.io.BaseEncoding$Alphabet: boolean isValidPaddingStartPosition(int)>($i0);
+
+        if $z0 == 0 goto label4;
+
+        goto label5;
+
+     label4:
+        $r8 = new com.google.common.io.BaseEncoding$DecodingException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        $r4 = $r7;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Padding cannot start at index ");
+
+        $i0 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int readChars>;
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r8.<com.google.common.io.BaseEncoding$DecodingException: void <init>(java.lang.String)>($r5);
+
+        throw $r8;
+
+     label5:
+        r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: boolean hitPadding> = 1;
+
+        goto label1;
+
+     label6:
+        $z0 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: boolean hitPadding>;
+
+        if $z0 != 0 goto label7;
+
+        $i0 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int bitBuffer>;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: com.google.common.io.BaseEncoding$StandardBaseEncoding this$0>;
+
+        $r3 = $r2.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i1 = $r3.<com.google.common.io.BaseEncoding$Alphabet: int bitsPerChar>;
+
+        $i0 = $i0 << $i1;
+
+        r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int bitBuffer> = $i0;
+
+        $i0 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int bitBuffer>;
+
+        $i1 = virtualinvoke $r3.<com.google.common.io.BaseEncoding$Alphabet: int decode(char)>($c2);
+
+        $i0 = $i1 | $i0;
+
+        r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int bitBuffer> = $i0;
+
+        $i0 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int bitBufferLength>;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: com.google.common.io.BaseEncoding$StandardBaseEncoding this$0>;
+
+        $r3 = $r2.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i1 = $r3.<com.google.common.io.BaseEncoding$Alphabet: int bitsPerChar>;
+
+        $i0 = $i0 + $i1;
+
+        r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int bitBufferLength> = $i0;
+
+        $i0 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int bitBufferLength>;
+
+        if $i0 < 8 goto label1;
+
+        $i0 = $i0 - 8;
+
+        r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int bitBufferLength> = $i0;
+
+        $i0 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int bitBuffer>;
+
+        $i1 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int bitBufferLength>;
+
+        $i0 = $i0 >> $i1;
+
+        $i0 = $i0 & 255;
+
+        return $i0;
+
+     label7:
+        $r8 = new com.google.common.io.BaseEncoding$DecodingException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        $r4 = $r7;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected padding character but found \'");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c2);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' at index ");
+
+        $i0 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: int readChars>;
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r8.<com.google.common.io.BaseEncoding$DecodingException: void <init>(java.lang.String)>($r5);
+
+        goto label8;
+
+     label8:
+        throw $r8;
+
+     label9:
+        $i0 = -1;
+
+        return $i0;
+    }
+}

@@ -1,0 +1,263 @@
+public final class com.google.zxing.client.result.VEventResultParser extends com.google.zxing.client.result.ResultParser
+{
+
+    public void <init>()
+    {
+        com.google.zxing.client.result.VEventResultParser r0;
+
+        r0 := @this: com.google.zxing.client.result.VEventResultParser;
+
+        specialinvoke r0.<com.google.zxing.client.result.ResultParser: void <init>()>();
+
+        return;
+    }
+
+    public static java.lang.String matchSingleVCardPrefixedField(java.lang.CharSequence, java.lang.String, boolean)
+    {
+        java.util.List $r2;
+        java.lang.CharSequence $r0;
+        java.lang.Object $r3;
+        java.lang.String $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.CharSequence;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $z0 := @parameter2: boolean;
+
+        $r2 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.util.List matchSingleVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean,boolean)>($r0, $r1, $z0, 0);
+
+        if $r2 == null goto label2;
+
+        $z0 = interfaceinvoke $r2.<java.util.List: boolean isEmpty()>();
+
+        if $z0 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        $r3 = interfaceinvoke $r2.<java.util.List: java.lang.Object get(int)>(0);
+
+        $r1 = (java.lang.String) $r3;
+
+        return $r1;
+
+     label2:
+        return null;
+    }
+
+    public static java.lang.String[] matchVCardPrefixedField(java.lang.CharSequence, java.lang.String, boolean)
+    {
+        java.lang.CharSequence $r0;
+        java.lang.String[] $r3;
+        java.util.List $r2, $r5;
+        int $i0, $i1;
+        java.lang.Object $r4;
+        java.lang.String $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.CharSequence;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $z0 := @parameter2: boolean;
+
+        $r2 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.util.List matchVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean,boolean)>($r0, $r1, $z0, 0);
+
+        if $r2 == null goto label4;
+
+        $z0 = interfaceinvoke $r2.<java.util.List: boolean isEmpty()>();
+
+        if $z0 == 0 goto label1;
+
+        goto label4;
+
+     label1:
+        $i0 = interfaceinvoke $r2.<java.util.List: int size()>();
+
+        $r3 = newarray (java.lang.String)[$i0];
+
+        $i1 = 0;
+
+     label2:
+        if $i1 >= $i0 goto label3;
+
+        $r4 = interfaceinvoke $r2.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r5 = (java.util.List) $r4;
+
+        $r4 = interfaceinvoke $r5.<java.util.List: java.lang.Object get(int)>(0);
+
+        $r1 = (java.lang.String) $r4;
+
+        $r3[$i1] = $r1;
+
+        $i1 = $i1 + 1;
+
+        goto label2;
+
+     label3:
+        return $r3;
+
+     label4:
+        return null;
+    }
+
+    public static java.lang.String stripMailto(java.lang.String)
+    {
+        java.lang.String $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        if $r0 == null goto label2;
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean startsWith(java.lang.String)>("mailto:");
+
+        if $z0 != 0 goto label1;
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean startsWith(java.lang.String)>("MAILTO:");
+
+        if $z0 == 0 goto label2;
+
+     label1:
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String substring(int)>(7);
+
+     label2:
+        return $r0;
+    }
+
+    public com.google.zxing.client.result.CalendarParsedResult parse(com.google.zxing.Result)
+    {
+        com.google.zxing.Result $r1;
+        com.google.zxing.client.result.CalendarParsedResult $r14;
+        com.google.zxing.client.result.VEventResultParser r0;
+        java.lang.String[] $r11;
+        int $i0, $i1;
+        java.lang.String $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r12, $r13;
+        double $d0, $d1;
+        java.lang.NumberFormatException $r2;
+        java.lang.IllegalArgumentException $r3;
+
+        r0 := @this: com.google.zxing.client.result.VEventResultParser;
+
+        $r1 := @parameter0: com.google.zxing.Result;
+
+        $r4 = staticinvoke <com.google.zxing.client.result.ResultParser: java.lang.String getMassagedText(com.google.zxing.Result)>($r1);
+
+        $i0 = virtualinvoke $r4.<java.lang.String: int indexOf(java.lang.String)>("BEGIN:VEVENT");
+
+        if $i0 >= 0 goto label01;
+
+        return null;
+
+     label01:
+        $r5 = staticinvoke <com.google.zxing.client.result.VEventResultParser: java.lang.String matchSingleVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean)>("SUMMARY", $r4, 1);
+
+        $r6 = staticinvoke <com.google.zxing.client.result.VEventResultParser: java.lang.String matchSingleVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean)>("DTSTART", $r4, 1);
+
+        if $r6 != null goto label02;
+
+        return null;
+
+     label02:
+        $r7 = staticinvoke <com.google.zxing.client.result.VEventResultParser: java.lang.String matchSingleVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean)>("DTEND", $r4, 1);
+
+        $r8 = staticinvoke <com.google.zxing.client.result.VEventResultParser: java.lang.String matchSingleVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean)>("DURATION", $r4, 1);
+
+        $r9 = staticinvoke <com.google.zxing.client.result.VEventResultParser: java.lang.String matchSingleVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean)>("LOCATION", $r4, 1);
+
+        $r10 = staticinvoke <com.google.zxing.client.result.VEventResultParser: java.lang.String matchSingleVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean)>("ORGANIZER", $r4, 1);
+
+        $r10 = staticinvoke <com.google.zxing.client.result.VEventResultParser: java.lang.String stripMailto(java.lang.String)>($r10);
+
+        $r11 = staticinvoke <com.google.zxing.client.result.VEventResultParser: java.lang.String[] matchVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean)>("ATTENDEE", $r4, 1);
+
+        if $r11 == null goto label04;
+
+        $i0 = 0;
+
+     label03:
+        $i1 = lengthof $r11;
+
+        if $i0 >= $i1 goto label04;
+
+        $r12 = $r11[$i0];
+
+        $r12 = staticinvoke <com.google.zxing.client.result.VEventResultParser: java.lang.String stripMailto(java.lang.String)>($r12);
+
+        $r11[$i0] = $r12;
+
+        $i0 = $i0 + 1;
+
+        goto label03;
+
+     label04:
+        $r12 = staticinvoke <com.google.zxing.client.result.VEventResultParser: java.lang.String matchSingleVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean)>("DESCRIPTION", $r4, 1);
+
+        $r4 = staticinvoke <com.google.zxing.client.result.VEventResultParser: java.lang.String matchSingleVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean)>("GEO", $r4, 1);
+
+        $d0 = #NaN;
+
+        if $r4 != null goto label05;
+
+        $d1 = #NaN;
+
+        goto label09;
+
+     label05:
+        $i0 = virtualinvoke $r4.<java.lang.String: int indexOf(int)>(59);
+
+     label06:
+        $r13 = virtualinvoke $r4.<java.lang.String: java.lang.String substring(int,int)>(0, $i0);
+
+        $d0 = staticinvoke <java.lang.Double: double parseDouble(java.lang.String)>($r13);
+
+     label07:
+        $i0 = $i0 + 1;
+
+     label08:
+        $r4 = virtualinvoke $r4.<java.lang.String: java.lang.String substring(int)>($i0);
+
+        $d1 = staticinvoke <java.lang.Double: double parseDouble(java.lang.String)>($r4);
+
+     label09:
+        $r14 = new com.google.zxing.client.result.CalendarParsedResult;
+
+     label10:
+        specialinvoke $r14.<com.google.zxing.client.result.CalendarParsedResult: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String[],java.lang.String,double,double)>($r5, $r6, $r7, $r8, $r9, $r10, $r11, $r12, $d0, $d1);
+
+     label11:
+        return $r14;
+
+     label12:
+        $r2 := @caughtexception;
+
+        return null;
+
+     label13:
+        $r3 := @caughtexception;
+
+        return null;
+
+        catch java.lang.NumberFormatException from label06 to label07 with label12;
+        catch java.lang.NumberFormatException from label08 to label09 with label12;
+        catch java.lang.IllegalArgumentException from label10 to label11 with label13;
+    }
+
+    public volatile com.google.zxing.client.result.ParsedResult parse(com.google.zxing.Result)
+    {
+        com.google.zxing.client.result.CalendarParsedResult $r1;
+        com.google.zxing.Result $r2;
+        com.google.zxing.client.result.VEventResultParser r0;
+
+        r0 := @this: com.google.zxing.client.result.VEventResultParser;
+
+        $r2 := @parameter0: com.google.zxing.Result;
+
+        $r1 = virtualinvoke r0.<com.google.zxing.client.result.VEventResultParser: com.google.zxing.client.result.CalendarParsedResult parse(com.google.zxing.Result)>($r2);
+
+        return $r1;
+    }
+}

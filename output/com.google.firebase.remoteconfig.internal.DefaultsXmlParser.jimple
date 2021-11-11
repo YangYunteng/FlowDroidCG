@@ -1,0 +1,222 @@
+public class com.google.firebase.remoteconfig.internal.DefaultsXmlParser extends java.lang.Object
+{
+    public static final java.lang.String XML_TAG_ENTRY;
+    public static final java.lang.String XML_TAG_KEY;
+    public static final java.lang.String XML_TAG_VALUE;
+
+    public void <init>()
+    {
+        com.google.firebase.remoteconfig.internal.DefaultsXmlParser r0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.DefaultsXmlParser;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.util.Map getDefaultsFromXml(android.content.Context, int)
+    {
+        android.content.Context $r1;
+        android.content.res.XmlResourceParser $r3;
+        java.util.HashMap $r0;
+        java.lang.Exception $r7;
+        byte $b1;
+        int $i0;
+        java.lang.String $r4, $r5, $r6;
+        android.content.res.Resources $r2;
+        boolean $z0;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $i0 := @parameter1: int;
+
+        $r0 = new java.util.HashMap;
+
+        specialinvoke $r0.<java.util.HashMap: void <init>()>();
+
+     label01:
+        $r2 = virtualinvoke $r1.<android.content.Context: android.content.res.Resources getResources()>();
+
+     label02:
+        if $r2 != null goto label05;
+
+     label03:
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("FirebaseRemoteConfig", "Could not find the resources of the current context while trying to set defaults from an XML.");
+
+     label04:
+        return $r0;
+
+     label05:
+        $r3 = virtualinvoke $r2.<android.content.res.Resources: android.content.res.XmlResourceParser getXml(int)>($i0);
+
+        $i0 = interfaceinvoke $r3.<android.content.res.XmlResourceParser: int getEventType()>();
+
+     label06:
+        $r4 = null;
+
+        $r5 = null;
+
+        $r6 = null;
+
+     label07:
+        if $i0 == 1 goto label36;
+
+        if $i0 != 2 goto label10;
+
+     label08:
+        $r4 = interfaceinvoke $r3.<android.content.res.XmlResourceParser: java.lang.String getName()>();
+
+     label09:
+        goto label31;
+
+     label10:
+        if $i0 != 3 goto label18;
+
+     label11:
+        $r4 = interfaceinvoke $r3.<android.content.res.XmlResourceParser: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>("entry");
+
+     label12:
+        if $z0 == 0 goto label17;
+
+        if $r5 == null goto label15;
+
+        if $r6 == null goto label15;
+
+     label13:
+        interfaceinvoke $r0.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r5, $r6);
+
+     label14:
+        goto label16;
+
+     label15:
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("FirebaseRemoteConfig", "An entry in the defaults XML has an invalid key and/or value tag.");
+
+     label16:
+        $r5 = null;
+
+        $r6 = null;
+
+     label17:
+        $r4 = null;
+
+        goto label31;
+
+     label18:
+        if $i0 != 4 goto label31;
+
+        if $r4 == null goto label31;
+
+        $b1 = -1;
+
+     label19:
+        $i0 = virtualinvoke $r4.<java.lang.String: int hashCode()>();
+
+     label20:
+        if $i0 == 106079 goto label23;
+
+        if $i0 == 111972721 goto label21;
+
+        goto label25;
+
+     label21:
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>("value");
+
+     label22:
+        if $z0 == 0 goto label25;
+
+        $b1 = 1;
+
+        goto label25;
+
+     label23:
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>("key");
+
+     label24:
+        if $z0 == 0 goto label25;
+
+        $b1 = 0;
+
+     label25:
+        if $b1 == 0 goto label30;
+
+        if $b1 == 1 goto label28;
+
+     label26:
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("FirebaseRemoteConfig", "Encountered an unexpected tag while parsing the defaults XML.");
+
+     label27:
+        goto label31;
+
+     label28:
+        $r6 = interfaceinvoke $r3.<android.content.res.XmlResourceParser: java.lang.String getText()>();
+
+     label29:
+        goto label31;
+
+     label30:
+        $r5 = interfaceinvoke $r3.<android.content.res.XmlResourceParser: java.lang.String getText()>();
+
+     label31:
+        $i0 = interfaceinvoke $r3.<android.content.res.XmlResourceParser: int next()>();
+
+     label32:
+        goto label07;
+
+     label33:
+        $r7 := @caughtexception;
+
+        goto label35;
+
+     label34:
+        $r7 := @caughtexception;
+
+     label35:
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("FirebaseRemoteConfig", "Encountered an error while parsing the defaults XML file.", $r7);
+
+     label36:
+        return $r0;
+
+        catch org.xmlpull.v1.XmlPullParserException from label01 to label02 with label34;
+        catch org.xmlpull.v1.XmlPullParserException from label03 to label04 with label34;
+        catch org.xmlpull.v1.XmlPullParserException from label05 to label06 with label34;
+        catch org.xmlpull.v1.XmlPullParserException from label08 to label09 with label34;
+        catch org.xmlpull.v1.XmlPullParserException from label11 to label12 with label34;
+        catch org.xmlpull.v1.XmlPullParserException from label13 to label14 with label34;
+        catch org.xmlpull.v1.XmlPullParserException from label15 to label16 with label34;
+        catch org.xmlpull.v1.XmlPullParserException from label19 to label20 with label34;
+        catch org.xmlpull.v1.XmlPullParserException from label21 to label22 with label34;
+        catch org.xmlpull.v1.XmlPullParserException from label23 to label24 with label34;
+        catch org.xmlpull.v1.XmlPullParserException from label26 to label27 with label34;
+        catch org.xmlpull.v1.XmlPullParserException from label28 to label29 with label34;
+        catch org.xmlpull.v1.XmlPullParserException from label30 to label31 with label34;
+        catch org.xmlpull.v1.XmlPullParserException from label31 to label32 with label34;
+        catch java.io.IOException from label01 to label02 with label33;
+        catch java.io.IOException from label03 to label04 with label33;
+        catch java.io.IOException from label05 to label06 with label33;
+        catch java.io.IOException from label08 to label09 with label33;
+        catch java.io.IOException from label11 to label12 with label33;
+        catch java.io.IOException from label13 to label14 with label33;
+        catch java.io.IOException from label15 to label16 with label33;
+        catch java.io.IOException from label19 to label20 with label33;
+        catch java.io.IOException from label21 to label22 with label33;
+        catch java.io.IOException from label23 to label24 with label33;
+        catch java.io.IOException from label26 to label27 with label33;
+        catch java.io.IOException from label28 to label29 with label33;
+        catch java.io.IOException from label30 to label31 with label33;
+        catch java.io.IOException from label31 to label32 with label33;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.firebase.remoteconfig.internal.DefaultsXmlParser: java.lang.String XML_TAG_VALUE> = "value";
+
+        <com.google.firebase.remoteconfig.internal.DefaultsXmlParser: java.lang.String XML_TAG_KEY> = "key";
+
+        <com.google.firebase.remoteconfig.internal.DefaultsXmlParser: java.lang.String XML_TAG_ENTRY> = "entry";
+
+        return;
+    }
+}

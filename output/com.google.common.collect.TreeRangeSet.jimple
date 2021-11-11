@@ -1,0 +1,797 @@
+public class com.google.common.collect.TreeRangeSet extends com.google.common.collect.AbstractRangeSet implements java.io.Serializable
+{
+    public transient java.util.Set asDescendingSetOfRanges;
+    public transient java.util.Set asRanges;
+    public transient com.google.common.collect.RangeSet complement;
+    public final java.util.NavigableMap rangesByLowerBound;
+
+    public void <init>(java.util.NavigableMap)
+    {
+        java.util.NavigableMap $r1;
+        com.google.common.collect.TreeRangeSet r0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r1 := @parameter0: java.util.NavigableMap;
+
+        specialinvoke r0.<com.google.common.collect.AbstractRangeSet: void <init>()>();
+
+        r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound> = $r1;
+
+        return;
+    }
+
+    public void <init>(java.util.NavigableMap, com.google.common.collect.TreeRangeSet$1)
+    {
+        com.google.common.collect.TreeRangeSet$1 $r2;
+        java.util.NavigableMap $r1;
+        com.google.common.collect.TreeRangeSet r0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r1 := @parameter0: java.util.NavigableMap;
+
+        $r2 := @parameter1: com.google.common.collect.TreeRangeSet$1;
+
+        specialinvoke r0.<com.google.common.collect.TreeRangeSet: void <init>(java.util.NavigableMap)>($r1);
+
+        return;
+    }
+
+    public static com.google.common.collect.Range access$600(com.google.common.collect.TreeRangeSet, com.google.common.collect.Range)
+    {
+        com.google.common.collect.Range $r0;
+        com.google.common.collect.TreeRangeSet $r1;
+
+        $r1 := @parameter0: com.google.common.collect.TreeRangeSet;
+
+        $r0 := @parameter1: com.google.common.collect.Range;
+
+        $r0 = specialinvoke $r1.<com.google.common.collect.TreeRangeSet: com.google.common.collect.Range rangeEnclosing(com.google.common.collect.Range)>($r0);
+
+        return $r0;
+    }
+
+    public static com.google.common.collect.TreeRangeSet create()
+    {
+        java.util.TreeMap $r1;
+        com.google.common.collect.TreeRangeSet $r0;
+
+        $r0 = new com.google.common.collect.TreeRangeSet;
+
+        $r1 = new java.util.TreeMap;
+
+        specialinvoke $r1.<java.util.TreeMap: void <init>()>();
+
+        specialinvoke $r0.<com.google.common.collect.TreeRangeSet: void <init>(java.util.NavigableMap)>($r1);
+
+        return $r0;
+    }
+
+    public static com.google.common.collect.TreeRangeSet create(com.google.common.collect.RangeSet)
+    {
+        com.google.common.collect.RangeSet $r0;
+        com.google.common.collect.TreeRangeSet $r1;
+
+        $r0 := @parameter0: com.google.common.collect.RangeSet;
+
+        $r1 = staticinvoke <com.google.common.collect.TreeRangeSet: com.google.common.collect.TreeRangeSet create()>();
+
+        virtualinvoke $r1.<com.google.common.collect.TreeRangeSet: void addAll(com.google.common.collect.RangeSet)>($r0);
+
+        return $r1;
+    }
+
+    public static com.google.common.collect.TreeRangeSet create(java.lang.Iterable)
+    {
+        com.google.common.collect.TreeRangeSet $r1;
+        java.lang.Iterable $r0;
+
+        $r0 := @parameter0: java.lang.Iterable;
+
+        $r1 = staticinvoke <com.google.common.collect.TreeRangeSet: com.google.common.collect.TreeRangeSet create()>();
+
+        interfaceinvoke $r1.<com.google.common.collect.RangeSet: void addAll(java.lang.Iterable)>($r0);
+
+        return $r1;
+    }
+
+    private com.google.common.collect.Range rangeEnclosing(com.google.common.collect.Range)
+    {
+        com.google.common.collect.Cut $r3;
+        java.util.Map$Entry $r4;
+        com.google.common.collect.Range $r1, $r6;
+        java.util.NavigableMap $r2;
+        com.google.common.collect.TreeRangeSet r0;
+        java.lang.Object $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r1 := @parameter0: com.google.common.collect.Range;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r3 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut lowerBound>;
+
+        $r4 = interfaceinvoke $r2.<java.util.NavigableMap: java.util.Map$Entry floorEntry(java.lang.Object)>($r3);
+
+        if $r4 == null goto label1;
+
+        $r5 = interfaceinvoke $r4.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r6 = (com.google.common.collect.Range) $r5;
+
+        $z0 = virtualinvoke $r6.<com.google.common.collect.Range: boolean encloses(com.google.common.collect.Range)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        $r5 = interfaceinvoke $r4.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r1 = (com.google.common.collect.Range) $r5;
+
+        return $r1;
+
+     label1:
+        return null;
+    }
+
+    private void replaceRangeWithSameLowerBound(com.google.common.collect.Range)
+    {
+        com.google.common.collect.Cut $r1;
+        com.google.common.collect.Range $r2;
+        java.util.NavigableMap $r3;
+        com.google.common.collect.TreeRangeSet r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r2 := @parameter0: com.google.common.collect.Range;
+
+        $z0 = virtualinvoke $r2.<com.google.common.collect.Range: boolean isEmpty()>();
+
+        if $z0 == 0 goto label1;
+
+        $r3 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r1 = $r2.<com.google.common.collect.Range: com.google.common.collect.Cut lowerBound>;
+
+        interfaceinvoke $r3.<java.util.NavigableMap: java.lang.Object remove(java.lang.Object)>($r1);
+
+        return;
+
+     label1:
+        $r3 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r1 = $r2.<com.google.common.collect.Range: com.google.common.collect.Cut lowerBound>;
+
+        interfaceinvoke $r3.<java.util.NavigableMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r1, $r2);
+
+        return;
+    }
+
+    public void add(com.google.common.collect.Range)
+    {
+        com.google.common.collect.Cut $r2, $r3, $r7;
+        java.util.Map$Entry $r5;
+        com.google.common.collect.Range $r1;
+        java.util.NavigableMap $r4;
+        com.google.common.collect.TreeRangeSet r0;
+        int $i0;
+        java.lang.Object $r6;
+        java.util.SortedMap $r8;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r1 := @parameter0: com.google.common.collect.Range;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $z0 = virtualinvoke $r1.<com.google.common.collect.Range: boolean isEmpty()>();
+
+        if $z0 == 0 goto label1;
+
+        return;
+
+     label1:
+        $r2 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut lowerBound>;
+
+        $r3 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+        $r4 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r5 = interfaceinvoke $r4.<java.util.NavigableMap: java.util.Map$Entry lowerEntry(java.lang.Object)>($r2);
+
+        if $r5 == null goto label3;
+
+        $r6 = interfaceinvoke $r5.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r1 = (com.google.common.collect.Range) $r6;
+
+        $r7 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+        $i0 = virtualinvoke $r7.<com.google.common.collect.Cut: int compareTo(com.google.common.collect.Cut)>($r2);
+
+        if $i0 < 0 goto label3;
+
+        $r2 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+        $i0 = virtualinvoke $r2.<com.google.common.collect.Cut: int compareTo(com.google.common.collect.Cut)>($r3);
+
+        if $i0 < 0 goto label2;
+
+        $r3 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+     label2:
+        $r2 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut lowerBound>;
+
+     label3:
+        $r4 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r5 = interfaceinvoke $r4.<java.util.NavigableMap: java.util.Map$Entry floorEntry(java.lang.Object)>($r3);
+
+        if $r5 == null goto label4;
+
+        $r6 = interfaceinvoke $r5.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r1 = (com.google.common.collect.Range) $r6;
+
+        $r7 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+        $i0 = virtualinvoke $r7.<com.google.common.collect.Cut: int compareTo(com.google.common.collect.Cut)>($r3);
+
+        if $i0 < 0 goto label4;
+
+        $r3 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+     label4:
+        $r4 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r8 = interfaceinvoke $r4.<java.util.NavigableMap: java.util.SortedMap subMap(java.lang.Object,java.lang.Object)>($r2, $r3);
+
+        interfaceinvoke $r8.<java.util.SortedMap: void clear()>();
+
+        $r1 = staticinvoke <com.google.common.collect.Range: com.google.common.collect.Range create(com.google.common.collect.Cut,com.google.common.collect.Cut)>($r2, $r3);
+
+        specialinvoke r0.<com.google.common.collect.TreeRangeSet: void replaceRangeWithSameLowerBound(com.google.common.collect.Range)>($r1);
+
+        return;
+    }
+
+    public volatile void addAll(com.google.common.collect.RangeSet)
+    {
+        com.google.common.collect.RangeSet $r1;
+        com.google.common.collect.TreeRangeSet r0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r1 := @parameter0: com.google.common.collect.RangeSet;
+
+        specialinvoke r0.<com.google.common.collect.AbstractRangeSet: void addAll(com.google.common.collect.RangeSet)>($r1);
+
+        return;
+    }
+
+    public java.util.Set asDescendingSetOfRanges()
+    {
+        com.google.common.collect.TreeRangeSet$AsRanges $r2;
+        java.util.Collection $r4;
+        java.util.Set $r1;
+        java.util.NavigableMap $r3;
+        com.google.common.collect.TreeRangeSet r0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r1 = r0.<com.google.common.collect.TreeRangeSet: java.util.Set asDescendingSetOfRanges>;
+
+        if $r1 != null goto label1;
+
+        $r2 = new com.google.common.collect.TreeRangeSet$AsRanges;
+
+        $r3 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r3 = interfaceinvoke $r3.<java.util.NavigableMap: java.util.NavigableMap descendingMap()>();
+
+        $r4 = interfaceinvoke $r3.<java.util.NavigableMap: java.util.Collection values()>();
+
+        specialinvoke $r2.<com.google.common.collect.TreeRangeSet$AsRanges: void <init>(com.google.common.collect.TreeRangeSet,java.util.Collection)>(r0, $r4);
+
+        r0.<com.google.common.collect.TreeRangeSet: java.util.Set asDescendingSetOfRanges> = $r2;
+
+        return $r2;
+
+     label1:
+        return $r1;
+    }
+
+    public java.util.Set asRanges()
+    {
+        com.google.common.collect.TreeRangeSet$AsRanges $r3;
+        java.util.Collection $r1;
+        java.util.Set $r2;
+        java.util.NavigableMap $r4;
+        com.google.common.collect.TreeRangeSet r0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r2 = r0.<com.google.common.collect.TreeRangeSet: java.util.Set asRanges>;
+
+        if $r2 != null goto label1;
+
+        $r3 = new com.google.common.collect.TreeRangeSet$AsRanges;
+
+        $r4 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r1 = interfaceinvoke $r4.<java.util.NavigableMap: java.util.Collection values()>();
+
+        specialinvoke $r3.<com.google.common.collect.TreeRangeSet$AsRanges: void <init>(com.google.common.collect.TreeRangeSet,java.util.Collection)>(r0, $r1);
+
+        r0.<com.google.common.collect.TreeRangeSet: java.util.Set asRanges> = $r3;
+
+        return $r3;
+
+     label1:
+        return $r2;
+    }
+
+    public volatile void clear()
+    {
+        com.google.common.collect.TreeRangeSet r0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        specialinvoke r0.<com.google.common.collect.AbstractRangeSet: void clear()>();
+
+        return;
+    }
+
+    public com.google.common.collect.RangeSet complement()
+    {
+        com.google.common.collect.RangeSet $r1;
+        com.google.common.collect.TreeRangeSet$Complement $r2;
+        com.google.common.collect.TreeRangeSet r0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r1 = r0.<com.google.common.collect.TreeRangeSet: com.google.common.collect.RangeSet complement>;
+
+        if $r1 != null goto label1;
+
+        $r2 = new com.google.common.collect.TreeRangeSet$Complement;
+
+        specialinvoke $r2.<com.google.common.collect.TreeRangeSet$Complement: void <init>(com.google.common.collect.TreeRangeSet)>(r0);
+
+        r0.<com.google.common.collect.TreeRangeSet: com.google.common.collect.RangeSet complement> = $r2;
+
+        return $r2;
+
+     label1:
+        return $r1;
+    }
+
+    public volatile boolean contains(java.lang.Comparable)
+    {
+        java.lang.Comparable $r1;
+        com.google.common.collect.TreeRangeSet r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r1 := @parameter0: java.lang.Comparable;
+
+        $z0 = specialinvoke r0.<com.google.common.collect.AbstractRangeSet: boolean contains(java.lang.Comparable)>($r1);
+
+        return $z0;
+    }
+
+    public boolean encloses(com.google.common.collect.Range)
+    {
+        com.google.common.collect.Cut $r1;
+        java.util.Map$Entry $r4;
+        com.google.common.collect.Range $r2, $r6;
+        java.util.NavigableMap $r3;
+        com.google.common.collect.TreeRangeSet r0;
+        java.lang.Object $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r2 := @parameter0: com.google.common.collect.Range;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        $r3 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r1 = $r2.<com.google.common.collect.Range: com.google.common.collect.Cut lowerBound>;
+
+        $r4 = interfaceinvoke $r3.<java.util.NavigableMap: java.util.Map$Entry floorEntry(java.lang.Object)>($r1);
+
+        if $r4 == null goto label1;
+
+        $r5 = interfaceinvoke $r4.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r6 = (com.google.common.collect.Range) $r5;
+
+        $z0 = virtualinvoke $r6.<com.google.common.collect.Range: boolean encloses(com.google.common.collect.Range)>($r2);
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public volatile boolean enclosesAll(com.google.common.collect.RangeSet)
+    {
+        com.google.common.collect.RangeSet $r1;
+        com.google.common.collect.TreeRangeSet r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r1 := @parameter0: com.google.common.collect.RangeSet;
+
+        $z0 = specialinvoke r0.<com.google.common.collect.AbstractRangeSet: boolean enclosesAll(com.google.common.collect.RangeSet)>($r1);
+
+        return $z0;
+    }
+
+    public volatile boolean equals(java.lang.Object)
+    {
+        java.lang.Object $r1;
+        com.google.common.collect.TreeRangeSet r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $z0 = specialinvoke r0.<com.google.common.collect.AbstractRangeSet: boolean equals(java.lang.Object)>($r1);
+
+        return $z0;
+    }
+
+    public boolean intersects(com.google.common.collect.Range)
+    {
+        com.google.common.collect.Cut $r3;
+        java.util.Map$Entry $r4;
+        com.google.common.collect.Range $r1, $r6;
+        java.util.NavigableMap $r2;
+        com.google.common.collect.TreeRangeSet r0;
+        java.lang.Object $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r1 := @parameter0: com.google.common.collect.Range;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r3 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut lowerBound>;
+
+        $r4 = interfaceinvoke $r2.<java.util.NavigableMap: java.util.Map$Entry ceilingEntry(java.lang.Object)>($r3);
+
+        if $r4 == null goto label1;
+
+        $r5 = interfaceinvoke $r4.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r6 = (com.google.common.collect.Range) $r5;
+
+        $z0 = virtualinvoke $r6.<com.google.common.collect.Range: boolean isConnected(com.google.common.collect.Range)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        $r5 = interfaceinvoke $r4.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r6 = (com.google.common.collect.Range) $r5;
+
+        $r6 = virtualinvoke $r6.<com.google.common.collect.Range: com.google.common.collect.Range intersection(com.google.common.collect.Range)>($r1);
+
+        $z0 = virtualinvoke $r6.<com.google.common.collect.Range: boolean isEmpty()>();
+
+        if $z0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        $r2 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r3 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut lowerBound>;
+
+        $r4 = interfaceinvoke $r2.<java.util.NavigableMap: java.util.Map$Entry lowerEntry(java.lang.Object)>($r3);
+
+        if $r4 == null goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r6 = (com.google.common.collect.Range) $r5;
+
+        $z0 = virtualinvoke $r6.<com.google.common.collect.Range: boolean isConnected(com.google.common.collect.Range)>($r1);
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r6 = (com.google.common.collect.Range) $r5;
+
+        $r1 = virtualinvoke $r6.<com.google.common.collect.Range: com.google.common.collect.Range intersection(com.google.common.collect.Range)>($r1);
+
+        $z0 = virtualinvoke $r1.<com.google.common.collect.Range: boolean isEmpty()>();
+
+        if $z0 != 0 goto label2;
+
+        return 1;
+
+     label2:
+        return 0;
+    }
+
+    public volatile boolean isEmpty()
+    {
+        com.google.common.collect.TreeRangeSet r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $z0 = specialinvoke r0.<com.google.common.collect.AbstractRangeSet: boolean isEmpty()>();
+
+        return $z0;
+    }
+
+    public com.google.common.collect.Range rangeContaining(java.lang.Comparable)
+    {
+        com.google.common.collect.Cut $r3;
+        java.util.Map$Entry $r4;
+        com.google.common.collect.Range $r6;
+        java.util.NavigableMap $r2;
+        com.google.common.collect.TreeRangeSet r0;
+        java.lang.Comparable $r1;
+        java.lang.Object $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r1 := @parameter0: java.lang.Comparable;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r3 = staticinvoke <com.google.common.collect.Cut: com.google.common.collect.Cut belowValue(java.lang.Comparable)>($r1);
+
+        $r4 = interfaceinvoke $r2.<java.util.NavigableMap: java.util.Map$Entry floorEntry(java.lang.Object)>($r3);
+
+        if $r4 == null goto label1;
+
+        $r5 = interfaceinvoke $r4.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r6 = (com.google.common.collect.Range) $r5;
+
+        $z0 = virtualinvoke $r6.<com.google.common.collect.Range: boolean contains(java.lang.Comparable)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        $r5 = interfaceinvoke $r4.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r6 = (com.google.common.collect.Range) $r5;
+
+        return $r6;
+
+     label1:
+        return null;
+    }
+
+    public void remove(com.google.common.collect.Range)
+    {
+        com.google.common.collect.Cut $r3, $r7;
+        java.util.Map$Entry $r4;
+        com.google.common.collect.Range $r1, $r6, $r8;
+        java.util.NavigableMap $r2;
+        com.google.common.collect.TreeRangeSet r0;
+        int $i0;
+        java.lang.Object $r5;
+        java.util.SortedMap $r9;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r1 := @parameter0: com.google.common.collect.Range;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $z0 = virtualinvoke $r1.<com.google.common.collect.Range: boolean isEmpty()>();
+
+        if $z0 == 0 goto label1;
+
+        return;
+
+     label1:
+        $r2 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r3 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut lowerBound>;
+
+        $r4 = interfaceinvoke $r2.<java.util.NavigableMap: java.util.Map$Entry lowerEntry(java.lang.Object)>($r3);
+
+        if $r4 == null goto label3;
+
+        $r5 = interfaceinvoke $r4.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r6 = (com.google.common.collect.Range) $r5;
+
+        $r3 = $r6.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+        $r7 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut lowerBound>;
+
+        $i0 = virtualinvoke $r3.<com.google.common.collect.Cut: int compareTo(com.google.common.collect.Cut)>($r7);
+
+        if $i0 < 0 goto label3;
+
+        $z0 = virtualinvoke $r1.<com.google.common.collect.Range: boolean hasUpperBound()>();
+
+        if $z0 == 0 goto label2;
+
+        $r3 = $r6.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+        $r7 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+        $i0 = virtualinvoke $r3.<com.google.common.collect.Cut: int compareTo(com.google.common.collect.Cut)>($r7);
+
+        if $i0 < 0 goto label2;
+
+        $r3 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+        $r7 = $r6.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+        $r8 = staticinvoke <com.google.common.collect.Range: com.google.common.collect.Range create(com.google.common.collect.Cut,com.google.common.collect.Cut)>($r3, $r7);
+
+        specialinvoke r0.<com.google.common.collect.TreeRangeSet: void replaceRangeWithSameLowerBound(com.google.common.collect.Range)>($r8);
+
+     label2:
+        $r3 = $r6.<com.google.common.collect.Range: com.google.common.collect.Cut lowerBound>;
+
+        $r7 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut lowerBound>;
+
+        $r6 = staticinvoke <com.google.common.collect.Range: com.google.common.collect.Range create(com.google.common.collect.Cut,com.google.common.collect.Cut)>($r3, $r7);
+
+        specialinvoke r0.<com.google.common.collect.TreeRangeSet: void replaceRangeWithSameLowerBound(com.google.common.collect.Range)>($r6);
+
+     label3:
+        $r2 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r3 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+        $r4 = interfaceinvoke $r2.<java.util.NavigableMap: java.util.Map$Entry floorEntry(java.lang.Object)>($r3);
+
+        if $r4 == null goto label4;
+
+        $r5 = interfaceinvoke $r4.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r6 = (com.google.common.collect.Range) $r5;
+
+        $z0 = virtualinvoke $r1.<com.google.common.collect.Range: boolean hasUpperBound()>();
+
+        if $z0 == 0 goto label4;
+
+        $r3 = $r6.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+        $r7 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+        $i0 = virtualinvoke $r3.<com.google.common.collect.Cut: int compareTo(com.google.common.collect.Cut)>($r7);
+
+        if $i0 < 0 goto label4;
+
+        $r3 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+        $r7 = $r6.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+        $r6 = staticinvoke <com.google.common.collect.Range: com.google.common.collect.Range create(com.google.common.collect.Cut,com.google.common.collect.Cut)>($r3, $r7);
+
+        specialinvoke r0.<com.google.common.collect.TreeRangeSet: void replaceRangeWithSameLowerBound(com.google.common.collect.Range)>($r6);
+
+     label4:
+        $r2 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r3 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut lowerBound>;
+
+        $r7 = $r1.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+        $r9 = interfaceinvoke $r2.<java.util.NavigableMap: java.util.SortedMap subMap(java.lang.Object,java.lang.Object)>($r3, $r7);
+
+        interfaceinvoke $r9.<java.util.SortedMap: void clear()>();
+
+        return;
+    }
+
+    public volatile void removeAll(com.google.common.collect.RangeSet)
+    {
+        com.google.common.collect.RangeSet $r1;
+        com.google.common.collect.TreeRangeSet r0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r1 := @parameter0: com.google.common.collect.RangeSet;
+
+        specialinvoke r0.<com.google.common.collect.AbstractRangeSet: void removeAll(com.google.common.collect.RangeSet)>($r1);
+
+        return;
+    }
+
+    public com.google.common.collect.Range span()
+    {
+        com.google.common.collect.Cut $r6, $r7;
+        java.util.Map$Entry $r2, $r3;
+        com.google.common.collect.Range $r5;
+        java.util.NavigableMap $r1;
+        com.google.common.collect.TreeRangeSet r0;
+        java.lang.Object $r4;
+        java.util.NoSuchElementException $r8;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r1 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r2 = interfaceinvoke $r1.<java.util.NavigableMap: java.util.Map$Entry firstEntry()>();
+
+        $r1 = r0.<com.google.common.collect.TreeRangeSet: java.util.NavigableMap rangesByLowerBound>;
+
+        $r3 = interfaceinvoke $r1.<java.util.NavigableMap: java.util.Map$Entry lastEntry()>();
+
+        if $r2 == null goto label1;
+
+        $r4 = interfaceinvoke $r2.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r5 = (com.google.common.collect.Range) $r4;
+
+        $r6 = $r5.<com.google.common.collect.Range: com.google.common.collect.Cut lowerBound>;
+
+        $r4 = interfaceinvoke $r3.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r5 = (com.google.common.collect.Range) $r4;
+
+        $r7 = $r5.<com.google.common.collect.Range: com.google.common.collect.Cut upperBound>;
+
+        $r5 = staticinvoke <com.google.common.collect.Range: com.google.common.collect.Range create(com.google.common.collect.Cut,com.google.common.collect.Cut)>($r6, $r7);
+
+        return $r5;
+
+     label1:
+        $r8 = new java.util.NoSuchElementException;
+
+        specialinvoke $r8.<java.util.NoSuchElementException: void <init>()>();
+
+        throw $r8;
+    }
+
+    public com.google.common.collect.RangeSet subRangeSet(com.google.common.collect.Range)
+    {
+        com.google.common.collect.Range $r1, $r2;
+        com.google.common.collect.TreeRangeSet r0;
+        com.google.common.collect.TreeRangeSet$SubRangeSet $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.TreeRangeSet;
+
+        $r1 := @parameter0: com.google.common.collect.Range;
+
+        $r2 = staticinvoke <com.google.common.collect.Range: com.google.common.collect.Range all()>();
+
+        $z0 = virtualinvoke $r1.<com.google.common.collect.Range: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label1;
+
+        return r0;
+
+     label1:
+        $r3 = new com.google.common.collect.TreeRangeSet$SubRangeSet;
+
+        specialinvoke $r3.<com.google.common.collect.TreeRangeSet$SubRangeSet: void <init>(com.google.common.collect.TreeRangeSet,com.google.common.collect.Range)>(r0, $r1);
+
+        return $r3;
+    }
+}

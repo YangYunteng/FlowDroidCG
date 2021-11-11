@@ -1,0 +1,258 @@
+public final class j.a.d.f extends j.a.P implements j.a.d.j, java.util.concurrent.Executor
+{
+    public static final java.util.concurrent.atomic.AtomicIntegerFieldUpdater a;
+    public final java.util.concurrent.ConcurrentLinkedQueue b;
+    public final j.a.d.d c;
+    public final int d;
+    public final j.a.d.l e;
+    public volatile int inFlightTasks;
+
+    static void <clinit>()
+    {
+        java.util.concurrent.atomic.AtomicIntegerFieldUpdater $r0;
+
+        $r0 = staticinvoke <java.util.concurrent.atomic.AtomicIntegerFieldUpdater: java.util.concurrent.atomic.AtomicIntegerFieldUpdater newUpdater(java.lang.Class,java.lang.String)>(class "Lj/a/d/f;", "inFlightTasks");
+
+        <j.a.d.f: java.util.concurrent.atomic.AtomicIntegerFieldUpdater a> = $r0;
+
+        return;
+    }
+
+    public void <init>(j.a.d.d, int, j.a.d.l)
+    {
+        j.a.d.l $r1;
+        int $i0;
+        j.a.d.d $r2;
+        j.a.d.f r0;
+        java.util.concurrent.ConcurrentLinkedQueue $r3;
+
+        r0 := @this: j.a.d.f;
+
+        $r2 := @parameter0: j.a.d.d;
+
+        $i0 := @parameter1: int;
+
+        $r1 := @parameter2: j.a.d.l;
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r2, "dispatcher");
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r1, "taskMode");
+
+        specialinvoke r0.<j.a.P: void <init>()>();
+
+        r0.<j.a.d.f: j.a.d.d c> = $r2;
+
+        r0.<j.a.d.f: int d> = $i0;
+
+        r0.<j.a.d.f: j.a.d.l e> = $r1;
+
+        $r3 = new java.util.concurrent.ConcurrentLinkedQueue;
+
+        specialinvoke $r3.<java.util.concurrent.ConcurrentLinkedQueue: void <init>()>();
+
+        r0.<j.a.d.f: java.util.concurrent.ConcurrentLinkedQueue b> = $r3;
+
+        r0.<j.a.d.f: int inFlightTasks> = 0;
+
+        return;
+    }
+
+    public final void a(java.lang.Runnable, boolean)
+    {
+        java.util.concurrent.atomic.AtomicIntegerFieldUpdater $r2;
+        j.a.d.d $r3;
+        j.a.d.f r0;
+        java.lang.Runnable $r1;
+        int $i0, $i1;
+        java.lang.Object $r5;
+        boolean $z0;
+        java.util.concurrent.ConcurrentLinkedQueue $r4;
+
+        r0 := @this: j.a.d.f;
+
+        $r1 := @parameter0: java.lang.Runnable;
+
+        $z0 := @parameter1: boolean;
+
+     label1:
+        $r2 = <j.a.d.f: java.util.concurrent.atomic.AtomicIntegerFieldUpdater a>;
+
+        $i1 = virtualinvoke $r2.<java.util.concurrent.atomic.AtomicIntegerFieldUpdater: int incrementAndGet(java.lang.Object)>(r0);
+
+        $i0 = r0.<j.a.d.f: int d>;
+
+        if $i1 > $i0 goto label2;
+
+        $r3 = r0.<j.a.d.f: j.a.d.d c>;
+
+        virtualinvoke $r3.<j.a.d.d: void a(java.lang.Runnable,j.a.d.j,boolean)>($r1, r0, $z0);
+
+        return;
+
+     label2:
+        $r4 = r0.<j.a.d.f: java.util.concurrent.ConcurrentLinkedQueue b>;
+
+        virtualinvoke $r4.<java.util.concurrent.ConcurrentLinkedQueue: boolean add(java.lang.Object)>($r1);
+
+        $r2 = <j.a.d.f: java.util.concurrent.atomic.AtomicIntegerFieldUpdater a>;
+
+        $i0 = virtualinvoke $r2.<java.util.concurrent.atomic.AtomicIntegerFieldUpdater: int decrementAndGet(java.lang.Object)>(r0);
+
+        $i1 = r0.<j.a.d.f: int d>;
+
+        if $i0 < $i1 goto label3;
+
+        return;
+
+     label3:
+        $r4 = r0.<j.a.d.f: java.util.concurrent.ConcurrentLinkedQueue b>;
+
+        $r5 = virtualinvoke $r4.<java.util.concurrent.ConcurrentLinkedQueue: java.lang.Object poll()>();
+
+        $r1 = (java.lang.Runnable) $r5;
+
+        if $r1 == null goto label4;
+
+        goto label1;
+
+     label4:
+        return;
+    }
+
+    public void close()
+    {
+        java.lang.IllegalStateException $r1;
+        j.a.d.f r0;
+
+        r0 := @this: j.a.d.f;
+
+        $r1 = new java.lang.IllegalStateException;
+
+        specialinvoke $r1.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Close cannot be invoked on LimitingBlockingDispatcher");
+
+        throw $r1;
+    }
+
+    public void dispatch(i.c.h, java.lang.Runnable)
+    {
+        j.a.d.f r0;
+        java.lang.Runnable $r1;
+        i.c.h $r2;
+
+        r0 := @this: j.a.d.f;
+
+        $r2 := @parameter0: i.c.h;
+
+        $r1 := @parameter1: java.lang.Runnable;
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r2, "context");
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r1, "block");
+
+        virtualinvoke r0.<j.a.d.f: void a(java.lang.Runnable,boolean)>($r1, 0);
+
+        return;
+    }
+
+    public void execute(java.lang.Runnable)
+    {
+        j.a.d.f r0;
+        java.lang.Runnable $r1;
+
+        r0 := @this: j.a.d.f;
+
+        $r1 := @parameter0: java.lang.Runnable;
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r1, "command");
+
+        virtualinvoke r0.<j.a.d.f: void a(java.lang.Runnable,boolean)>($r1, 0);
+
+        return;
+    }
+
+    public void k()
+    {
+        java.util.concurrent.atomic.AtomicIntegerFieldUpdater $r5;
+        j.a.d.d $r1;
+        java.lang.Object $r3;
+        j.a.d.f r0;
+        java.lang.Runnable $r4;
+        java.util.concurrent.ConcurrentLinkedQueue $r2;
+
+        r0 := @this: j.a.d.f;
+
+        $r2 = r0.<j.a.d.f: java.util.concurrent.ConcurrentLinkedQueue b>;
+
+        $r3 = virtualinvoke $r2.<java.util.concurrent.ConcurrentLinkedQueue: java.lang.Object poll()>();
+
+        $r4 = (java.lang.Runnable) $r3;
+
+        if $r4 == null goto label1;
+
+        $r1 = r0.<j.a.d.f: j.a.d.d c>;
+
+        virtualinvoke $r1.<j.a.d.d: void a(java.lang.Runnable,j.a.d.j,boolean)>($r4, r0, 1);
+
+        return;
+
+     label1:
+        $r5 = <j.a.d.f: java.util.concurrent.atomic.AtomicIntegerFieldUpdater a>;
+
+        virtualinvoke $r5.<java.util.concurrent.atomic.AtomicIntegerFieldUpdater: int decrementAndGet(java.lang.Object)>(r0);
+
+        $r2 = r0.<j.a.d.f: java.util.concurrent.ConcurrentLinkedQueue b>;
+
+        $r3 = virtualinvoke $r2.<java.util.concurrent.ConcurrentLinkedQueue: java.lang.Object poll()>();
+
+        $r4 = (java.lang.Runnable) $r3;
+
+        if $r4 == null goto label2;
+
+        virtualinvoke r0.<j.a.d.f: void a(java.lang.Runnable,boolean)>($r4, 1);
+
+     label2:
+        return;
+    }
+
+    public j.a.d.l l()
+    {
+        j.a.d.l r1;
+        j.a.d.f r0;
+
+        r0 := @this: j.a.d.f;
+
+        r1 = r0.<j.a.d.f: j.a.d.l e>;
+
+        return r1;
+    }
+
+    public java.lang.String toString()
+    {
+        j.a.d.d $r3;
+        java.lang.StringBuilder $r1;
+        j.a.d.f r0;
+        java.lang.String $r2;
+
+        r0 := @this: j.a.d.f;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = specialinvoke r0.<j.a.q: java.lang.String toString()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[dispatcher = ");
+
+        $r3 = r0.<j.a.d.f: j.a.d.d c>;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(93);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r2;
+    }
+}

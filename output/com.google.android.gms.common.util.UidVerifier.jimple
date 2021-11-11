@@ -1,0 +1,88 @@
+public final class com.google.android.gms.common.util.UidVerifier extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        com.google.android.gms.common.util.UidVerifier r0;
+
+        r0 := @this: com.google.android.gms.common.util.UidVerifier;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static boolean isGooglePlayServicesUid(android.content.Context, int)
+    {
+        android.content.Context $r1;
+        android.content.pm.PackageManager $r2;
+        android.content.pm.PackageManager$NameNotFoundException $r0;
+        int $i0;
+        android.content.pm.PackageInfo $r3;
+        com.google.android.gms.common.GoogleSignatureVerifier $r4;
+        boolean $z0;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $i0 := @parameter1: int;
+
+        $z0 = staticinvoke <com.google.android.gms.common.util.UidVerifier: boolean uidHasPackageName(android.content.Context,int,java.lang.String)>($r1, $i0, "com.google.android.gms");
+
+        if $z0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $r2 = virtualinvoke $r1.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+     label2:
+        $r3 = virtualinvoke $r2.<android.content.pm.PackageManager: android.content.pm.PackageInfo getPackageInfo(java.lang.String,int)>("com.google.android.gms", 64);
+
+     label3:
+        $r4 = staticinvoke <com.google.android.gms.common.GoogleSignatureVerifier: com.google.android.gms.common.GoogleSignatureVerifier getInstance(android.content.Context)>($r1);
+
+        $z0 = virtualinvoke $r4.<com.google.android.gms.common.GoogleSignatureVerifier: boolean isGooglePublicSignedPackage(android.content.pm.PackageInfo)>($r3);
+
+        return $z0;
+
+     label4:
+        $z0 = staticinvoke <android.util.Log: boolean isLoggable(java.lang.String,int)>("UidVerifier", 3);
+
+        if $z0 == 0 goto label6;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("UidVerifier", "Package manager can\'t find google play services package, defaulting to false");
+
+        return 0;
+
+     label5:
+        $r0 := @caughtexception;
+
+        goto label4;
+
+     label6:
+        return 0;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label2 to label3 with label5;
+    }
+
+    public static boolean uidHasPackageName(android.content.Context, int, java.lang.String)
+    {
+        android.content.Context $r1;
+        int $i0;
+        com.google.android.gms.common.wrappers.PackageManagerWrapper $r2;
+        java.lang.String $r0;
+        boolean $z0;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $i0 := @parameter1: int;
+
+        $r0 := @parameter2: java.lang.String;
+
+        $r2 = staticinvoke <com.google.android.gms.common.wrappers.Wrappers: com.google.android.gms.common.wrappers.PackageManagerWrapper packageManager(android.content.Context)>($r1);
+
+        $z0 = virtualinvoke $r2.<com.google.android.gms.common.wrappers.PackageManagerWrapper: boolean zzb(int,java.lang.String)>($i0, $r0);
+
+        return $z0;
+    }
+}

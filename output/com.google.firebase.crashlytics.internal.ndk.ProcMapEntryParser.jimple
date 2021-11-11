@@ -1,0 +1,108 @@
+public final class com.google.firebase.crashlytics.internal.ndk.ProcMapEntryParser extends java.lang.Object
+{
+    public static final java.util.regex.Pattern MAP_REGEX;
+
+    static void <clinit>()
+    {
+        java.util.regex.Pattern $r0;
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>("\\s*(\\p{XDigit}+)-\\s*(\\p{XDigit}+)\\s+(.{4})\\s+\\p{XDigit}+\\s+.+\\s+\\d+\\s+(.*)");
+
+        <com.google.firebase.crashlytics.internal.ndk.ProcMapEntryParser: java.util.regex.Pattern MAP_REGEX> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.firebase.crashlytics.internal.ndk.ProcMapEntryParser r0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.ndk.ProcMapEntryParser;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static com.google.firebase.crashlytics.internal.ndk.ProcMapEntry parse(java.lang.String)
+    {
+        com.google.firebase.crashlytics.internal.ndk.ProcMapEntry $r7;
+        long $l0, $l1;
+        java.lang.Exception $r0;
+        com.google.firebase.crashlytics.internal.Logger $r8;
+        java.util.regex.Matcher $r3;
+        java.lang.Long $r5;
+        java.lang.StringBuilder $r9;
+        java.lang.String $r1, $r4, $r6;
+        java.util.regex.Pattern $r2;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = <com.google.firebase.crashlytics.internal.ndk.ProcMapEntryParser: java.util.regex.Pattern MAP_REGEX>;
+
+        $r3 = virtualinvoke $r2.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r1);
+
+        $z0 = virtualinvoke $r3.<java.util.regex.Matcher: boolean matches()>();
+
+        if $z0 != 0 goto label1;
+
+        return null;
+
+     label1:
+        $r4 = virtualinvoke $r3.<java.util.regex.Matcher: java.lang.String group(int)>(1);
+
+        $r5 = staticinvoke <java.lang.Long: java.lang.Long valueOf(java.lang.String,int)>($r4, 16);
+
+        $l1 = virtualinvoke $r5.<java.lang.Long: long longValue()>();
+
+        $r4 = virtualinvoke $r3.<java.util.regex.Matcher: java.lang.String group(int)>(2);
+
+        $r5 = staticinvoke <java.lang.Long: java.lang.Long valueOf(java.lang.String,int)>($r4, 16);
+
+        $l0 = virtualinvoke $r5.<java.lang.Long: long longValue()>();
+
+     label2:
+        $l0 = $l0 - $l1;
+
+     label3:
+        $r4 = virtualinvoke $r3.<java.util.regex.Matcher: java.lang.String group(int)>(3);
+
+        $r6 = virtualinvoke $r3.<java.util.regex.Matcher: java.lang.String group(int)>(4);
+
+     label4:
+        $r7 = new com.google.firebase.crashlytics.internal.ndk.ProcMapEntry;
+
+     label5:
+        specialinvoke $r7.<com.google.firebase.crashlytics.internal.ndk.ProcMapEntry: void <init>(long,long,java.lang.String,java.lang.String)>($l1, $l0, $r4, $r6);
+
+     label6:
+        return $r7;
+
+     label7:
+        $r8 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not parse map entry: ");
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r8.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>($r1);
+
+        return null;
+
+     label8:
+        $r0 := @caughtexception;
+
+        goto label7;
+
+        catch java.lang.Exception from label1 to label2 with label8;
+        catch java.lang.Exception from label3 to label4 with label8;
+        catch java.lang.Exception from label5 to label6 with label8;
+    }
+}

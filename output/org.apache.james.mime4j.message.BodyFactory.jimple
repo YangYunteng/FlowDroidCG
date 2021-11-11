@@ -1,0 +1,525 @@
+public class org.apache.james.mime4j.message.BodyFactory extends java.lang.Object
+{
+    public static final java.nio.charset.Charset FALLBACK_CHARSET;
+    public static org.apache.commons.logging.Log log;
+    public org.apache.james.mime4j.storage.StorageProvider storageProvider;
+
+    static void <clinit>()
+    {
+        org.apache.commons.logging.Log $r0;
+        java.nio.charset.Charset $r1;
+
+        $r0 = staticinvoke <org.apache.commons.logging.LogFactory: org.apache.commons.logging.Log getLog(java.lang.Class)>(class "Lorg/apache/james/mime4j/message/BodyFactory;");
+
+        <org.apache.james.mime4j.message.BodyFactory: org.apache.commons.logging.Log log> = $r0;
+
+        $r1 = <org.apache.james.mime4j.util.CharsetUtil: java.nio.charset.Charset DEFAULT_CHARSET>;
+
+        <org.apache.james.mime4j.message.BodyFactory: java.nio.charset.Charset FALLBACK_CHARSET> = $r1;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.apache.james.mime4j.storage.StorageProvider $r1;
+        org.apache.james.mime4j.message.BodyFactory r0;
+
+        r0 := @this: org.apache.james.mime4j.message.BodyFactory;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r1 = staticinvoke <org.apache.james.mime4j.storage.DefaultStorageProvider: org.apache.james.mime4j.storage.StorageProvider getInstance()>();
+
+        r0.<org.apache.james.mime4j.message.BodyFactory: org.apache.james.mime4j.storage.StorageProvider storageProvider> = $r1;
+
+        return;
+    }
+
+    public void <init>(org.apache.james.mime4j.storage.StorageProvider)
+    {
+        org.apache.james.mime4j.storage.StorageProvider $r1;
+        org.apache.james.mime4j.message.BodyFactory r0;
+
+        r0 := @this: org.apache.james.mime4j.message.BodyFactory;
+
+        $r1 := @parameter0: org.apache.james.mime4j.storage.StorageProvider;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        if $r1 != null goto label1;
+
+        $r1 = staticinvoke <org.apache.james.mime4j.storage.DefaultStorageProvider: org.apache.james.mime4j.storage.StorageProvider getInstance()>();
+
+     label1:
+        r0.<org.apache.james.mime4j.message.BodyFactory: org.apache.james.mime4j.storage.StorageProvider storageProvider> = $r1;
+
+        return;
+    }
+
+    public static java.nio.charset.Charset toJavaCharset(java.lang.String, boolean)
+    {
+        java.nio.charset.Charset $r4;
+        org.apache.commons.logging.Log $r2;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r0, $r1;
+        boolean $z0, $z1;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $z0 := @parameter1: boolean;
+
+        $r1 = staticinvoke <org.apache.james.mime4j.util.CharsetUtil: java.lang.String toJavaCharset(java.lang.String)>($r0);
+
+        if $r1 != null goto label2;
+
+        $r2 = <org.apache.james.mime4j.message.BodyFactory: org.apache.commons.logging.Log log>;
+
+        $z0 = interfaceinvoke $r2.<org.apache.commons.logging.Log: boolean isWarnEnabled()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = <org.apache.james.mime4j.message.BodyFactory: org.apache.commons.logging.Log log>;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("MIME charset \'");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r0);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' has no ");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("corresponding Java charset. Using ");
+
+        $r4 = <org.apache.james.mime4j.message.BodyFactory: java.nio.charset.Charset FALLBACK_CHARSET>;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" instead.");
+
+        $r0 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r2.<org.apache.commons.logging.Log: void warn(java.lang.Object)>($r0);
+
+     label1:
+        $r4 = <org.apache.james.mime4j.message.BodyFactory: java.nio.charset.Charset FALLBACK_CHARSET>;
+
+        return $r4;
+
+     label2:
+        if $z0 == 0 goto label4;
+
+        $z1 = staticinvoke <org.apache.james.mime4j.util.CharsetUtil: boolean isEncodingSupported(java.lang.String)>($r1);
+
+        if $z1 != 0 goto label4;
+
+        $r2 = <org.apache.james.mime4j.message.BodyFactory: org.apache.commons.logging.Log log>;
+
+        $z0 = interfaceinvoke $r2.<org.apache.commons.logging.Log: boolean isWarnEnabled()>();
+
+        if $z0 == 0 goto label3;
+
+        $r2 = <org.apache.james.mime4j.message.BodyFactory: org.apache.commons.logging.Log log>;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("MIME charset \'");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r0);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' does not support encoding. Using ");
+
+        $r4 = <org.apache.james.mime4j.message.BodyFactory: java.nio.charset.Charset FALLBACK_CHARSET>;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" instead.");
+
+        $r0 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r2.<org.apache.commons.logging.Log: void warn(java.lang.Object)>($r0);
+
+     label3:
+        $r4 = <org.apache.james.mime4j.message.BodyFactory: java.nio.charset.Charset FALLBACK_CHARSET>;
+
+        return $r4;
+
+     label4:
+        if $z0 != 0 goto label6;
+
+        $z0 = staticinvoke <org.apache.james.mime4j.util.CharsetUtil: boolean isDecodingSupported(java.lang.String)>($r1);
+
+        if $z0 != 0 goto label6;
+
+        $r2 = <org.apache.james.mime4j.message.BodyFactory: org.apache.commons.logging.Log log>;
+
+        $z0 = interfaceinvoke $r2.<org.apache.commons.logging.Log: boolean isWarnEnabled()>();
+
+        if $z0 == 0 goto label5;
+
+        $r2 = <org.apache.james.mime4j.message.BodyFactory: org.apache.commons.logging.Log log>;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("MIME charset \'");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r0);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' does not support decoding. Using ");
+
+        $r4 = <org.apache.james.mime4j.message.BodyFactory: java.nio.charset.Charset FALLBACK_CHARSET>;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" instead.");
+
+        $r0 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r2.<org.apache.commons.logging.Log: void warn(java.lang.Object)>($r0);
+
+     label5:
+        $r4 = <org.apache.james.mime4j.message.BodyFactory: java.nio.charset.Charset FALLBACK_CHARSET>;
+
+        return $r4;
+
+     label6:
+        $r4 = staticinvoke <java.nio.charset.Charset: java.nio.charset.Charset forName(java.lang.String)>($r1);
+
+        return $r4;
+    }
+
+    public org.apache.james.mime4j.message.BinaryBody binaryBody(java.io.InputStream)
+    {
+        org.apache.james.mime4j.message.StorageBinaryBody $r5;
+        org.apache.james.mime4j.message.BodyFactory r0;
+        org.apache.james.mime4j.storage.Storage $r2;
+        org.apache.james.mime4j.storage.StorageProvider $r4;
+        java.lang.IllegalArgumentException $r6;
+        org.apache.james.mime4j.storage.MultiReferenceStorage $r1;
+        java.io.InputStream $r3;
+
+        r0 := @this: org.apache.james.mime4j.message.BodyFactory;
+
+        $r3 := @parameter0: java.io.InputStream;
+
+        if $r3 == null goto label1;
+
+        $r4 = r0.<org.apache.james.mime4j.message.BodyFactory: org.apache.james.mime4j.storage.StorageProvider storageProvider>;
+
+        $r2 = interfaceinvoke $r4.<org.apache.james.mime4j.storage.StorageProvider: org.apache.james.mime4j.storage.Storage store(java.io.InputStream)>($r3);
+
+        $r5 = new org.apache.james.mime4j.message.StorageBinaryBody;
+
+        $r1 = new org.apache.james.mime4j.storage.MultiReferenceStorage;
+
+        specialinvoke $r1.<org.apache.james.mime4j.storage.MultiReferenceStorage: void <init>(org.apache.james.mime4j.storage.Storage)>($r2);
+
+        specialinvoke $r5.<org.apache.james.mime4j.message.StorageBinaryBody: void <init>(org.apache.james.mime4j.storage.MultiReferenceStorage)>($r1);
+
+        return $r5;
+
+     label1:
+        $r6 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r6;
+    }
+
+    public org.apache.james.mime4j.message.BinaryBody binaryBody(org.apache.james.mime4j.storage.Storage)
+    {
+        org.apache.james.mime4j.message.StorageBinaryBody $r1;
+        org.apache.james.mime4j.message.BodyFactory r0;
+        org.apache.james.mime4j.storage.Storage $r3;
+        java.lang.IllegalArgumentException $r4;
+        org.apache.james.mime4j.storage.MultiReferenceStorage $r2;
+
+        r0 := @this: org.apache.james.mime4j.message.BodyFactory;
+
+        $r3 := @parameter0: org.apache.james.mime4j.storage.Storage;
+
+        if $r3 == null goto label1;
+
+        $r1 = new org.apache.james.mime4j.message.StorageBinaryBody;
+
+        $r2 = new org.apache.james.mime4j.storage.MultiReferenceStorage;
+
+        specialinvoke $r2.<org.apache.james.mime4j.storage.MultiReferenceStorage: void <init>(org.apache.james.mime4j.storage.Storage)>($r3);
+
+        specialinvoke $r1.<org.apache.james.mime4j.message.StorageBinaryBody: void <init>(org.apache.james.mime4j.storage.MultiReferenceStorage)>($r2);
+
+        return $r1;
+
+     label1:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r4;
+    }
+
+    public org.apache.james.mime4j.storage.StorageProvider getStorageProvider()
+    {
+        org.apache.james.mime4j.storage.StorageProvider r1;
+        org.apache.james.mime4j.message.BodyFactory r0;
+
+        r0 := @this: org.apache.james.mime4j.message.BodyFactory;
+
+        r1 = r0.<org.apache.james.mime4j.message.BodyFactory: org.apache.james.mime4j.storage.StorageProvider storageProvider>;
+
+        return r1;
+    }
+
+    public org.apache.james.mime4j.message.TextBody textBody(java.io.InputStream)
+    {
+        org.apache.james.mime4j.storage.StorageProvider $r4;
+        java.lang.IllegalArgumentException $r7;
+        java.nio.charset.Charset $r6;
+        org.apache.james.mime4j.message.BodyFactory r0;
+        org.apache.james.mime4j.storage.Storage $r2;
+        org.apache.james.mime4j.message.StorageTextBody $r5;
+        org.apache.james.mime4j.storage.MultiReferenceStorage $r1;
+        java.io.InputStream $r3;
+
+        r0 := @this: org.apache.james.mime4j.message.BodyFactory;
+
+        $r3 := @parameter0: java.io.InputStream;
+
+        if $r3 == null goto label1;
+
+        $r4 = r0.<org.apache.james.mime4j.message.BodyFactory: org.apache.james.mime4j.storage.StorageProvider storageProvider>;
+
+        $r2 = interfaceinvoke $r4.<org.apache.james.mime4j.storage.StorageProvider: org.apache.james.mime4j.storage.Storage store(java.io.InputStream)>($r3);
+
+        $r5 = new org.apache.james.mime4j.message.StorageTextBody;
+
+        $r1 = new org.apache.james.mime4j.storage.MultiReferenceStorage;
+
+        specialinvoke $r1.<org.apache.james.mime4j.storage.MultiReferenceStorage: void <init>(org.apache.james.mime4j.storage.Storage)>($r2);
+
+        $r6 = <org.apache.james.mime4j.util.CharsetUtil: java.nio.charset.Charset DEFAULT_CHARSET>;
+
+        specialinvoke $r5.<org.apache.james.mime4j.message.StorageTextBody: void <init>(org.apache.james.mime4j.storage.MultiReferenceStorage,java.nio.charset.Charset)>($r1, $r6);
+
+        return $r5;
+
+     label1:
+        $r7 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r7.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r7;
+    }
+
+    public org.apache.james.mime4j.message.TextBody textBody(java.io.InputStream, java.lang.String)
+    {
+        org.apache.james.mime4j.storage.StorageProvider $r4;
+        java.lang.IllegalArgumentException $r8;
+        java.nio.charset.Charset $r6;
+        org.apache.james.mime4j.message.BodyFactory r0;
+        org.apache.james.mime4j.storage.Storage $r5;
+        java.lang.String $r3;
+        org.apache.james.mime4j.message.StorageTextBody $r7;
+        org.apache.james.mime4j.storage.MultiReferenceStorage $r1;
+        java.io.InputStream $r2;
+
+        r0 := @this: org.apache.james.mime4j.message.BodyFactory;
+
+        $r2 := @parameter0: java.io.InputStream;
+
+        $r3 := @parameter1: java.lang.String;
+
+        if $r2 == null goto label2;
+
+        if $r3 == null goto label1;
+
+        $r4 = r0.<org.apache.james.mime4j.message.BodyFactory: org.apache.james.mime4j.storage.StorageProvider storageProvider>;
+
+        $r5 = interfaceinvoke $r4.<org.apache.james.mime4j.storage.StorageProvider: org.apache.james.mime4j.storage.Storage store(java.io.InputStream)>($r2);
+
+        $r6 = staticinvoke <org.apache.james.mime4j.message.BodyFactory: java.nio.charset.Charset toJavaCharset(java.lang.String,boolean)>($r3, 0);
+
+        $r7 = new org.apache.james.mime4j.message.StorageTextBody;
+
+        $r1 = new org.apache.james.mime4j.storage.MultiReferenceStorage;
+
+        specialinvoke $r1.<org.apache.james.mime4j.storage.MultiReferenceStorage: void <init>(org.apache.james.mime4j.storage.Storage)>($r5);
+
+        specialinvoke $r7.<org.apache.james.mime4j.message.StorageTextBody: void <init>(org.apache.james.mime4j.storage.MultiReferenceStorage,java.nio.charset.Charset)>($r1, $r6);
+
+        return $r7;
+
+     label1:
+        $r8 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r8.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r8;
+
+     label2:
+        $r8 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r8.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r8;
+    }
+
+    public org.apache.james.mime4j.message.TextBody textBody(java.lang.String)
+    {
+        java.nio.charset.Charset $r2;
+        org.apache.james.mime4j.message.BodyFactory r0;
+        org.apache.james.mime4j.message.StringTextBody $r1;
+        java.lang.String $r3;
+        java.lang.IllegalArgumentException $r4;
+
+        r0 := @this: org.apache.james.mime4j.message.BodyFactory;
+
+        $r3 := @parameter0: java.lang.String;
+
+        if $r3 == null goto label1;
+
+        $r1 = new org.apache.james.mime4j.message.StringTextBody;
+
+        $r2 = <org.apache.james.mime4j.util.CharsetUtil: java.nio.charset.Charset DEFAULT_CHARSET>;
+
+        specialinvoke $r1.<org.apache.james.mime4j.message.StringTextBody: void <init>(java.lang.String,java.nio.charset.Charset)>($r3, $r2);
+
+        return $r1;
+
+     label1:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r4;
+    }
+
+    public org.apache.james.mime4j.message.TextBody textBody(java.lang.String, java.lang.String)
+    {
+        java.nio.charset.Charset $r1;
+        org.apache.james.mime4j.message.BodyFactory r0;
+        java.lang.String $r2, $r3;
+        org.apache.james.mime4j.message.StringTextBody $r4;
+        java.lang.IllegalArgumentException $r5;
+
+        r0 := @this: org.apache.james.mime4j.message.BodyFactory;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r3 := @parameter1: java.lang.String;
+
+        if $r2 == null goto label2;
+
+        if $r3 == null goto label1;
+
+        $r1 = staticinvoke <org.apache.james.mime4j.message.BodyFactory: java.nio.charset.Charset toJavaCharset(java.lang.String,boolean)>($r3, 1);
+
+        $r4 = new org.apache.james.mime4j.message.StringTextBody;
+
+        specialinvoke $r4.<org.apache.james.mime4j.message.StringTextBody: void <init>(java.lang.String,java.nio.charset.Charset)>($r2, $r1);
+
+        return $r4;
+
+     label1:
+        $r5 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r5.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r5;
+
+     label2:
+        $r5 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r5.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r5;
+    }
+
+    public org.apache.james.mime4j.message.TextBody textBody(org.apache.james.mime4j.storage.Storage)
+    {
+        java.nio.charset.Charset $r4;
+        org.apache.james.mime4j.message.BodyFactory r0;
+        org.apache.james.mime4j.storage.Storage $r3;
+        org.apache.james.mime4j.message.StorageTextBody $r1;
+        java.lang.IllegalArgumentException $r5;
+        org.apache.james.mime4j.storage.MultiReferenceStorage $r2;
+
+        r0 := @this: org.apache.james.mime4j.message.BodyFactory;
+
+        $r3 := @parameter0: org.apache.james.mime4j.storage.Storage;
+
+        if $r3 == null goto label1;
+
+        $r1 = new org.apache.james.mime4j.message.StorageTextBody;
+
+        $r2 = new org.apache.james.mime4j.storage.MultiReferenceStorage;
+
+        specialinvoke $r2.<org.apache.james.mime4j.storage.MultiReferenceStorage: void <init>(org.apache.james.mime4j.storage.Storage)>($r3);
+
+        $r4 = <org.apache.james.mime4j.util.CharsetUtil: java.nio.charset.Charset DEFAULT_CHARSET>;
+
+        specialinvoke $r1.<org.apache.james.mime4j.message.StorageTextBody: void <init>(org.apache.james.mime4j.storage.MultiReferenceStorage,java.nio.charset.Charset)>($r2, $r4);
+
+        return $r1;
+
+     label1:
+        $r5 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r5.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r5;
+    }
+
+    public org.apache.james.mime4j.message.TextBody textBody(org.apache.james.mime4j.storage.Storage, java.lang.String)
+    {
+        java.nio.charset.Charset $r2;
+        org.apache.james.mime4j.message.BodyFactory r0;
+        org.apache.james.mime4j.storage.Storage $r3;
+        java.lang.String $r4;
+        org.apache.james.mime4j.message.StorageTextBody $r5;
+        java.lang.IllegalArgumentException $r6;
+        org.apache.james.mime4j.storage.MultiReferenceStorage $r1;
+
+        r0 := @this: org.apache.james.mime4j.message.BodyFactory;
+
+        $r3 := @parameter0: org.apache.james.mime4j.storage.Storage;
+
+        $r4 := @parameter1: java.lang.String;
+
+        if $r3 == null goto label2;
+
+        if $r4 == null goto label1;
+
+        $r2 = staticinvoke <org.apache.james.mime4j.message.BodyFactory: java.nio.charset.Charset toJavaCharset(java.lang.String,boolean)>($r4, 0);
+
+        $r5 = new org.apache.james.mime4j.message.StorageTextBody;
+
+        $r1 = new org.apache.james.mime4j.storage.MultiReferenceStorage;
+
+        specialinvoke $r1.<org.apache.james.mime4j.storage.MultiReferenceStorage: void <init>(org.apache.james.mime4j.storage.Storage)>($r3);
+
+        specialinvoke $r5.<org.apache.james.mime4j.message.StorageTextBody: void <init>(org.apache.james.mime4j.storage.MultiReferenceStorage,java.nio.charset.Charset)>($r1, $r2);
+
+        return $r5;
+
+     label1:
+        $r6 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r6;
+
+     label2:
+        $r6 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r6;
+    }
+}

@@ -1,0 +1,251 @@
+public class com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient extends android.webkit.WebViewClient
+{
+    public com.adobe.mobile.MessageFullScreen message;
+
+    public void <init>(com.adobe.mobile.MessageFullScreen)
+    {
+        com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient r0;
+        com.adobe.mobile.MessageFullScreen $r1;
+
+        r0 := @this: com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient;
+
+        $r1 := @parameter0: com.adobe.mobile.MessageFullScreen;
+
+        specialinvoke r0.<android.webkit.WebViewClient: void <init>()>();
+
+        r0.<com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient: com.adobe.mobile.MessageFullScreen message> = $r1;
+
+        return;
+    }
+
+    public void dismissMessage(android.webkit.WebView)
+    {
+        java.lang.Object[] $r5;
+        android.view.ViewGroup $r4;
+        com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient r0;
+        com.adobe.mobile.MessageFullScreen $r3;
+        c.a.a.K $r6;
+        android.view.animation.TranslateAnimation $r1;
+        int $i0;
+        float $f0;
+        android.webkit.WebView $r2;
+
+        r0 := @this: com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient;
+
+        $r2 := @parameter0: android.webkit.WebView;
+
+        $r3 = r0.<com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient: com.adobe.mobile.MessageFullScreen message>;
+
+        $r4 = $r3.<com.adobe.mobile.MessageFullScreen: android.view.ViewGroup t>;
+
+        if $r4 != null goto label1;
+
+        $r5 = newarray (java.lang.Object)[0];
+
+        staticinvoke <com.adobe.mobile.StaticMethods: void b(java.lang.String,java.lang.Object[])>("Messages - unable to get root view group from os", $r5);
+
+        return;
+
+     label1:
+        $r1 = new android.view.animation.TranslateAnimation;
+
+        $i0 = virtualinvoke $r4.<android.view.ViewGroup: int getMeasuredHeight()>();
+
+        $f0 = (float) $i0;
+
+        specialinvoke $r1.<android.view.animation.TranslateAnimation: void <init>(float,float,float,float)>(0.0F, 0.0F, 0.0F, $f0);
+
+        virtualinvoke $r1.<android.view.animation.Animation: void setDuration(long)>(300L);
+
+        $r6 = new c.a.a.K;
+
+        specialinvoke $r6.<c.a.a.K: void <init>(com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient)>(r0);
+
+        virtualinvoke $r1.<android.view.animation.Animation: void setAnimationListener(android.view.animation.Animation$AnimationListener)>($r6);
+
+        virtualinvoke $r2.<android.webkit.WebView: void setAnimation(android.view.animation.Animation)>($r1);
+
+        $r3 = r0.<com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient: com.adobe.mobile.MessageFullScreen message>;
+
+        $r4 = $r3.<com.adobe.mobile.MessageFullScreen: android.view.ViewGroup t>;
+
+        virtualinvoke $r4.<android.view.ViewGroup: void removeView(android.view.View)>($r2);
+
+        return;
+    }
+
+    public boolean shouldOverrideUrlLoading(android.webkit.WebView, java.lang.String)
+    {
+        java.lang.Object[] $r15;
+        android.net.Uri $r12;
+        java.util.HashMap $r4;
+        android.content.Intent $r11;
+        c.a.a.Da $r7;
+        com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient r0;
+        java.math.BigDecimal $r6;
+        c.a.a.Ia $r8, $r9;
+        int $i0;
+        java.lang.String $r2, $r5, $r10;
+        android.webkit.WebView $r1;
+        boolean $z0;
+        java.lang.Exception $r14;
+        com.adobe.mobile.MessageFullScreen $r3;
+        android.app.Activity $r13;
+
+        r0 := @this: com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient;
+
+        $r1 := @parameter0: android.webkit.WebView;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean startsWith(java.lang.String)>("adbinapp");
+
+        if $z0 != 0 goto label01;
+
+        return 1;
+
+     label01:
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean contains(java.lang.CharSequence)>("cancel");
+
+        if $z0 == 0 goto label03;
+
+        $r3 = r0.<com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient: com.adobe.mobile.MessageFullScreen message>;
+
+        $z0 = $r3.<com.adobe.mobile.MessageFullScreen: boolean u>;
+
+        if $z0 == 0 goto label02;
+
+        virtualinvoke $r3.<c.a.a.I: void i()>();
+
+     label02:
+        virtualinvoke r0.<com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient: void dismissMessage(android.webkit.WebView)>($r1);
+
+        return 1;
+
+     label03:
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean contains(java.lang.CharSequence)>("confirm");
+
+        if $z0 == 0 goto label14;
+
+        $r3 = r0.<com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient: com.adobe.mobile.MessageFullScreen message>;
+
+        $z0 = $r3.<com.adobe.mobile.MessageFullScreen: boolean u>;
+
+        if $z0 == 0 goto label04;
+
+        virtualinvoke $r3.<c.a.a.I: void b()>();
+
+     label04:
+        virtualinvoke r0.<com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient: void dismissMessage(android.webkit.WebView)>($r1);
+
+        $i0 = virtualinvoke $r2.<java.lang.String: int indexOf(java.lang.String)>("url=");
+
+        if $i0 >= 0 goto label05;
+
+        return 1;
+
+     label05:
+        $i0 = $i0 + 4;
+
+        $r2 = virtualinvoke $r2.<java.lang.String: java.lang.String substring(int)>($i0);
+
+        $r4 = new java.util.HashMap;
+
+        specialinvoke $r4.<java.util.HashMap: void <init>()>();
+
+        virtualinvoke $r4.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("{userId}", "0");
+
+        virtualinvoke $r4.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("{trackingId}", "0");
+
+        $r3 = r0.<com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient: com.adobe.mobile.MessageFullScreen message>;
+
+        $r5 = $r3.<c.a.a.I: java.lang.String f>;
+
+        virtualinvoke $r4.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("{messageId}", $r5);
+
+        $r6 = staticinvoke <c.a.a.j: java.math.BigDecimal a()>();
+
+        $r5 = virtualinvoke $r6.<java.math.BigDecimal: java.lang.String toString()>();
+
+        virtualinvoke $r4.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("{lifetimeValue}", $r5);
+
+        $r7 = staticinvoke <c.a.a.Da: c.a.a.Da q()>();
+
+        $r8 = virtualinvoke $r7.<c.a.a.Da: c.a.a.Ia v()>();
+
+        $r9 = <c.a.a.Ia: c.a.a.Ia a>;
+
+        if $r8 != $r9 goto label10;
+
+        $r10 = staticinvoke <com.adobe.mobile.StaticMethods: java.lang.String H()>();
+
+        $r5 = "";
+
+        if $r10 != null goto label06;
+
+        $r10 = "";
+
+        goto label07;
+
+     label06:
+        $r10 = staticinvoke <com.adobe.mobile.StaticMethods: java.lang.String H()>();
+
+     label07:
+        virtualinvoke $r4.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("{userId}", $r10);
+
+        $r10 = staticinvoke <com.adobe.mobile.StaticMethods: java.lang.String b()>();
+
+        if $r10 != null goto label08;
+
+        goto label09;
+
+     label08:
+        $r5 = staticinvoke <com.adobe.mobile.StaticMethods: java.lang.String b()>();
+
+     label09:
+        virtualinvoke $r4.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("{trackingId}", $r5);
+
+     label10:
+        $r2 = staticinvoke <com.adobe.mobile.StaticMethods: java.lang.String a(java.lang.String,java.util.Map)>($r2, $r4);
+
+        if $r2 == null goto label14;
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean isEmpty()>();
+
+        if $z0 != 0 goto label14;
+
+        $r11 = new android.content.Intent;
+
+     label11:
+        specialinvoke $r11.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.VIEW");
+
+        $r12 = staticinvoke <android.net.Uri: android.net.Uri parse(java.lang.String)>($r2);
+
+        virtualinvoke $r11.<android.content.Intent: android.content.Intent setData(android.net.Uri)>($r12);
+
+        $r3 = r0.<com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient: com.adobe.mobile.MessageFullScreen message>;
+
+        $r13 = $r3.<com.adobe.mobile.MessageFullScreen: android.app.Activity s>;
+
+        virtualinvoke $r13.<android.app.Activity: void startActivity(android.content.Intent)>($r11);
+
+     label12:
+        return 1;
+
+     label13:
+        $r14 := @caughtexception;
+
+        $r15 = newarray (java.lang.Object)[1];
+
+        $r2 = virtualinvoke $r14.<java.lang.Exception: java.lang.String getMessage()>();
+
+        $r15[0] = $r2;
+
+        staticinvoke <com.adobe.mobile.StaticMethods: void a(java.lang.String,java.lang.Object[])>("Messages - unable to launch intent from full screen message (%s)", $r15);
+
+     label14:
+        return 1;
+
+        catch java.lang.Exception from label11 to label12 with label13;
+    }
+}

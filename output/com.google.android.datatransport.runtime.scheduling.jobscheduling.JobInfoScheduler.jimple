@@ -1,0 +1,299 @@
+public class com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler extends java.lang.Object implements com.google.android.datatransport.runtime.scheduling.jobscheduling.WorkScheduler
+{
+    public static final java.lang.String ATTEMPT_NUMBER;
+    public static final java.lang.String BACKEND_NAME;
+    public static final java.lang.String EVENT_PRIORITY;
+    public static final java.lang.String EXTRAS;
+    public static final java.lang.String LOG_TAG;
+    public final com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig config;
+    public final android.content.Context context;
+    public final com.google.android.datatransport.runtime.scheduling.persistence.EventStore eventStore;
+
+    public void <init>(android.content.Context, com.google.android.datatransport.runtime.scheduling.persistence.EventStore, com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig)
+    {
+        android.content.Context $r1;
+        com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig $r3;
+        com.google.android.datatransport.runtime.scheduling.persistence.EventStore $r2;
+        com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler r0;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 := @parameter1: com.google.android.datatransport.runtime.scheduling.persistence.EventStore;
+
+        $r3 := @parameter2: com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler: android.content.Context context> = $r1;
+
+        r0.<com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler: com.google.android.datatransport.runtime.scheduling.persistence.EventStore eventStore> = $r2;
+
+        r0.<com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler: com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig config> = $r3;
+
+        return;
+    }
+
+    private boolean isJobServiceOn(android.app.job.JobScheduler, int, int)
+    {
+        java.util.Iterator $r3;
+        android.app.job.JobScheduler $r1;
+        com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler r0;
+        java.util.List $r2;
+        int $i0, $i1, $i2, $i3;
+        android.os.PersistableBundle $r6;
+        java.lang.Object $r4;
+        android.app.job.JobInfo $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler;
+
+        $r1 := @parameter0: android.app.job.JobScheduler;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 = virtualinvoke $r1.<android.app.job.JobScheduler: java.util.List getAllPendingJobs()>();
+
+        $r3 = interfaceinvoke $r2.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (android.app.job.JobInfo) $r4;
+
+        $r6 = virtualinvoke $r5.<android.app.job.JobInfo: android.os.PersistableBundle getExtras()>();
+
+        $i2 = virtualinvoke $r6.<android.os.PersistableBundle: int getInt(java.lang.String)>("attemptNumber");
+
+        $i3 = virtualinvoke $r5.<android.app.job.JobInfo: int getId()>();
+
+        if $i3 != $i0 goto label1;
+
+        if $i2 < $i1 goto label2;
+
+        return 1;
+
+     label2:
+        return 0;
+    }
+
+    public int getJobId(com.google.android.datatransport.runtime.TransportContext)
+    {
+        android.content.Context $r3;
+        byte[] $r6;
+        com.google.android.datatransport.Priority $r8;
+        long $l1;
+        com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler r0;
+        java.nio.ByteBuffer $r7;
+        com.google.android.datatransport.runtime.TransportContext $r1;
+        java.util.zip.Adler32 $r2;
+        java.nio.charset.Charset $r5;
+        int $i0;
+        java.lang.String $r4;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler;
+
+        $r1 := @parameter0: com.google.android.datatransport.runtime.TransportContext;
+
+        $r2 = new java.util.zip.Adler32;
+
+        specialinvoke $r2.<java.util.zip.Adler32: void <init>()>();
+
+        $r3 = r0.<com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler: android.content.Context context>;
+
+        $r4 = virtualinvoke $r3.<android.content.Context: java.lang.String getPackageName()>();
+
+        $r5 = staticinvoke <java.nio.charset.Charset: java.nio.charset.Charset forName(java.lang.String)>("UTF-8");
+
+        $r6 = virtualinvoke $r4.<java.lang.String: byte[] getBytes(java.nio.charset.Charset)>($r5);
+
+        virtualinvoke $r2.<java.util.zip.Adler32: void update(byte[])>($r6);
+
+        $r4 = virtualinvoke $r1.<com.google.android.datatransport.runtime.TransportContext: java.lang.String getBackendName()>();
+
+        $r5 = staticinvoke <java.nio.charset.Charset: java.nio.charset.Charset forName(java.lang.String)>("UTF-8");
+
+        $r6 = virtualinvoke $r4.<java.lang.String: byte[] getBytes(java.nio.charset.Charset)>($r5);
+
+        virtualinvoke $r2.<java.util.zip.Adler32: void update(byte[])>($r6);
+
+        $r7 = staticinvoke <java.nio.ByteBuffer: java.nio.ByteBuffer allocate(int)>(4);
+
+        $r8 = virtualinvoke $r1.<com.google.android.datatransport.runtime.TransportContext: com.google.android.datatransport.Priority getPriority()>();
+
+        $i0 = staticinvoke <com.google.android.datatransport.runtime.util.PriorityMapping: int toInt(com.google.android.datatransport.Priority)>($r8);
+
+        $r7 = virtualinvoke $r7.<java.nio.ByteBuffer: java.nio.ByteBuffer putInt(int)>($i0);
+
+        $r6 = virtualinvoke $r7.<java.nio.ByteBuffer: byte[] array()>();
+
+        virtualinvoke $r2.<java.util.zip.Adler32: void update(byte[])>($r6);
+
+        $r6 = virtualinvoke $r1.<com.google.android.datatransport.runtime.TransportContext: byte[] getExtras()>();
+
+        if $r6 == null goto label1;
+
+        $r6 = virtualinvoke $r1.<com.google.android.datatransport.runtime.TransportContext: byte[] getExtras()>();
+
+        virtualinvoke $r2.<java.util.zip.Adler32: void update(byte[])>($r6);
+
+     label1:
+        $l1 = virtualinvoke $r2.<java.util.zip.Adler32: long getValue()>();
+
+        $i0 = (int) $l1;
+
+        return $i0;
+    }
+
+    public void schedule(com.google.android.datatransport.runtime.TransportContext, int)
+    {
+        android.content.Context $r3;
+        byte[] $r12;
+        java.lang.Object[] $r13;
+        long $l2, $l4;
+        java.lang.Integer $r14;
+        com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler r0;
+        com.google.android.datatransport.runtime.TransportContext $r1;
+        java.lang.Long $r15;
+        int $i0, $i1, $i3;
+        android.os.PersistableBundle $r10;
+        com.google.android.datatransport.runtime.scheduling.persistence.EventStore $r6;
+        android.app.job.JobInfo $r16;
+        java.lang.String $r11;
+        boolean $z0;
+        com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig $r7;
+        android.content.ComponentName $r2;
+        android.app.job.JobScheduler $r5;
+        com.google.android.datatransport.Priority $r9;
+        java.lang.Object $r4;
+        android.app.job.JobInfo$Builder $r8;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler;
+
+        $r1 := @parameter0: com.google.android.datatransport.runtime.TransportContext;
+
+        $i0 := @parameter1: int;
+
+        $r2 = new android.content.ComponentName;
+
+        $r3 = r0.<com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler: android.content.Context context>;
+
+        specialinvoke $r2.<android.content.ComponentName: void <init>(android.content.Context,java.lang.Class)>($r3, class "Lcom/google/android/datatransport/runtime/scheduling/jobscheduling/JobInfoSchedulerService;");
+
+        $r3 = r0.<com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler: android.content.Context context>;
+
+        $r4 = virtualinvoke $r3.<android.content.Context: java.lang.Object getSystemService(java.lang.String)>("jobscheduler");
+
+        $r5 = (android.app.job.JobScheduler) $r4;
+
+        $i1 = virtualinvoke r0.<com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler: int getJobId(com.google.android.datatransport.runtime.TransportContext)>($r1);
+
+        $z0 = specialinvoke r0.<com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler: boolean isJobServiceOn(android.app.job.JobScheduler,int,int)>($r5, $i1, $i0);
+
+        if $z0 == 0 goto label1;
+
+        staticinvoke <com.google.android.datatransport.runtime.logging.Logging: void d(java.lang.String,java.lang.String,java.lang.Object)>("JobInfoScheduler", "Upload for context %s is already scheduled. Returning...", $r1);
+
+        return;
+
+     label1:
+        $r6 = r0.<com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler: com.google.android.datatransport.runtime.scheduling.persistence.EventStore eventStore>;
+
+        $l2 = interfaceinvoke $r6.<com.google.android.datatransport.runtime.scheduling.persistence.EventStore: long getNextCallTime(com.google.android.datatransport.runtime.TransportContext)>($r1);
+
+        $r7 = r0.<com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler: com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig config>;
+
+        $r8 = new android.app.job.JobInfo$Builder;
+
+        specialinvoke $r8.<android.app.job.JobInfo$Builder: void <init>(int,android.content.ComponentName)>($i1, $r2);
+
+        $r9 = virtualinvoke $r1.<com.google.android.datatransport.runtime.TransportContext: com.google.android.datatransport.Priority getPriority()>();
+
+        $r8 = virtualinvoke $r7.<com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig: android.app.job.JobInfo$Builder configureJob(android.app.job.JobInfo$Builder,com.google.android.datatransport.Priority,long,int)>($r8, $r9, $l2, $i0);
+
+        $r10 = new android.os.PersistableBundle;
+
+        specialinvoke $r10.<android.os.PersistableBundle: void <init>()>();
+
+        virtualinvoke $r10.<android.os.PersistableBundle: void putInt(java.lang.String,int)>("attemptNumber", $i0);
+
+        $r11 = virtualinvoke $r1.<com.google.android.datatransport.runtime.TransportContext: java.lang.String getBackendName()>();
+
+        virtualinvoke $r10.<android.os.PersistableBundle: void putString(java.lang.String,java.lang.String)>("backendName", $r11);
+
+        $r9 = virtualinvoke $r1.<com.google.android.datatransport.runtime.TransportContext: com.google.android.datatransport.Priority getPriority()>();
+
+        $i3 = staticinvoke <com.google.android.datatransport.runtime.util.PriorityMapping: int toInt(com.google.android.datatransport.Priority)>($r9);
+
+        virtualinvoke $r10.<android.os.PersistableBundle: void putInt(java.lang.String,int)>("priority", $i3);
+
+        $r12 = virtualinvoke $r1.<com.google.android.datatransport.runtime.TransportContext: byte[] getExtras()>();
+
+        if $r12 == null goto label2;
+
+        $r12 = virtualinvoke $r1.<com.google.android.datatransport.runtime.TransportContext: byte[] getExtras()>();
+
+        $r11 = staticinvoke <android.util.Base64: java.lang.String encodeToString(byte[],int)>($r12, 0);
+
+        virtualinvoke $r10.<android.os.PersistableBundle: void putString(java.lang.String,java.lang.String)>("extras", $r11);
+
+     label2:
+        virtualinvoke $r8.<android.app.job.JobInfo$Builder: android.app.job.JobInfo$Builder setExtras(android.os.PersistableBundle)>($r10);
+
+        $r13 = newarray (java.lang.Object)[5];
+
+        $r13[0] = $r1;
+
+        $r14 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i1);
+
+        $r13[1] = $r14;
+
+        $r7 = r0.<com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler: com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig config>;
+
+        $r9 = virtualinvoke $r1.<com.google.android.datatransport.runtime.TransportContext: com.google.android.datatransport.Priority getPriority()>();
+
+        $l4 = virtualinvoke $r7.<com.google.android.datatransport.runtime.scheduling.jobscheduling.SchedulerConfig: long getScheduleDelay(com.google.android.datatransport.Priority,long,int)>($r9, $l2, $i0);
+
+        $r15 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l4);
+
+        $r13[2] = $r15;
+
+        $r15 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l2);
+
+        $r13[3] = $r15;
+
+        $r14 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r13[4] = $r14;
+
+        staticinvoke <com.google.android.datatransport.runtime.logging.Logging: void d(java.lang.String,java.lang.String,java.lang.Object[])>("JobInfoScheduler", "Scheduling upload for context %s with jobId=%d in %dms(Backend next call timestamp %d). Attempt %d", $r13);
+
+        $r16 = virtualinvoke $r8.<android.app.job.JobInfo$Builder: android.app.job.JobInfo build()>();
+
+        virtualinvoke $r5.<android.app.job.JobScheduler: int schedule(android.app.job.JobInfo)>($r16);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler: java.lang.String LOG_TAG> = "JobInfoScheduler";
+
+        <com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler: java.lang.String EXTRAS> = "extras";
+
+        <com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler: java.lang.String EVENT_PRIORITY> = "priority";
+
+        <com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler: java.lang.String BACKEND_NAME> = "backendName";
+
+        <com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoScheduler: java.lang.String ATTEMPT_NUMBER> = "attemptNumber";
+
+        return;
+    }
+}

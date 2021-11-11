@@ -1,0 +1,1483 @@
+public final class com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder extends java.lang.Object
+{
+    public final java.lang.StringBuilder buffer;
+    public final com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current;
+    public final com.google.zxing.common.BitArray information;
+
+    public void <init>(com.google.zxing.common.BitArray)
+    {
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState $r2;
+        java.lang.StringBuilder $r3;
+        com.google.zxing.common.BitArray $r1;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+        $r1 := @parameter0: com.google.zxing.common.BitArray;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r2 = new com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState;
+
+        specialinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void <init>()>();
+
+        r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current> = $r2;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: java.lang.StringBuilder buffer> = $r3;
+
+        r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information> = $r1;
+
+        return;
+    }
+
+    private com.google.zxing.oned.rss.expanded.decoders.DecodedChar decodeAlphanumeric(int)
+    {
+        com.google.zxing.oned.rss.expanded.decoders.DecodedChar $r1;
+        java.lang.IllegalStateException $r2;
+        char $c2;
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        int $i0, $i1;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r4;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+        $i0 := @parameter0: int;
+
+        $i1 = virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: int extractNumericValueFromBitArray(int,int)>($i0, 5);
+
+        if $i1 != 15 goto label01;
+
+        $r1 = new com.google.zxing.oned.rss.expanded.decoders.DecodedChar;
+
+        $i0 = $i0 + 5;
+
+        specialinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.DecodedChar: void <init>(int,char)>($i0, 36);
+
+        return $r1;
+
+     label01:
+        if $i1 < 5 goto label02;
+
+        if $i1 >= 15 goto label02;
+
+        $r1 = new com.google.zxing.oned.rss.expanded.decoders.DecodedChar;
+
+        $i0 = $i0 + 5;
+
+        $i1 = $i1 + 48;
+
+        $i1 = $i1 - 5;
+
+        $c2 = (char) $i1;
+
+        specialinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.DecodedChar: void <init>(int,char)>($i0, $c2);
+
+        return $r1;
+
+     label02:
+        $i1 = virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: int extractNumericValueFromBitArray(int,int)>($i0, 6);
+
+        if $i1 < 32 goto label03;
+
+        if $i1 >= 58 goto label03;
+
+        $r1 = new com.google.zxing.oned.rss.expanded.decoders.DecodedChar;
+
+        $i0 = $i0 + 6;
+
+        $i1 = $i1 + 33;
+
+        $c2 = (char) $i1;
+
+        specialinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.DecodedChar: void <init>(int,char)>($i0, $c2);
+
+        return $r1;
+
+     label03:
+        lookupswitch($i1)
+        {
+            case 58: goto label09;
+            case 59: goto label08;
+            case 60: goto label07;
+            case 61: goto label06;
+            case 62: goto label05;
+            default: goto label04;
+        };
+
+     label04:
+        $r2 = new java.lang.IllegalStateException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Decoding invalid alphanumeric value: ");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r4);
+
+        throw $r2;
+
+     label05:
+        $c2 = 47;
+
+        goto label10;
+
+     label06:
+        $c2 = 46;
+
+        goto label10;
+
+     label07:
+        $c2 = 45;
+
+        goto label10;
+
+     label08:
+        $c2 = 44;
+
+        goto label10;
+
+     label09:
+        $c2 = 42;
+
+     label10:
+        $r1 = new com.google.zxing.oned.rss.expanded.decoders.DecodedChar;
+
+        $i0 = $i0 + 6;
+
+        specialinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.DecodedChar: void <init>(int,char)>($i0, $c2);
+
+        return $r1;
+    }
+
+    private com.google.zxing.oned.rss.expanded.decoders.DecodedChar decodeIsoIec646(int)
+    {
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        com.google.zxing.oned.rss.expanded.decoders.DecodedChar $r1;
+        int $i0, $i1;
+        char $c2;
+        com.google.zxing.FormatException $r2;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+        $i0 := @parameter0: int;
+
+        $i1 = virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: int extractNumericValueFromBitArray(int,int)>($i0, 5);
+
+        if $i1 != 15 goto label01;
+
+        $r1 = new com.google.zxing.oned.rss.expanded.decoders.DecodedChar;
+
+        $i0 = $i0 + 5;
+
+        specialinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.DecodedChar: void <init>(int,char)>($i0, 36);
+
+        return $r1;
+
+     label01:
+        if $i1 < 5 goto label02;
+
+        if $i1 >= 15 goto label02;
+
+        $r1 = new com.google.zxing.oned.rss.expanded.decoders.DecodedChar;
+
+        $i0 = $i0 + 5;
+
+        $i1 = $i1 + 48;
+
+        $i1 = $i1 - 5;
+
+        $c2 = (char) $i1;
+
+        specialinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.DecodedChar: void <init>(int,char)>($i0, $c2);
+
+        return $r1;
+
+     label02:
+        $i1 = virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: int extractNumericValueFromBitArray(int,int)>($i0, 7);
+
+        if $i1 < 64 goto label03;
+
+        if $i1 >= 90 goto label03;
+
+        $r1 = new com.google.zxing.oned.rss.expanded.decoders.DecodedChar;
+
+        $i0 = $i0 + 7;
+
+        $i1 = $i1 + 1;
+
+        $c2 = (char) $i1;
+
+        specialinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.DecodedChar: void <init>(int,char)>($i0, $c2);
+
+        return $r1;
+
+     label03:
+        if $i1 < 90 goto label04;
+
+        if $i1 >= 116 goto label04;
+
+        $r1 = new com.google.zxing.oned.rss.expanded.decoders.DecodedChar;
+
+        $i0 = $i0 + 7;
+
+        $i1 = $i1 + 7;
+
+        $c2 = (char) $i1;
+
+        specialinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.DecodedChar: void <init>(int,char)>($i0, $c2);
+
+        return $r1;
+
+     label04:
+        $i1 = virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: int extractNumericValueFromBitArray(int,int)>($i0, 8);
+
+        lookupswitch($i1)
+        {
+            case 232: goto label26;
+            case 233: goto label25;
+            case 234: goto label24;
+            case 235: goto label23;
+            case 236: goto label22;
+            case 237: goto label21;
+            case 238: goto label20;
+            case 239: goto label19;
+            case 240: goto label18;
+            case 241: goto label17;
+            case 242: goto label16;
+            case 243: goto label15;
+            case 244: goto label14;
+            case 245: goto label13;
+            case 246: goto label12;
+            case 247: goto label11;
+            case 248: goto label10;
+            case 249: goto label09;
+            case 250: goto label08;
+            case 251: goto label07;
+            case 252: goto label06;
+            default: goto label05;
+        };
+
+     label05:
+        $r2 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        throw $r2;
+
+     label06:
+        $c2 = 32;
+
+        goto label27;
+
+     label07:
+        $c2 = 95;
+
+        goto label27;
+
+     label08:
+        $c2 = 63;
+
+        goto label27;
+
+     label09:
+        $c2 = 62;
+
+        goto label27;
+
+     label10:
+        $c2 = 61;
+
+        goto label27;
+
+     label11:
+        $c2 = 60;
+
+        goto label27;
+
+     label12:
+        $c2 = 59;
+
+        goto label27;
+
+     label13:
+        $c2 = 58;
+
+        goto label27;
+
+     label14:
+        $c2 = 47;
+
+        goto label27;
+
+     label15:
+        $c2 = 46;
+
+        goto label27;
+
+     label16:
+        $c2 = 45;
+
+        goto label27;
+
+     label17:
+        $c2 = 44;
+
+        goto label27;
+
+     label18:
+        $c2 = 43;
+
+        goto label27;
+
+     label19:
+        $c2 = 42;
+
+        goto label27;
+
+     label20:
+        $c2 = 41;
+
+        goto label27;
+
+     label21:
+        $c2 = 40;
+
+        goto label27;
+
+     label22:
+        $c2 = 39;
+
+        goto label27;
+
+     label23:
+        $c2 = 38;
+
+        goto label27;
+
+     label24:
+        $c2 = 37;
+
+        goto label27;
+
+     label25:
+        $c2 = 34;
+
+        goto label27;
+
+     label26:
+        $c2 = 33;
+
+     label27:
+        $r1 = new com.google.zxing.oned.rss.expanded.decoders.DecodedChar;
+
+        $i0 = $i0 + 8;
+
+        specialinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.DecodedChar: void <init>(int,char)>($i0, $c2);
+
+        return $r1;
+    }
+
+    private com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric decodeNumeric(int)
+    {
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        int $i0, $i1, $i2;
+        com.google.zxing.common.BitArray $r1;
+        com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric $r2;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+        $i0 := @parameter0: int;
+
+        $i1 = $i0 + 7;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i2 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        if $i1 <= $i2 goto label2;
+
+        $i1 = virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: int extractNumericValueFromBitArray(int,int)>($i0, 4);
+
+        if $i1 != 0 goto label1;
+
+        $r2 = new com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        specialinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric: void <init>(int,int,int)>($i0, 10, 10);
+
+        return $r2;
+
+     label1:
+        $r2 = new com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        specialinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric: void <init>(int,int,int)>($i0, $i1, 10);
+
+        return $r2;
+
+     label2:
+        $i0 = virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: int extractNumericValueFromBitArray(int,int)>($i0, 7);
+
+        $i2 = -8;
+
+        $i2 = $i0 + $i2;
+
+        $i0 = $i2 / 11;
+
+        $i2 = $i2 % 11;
+
+        $r2 = new com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric;
+
+        specialinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric: void <init>(int,int,int)>($i1, $i0, $i2);
+
+        return $r2;
+    }
+
+    public static int extractNumericValueFromBitArray(com.google.zxing.common.BitArray, int, int)
+    {
+        int $i0, $i1, $i2, $i3, $i4;
+        com.google.zxing.common.BitArray $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: com.google.zxing.common.BitArray;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 = 0;
+
+        $i3 = 0;
+
+     label1:
+        if $i2 >= $i1 goto label3;
+
+        $i4 = $i0 + $i2;
+
+        $z0 = virtualinvoke $r0.<com.google.zxing.common.BitArray: boolean get(int)>($i4);
+
+        if $z0 == 0 goto label2;
+
+        $i4 = $i1 - $i2;
+
+        $i4 = $i4 - 1;
+
+        $i4 = 1 << $i4;
+
+        $i3 = $i3 | $i4;
+
+     label2:
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label3:
+        return $i3;
+    }
+
+    private boolean isAlphaOr646ToNumericLatch(int)
+    {
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        int $i0, $i1, $i2;
+        com.google.zxing.common.BitArray $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+        $i1 := @parameter0: int;
+
+        $i0 = $i1 + 3;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i2 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        if $i0 <= $i2 goto label1;
+
+        return 0;
+
+     label1:
+        if $i1 >= $i0 goto label3;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $z0 = virtualinvoke $r1.<com.google.zxing.common.BitArray: boolean get(int)>($i1);
+
+        if $z0 == 0 goto label2;
+
+        return 0;
+
+     label2:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label3:
+        return 1;
+    }
+
+    private boolean isAlphaTo646ToAlphaLatch(int)
+    {
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        int $i0, $i1, $i2, $i3;
+        com.google.zxing.common.BitArray $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+        $i0 := @parameter0: int;
+
+        $i1 = $i0 + 1;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i2 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        if $i1 <= $i2 goto label1;
+
+        return 0;
+
+     label1:
+        $i1 = 0;
+
+     label2:
+        if $i1 >= 5 goto label5;
+
+        $i2 = $i1 + $i0;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i3 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        if $i2 >= $i3 goto label5;
+
+        if $i1 != 2 goto label3;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i2 = $i0 + 2;
+
+        $z0 = virtualinvoke $r1.<com.google.zxing.common.BitArray: boolean get(int)>($i2);
+
+        if $z0 != 0 goto label4;
+
+        return 0;
+
+     label3:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $z0 = virtualinvoke $r1.<com.google.zxing.common.BitArray: boolean get(int)>($i2);
+
+        if $z0 == 0 goto label4;
+
+        return 0;
+
+     label4:
+        $i1 = $i1 + 1;
+
+        goto label2;
+
+     label5:
+        return 1;
+    }
+
+    private boolean isNumericToAlphaNumericLatch(int)
+    {
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        int $i0, $i1, $i2, $i3;
+        com.google.zxing.common.BitArray $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+        $i0 := @parameter0: int;
+
+        $i1 = $i0 + 1;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i2 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        if $i1 <= $i2 goto label1;
+
+        return 0;
+
+     label1:
+        $i1 = 0;
+
+     label2:
+        if $i1 >= 4 goto label4;
+
+        $i2 = $i1 + $i0;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i3 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        if $i2 >= $i3 goto label4;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $z0 = virtualinvoke $r1.<com.google.zxing.common.BitArray: boolean get(int)>($i2);
+
+        if $z0 == 0 goto label3;
+
+        return 0;
+
+     label3:
+        $i1 = $i1 + 1;
+
+        goto label2;
+
+     label4:
+        return 1;
+    }
+
+    private boolean isStillAlpha(int)
+    {
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        int $i0, $i1, $i2;
+        com.google.zxing.common.BitArray $r1;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+        $i0 := @parameter0: int;
+
+        $i1 = $i0 + 5;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i2 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        if $i1 <= $i2 goto label1;
+
+        return 0;
+
+     label1:
+        $i1 = virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: int extractNumericValueFromBitArray(int,int)>($i0, 5);
+
+        if $i1 < 5 goto label2;
+
+        if $i1 >= 16 goto label2;
+
+        return 1;
+
+     label2:
+        $i1 = $i0 + 6;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i2 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        if $i1 <= $i2 goto label3;
+
+        return 0;
+
+     label3:
+        $i0 = virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: int extractNumericValueFromBitArray(int,int)>($i0, 6);
+
+        if $i0 < 16 goto label4;
+
+        if $i0 >= 63 goto label4;
+
+        return 1;
+
+     label4:
+        return 0;
+    }
+
+    private boolean isStillIsoIec646(int)
+    {
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        int $i0, $i1, $i2;
+        com.google.zxing.common.BitArray $r1;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+        $i0 := @parameter0: int;
+
+        $i1 = $i0 + 5;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i2 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        if $i1 <= $i2 goto label1;
+
+        return 0;
+
+     label1:
+        $i1 = virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: int extractNumericValueFromBitArray(int,int)>($i0, 5);
+
+        if $i1 < 5 goto label2;
+
+        if $i1 >= 16 goto label2;
+
+        return 1;
+
+     label2:
+        $i1 = $i0 + 7;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i2 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        if $i1 <= $i2 goto label3;
+
+        return 0;
+
+     label3:
+        $i1 = virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: int extractNumericValueFromBitArray(int,int)>($i0, 7);
+
+        if $i1 < 64 goto label4;
+
+        if $i1 >= 116 goto label4;
+
+        return 1;
+
+     label4:
+        $i1 = $i0 + 8;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i2 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        if $i1 <= $i2 goto label5;
+
+        return 0;
+
+     label5:
+        $i0 = virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: int extractNumericValueFromBitArray(int,int)>($i0, 8);
+
+        if $i0 < 232 goto label6;
+
+        if $i0 >= 253 goto label6;
+
+        return 1;
+
+     label6:
+        return 0;
+    }
+
+    private boolean isStillNumeric(int)
+    {
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        int $i0, $i1, $i2;
+        com.google.zxing.common.BitArray $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+        $i0 := @parameter0: int;
+
+        $i1 = $i0 + 7;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i2 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        if $i1 <= $i2 goto label2;
+
+        $i0 = $i0 + 4;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i1 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        if $i0 > $i1 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+
+     label2:
+        $i1 = $i0;
+
+     label3:
+        $i2 = $i0 + 3;
+
+        if $i1 >= $i2 goto label5;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $z0 = virtualinvoke $r1.<com.google.zxing.common.BitArray: boolean get(int)>($i1);
+
+        if $z0 == 0 goto label4;
+
+        return 1;
+
+     label4:
+        $i1 = $i1 + 1;
+
+        goto label3;
+
+     label5:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $z0 = virtualinvoke $r1.<com.google.zxing.common.BitArray: boolean get(int)>($i2);
+
+        return $z0;
+    }
+
+    private com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult parseAlphaBlock()
+    {
+        com.google.zxing.oned.rss.expanded.decoders.DecodedChar $r2;
+        com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState $r1;
+        char $c1;
+        com.google.zxing.common.BitArray $r7;
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        com.google.zxing.oned.rss.expanded.decoders.DecodedInformation $r3;
+        int $i0, $i2;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r5;
+        boolean $z0;
+        com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult $r6;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+     label1:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $z0 = specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: boolean isStillAlpha(int)>($i0);
+
+        if $z0 == 0 goto label3;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $r2 = specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.DecodedChar decodeAlphanumeric(int)>($i0);
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.DecodedObject: int getNewPosition()>();
+
+        virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void setPosition(int)>($i0);
+
+        $z0 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.DecodedChar: boolean isFNC1()>();
+
+        if $z0 == 0 goto label2;
+
+        $r3 = new com.google.zxing.oned.rss.expanded.decoders.DecodedInformation;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $r4 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: java.lang.StringBuilder buffer>;
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<com.google.zxing.oned.rss.expanded.decoders.DecodedInformation: void <init>(int,java.lang.String)>($i0, $r5);
+
+        $r6 = new com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult;
+
+        specialinvoke $r6.<com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult: void <init>(com.google.zxing.oned.rss.expanded.decoders.DecodedInformation,boolean)>($r3, 1);
+
+        return $r6;
+
+     label2:
+        $r4 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: java.lang.StringBuilder buffer>;
+
+        $c1 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.DecodedChar: char getValue()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c1);
+
+        goto label1;
+
+     label3:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $z0 = specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: boolean isAlphaOr646ToNumericLatch(int)>($i0);
+
+        if $z0 == 0 goto label4;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void incrementPosition(int)>(3);
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void setNumeric()>();
+
+        goto label7;
+
+     label4:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $z0 = specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: boolean isAlphaTo646ToAlphaLatch(int)>($i0);
+
+        if $z0 == 0 goto label7;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $i0 = $i0 + 5;
+
+        $r7 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i2 = virtualinvoke $r7.<com.google.zxing.common.BitArray: int getSize()>();
+
+        if $i0 >= $i2 goto label5;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void incrementPosition(int)>(5);
+
+        goto label6;
+
+     label5:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $r7 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i0 = virtualinvoke $r7.<com.google.zxing.common.BitArray: int getSize()>();
+
+        virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void setPosition(int)>($i0);
+
+     label6:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void setIsoIec646()>();
+
+     label7:
+        $r6 = new com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult;
+
+        specialinvoke $r6.<com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult: void <init>(boolean)>(0);
+
+        return $r6;
+    }
+
+    private com.google.zxing.oned.rss.expanded.decoders.DecodedInformation parseBlocks()
+    {
+        com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState $r1;
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        com.google.zxing.oned.rss.expanded.decoders.DecodedInformation $r4;
+        int $i0, $i1;
+        boolean $z0, $z1;
+        com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult $r2, $r3;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+     label1:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $z0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: boolean isAlpha()>();
+
+        if $z0 == 0 goto label2;
+
+        $r2 = specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult parseAlphaBlock()>();
+
+        $r3 = $r2;
+
+        $z0 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult: boolean isFinished()>();
+
+        goto label4;
+
+     label2:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $z0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: boolean isIsoIec646()>();
+
+        if $z0 == 0 goto label3;
+
+        $r2 = specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult parseIsoIec646Block()>();
+
+        $r3 = $r2;
+
+        $z0 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult: boolean isFinished()>();
+
+        goto label4;
+
+     label3:
+        $r2 = specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult parseNumericBlock()>();
+
+        $r3 = $r2;
+
+        $z0 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult: boolean isFinished()>();
+
+     label4:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i1 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        if $i0 == $i1 goto label5;
+
+        $z1 = 1;
+
+        goto label6;
+
+     label5:
+        $z1 = 0;
+
+     label6:
+        if $z1 != 0 goto label7;
+
+        if $z0 != 0 goto label7;
+
+        goto label8;
+
+     label7:
+        if $z0 == 0 goto label1;
+
+     label8:
+        $r4 = virtualinvoke $r3.<com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult: com.google.zxing.oned.rss.expanded.decoders.DecodedInformation getDecodedInformation()>();
+
+        return $r4;
+    }
+
+    private com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult parseIsoIec646Block()
+    {
+        com.google.zxing.oned.rss.expanded.decoders.DecodedChar $r2;
+        com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState $r1;
+        char $c1;
+        com.google.zxing.common.BitArray $r7;
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        com.google.zxing.oned.rss.expanded.decoders.DecodedInformation $r3;
+        int $i0, $i2;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r5;
+        boolean $z0;
+        com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult $r6;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+     label1:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $z0 = specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: boolean isStillIsoIec646(int)>($i0);
+
+        if $z0 == 0 goto label3;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $r2 = specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.DecodedChar decodeIsoIec646(int)>($i0);
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.DecodedObject: int getNewPosition()>();
+
+        virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void setPosition(int)>($i0);
+
+        $z0 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.DecodedChar: boolean isFNC1()>();
+
+        if $z0 == 0 goto label2;
+
+        $r3 = new com.google.zxing.oned.rss.expanded.decoders.DecodedInformation;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $r4 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: java.lang.StringBuilder buffer>;
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<com.google.zxing.oned.rss.expanded.decoders.DecodedInformation: void <init>(int,java.lang.String)>($i0, $r5);
+
+        $r6 = new com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult;
+
+        specialinvoke $r6.<com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult: void <init>(com.google.zxing.oned.rss.expanded.decoders.DecodedInformation,boolean)>($r3, 1);
+
+        return $r6;
+
+     label2:
+        $r4 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: java.lang.StringBuilder buffer>;
+
+        $c1 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.DecodedChar: char getValue()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c1);
+
+        goto label1;
+
+     label3:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $z0 = specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: boolean isAlphaOr646ToNumericLatch(int)>($i0);
+
+        if $z0 == 0 goto label4;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void incrementPosition(int)>(3);
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void setNumeric()>();
+
+        goto label7;
+
+     label4:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $z0 = specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: boolean isAlphaTo646ToAlphaLatch(int)>($i0);
+
+        if $z0 == 0 goto label7;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $i0 = $i0 + 5;
+
+        $r7 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i2 = virtualinvoke $r7.<com.google.zxing.common.BitArray: int getSize()>();
+
+        if $i0 >= $i2 goto label5;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void incrementPosition(int)>(5);
+
+        goto label6;
+
+     label5:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $r7 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i0 = virtualinvoke $r7.<com.google.zxing.common.BitArray: int getSize()>();
+
+        virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void setPosition(int)>($i0);
+
+     label6:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void setAlpha()>();
+
+     label7:
+        $r6 = new com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult;
+
+        specialinvoke $r6.<com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult: void <init>(boolean)>(0);
+
+        return $r6;
+    }
+
+    private com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult parseNumericBlock()
+    {
+        com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState $r1;
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        com.google.zxing.oned.rss.expanded.decoders.DecodedInformation $r3;
+        int $i0, $i1;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r5;
+        com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric $r2;
+        boolean $z0;
+        com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult $r6;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+     label1:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $z0 = specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: boolean isStillNumeric(int)>($i0);
+
+        if $z0 == 0 goto label6;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $r2 = specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric decodeNumeric(int)>($i0);
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.DecodedObject: int getNewPosition()>();
+
+        virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void setPosition(int)>($i0);
+
+        $z0 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric: boolean isFirstDigitFNC1()>();
+
+        if $z0 == 0 goto label4;
+
+        $z0 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric: boolean isSecondDigitFNC1()>();
+
+        if $z0 == 0 goto label2;
+
+        $r3 = new com.google.zxing.oned.rss.expanded.decoders.DecodedInformation;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $r4 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: java.lang.StringBuilder buffer>;
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<com.google.zxing.oned.rss.expanded.decoders.DecodedInformation: void <init>(int,java.lang.String)>($i0, $r5);
+
+        goto label3;
+
+     label2:
+        $r3 = new com.google.zxing.oned.rss.expanded.decoders.DecodedInformation;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $r4 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: java.lang.StringBuilder buffer>;
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i1 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric: int getSecondDigit()>();
+
+        specialinvoke $r3.<com.google.zxing.oned.rss.expanded.decoders.DecodedInformation: void <init>(int,java.lang.String,int)>($i0, $r5, $i1);
+
+     label3:
+        $r6 = new com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult;
+
+        specialinvoke $r6.<com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult: void <init>(com.google.zxing.oned.rss.expanded.decoders.DecodedInformation,boolean)>($r3, 1);
+
+        return $r6;
+
+     label4:
+        $r4 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: java.lang.StringBuilder buffer>;
+
+        $i0 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric: int getFirstDigit()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $z0 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric: boolean isSecondDigitFNC1()>();
+
+        if $z0 == 0 goto label5;
+
+        $r3 = new com.google.zxing.oned.rss.expanded.decoders.DecodedInformation;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $r4 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: java.lang.StringBuilder buffer>;
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<com.google.zxing.oned.rss.expanded.decoders.DecodedInformation: void <init>(int,java.lang.String)>($i0, $r5);
+
+        $r6 = new com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult;
+
+        specialinvoke $r6.<com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult: void <init>(com.google.zxing.oned.rss.expanded.decoders.DecodedInformation,boolean)>($r3, 1);
+
+        return $r6;
+
+     label5:
+        $r4 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: java.lang.StringBuilder buffer>;
+
+        $i0 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.DecodedNumeric: int getSecondDigit()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        goto label1;
+
+     label6:
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $z0 = specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: boolean isNumericToAlphaNumericLatch(int)>($i0);
+
+        if $z0 == 0 goto label7;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void setAlpha()>();
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        virtualinvoke $r1.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void incrementPosition(int)>(4);
+
+     label7:
+        $r6 = new com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult;
+
+        specialinvoke $r6.<com.google.zxing.oned.rss.expanded.decoders.BlockParsedResult: void <init>(boolean)>(0);
+
+        return $r6;
+    }
+
+    public java.lang.String decodeAllCodes(java.lang.StringBuilder, int)
+    {
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        com.google.zxing.oned.rss.expanded.decoders.DecodedInformation $r3;
+        int $i0, $i1;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+        $r1 := @parameter0: java.lang.StringBuilder;
+
+        $i0 := @parameter1: int;
+
+        $r2 = null;
+
+     label1:
+        $r3 = virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.DecodedInformation decodeGeneralPurposeField(int,java.lang.String)>($i0, $r2);
+
+        $r2 = virtualinvoke $r3.<com.google.zxing.oned.rss.expanded.decoders.DecodedInformation: java.lang.String getNewString()>();
+
+        $r2 = staticinvoke <com.google.zxing.oned.rss.expanded.decoders.FieldParser: java.lang.String parseFieldsInGeneralPurpose(java.lang.String)>($r2);
+
+        if $r2 == null goto label2;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+     label2:
+        $z0 = virtualinvoke $r3.<com.google.zxing.oned.rss.expanded.decoders.DecodedInformation: boolean isRemaining()>();
+
+        if $z0 == 0 goto label3;
+
+        $i1 = virtualinvoke $r3.<com.google.zxing.oned.rss.expanded.decoders.DecodedInformation: int getRemainingValue()>();
+
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i1);
+
+        goto label4;
+
+     label3:
+        $r2 = null;
+
+     label4:
+        $i1 = virtualinvoke $r3.<com.google.zxing.oned.rss.expanded.decoders.DecodedObject: int getNewPosition()>();
+
+        if $i0 != $i1 goto label5;
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r2;
+
+     label5:
+        $i0 = virtualinvoke $r3.<com.google.zxing.oned.rss.expanded.decoders.DecodedObject: int getNewPosition()>();
+
+        goto label1;
+    }
+
+    public com.google.zxing.oned.rss.expanded.decoders.DecodedInformation decodeGeneralPurposeField(int, java.lang.String)
+    {
+        com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState $r3;
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        com.google.zxing.oned.rss.expanded.decoders.DecodedInformation $r4, $r5;
+        int $i0, $i1;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: java.lang.StringBuilder buffer>;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: void setLength(int)>(0);
+
+        if $r1 == null goto label1;
+
+        $r2 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: java.lang.StringBuilder buffer>;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+     label1:
+        $r3 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        virtualinvoke $r3.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: void setPosition(int)>($i0);
+
+        $r4 = specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.DecodedInformation parseBlocks()>();
+
+        if $r4 == null goto label2;
+
+        $z0 = virtualinvoke $r4.<com.google.zxing.oned.rss.expanded.decoders.DecodedInformation: boolean isRemaining()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = new com.google.zxing.oned.rss.expanded.decoders.DecodedInformation;
+
+        $r3 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r3.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $r2 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: java.lang.StringBuilder buffer>;
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i1 = virtualinvoke $r4.<com.google.zxing.oned.rss.expanded.decoders.DecodedInformation: int getRemainingValue()>();
+
+        specialinvoke $r5.<com.google.zxing.oned.rss.expanded.decoders.DecodedInformation: void <init>(int,java.lang.String,int)>($i0, $r1, $i1);
+
+        return $r5;
+
+     label2:
+        $r4 = new com.google.zxing.oned.rss.expanded.decoders.DecodedInformation;
+
+        $r3 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState current>;
+
+        $i0 = virtualinvoke $r3.<com.google.zxing.oned.rss.expanded.decoders.CurrentParsingState: int getPosition()>();
+
+        $r2 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: java.lang.StringBuilder buffer>;
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<com.google.zxing.oned.rss.expanded.decoders.DecodedInformation: void <init>(int,java.lang.String)>($i0, $r1);
+
+        return $r4;
+    }
+
+    public int extractNumericValueFromBitArray(int, int)
+    {
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder r0;
+        int $i0, $i1;
+        com.google.zxing.common.BitArray $r1;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder;
+
+        $i1 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $r1 = r0.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: com.google.zxing.common.BitArray information>;
+
+        $i1 = staticinvoke <com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: int extractNumericValueFromBitArray(com.google.zxing.common.BitArray,int,int)>($r1, $i1, $i0);
+
+        return $i1;
+    }
+}

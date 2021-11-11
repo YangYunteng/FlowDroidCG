@@ -1,0 +1,932 @@
+public class com.crashlytics.android.answers.Answers extends f.a.a.a.l
+{
+    public static final java.lang.String CRASHLYTICS_API_ENDPOINT;
+    public static final java.lang.String TAG;
+    public com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager;
+    public boolean firebaseEnabled;
+
+    public void <init>()
+    {
+        com.crashlytics.android.answers.Answers r0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        specialinvoke r0.<f.a.a.a.l: void <init>()>();
+
+        r0.<com.crashlytics.android.answers.Answers: boolean firebaseEnabled> = 0;
+
+        return;
+    }
+
+    public static com.crashlytics.android.answers.Answers getInstance()
+    {
+        com.crashlytics.android.answers.Answers $r1;
+        f.a.a.a.l $r0;
+
+        $r0 = staticinvoke <f.a.a.a.f: f.a.a.a.l a(java.lang.Class)>(class "Lcom/crashlytics/android/answers/Answers;");
+
+        $r1 = (com.crashlytics.android.answers.Answers) $r0;
+
+        return $r1;
+    }
+
+    private void logFirebaseModeEnabledWarning(java.lang.String)
+    {
+        f.a.a.a.o $r2;
+        java.lang.StringBuilder $r3;
+        com.crashlytics.android.answers.Answers r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Method ");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" is not supported when using Crashlytics through Firebase.");
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r2.<f.a.a.a.o: void a(java.lang.String,java.lang.String)>("Answers", $r1);
+
+        return;
+    }
+
+    public java.lang.Boolean doInBackground()
+    {
+        f.a.a.a.a.b.o $r2;
+        android.content.Context $r1;
+        f.a.a.a.o $r4;
+        f.a.a.a.a.g.n $r8;
+        java.lang.Exception $r12;
+        f.a.a.a.a.g.v $r7;
+        f.a.a.a.a.g.s $r6;
+        f.a.a.a.a.g.b $r9;
+        java.lang.Boolean $r3, $r11;
+        com.crashlytics.android.answers.Answers r0;
+        java.lang.String $r10;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r5;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 = virtualinvoke r0.<f.a.a.a.l: android.content.Context getContext()>();
+
+        $r2 = staticinvoke <f.a.a.a.a.b.o: f.a.a.a.a.b.o a(android.content.Context)>($r1);
+
+        $z0 = virtualinvoke $r2.<f.a.a.a.a.b.o: boolean a()>();
+
+        $r3 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(0);
+
+        if $z0 != 0 goto label01;
+
+        $r4 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        interfaceinvoke $r4.<f.a.a.a.o: void d(java.lang.String,java.lang.String)>("Fabric", "Analytics collection disabled, because data collection is disabled by Firebase.");
+
+        $r5 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        virtualinvoke $r5.<com.crashlytics.android.answers.SessionAnalyticsManager: void disable()>();
+
+        return $r3;
+
+     label01:
+        $r6 = staticinvoke <f.a.a.a.a.g.s: f.a.a.a.a.g.s b()>();
+
+        $r7 = virtualinvoke $r6.<f.a.a.a.a.g.s: f.a.a.a.a.g.v a()>();
+
+     label02:
+        if $r7 != null goto label05;
+
+     label03:
+        $r4 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        interfaceinvoke $r4.<f.a.a.a.o: void b(java.lang.String,java.lang.String)>("Answers", "Failed to retrieve settings");
+
+     label04:
+        return $r3;
+
+     label05:
+        $r8 = $r7.<f.a.a.a.a.g.v: f.a.a.a.a.g.n d>;
+
+        $z0 = $r8.<f.a.a.a.a.g.n: boolean d>;
+
+     label06:
+        if $z0 == 0 goto label09;
+
+     label07:
+        $r4 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        interfaceinvoke $r4.<f.a.a.a.o: void d(java.lang.String,java.lang.String)>("Answers", "Analytics collection enabled");
+
+        $r5 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        $r9 = $r7.<f.a.a.a.a.g.v: f.a.a.a.a.g.b e>;
+
+        $r10 = virtualinvoke r0.<com.crashlytics.android.answers.Answers: java.lang.String getOverridenSpiEndpoint()>();
+
+        virtualinvoke $r5.<com.crashlytics.android.answers.SessionAnalyticsManager: void setAnalyticsSettingsData(f.a.a.a.a.g.b,java.lang.String)>($r9, $r10);
+
+        $r11 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+     label08:
+        return $r11;
+
+     label09:
+        $r4 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        interfaceinvoke $r4.<f.a.a.a.o: void d(java.lang.String,java.lang.String)>("Answers", "Analytics collection disabled");
+
+        $r5 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        virtualinvoke $r5.<com.crashlytics.android.answers.SessionAnalyticsManager: void disable()>();
+
+     label10:
+        return $r3;
+
+     label11:
+        $r12 := @caughtexception;
+
+        $r4 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        interfaceinvoke $r4.<f.a.a.a.o: void c(java.lang.String,java.lang.String,java.lang.Throwable)>("Answers", "Error dealing with settings", $r12);
+
+        return $r3;
+
+        catch java.lang.Exception from label01 to label02 with label11;
+        catch java.lang.Exception from label03 to label04 with label11;
+        catch java.lang.Exception from label05 to label06 with label11;
+        catch java.lang.Exception from label07 to label08 with label11;
+        catch java.lang.Exception from label09 to label10 with label11;
+    }
+
+    public volatile java.lang.Object doInBackground()
+    {
+        java.lang.Boolean $r1;
+        com.crashlytics.android.answers.Answers r0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 = virtualinvoke r0.<com.crashlytics.android.answers.Answers: java.lang.Boolean doInBackground()>();
+
+        return $r1;
+    }
+
+    public java.lang.String getIdentifier()
+    {
+        com.crashlytics.android.answers.Answers r0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        return "com.crashlytics.sdk.android:answers";
+    }
+
+    public java.lang.String getOverridenSpiEndpoint()
+    {
+        android.content.Context $r1;
+        com.crashlytics.android.answers.Answers r0;
+        java.lang.String $r2;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 = virtualinvoke r0.<f.a.a.a.l: android.content.Context getContext()>();
+
+        $r2 = staticinvoke <f.a.a.a.a.b.l: java.lang.String b(android.content.Context,java.lang.String)>($r1, "com.crashlytics.ApiEndpoint");
+
+        return $r2;
+    }
+
+    public java.lang.String getVersion()
+    {
+        com.crashlytics.android.answers.Answers r0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        return "1.4.7.32";
+    }
+
+    public void logAddToCart(com.crashlytics.android.answers.AddToCartEvent)
+    {
+        com.crashlytics.android.answers.Answers r0;
+        com.crashlytics.android.answers.AddToCartEvent $r1;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r2;
+        java.lang.NullPointerException $r3;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 := @parameter0: com.crashlytics.android.answers.AddToCartEvent;
+
+        if $r1 == null goto label2;
+
+        $z0 = r0.<com.crashlytics.android.answers.Answers: boolean firebaseEnabled>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.crashlytics.android.answers.Answers: void logFirebaseModeEnabledWarning(java.lang.String)>("logAddToCart");
+
+        return;
+
+     label1:
+        $r2 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        if $r2 == null goto label3;
+
+        virtualinvoke $r2.<com.crashlytics.android.answers.SessionAnalyticsManager: void onPredefined(com.crashlytics.android.answers.PredefinedEvent)>($r1);
+
+        return;
+
+     label2:
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("event must not be null");
+
+        throw $r3;
+
+     label3:
+        return;
+    }
+
+    public void logContentView(com.crashlytics.android.answers.ContentViewEvent)
+    {
+        com.crashlytics.android.answers.ContentViewEvent $r1;
+        com.crashlytics.android.answers.Answers r0;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r2;
+        java.lang.NullPointerException $r3;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 := @parameter0: com.crashlytics.android.answers.ContentViewEvent;
+
+        if $r1 == null goto label2;
+
+        $z0 = r0.<com.crashlytics.android.answers.Answers: boolean firebaseEnabled>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.crashlytics.android.answers.Answers: void logFirebaseModeEnabledWarning(java.lang.String)>("logContentView");
+
+        return;
+
+     label1:
+        $r2 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        if $r2 == null goto label3;
+
+        virtualinvoke $r2.<com.crashlytics.android.answers.SessionAnalyticsManager: void onPredefined(com.crashlytics.android.answers.PredefinedEvent)>($r1);
+
+        return;
+
+     label2:
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("event must not be null");
+
+        throw $r3;
+
+     label3:
+        return;
+    }
+
+    public void logCustom(com.crashlytics.android.answers.CustomEvent)
+    {
+        com.crashlytics.android.answers.CustomEvent $r1;
+        com.crashlytics.android.answers.Answers r0;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r2;
+        java.lang.NullPointerException $r3;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 := @parameter0: com.crashlytics.android.answers.CustomEvent;
+
+        if $r1 == null goto label2;
+
+        $z0 = r0.<com.crashlytics.android.answers.Answers: boolean firebaseEnabled>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.crashlytics.android.answers.Answers: void logFirebaseModeEnabledWarning(java.lang.String)>("logCustom");
+
+        return;
+
+     label1:
+        $r2 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        if $r2 == null goto label3;
+
+        virtualinvoke $r2.<com.crashlytics.android.answers.SessionAnalyticsManager: void onCustom(com.crashlytics.android.answers.CustomEvent)>($r1);
+
+        return;
+
+     label2:
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("event must not be null");
+
+        throw $r3;
+
+     label3:
+        return;
+    }
+
+    public void logInvite(com.crashlytics.android.answers.InviteEvent)
+    {
+        com.crashlytics.android.answers.InviteEvent $r1;
+        com.crashlytics.android.answers.Answers r0;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r2;
+        java.lang.NullPointerException $r3;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 := @parameter0: com.crashlytics.android.answers.InviteEvent;
+
+        if $r1 == null goto label2;
+
+        $z0 = r0.<com.crashlytics.android.answers.Answers: boolean firebaseEnabled>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.crashlytics.android.answers.Answers: void logFirebaseModeEnabledWarning(java.lang.String)>("logInvite");
+
+        return;
+
+     label1:
+        $r2 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        if $r2 == null goto label3;
+
+        virtualinvoke $r2.<com.crashlytics.android.answers.SessionAnalyticsManager: void onPredefined(com.crashlytics.android.answers.PredefinedEvent)>($r1);
+
+        return;
+
+     label2:
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("event must not be null");
+
+        throw $r3;
+
+     label3:
+        return;
+    }
+
+    public void logLevelEnd(com.crashlytics.android.answers.LevelEndEvent)
+    {
+        com.crashlytics.android.answers.LevelEndEvent $r1;
+        com.crashlytics.android.answers.Answers r0;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r2;
+        java.lang.NullPointerException $r3;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 := @parameter0: com.crashlytics.android.answers.LevelEndEvent;
+
+        if $r1 == null goto label2;
+
+        $z0 = r0.<com.crashlytics.android.answers.Answers: boolean firebaseEnabled>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.crashlytics.android.answers.Answers: void logFirebaseModeEnabledWarning(java.lang.String)>("logLevelEnd");
+
+        return;
+
+     label1:
+        $r2 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        if $r2 == null goto label3;
+
+        virtualinvoke $r2.<com.crashlytics.android.answers.SessionAnalyticsManager: void onPredefined(com.crashlytics.android.answers.PredefinedEvent)>($r1);
+
+        return;
+
+     label2:
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("event must not be null");
+
+        throw $r3;
+
+     label3:
+        return;
+    }
+
+    public void logLevelStart(com.crashlytics.android.answers.LevelStartEvent)
+    {
+        com.crashlytics.android.answers.Answers r0;
+        com.crashlytics.android.answers.LevelStartEvent $r1;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r2;
+        java.lang.NullPointerException $r3;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 := @parameter0: com.crashlytics.android.answers.LevelStartEvent;
+
+        if $r1 == null goto label2;
+
+        $z0 = r0.<com.crashlytics.android.answers.Answers: boolean firebaseEnabled>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.crashlytics.android.answers.Answers: void logFirebaseModeEnabledWarning(java.lang.String)>("logLevelStart");
+
+        return;
+
+     label1:
+        $r2 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        if $r2 == null goto label3;
+
+        virtualinvoke $r2.<com.crashlytics.android.answers.SessionAnalyticsManager: void onPredefined(com.crashlytics.android.answers.PredefinedEvent)>($r1);
+
+        return;
+
+     label2:
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("event must not be null");
+
+        throw $r3;
+
+     label3:
+        return;
+    }
+
+    public void logLogin(com.crashlytics.android.answers.LoginEvent)
+    {
+        com.crashlytics.android.answers.LoginEvent $r1;
+        com.crashlytics.android.answers.Answers r0;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r2;
+        java.lang.NullPointerException $r3;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 := @parameter0: com.crashlytics.android.answers.LoginEvent;
+
+        if $r1 == null goto label2;
+
+        $z0 = r0.<com.crashlytics.android.answers.Answers: boolean firebaseEnabled>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.crashlytics.android.answers.Answers: void logFirebaseModeEnabledWarning(java.lang.String)>("logLogin");
+
+        return;
+
+     label1:
+        $r2 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        if $r2 == null goto label3;
+
+        virtualinvoke $r2.<com.crashlytics.android.answers.SessionAnalyticsManager: void onPredefined(com.crashlytics.android.answers.PredefinedEvent)>($r1);
+
+        return;
+
+     label2:
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("event must not be null");
+
+        throw $r3;
+
+     label3:
+        return;
+    }
+
+    public void logPurchase(com.crashlytics.android.answers.PurchaseEvent)
+    {
+        com.crashlytics.android.answers.Answers r0;
+        com.crashlytics.android.answers.PurchaseEvent $r1;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r2;
+        java.lang.NullPointerException $r3;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 := @parameter0: com.crashlytics.android.answers.PurchaseEvent;
+
+        if $r1 == null goto label2;
+
+        $z0 = r0.<com.crashlytics.android.answers.Answers: boolean firebaseEnabled>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.crashlytics.android.answers.Answers: void logFirebaseModeEnabledWarning(java.lang.String)>("logPurchase");
+
+        return;
+
+     label1:
+        $r2 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        if $r2 == null goto label3;
+
+        virtualinvoke $r2.<com.crashlytics.android.answers.SessionAnalyticsManager: void onPredefined(com.crashlytics.android.answers.PredefinedEvent)>($r1);
+
+        return;
+
+     label2:
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("event must not be null");
+
+        throw $r3;
+
+     label3:
+        return;
+    }
+
+    public void logRating(com.crashlytics.android.answers.RatingEvent)
+    {
+        com.crashlytics.android.answers.Answers r0;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r2;
+        com.crashlytics.android.answers.RatingEvent $r1;
+        java.lang.NullPointerException $r3;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 := @parameter0: com.crashlytics.android.answers.RatingEvent;
+
+        if $r1 == null goto label2;
+
+        $z0 = r0.<com.crashlytics.android.answers.Answers: boolean firebaseEnabled>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.crashlytics.android.answers.Answers: void logFirebaseModeEnabledWarning(java.lang.String)>("logRating");
+
+        return;
+
+     label1:
+        $r2 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        if $r2 == null goto label3;
+
+        virtualinvoke $r2.<com.crashlytics.android.answers.SessionAnalyticsManager: void onPredefined(com.crashlytics.android.answers.PredefinedEvent)>($r1);
+
+        return;
+
+     label2:
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("event must not be null");
+
+        throw $r3;
+
+     label3:
+        return;
+    }
+
+    public void logSearch(com.crashlytics.android.answers.SearchEvent)
+    {
+        com.crashlytics.android.answers.SearchEvent $r1;
+        com.crashlytics.android.answers.Answers r0;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r2;
+        java.lang.NullPointerException $r3;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 := @parameter0: com.crashlytics.android.answers.SearchEvent;
+
+        if $r1 == null goto label2;
+
+        $z0 = r0.<com.crashlytics.android.answers.Answers: boolean firebaseEnabled>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.crashlytics.android.answers.Answers: void logFirebaseModeEnabledWarning(java.lang.String)>("logSearch");
+
+        return;
+
+     label1:
+        $r2 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        if $r2 == null goto label3;
+
+        virtualinvoke $r2.<com.crashlytics.android.answers.SessionAnalyticsManager: void onPredefined(com.crashlytics.android.answers.PredefinedEvent)>($r1);
+
+        return;
+
+     label2:
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("event must not be null");
+
+        throw $r3;
+
+     label3:
+        return;
+    }
+
+    public void logShare(com.crashlytics.android.answers.ShareEvent)
+    {
+        com.crashlytics.android.answers.Answers r0;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r2;
+        java.lang.NullPointerException $r3;
+        com.crashlytics.android.answers.ShareEvent $r1;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 := @parameter0: com.crashlytics.android.answers.ShareEvent;
+
+        if $r1 == null goto label2;
+
+        $z0 = r0.<com.crashlytics.android.answers.Answers: boolean firebaseEnabled>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.crashlytics.android.answers.Answers: void logFirebaseModeEnabledWarning(java.lang.String)>("logShare");
+
+        return;
+
+     label1:
+        $r2 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        if $r2 == null goto label3;
+
+        virtualinvoke $r2.<com.crashlytics.android.answers.SessionAnalyticsManager: void onPredefined(com.crashlytics.android.answers.PredefinedEvent)>($r1);
+
+        return;
+
+     label2:
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("event must not be null");
+
+        throw $r3;
+
+     label3:
+        return;
+    }
+
+    public void logSignUp(com.crashlytics.android.answers.SignUpEvent)
+    {
+        com.crashlytics.android.answers.SignUpEvent $r1;
+        com.crashlytics.android.answers.Answers r0;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r2;
+        java.lang.NullPointerException $r3;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 := @parameter0: com.crashlytics.android.answers.SignUpEvent;
+
+        if $r1 == null goto label2;
+
+        $z0 = r0.<com.crashlytics.android.answers.Answers: boolean firebaseEnabled>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.crashlytics.android.answers.Answers: void logFirebaseModeEnabledWarning(java.lang.String)>("logSignUp");
+
+        return;
+
+     label1:
+        $r2 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        if $r2 == null goto label3;
+
+        virtualinvoke $r2.<com.crashlytics.android.answers.SessionAnalyticsManager: void onPredefined(com.crashlytics.android.answers.PredefinedEvent)>($r1);
+
+        return;
+
+     label2:
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("event must not be null");
+
+        throw $r3;
+
+     label3:
+        return;
+    }
+
+    public void logStartCheckout(com.crashlytics.android.answers.StartCheckoutEvent)
+    {
+        com.crashlytics.android.answers.StartCheckoutEvent $r1;
+        com.crashlytics.android.answers.Answers r0;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r2;
+        java.lang.NullPointerException $r3;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r1 := @parameter0: com.crashlytics.android.answers.StartCheckoutEvent;
+
+        if $r1 == null goto label2;
+
+        $z0 = r0.<com.crashlytics.android.answers.Answers: boolean firebaseEnabled>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.crashlytics.android.answers.Answers: void logFirebaseModeEnabledWarning(java.lang.String)>("logStartCheckout");
+
+        return;
+
+     label1:
+        $r2 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        if $r2 == null goto label3;
+
+        virtualinvoke $r2.<com.crashlytics.android.answers.SessionAnalyticsManager: void onPredefined(com.crashlytics.android.answers.PredefinedEvent)>($r1);
+
+        return;
+
+     label2:
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("event must not be null");
+
+        throw $r3;
+
+     label3:
+        return;
+    }
+
+    public void onException(f.a.a.a.a.b.m$a)
+    {
+        com.crashlytics.android.answers.Answers r0;
+        java.lang.String $r3, $r4;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r1;
+        f.a.a.a.a.b.m$a $r2;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r2 := @parameter0: f.a.a.a.a.b.m$a;
+
+        $r1 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        if $r1 == null goto label1;
+
+        $r3 = virtualinvoke $r2.<f.a.a.a.a.b.m: java.lang.String b()>();
+
+        $r4 = virtualinvoke $r2.<f.a.a.a.a.b.m: java.lang.String a()>();
+
+        virtualinvoke $r1.<com.crashlytics.android.answers.SessionAnalyticsManager: void onCrash(java.lang.String,java.lang.String)>($r3, $r4);
+
+     label1:
+        return;
+    }
+
+    public void onException(f.a.a.a.a.b.m$b)
+    {
+        com.crashlytics.android.answers.Answers r0;
+        java.lang.String $r2;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r1;
+        f.a.a.a.a.b.m$b $r3;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+        $r3 := @parameter0: f.a.a.a.a.b.m$b;
+
+        $r1 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        if $r1 == null goto label1;
+
+        $r2 = virtualinvoke $r3.<f.a.a.a.a.b.m: java.lang.String b()>();
+
+        virtualinvoke $r1.<com.crashlytics.android.answers.SessionAnalyticsManager: void onError(java.lang.String)>($r2);
+
+     label1:
+        return;
+    }
+
+    public boolean onPreExecute()
+    {
+        android.content.Context $r1;
+        android.content.pm.PackageManager $r2;
+        long $l1;
+        android.content.pm.PackageInfo $r4;
+        int $i0;
+        java.lang.String $r3, $r5, $r6;
+        com.crashlytics.android.answers.SessionAnalyticsManager $r10;
+        boolean $z0;
+        f.a.a.a.o $r13;
+        java.io.File $r8;
+        java.lang.Exception $r12;
+        f.a.a.a.a.b.y $r9;
+        f.a.a.a.a.b.x $r11;
+        com.crashlytics.android.answers.Answers r0;
+        android.content.pm.ApplicationInfo $r7;
+
+        r0 := @this: com.crashlytics.android.answers.Answers;
+
+     label01:
+        $r1 = virtualinvoke r0.<f.a.a.a.l: android.content.Context getContext()>();
+
+        $r2 = virtualinvoke $r1.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+        $r3 = virtualinvoke $r1.<android.content.Context: java.lang.String getPackageName()>();
+
+        $r4 = virtualinvoke $r2.<android.content.pm.PackageManager: android.content.pm.PackageInfo getPackageInfo(java.lang.String,int)>($r3, 0);
+
+        $i0 = $r4.<android.content.pm.PackageInfo: int versionCode>;
+
+        $r5 = staticinvoke <java.lang.Integer: java.lang.String toString(int)>($i0);
+
+        $r6 = $r4.<android.content.pm.PackageInfo: java.lang.String versionName>;
+
+     label02:
+        if $r6 != null goto label03;
+
+        $r6 = "0.0";
+
+        goto label04;
+
+     label03:
+        $r6 = $r4.<android.content.pm.PackageInfo: java.lang.String versionName>;
+
+     label04:
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 < 9 goto label07;
+
+     label05:
+        $l1 = $r4.<android.content.pm.PackageInfo: long firstInstallTime>;
+
+     label06:
+        goto label11;
+
+     label07:
+        $r7 = virtualinvoke $r2.<android.content.pm.PackageManager: android.content.pm.ApplicationInfo getApplicationInfo(java.lang.String,int)>($r3, 0);
+
+     label08:
+        $r8 = new java.io.File;
+
+     label09:
+        $r3 = $r7.<android.content.pm.ApplicationInfo: java.lang.String sourceDir>;
+
+        specialinvoke $r8.<java.io.File: void <init>(java.lang.String)>($r3);
+
+        $l1 = virtualinvoke $r8.<java.io.File: long lastModified()>();
+
+     label10:
+        goto label06;
+
+     label11:
+        $r9 = virtualinvoke r0.<f.a.a.a.l: f.a.a.a.a.b.y getIdManager()>();
+
+        $r10 = staticinvoke <com.crashlytics.android.answers.SessionAnalyticsManager: com.crashlytics.android.answers.SessionAnalyticsManager build(f.a.a.a.l,android.content.Context,f.a.a.a.a.b.y,java.lang.String,java.lang.String,long)>(r0, $r1, $r9, $r5, $r6, $l1);
+
+        r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager> = $r10;
+
+        $r10 = r0.<com.crashlytics.android.answers.Answers: com.crashlytics.android.answers.SessionAnalyticsManager analyticsManager>;
+
+        virtualinvoke $r10.<com.crashlytics.android.answers.SessionAnalyticsManager: void enable()>();
+
+     label12:
+        $r11 = new f.a.a.a.a.b.x;
+
+     label13:
+        specialinvoke $r11.<f.a.a.a.a.b.x: void <init>()>();
+
+        $z0 = virtualinvoke $r11.<f.a.a.a.a.b.x: boolean e(android.content.Context)>($r1);
+
+        r0.<com.crashlytics.android.answers.Answers: boolean firebaseEnabled> = $z0;
+
+     label14:
+        return 1;
+
+     label15:
+        $r12 := @caughtexception;
+
+        $r13 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        interfaceinvoke $r13.<f.a.a.a.o: void c(java.lang.String,java.lang.String,java.lang.Throwable)>("Answers", "Error retrieving app properties", $r12);
+
+        return 0;
+
+        catch java.lang.Exception from label01 to label02 with label15;
+        catch java.lang.Exception from label03 to label04 with label15;
+        catch java.lang.Exception from label05 to label06 with label15;
+        catch java.lang.Exception from label07 to label08 with label15;
+        catch java.lang.Exception from label09 to label10 with label15;
+        catch java.lang.Exception from label11 to label12 with label15;
+        catch java.lang.Exception from label13 to label14 with label15;
+    }
+
+    public static void <clinit>()
+    {
+        <com.crashlytics.android.answers.Answers: java.lang.String TAG> = "Answers";
+
+        <com.crashlytics.android.answers.Answers: java.lang.String CRASHLYTICS_API_ENDPOINT> = "com.crashlytics.ApiEndpoint";
+
+        return;
+    }
+}

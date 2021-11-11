@@ -1,0 +1,729 @@
+public abstract class com.google.common.io.ByteSource extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        com.google.common.io.ByteSource r0;
+
+        r0 := @this: com.google.common.io.ByteSource;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static com.google.common.io.ByteSource concat(java.lang.Iterable)
+    {
+        java.lang.Iterable $r0;
+        com.google.common.io.ByteSource$ConcatenatedByteSource $r1;
+
+        $r0 := @parameter0: java.lang.Iterable;
+
+        $r1 = new com.google.common.io.ByteSource$ConcatenatedByteSource;
+
+        specialinvoke $r1.<com.google.common.io.ByteSource$ConcatenatedByteSource: void <init>(java.lang.Iterable)>($r0);
+
+        return $r1;
+    }
+
+    public static com.google.common.io.ByteSource concat(java.util.Iterator)
+    {
+        java.util.Iterator $r0;
+        com.google.common.collect.ImmutableList $r1;
+        com.google.common.io.ByteSource $r2;
+
+        $r0 := @parameter0: java.util.Iterator;
+
+        $r1 = staticinvoke <com.google.common.collect.ImmutableList: com.google.common.collect.ImmutableList copyOf(java.util.Iterator)>($r0);
+
+        $r2 = staticinvoke <com.google.common.io.ByteSource: com.google.common.io.ByteSource concat(java.lang.Iterable)>($r1);
+
+        return $r2;
+    }
+
+    public static transient com.google.common.io.ByteSource concat(com.google.common.io.ByteSource[])
+    {
+        com.google.common.io.ByteSource[] $r0;
+        com.google.common.collect.ImmutableList $r1;
+        com.google.common.io.ByteSource $r2;
+
+        $r0 := @parameter0: com.google.common.io.ByteSource[];
+
+        $r1 = staticinvoke <com.google.common.collect.ImmutableList: com.google.common.collect.ImmutableList copyOf(java.lang.Object[])>($r0);
+
+        $r2 = staticinvoke <com.google.common.io.ByteSource: com.google.common.io.ByteSource concat(java.lang.Iterable)>($r1);
+
+        return $r2;
+    }
+
+    private long countBySkipping(java.io.InputStream)
+    {
+        byte $b0;
+        int $i3;
+        long $l1, $l2;
+        com.google.common.io.ByteSource r0;
+        java.io.InputStream $r1;
+
+        r0 := @this: com.google.common.io.ByteSource;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        $l2 = 0L;
+
+     label1:
+        $l1 = staticinvoke <com.google.common.io.ByteStreams: long skipUpTo(java.io.InputStream,long)>($r1, 2147483647L);
+
+        $b0 = $l1 cmp 0L;
+
+        $i3 = (int) $b0;
+
+        if $i3 <= 0 goto label2;
+
+        $l2 = $l2 + $l1;
+
+        goto label1;
+
+     label2:
+        return $l2;
+    }
+
+    public static com.google.common.io.ByteSource empty()
+    {
+        com.google.common.io.ByteSource$EmptyByteSource r0;
+
+        r0 = <com.google.common.io.ByteSource$EmptyByteSource: com.google.common.io.ByteSource$EmptyByteSource INSTANCE>;
+
+        return r0;
+    }
+
+    public static com.google.common.io.ByteSource wrap(byte[])
+    {
+        byte[] $r0;
+        com.google.common.io.ByteSource$ByteArrayByteSource $r1;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 = new com.google.common.io.ByteSource$ByteArrayByteSource;
+
+        specialinvoke $r1.<com.google.common.io.ByteSource$ByteArrayByteSource: void <init>(byte[])>($r0);
+
+        return $r1;
+    }
+
+    public com.google.common.io.CharSource asCharSource(java.nio.charset.Charset)
+    {
+        com.google.common.io.ByteSource$AsCharSource $r2;
+        com.google.common.io.ByteSource r0;
+        java.nio.charset.Charset $r1;
+
+        r0 := @this: com.google.common.io.ByteSource;
+
+        $r1 := @parameter0: java.nio.charset.Charset;
+
+        $r2 = new com.google.common.io.ByteSource$AsCharSource;
+
+        specialinvoke $r2.<com.google.common.io.ByteSource$AsCharSource: void <init>(com.google.common.io.ByteSource,java.nio.charset.Charset)>(r0, $r1);
+
+        return $r2;
+    }
+
+    public boolean contentEquals(com.google.common.io.ByteSource)
+    {
+        java.lang.Throwable $r8, $r9;
+        byte[] $r2, $r3;
+        java.lang.RuntimeException $r10;
+        com.google.common.io.Closer $r4;
+        java.io.Closeable $r6;
+        int $i0, $i1;
+        com.google.common.io.ByteSource r0, $r1;
+        java.io.InputStream $r5, $r7;
+        boolean $z0;
+
+        r0 := @this: com.google.common.io.ByteSource;
+
+        $r1 := @parameter0: com.google.common.io.ByteSource;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = staticinvoke <com.google.common.io.ByteStreams: byte[] createBuffer()>();
+
+        $r3 = staticinvoke <com.google.common.io.ByteStreams: byte[] createBuffer()>();
+
+        $r4 = staticinvoke <com.google.common.io.Closer: com.google.common.io.Closer create()>();
+
+     label01:
+        $r5 = virtualinvoke r0.<com.google.common.io.ByteSource: java.io.InputStream openStream()>();
+
+        $r6 = virtualinvoke $r4.<com.google.common.io.Closer: java.io.Closeable register(java.io.Closeable)>($r5);
+
+        $r5 = (java.io.InputStream) $r6;
+
+        $r7 = virtualinvoke $r1.<com.google.common.io.ByteSource: java.io.InputStream openStream()>();
+
+        $r6 = virtualinvoke $r4.<com.google.common.io.Closer: java.io.Closeable register(java.io.Closeable)>($r7);
+
+        $r7 = (java.io.InputStream) $r6;
+
+     label02:
+        $i0 = lengthof $r2;
+
+        $i0 = staticinvoke <com.google.common.io.ByteStreams: int read(java.io.InputStream,byte[],int,int)>($r5, $r2, 0, $i0);
+
+        $i1 = lengthof $r3;
+
+        $i1 = staticinvoke <com.google.common.io.ByteStreams: int read(java.io.InputStream,byte[],int,int)>($r7, $r3, 0, $i1);
+
+     label03:
+        if $i0 != $i1 goto label08;
+
+     label04:
+        $z0 = staticinvoke <java.util.Arrays: boolean equals(byte[],byte[])>($r2, $r3);
+
+     label05:
+        if $z0 != 0 goto label06;
+
+        goto label08;
+
+     label06:
+        $i1 = lengthof $r2;
+
+     label07:
+        if $i0 == $i1 goto label02;
+
+        virtualinvoke $r4.<com.google.common.io.Closer: void close()>();
+
+        return 1;
+
+     label08:
+        virtualinvoke $r4.<com.google.common.io.Closer: void close()>();
+
+        return 0;
+
+     label09:
+        $r8 := @caughtexception;
+
+        goto label12;
+
+     label10:
+        $r9 := @caughtexception;
+
+     label11:
+        $r10 = virtualinvoke $r4.<com.google.common.io.Closer: java.lang.RuntimeException rethrow(java.lang.Throwable)>($r9);
+
+        throw $r10;
+
+     label12:
+        virtualinvoke $r4.<com.google.common.io.Closer: void close()>();
+
+        goto label13;
+
+     label13:
+        throw $r8;
+
+        catch java.lang.Throwable from label01 to label03 with label10;
+        catch java.lang.Throwable from label04 to label05 with label10;
+        catch java.lang.Throwable from label06 to label07 with label10;
+        catch java.lang.Throwable from label11 to label12 with label09;
+    }
+
+    public long copyTo(com.google.common.io.ByteSink)
+    {
+        java.io.OutputStream $r5;
+        java.lang.Throwable $r6, $r7;
+        long $l0;
+        java.lang.RuntimeException $r8;
+        com.google.common.io.ByteSink $r1;
+        com.google.common.io.Closer $r2;
+        java.io.Closeable $r4;
+        com.google.common.io.ByteSource r0;
+        java.io.InputStream $r3;
+
+        r0 := @this: com.google.common.io.ByteSource;
+
+        $r1 := @parameter0: com.google.common.io.ByteSink;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = staticinvoke <com.google.common.io.Closer: com.google.common.io.Closer create()>();
+
+     label1:
+        $r3 = virtualinvoke r0.<com.google.common.io.ByteSource: java.io.InputStream openStream()>();
+
+        $r4 = virtualinvoke $r2.<com.google.common.io.Closer: java.io.Closeable register(java.io.Closeable)>($r3);
+
+        $r3 = (java.io.InputStream) $r4;
+
+        $r5 = virtualinvoke $r1.<com.google.common.io.ByteSink: java.io.OutputStream openStream()>();
+
+        $r4 = virtualinvoke $r2.<com.google.common.io.Closer: java.io.Closeable register(java.io.Closeable)>($r5);
+
+        $r5 = (java.io.OutputStream) $r4;
+
+        $l0 = staticinvoke <com.google.common.io.ByteStreams: long copy(java.io.InputStream,java.io.OutputStream)>($r3, $r5);
+
+     label2:
+        virtualinvoke $r2.<com.google.common.io.Closer: void close()>();
+
+        return $l0;
+
+     label3:
+        $r6 := @caughtexception;
+
+        goto label6;
+
+     label4:
+        $r7 := @caughtexception;
+
+     label5:
+        $r8 = virtualinvoke $r2.<com.google.common.io.Closer: java.lang.RuntimeException rethrow(java.lang.Throwable)>($r7);
+
+        throw $r8;
+
+     label6:
+        virtualinvoke $r2.<com.google.common.io.Closer: void close()>();
+
+        throw $r6;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label5 to label6 with label3;
+    }
+
+    public long copyTo(java.io.OutputStream)
+    {
+        java.io.OutputStream $r1;
+        java.lang.Throwable $r5, $r6;
+        long $l0;
+        java.lang.RuntimeException $r7;
+        com.google.common.io.Closer $r2;
+        java.io.Closeable $r4;
+        com.google.common.io.ByteSource r0;
+        java.io.InputStream $r3;
+
+        r0 := @this: com.google.common.io.ByteSource;
+
+        $r1 := @parameter0: java.io.OutputStream;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = staticinvoke <com.google.common.io.Closer: com.google.common.io.Closer create()>();
+
+     label1:
+        $r3 = virtualinvoke r0.<com.google.common.io.ByteSource: java.io.InputStream openStream()>();
+
+        $r4 = virtualinvoke $r2.<com.google.common.io.Closer: java.io.Closeable register(java.io.Closeable)>($r3);
+
+        $r3 = (java.io.InputStream) $r4;
+
+        $l0 = staticinvoke <com.google.common.io.ByteStreams: long copy(java.io.InputStream,java.io.OutputStream)>($r3, $r1);
+
+     label2:
+        virtualinvoke $r2.<com.google.common.io.Closer: void close()>();
+
+        return $l0;
+
+     label3:
+        $r5 := @caughtexception;
+
+        goto label6;
+
+     label4:
+        $r6 := @caughtexception;
+
+     label5:
+        $r7 = virtualinvoke $r2.<com.google.common.io.Closer: java.lang.RuntimeException rethrow(java.lang.Throwable)>($r6);
+
+        throw $r7;
+
+     label6:
+        virtualinvoke $r2.<com.google.common.io.Closer: void close()>();
+
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label5 to label6 with label3;
+    }
+
+    public com.google.common.hash.HashCode hash(com.google.common.hash.HashFunction)
+    {
+        java.io.OutputStream $r3;
+        com.google.common.hash.HashCode $r4;
+        com.google.common.io.ByteSource r0;
+        com.google.common.hash.HashFunction $r1;
+        com.google.common.hash.Hasher $r2;
+
+        r0 := @this: com.google.common.io.ByteSource;
+
+        $r1 := @parameter0: com.google.common.hash.HashFunction;
+
+        $r2 = interfaceinvoke $r1.<com.google.common.hash.HashFunction: com.google.common.hash.Hasher newHasher()>();
+
+        $r3 = staticinvoke <com.google.common.hash.Funnels: java.io.OutputStream asOutputStream(com.google.common.hash.PrimitiveSink)>($r2);
+
+        virtualinvoke r0.<com.google.common.io.ByteSource: long copyTo(java.io.OutputStream)>($r3);
+
+        $r4 = interfaceinvoke $r2.<com.google.common.hash.Hasher: com.google.common.hash.HashCode hash()>();
+
+        return $r4;
+    }
+
+    public boolean isEmpty()
+    {
+        java.lang.Throwable $r7, $r8;
+        long $l1;
+        byte $b0;
+        java.lang.Long $r3;
+        com.google.common.io.Closer $r4;
+        com.google.common.base.Optional $r1;
+        int $i2, $i3;
+        com.google.common.io.ByteSource r0;
+        boolean $z0, $z1;
+        java.lang.RuntimeException $r9;
+        java.io.Closeable $r6;
+        java.lang.Object $r2;
+        java.io.InputStream $r5;
+
+        r0 := @this: com.google.common.io.ByteSource;
+
+        $r1 = virtualinvoke r0.<com.google.common.io.ByteSource: com.google.common.base.Optional sizeIfKnown()>();
+
+        $z0 = virtualinvoke $r1.<com.google.common.base.Optional: boolean isPresent()>();
+
+        $z1 = 1;
+
+        if $z0 == 0 goto label02;
+
+        $r2 = virtualinvoke $r1.<com.google.common.base.Optional: java.lang.Object get()>();
+
+        $r3 = (java.lang.Long) $r2;
+
+        $l1 = virtualinvoke $r3.<java.lang.Long: long longValue()>();
+
+        $b0 = $l1 cmp 0L;
+
+        if $b0 != 0 goto label01;
+
+        return 1;
+
+     label01:
+        return 0;
+
+     label02:
+        $r4 = staticinvoke <com.google.common.io.Closer: com.google.common.io.Closer create()>();
+
+     label03:
+        $r5 = virtualinvoke r0.<com.google.common.io.ByteSource: java.io.InputStream openStream()>();
+
+        $r6 = virtualinvoke $r4.<com.google.common.io.Closer: java.io.Closeable register(java.io.Closeable)>($r5);
+
+        $r5 = (java.io.InputStream) $r6;
+
+        $i2 = virtualinvoke $r5.<java.io.InputStream: int read()>();
+
+     label04:
+        $i3 = -1;
+
+        if $i2 != $i3 goto label05;
+
+        goto label06;
+
+     label05:
+        $z1 = 0;
+
+     label06:
+        virtualinvoke $r4.<com.google.common.io.Closer: void close()>();
+
+        return $z1;
+
+     label07:
+        $r7 := @caughtexception;
+
+        goto label10;
+
+     label08:
+        $r8 := @caughtexception;
+
+     label09:
+        $r9 = virtualinvoke $r4.<com.google.common.io.Closer: java.lang.RuntimeException rethrow(java.lang.Throwable)>($r8);
+
+        throw $r9;
+
+     label10:
+        virtualinvoke $r4.<com.google.common.io.Closer: void close()>();
+
+        throw $r7;
+
+        catch java.lang.Throwable from label03 to label04 with label08;
+        catch java.lang.Throwable from label09 to label10 with label07;
+    }
+
+    public java.io.InputStream openBufferedStream()
+    {
+        java.io.BufferedInputStream $r2;
+        com.google.common.io.ByteSource r0;
+        java.io.InputStream $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.io.ByteSource;
+
+        $r1 = virtualinvoke r0.<com.google.common.io.ByteSource: java.io.InputStream openStream()>();
+
+        $z0 = $r1 instanceof java.io.BufferedInputStream;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (java.io.BufferedInputStream) $r1;
+
+        return $r2;
+
+     label1:
+        $r2 = new java.io.BufferedInputStream;
+
+        specialinvoke $r2.<java.io.BufferedInputStream: void <init>(java.io.InputStream)>($r1);
+
+        return $r2;
+    }
+
+    public abstract java.io.InputStream openStream();
+
+    public java.lang.Object read(com.google.common.io.ByteProcessor)
+    {
+        java.lang.Throwable $r6, $r7;
+        com.google.common.io.ByteProcessor $r1;
+        java.lang.RuntimeException $r8;
+        com.google.common.io.Closer $r2;
+        java.io.Closeable $r4;
+        java.lang.Object $r5;
+        com.google.common.io.ByteSource r0;
+        java.io.InputStream $r3;
+
+        r0 := @this: com.google.common.io.ByteSource;
+
+        $r1 := @parameter0: com.google.common.io.ByteProcessor;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = staticinvoke <com.google.common.io.Closer: com.google.common.io.Closer create()>();
+
+     label1:
+        $r3 = virtualinvoke r0.<com.google.common.io.ByteSource: java.io.InputStream openStream()>();
+
+        $r4 = virtualinvoke $r2.<com.google.common.io.Closer: java.io.Closeable register(java.io.Closeable)>($r3);
+
+        $r3 = (java.io.InputStream) $r4;
+
+        $r5 = staticinvoke <com.google.common.io.ByteStreams: java.lang.Object readBytes(java.io.InputStream,com.google.common.io.ByteProcessor)>($r3, $r1);
+
+     label2:
+        virtualinvoke $r2.<com.google.common.io.Closer: void close()>();
+
+        return $r5;
+
+     label3:
+        $r6 := @caughtexception;
+
+        goto label6;
+
+     label4:
+        $r7 := @caughtexception;
+
+     label5:
+        $r8 = virtualinvoke $r2.<com.google.common.io.Closer: java.lang.RuntimeException rethrow(java.lang.Throwable)>($r7);
+
+        throw $r8;
+
+     label6:
+        virtualinvoke $r2.<com.google.common.io.Closer: void close()>();
+
+        throw $r6;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label5 to label6 with label3;
+    }
+
+    public byte[] read()
+    {
+        java.lang.Throwable $r5, $r6;
+        byte[] $r4;
+        java.lang.RuntimeException $r7;
+        com.google.common.io.Closer $r1;
+        java.io.Closeable $r3;
+        com.google.common.io.ByteSource r0;
+        java.io.InputStream $r2;
+
+        r0 := @this: com.google.common.io.ByteSource;
+
+        $r1 = staticinvoke <com.google.common.io.Closer: com.google.common.io.Closer create()>();
+
+     label1:
+        $r2 = virtualinvoke r0.<com.google.common.io.ByteSource: java.io.InputStream openStream()>();
+
+        $r3 = virtualinvoke $r1.<com.google.common.io.Closer: java.io.Closeable register(java.io.Closeable)>($r2);
+
+        $r2 = (java.io.InputStream) $r3;
+
+        $r4 = staticinvoke <com.google.common.io.ByteStreams: byte[] toByteArray(java.io.InputStream)>($r2);
+
+     label2:
+        virtualinvoke $r1.<com.google.common.io.Closer: void close()>();
+
+        return $r4;
+
+     label3:
+        $r5 := @caughtexception;
+
+        goto label6;
+
+     label4:
+        $r6 := @caughtexception;
+
+     label5:
+        $r7 = virtualinvoke $r1.<com.google.common.io.Closer: java.lang.RuntimeException rethrow(java.lang.Throwable)>($r6);
+
+        throw $r7;
+
+     label6:
+        virtualinvoke $r1.<com.google.common.io.Closer: void close()>();
+
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label5 to label6 with label3;
+    }
+
+    public long size()
+    {
+        java.lang.Throwable $r8, $r9, $r10;
+        java.io.IOException $r1;
+        long $l0;
+        java.lang.RuntimeException $r11;
+        java.lang.Long $r4;
+        com.google.common.io.Closer $r5;
+        com.google.common.base.Optional $r2;
+        java.io.Closeable $r7;
+        java.lang.Object $r3;
+        com.google.common.io.ByteSource r0;
+        boolean $z0;
+        java.io.InputStream $r6;
+
+        r0 := @this: com.google.common.io.ByteSource;
+
+        $r2 = virtualinvoke r0.<com.google.common.io.ByteSource: com.google.common.base.Optional sizeIfKnown()>();
+
+        $z0 = virtualinvoke $r2.<com.google.common.base.Optional: boolean isPresent()>();
+
+        if $z0 == 0 goto label01;
+
+        $r3 = virtualinvoke $r2.<com.google.common.base.Optional: java.lang.Object get()>();
+
+        $r4 = (java.lang.Long) $r3;
+
+        $l0 = virtualinvoke $r4.<java.lang.Long: long longValue()>();
+
+        return $l0;
+
+     label01:
+        $r5 = staticinvoke <com.google.common.io.Closer: com.google.common.io.Closer create()>();
+
+     label02:
+        $r6 = virtualinvoke r0.<com.google.common.io.ByteSource: java.io.InputStream openStream()>();
+
+        $r7 = virtualinvoke $r5.<com.google.common.io.Closer: java.io.Closeable register(java.io.Closeable)>($r6);
+
+     label03:
+        $r6 = (java.io.InputStream) $r7;
+
+     label04:
+        $l0 = specialinvoke r0.<com.google.common.io.ByteSource: long countBySkipping(java.io.InputStream)>($r6);
+
+     label05:
+        virtualinvoke $r5.<com.google.common.io.Closer: void close()>();
+
+        return $l0;
+
+     label06:
+        $r8 := @caughtexception;
+
+        virtualinvoke $r5.<com.google.common.io.Closer: void close()>();
+
+        throw $r8;
+
+     label07:
+        virtualinvoke $r5.<com.google.common.io.Closer: void close()>();
+
+        $r5 = staticinvoke <com.google.common.io.Closer: com.google.common.io.Closer create()>();
+
+     label08:
+        $r6 = virtualinvoke r0.<com.google.common.io.ByteSource: java.io.InputStream openStream()>();
+
+        $r7 = virtualinvoke $r5.<com.google.common.io.Closer: java.io.Closeable register(java.io.Closeable)>($r6);
+
+        $r6 = (java.io.InputStream) $r7;
+
+        $l0 = staticinvoke <com.google.common.io.ByteStreams: long exhaust(java.io.InputStream)>($r6);
+
+     label09:
+        virtualinvoke $r5.<com.google.common.io.Closer: void close()>();
+
+        return $l0;
+
+     label10:
+        $r9 := @caughtexception;
+
+        goto label13;
+
+     label11:
+        $r10 := @caughtexception;
+
+     label12:
+        $r11 = virtualinvoke $r5.<com.google.common.io.Closer: java.lang.RuntimeException rethrow(java.lang.Throwable)>($r10);
+
+        throw $r11;
+
+     label13:
+        virtualinvoke $r5.<com.google.common.io.Closer: void close()>();
+
+        throw $r9;
+
+     label14:
+        $r1 := @caughtexception;
+
+        goto label07;
+
+        catch java.io.IOException from label02 to label03 with label14;
+        catch java.io.IOException from label04 to label05 with label14;
+        catch java.lang.Throwable from label02 to label05 with label06;
+        catch java.lang.Throwable from label08 to label09 with label11;
+        catch java.lang.Throwable from label12 to label13 with label10;
+    }
+
+    public com.google.common.base.Optional sizeIfKnown()
+    {
+        com.google.common.io.ByteSource r0;
+        com.google.common.base.Optional $r1;
+
+        r0 := @this: com.google.common.io.ByteSource;
+
+        $r1 = staticinvoke <com.google.common.base.Optional: com.google.common.base.Optional absent()>();
+
+        return $r1;
+    }
+
+    public com.google.common.io.ByteSource slice(long, long)
+    {
+        com.google.common.io.ByteSource$SlicedByteSource $r1;
+        long $l0, $l1;
+        com.google.common.io.ByteSource r0;
+
+        r0 := @this: com.google.common.io.ByteSource;
+
+        $l0 := @parameter0: long;
+
+        $l1 := @parameter1: long;
+
+        $r1 = new com.google.common.io.ByteSource$SlicedByteSource;
+
+        specialinvoke $r1.<com.google.common.io.ByteSource$SlicedByteSource: void <init>(com.google.common.io.ByteSource,long,long)>(r0, $l0, $l1);
+
+        return $r1;
+    }
+}

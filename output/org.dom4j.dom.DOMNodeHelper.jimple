@@ -1,0 +1,1376 @@
+public class org.dom4j.dom.DOMNodeHelper extends java.lang.Object
+{
+    public static final org.w3c.dom.NodeList EMPTY_NODE_LIST;
+
+    static void <clinit>()
+    {
+        org.dom4j.dom.DOMNodeHelper$EmptyNodeList $r0;
+
+        $r0 = new org.dom4j.dom.DOMNodeHelper$EmptyNodeList;
+
+        specialinvoke $r0.<org.dom4j.dom.DOMNodeHelper$EmptyNodeList: void <init>()>();
+
+        <org.dom4j.dom.DOMNodeHelper: org.w3c.dom.NodeList EMPTY_NODE_LIST> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.dom4j.dom.DOMNodeHelper r0;
+
+        r0 := @this: org.dom4j.dom.DOMNodeHelper;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.w3c.dom.Node appendChild(org.dom4j.Node, org.w3c.dom.Node)
+    {
+        org.dom4j.Node $r1;
+        org.dom4j.Branch $r3;
+        org.w3c.dom.Node $r2, $r4;
+        org.w3c.dom.DOMException $r5;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r6;
+        boolean $z0;
+
+        $r1 := @parameter0: org.dom4j.Node;
+
+        $r2 := @parameter1: org.w3c.dom.Node;
+
+        $z0 = $r1 instanceof org.dom4j.Branch;
+
+        if $z0 == 0 goto label2;
+
+        $r3 = (org.dom4j.Branch) $r1;
+
+        $r4 = interfaceinvoke $r2.<org.w3c.dom.Node: org.w3c.dom.Node getParentNode()>();
+
+        if $r4 == null goto label1;
+
+        interfaceinvoke $r4.<org.w3c.dom.Node: org.w3c.dom.Node removeChild(org.w3c.dom.Node)>($r2);
+
+     label1:
+        $r1 = (org.dom4j.Node) $r2;
+
+        interfaceinvoke $r3.<org.dom4j.Branch: void add(org.dom4j.Node)>($r1);
+
+        return $r2;
+
+     label2:
+        $r5 = new org.w3c.dom.DOMException;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("Children not allowed for this node: ");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r1);
+
+        $r6 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(3, $r6);
+
+        throw $r5;
+    }
+
+    public static void appendData(org.dom4j.CharacterData, java.lang.String)
+    {
+        org.w3c.dom.DOMException $r4;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r1, $r2;
+        org.dom4j.CharacterData $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: org.dom4j.CharacterData;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $z0 = interfaceinvoke $r0.<org.dom4j.Node: boolean isReadOnly()>();
+
+        if $z0 != 0 goto label2;
+
+        $r2 = interfaceinvoke $r0.<org.dom4j.Node: java.lang.String getText()>();
+
+        if $r2 != null goto label1;
+
+        interfaceinvoke $r0.<org.dom4j.Node: void setText(java.lang.String)>($r2);
+
+        return;
+
+     label1:
+        $r3 = new java.lang.StringBuilder;
+
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r2);
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>($r2);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r0.<org.dom4j.Node: void setText(java.lang.String)>($r1);
+
+        return;
+
+     label2:
+        $r4 = new org.w3c.dom.DOMException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>("CharacterData node is read only: ");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r0);
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(7, $r1);
+
+        throw $r4;
+    }
+
+    public static void appendElementsByTagName(java.util.List, org.dom4j.Branch, java.lang.String)
+    {
+        org.dom4j.Branch $r1;
+        org.dom4j.Node $r4;
+        java.util.List $r0;
+        int $i0, $i1;
+        org.dom4j.Element $r5;
+        java.lang.String $r2, $r3;
+        boolean $z0, $z1;
+
+        $r0 := @parameter0: java.util.List;
+
+        $r1 := @parameter1: org.dom4j.Branch;
+
+        $r2 := @parameter2: java.lang.String;
+
+        $r3 = "*";
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        $i0 = interfaceinvoke $r1.<org.dom4j.Branch: int nodeCount()>();
+
+        $i1 = 0;
+
+     label1:
+        if $i1 < $i0 goto label2;
+
+        return;
+
+     label2:
+        $r4 = interfaceinvoke $r1.<org.dom4j.Branch: org.dom4j.Node node(int)>($i1);
+
+        $z1 = $r4 instanceof org.dom4j.Element;
+
+        if $z1 == 0 goto label5;
+
+        $r5 = (org.dom4j.Element) $r4;
+
+        if $z0 != 0 goto label3;
+
+        $r3 = interfaceinvoke $r5.<org.dom4j.Node: java.lang.String getName()>();
+
+        $z1 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+
+        if $z1 == 0 goto label4;
+
+     label3:
+        interfaceinvoke $r0.<java.util.List: boolean add(java.lang.Object)>($r5);
+
+     label4:
+        staticinvoke <org.dom4j.dom.DOMNodeHelper: void appendElementsByTagName(java.util.List,org.dom4j.Branch,java.lang.String)>($r0, $r5, $r2);
+
+     label5:
+        $i1 = $i1 + 1;
+
+        goto label1;
+    }
+
+    public static void appendElementsByTagNameNS(java.util.List, org.dom4j.Branch, java.lang.String, java.lang.String)
+    {
+        org.dom4j.Branch $r1;
+        org.dom4j.Node $r5;
+        java.util.List $r0;
+        int $i0, $i1, $i2;
+        org.dom4j.Element $r6;
+        java.lang.String $r2, $r3, $r4;
+        boolean $z0, $z1, $z2;
+
+        $r0 := @parameter0: java.util.List;
+
+        $r1 := @parameter1: org.dom4j.Branch;
+
+        $r2 := @parameter2: java.lang.String;
+
+        $r3 := @parameter3: java.lang.String;
+
+        $r4 = "*";
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        $z1 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+
+        $i0 = interfaceinvoke $r1.<org.dom4j.Branch: int nodeCount()>();
+
+        $i1 = 0;
+
+     label1:
+        if $i1 < $i0 goto label2;
+
+        return;
+
+     label2:
+        $r5 = interfaceinvoke $r1.<org.dom4j.Branch: org.dom4j.Node node(int)>($i1);
+
+        $z2 = $r5 instanceof org.dom4j.Element;
+
+        if $z2 == 0 goto label8;
+
+        $r6 = (org.dom4j.Element) $r5;
+
+        if $z0 != 0 goto label5;
+
+        if $r2 == null goto label3;
+
+        $i2 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        if $i2 != 0 goto label4;
+
+     label3:
+        $r4 = interfaceinvoke $r6.<org.dom4j.Element: java.lang.String getNamespaceURI()>();
+
+        if $r4 == null goto label5;
+
+        $r4 = interfaceinvoke $r6.<org.dom4j.Element: java.lang.String getNamespaceURI()>();
+
+        $i2 = virtualinvoke $r4.<java.lang.String: int length()>();
+
+        if $i2 == 0 goto label5;
+
+     label4:
+        if $r2 == null goto label7;
+
+        $r4 = interfaceinvoke $r6.<org.dom4j.Element: java.lang.String getNamespaceURI()>();
+
+        $z2 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r4);
+
+        if $z2 == 0 goto label7;
+
+     label5:
+        if $z1 != 0 goto label6;
+
+        $r4 = interfaceinvoke $r6.<org.dom4j.Node: java.lang.String getName()>();
+
+        $z2 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r4);
+
+        if $z2 == 0 goto label7;
+
+     label6:
+        interfaceinvoke $r0.<java.util.List: boolean add(java.lang.Object)>($r6);
+
+     label7:
+        staticinvoke <org.dom4j.dom.DOMNodeHelper: void appendElementsByTagNameNS(java.util.List,org.dom4j.Branch,java.lang.String,java.lang.String)>($r0, $r6, $r2, $r3);
+
+     label8:
+        $i1 = $i1 + 1;
+
+        goto label1;
+    }
+
+    public static org.w3c.dom.Attr asDOMAttr(org.dom4j.Node)
+    {
+        org.dom4j.Node $r0;
+        org.w3c.dom.Attr $r1;
+        java.lang.NullPointerException r2;
+        boolean $z0;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        if $r0 != null goto label1;
+
+        return null;
+
+     label1:
+        $z0 = $r0 instanceof org.w3c.dom.Attr;
+
+        if $z0 == 0 goto label2;
+
+        $r1 = (org.w3c.dom.Attr) $r0;
+
+        return $r1;
+
+     label2:
+        staticinvoke <org.dom4j.dom.DOMNodeHelper: void notSupported()>();
+
+        r2 = new java.lang.NullPointerException;
+
+        specialinvoke r2.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw r2;
+    }
+
+    public static org.w3c.dom.Document asDOMDocument(org.dom4j.Document)
+    {
+        org.dom4j.Document $r0;
+        org.w3c.dom.Document $r1;
+        java.lang.NullPointerException r2;
+        boolean $z0;
+
+        $r0 := @parameter0: org.dom4j.Document;
+
+        if $r0 != null goto label1;
+
+        return null;
+
+     label1:
+        $z0 = $r0 instanceof org.w3c.dom.Document;
+
+        if $z0 == 0 goto label2;
+
+        $r1 = (org.w3c.dom.Document) $r0;
+
+        return $r1;
+
+     label2:
+        staticinvoke <org.dom4j.dom.DOMNodeHelper: void notSupported()>();
+
+        r2 = new java.lang.NullPointerException;
+
+        specialinvoke r2.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw r2;
+    }
+
+    public static org.w3c.dom.DocumentType asDOMDocumentType(org.dom4j.DocumentType)
+    {
+        org.dom4j.DocumentType $r0;
+        java.lang.NullPointerException r2;
+        boolean $z0;
+        org.w3c.dom.DocumentType $r1;
+
+        $r0 := @parameter0: org.dom4j.DocumentType;
+
+        if $r0 != null goto label1;
+
+        return null;
+
+     label1:
+        $z0 = $r0 instanceof org.w3c.dom.DocumentType;
+
+        if $z0 == 0 goto label2;
+
+        $r1 = (org.w3c.dom.DocumentType) $r0;
+
+        return $r1;
+
+     label2:
+        staticinvoke <org.dom4j.dom.DOMNodeHelper: void notSupported()>();
+
+        r2 = new java.lang.NullPointerException;
+
+        specialinvoke r2.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw r2;
+    }
+
+    public static org.w3c.dom.Element asDOMElement(org.dom4j.Node)
+    {
+        org.w3c.dom.Element $r1;
+        org.dom4j.Node $r0;
+        java.lang.NullPointerException r2;
+        boolean $z0;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        if $r0 != null goto label1;
+
+        return null;
+
+     label1:
+        $z0 = $r0 instanceof org.w3c.dom.Element;
+
+        if $z0 == 0 goto label2;
+
+        $r1 = (org.w3c.dom.Element) $r0;
+
+        return $r1;
+
+     label2:
+        staticinvoke <org.dom4j.dom.DOMNodeHelper: void notSupported()>();
+
+        r2 = new java.lang.NullPointerException;
+
+        specialinvoke r2.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw r2;
+    }
+
+    public static org.w3c.dom.Node asDOMNode(org.dom4j.Node)
+    {
+        java.io.PrintStream $r4;
+        org.dom4j.Node $r2;
+        org.w3c.dom.Node $r3;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+        java.lang.NullPointerException r5;
+        boolean $z0;
+
+        $r2 := @parameter0: org.dom4j.Node;
+
+        if $r2 != null goto label1;
+
+        return null;
+
+     label1:
+        $z0 = $r2 instanceof org.w3c.dom.Node;
+
+        if $z0 == 0 goto label2;
+
+        $r3 = (org.w3c.dom.Node) $r2;
+
+        return $r3;
+
+     label2:
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("Cannot convert: ");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" into a W3C DOM Node");
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>($r1);
+
+        staticinvoke <org.dom4j.dom.DOMNodeHelper: void notSupported()>();
+
+        r5 = new java.lang.NullPointerException;
+
+        specialinvoke r5.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw r5;
+    }
+
+    public static org.w3c.dom.Text asDOMText(org.dom4j.CharacterData)
+    {
+        org.w3c.dom.Text $r1;
+        org.dom4j.CharacterData $r0;
+        java.lang.NullPointerException r2;
+        boolean $z0;
+
+        $r0 := @parameter0: org.dom4j.CharacterData;
+
+        if $r0 != null goto label1;
+
+        return null;
+
+     label1:
+        $z0 = $r0 instanceof org.w3c.dom.Text;
+
+        if $z0 == 0 goto label2;
+
+        $r1 = (org.w3c.dom.Text) $r0;
+
+        return $r1;
+
+     label2:
+        staticinvoke <org.dom4j.dom.DOMNodeHelper: void notSupported()>();
+
+        r2 = new java.lang.NullPointerException;
+
+        specialinvoke r2.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw r2;
+    }
+
+    public static org.w3c.dom.Node cloneNode(org.dom4j.Node, boolean)
+    {
+        org.dom4j.Node $r0;
+        org.w3c.dom.Node $r2;
+        java.lang.Object $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        $z0 := @parameter1: boolean;
+
+        $r1 = interfaceinvoke $r0.<org.dom4j.Node: java.lang.Object clone()>();
+
+        $r0 = (org.dom4j.Node) $r1;
+
+        $r2 = staticinvoke <org.dom4j.dom.DOMNodeHelper: org.w3c.dom.Node asDOMNode(org.dom4j.Node)>($r0);
+
+        return $r2;
+    }
+
+    public static org.w3c.dom.NodeList createNodeList(java.util.List)
+    {
+        java.util.List $r0;
+        org.dom4j.dom.DOMNodeHelper$1 $r1;
+
+        $r0 := @parameter0: java.util.List;
+
+        $r1 = new org.dom4j.dom.DOMNodeHelper$1;
+
+        specialinvoke $r1.<org.dom4j.dom.DOMNodeHelper$1: void <init>(java.util.List)>($r0);
+
+        return $r1;
+    }
+
+    public static void deleteData(org.dom4j.CharacterData, int, int)
+    {
+        java.lang.StringBuffer $r2;
+        org.w3c.dom.DOMException $r3;
+        int $i0, $i1, $i2;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r1;
+        org.dom4j.CharacterData $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: org.dom4j.CharacterData;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $z0 = interfaceinvoke $r0.<org.dom4j.Node: boolean isReadOnly()>();
+
+        if $z0 != 0 goto label3;
+
+        if $i1 < 0 goto label2;
+
+        $r1 = interfaceinvoke $r0.<org.dom4j.Node: java.lang.String getText()>();
+
+        if $r1 == null goto label4;
+
+        $i2 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i0 < 0 goto label1;
+
+        if $i0 >= $i2 goto label1;
+
+        $r2 = new java.lang.StringBuffer;
+
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>(java.lang.String)>($r1);
+
+        $i1 = $i1 + $i0;
+
+        virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer delete(int,int)>($i0, $i1);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        interfaceinvoke $r0.<org.dom4j.Node: void setText(java.lang.String)>($r1);
+
+        return;
+
+     label1:
+        $r3 = new org.w3c.dom.DOMException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>(java.lang.String)>("No text at offset: ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r1 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(1, $r1);
+
+        throw $r3;
+
+     label2:
+        $r3 = new org.w3c.dom.DOMException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>(java.lang.String)>("Illegal value for count: ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r1 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(1, $r1);
+
+        throw $r3;
+
+     label3:
+        $r3 = new org.w3c.dom.DOMException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>(java.lang.String)>("CharacterData node is read only: ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r0);
+
+        $r1 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(7, $r1);
+
+        throw $r3;
+
+     label4:
+        return;
+    }
+
+    public static org.w3c.dom.NamedNodeMap getAttributes(org.dom4j.Node)
+    {
+        org.dom4j.Node $r0;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        return null;
+    }
+
+    public static org.w3c.dom.NodeList getChildNodes(org.dom4j.Node)
+    {
+        org.w3c.dom.NodeList r1;
+        org.dom4j.Node $r0;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        r1 = <org.dom4j.dom.DOMNodeHelper: org.w3c.dom.NodeList EMPTY_NODE_LIST>;
+
+        return r1;
+    }
+
+    public static java.lang.String getData(org.dom4j.CharacterData)
+    {
+        java.lang.String $r0;
+        org.dom4j.CharacterData $r1;
+
+        $r1 := @parameter0: org.dom4j.CharacterData;
+
+        $r0 = interfaceinvoke $r1.<org.dom4j.Node: java.lang.String getText()>();
+
+        return $r0;
+    }
+
+    public static org.w3c.dom.Node getFirstChild(org.dom4j.Node)
+    {
+        org.dom4j.Node $r0;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        return null;
+    }
+
+    public static org.w3c.dom.Node getLastChild(org.dom4j.Node)
+    {
+        org.dom4j.Node $r0;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        return null;
+    }
+
+    public static int getLength(org.dom4j.CharacterData)
+    {
+        int $i0;
+        java.lang.String $r1;
+        org.dom4j.CharacterData $r0;
+
+        $r0 := @parameter0: org.dom4j.CharacterData;
+
+        $r1 = interfaceinvoke $r0.<org.dom4j.Node: java.lang.String getText()>();
+
+        if $r1 == null goto label1;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        return $i0;
+
+     label1:
+        return 0;
+    }
+
+    public static java.lang.String getLocalName(org.dom4j.Node)
+    {
+        org.dom4j.Node $r0;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        return null;
+    }
+
+    public static java.lang.String getNamespaceURI(org.dom4j.Node)
+    {
+        org.dom4j.Node $r0;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        return null;
+    }
+
+    public static org.w3c.dom.Node getNextSibling(org.dom4j.Node)
+    {
+        org.dom4j.Node $r0;
+        org.w3c.dom.Node $r2;
+        int $i0, $i1;
+        org.dom4j.Element $r1;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        $r1 = interfaceinvoke $r0.<org.dom4j.Node: org.dom4j.Element getParent()>();
+
+        if $r1 == null goto label1;
+
+        $i0 = interfaceinvoke $r1.<org.dom4j.Branch: int indexOf(org.dom4j.Node)>($r0);
+
+        if $i0 < 0 goto label1;
+
+        $i0 = $i0 + 1;
+
+        $i1 = interfaceinvoke $r1.<org.dom4j.Branch: int nodeCount()>();
+
+        if $i0 >= $i1 goto label1;
+
+        $r0 = interfaceinvoke $r1.<org.dom4j.Branch: org.dom4j.Node node(int)>($i0);
+
+        $r2 = staticinvoke <org.dom4j.dom.DOMNodeHelper: org.w3c.dom.Node asDOMNode(org.dom4j.Node)>($r0);
+
+        return $r2;
+
+     label1:
+        return null;
+    }
+
+    public static java.lang.String getNodeValue(org.dom4j.Node)
+    {
+        java.lang.String $r0;
+        org.dom4j.Node $r1;
+
+        $r1 := @parameter0: org.dom4j.Node;
+
+        $r0 = interfaceinvoke $r1.<org.dom4j.Node: java.lang.String getText()>();
+
+        return $r0;
+    }
+
+    public static org.w3c.dom.Document getOwnerDocument(org.dom4j.Node)
+    {
+        org.dom4j.Document $r1;
+        org.dom4j.Node $r0;
+        org.w3c.dom.Document $r2;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        $r1 = interfaceinvoke $r0.<org.dom4j.Node: org.dom4j.Document getDocument()>();
+
+        $r2 = staticinvoke <org.dom4j.dom.DOMNodeHelper: org.w3c.dom.Document asDOMDocument(org.dom4j.Document)>($r1);
+
+        return $r2;
+    }
+
+    public static org.w3c.dom.Node getParentNode(org.dom4j.Node)
+    {
+        org.dom4j.Element $r1;
+        org.dom4j.Node $r0;
+        org.w3c.dom.Node $r2;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        $r1 = interfaceinvoke $r0.<org.dom4j.Node: org.dom4j.Element getParent()>();
+
+        $r2 = staticinvoke <org.dom4j.dom.DOMNodeHelper: org.w3c.dom.Node asDOMNode(org.dom4j.Node)>($r1);
+
+        return $r2;
+    }
+
+    public static java.lang.String getPrefix(org.dom4j.Node)
+    {
+        org.dom4j.Node $r0;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        return null;
+    }
+
+    public static org.w3c.dom.Node getPreviousSibling(org.dom4j.Node)
+    {
+        org.dom4j.Node $r0;
+        org.w3c.dom.Node $r2;
+        int $i0, $i1;
+        org.dom4j.Element $r1;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        $r1 = interfaceinvoke $r0.<org.dom4j.Node: org.dom4j.Element getParent()>();
+
+        if $r1 == null goto label1;
+
+        $i0 = interfaceinvoke $r1.<org.dom4j.Branch: int indexOf(org.dom4j.Node)>($r0);
+
+        if $i0 <= 0 goto label1;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        $r0 = interfaceinvoke $r1.<org.dom4j.Branch: org.dom4j.Node node(int)>($i0);
+
+        $r2 = staticinvoke <org.dom4j.dom.DOMNodeHelper: org.w3c.dom.Node asDOMNode(org.dom4j.Node)>($r0);
+
+        return $r2;
+
+     label1:
+        return null;
+    }
+
+    public static boolean hasAttributes(org.dom4j.Node)
+    {
+        org.dom4j.Node $r0;
+        int $i0;
+        org.dom4j.Element $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        if $r0 == null goto label1;
+
+        $z0 = $r0 instanceof org.dom4j.Element;
+
+        if $z0 == 0 goto label1;
+
+        $r1 = (org.dom4j.Element) $r0;
+
+        $i0 = interfaceinvoke $r1.<org.dom4j.Element: int attributeCount()>();
+
+        if $i0 <= 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static boolean hasChildNodes(org.dom4j.Node)
+    {
+        org.dom4j.Node $r0;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        return 0;
+    }
+
+    public static org.w3c.dom.Node insertBefore(org.dom4j.Node, org.w3c.dom.Node, org.w3c.dom.Node)
+    {
+        org.dom4j.Node $r0;
+        org.dom4j.Branch $r3;
+        java.util.List $r4;
+        org.w3c.dom.Node $r1, $r2;
+        org.w3c.dom.DOMException $r5;
+        int $i0;
+        java.lang.StringBuilder $r6;
+        java.lang.String $r7;
+        boolean $z0;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        $r1 := @parameter1: org.w3c.dom.Node;
+
+        $r2 := @parameter2: org.w3c.dom.Node;
+
+        $z0 = $r0 instanceof org.dom4j.Branch;
+
+        if $z0 == 0 goto label2;
+
+        $r3 = (org.dom4j.Branch) $r0;
+
+        $r4 = interfaceinvoke $r3.<org.dom4j.Branch: java.util.List content()>();
+
+        $i0 = interfaceinvoke $r4.<java.util.List: int indexOf(java.lang.Object)>($r2);
+
+        if $i0 >= 0 goto label1;
+
+        $r0 = (org.dom4j.Node) $r1;
+
+        interfaceinvoke $r3.<org.dom4j.Branch: void add(org.dom4j.Node)>($r0);
+
+        return $r1;
+
+     label1:
+        interfaceinvoke $r4.<java.util.List: void add(int,java.lang.Object)>($i0, $r1);
+
+        return $r1;
+
+     label2:
+        $r5 = new org.w3c.dom.DOMException;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>(java.lang.String)>("Children not allowed for this node: ");
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r0);
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(3, $r7);
+
+        throw $r5;
+    }
+
+    public static void insertData(org.dom4j.CharacterData, int, java.lang.String)
+    {
+        java.lang.StringBuffer $r3;
+        org.w3c.dom.DOMException $r4;
+        int $i0, $i1;
+        java.lang.StringBuilder $r5;
+        java.lang.String $r1, $r2;
+        org.dom4j.CharacterData $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: org.dom4j.CharacterData;
+
+        $i0 := @parameter1: int;
+
+        $r1 := @parameter2: java.lang.String;
+
+        $z0 = interfaceinvoke $r0.<org.dom4j.Node: boolean isReadOnly()>();
+
+        if $z0 != 0 goto label3;
+
+        $r2 = interfaceinvoke $r0.<org.dom4j.Node: java.lang.String getText()>();
+
+        if $r2 != null goto label1;
+
+        interfaceinvoke $r0.<org.dom4j.Node: void setText(java.lang.String)>($r1);
+
+        return;
+
+     label1:
+        $i1 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        if $i0 < 0 goto label2;
+
+        if $i0 > $i1 goto label2;
+
+        $r3 = new java.lang.StringBuffer;
+
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>(java.lang.String)>($r2);
+
+        virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer insert(int,java.lang.String)>($i0, $r1);
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        interfaceinvoke $r0.<org.dom4j.Node: void setText(java.lang.String)>($r1);
+
+        return;
+
+     label2:
+        $r4 = new org.w3c.dom.DOMException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>(java.lang.String)>("No text at offset: ");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r1 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(1, $r1);
+
+        throw $r4;
+
+     label3:
+        $r4 = new org.w3c.dom.DOMException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>(java.lang.String)>("CharacterData node is read only: ");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r0);
+
+        $r1 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(7, $r1);
+
+        throw $r4;
+    }
+
+    public static boolean isSupported(org.dom4j.Node, java.lang.String, java.lang.String)
+    {
+        java.lang.String $r0, $r1;
+        org.dom4j.Node $r2;
+
+        $r2 := @parameter0: org.dom4j.Node;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $r1 := @parameter2: java.lang.String;
+
+        return 0;
+    }
+
+    public static void normalize(org.dom4j.Node)
+    {
+        org.dom4j.Node $r0;
+        java.lang.NullPointerException r1;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        staticinvoke <org.dom4j.dom.DOMNodeHelper: void notSupported()>();
+
+        r1 = new java.lang.NullPointerException;
+
+        specialinvoke r1.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw r1;
+    }
+
+    public static void notSupported()
+    {
+        org.w3c.dom.DOMException $r0;
+
+        $r0 = new org.w3c.dom.DOMException;
+
+        specialinvoke $r0.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(9, "Not supported yet");
+
+        throw $r0;
+    }
+
+    public static org.w3c.dom.Node removeChild(org.dom4j.Node, org.w3c.dom.Node)
+    {
+        org.dom4j.Node $r2;
+        org.dom4j.Branch $r4;
+        org.w3c.dom.Node $r3;
+        org.w3c.dom.DOMException $r5;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+        boolean $z0;
+
+        $r2 := @parameter0: org.dom4j.Node;
+
+        $r3 := @parameter1: org.w3c.dom.Node;
+
+        $z0 = $r2 instanceof org.dom4j.Branch;
+
+        if $z0 == 0 goto label1;
+
+        $r4 = (org.dom4j.Branch) $r2;
+
+        $r2 = (org.dom4j.Node) $r3;
+
+        interfaceinvoke $r4.<org.dom4j.Branch: boolean remove(org.dom4j.Node)>($r2);
+
+        return $r3;
+
+     label1:
+        $r5 = new org.w3c.dom.DOMException;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(java.lang.String)>("Children not allowed for this node: ");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(3, $r1);
+
+        throw $r5;
+    }
+
+    public static org.w3c.dom.Node replaceChild(org.dom4j.Node, org.w3c.dom.Node, org.w3c.dom.Node)
+    {
+        org.dom4j.Node $r0;
+        org.dom4j.Branch $r3;
+        java.util.List $r4;
+        org.w3c.dom.Node $r1, $r2;
+        org.w3c.dom.DOMException $r5;
+        int $i0;
+        java.lang.StringBuilder $r6;
+        java.lang.String $r7;
+        boolean $z0;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        $r1 := @parameter1: org.w3c.dom.Node;
+
+        $r2 := @parameter2: org.w3c.dom.Node;
+
+        $z0 = $r0 instanceof org.dom4j.Branch;
+
+        if $z0 == 0 goto label2;
+
+        $r3 = (org.dom4j.Branch) $r0;
+
+        $r4 = interfaceinvoke $r3.<org.dom4j.Branch: java.util.List content()>();
+
+        $i0 = interfaceinvoke $r4.<java.util.List: int indexOf(java.lang.Object)>($r2);
+
+        if $i0 < 0 goto label1;
+
+        interfaceinvoke $r4.<java.util.List: java.lang.Object set(int,java.lang.Object)>($i0, $r1);
+
+        return $r2;
+
+     label1:
+        $r5 = new org.w3c.dom.DOMException;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>(java.lang.String)>("Tried to replace a non existing child for node: ");
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r0);
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(8, $r7);
+
+        throw $r5;
+
+     label2:
+        $r5 = new org.w3c.dom.DOMException;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>(java.lang.String)>("Children not allowed for this node: ");
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r0);
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(3, $r7);
+
+        throw $r5;
+    }
+
+    public static void replaceData(org.dom4j.CharacterData, int, int, java.lang.String)
+    {
+        java.lang.StringBuffer $r3;
+        org.w3c.dom.DOMException $r4;
+        int $i0, $i1, $i2;
+        java.lang.StringBuilder $r5;
+        java.lang.String $r1, $r2;
+        org.dom4j.CharacterData $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: org.dom4j.CharacterData;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r1 := @parameter3: java.lang.String;
+
+        $z0 = interfaceinvoke $r0.<org.dom4j.Node: boolean isReadOnly()>();
+
+        if $z0 != 0 goto label3;
+
+        if $i1 < 0 goto label2;
+
+        $r2 = interfaceinvoke $r0.<org.dom4j.Node: java.lang.String getText()>();
+
+        if $r2 == null goto label4;
+
+        $i2 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        if $i0 < 0 goto label1;
+
+        if $i0 >= $i2 goto label1;
+
+        $r3 = new java.lang.StringBuffer;
+
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>(java.lang.String)>($r2);
+
+        $i1 = $i1 + $i0;
+
+        virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer replace(int,int,java.lang.String)>($i0, $i1, $r1);
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        interfaceinvoke $r0.<org.dom4j.Node: void setText(java.lang.String)>($r1);
+
+        return;
+
+     label1:
+        $r4 = new org.w3c.dom.DOMException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>(java.lang.String)>("No text at offset: ");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r1 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(1, $r1);
+
+        throw $r4;
+
+     label2:
+        $r4 = new org.w3c.dom.DOMException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>(java.lang.String)>("Illegal value for count: ");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r1 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(1, $r1);
+
+        throw $r4;
+
+     label3:
+        $r4 = new org.w3c.dom.DOMException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>(java.lang.String)>("CharacterData node is read only: ");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r0);
+
+        $r1 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(7, $r1);
+
+        throw $r4;
+
+     label4:
+        return;
+    }
+
+    public static void setData(org.dom4j.CharacterData, java.lang.String)
+    {
+        java.lang.String $r1;
+        org.dom4j.CharacterData $r0;
+
+        $r0 := @parameter0: org.dom4j.CharacterData;
+
+        $r1 := @parameter1: java.lang.String;
+
+        interfaceinvoke $r0.<org.dom4j.Node: void setText(java.lang.String)>($r1);
+
+        return;
+    }
+
+    public static void setNodeValue(org.dom4j.Node, java.lang.String)
+    {
+        java.lang.String $r1;
+        org.dom4j.Node $r0;
+
+        $r0 := @parameter0: org.dom4j.Node;
+
+        $r1 := @parameter1: java.lang.String;
+
+        interfaceinvoke $r0.<org.dom4j.Node: void setText(java.lang.String)>($r1);
+
+        return;
+    }
+
+    public static void setPrefix(org.dom4j.Node, java.lang.String)
+    {
+        java.lang.String $r0;
+        org.dom4j.Node $r1;
+        java.lang.NullPointerException r2;
+
+        $r1 := @parameter0: org.dom4j.Node;
+
+        $r0 := @parameter1: java.lang.String;
+
+        staticinvoke <org.dom4j.dom.DOMNodeHelper: void notSupported()>();
+
+        r2 = new java.lang.NullPointerException;
+
+        specialinvoke r2.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw r2;
+    }
+
+    public static java.lang.String substringData(org.dom4j.CharacterData, int, int)
+    {
+        org.w3c.dom.DOMException $r2;
+        int $i0, $i1, $i2;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r1;
+        org.dom4j.CharacterData $r0;
+
+        $r0 := @parameter0: org.dom4j.CharacterData;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        if $i1 < 0 goto label5;
+
+        $r1 = interfaceinvoke $r0.<org.dom4j.Node: java.lang.String getText()>();
+
+        if $r1 == null goto label1;
+
+        $i2 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        goto label2;
+
+     label1:
+        $i2 = 0;
+
+     label2:
+        if $i0 < 0 goto label4;
+
+        if $i0 >= $i2 goto label4;
+
+        $i1 = $i1 + $i0;
+
+        if $i1 <= $i2 goto label3;
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int)>($i0);
+
+        return $r1;
+
+     label3:
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int,int)>($i0, $i1);
+
+        return $r1;
+
+     label4:
+        $r2 = new org.w3c.dom.DOMException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>("No text at offset: ");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(1, $r1);
+
+        throw $r2;
+
+     label5:
+        $r2 = new org.w3c.dom.DOMException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>("Illegal value for count: ");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<org.w3c.dom.DOMException: void <init>(short,java.lang.String)>(1, $r1);
+
+        throw $r2;
+    }
+
+    public static boolean supports(org.dom4j.Node, java.lang.String, java.lang.String)
+    {
+        java.lang.String $r0, $r1;
+        org.dom4j.Node $r2;
+
+        $r2 := @parameter0: org.dom4j.Node;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $r1 := @parameter2: java.lang.String;
+
+        return 0;
+    }
+}

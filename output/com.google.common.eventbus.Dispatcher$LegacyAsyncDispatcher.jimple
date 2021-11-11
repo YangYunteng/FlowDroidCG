@@ -1,0 +1,92 @@
+public final class com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher extends com.google.common.eventbus.Dispatcher
+{
+    public final java.util.concurrent.ConcurrentLinkedQueue queue;
+
+    public void <init>()
+    {
+        com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher r0;
+        java.util.concurrent.ConcurrentLinkedQueue $r1;
+
+        r0 := @this: com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher;
+
+        specialinvoke r0.<com.google.common.eventbus.Dispatcher: void <init>()>();
+
+        $r1 = staticinvoke <com.google.common.collect.Queues: java.util.concurrent.ConcurrentLinkedQueue newConcurrentLinkedQueue()>();
+
+        r0.<com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher: java.util.concurrent.ConcurrentLinkedQueue queue> = $r1;
+
+        return;
+    }
+
+    public void <init>(com.google.common.eventbus.Dispatcher$1)
+    {
+        com.google.common.eventbus.Dispatcher$1 $r1;
+        com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher r0;
+
+        r0 := @this: com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher;
+
+        $r1 := @parameter0: com.google.common.eventbus.Dispatcher$1;
+
+        specialinvoke r0.<com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher: void <init>()>();
+
+        return;
+    }
+
+    public void dispatch(java.lang.Object, java.util.Iterator)
+    {
+        java.util.Iterator $r3;
+        com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher$EventWithSubscriber $r1;
+        com.google.common.eventbus.Subscriber $r6;
+        com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher r0;
+        java.lang.Object $r2, $r5;
+        boolean $z0;
+        java.util.concurrent.ConcurrentLinkedQueue $r4;
+
+        r0 := @this: com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r3 := @parameter1: java.util.Iterator;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r4 = r0.<com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher: java.util.concurrent.ConcurrentLinkedQueue queue>;
+
+        $r1 = new com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher$EventWithSubscriber;
+
+        $r5 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (com.google.common.eventbus.Subscriber) $r5;
+
+        specialinvoke $r1.<com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher$EventWithSubscriber: void <init>(java.lang.Object,com.google.common.eventbus.Subscriber,com.google.common.eventbus.Dispatcher$1)>($r2, $r6, null);
+
+        virtualinvoke $r4.<java.util.concurrent.ConcurrentLinkedQueue: boolean add(java.lang.Object)>($r1);
+
+        goto label1;
+
+     label2:
+        $r4 = r0.<com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher: java.util.concurrent.ConcurrentLinkedQueue queue>;
+
+        $r2 = virtualinvoke $r4.<java.util.concurrent.ConcurrentLinkedQueue: java.lang.Object poll()>();
+
+        $r1 = (com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher$EventWithSubscriber) $r2;
+
+        if $r1 == null goto label3;
+
+        $r6 = staticinvoke <com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher$EventWithSubscriber: com.google.common.eventbus.Subscriber access$800(com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher$EventWithSubscriber)>($r1);
+
+        $r2 = staticinvoke <com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher$EventWithSubscriber: java.lang.Object access$700(com.google.common.eventbus.Dispatcher$LegacyAsyncDispatcher$EventWithSubscriber)>($r1);
+
+        virtualinvoke $r6.<com.google.common.eventbus.Subscriber: void dispatchEvent(java.lang.Object)>($r2);
+
+        goto label2;
+
+     label3:
+        return;
+    }
+}

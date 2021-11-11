@@ -1,0 +1,313 @@
+public class com.crashlytics.android.CrashlyticsInitProvider extends android.content.ContentProvider
+{
+    public static final java.lang.String NDK_MANIFEST_FLAG;
+    public static final java.lang.String TAG;
+
+    public void <init>()
+    {
+        com.crashlytics.android.CrashlyticsInitProvider r0;
+
+        r0 := @this: com.crashlytics.android.CrashlyticsInitProvider;
+
+        specialinvoke r0.<android.content.ContentProvider: void <init>()>();
+
+        return;
+    }
+
+    private f.a.a.a.l[] createCrashlyticsKits(android.content.Context)
+    {
+        java.lang.Throwable $r11;
+        android.content.Context $r1;
+        android.os.Bundle $r5;
+        java.lang.Object[] $r9;
+        android.content.pm.PackageManager $r2;
+        android.content.pm.PackageManager$NameNotFoundException $r6;
+        com.crashlytics.android.CrashlyticsInitProvider r0;
+        java.lang.String $r3;
+        com.crashlytics.android.ndk.CrashlyticsNdk $r10, $r14;
+        boolean $z0;
+        f.a.a.a.o $r7;
+        f.a.a.a.l[] $r12;
+        com.crashlytics.android.Crashlytics $r8, $r13;
+        android.content.pm.ApplicationInfo $r4;
+
+        r0 := @this: com.crashlytics.android.CrashlyticsInitProvider;
+
+        $r1 := @parameter0: android.content.Context;
+
+     label01:
+        $r2 = virtualinvoke $r1.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+        $r3 = virtualinvoke $r1.<android.content.Context: java.lang.String getPackageName()>();
+
+        $r4 = virtualinvoke $r2.<android.content.pm.PackageManager: android.content.pm.ApplicationInfo getApplicationInfo(java.lang.String,int)>($r3, 128);
+
+     label02:
+        $r5 = $r4.<android.content.pm.ApplicationInfo: android.os.Bundle metaData>;
+
+        if $r5 == null goto label06;
+
+     label03:
+        $z0 = virtualinvoke $r5.<android.os.Bundle: boolean getBoolean(java.lang.String,boolean)>("firebase_crashlytics_ndk_enabled", 0);
+
+     label04:
+        if $z0 == 0 goto label06;
+
+        $z0 = 1;
+
+        goto label07;
+
+     label05:
+        $r6 := @caughtexception;
+
+        $r7 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        interfaceinvoke $r7.<f.a.a.a.o: void a(java.lang.String,java.lang.String,java.lang.Throwable)>("Fabric", "Unable to get PackageManager while determining if Crashlytics NDK should be initialized", $r6);
+
+     label06:
+        $z0 = 0;
+
+     label07:
+        $r13 = new com.crashlytics.android.Crashlytics;
+
+        $r8 = $r13;
+
+        specialinvoke $r13.<com.crashlytics.android.Crashlytics: void <init>()>();
+
+        if $z0 == 0 goto label13;
+
+     label08:
+        $r7 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        interfaceinvoke $r7.<f.a.a.a.o: void e(java.lang.String,java.lang.String)>("Fabric", "Crashlytics is initializing NDK crash reporter.");
+
+        $r9 = newarray (f.a.a.a.l)[2];
+
+        $r9[0] = $r8;
+
+        $r14 = new com.crashlytics.android.ndk.CrashlyticsNdk;
+
+     label09:
+        $r10 = $r14;
+
+     label10:
+        specialinvoke $r14.<com.crashlytics.android.ndk.CrashlyticsNdk: void <init>()>();
+
+        $r9[1] = $r10;
+
+     label11:
+        $r12 = (f.a.a.a.l[]) $r9;
+
+        return $r12;
+
+     label12:
+        $r11 := @caughtexception;
+
+        $r7 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        interfaceinvoke $r7.<f.a.a.a.o: void c(java.lang.String,java.lang.String,java.lang.Throwable)>("Fabric", "Crashlytics failed to initialize NDK crash reporting. Attempting to intialize SDK...", $r11);
+
+     label13:
+        $r12 = newarray (f.a.a.a.l)[1];
+
+        $r12[0] = $r8;
+
+        return $r12;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label01 to label02 with label05;
+        catch android.content.pm.PackageManager$NameNotFoundException from label03 to label04 with label05;
+        catch java.lang.Throwable from label08 to label09 with label12;
+        catch java.lang.Throwable from label10 to label11 with label12;
+    }
+
+    public int delete(android.net.Uri, java.lang.String, java.lang.String[])
+    {
+        com.crashlytics.android.CrashlyticsInitProvider r0;
+        android.net.Uri $r3;
+        java.lang.String[] $r2;
+        java.lang.String $r1;
+
+        r0 := @this: com.crashlytics.android.CrashlyticsInitProvider;
+
+        $r3 := @parameter0: android.net.Uri;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 := @parameter2: java.lang.String[];
+
+        return 0;
+    }
+
+    public java.lang.String getType(android.net.Uri)
+    {
+        com.crashlytics.android.CrashlyticsInitProvider r0;
+        android.net.Uri $r1;
+
+        r0 := @this: com.crashlytics.android.CrashlyticsInitProvider;
+
+        $r1 := @parameter0: android.net.Uri;
+
+        return null;
+    }
+
+    public android.net.Uri insert(android.net.Uri, android.content.ContentValues)
+    {
+        com.crashlytics.android.CrashlyticsInitProvider r0;
+        android.net.Uri $r2;
+        android.content.ContentValues $r1;
+
+        r0 := @this: com.crashlytics.android.CrashlyticsInitProvider;
+
+        $r2 := @parameter0: android.net.Uri;
+
+        $r1 := @parameter1: android.content.ContentValues;
+
+        return null;
+    }
+
+    public boolean onCreate()
+    {
+        java.lang.IllegalStateException $r1;
+        android.content.Context $r2, $r5;
+        f.a.a.a.o $r7;
+        com.crashlytics.android.ManifestEnabledCheckStrategy $r4;
+        f.a.a.a.l[] $r6;
+        f.a.a.a.a.b.x $r3;
+        com.crashlytics.android.CrashlyticsInitProvider r0;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.CrashlyticsInitProvider;
+
+        $r2 = virtualinvoke r0.<android.content.ContentProvider: android.content.Context getContext()>();
+
+        $r3 = new f.a.a.a.a.b.x;
+
+        specialinvoke $r3.<f.a.a.a.a.b.x: void <init>()>();
+
+        $r4 = new com.crashlytics.android.ManifestEnabledCheckStrategy;
+
+        specialinvoke $r4.<com.crashlytics.android.ManifestEnabledCheckStrategy: void <init>()>();
+
+        $z0 = virtualinvoke r0.<com.crashlytics.android.CrashlyticsInitProvider: boolean shouldInitializeFabric(android.content.Context,f.a.a.a.a.b.x,com.crashlytics.android.CrashlyticsInitProvider$EnabledCheckStrategy)>($r2, $r3, $r4);
+
+        if $z0 == 0 goto label4;
+
+     label1:
+        $r5 = virtualinvoke $r2.<android.content.Context: android.content.Context getApplicationContext()>();
+
+        $r6 = specialinvoke r0.<com.crashlytics.android.CrashlyticsInitProvider: f.a.a.a.l[] createCrashlyticsKits(android.content.Context)>($r5);
+
+        staticinvoke <f.a.a.a.f: f.a.a.a.f a(android.content.Context,f.a.a.a.l[])>($r2, $r6);
+
+        $r7 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        interfaceinvoke $r7.<f.a.a.a.o: void e(java.lang.String,java.lang.String)>("CrashlyticsInitProvider", "CrashlyticsInitProvider initialization successful");
+
+     label2:
+        goto label5;
+
+     label3:
+        $r7 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        interfaceinvoke $r7.<f.a.a.a.o: void e(java.lang.String,java.lang.String)>("CrashlyticsInitProvider", "CrashlyticsInitProvider initialization unsuccessful");
+
+        return 0;
+
+     label4:
+        $r7 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        interfaceinvoke $r7.<f.a.a.a.o: void e(java.lang.String,java.lang.String)>("CrashlyticsInitProvider", "CrashlyticsInitProvider skipping initialization");
+
+     label5:
+        return 1;
+
+     label6:
+        $r1 := @caughtexception;
+
+        goto label3;
+
+        catch java.lang.IllegalStateException from label1 to label2 with label6;
+    }
+
+    public android.database.Cursor query(android.net.Uri, java.lang.String[], java.lang.String, java.lang.String[], java.lang.String)
+    {
+        com.crashlytics.android.CrashlyticsInitProvider r0;
+        android.net.Uri $r5;
+        java.lang.String[] $r1, $r3;
+        java.lang.String $r2, $r4;
+
+        r0 := @this: com.crashlytics.android.CrashlyticsInitProvider;
+
+        $r5 := @parameter0: android.net.Uri;
+
+        $r1 := @parameter1: java.lang.String[];
+
+        $r2 := @parameter2: java.lang.String;
+
+        $r3 := @parameter3: java.lang.String[];
+
+        $r4 := @parameter4: java.lang.String;
+
+        return null;
+    }
+
+    public boolean shouldInitializeFabric(android.content.Context, f.a.a.a.a.b.x, com.crashlytics.android.CrashlyticsInitProvider$EnabledCheckStrategy)
+    {
+        android.content.Context $r3;
+        f.a.a.a.a.b.x $r1;
+        com.crashlytics.android.CrashlyticsInitProvider r0;
+        com.crashlytics.android.CrashlyticsInitProvider$EnabledCheckStrategy $r2;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.CrashlyticsInitProvider;
+
+        $r3 := @parameter0: android.content.Context;
+
+        $r1 := @parameter1: f.a.a.a.a.b.x;
+
+        $r2 := @parameter2: com.crashlytics.android.CrashlyticsInitProvider$EnabledCheckStrategy;
+
+        $z0 = virtualinvoke $r1.<f.a.a.a.a.b.x: boolean e(android.content.Context)>($r3);
+
+        if $z0 == 0 goto label1;
+
+        $z0 = interfaceinvoke $r2.<com.crashlytics.android.CrashlyticsInitProvider$EnabledCheckStrategy: boolean isCrashlyticsEnabled(android.content.Context)>($r3);
+
+        return $z0;
+
+     label1:
+        $z0 = virtualinvoke $r1.<f.a.a.a.a.b.x: boolean d(android.content.Context)>($r3);
+
+        return $z0;
+    }
+
+    public int update(android.net.Uri, android.content.ContentValues, java.lang.String, java.lang.String[])
+    {
+        com.crashlytics.android.CrashlyticsInitProvider r0;
+        android.net.Uri $r4;
+        java.lang.String[] $r3;
+        android.content.ContentValues $r1;
+        java.lang.String $r2;
+
+        r0 := @this: com.crashlytics.android.CrashlyticsInitProvider;
+
+        $r4 := @parameter0: android.net.Uri;
+
+        $r1 := @parameter1: android.content.ContentValues;
+
+        $r2 := @parameter2: java.lang.String;
+
+        $r3 := @parameter3: java.lang.String[];
+
+        return 0;
+    }
+
+    public static void <clinit>()
+    {
+        <com.crashlytics.android.CrashlyticsInitProvider: java.lang.String TAG> = "CrashlyticsInitProvider";
+
+        <com.crashlytics.android.CrashlyticsInitProvider: java.lang.String NDK_MANIFEST_FLAG> = "firebase_crashlytics_ndk_enabled";
+
+        return;
+    }
+}

@@ -1,0 +1,330 @@
+public final class com.google.common.base.SmallCharMatcher extends com.google.common.base.CharMatcher$NamedFastMatcher
+{
+    public static final int C1;
+    public static final int C2;
+    public static final double DESIRED_LOAD_FACTOR;
+    public static final int MAX_SIZE;
+    public final boolean containsZero;
+    public final long filter;
+    public final char[] table;
+
+    public void <init>(char[], long, boolean, java.lang.String)
+    {
+        com.google.common.base.SmallCharMatcher r0;
+        char[] $r1;
+        long $l0;
+        java.lang.String $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.common.base.SmallCharMatcher;
+
+        $r1 := @parameter0: char[];
+
+        $l0 := @parameter1: long;
+
+        $z0 := @parameter2: boolean;
+
+        $r2 := @parameter3: java.lang.String;
+
+        specialinvoke r0.<com.google.common.base.CharMatcher$NamedFastMatcher: void <init>(java.lang.String)>($r2);
+
+        r0.<com.google.common.base.SmallCharMatcher: char[] table> = $r1;
+
+        r0.<com.google.common.base.SmallCharMatcher: long filter> = $l0;
+
+        r0.<com.google.common.base.SmallCharMatcher: boolean containsZero> = $z0;
+
+        return;
+    }
+
+    private boolean checkFilter(int)
+    {
+        byte $b2;
+        int $i0;
+        com.google.common.base.SmallCharMatcher r0;
+        long $l1;
+
+        r0 := @this: com.google.common.base.SmallCharMatcher;
+
+        $i0 := @parameter0: int;
+
+        $l1 = r0.<com.google.common.base.SmallCharMatcher: long filter>;
+
+        $l1 = $l1 >> $i0;
+
+        $l1 = $l1 & 1L;
+
+        $b2 = 1L cmp $l1;
+
+        if $b2 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static int chooseTableSize(int)
+    {
+        byte $b0;
+        int $i1, $i2, $i3;
+        double $d0, $d1;
+
+        $i2 := @parameter0: int;
+
+        if $i2 != 1 goto label1;
+
+        return 2;
+
+     label1:
+        $i1 = -1;
+
+        $i1 = $i2 + $i1;
+
+        $i1 = staticinvoke <java.lang.Integer: int highestOneBit(int)>($i1);
+
+        $i1 = $i1 << 1;
+
+     label2:
+        $d0 = (double) $i1;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        $d0 = $d0 * 0.5;
+
+        $d1 = (double) $i2;
+
+        $b0 = $d0 cmpg $d1;
+
+        $i3 = (int) $b0;
+
+        if $i3 >= 0 goto label3;
+
+        $i1 = $i1 << 1;
+
+        goto label2;
+
+     label3:
+        return $i1;
+    }
+
+    public static com.google.common.base.CharMatcher 'from'(java.util.BitSet, java.lang.String)
+    {
+        long $l2, $l3;
+        char $c5;
+        int $i0, $i1, $i4;
+        char[] $r1;
+        com.google.common.base.SmallCharMatcher $r3;
+        java.lang.String $r0;
+        java.util.BitSet $r2;
+        boolean $z0;
+
+        $r2 := @parameter0: java.util.BitSet;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $i0 = virtualinvoke $r2.<java.util.BitSet: int cardinality()>();
+
+        $z0 = virtualinvoke $r2.<java.util.BitSet: boolean get(int)>(0);
+
+        $i0 = staticinvoke <com.google.common.base.SmallCharMatcher: int chooseTableSize(int)>($i0);
+
+        $r1 = newarray (char)[$i0];
+
+        $i0 = lengthof $r1;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        $i1 = virtualinvoke $r2.<java.util.BitSet: int nextSetBit(int)>(0);
+
+        $l2 = 0L;
+
+     label1:
+        $i4 = -1;
+
+        if $i1 == $i4 goto label4;
+
+        $l3 = 1L << $i1;
+
+        $l2 = $l3 | $l2;
+
+        $i4 = staticinvoke <com.google.common.base.SmallCharMatcher: int smear(int)>($i1);
+
+     label2:
+        $i4 = $i4 & $i0;
+
+        $c5 = $r1[$i4];
+
+        if $c5 != 0 goto label3;
+
+        $c5 = (char) $i1;
+
+        $r1[$i4] = $c5;
+
+        $i1 = $i1 + 1;
+
+        $i1 = virtualinvoke $r2.<java.util.BitSet: int nextSetBit(int)>($i1);
+
+        goto label1;
+
+     label3:
+        $i4 = $i4 + 1;
+
+        goto label2;
+
+     label4:
+        $r3 = new com.google.common.base.SmallCharMatcher;
+
+        specialinvoke $r3.<com.google.common.base.SmallCharMatcher: void <init>(char[],long,boolean,java.lang.String)>($r1, $l2, $z0, $r0);
+
+        return $r3;
+    }
+
+    public static int smear(int)
+    {
+        int $i0;
+
+        $i0 := @parameter0: int;
+
+        $i0 = $i0 * -862048943;
+
+        $i0 = staticinvoke <java.lang.Integer: int rotateLeft(int,int)>($i0, 15);
+
+        $i0 = $i0 * 461845907;
+
+        return $i0;
+    }
+
+    public boolean matches(char)
+    {
+        char $c0, $c1;
+        int $i2, $i3, $i4, $i5, $i6;
+        com.google.common.base.SmallCharMatcher r0;
+        char[] $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.base.SmallCharMatcher;
+
+        $c1 := @parameter0: char;
+
+        if $c1 != 0 goto label1;
+
+        $z0 = r0.<com.google.common.base.SmallCharMatcher: boolean containsZero>;
+
+        return $z0;
+
+     label1:
+        $i2 = (int) $c1;
+
+        $z0 = specialinvoke r0.<com.google.common.base.SmallCharMatcher: boolean checkFilter(int)>($i2);
+
+        if $z0 != 0 goto label2;
+
+        return 0;
+
+     label2:
+        $r1 = r0.<com.google.common.base.SmallCharMatcher: char[] table>;
+
+        $i2 = lengthof $r1;
+
+        $i2 = $i2 - 1;
+
+        $i3 = (int) $c1;
+
+        $i3 = staticinvoke <com.google.common.base.SmallCharMatcher: int smear(int)>($i3);
+
+        $i3 = $i3 & $i2;
+
+        $i4 = $i3;
+
+     label3:
+        $r1 = r0.<com.google.common.base.SmallCharMatcher: char[] table>;
+
+        $c0 = $r1[$i4];
+
+        if $c0 != 0 goto label4;
+
+        return 0;
+
+     label4:
+        $c0 = $r1[$i4];
+
+        $i5 = (int) $c0;
+
+        $i6 = (int) $c1;
+
+        if $i5 != $i6 goto label5;
+
+        return 1;
+
+     label5:
+        $i4 = $i4 + 1;
+
+        $i4 = $i4 & $i2;
+
+        if $i4 != $i3 goto label3;
+
+        return 0;
+    }
+
+    public void setBits(java.util.BitSet)
+    {
+        char $c1;
+        int $i0, $i2, $i3;
+        com.google.common.base.SmallCharMatcher r0;
+        char[] $r2;
+        java.util.BitSet $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.base.SmallCharMatcher;
+
+        $r1 := @parameter0: java.util.BitSet;
+
+        $z0 = r0.<com.google.common.base.SmallCharMatcher: boolean containsZero>;
+
+        $i2 = 0;
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke $r1.<java.util.BitSet: void set(int)>(0);
+
+     label1:
+        $r2 = r0.<com.google.common.base.SmallCharMatcher: char[] table>;
+
+        $i0 = lengthof $r2;
+
+     label2:
+        if $i2 >= $i0 goto label4;
+
+        $c1 = $r2[$i2];
+
+        if $c1 == 0 goto label3;
+
+        $i3 = (int) $c1;
+
+        virtualinvoke $r1.<java.util.BitSet: void set(int)>($i3);
+
+     label3:
+        $i2 = $i2 + 1;
+
+        goto label2;
+
+     label4:
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.common.base.SmallCharMatcher: int MAX_SIZE> = 1023;
+
+        <com.google.common.base.SmallCharMatcher: double DESIRED_LOAD_FACTOR> = 0.5;
+
+        <com.google.common.base.SmallCharMatcher: int C2> = 461845907;
+
+        <com.google.common.base.SmallCharMatcher: int C1> = -862048943;
+
+        return;
+    }
+}

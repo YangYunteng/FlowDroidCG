@@ -1,0 +1,565 @@
+public final class com.google.zxing.common.HybridBinarizer extends com.google.zxing.common.GlobalHistogramBinarizer
+{
+    public static final int BLOCK_SIZE;
+    public static final int BLOCK_SIZE_MASK;
+    public static final int BLOCK_SIZE_POWER;
+    public static final int MINIMUM_DIMENSION;
+    public static final int MIN_DYNAMIC_RANGE;
+    public com.google.zxing.common.BitMatrix matrix;
+
+    public void <init>(com.google.zxing.LuminanceSource)
+    {
+        com.google.zxing.LuminanceSource $r1;
+        com.google.zxing.common.HybridBinarizer r0;
+
+        r0 := @this: com.google.zxing.common.HybridBinarizer;
+
+        $r1 := @parameter0: com.google.zxing.LuminanceSource;
+
+        specialinvoke r0.<com.google.zxing.common.GlobalHistogramBinarizer: void <init>(com.google.zxing.LuminanceSource)>($r1);
+
+        return;
+    }
+
+    public static int[][] calculateBlackPoints(byte[], int, int, int, int)
+    {
+        byte[] $r0;
+        int[][] $r3;
+        short $s11, $s12, $s15;
+        byte $b14;
+        int[] $r1;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10, $i13;
+        java.lang.Object $r2;
+
+        $r0 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        $i3 := @parameter4: int;
+
+        $r1 = newarray (int)[2];
+
+        $r1[0] = $i1;
+
+        $r1[1] = $i0;
+
+        $r2 = staticinvoke <java.lang.reflect.Array: java.lang.Object newInstance(java.lang.Class,int[])>(class "I", $r1);
+
+        $r3 = (int[][]) $r2;
+
+        $i5 = 0;
+
+     label01:
+        if $i5 >= $i1 goto label16;
+
+        $i6 = $i5 << 3;
+
+        $i7 = -8;
+
+        $i7 = $i3 + $i7;
+
+        if $i6 <= $i7 goto label02;
+
+        $i6 = $i7;
+
+     label02:
+        $i7 = 0;
+
+     label03:
+        if $i7 >= $i0 goto label15;
+
+        $i8 = $i7 << 3;
+
+        $i9 = -8;
+
+        $i9 = $i2 + $i9;
+
+        if $i8 <= $i9 goto label04;
+
+        $i8 = $i9;
+
+     label04:
+        $i9 = $i6 * $i2;
+
+        $i8 = $i9 + $i8;
+
+        $i9 = 0;
+
+        $i10 = 0;
+
+        $s11 = 0;
+
+        $s12 = 255;
+
+     label05:
+        if $i9 >= 8 goto label13;
+
+        $i13 = 0;
+
+     label06:
+        if $i13 >= 8 goto label09;
+
+        $i4 = $i8 + $i13;
+
+        $b14 = $r0[$i4];
+
+        $s15 = (short) $b14;
+
+        $s15 = $s15 & 255;
+
+        $i4 = (int) $s15;
+
+        $i10 = $i10 + $i4;
+
+        $i4 = (int) $s15;
+
+        if $i4 >= $s12 goto label07;
+
+        $s12 = $s15;
+
+     label07:
+        $i4 = (int) $s15;
+
+        if $i4 <= $s11 goto label08;
+
+        $s11 = $s15;
+
+     label08:
+        $i13 = $i13 + 1;
+
+        goto label06;
+
+     label09:
+        $i13 = $s11 - $s12;
+
+        if $i13 <= 24 goto label12;
+
+     label10:
+        $i9 = $i9 + 1;
+
+        $i8 = $i8 + $i2;
+
+        if $i9 >= 8 goto label12;
+
+        $i13 = 0;
+
+     label11:
+        if $i13 >= 8 goto label10;
+
+        $i4 = $i8 + $i13;
+
+        $b14 = $r0[$i4];
+
+        $s15 = (short) $b14;
+
+        $s15 = $s15 & 255;
+
+        $i4 = (int) $s15;
+
+        $i10 = $i10 + $i4;
+
+        $i13 = $i13 + 1;
+
+        goto label11;
+
+     label12:
+        $i9 = $i9 + 1;
+
+        $i8 = $i8 + $i2;
+
+        goto label05;
+
+     label13:
+        $i8 = $i10 >> 6;
+
+        $i9 = $s11 - $s12;
+
+        if $i9 > 24 goto label14;
+
+        $i8 = $s12 >> 1;
+
+        if $i5 <= 0 goto label14;
+
+        if $i7 <= 0 goto label14;
+
+        $i9 = -1;
+
+        $i9 = $i5 + $i9;
+
+        $r1 = $r3[$i9];
+
+        $i10 = $r1[$i7];
+
+        $r1 = $r3[$i5];
+
+        $i13 = -1;
+
+        $i13 = $i7 + $i13;
+
+        $i4 = $r1[$i13];
+
+        $i4 = $i4 * 2;
+
+        $i10 = $i10 + $i4;
+
+        $r1 = $r3[$i9];
+
+        $i9 = $r1[$i13];
+
+        $i9 = $i10 + $i9;
+
+        $i9 = $i9 >> 2;
+
+        if $s12 >= $i9 goto label14;
+
+        $i8 = $i9;
+
+     label14:
+        $r1 = $r3[$i5];
+
+        $r1[$i7] = $i8;
+
+        $i7 = $i7 + 1;
+
+        goto label03;
+
+     label15:
+        $i5 = $i5 + 1;
+
+        goto label01;
+
+     label16:
+        return $r3;
+    }
+
+    public static void calculateThresholdForBlock(byte[], int, int, int, int, int[][], com.google.zxing.common.BitMatrix)
+    {
+        byte[] $r0;
+        int[][] $r1;
+        int[] $r3;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10, $i11, $i12, $i13;
+        com.google.zxing.common.BitMatrix $r2;
+
+        $r0 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        $i3 := @parameter4: int;
+
+        $r1 := @parameter5: int[][];
+
+        $r2 := @parameter6: com.google.zxing.common.BitMatrix;
+
+        $i4 = 0;
+
+     label1:
+        if $i4 >= $i1 goto label9;
+
+        $i5 = $i4 << 3;
+
+        $i6 = -8;
+
+        $i6 = $i3 + $i6;
+
+        if $i5 <= $i6 goto label2;
+
+        $i5 = $i6;
+
+     label2:
+        $i6 = 0;
+
+     label3:
+        if $i6 >= $i0 goto label8;
+
+        $i7 = $i6 << 3;
+
+        $i8 = -8;
+
+        $i8 = $i2 + $i8;
+
+        if $i7 <= $i8 goto label4;
+
+        goto label5;
+
+     label4:
+        $i8 = $i7;
+
+     label5:
+        $i7 = -3;
+
+        $i7 = $i0 + $i7;
+
+        $i7 = staticinvoke <com.google.zxing.common.HybridBinarizer: int cap(int,int,int)>($i6, 2, $i7);
+
+        $i9 = -3;
+
+        $i9 = $i1 + $i9;
+
+        $i9 = staticinvoke <com.google.zxing.common.HybridBinarizer: int cap(int,int,int)>($i4, 2, $i9);
+
+        $i10 = -2;
+
+        $i11 = 0;
+
+     label6:
+        if $i10 > 2 goto label7;
+
+        $i12 = $i9 + $i10;
+
+        $r3 = $r1[$i12];
+
+        $i12 = -2;
+
+        $i12 = $i7 + $i12;
+
+        $i12 = $r3[$i12];
+
+        $i13 = -1;
+
+        $i13 = $i7 + $i13;
+
+        $i13 = $r3[$i13];
+
+        $i12 = $i12 + $i13;
+
+        $i13 = $r3[$i7];
+
+        $i12 = $i12 + $i13;
+
+        $i13 = $i7 + 1;
+
+        $i13 = $r3[$i13];
+
+        $i12 = $i12 + $i13;
+
+        $i13 = $i7 + 2;
+
+        $i13 = $r3[$i13];
+
+        $i12 = $i12 + $i13;
+
+        $i11 = $i11 + $i12;
+
+        $i10 = $i10 + 1;
+
+        goto label6;
+
+     label7:
+        $i7 = $i11 / 25;
+
+        staticinvoke <com.google.zxing.common.HybridBinarizer: void thresholdBlock(byte[],int,int,int,int,com.google.zxing.common.BitMatrix)>($r0, $i8, $i5, $i7, $i2, $r2);
+
+        $i6 = $i6 + 1;
+
+        goto label3;
+
+     label8:
+        $i4 = $i4 + 1;
+
+        goto label1;
+
+     label9:
+        return;
+    }
+
+    public static int cap(int, int, int)
+    {
+        int $i0, $i1, $i2;
+
+        $i2 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        if $i2 >= $i0 goto label1;
+
+        return $i0;
+
+     label1:
+        if $i2 <= $i1 goto label2;
+
+        return $i1;
+
+     label2:
+        return $i2;
+    }
+
+    public static void thresholdBlock(byte[], int, int, int, int, com.google.zxing.common.BitMatrix)
+    {
+        byte[] $r0;
+        short $s9;
+        byte $b8;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i10;
+        com.google.zxing.common.BitMatrix $r1;
+
+        $r0 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        $i3 := @parameter4: int;
+
+        $r1 := @parameter5: com.google.zxing.common.BitMatrix;
+
+        $i5 = $i1 * $i3;
+
+        $i5 = $i5 + $i0;
+
+        $i6 = 0;
+
+     label1:
+        if $i6 >= 8 goto label5;
+
+        $i7 = 0;
+
+     label2:
+        if $i7 >= 8 goto label4;
+
+        $i4 = $i5 + $i7;
+
+        $b8 = $r0[$i4];
+
+        $s9 = (short) $b8;
+
+        $s9 = $s9 & 255;
+
+        $i4 = (int) $s9;
+
+        if $i4 > $i2 goto label3;
+
+        $i10 = $i0 + $i7;
+
+        $i4 = $i1 + $i6;
+
+        virtualinvoke $r1.<com.google.zxing.common.BitMatrix: void set(int,int)>($i10, $i4);
+
+     label3:
+        $i7 = $i7 + 1;
+
+        goto label2;
+
+     label4:
+        $i6 = $i6 + 1;
+
+        $i5 = $i5 + $i3;
+
+        goto label1;
+
+     label5:
+        return;
+    }
+
+    public com.google.zxing.Binarizer createBinarizer(com.google.zxing.LuminanceSource)
+    {
+        com.google.zxing.LuminanceSource $r1;
+        com.google.zxing.common.HybridBinarizer r0;
+
+        r0 := @this: com.google.zxing.common.HybridBinarizer;
+
+        $r1 := @parameter0: com.google.zxing.LuminanceSource;
+
+        r0 = new com.google.zxing.common.HybridBinarizer;
+
+        specialinvoke r0.<com.google.zxing.common.HybridBinarizer: void <init>(com.google.zxing.LuminanceSource)>($r1);
+
+        return r0;
+    }
+
+    public com.google.zxing.common.BitMatrix getBlackMatrix()
+    {
+        byte[] $r3;
+        int[][] $r4;
+        com.google.zxing.LuminanceSource $r2;
+        int $i0, $i1, $i2, $i3, $i4;
+        com.google.zxing.common.BitMatrix $r1;
+        com.google.zxing.common.HybridBinarizer r0;
+
+        r0 := @this: com.google.zxing.common.HybridBinarizer;
+
+        $r1 = r0.<com.google.zxing.common.HybridBinarizer: com.google.zxing.common.BitMatrix matrix>;
+
+        if $r1 == null goto label1;
+
+        return $r1;
+
+     label1:
+        $r2 = virtualinvoke r0.<com.google.zxing.Binarizer: com.google.zxing.LuminanceSource getLuminanceSource()>();
+
+        $i0 = virtualinvoke $r2.<com.google.zxing.LuminanceSource: int getWidth()>();
+
+        $i1 = virtualinvoke $r2.<com.google.zxing.LuminanceSource: int getHeight()>();
+
+        if $i0 < 40 goto label4;
+
+        if $i1 < 40 goto label4;
+
+        $r3 = virtualinvoke $r2.<com.google.zxing.LuminanceSource: byte[] getMatrix()>();
+
+        $i2 = $i0 >> 3;
+
+        $i3 = $i0 & 7;
+
+        if $i3 == 0 goto label2;
+
+        $i2 = $i2 + 1;
+
+     label2:
+        $i3 = $i1 >> 3;
+
+        $i4 = $i1 & 7;
+
+        if $i4 == 0 goto label3;
+
+        $i3 = $i3 + 1;
+
+     label3:
+        $r4 = staticinvoke <com.google.zxing.common.HybridBinarizer: int[][] calculateBlackPoints(byte[],int,int,int,int)>($r3, $i2, $i3, $i0, $i1);
+
+        $r1 = new com.google.zxing.common.BitMatrix;
+
+        specialinvoke $r1.<com.google.zxing.common.BitMatrix: void <init>(int,int)>($i0, $i1);
+
+        staticinvoke <com.google.zxing.common.HybridBinarizer: void calculateThresholdForBlock(byte[],int,int,int,int,int[][],com.google.zxing.common.BitMatrix)>($r3, $i2, $i3, $i0, $i1, $r4, $r1);
+
+        r0.<com.google.zxing.common.HybridBinarizer: com.google.zxing.common.BitMatrix matrix> = $r1;
+
+        goto label5;
+
+     label4:
+        $r1 = specialinvoke r0.<com.google.zxing.common.GlobalHistogramBinarizer: com.google.zxing.common.BitMatrix getBlackMatrix()>();
+
+        r0.<com.google.zxing.common.HybridBinarizer: com.google.zxing.common.BitMatrix matrix> = $r1;
+
+     label5:
+        $r1 = r0.<com.google.zxing.common.HybridBinarizer: com.google.zxing.common.BitMatrix matrix>;
+
+        return $r1;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.zxing.common.HybridBinarizer: int MIN_DYNAMIC_RANGE> = 24;
+
+        <com.google.zxing.common.HybridBinarizer: int MINIMUM_DIMENSION> = 40;
+
+        <com.google.zxing.common.HybridBinarizer: int BLOCK_SIZE_POWER> = 3;
+
+        <com.google.zxing.common.HybridBinarizer: int BLOCK_SIZE_MASK> = 7;
+
+        <com.google.zxing.common.HybridBinarizer: int BLOCK_SIZE> = 8;
+
+        return;
+    }
+}

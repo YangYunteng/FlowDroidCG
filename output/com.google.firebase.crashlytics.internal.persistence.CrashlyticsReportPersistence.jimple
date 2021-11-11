@@ -1,0 +1,1845 @@
+public class com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence extends java.lang.Object
+{
+    public static final java.lang.String EVENT_COUNTER_FORMAT;
+    public static final int EVENT_COUNTER_WIDTH;
+    public static final java.io.FilenameFilter EVENT_FILE_FILTER;
+    public static final java.lang.String EVENT_FILE_NAME_PREFIX;
+    public static final int EVENT_NAME_LENGTH;
+    public static final java.util.Comparator LATEST_SESSION_ID_FIRST_COMPARATOR;
+    public static final int MAX_OPEN_SESSIONS;
+    public static final java.lang.String NATIVE_REPORTS_DIRECTORY;
+    public static final java.lang.String NORMAL_EVENT_SUFFIX;
+    public static final java.lang.String OPEN_SESSIONS_DIRECTORY_NAME;
+    public static final java.lang.String PRIORITY_EVENT_SUFFIX;
+    public static final java.lang.String PRIORITY_REPORTS_DIRECTORY;
+    public static final java.lang.String REPORTS_DIRECTORY;
+    public static final java.lang.String REPORT_FILE_NAME;
+    public static final com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform TRANSFORM;
+    public static final java.lang.String USER_FILE_NAME;
+    public static final java.nio.charset.Charset UTF_8;
+    public static final java.lang.String WORKING_DIRECTORY_NAME;
+    public final java.util.concurrent.atomic.AtomicInteger eventCounter;
+    public final java.io.File nativeReportsDirectory;
+    public final java.io.File openSessionsDirectory;
+    public final java.io.File priorityReportsDirectory;
+    public final java.io.File reportsDirectory;
+    public final com.google.firebase.crashlytics.internal.settings.SettingsDataProvider settingsDataProvider;
+
+    static void <clinit>()
+    {
+        com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform $r1;
+        java.io.FilenameFilter $r3;
+        java.nio.charset.Charset $r0;
+        java.util.Comparator $r2;
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String WORKING_DIRECTORY_NAME> = "report-persistence";
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String USER_FILE_NAME> = "user";
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String REPORT_FILE_NAME> = "report";
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String REPORTS_DIRECTORY> = "reports";
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String PRIORITY_REPORTS_DIRECTORY> = "priority-reports";
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String PRIORITY_EVENT_SUFFIX> = "_";
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String OPEN_SESSIONS_DIRECTORY_NAME> = "sessions";
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String NORMAL_EVENT_SUFFIX> = "";
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String NATIVE_REPORTS_DIRECTORY> = "native-reports";
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: int MAX_OPEN_SESSIONS> = 8;
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String EVENT_FILE_NAME_PREFIX> = "event";
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: int EVENT_COUNTER_WIDTH> = 10;
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String EVENT_COUNTER_FORMAT> = "%010d";
+
+        $r0 = staticinvoke <java.nio.charset.Charset: java.nio.charset.Charset forName(java.lang.String)>("UTF-8");
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.nio.charset.Charset UTF_8> = $r0;
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: int EVENT_NAME_LENGTH> = 15;
+
+        $r1 = new com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform;
+
+        specialinvoke $r1.<com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform: void <init>()>();
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform TRANSFORM> = $r1;
+
+        $r2 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence$$Lambda$5: java.util.Comparator lambdaFactory$()>();
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.Comparator LATEST_SESSION_ID_FIRST_COMPARATOR> = $r2;
+
+        $r3 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence$$Lambda$6: java.io.FilenameFilter lambdaFactory$()>();
+
+        <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.FilenameFilter EVENT_FILE_FILTER> = $r3;
+
+        return;
+    }
+
+    public void <init>(java.io.File, com.google.firebase.crashlytics.internal.settings.SettingsDataProvider)
+    {
+        com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence r0;
+        java.util.concurrent.atomic.AtomicInteger $r3;
+        com.google.firebase.crashlytics.internal.settings.SettingsDataProvider $r1;
+        java.io.File $r2, $r4;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence;
+
+        $r2 := @parameter0: java.io.File;
+
+        $r1 := @parameter1: com.google.firebase.crashlytics.internal.settings.SettingsDataProvider;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r3 = new java.util.concurrent.atomic.AtomicInteger;
+
+        specialinvoke $r3.<java.util.concurrent.atomic.AtomicInteger: void <init>(int)>(0);
+
+        r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.concurrent.atomic.AtomicInteger eventCounter> = $r3;
+
+        $r4 = new java.io.File;
+
+        specialinvoke $r4.<java.io.File: void <init>(java.io.File,java.lang.String)>($r2, "report-persistence");
+
+        $r2 = new java.io.File;
+
+        specialinvoke $r2.<java.io.File: void <init>(java.io.File,java.lang.String)>($r4, "sessions");
+
+        r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File openSessionsDirectory> = $r2;
+
+        $r2 = new java.io.File;
+
+        specialinvoke $r2.<java.io.File: void <init>(java.io.File,java.lang.String)>($r4, "priority-reports");
+
+        r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File priorityReportsDirectory> = $r2;
+
+        $r2 = new java.io.File;
+
+        specialinvoke $r2.<java.io.File: void <init>(java.io.File,java.lang.String)>($r4, "reports");
+
+        r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File reportsDirectory> = $r2;
+
+        $r2 = new java.io.File;
+
+        specialinvoke $r2.<java.io.File: void <init>(java.io.File,java.lang.String)>($r4, "native-reports");
+
+        r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File nativeReportsDirectory> = $r2;
+
+        r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: com.google.firebase.crashlytics.internal.settings.SettingsDataProvider settingsDataProvider> = $r1;
+
+        return;
+    }
+
+    public static boolean access$lambda$0(java.io.File, java.lang.String)
+    {
+        java.lang.String $r0;
+        java.io.File $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $z0 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: boolean isNormalPriorityEventFile(java.io.File,java.lang.String)>($r1, $r0);
+
+        return $z0;
+    }
+
+    public static int access$lambda$1(java.io.File, java.io.File)
+    {
+        int $i0;
+        java.io.File $r0, $r1;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.io.File;
+
+        $i0 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: int oldestEventFileFirst(java.io.File,java.io.File)>($r1, $r0);
+
+        return $i0;
+    }
+
+    private java.util.List capAndGetOpenSessions(java.lang.String)
+    {
+        java.util.Iterator $r7;
+        java.io.File $r3;
+        com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence r0;
+        java.util.List $r4, $r6;
+        java.io.FileFilter $r2;
+        int $i0;
+        java.lang.Object $r8;
+        java.lang.String $r1;
+        java.util.Comparator $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence$$Lambda$2: java.io.FileFilter lambdaFactory$(java.lang.String)>($r1);
+
+        $r3 = r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File openSessionsDirectory>;
+
+        $r4 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List getFilesInDirectory(java.io.File,java.io.FileFilter)>($r3, $r2);
+
+        $r5 = <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.Comparator LATEST_SESSION_ID_FIRST_COMPARATOR>;
+
+        staticinvoke <java.util.Collections: void sort(java.util.List,java.util.Comparator)>($r4, $r5);
+
+        $i0 = interfaceinvoke $r4.<java.util.List: int size()>();
+
+        if $i0 > 8 goto label1;
+
+        return $r4;
+
+     label1:
+        $i0 = interfaceinvoke $r4.<java.util.List: int size()>();
+
+        $r6 = interfaceinvoke $r4.<java.util.List: java.util.List subList(int,int)>(8, $i0);
+
+        $r7 = interfaceinvoke $r6.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r7.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r8 = interfaceinvoke $r7.<java.util.Iterator: java.lang.Object next()>();
+
+        $r3 = (java.io.File) $r8;
+
+        staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: void recursiveDelete(java.io.File)>($r3);
+
+        goto label2;
+
+     label3:
+        $r4 = interfaceinvoke $r4.<java.util.List: java.util.List subList(int,int)>(0, 8);
+
+        return $r4;
+    }
+
+    public static int capFilesCount(java.util.List, int)
+    {
+        java.util.Iterator $r1;
+        java.io.File $r3;
+        java.util.List $r0;
+        int $i0, $i1, $i2;
+        java.lang.Object $r2;
+        boolean $z0;
+
+        $r0 := @parameter0: java.util.List;
+
+        $i0 := @parameter1: int;
+
+        $i1 = interfaceinvoke $r0.<java.util.List: int size()>();
+
+        $r1 = interfaceinvoke $r0.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r1.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r2 = interfaceinvoke $r1.<java.util.Iterator: java.lang.Object next()>();
+
+        $r3 = (java.io.File) $r2;
+
+        if $i1 > $i0 goto label2;
+
+        return $i1;
+
+     label2:
+        staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: void recursiveDelete(java.io.File)>($r3);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label1;
+
+     label3:
+        return $i1;
+    }
+
+    private void capFinalizedReports()
+    {
+        com.google.firebase.crashlytics.internal.settings.model.SessionSettingsData $r3;
+        java.util.Iterator $r5;
+        com.google.firebase.crashlytics.internal.settings.SettingsDataProvider $r1;
+        java.io.File $r7;
+        com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence r0;
+        java.util.List $r4;
+        int $i0, $i1;
+        java.lang.Object $r6;
+        com.google.firebase.crashlytics.internal.settings.model.Settings $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence;
+
+        $r1 = r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: com.google.firebase.crashlytics.internal.settings.SettingsDataProvider settingsDataProvider>;
+
+        $r2 = interfaceinvoke $r1.<com.google.firebase.crashlytics.internal.settings.SettingsDataProvider: com.google.firebase.crashlytics.internal.settings.model.Settings getSettings()>();
+
+        $r3 = interfaceinvoke $r2.<com.google.firebase.crashlytics.internal.settings.model.Settings: com.google.firebase.crashlytics.internal.settings.model.SessionSettingsData getSessionData()>();
+
+        $i0 = $r3.<com.google.firebase.crashlytics.internal.settings.model.SessionSettingsData: int maxCompleteSessionsCount>;
+
+        $r4 = specialinvoke r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List getAllFinalizedReportFiles()>();
+
+        $i1 = interfaceinvoke $r4.<java.util.List: int size()>();
+
+        if $i1 > $i0 goto label1;
+
+        return;
+
+     label1:
+        $r4 = interfaceinvoke $r4.<java.util.List: java.util.List subList(int,int)>($i0, $i1);
+
+        $r5 = interfaceinvoke $r4.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r5.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r6 = interfaceinvoke $r5.<java.util.Iterator: java.lang.Object next()>();
+
+        $r7 = (java.io.File) $r6;
+
+        virtualinvoke $r7.<java.io.File: boolean delete()>();
+
+        goto label2;
+
+     label3:
+        return;
+    }
+
+    public static transient java.util.List combineReportFiles(java.util.List[])
+    {
+        java.util.List[] $r0;
+        java.util.ArrayList $r1;
+        java.util.List $r2;
+        int $i0, $i1, $i2, $i3, $i4;
+
+        $r0 := @parameter0: java.util.List[];
+
+        $r1 = new java.util.ArrayList;
+
+        specialinvoke $r1.<java.util.ArrayList: void <init>()>();
+
+        $i1 = lengthof $r0;
+
+        $i2 = 0;
+
+        $i3 = 0;
+
+        $i4 = 0;
+
+     label1:
+        if $i3 >= $i1 goto label2;
+
+        $r2 = $r0[$i3];
+
+        $i0 = interfaceinvoke $r2.<java.util.List: int size()>();
+
+        $i4 = $i4 + $i0;
+
+        $i3 = $i3 + 1;
+
+        goto label1;
+
+     label2:
+        virtualinvoke $r1.<java.util.ArrayList: void ensureCapacity(int)>($i4);
+
+        $i0 = lengthof $r0;
+
+     label3:
+        if $i2 >= $i0 goto label4;
+
+        $r2 = $r0[$i2];
+
+        virtualinvoke $r1.<java.util.ArrayList: boolean addAll(java.util.Collection)>($r2);
+
+        $i2 = $i2 + 1;
+
+        goto label3;
+
+     label4:
+        return $r1;
+    }
+
+    public static java.lang.String generateEventFilename(int, boolean)
+    {
+        java.lang.Object[] $r1;
+        java.lang.Integer $r2;
+        java.util.Locale $r0;
+        int $i0;
+        java.lang.StringBuilder $r5;
+        java.lang.String $r3, $r4;
+        boolean $z0;
+
+        $i0 := @parameter0: int;
+
+        $z0 := @parameter1: boolean;
+
+        $r0 = <java.util.Locale: java.util.Locale US>;
+
+        $r1 = newarray (java.lang.Object)[1];
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r1[0] = $r2;
+
+        $r3 = staticinvoke <java.lang.String: java.lang.String format(java.util.Locale,java.lang.String,java.lang.Object[])>($r0, "%010d", $r1);
+
+        if $z0 == 0 goto label1;
+
+        $r4 = "_";
+
+        goto label2;
+
+     label1:
+        $r4 = "";
+
+     label2:
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("event");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r3 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r3;
+    }
+
+    public static java.util.List getAllFilesInDirectory(java.io.File)
+    {
+        java.util.List $r0;
+        java.io.File $r1;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List getFilesInDirectory(java.io.File,java.io.FileFilter)>($r1, null);
+
+        return $r0;
+    }
+
+    private java.util.List getAllFinalizedReportFiles()
+    {
+        com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence r0;
+        java.util.List $r4;
+        java.util.List[] $r1, $r2;
+        java.io.File $r3;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence;
+
+        $r1 = newarray (java.util.List)[2];
+
+        $r2 = newarray (java.util.List)[2];
+
+        $r3 = r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File priorityReportsDirectory>;
+
+        $r4 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List getAllFilesInDirectory(java.io.File)>($r3);
+
+        $r2[0] = $r4;
+
+        $r3 = r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File nativeReportsDirectory>;
+
+        $r4 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List getAllFilesInDirectory(java.io.File)>($r3);
+
+        $r2[1] = $r4;
+
+        $r4 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List combineReportFiles(java.util.List[])>($r2);
+
+        $r1[0] = $r4;
+
+        $r3 = r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File reportsDirectory>;
+
+        $r4 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List getAllFilesInDirectory(java.io.File)>($r3);
+
+        $r1[1] = $r4;
+
+        $r4 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List sortAndCombineReportFiles(java.util.List[])>($r1);
+
+        return $r4;
+    }
+
+    public static java.lang.String getEventNameWithoutPriority(java.lang.String)
+    {
+        int $i0;
+        java.lang.String $r0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $i0 = <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: int EVENT_NAME_LENGTH>;
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String substring(int,int)>(0, $i0);
+
+        return $r0;
+    }
+
+    public static java.util.List getFilesInDirectory(java.io.File, java.io.FileFilter)
+    {
+        java.util.List $r2;
+        java.io.FileFilter $r0;
+        java.io.File[] $r3;
+        java.io.File $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.io.FileFilter;
+
+        $z0 = virtualinvoke $r1.<java.io.File: boolean isDirectory()>();
+
+        if $z0 != 0 goto label1;
+
+        $r2 = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        return $r2;
+
+     label1:
+        if $r0 != null goto label2;
+
+        $r3 = virtualinvoke $r1.<java.io.File: java.io.File[] listFiles()>();
+
+        goto label3;
+
+     label2:
+        $r3 = virtualinvoke $r1.<java.io.File: java.io.File[] listFiles(java.io.FileFilter)>($r0);
+
+     label3:
+        if $r3 == null goto label4;
+
+        $r2 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($r3);
+
+        return $r2;
+
+     label4:
+        $r2 = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        return $r2;
+    }
+
+    public static java.util.List getFilesInDirectory(java.io.File, java.io.FilenameFilter)
+    {
+        java.io.FilenameFilter $r0;
+        java.util.List $r2;
+        java.io.File[] $r3;
+        java.io.File $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.io.FilenameFilter;
+
+        $z0 = virtualinvoke $r1.<java.io.File: boolean isDirectory()>();
+
+        if $z0 != 0 goto label1;
+
+        $r2 = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        return $r2;
+
+     label1:
+        if $r0 != null goto label2;
+
+        $r3 = virtualinvoke $r1.<java.io.File: java.io.File[] listFiles()>();
+
+        goto label3;
+
+     label2:
+        $r3 = virtualinvoke $r1.<java.io.File: java.io.File[] listFiles(java.io.FilenameFilter)>($r0);
+
+     label3:
+        if $r3 == null goto label4;
+
+        $r2 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($r3);
+
+        return $r2;
+
+     label4:
+        $r2 = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        return $r2;
+    }
+
+    private java.io.File getSessionDirectoryById(java.lang.String)
+    {
+        com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence r0;
+        java.lang.String $r1;
+        java.io.File $r2, $r3;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = new java.io.File;
+
+        $r3 = r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File openSessionsDirectory>;
+
+        specialinvoke $r2.<java.io.File: void <init>(java.io.File,java.lang.String)>($r3, $r1);
+
+        return $r2;
+    }
+
+    public static boolean isHighPriorityEventFile(java.lang.String)
+    {
+        java.lang.String $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean startsWith(java.lang.String)>("event");
+
+        if $z0 == 0 goto label1;
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean endsWith(java.lang.String)>("_");
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static boolean isNormalPriorityEventFile(java.io.File, java.lang.String)
+    {
+        java.lang.String $r0;
+        java.io.File $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean startsWith(java.lang.String)>("event");
+
+        if $z0 == 0 goto label1;
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean endsWith(java.lang.String)>("_");
+
+        if $z0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static boolean lambda$capAndGetOpenSessions$3(java.lang.String, java.io.File)
+    {
+        java.lang.String $r0, $r2;
+        java.io.File $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: java.io.File;
+
+        $z0 = virtualinvoke $r1.<java.io.File: boolean isDirectory()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = virtualinvoke $r1.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r0);
+
+        if $z0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static boolean lambda$deleteFinalizedReport$2(java.lang.String, java.io.File, java.lang.String)
+    {
+        java.lang.String $r1, $r2;
+        java.io.File $r0;
+        boolean $z0;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r0 := @parameter1: java.io.File;
+
+        $r1 := @parameter2: java.lang.String;
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean startsWith(java.lang.String)>($r2);
+
+        return $z0;
+    }
+
+    public static int lambda$static$0(java.io.File, java.io.File)
+    {
+        int $i0;
+        java.lang.String $r2, $r3;
+        java.io.File $r0, $r1;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r1 := @parameter1: java.io.File;
+
+        $r2 = virtualinvoke $r1.<java.io.File: java.lang.String getName()>();
+
+        $r3 = virtualinvoke $r0.<java.io.File: java.lang.String getName()>();
+
+        $i0 = virtualinvoke $r2.<java.lang.String: int compareTo(java.lang.String)>($r3);
+
+        return $i0;
+    }
+
+    public static boolean lambda$static$1(java.io.File, java.lang.String)
+    {
+        java.lang.String $r0;
+        java.io.File $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean startsWith(java.lang.String)>("event");
+
+        return $z0;
+    }
+
+    public static boolean makeDirectory(java.io.File)
+    {
+        java.io.File $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.io.File;
+
+        $z0 = virtualinvoke $r0.<java.io.File: boolean exists()>();
+
+        if $z0 != 0 goto label2;
+
+        $z0 = virtualinvoke $r0.<java.io.File: boolean mkdirs()>();
+
+        if $z0 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    public static int oldestEventFileFirst(java.io.File, java.io.File)
+    {
+        int $i0;
+        java.lang.String $r2, $r3;
+        java.io.File $r0, $r1;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r1 := @parameter1: java.io.File;
+
+        $r2 = virtualinvoke $r0.<java.io.File: java.lang.String getName()>();
+
+        $r2 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String getEventNameWithoutPriority(java.lang.String)>($r2);
+
+        $r3 = virtualinvoke $r1.<java.io.File: java.lang.String getName()>();
+
+        $r3 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String getEventNameWithoutPriority(java.lang.String)>($r3);
+
+        $i0 = virtualinvoke $r2.<java.lang.String: int compareTo(java.lang.String)>($r3);
+
+        return $i0;
+    }
+
+    public static java.io.File prepareDirectory(java.io.File)
+    {
+        java.lang.StringBuilder $r0;
+        java.io.IOException $r2;
+        java.lang.String $r3;
+        java.io.File $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.io.File;
+
+        $z0 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: boolean makeDirectory(java.io.File)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        return $r1;
+
+     label1:
+        $r2 = new java.io.IOException;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not create directory ");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r1);
+
+        $r3 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r3);
+
+        throw $r2;
+    }
+
+    public static java.lang.String readTextFile(java.io.File)
+    {
+        java.lang.Throwable $r1, $r7;
+        byte[] $r3;
+        java.io.ByteArrayOutputStream $r4;
+        java.io.FileInputStream $r0;
+        java.io.File $r2;
+        java.nio.charset.Charset $r6;
+        int $i0;
+        java.lang.String $r5;
+
+        $r2 := @parameter0: java.io.File;
+
+        $r3 = newarray (byte)[8192];
+
+        $r4 = new java.io.ByteArrayOutputStream;
+
+        specialinvoke $r4.<java.io.ByteArrayOutputStream: void <init>()>();
+
+        $r0 = new java.io.FileInputStream;
+
+        specialinvoke $r0.<java.io.FileInputStream: void <init>(java.io.File)>($r2);
+
+     label01:
+        $i0 = virtualinvoke $r0.<java.io.FileInputStream: int read(byte[])>($r3);
+
+     label02:
+        if $i0 <= 0 goto label05;
+
+     label03:
+        virtualinvoke $r4.<java.io.ByteArrayOutputStream: void write(byte[],int,int)>($r3, 0, $i0);
+
+     label04:
+        goto label01;
+
+     label05:
+        $r5 = new java.lang.String;
+
+        $r3 = virtualinvoke $r4.<java.io.ByteArrayOutputStream: byte[] toByteArray()>();
+
+        $r6 = <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.nio.charset.Charset UTF_8>;
+
+        specialinvoke $r5.<java.lang.String: void <init>(byte[],java.nio.charset.Charset)>($r3, $r6);
+
+     label06:
+        virtualinvoke $r0.<java.io.FileInputStream: void close()>();
+
+        return $r5;
+
+     label07:
+        $r7 := @caughtexception;
+
+     label08:
+        virtualinvoke $r0.<java.io.FileInputStream: void close()>();
+
+     label09:
+        goto label10;
+
+     label10:
+        throw $r7;
+
+     label11:
+        $r1 := @caughtexception;
+
+        goto label10;
+
+        catch java.lang.Throwable from label01 to label02 with label07;
+        catch java.lang.Throwable from label03 to label04 with label07;
+        catch java.lang.Throwable from label05 to label06 with label07;
+        catch java.lang.Throwable from label08 to label09 with label11;
+    }
+
+    public static void recursiveDelete(java.io.File)
+    {
+        int $i0, $i1;
+        java.io.File[] $r2;
+        java.io.File $r0, $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: java.io.File;
+
+        if $r0 != null goto label1;
+
+        return;
+
+     label1:
+        $z0 = virtualinvoke $r0.<java.io.File: boolean isDirectory()>();
+
+        if $z0 == 0 goto label3;
+
+        $r2 = virtualinvoke $r0.<java.io.File: java.io.File[] listFiles()>();
+
+        $i0 = lengthof $r2;
+
+        $i1 = 0;
+
+     label2:
+        if $i1 >= $i0 goto label3;
+
+        $r1 = $r2[$i1];
+
+        staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: void recursiveDelete(java.io.File)>($r1);
+
+        $i1 = $i1 + 1;
+
+        goto label2;
+
+     label3:
+        virtualinvoke $r0.<java.io.File: boolean delete()>();
+
+        return;
+    }
+
+    public static transient java.util.List sortAndCombineReportFiles(java.util.List[])
+    {
+        java.util.List $r0;
+        java.util.List[] $r2;
+        int $i0, $i1;
+        java.util.Comparator $r1;
+
+        $r2 := @parameter0: java.util.List[];
+
+        $i0 = lengthof $r2;
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label2;
+
+        $r0 = $r2[$i1];
+
+        $r1 = <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.Comparator LATEST_SESSION_ID_FIRST_COMPARATOR>;
+
+        staticinvoke <java.util.Collections: void sort(java.util.List,java.util.Comparator)>($r0, $r1);
+
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label2:
+        $r0 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List combineReportFiles(java.util.List[])>($r2);
+
+        return $r0;
+    }
+
+    public static void synthesizeNativeReportFile(java.io.File, java.io.File, com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload, java.lang.String)
+    {
+        com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform $r4;
+        java.io.IOException $r8;
+        java.io.File $r0, $r1, $r7;
+        com.google.firebase.crashlytics.internal.model.CrashlyticsReport $r6;
+        com.google.firebase.crashlytics.internal.Logger $r9;
+        com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload $r2;
+        java.lang.StringBuilder $r10;
+        java.lang.String $r3, $r5;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r1 := @parameter1: java.io.File;
+
+        $r2 := @parameter2: com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload;
+
+        $r3 := @parameter3: java.lang.String;
+
+        $r4 = <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform TRANSFORM>;
+
+     label1:
+        $r5 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String readTextFile(java.io.File)>($r0);
+
+        $r6 = virtualinvoke $r4.<com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform: com.google.firebase.crashlytics.internal.model.CrashlyticsReport reportFromJson(java.lang.String)>($r5);
+
+        $r6 = virtualinvoke $r6.<com.google.firebase.crashlytics.internal.model.CrashlyticsReport: com.google.firebase.crashlytics.internal.model.CrashlyticsReport withNdkPayload(com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload)>($r2);
+
+     label2:
+        $r7 = new java.io.File;
+
+     label3:
+        staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File prepareDirectory(java.io.File)>($r1);
+
+        specialinvoke $r7.<java.io.File: void <init>(java.io.File,java.lang.String)>($r1, $r3);
+
+     label4:
+        $r4 = <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform TRANSFORM>;
+
+     label5:
+        $r3 = virtualinvoke $r4.<com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform: java.lang.String reportToJson(com.google.firebase.crashlytics.internal.model.CrashlyticsReport)>($r6);
+
+        staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: void writeTextFile(java.io.File,java.lang.String)>($r7, $r3);
+
+     label6:
+        return;
+
+     label7:
+        $r8 := @caughtexception;
+
+        $r9 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r10 = new java.lang.StringBuilder;
+
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not synthesize final native report file for ");
+
+        virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r0);
+
+        $r3 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r9.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String,java.lang.Throwable)>($r3, $r8);
+
+        return;
+
+        catch java.io.IOException from label1 to label2 with label7;
+        catch java.io.IOException from label3 to label4 with label7;
+        catch java.io.IOException from label5 to label6 with label7;
+    }
+
+    private void synthesizeReport(java.io.File, long)
+    {
+        java.io.FilenameFilter $r4;
+        long $l0;
+        java.util.ArrayList $r2;
+        java.lang.String $r7, $r14;
+        boolean $z0, $z1;
+        com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform $r11;
+        java.util.Iterator $r8;
+        java.io.IOException $r13, $r15;
+        com.google.firebase.crashlytics.internal.model.CrashlyticsReport$Session$Event $r12;
+        java.io.File $r3, $r10;
+        com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence r0;
+        com.google.firebase.crashlytics.internal.Logger $r6;
+        java.util.List $r5;
+        java.lang.StringBuilder $r1;
+        java.lang.Object $r9;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence;
+
+        $r3 := @parameter0: java.io.File;
+
+        $l0 := @parameter1: long;
+
+        $r4 = <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.FilenameFilter EVENT_FILE_FILTER>;
+
+        $r5 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List getFilesInDirectory(java.io.File,java.io.FilenameFilter)>($r3, $r4);
+
+        $z0 = interfaceinvoke $r5.<java.util.List: boolean isEmpty()>();
+
+        if $z0 == 0 goto label01;
+
+        $r6 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Session ");
+
+        $r7 = virtualinvoke $r3.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" has no events.");
+
+        $r7 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>($r7);
+
+        return;
+
+     label01:
+        staticinvoke <java.util.Collections: void sort(java.util.List)>($r5);
+
+        $r2 = new java.util.ArrayList;
+
+        specialinvoke $r2.<java.util.ArrayList: void <init>()>();
+
+        $r8 = interfaceinvoke $r5.<java.util.List: java.util.Iterator iterator()>();
+
+     label02:
+        $z0 = 0;
+
+     label03:
+        $z1 = interfaceinvoke $r8.<java.util.Iterator: boolean hasNext()>();
+
+        if $z1 == 0 goto label10;
+
+        $r9 = interfaceinvoke $r8.<java.util.Iterator: java.lang.Object next()>();
+
+        $r10 = (java.io.File) $r9;
+
+        $r11 = <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform TRANSFORM>;
+
+     label04:
+        $r7 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String readTextFile(java.io.File)>($r10);
+
+        $r12 = virtualinvoke $r11.<com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform: com.google.firebase.crashlytics.internal.model.CrashlyticsReport$Session$Event eventFromJson(java.lang.String)>($r7);
+
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r12);
+
+     label05:
+        if $z0 != 0 goto label08;
+
+     label06:
+        $r7 = virtualinvoke $r10.<java.io.File: java.lang.String getName()>();
+
+        $z1 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: boolean isHighPriorityEventFile(java.lang.String)>($r7);
+
+     label07:
+        if $z1 == 0 goto label02;
+
+     label08:
+        $z0 = 1;
+
+        goto label03;
+
+     label09:
+        $r13 := @caughtexception;
+
+        $r6 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not add event to report for ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r10);
+
+        $r7 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String,java.lang.Throwable)>($r7, $r13);
+
+        goto label03;
+
+     label10:
+        $r7 = null;
+
+        $r10 = new java.io.File;
+
+        specialinvoke $r10.<java.io.File: void <init>(java.io.File,java.lang.String)>($r3, "user");
+
+        $z1 = virtualinvoke $r10.<java.io.File: boolean isFile()>();
+
+        if $z1 == 0 goto label14;
+
+     label11:
+        $r14 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String readTextFile(java.io.File)>($r10);
+
+     label12:
+        $r7 = $r14;
+
+        goto label14;
+
+     label13:
+        $r15 := @caughtexception;
+
+        $r6 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not read user ID file in ");
+
+        $r14 = virtualinvoke $r3.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r14);
+
+        $r14 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String,java.lang.Throwable)>($r14, $r15);
+
+     label14:
+        $r10 = new java.io.File;
+
+        specialinvoke $r10.<java.io.File: void <init>(java.io.File,java.lang.String)>($r3, "report");
+
+        if $z0 == 0 goto label15;
+
+        $r3 = r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File priorityReportsDirectory>;
+
+        goto label16;
+
+     label15:
+        $r3 = r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File reportsDirectory>;
+
+     label16:
+        staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: void synthesizeReportFile(java.io.File,java.io.File,java.util.List,long,boolean,java.lang.String)>($r10, $r3, $r2, $l0, $z0, $r7);
+
+        return;
+
+        catch java.io.IOException from label04 to label05 with label09;
+        catch java.io.IOException from label06 to label07 with label09;
+        catch java.io.IOException from label11 to label12 with label13;
+    }
+
+    public static void synthesizeReportFile(java.io.File, java.io.File, java.util.List, long, boolean, java.lang.String)
+    {
+        com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform $r4;
+        long $l0;
+        java.io.IOException $r10;
+        java.io.File $r1, $r2, $r9;
+        com.google.firebase.crashlytics.internal.model.CrashlyticsReport $r6;
+        com.google.firebase.crashlytics.internal.Logger $r11;
+        java.util.List $r3;
+        java.lang.StringBuilder $r12;
+        java.lang.String $r0, $r5;
+        com.google.firebase.crashlytics.internal.model.ImmutableList $r7;
+        com.google.firebase.crashlytics.internal.model.CrashlyticsReport$Session $r8;
+        boolean $z0;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r2 := @parameter1: java.io.File;
+
+        $r3 := @parameter2: java.util.List;
+
+        $l0 := @parameter3: long;
+
+        $z0 := @parameter4: boolean;
+
+        $r0 := @parameter5: java.lang.String;
+
+        $r4 = <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform TRANSFORM>;
+
+     label1:
+        $r5 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String readTextFile(java.io.File)>($r1);
+
+        $r6 = virtualinvoke $r4.<com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform: com.google.firebase.crashlytics.internal.model.CrashlyticsReport reportFromJson(java.lang.String)>($r5);
+
+        $r6 = virtualinvoke $r6.<com.google.firebase.crashlytics.internal.model.CrashlyticsReport: com.google.firebase.crashlytics.internal.model.CrashlyticsReport withSessionEndFields(long,boolean,java.lang.String)>($l0, $z0, $r0);
+
+        $r7 = staticinvoke <com.google.firebase.crashlytics.internal.model.ImmutableList: com.google.firebase.crashlytics.internal.model.ImmutableList 'from'(java.util.List)>($r3);
+
+        $r6 = virtualinvoke $r6.<com.google.firebase.crashlytics.internal.model.CrashlyticsReport: com.google.firebase.crashlytics.internal.model.CrashlyticsReport withEvents(com.google.firebase.crashlytics.internal.model.ImmutableList)>($r7);
+
+        $r8 = virtualinvoke $r6.<com.google.firebase.crashlytics.internal.model.CrashlyticsReport: com.google.firebase.crashlytics.internal.model.CrashlyticsReport$Session getSession()>();
+
+     label2:
+        if $r8 != null goto label3;
+
+        return;
+
+     label3:
+        $r9 = new java.io.File;
+
+     label4:
+        staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File prepareDirectory(java.io.File)>($r2);
+
+        $r0 = virtualinvoke $r8.<com.google.firebase.crashlytics.internal.model.CrashlyticsReport$Session: java.lang.String getIdentifier()>();
+
+        specialinvoke $r9.<java.io.File: void <init>(java.io.File,java.lang.String)>($r2, $r0);
+
+     label5:
+        $r4 = <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform TRANSFORM>;
+
+     label6:
+        $r0 = virtualinvoke $r4.<com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform: java.lang.String reportToJson(com.google.firebase.crashlytics.internal.model.CrashlyticsReport)>($r6);
+
+        staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: void writeTextFile(java.io.File,java.lang.String)>($r9, $r0);
+
+     label7:
+        return;
+
+     label8:
+        $r10 := @caughtexception;
+
+        $r11 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r12 = new java.lang.StringBuilder;
+
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not synthesize final report file for ");
+
+        virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r1);
+
+        $r0 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r11.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String,java.lang.Throwable)>($r0, $r10);
+
+        return;
+
+        catch java.io.IOException from label1 to label2 with label8;
+        catch java.io.IOException from label4 to label5 with label8;
+        catch java.io.IOException from label6 to label7 with label8;
+    }
+
+    public static int trimEvents(java.io.File, int)
+    {
+        java.io.FilenameFilter $r1;
+        java.util.List $r2;
+        int $i0;
+        java.util.Comparator $r3;
+        java.io.File $r0;
+
+        $r0 := @parameter0: java.io.File;
+
+        $i0 := @parameter1: int;
+
+        $r1 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence$$Lambda$3: java.io.FilenameFilter lambdaFactory$()>();
+
+        $r2 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List getFilesInDirectory(java.io.File,java.io.FilenameFilter)>($r0, $r1);
+
+        $r3 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence$$Lambda$4: java.util.Comparator lambdaFactory$()>();
+
+        staticinvoke <java.util.Collections: void sort(java.util.List,java.util.Comparator)>($r2, $r3);
+
+        $i0 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: int capFilesCount(java.util.List,int)>($r2, $i0);
+
+        return $i0;
+    }
+
+    public static void writeTextFile(java.io.File, java.lang.String)
+    {
+        java.lang.Throwable $r3, $r6;
+        java.nio.charset.Charset $r5;
+        java.io.OutputStreamWriter $r1;
+        java.io.FileOutputStream $r2;
+        java.lang.String $r0;
+        java.io.File $r4;
+
+        $r4 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $r1 = new java.io.OutputStreamWriter;
+
+        $r2 = new java.io.FileOutputStream;
+
+        specialinvoke $r2.<java.io.FileOutputStream: void <init>(java.io.File)>($r4);
+
+        $r5 = <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.nio.charset.Charset UTF_8>;
+
+        specialinvoke $r1.<java.io.OutputStreamWriter: void <init>(java.io.OutputStream,java.nio.charset.Charset)>($r2, $r5);
+
+     label1:
+        virtualinvoke $r1.<java.io.OutputStreamWriter: void write(java.lang.String)>($r0);
+
+     label2:
+        virtualinvoke $r1.<java.io.OutputStreamWriter: void close()>();
+
+        return;
+
+     label3:
+        $r6 := @caughtexception;
+
+     label4:
+        virtualinvoke $r1.<java.io.OutputStreamWriter: void close()>();
+
+     label5:
+        throw $r6;
+
+     label6:
+        $r3 := @caughtexception;
+
+        goto label5;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label6;
+    }
+
+    public void deleteAllReports()
+    {
+        com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence r0;
+        java.util.List $r1;
+        java.util.Iterator $r2;
+        java.lang.Object $r3;
+        java.io.File $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence;
+
+        $r1 = specialinvoke r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List getAllFinalizedReportFiles()>();
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r3 = interfaceinvoke $r2.<java.util.Iterator: java.lang.Object next()>();
+
+        $r4 = (java.io.File) $r3;
+
+        virtualinvoke $r4.<java.io.File: boolean delete()>();
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public void deleteFinalizedReport(java.lang.String)
+    {
+        java.io.FilenameFilter $r2;
+        java.util.Iterator $r6;
+        java.util.List[] $r3;
+        java.io.File $r4;
+        com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence r0;
+        java.util.List $r5;
+        java.lang.Object $r7;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence$$Lambda$1: java.io.FilenameFilter lambdaFactory$(java.lang.String)>($r1);
+
+        $r3 = newarray (java.util.List)[3];
+
+        $r4 = r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File priorityReportsDirectory>;
+
+        $r5 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List getFilesInDirectory(java.io.File,java.io.FilenameFilter)>($r4, $r2);
+
+        $r3[0] = $r5;
+
+        $r4 = r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File nativeReportsDirectory>;
+
+        $r5 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List getFilesInDirectory(java.io.File,java.io.FilenameFilter)>($r4, $r2);
+
+        $r3[1] = $r5;
+
+        $r4 = r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File reportsDirectory>;
+
+        $r5 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List getFilesInDirectory(java.io.File,java.io.FilenameFilter)>($r4, $r2);
+
+        $r3[2] = $r5;
+
+        $r5 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List combineReportFiles(java.util.List[])>($r3);
+
+        $r6 = interfaceinvoke $r5.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r6.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r7 = interfaceinvoke $r6.<java.util.Iterator: java.lang.Object next()>();
+
+        $r4 = (java.io.File) $r7;
+
+        virtualinvoke $r4.<java.io.File: boolean delete()>();
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public void finalizeReports(java.lang.String, long)
+    {
+        java.util.Iterator $r3;
+        long $l0;
+        java.io.File $r5;
+        com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence r0;
+        com.google.firebase.crashlytics.internal.Logger $r6;
+        java.util.List $r2;
+        java.lang.Object $r4;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $l0 := @parameter1: long;
+
+        $r2 = specialinvoke r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List capAndGetOpenSessions(java.lang.String)>($r1);
+
+        $r3 = interfaceinvoke $r2.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (java.io.File) $r4;
+
+        $r6 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Finalizing report for session ");
+
+        $r1 = virtualinvoke $r5.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>($r1);
+
+        specialinvoke r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: void synthesizeReport(java.io.File,long)>($r5, $l0);
+
+        staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: void recursiveDelete(java.io.File)>($r5);
+
+        goto label1;
+
+     label2:
+        specialinvoke r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: void capFinalizedReports()>();
+
+        return;
+    }
+
+    public void finalizeSessionWithNativeEvent(java.lang.String, com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload)
+    {
+        com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence r0;
+        com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload $r2;
+        java.lang.String $r1;
+        java.io.File $r3, $r4;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload;
+
+        $r3 = new java.io.File;
+
+        $r4 = specialinvoke r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File getSessionDirectoryById(java.lang.String)>($r1);
+
+        specialinvoke $r3.<java.io.File: void <init>(java.io.File,java.lang.String)>($r4, "report");
+
+        $r4 = r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File nativeReportsDirectory>;
+
+        staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: void synthesizeNativeReportFile(java.io.File,java.io.File,com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload,java.lang.String)>($r3, $r4, $r2, $r1);
+
+        return;
+    }
+
+    public java.util.List loadFinalizedReports()
+    {
+        com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform $r6;
+        java.util.Iterator $r3;
+        java.io.IOException $r10;
+        java.io.File $r5;
+        com.google.firebase.crashlytics.internal.model.CrashlyticsReport $r8;
+        java.util.ArrayList $r1;
+        com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence r0;
+        com.google.firebase.crashlytics.internal.Logger $r11;
+        java.util.List $r2;
+        int $i0;
+        java.lang.Object $r4;
+        java.lang.StringBuilder $r12;
+        java.lang.String $r7;
+        boolean $z0;
+        com.google.firebase.crashlytics.internal.common.CrashlyticsReportWithSessionId $r9;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence;
+
+        $r2 = specialinvoke r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List getAllFinalizedReportFiles()>();
+
+        $r1 = new java.util.ArrayList;
+
+        specialinvoke $r1.<java.util.ArrayList: void <init>()>();
+
+        $i0 = interfaceinvoke $r2.<java.util.List: int size()>();
+
+        virtualinvoke $r1.<java.util.ArrayList: void ensureCapacity(int)>($i0);
+
+        $r2 = specialinvoke r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.List getAllFinalizedReportFiles()>();
+
+        $r3 = interfaceinvoke $r2.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label5;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (java.io.File) $r4;
+
+        $r6 = <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform TRANSFORM>;
+
+     label2:
+        $r7 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String readTextFile(java.io.File)>($r5);
+
+        $r8 = virtualinvoke $r6.<com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform: com.google.firebase.crashlytics.internal.model.CrashlyticsReport reportFromJson(java.lang.String)>($r7);
+
+        $r7 = virtualinvoke $r5.<java.io.File: java.lang.String getName()>();
+
+        $r9 = staticinvoke <com.google.firebase.crashlytics.internal.common.CrashlyticsReportWithSessionId: com.google.firebase.crashlytics.internal.common.CrashlyticsReportWithSessionId create(com.google.firebase.crashlytics.internal.model.CrashlyticsReport,java.lang.String)>($r8, $r7);
+
+        virtualinvoke $r1.<java.util.ArrayList: boolean add(java.lang.Object)>($r9);
+
+     label3:
+        goto label1;
+
+     label4:
+        $r10 := @caughtexception;
+
+        $r11 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r12 = new java.lang.StringBuilder;
+
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not load report file ");
+
+        virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r5);
+
+        virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; deleting");
+
+        $r7 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r11.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String,java.lang.Throwable)>($r7, $r10);
+
+        virtualinvoke $r5.<java.io.File: boolean delete()>();
+
+        goto label1;
+
+     label5:
+        return $r1;
+
+        catch java.io.IOException from label2 to label3 with label4;
+    }
+
+    public void persistEvent(com.google.firebase.crashlytics.internal.model.CrashlyticsReport$Session$Event, java.lang.String)
+    {
+        com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence r0;
+        java.lang.String $r2;
+        com.google.firebase.crashlytics.internal.model.CrashlyticsReport$Session$Event $r1;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence;
+
+        $r1 := @parameter0: com.google.firebase.crashlytics.internal.model.CrashlyticsReport$Session$Event;
+
+        $r2 := @parameter1: java.lang.String;
+
+        virtualinvoke r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: void persistEvent(com.google.firebase.crashlytics.internal.model.CrashlyticsReport$Session$Event,java.lang.String,boolean)>($r1, $r2, 0);
+
+        return;
+    }
+
+    public void persistEvent(com.google.firebase.crashlytics.internal.model.CrashlyticsReport$Session$Event, java.lang.String, boolean)
+    {
+        com.google.firebase.crashlytics.internal.settings.model.SessionSettingsData $r5;
+        com.google.firebase.crashlytics.internal.settings.SettingsDataProvider $r3;
+        java.util.concurrent.atomic.AtomicInteger $r9;
+        int $i0, $i1;
+        java.lang.String $r2, $r8, $r10;
+        boolean $z0;
+        com.google.firebase.crashlytics.internal.settings.model.Settings $r4;
+        com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform $r7;
+        java.io.IOException $r12;
+        com.google.firebase.crashlytics.internal.model.CrashlyticsReport$Session$Event $r1;
+        java.io.File $r6, $r11;
+        com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence r0;
+        com.google.firebase.crashlytics.internal.Logger $r13;
+        java.lang.StringBuilder $r14;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence;
+
+        $r1 := @parameter0: com.google.firebase.crashlytics.internal.model.CrashlyticsReport$Session$Event;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $z0 := @parameter2: boolean;
+
+        $r3 = r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: com.google.firebase.crashlytics.internal.settings.SettingsDataProvider settingsDataProvider>;
+
+        $r4 = interfaceinvoke $r3.<com.google.firebase.crashlytics.internal.settings.SettingsDataProvider: com.google.firebase.crashlytics.internal.settings.model.Settings getSettings()>();
+
+        $r5 = interfaceinvoke $r4.<com.google.firebase.crashlytics.internal.settings.model.Settings: com.google.firebase.crashlytics.internal.settings.model.SessionSettingsData getSessionData()>();
+
+        $i0 = $r5.<com.google.firebase.crashlytics.internal.settings.model.SessionSettingsData: int maxCustomExceptionEvents>;
+
+        $r6 = specialinvoke r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File getSessionDirectoryById(java.lang.String)>($r2);
+
+        $r7 = <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform TRANSFORM>;
+
+        $r8 = virtualinvoke $r7.<com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform: java.lang.String eventToJson(com.google.firebase.crashlytics.internal.model.CrashlyticsReport$Session$Event)>($r1);
+
+        $r9 = r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.util.concurrent.atomic.AtomicInteger eventCounter>;
+
+        $i1 = virtualinvoke $r9.<java.util.concurrent.atomic.AtomicInteger: int getAndIncrement()>();
+
+        $r10 = staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.lang.String generateEventFilename(int,boolean)>($i1, $z0);
+
+        $r11 = new java.io.File;
+
+     label1:
+        specialinvoke $r11.<java.io.File: void <init>(java.io.File,java.lang.String)>($r6, $r10);
+
+        staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: void writeTextFile(java.io.File,java.lang.String)>($r11, $r8);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r12 := @caughtexception;
+
+        $r13 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r14 = new java.lang.StringBuilder;
+
+        specialinvoke $r14.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not persist event for session ");
+
+        virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r13.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String,java.lang.Throwable)>($r2, $r12);
+
+     label4:
+        staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: int trimEvents(java.io.File,int)>($r6, $i0);
+
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    public void persistReport(com.google.firebase.crashlytics.internal.model.CrashlyticsReport)
+    {
+        com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform $r6;
+        java.io.IOException $r9;
+        com.google.firebase.crashlytics.internal.model.CrashlyticsReport $r1;
+        java.io.File $r5, $r8;
+        com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence r0;
+        com.google.firebase.crashlytics.internal.Logger $r3;
+        java.lang.StringBuilder $r10;
+        java.lang.String $r4, $r7;
+        com.google.firebase.crashlytics.internal.model.CrashlyticsReport$Session $r2;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence;
+
+        $r1 := @parameter0: com.google.firebase.crashlytics.internal.model.CrashlyticsReport;
+
+        $r2 = virtualinvoke $r1.<com.google.firebase.crashlytics.internal.model.CrashlyticsReport: com.google.firebase.crashlytics.internal.model.CrashlyticsReport$Session getSession()>();
+
+        if $r2 != null goto label1;
+
+        $r3 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        virtualinvoke $r3.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>("Could not get session for report");
+
+        return;
+
+     label1:
+        $r4 = virtualinvoke $r2.<com.google.firebase.crashlytics.internal.model.CrashlyticsReport$Session: java.lang.String getIdentifier()>();
+
+     label2:
+        $r5 = specialinvoke r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File getSessionDirectoryById(java.lang.String)>($r4);
+
+        staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File prepareDirectory(java.io.File)>($r5);
+
+     label3:
+        $r6 = <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform TRANSFORM>;
+
+     label4:
+        $r7 = virtualinvoke $r6.<com.google.firebase.crashlytics.internal.model.serialization.CrashlyticsReportJsonTransform: java.lang.String reportToJson(com.google.firebase.crashlytics.internal.model.CrashlyticsReport)>($r1);
+
+     label5:
+        $r8 = new java.io.File;
+
+     label6:
+        specialinvoke $r8.<java.io.File: void <init>(java.io.File,java.lang.String)>($r5, "report");
+
+        staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: void writeTextFile(java.io.File,java.lang.String)>($r8, $r7);
+
+     label7:
+        return;
+
+     label8:
+        $r9 := @caughtexception;
+
+        $r3 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r10 = new java.lang.StringBuilder;
+
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not persist report for session ");
+
+        virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r4 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r3.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String,java.lang.Throwable)>($r4, $r9);
+
+        return;
+
+        catch java.io.IOException from label2 to label3 with label8;
+        catch java.io.IOException from label4 to label5 with label8;
+        catch java.io.IOException from label6 to label7 with label8;
+    }
+
+    public void persistUserIdForSession(java.lang.String, java.lang.String)
+    {
+        java.io.IOException $r5;
+        java.io.File $r3, $r4;
+        com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence r0;
+        com.google.firebase.crashlytics.internal.Logger $r6;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r1, $r2;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 = specialinvoke r0.<com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: java.io.File getSessionDirectoryById(java.lang.String)>($r2);
+
+        $r4 = new java.io.File;
+
+     label1:
+        specialinvoke $r4.<java.io.File: void <init>(java.io.File,java.lang.String)>($r3, "user");
+
+        staticinvoke <com.google.firebase.crashlytics.internal.persistence.CrashlyticsReportPersistence: void writeTextFile(java.io.File,java.lang.String)>($r4, $r1);
+
+     label2:
+        return;
+
+     label3:
+        $r5 := @caughtexception;
+
+        $r6 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not persist user ID for session ");
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r1 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String,java.lang.Throwable)>($r1, $r5);
+
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+}

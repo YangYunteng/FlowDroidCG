@@ -1,0 +1,447 @@
+public class org.apache.james.mime4j.message.MessageWriter extends java.lang.Object
+{
+    public static final byte[] CRLF;
+    public static final byte[] DASHES;
+    public static final org.apache.james.mime4j.message.MessageWriter DEFAULT;
+
+    static void <clinit>()
+    {
+        org.apache.james.mime4j.message.MessageWriter $r1;
+        byte[] $r0;
+
+        $r0 = newarray (byte)[2];
+
+        $r0[0] = 13;
+
+        $r0[1] = 10;
+
+        <org.apache.james.mime4j.message.MessageWriter: byte[] CRLF> = $r0;
+
+        $r0 = newarray (byte)[2];
+
+        $r0[0] = 45;
+
+        $r0[1] = 45;
+
+        <org.apache.james.mime4j.message.MessageWriter: byte[] DASHES> = $r0;
+
+        $r1 = new org.apache.james.mime4j.message.MessageWriter;
+
+        specialinvoke $r1.<org.apache.james.mime4j.message.MessageWriter: void <init>()>();
+
+        <org.apache.james.mime4j.message.MessageWriter: org.apache.james.mime4j.message.MessageWriter DEFAULT> = $r1;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.apache.james.mime4j.message.MessageWriter r0;
+
+        r0 := @this: org.apache.james.mime4j.message.MessageWriter;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    private org.apache.james.mime4j.util.ByteSequence getBoundary(org.apache.james.mime4j.field.ContentTypeField)
+    {
+        org.apache.james.mime4j.message.MessageWriter r0;
+        org.apache.james.mime4j.field.ContentTypeField $r1;
+        org.apache.james.mime4j.util.ByteSequence $r3;
+        java.lang.String $r2;
+        java.lang.IllegalArgumentException $r4;
+
+        r0 := @this: org.apache.james.mime4j.message.MessageWriter;
+
+        $r1 := @parameter0: org.apache.james.mime4j.field.ContentTypeField;
+
+        $r2 = virtualinvoke $r1.<org.apache.james.mime4j.field.ContentTypeField: java.lang.String getBoundary()>();
+
+        if $r2 == null goto label1;
+
+        $r3 = staticinvoke <org.apache.james.mime4j.util.ContentUtil: org.apache.james.mime4j.util.ByteSequence encode(java.lang.String)>($r2);
+
+        return $r3;
+
+     label1:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Multipart boundary not specified");
+
+        throw $r4;
+    }
+
+    private org.apache.james.mime4j.field.ContentTypeField getContentType(org.apache.james.mime4j.message.Multipart)
+    {
+        org.apache.james.mime4j.message.MessageWriter r0;
+        org.apache.james.mime4j.field.ContentTypeField $r5;
+        org.apache.james.mime4j.message.Entity $r2;
+        org.apache.james.mime4j.message.Multipart $r1;
+        org.apache.james.mime4j.message.Header $r3;
+        java.lang.IllegalArgumentException $r6;
+        org.apache.james.mime4j.parser.Field $r4;
+
+        r0 := @this: org.apache.james.mime4j.message.MessageWriter;
+
+        $r1 := @parameter0: org.apache.james.mime4j.message.Multipart;
+
+        $r2 = virtualinvoke $r1.<org.apache.james.mime4j.message.Multipart: org.apache.james.mime4j.message.Entity getParent()>();
+
+        if $r2 == null goto label3;
+
+        $r3 = virtualinvoke $r2.<org.apache.james.mime4j.message.Entity: org.apache.james.mime4j.message.Header getHeader()>();
+
+        if $r3 == null goto label2;
+
+        $r4 = virtualinvoke $r3.<org.apache.james.mime4j.message.Header: org.apache.james.mime4j.parser.Field getField(java.lang.String)>("Content-Type");
+
+        $r5 = (org.apache.james.mime4j.field.ContentTypeField) $r4;
+
+        if $r5 == null goto label1;
+
+        return $r5;
+
+     label1:
+        $r6 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Content-Type field not specified");
+
+        throw $r6;
+
+     label2:
+        $r6 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Missing header in parent entity");
+
+        throw $r6;
+
+     label3:
+        $r6 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Missing parent entity in multipart");
+
+        throw $r6;
+    }
+
+    private void writeBytes(org.apache.james.mime4j.util.ByteSequence, java.io.OutputStream)
+    {
+        org.apache.james.mime4j.message.MessageWriter r0;
+        java.io.OutputStream $r1;
+        byte[] $r4;
+        org.apache.james.mime4j.util.ByteSequence $r2;
+        int $i0;
+        org.apache.james.mime4j.util.ByteArrayBuffer $r3;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.message.MessageWriter;
+
+        $r2 := @parameter0: org.apache.james.mime4j.util.ByteSequence;
+
+        $r1 := @parameter1: java.io.OutputStream;
+
+        $z0 = $r2 instanceof org.apache.james.mime4j.util.ByteArrayBuffer;
+
+        if $z0 == 0 goto label1;
+
+        $r3 = (org.apache.james.mime4j.util.ByteArrayBuffer) $r2;
+
+        $r4 = virtualinvoke $r3.<org.apache.james.mime4j.util.ByteArrayBuffer: byte[] buffer()>();
+
+        $i0 = virtualinvoke $r3.<org.apache.james.mime4j.util.ByteArrayBuffer: int length()>();
+
+        virtualinvoke $r1.<java.io.OutputStream: void write(byte[],int,int)>($r4, 0, $i0);
+
+        return;
+
+     label1:
+        $r4 = interfaceinvoke $r2.<org.apache.james.mime4j.util.ByteSequence: byte[] toByteArray()>();
+
+        virtualinvoke $r1.<java.io.OutputStream: void write(byte[])>($r4);
+
+        return;
+    }
+
+    public java.io.OutputStream encodeStream(java.io.OutputStream, java.lang.String, boolean)
+    {
+        org.apache.james.mime4j.message.MessageWriter r0;
+        java.io.OutputStream $r1;
+        java.lang.String $r2;
+        boolean $z0, $z1;
+
+        r0 := @this: org.apache.james.mime4j.message.MessageWriter;
+
+        $r1 := @parameter0: java.io.OutputStream;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 = staticinvoke <org.apache.james.mime4j.util.MimeUtil: boolean isBase64Encoding(java.lang.String)>($r2);
+
+        if $z1 == 0 goto label1;
+
+        $r1 = staticinvoke <org.apache.james.mime4j.codec.CodecUtil: java.io.OutputStream wrapBase64(java.io.OutputStream)>($r1);
+
+        return $r1;
+
+     label1:
+        $z1 = staticinvoke <org.apache.james.mime4j.util.MimeUtil: boolean isQuotedPrintableEncoded(java.lang.String)>($r2);
+
+        if $z1 == 0 goto label2;
+
+        $r1 = staticinvoke <org.apache.james.mime4j.codec.CodecUtil: java.io.OutputStream wrapQuotedPrintable(java.io.OutputStream,boolean)>($r1, $z0);
+
+     label2:
+        return $r1;
+    }
+
+    public void writeBody(org.apache.james.mime4j.message.Body, java.io.OutputStream)
+    {
+        java.io.OutputStream $r2;
+        org.apache.james.mime4j.message.SingleBody $r5;
+        org.apache.james.mime4j.message.Body $r1;
+        java.lang.IllegalArgumentException $r6;
+        org.apache.james.mime4j.message.MessageWriter r0;
+        org.apache.james.mime4j.message.Multipart $r4;
+        org.apache.james.mime4j.message.Message $r3;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.message.MessageWriter;
+
+        $r1 := @parameter0: org.apache.james.mime4j.message.Body;
+
+        $r2 := @parameter1: java.io.OutputStream;
+
+        $z0 = $r1 instanceof org.apache.james.mime4j.message.Message;
+
+        if $z0 == 0 goto label1;
+
+        $r3 = (org.apache.james.mime4j.message.Message) $r1;
+
+        virtualinvoke r0.<org.apache.james.mime4j.message.MessageWriter: void writeEntity(org.apache.james.mime4j.message.Entity,java.io.OutputStream)>($r3, $r2);
+
+        return;
+
+     label1:
+        $z0 = $r1 instanceof org.apache.james.mime4j.message.Multipart;
+
+        if $z0 == 0 goto label2;
+
+        $r4 = (org.apache.james.mime4j.message.Multipart) $r1;
+
+        virtualinvoke r0.<org.apache.james.mime4j.message.MessageWriter: void writeMultipart(org.apache.james.mime4j.message.Multipart,java.io.OutputStream)>($r4, $r2);
+
+        return;
+
+     label2:
+        $z0 = $r1 instanceof org.apache.james.mime4j.message.SingleBody;
+
+        if $z0 == 0 goto label3;
+
+        $r5 = (org.apache.james.mime4j.message.SingleBody) $r1;
+
+        virtualinvoke $r5.<org.apache.james.mime4j.message.SingleBody: void writeTo(java.io.OutputStream)>($r2);
+
+        return;
+
+     label3:
+        $r6 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Unsupported body class");
+
+        throw $r6;
+    }
+
+    public void writeEntity(org.apache.james.mime4j.message.Entity, java.io.OutputStream)
+    {
+        java.io.OutputStream $r2, $r6;
+        org.apache.james.mime4j.message.Body $r4;
+        java.lang.IllegalArgumentException $r7;
+        org.apache.james.mime4j.message.MessageWriter r0;
+        org.apache.james.mime4j.message.Entity $r1;
+        org.apache.james.mime4j.message.Header $r3;
+        java.lang.String $r5;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.message.MessageWriter;
+
+        $r1 := @parameter0: org.apache.james.mime4j.message.Entity;
+
+        $r2 := @parameter1: java.io.OutputStream;
+
+        $r3 = virtualinvoke $r1.<org.apache.james.mime4j.message.Entity: org.apache.james.mime4j.message.Header getHeader()>();
+
+        if $r3 == null goto label2;
+
+        virtualinvoke r0.<org.apache.james.mime4j.message.MessageWriter: void writeHeader(org.apache.james.mime4j.message.Header,java.io.OutputStream)>($r3, $r2);
+
+        $r4 = virtualinvoke $r1.<org.apache.james.mime4j.message.Entity: org.apache.james.mime4j.message.Body getBody()>();
+
+        if $r4 == null goto label1;
+
+        $z0 = $r4 instanceof org.apache.james.mime4j.message.BinaryBody;
+
+        $r5 = virtualinvoke $r1.<org.apache.james.mime4j.message.Entity: java.lang.String getContentTransferEncoding()>();
+
+        $r6 = virtualinvoke r0.<org.apache.james.mime4j.message.MessageWriter: java.io.OutputStream encodeStream(java.io.OutputStream,java.lang.String,boolean)>($r2, $r5, $z0);
+
+        virtualinvoke r0.<org.apache.james.mime4j.message.MessageWriter: void writeBody(org.apache.james.mime4j.message.Body,java.io.OutputStream)>($r4, $r6);
+
+        if $r6 == $r2 goto label3;
+
+        virtualinvoke $r6.<java.io.OutputStream: void close()>();
+
+        return;
+
+     label1:
+        $r7 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r7.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Missing body");
+
+        throw $r7;
+
+     label2:
+        $r7 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r7.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Missing header");
+
+        throw $r7;
+
+     label3:
+        return;
+    }
+
+    public void writeHeader(org.apache.james.mime4j.message.Header, java.io.OutputStream)
+    {
+        java.io.OutputStream $r1;
+        byte[] $r7;
+        java.util.Iterator $r3;
+        org.apache.james.mime4j.util.ByteSequence $r6;
+        org.apache.james.mime4j.message.MessageWriter r0;
+        org.apache.james.mime4j.message.Header $r2;
+        java.lang.Object $r4;
+        boolean $z0;
+        org.apache.james.mime4j.parser.Field $r5;
+
+        r0 := @this: org.apache.james.mime4j.message.MessageWriter;
+
+        $r2 := @parameter0: org.apache.james.mime4j.message.Header;
+
+        $r1 := @parameter1: java.io.OutputStream;
+
+        $r3 = virtualinvoke $r2.<org.apache.james.mime4j.message.Header: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (org.apache.james.mime4j.parser.Field) $r4;
+
+        $r6 = interfaceinvoke $r5.<org.apache.james.mime4j.parser.Field: org.apache.james.mime4j.util.ByteSequence getRaw()>();
+
+        specialinvoke r0.<org.apache.james.mime4j.message.MessageWriter: void writeBytes(org.apache.james.mime4j.util.ByteSequence,java.io.OutputStream)>($r6, $r1);
+
+        $r7 = <org.apache.james.mime4j.message.MessageWriter: byte[] CRLF>;
+
+        virtualinvoke $r1.<java.io.OutputStream: void write(byte[])>($r7);
+
+        goto label1;
+
+     label2:
+        $r7 = <org.apache.james.mime4j.message.MessageWriter: byte[] CRLF>;
+
+        virtualinvoke $r1.<java.io.OutputStream: void write(byte[])>($r7);
+
+        return;
+    }
+
+    public void writeMultipart(org.apache.james.mime4j.message.Multipart, java.io.OutputStream)
+    {
+        java.io.OutputStream $r1;
+        byte[] $r6;
+        org.apache.james.mime4j.field.ContentTypeField $r3;
+        java.util.Iterator $r8;
+        org.apache.james.mime4j.util.ByteSequence $r4, $r5;
+        org.apache.james.mime4j.message.MessageWriter r0;
+        java.util.List $r7;
+        org.apache.james.mime4j.message.Multipart $r2;
+        java.lang.Object $r9;
+        org.apache.james.mime4j.message.BodyPart $r10;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.message.MessageWriter;
+
+        $r2 := @parameter0: org.apache.james.mime4j.message.Multipart;
+
+        $r1 := @parameter1: java.io.OutputStream;
+
+        $r3 = specialinvoke r0.<org.apache.james.mime4j.message.MessageWriter: org.apache.james.mime4j.field.ContentTypeField getContentType(org.apache.james.mime4j.message.Multipart)>($r2);
+
+        $r4 = specialinvoke r0.<org.apache.james.mime4j.message.MessageWriter: org.apache.james.mime4j.util.ByteSequence getBoundary(org.apache.james.mime4j.field.ContentTypeField)>($r3);
+
+        $r5 = virtualinvoke $r2.<org.apache.james.mime4j.message.Multipart: org.apache.james.mime4j.util.ByteSequence getPreambleRaw()>();
+
+        specialinvoke r0.<org.apache.james.mime4j.message.MessageWriter: void writeBytes(org.apache.james.mime4j.util.ByteSequence,java.io.OutputStream)>($r5, $r1);
+
+        $r6 = <org.apache.james.mime4j.message.MessageWriter: byte[] CRLF>;
+
+        virtualinvoke $r1.<java.io.OutputStream: void write(byte[])>($r6);
+
+        $r7 = virtualinvoke $r2.<org.apache.james.mime4j.message.Multipart: java.util.List getBodyParts()>();
+
+        $r8 = interfaceinvoke $r7.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r8.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r9 = interfaceinvoke $r8.<java.util.Iterator: java.lang.Object next()>();
+
+        $r10 = (org.apache.james.mime4j.message.BodyPart) $r9;
+
+        $r6 = <org.apache.james.mime4j.message.MessageWriter: byte[] DASHES>;
+
+        virtualinvoke $r1.<java.io.OutputStream: void write(byte[])>($r6);
+
+        specialinvoke r0.<org.apache.james.mime4j.message.MessageWriter: void writeBytes(org.apache.james.mime4j.util.ByteSequence,java.io.OutputStream)>($r4, $r1);
+
+        $r6 = <org.apache.james.mime4j.message.MessageWriter: byte[] CRLF>;
+
+        virtualinvoke $r1.<java.io.OutputStream: void write(byte[])>($r6);
+
+        virtualinvoke r0.<org.apache.james.mime4j.message.MessageWriter: void writeEntity(org.apache.james.mime4j.message.Entity,java.io.OutputStream)>($r10, $r1);
+
+        $r6 = <org.apache.james.mime4j.message.MessageWriter: byte[] CRLF>;
+
+        virtualinvoke $r1.<java.io.OutputStream: void write(byte[])>($r6);
+
+        goto label1;
+
+     label2:
+        $r6 = <org.apache.james.mime4j.message.MessageWriter: byte[] DASHES>;
+
+        virtualinvoke $r1.<java.io.OutputStream: void write(byte[])>($r6);
+
+        specialinvoke r0.<org.apache.james.mime4j.message.MessageWriter: void writeBytes(org.apache.james.mime4j.util.ByteSequence,java.io.OutputStream)>($r4, $r1);
+
+        $r6 = <org.apache.james.mime4j.message.MessageWriter: byte[] DASHES>;
+
+        virtualinvoke $r1.<java.io.OutputStream: void write(byte[])>($r6);
+
+        $r6 = <org.apache.james.mime4j.message.MessageWriter: byte[] CRLF>;
+
+        virtualinvoke $r1.<java.io.OutputStream: void write(byte[])>($r6);
+
+        $r4 = virtualinvoke $r2.<org.apache.james.mime4j.message.Multipart: org.apache.james.mime4j.util.ByteSequence getEpilogueRaw()>();
+
+        specialinvoke r0.<org.apache.james.mime4j.message.MessageWriter: void writeBytes(org.apache.james.mime4j.util.ByteSequence,java.io.OutputStream)>($r4, $r1);
+
+        return;
+    }
+}

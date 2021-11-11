@@ -1,0 +1,347 @@
+public class com.crashlytics.android.core.NativeCreateReportSpiCall extends f.a.a.a.a.b.a implements com.crashlytics.android.core.CreateReportSpiCall
+{
+    public static final java.lang.String APP_META_FILE_MULTIPART_PARAM;
+    public static final java.lang.String BINARY_IMAGES_FILE_MULTIPART_PARAM;
+    public static final java.lang.String DEVICE_META_FILE_MULTIPART_PARAM;
+    public static final java.lang.String GZIP_FILE_CONTENT_TYPE;
+    public static final java.lang.String KEYS_FILE_MULTIPART_PARAM;
+    public static final java.lang.String LOGS_FILE_MULTIPART_PARAM;
+    public static final java.lang.String METADATA_FILE_MULTIPART_PARAM;
+    public static final java.lang.String MINIDUMP_FILE_MULTIPART_PARAM;
+    public static final java.lang.String OS_META_FILE_MULTIPART_PARAM;
+    public static final java.lang.String REPORT_IDENTIFIER_PARAM;
+    public static final java.lang.String SESSION_META_FILE_MULTIPART_PARAM;
+    public static final java.lang.String USER_META_FILE_MULTIPART_PARAM;
+
+    public void <init>(f.a.a.a.l, java.lang.String, java.lang.String, f.a.a.a.a.e.g)
+    {
+        f.a.a.a.a.e.g $r4;
+        f.a.a.a.a.e.d $r5;
+        com.crashlytics.android.core.NativeCreateReportSpiCall r0;
+        java.lang.String $r2, $r3;
+        f.a.a.a.l $r1;
+
+        r0 := @this: com.crashlytics.android.core.NativeCreateReportSpiCall;
+
+        $r1 := @parameter0: f.a.a.a.l;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: java.lang.String;
+
+        $r4 := @parameter3: f.a.a.a.a.e.g;
+
+        $r5 = <f.a.a.a.a.e.d: f.a.a.a.a.e.d b>;
+
+        specialinvoke r0.<f.a.a.a.a.b.a: void <init>(f.a.a.a.l,java.lang.String,java.lang.String,f.a.a.a.a.e.g,f.a.a.a.a.e.d)>($r1, $r2, $r3, $r4, $r5);
+
+        return;
+    }
+
+    private io.fabric.sdk.android.services.network.HttpRequest applyHeadersTo(io.fabric.sdk.android.services.network.HttpRequest, java.lang.String)
+    {
+        io.fabric.sdk.android.services.network.HttpRequest $r1;
+        com.crashlytics.android.core.NativeCreateReportSpiCall r0;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r2, $r5;
+        f.a.a.a.l $r4;
+
+        r0 := @this: com.crashlytics.android.core.NativeCreateReportSpiCall;
+
+        $r1 := @parameter0: io.fabric.sdk.android.services.network.HttpRequest;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Crashlytics Android SDK/");
+
+        $r4 = r0.<f.a.a.a.a.b.a: f.a.a.a.l kit>;
+
+        $r5 = virtualinvoke $r4.<f.a.a.a.l: java.lang.String getVersion()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest c(java.lang.String,java.lang.String)>("User-Agent", $r5);
+
+        virtualinvoke $r1.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest c(java.lang.String,java.lang.String)>("X-CRASHLYTICS-API-CLIENT-TYPE", "android");
+
+        $r4 = r0.<f.a.a.a.a.b.a: f.a.a.a.l kit>;
+
+        $r5 = virtualinvoke $r4.<f.a.a.a.l: java.lang.String getVersion()>();
+
+        virtualinvoke $r1.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest c(java.lang.String,java.lang.String)>("X-CRASHLYTICS-API-CLIENT-VERSION", $r5);
+
+        virtualinvoke $r1.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest c(java.lang.String,java.lang.String)>("X-CRASHLYTICS-API-KEY", $r2);
+
+        return $r1;
+    }
+
+    private io.fabric.sdk.android.services.network.HttpRequest applyMultipartDataTo(io.fabric.sdk.android.services.network.HttpRequest, com.crashlytics.android.core.Report)
+    {
+        com.crashlytics.android.core.Report $r3;
+        io.fabric.sdk.android.services.network.HttpRequest $r1;
+        java.io.File $r2;
+        int $i0, $i1;
+        com.crashlytics.android.core.NativeCreateReportSpiCall r0;
+        java.lang.String $r4;
+        java.io.File[] $r5;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.core.NativeCreateReportSpiCall;
+
+        $r1 := @parameter0: io.fabric.sdk.android.services.network.HttpRequest;
+
+        $r3 := @parameter1: com.crashlytics.android.core.Report;
+
+        $r4 = interfaceinvoke $r3.<com.crashlytics.android.core.Report: java.lang.String getIdentifier()>();
+
+        virtualinvoke $r1.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest e(java.lang.String,java.lang.String)>("report_id", $r4);
+
+        $r5 = interfaceinvoke $r3.<com.crashlytics.android.core.Report: java.io.File[] getFiles()>();
+
+        $i0 = lengthof $r5;
+
+        $i1 = 0;
+
+     label01:
+        if $i1 >= $i0 goto label12;
+
+        $r2 = $r5[$i1];
+
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>("minidump");
+
+        if $z0 == 0 goto label02;
+
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest a(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("minidump_file", $r4, "application/octet-stream", $r2);
+
+        goto label11;
+
+     label02:
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>("metadata");
+
+        if $z0 == 0 goto label03;
+
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest a(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("crash_meta_file", $r4, "application/octet-stream", $r2);
+
+        goto label11;
+
+     label03:
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>("binaryImages");
+
+        if $z0 == 0 goto label04;
+
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest a(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("binary_images_file", $r4, "application/octet-stream", $r2);
+
+        goto label11;
+
+     label04:
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>("session");
+
+        if $z0 == 0 goto label05;
+
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest a(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("session_meta_file", $r4, "application/octet-stream", $r2);
+
+        goto label11;
+
+     label05:
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>("app");
+
+        if $z0 == 0 goto label06;
+
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest a(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("app_meta_file", $r4, "application/octet-stream", $r2);
+
+        goto label11;
+
+     label06:
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>("device");
+
+        if $z0 == 0 goto label07;
+
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest a(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("device_meta_file", $r4, "application/octet-stream", $r2);
+
+        goto label11;
+
+     label07:
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>("os");
+
+        if $z0 == 0 goto label08;
+
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest a(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("os_meta_file", $r4, "application/octet-stream", $r2);
+
+        goto label11;
+
+     label08:
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>("user");
+
+        if $z0 == 0 goto label09;
+
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest a(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("user_meta_file", $r4, "application/octet-stream", $r2);
+
+        goto label11;
+
+     label09:
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>("logs");
+
+        if $z0 == 0 goto label10;
+
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest a(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("logs_file", $r4, "application/octet-stream", $r2);
+
+        goto label11;
+
+     label10:
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>("keys");
+
+        if $z0 == 0 goto label11;
+
+        $r4 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest a(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("keys_file", $r4, "application/octet-stream", $r2);
+
+     label11:
+        $i1 = $i1 + 1;
+
+        goto label01;
+
+     label12:
+        return $r1;
+    }
+
+    public boolean invoke(com.crashlytics.android.core.CreateReportRequest)
+    {
+        f.a.a.a.o $r5;
+        com.crashlytics.android.core.Report $r4;
+        io.fabric.sdk.android.services.network.HttpRequest $r2;
+        int $i0;
+        com.crashlytics.android.core.NativeCreateReportSpiCall r0;
+        java.lang.StringBuilder $r6;
+        java.lang.String $r3;
+        com.crashlytics.android.core.CreateReportRequest $r1;
+
+        r0 := @this: com.crashlytics.android.core.NativeCreateReportSpiCall;
+
+        $r1 := @parameter0: com.crashlytics.android.core.CreateReportRequest;
+
+        $r2 = virtualinvoke r0.<f.a.a.a.a.b.a: io.fabric.sdk.android.services.network.HttpRequest getHttpRequest()>();
+
+        $r3 = $r1.<com.crashlytics.android.core.CreateReportRequest: java.lang.String apiKey>;
+
+        specialinvoke r0.<com.crashlytics.android.core.NativeCreateReportSpiCall: io.fabric.sdk.android.services.network.HttpRequest applyHeadersTo(io.fabric.sdk.android.services.network.HttpRequest,java.lang.String)>($r2, $r3);
+
+        $r4 = $r1.<com.crashlytics.android.core.CreateReportRequest: com.crashlytics.android.core.Report report>;
+
+        specialinvoke r0.<com.crashlytics.android.core.NativeCreateReportSpiCall: io.fabric.sdk.android.services.network.HttpRequest applyMultipartDataTo(io.fabric.sdk.android.services.network.HttpRequest,com.crashlytics.android.core.Report)>($r2, $r4);
+
+        $r5 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Sending report to: ");
+
+        $r3 = virtualinvoke r0.<f.a.a.a.a.b.a: java.lang.String getUrl()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r5.<f.a.a.a.o: void d(java.lang.String,java.lang.String)>("CrashlyticsCore", $r3);
+
+        $i0 = virtualinvoke $r2.<io.fabric.sdk.android.services.network.HttpRequest: int g()>();
+
+        $r5 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Result was: ");
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r3 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r5.<f.a.a.a.o: void d(java.lang.String,java.lang.String)>("CrashlyticsCore", $r3);
+
+        $i0 = staticinvoke <f.a.a.a.a.b.D: int a(int)>($i0);
+
+        if $i0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static void <clinit>()
+    {
+        <com.crashlytics.android.core.NativeCreateReportSpiCall: java.lang.String USER_META_FILE_MULTIPART_PARAM> = "user_meta_file";
+
+        <com.crashlytics.android.core.NativeCreateReportSpiCall: java.lang.String SESSION_META_FILE_MULTIPART_PARAM> = "session_meta_file";
+
+        <com.crashlytics.android.core.NativeCreateReportSpiCall: java.lang.String REPORT_IDENTIFIER_PARAM> = "report_id";
+
+        <com.crashlytics.android.core.NativeCreateReportSpiCall: java.lang.String OS_META_FILE_MULTIPART_PARAM> = "os_meta_file";
+
+        <com.crashlytics.android.core.NativeCreateReportSpiCall: java.lang.String MINIDUMP_FILE_MULTIPART_PARAM> = "minidump_file";
+
+        <com.crashlytics.android.core.NativeCreateReportSpiCall: java.lang.String METADATA_FILE_MULTIPART_PARAM> = "crash_meta_file";
+
+        <com.crashlytics.android.core.NativeCreateReportSpiCall: java.lang.String LOGS_FILE_MULTIPART_PARAM> = "logs_file";
+
+        <com.crashlytics.android.core.NativeCreateReportSpiCall: java.lang.String KEYS_FILE_MULTIPART_PARAM> = "keys_file";
+
+        <com.crashlytics.android.core.NativeCreateReportSpiCall: java.lang.String GZIP_FILE_CONTENT_TYPE> = "application/octet-stream";
+
+        <com.crashlytics.android.core.NativeCreateReportSpiCall: java.lang.String DEVICE_META_FILE_MULTIPART_PARAM> = "device_meta_file";
+
+        <com.crashlytics.android.core.NativeCreateReportSpiCall: java.lang.String BINARY_IMAGES_FILE_MULTIPART_PARAM> = "binary_images_file";
+
+        <com.crashlytics.android.core.NativeCreateReportSpiCall: java.lang.String APP_META_FILE_MULTIPART_PARAM> = "app_meta_file";
+
+        return;
+    }
+}

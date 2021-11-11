@@ -1,0 +1,385 @@
+public final class com.google.zxing.oned.UPCEReader extends com.google.zxing.oned.UPCEANReader
+{
+    public static final int[] MIDDLE_END_PATTERN;
+    public static final int[][] NUMSYS_AND_CHECK_DIGIT_PATTERNS;
+    public final int[] decodeMiddleCounters;
+
+    static void <clinit>()
+    {
+        int[][] $r1;
+        int[] $r0;
+
+        $r0 = newarray (int)[6];
+
+        $r0[0] = 1;
+
+        $r0[1] = 1;
+
+        $r0[2] = 1;
+
+        $r0[3] = 1;
+
+        $r0[4] = 1;
+
+        $r0[5] = 1;
+
+        <com.google.zxing.oned.UPCEReader: int[] MIDDLE_END_PATTERN> = $r0;
+
+        $r1 = newarray (int[])[2];
+
+        $r0 = newarray (int)[10];
+
+        $r0[0] = 56;
+
+        $r0[1] = 52;
+
+        $r0[2] = 50;
+
+        $r0[3] = 49;
+
+        $r0[4] = 44;
+
+        $r0[5] = 38;
+
+        $r0[6] = 35;
+
+        $r0[7] = 42;
+
+        $r0[8] = 41;
+
+        $r0[9] = 37;
+
+        $r1[0] = $r0;
+
+        $r0 = newarray (int)[10];
+
+        $r0[0] = 7;
+
+        $r0[1] = 11;
+
+        $r0[2] = 13;
+
+        $r0[3] = 14;
+
+        $r0[4] = 19;
+
+        $r0[5] = 25;
+
+        $r0[6] = 28;
+
+        $r0[7] = 21;
+
+        $r0[8] = 22;
+
+        $r0[9] = 26;
+
+        $r1[1] = $r0;
+
+        <com.google.zxing.oned.UPCEReader: int[][] NUMSYS_AND_CHECK_DIGIT_PATTERNS> = $r1;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.zxing.oned.UPCEReader r0;
+        int[] $r1;
+
+        r0 := @this: com.google.zxing.oned.UPCEReader;
+
+        specialinvoke r0.<com.google.zxing.oned.UPCEANReader: void <init>()>();
+
+        $r1 = newarray (int)[4];
+
+        r0.<com.google.zxing.oned.UPCEReader: int[] decodeMiddleCounters> = $r1;
+
+        return;
+    }
+
+    public static java.lang.String convertUPCEtoUPCA(java.lang.String)
+    {
+        int $i1;
+        char[] $r1;
+        char $c0;
+        java.lang.StringBuilder $r2, $r3;
+        java.lang.String $r0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 = newarray (char)[6];
+
+        virtualinvoke $r0.<java.lang.String: void getChars(int,int,char[],int)>(1, 7, $r1, 0);
+
+        $r3 = new java.lang.StringBuilder;
+
+        $r2 = $r3;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(int)>(12);
+
+        $c0 = virtualinvoke $r0.<java.lang.String: char charAt(int)>(0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        $c0 = $r1[5];
+
+        $i1 = (int) $c0;
+
+        lookupswitch($i1)
+        {
+            case 48: goto label4;
+            case 49: goto label4;
+            case 50: goto label4;
+            case 51: goto label3;
+            case 52: goto label2;
+            default: goto label1;
+        };
+
+     label1:
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char[],int,int)>($r1, 0, 5);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("0000");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        goto label5;
+
+     label2:
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char[],int,int)>($r1, 0, 4);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("00000");
+
+        $c0 = $r1[4];
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        goto label5;
+
+     label3:
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char[],int,int)>($r1, 0, 3);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("00000");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char[],int,int)>($r1, 3, 2);
+
+        goto label5;
+
+     label4:
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char[],int,int)>($r1, 0, 2);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("0000");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char[],int,int)>($r1, 2, 3);
+
+     label5:
+        $c0 = virtualinvoke $r0.<java.lang.String: char charAt(int)>(7);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        $r0 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r0;
+    }
+
+    public static void determineNumSysAndCheckDigit(java.lang.StringBuilder, int)
+    {
+        int[][] $r2;
+        char $c4;
+        com.google.zxing.NotFoundException $r0;
+        int[] $r3;
+        int $i0, $i1, $i2, $i3;
+        java.lang.StringBuilder $r1;
+
+        $r1 := @parameter0: java.lang.StringBuilder;
+
+        $i0 := @parameter1: int;
+
+        $i1 = 0;
+
+     label1:
+        if $i1 > 1 goto label5;
+
+        $i2 = 0;
+
+     label2:
+        if $i2 >= 10 goto label4;
+
+        $r2 = <com.google.zxing.oned.UPCEReader: int[][] NUMSYS_AND_CHECK_DIGIT_PATTERNS>;
+
+        $r3 = $r2[$i1];
+
+        $i3 = $r3[$i2];
+
+        if $i0 != $i3 goto label3;
+
+        $i0 = $i1 + 48;
+
+        $c4 = (char) $i0;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder insert(int,char)>(0, $c4);
+
+        $i0 = $i2 + 48;
+
+        $c4 = (char) $i0;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c4);
+
+        return;
+
+     label3:
+        $i2 = $i2 + 1;
+
+        goto label2;
+
+     label4:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label5:
+        $r0 = staticinvoke <com.google.zxing.NotFoundException: com.google.zxing.NotFoundException getNotFoundInstance()>();
+
+        goto label6;
+
+     label6:
+        throw $r0;
+    }
+
+    public boolean checkChecksum(java.lang.String)
+    {
+        com.google.zxing.oned.UPCEReader r0;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.oned.UPCEReader;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r1 = staticinvoke <com.google.zxing.oned.UPCEReader: java.lang.String convertUPCEtoUPCA(java.lang.String)>($r1);
+
+        $z0 = specialinvoke r0.<com.google.zxing.oned.UPCEANReader: boolean checkChecksum(java.lang.String)>($r1);
+
+        return $z0;
+    }
+
+    public int[] decodeEnd(com.google.zxing.common.BitArray, int)
+    {
+        com.google.zxing.oned.UPCEReader r0;
+        int[] $r1;
+        int $i0;
+        com.google.zxing.common.BitArray $r2;
+
+        r0 := @this: com.google.zxing.oned.UPCEReader;
+
+        $r2 := @parameter0: com.google.zxing.common.BitArray;
+
+        $i0 := @parameter1: int;
+
+        $r1 = <com.google.zxing.oned.UPCEReader: int[] MIDDLE_END_PATTERN>;
+
+        $r1 = staticinvoke <com.google.zxing.oned.UPCEANReader: int[] findGuardPattern(com.google.zxing.common.BitArray,int,boolean,int[])>($r2, $i0, 1, $r1);
+
+        return $r1;
+    }
+
+    public int decodeMiddle(com.google.zxing.common.BitArray, int[], java.lang.StringBuilder)
+    {
+        int[][] $r5;
+        char $c7;
+        com.google.zxing.common.BitArray $r1;
+        com.google.zxing.oned.UPCEReader r0;
+        int[] $r3, $r4;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i8;
+        java.lang.StringBuilder $r2;
+
+        r0 := @this: com.google.zxing.oned.UPCEReader;
+
+        $r1 := @parameter0: com.google.zxing.common.BitArray;
+
+        $r4 := @parameter1: int[];
+
+        $r2 := @parameter2: java.lang.StringBuilder;
+
+        $r3 = r0.<com.google.zxing.oned.UPCEReader: int[] decodeMiddleCounters>;
+
+        $r3[0] = 0;
+
+        $r3[1] = 0;
+
+        $r3[2] = 0;
+
+        $r3[3] = 0;
+
+        $i1 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        $i3 = $r4[1];
+
+        $i2 = 0;
+
+        $i4 = 0;
+
+     label1:
+        if $i2 >= 6 goto label5;
+
+        if $i3 >= $i1 goto label5;
+
+        $r5 = <com.google.zxing.oned.UPCEANReader: int[][] L_AND_G_PATTERNS>;
+
+        $i5 = staticinvoke <com.google.zxing.oned.UPCEANReader: int decodeDigit(com.google.zxing.common.BitArray,int[],int,int[][])>($r1, $r3, $i3, $r5);
+
+        $i6 = $i5 % 10;
+
+        $i6 = $i6 + 48;
+
+        $c7 = (char) $i6;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c7);
+
+        $i6 = lengthof $r3;
+
+        $i8 = 0;
+
+     label2:
+        if $i8 >= $i6 goto label3;
+
+        $i0 = $r3[$i8];
+
+        $i3 = $i3 + $i0;
+
+        $i8 = $i8 + 1;
+
+        goto label2;
+
+     label3:
+        if $i5 < 10 goto label4;
+
+        $i5 = 5 - $i2;
+
+        $i5 = 1 << $i5;
+
+        $i4 = $i5 | $i4;
+
+     label4:
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label5:
+        staticinvoke <com.google.zxing.oned.UPCEReader: void determineNumSysAndCheckDigit(java.lang.StringBuilder,int)>($r2, $i4);
+
+        return $i3;
+    }
+
+    public com.google.zxing.BarcodeFormat getBarcodeFormat()
+    {
+        com.google.zxing.oned.UPCEReader r0;
+        com.google.zxing.BarcodeFormat r1;
+
+        r0 := @this: com.google.zxing.oned.UPCEReader;
+
+        r1 = <com.google.zxing.BarcodeFormat: com.google.zxing.BarcodeFormat UPC_E>;
+
+        return r1;
+    }
+}

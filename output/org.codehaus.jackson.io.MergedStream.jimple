@@ -1,0 +1,382 @@
+public final class org.codehaus.jackson.io.MergedStream extends java.io.InputStream
+{
+    public byte[] _buffer;
+    public final org.codehaus.jackson.io.IOContext _context;
+    public final int _end;
+    public final java.io.InputStream _in;
+    public int _ptr;
+
+    public void <init>(org.codehaus.jackson.io.IOContext, java.io.InputStream, byte[], int, int)
+    {
+        org.codehaus.jackson.io.IOContext $r1;
+        byte[] $r3;
+        int $i0, $i1;
+        org.codehaus.jackson.io.MergedStream r0;
+        java.io.InputStream $r2;
+
+        r0 := @this: org.codehaus.jackson.io.MergedStream;
+
+        $r1 := @parameter0: org.codehaus.jackson.io.IOContext;
+
+        $r2 := @parameter1: java.io.InputStream;
+
+        $r3 := @parameter2: byte[];
+
+        $i0 := @parameter3: int;
+
+        $i1 := @parameter4: int;
+
+        specialinvoke r0.<java.io.InputStream: void <init>()>();
+
+        r0.<org.codehaus.jackson.io.MergedStream: org.codehaus.jackson.io.IOContext _context> = $r1;
+
+        r0.<org.codehaus.jackson.io.MergedStream: java.io.InputStream _in> = $r2;
+
+        r0.<org.codehaus.jackson.io.MergedStream: byte[] _buffer> = $r3;
+
+        r0.<org.codehaus.jackson.io.MergedStream: int _ptr> = $i0;
+
+        r0.<org.codehaus.jackson.io.MergedStream: int _end> = $i1;
+
+        return;
+    }
+
+    private void freeMergedBuffer()
+    {
+        byte[] $r1;
+        org.codehaus.jackson.io.IOContext $r2;
+        org.codehaus.jackson.io.MergedStream r0;
+
+        r0 := @this: org.codehaus.jackson.io.MergedStream;
+
+        $r1 = r0.<org.codehaus.jackson.io.MergedStream: byte[] _buffer>;
+
+        if $r1 == null goto label1;
+
+        r0.<org.codehaus.jackson.io.MergedStream: byte[] _buffer> = null;
+
+        $r2 = r0.<org.codehaus.jackson.io.MergedStream: org.codehaus.jackson.io.IOContext _context>;
+
+        if $r2 == null goto label1;
+
+        virtualinvoke $r2.<org.codehaus.jackson.io.IOContext: void releaseReadIOBuffer(byte[])>($r1);
+
+     label1:
+        return;
+    }
+
+    public int available()
+    {
+        byte[] $r1;
+        int $i0, $i1;
+        org.codehaus.jackson.io.MergedStream r0;
+        java.io.InputStream $r2;
+
+        r0 := @this: org.codehaus.jackson.io.MergedStream;
+
+        $r1 = r0.<org.codehaus.jackson.io.MergedStream: byte[] _buffer>;
+
+        if $r1 == null goto label1;
+
+        $i1 = r0.<org.codehaus.jackson.io.MergedStream: int _end>;
+
+        $i0 = r0.<org.codehaus.jackson.io.MergedStream: int _ptr>;
+
+        $i0 = $i1 - $i0;
+
+        return $i0;
+
+     label1:
+        $r2 = r0.<org.codehaus.jackson.io.MergedStream: java.io.InputStream _in>;
+
+        $i0 = virtualinvoke $r2.<java.io.InputStream: int available()>();
+
+        return $i0;
+    }
+
+    public void close()
+    {
+        org.codehaus.jackson.io.MergedStream r0;
+        java.io.InputStream $r1;
+
+        r0 := @this: org.codehaus.jackson.io.MergedStream;
+
+        specialinvoke r0.<org.codehaus.jackson.io.MergedStream: void freeMergedBuffer()>();
+
+        $r1 = r0.<org.codehaus.jackson.io.MergedStream: java.io.InputStream _in>;
+
+        virtualinvoke $r1.<java.io.InputStream: void close()>();
+
+        return;
+    }
+
+    public void mark(int)
+    {
+        byte[] $r1;
+        int $i0;
+        org.codehaus.jackson.io.MergedStream r0;
+        java.io.InputStream $r2;
+
+        r0 := @this: org.codehaus.jackson.io.MergedStream;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<org.codehaus.jackson.io.MergedStream: byte[] _buffer>;
+
+        if $r1 != null goto label1;
+
+        $r2 = r0.<org.codehaus.jackson.io.MergedStream: java.io.InputStream _in>;
+
+        virtualinvoke $r2.<java.io.InputStream: void mark(int)>($i0);
+
+     label1:
+        return;
+    }
+
+    public boolean markSupported()
+    {
+        byte[] $r1;
+        org.codehaus.jackson.io.MergedStream r0;
+        boolean $z0;
+        java.io.InputStream $r2;
+
+        r0 := @this: org.codehaus.jackson.io.MergedStream;
+
+        $r1 = r0.<org.codehaus.jackson.io.MergedStream: byte[] _buffer>;
+
+        if $r1 != null goto label1;
+
+        $r2 = r0.<org.codehaus.jackson.io.MergedStream: java.io.InputStream _in>;
+
+        $z0 = virtualinvoke $r2.<java.io.InputStream: boolean markSupported()>();
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public int read()
+    {
+        byte[] $r1;
+        short $s3;
+        byte $b2;
+        int $i0, $i1;
+        org.codehaus.jackson.io.MergedStream r0;
+        java.io.InputStream $r2;
+
+        r0 := @this: org.codehaus.jackson.io.MergedStream;
+
+        $r1 = r0.<org.codehaus.jackson.io.MergedStream: byte[] _buffer>;
+
+        if $r1 == null goto label1;
+
+        $i0 = r0.<org.codehaus.jackson.io.MergedStream: int _ptr>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.io.MergedStream: int _ptr> = $i1;
+
+        $b2 = $r1[$i0];
+
+        $s3 = (short) $b2;
+
+        $s3 = $s3 & 255;
+
+        $i0 = r0.<org.codehaus.jackson.io.MergedStream: int _ptr>;
+
+        $i1 = r0.<org.codehaus.jackson.io.MergedStream: int _end>;
+
+        if $i0 < $i1 goto label2;
+
+        specialinvoke r0.<org.codehaus.jackson.io.MergedStream: void freeMergedBuffer()>();
+
+        $i0 = (int) $s3;
+
+        return $i0;
+
+     label1:
+        $r2 = r0.<org.codehaus.jackson.io.MergedStream: java.io.InputStream _in>;
+
+        $i0 = virtualinvoke $r2.<java.io.InputStream: int read()>();
+
+        return $i0;
+
+     label2:
+        $i0 = (int) $s3;
+
+        return $i0;
+    }
+
+    public int read(byte[])
+    {
+        int $i0;
+        byte[] $r1;
+        org.codehaus.jackson.io.MergedStream r0;
+
+        r0 := @this: org.codehaus.jackson.io.MergedStream;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 = lengthof $r1;
+
+        $i0 = virtualinvoke r0.<org.codehaus.jackson.io.MergedStream: int read(byte[],int,int)>($r1, 0, $i0);
+
+        return $i0;
+    }
+
+    public int read(byte[], int, int)
+    {
+        byte[] $r1, $r2;
+        org.codehaus.jackson.io.MergedStream r0;
+        int $i0, $i1, $i2, $i3;
+        java.io.InputStream $r3;
+
+        r0 := @this: org.codehaus.jackson.io.MergedStream;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 = r0.<org.codehaus.jackson.io.MergedStream: byte[] _buffer>;
+
+        if $r2 == null goto label2;
+
+        $i2 = r0.<org.codehaus.jackson.io.MergedStream: int _end>;
+
+        $i3 = r0.<org.codehaus.jackson.io.MergedStream: int _ptr>;
+
+        $i2 = $i2 - $i3;
+
+        if $i1 <= $i2 goto label1;
+
+        $i1 = $i2;
+
+     label1:
+        $r2 = r0.<org.codehaus.jackson.io.MergedStream: byte[] _buffer>;
+
+        $i2 = r0.<org.codehaus.jackson.io.MergedStream: int _ptr>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, $i2, $r1, $i0, $i1);
+
+        $i0 = r0.<org.codehaus.jackson.io.MergedStream: int _ptr>;
+
+        $i0 = $i0 + $i1;
+
+        r0.<org.codehaus.jackson.io.MergedStream: int _ptr> = $i0;
+
+        $i0 = r0.<org.codehaus.jackson.io.MergedStream: int _ptr>;
+
+        $i2 = r0.<org.codehaus.jackson.io.MergedStream: int _end>;
+
+        if $i0 < $i2 goto label3;
+
+        specialinvoke r0.<org.codehaus.jackson.io.MergedStream: void freeMergedBuffer()>();
+
+        return $i1;
+
+     label2:
+        $r3 = r0.<org.codehaus.jackson.io.MergedStream: java.io.InputStream _in>;
+
+        $i0 = virtualinvoke $r3.<java.io.InputStream: int read(byte[],int,int)>($r1, $i0, $i1);
+
+        return $i0;
+
+     label3:
+        return $i1;
+    }
+
+    public void reset()
+    {
+        byte[] $r1;
+        org.codehaus.jackson.io.MergedStream r0;
+        java.io.InputStream $r2;
+
+        r0 := @this: org.codehaus.jackson.io.MergedStream;
+
+        $r1 = r0.<org.codehaus.jackson.io.MergedStream: byte[] _buffer>;
+
+        if $r1 != null goto label1;
+
+        $r2 = r0.<org.codehaus.jackson.io.MergedStream: java.io.InputStream _in>;
+
+        virtualinvoke $r2.<java.io.InputStream: void reset()>();
+
+     label1:
+        return;
+    }
+
+    public long skip(long)
+    {
+        byte[] $r1;
+        org.codehaus.jackson.io.MergedStream r0;
+        long $l0, $l1, $l5;
+        byte $b4;
+        int $i2, $i3;
+        java.io.InputStream $r2;
+
+        r0 := @this: org.codehaus.jackson.io.MergedStream;
+
+        $l1 := @parameter0: long;
+
+        $r1 = r0.<org.codehaus.jackson.io.MergedStream: byte[] _buffer>;
+
+        if $r1 == null goto label2;
+
+        $i2 = r0.<org.codehaus.jackson.io.MergedStream: int _end>;
+
+        $i3 = r0.<org.codehaus.jackson.io.MergedStream: int _ptr>;
+
+        $i2 = $i2 - $i3;
+
+        $l0 = (long) $i2;
+
+        $b4 = $l0 cmp $l1;
+
+        $i2 = (int) $b4;
+
+        if $i2 <= 0 goto label1;
+
+        $i2 = (int) $l1;
+
+        $i3 = $i3 + $i2;
+
+        r0.<org.codehaus.jackson.io.MergedStream: int _ptr> = $i3;
+
+        return $l1;
+
+     label1:
+        specialinvoke r0.<org.codehaus.jackson.io.MergedStream: void freeMergedBuffer()>();
+
+        $l5 = $l0 + 0L;
+
+        $l1 = $l1 - $l0;
+
+        goto label3;
+
+     label2:
+        $l5 = 0L;
+
+     label3:
+        $b4 = $l1 cmp 0L;
+
+        $i3 = (int) $b4;
+
+        if $i3 <= 0 goto label4;
+
+        $r2 = r0.<org.codehaus.jackson.io.MergedStream: java.io.InputStream _in>;
+
+        $l1 = virtualinvoke $r2.<java.io.InputStream: long skip(long)>($l1);
+
+        $l1 = $l5 + $l1;
+
+        return $l1;
+
+     label4:
+        return $l5;
+    }
+}

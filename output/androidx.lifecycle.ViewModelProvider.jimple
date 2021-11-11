@@ -1,0 +1,190 @@
+public class androidx.lifecycle.ViewModelProvider extends java.lang.Object
+{
+    public static final java.lang.String DEFAULT_KEY;
+    public final androidx.lifecycle.ViewModelProvider$Factory mFactory;
+    public final androidx.lifecycle.ViewModelStore mViewModelStore;
+
+    public void <init>(androidx.lifecycle.ViewModelStore, androidx.lifecycle.ViewModelProvider$Factory)
+    {
+        androidx.lifecycle.ViewModelStore $r1;
+        androidx.lifecycle.ViewModelProvider$Factory $r2;
+        androidx.lifecycle.ViewModelProvider r0;
+
+        r0 := @this: androidx.lifecycle.ViewModelProvider;
+
+        $r1 := @parameter0: androidx.lifecycle.ViewModelStore;
+
+        $r2 := @parameter1: androidx.lifecycle.ViewModelProvider$Factory;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<androidx.lifecycle.ViewModelProvider: androidx.lifecycle.ViewModelProvider$Factory mFactory> = $r2;
+
+        r0.<androidx.lifecycle.ViewModelProvider: androidx.lifecycle.ViewModelStore mViewModelStore> = $r1;
+
+        return;
+    }
+
+    public void <init>(androidx.lifecycle.ViewModelStoreOwner)
+    {
+        androidx.lifecycle.ViewModelStore $r2;
+        androidx.lifecycle.ViewModelProvider r0;
+        androidx.lifecycle.ViewModelProvider$Factory $r4;
+        androidx.lifecycle.ViewModelStoreOwner $r1;
+        androidx.lifecycle.HasDefaultViewModelProviderFactory $r3;
+        boolean $z0;
+
+        r0 := @this: androidx.lifecycle.ViewModelProvider;
+
+        $r1 := @parameter0: androidx.lifecycle.ViewModelStoreOwner;
+
+        $r2 = interfaceinvoke $r1.<androidx.lifecycle.ViewModelStoreOwner: androidx.lifecycle.ViewModelStore getViewModelStore()>();
+
+        $z0 = $r1 instanceof androidx.lifecycle.HasDefaultViewModelProviderFactory;
+
+        if $z0 == 0 goto label1;
+
+        $r3 = (androidx.lifecycle.HasDefaultViewModelProviderFactory) $r1;
+
+        $r4 = interfaceinvoke $r3.<androidx.lifecycle.HasDefaultViewModelProviderFactory: androidx.lifecycle.ViewModelProvider$Factory getDefaultViewModelProviderFactory()>();
+
+        goto label2;
+
+     label1:
+        $r4 = staticinvoke <androidx.lifecycle.ViewModelProvider$NewInstanceFactory: androidx.lifecycle.ViewModelProvider$NewInstanceFactory getInstance()>();
+
+     label2:
+        specialinvoke r0.<androidx.lifecycle.ViewModelProvider: void <init>(androidx.lifecycle.ViewModelStore,androidx.lifecycle.ViewModelProvider$Factory)>($r2, $r4);
+
+        return;
+    }
+
+    public void <init>(androidx.lifecycle.ViewModelStoreOwner, androidx.lifecycle.ViewModelProvider$Factory)
+    {
+        androidx.lifecycle.ViewModelStore $r2;
+        androidx.lifecycle.ViewModelProvider r0;
+        androidx.lifecycle.ViewModelProvider$Factory $r1;
+        androidx.lifecycle.ViewModelStoreOwner $r3;
+
+        r0 := @this: androidx.lifecycle.ViewModelProvider;
+
+        $r3 := @parameter0: androidx.lifecycle.ViewModelStoreOwner;
+
+        $r1 := @parameter1: androidx.lifecycle.ViewModelProvider$Factory;
+
+        $r2 = interfaceinvoke $r3.<androidx.lifecycle.ViewModelStoreOwner: androidx.lifecycle.ViewModelStore getViewModelStore()>();
+
+        specialinvoke r0.<androidx.lifecycle.ViewModelProvider: void <init>(androidx.lifecycle.ViewModelStore,androidx.lifecycle.ViewModelProvider$Factory)>($r2, $r1);
+
+        return;
+    }
+
+    public androidx.lifecycle.ViewModel get(java.lang.Class)
+    {
+        androidx.lifecycle.ViewModelProvider r0;
+        androidx.lifecycle.ViewModel $r4;
+        java.lang.StringBuilder $r1;
+        java.lang.Class $r2;
+        java.lang.String $r3;
+        java.lang.IllegalArgumentException $r5;
+
+        r0 := @this: androidx.lifecycle.ViewModelProvider;
+
+        $r2 := @parameter0: java.lang.Class;
+
+        $r3 = virtualinvoke $r2.<java.lang.Class: java.lang.String getCanonicalName()>();
+
+        if $r3 == null goto label1;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("androidx.lifecycle.ViewModelProvider.DefaultKey:");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r4 = virtualinvoke r0.<androidx.lifecycle.ViewModelProvider: androidx.lifecycle.ViewModel get(java.lang.String,java.lang.Class)>($r3, $r2);
+
+        return $r4;
+
+     label1:
+        $r5 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r5.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Local and anonymous classes can not be ViewModels");
+
+        throw $r5;
+    }
+
+    public androidx.lifecycle.ViewModel get(java.lang.String, java.lang.Class)
+    {
+        androidx.lifecycle.ViewModelProvider r0;
+        androidx.lifecycle.ViewModelProvider$KeyedFactory $r7;
+        androidx.lifecycle.ViewModel $r4;
+        androidx.lifecycle.ViewModelStore $r3;
+        androidx.lifecycle.ViewModelProvider$OnRequeryFactory $r6;
+        androidx.lifecycle.ViewModelProvider$Factory $r5;
+        java.lang.Class $r2;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: androidx.lifecycle.ViewModelProvider;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.Class;
+
+        $r3 = r0.<androidx.lifecycle.ViewModelProvider: androidx.lifecycle.ViewModelStore mViewModelStore>;
+
+        $r4 = virtualinvoke $r3.<androidx.lifecycle.ViewModelStore: androidx.lifecycle.ViewModel get(java.lang.String)>($r1);
+
+        $z0 = virtualinvoke $r2.<java.lang.Class: boolean isInstance(java.lang.Object)>($r4);
+
+        if $z0 == 0 goto label1;
+
+        $r5 = r0.<androidx.lifecycle.ViewModelProvider: androidx.lifecycle.ViewModelProvider$Factory mFactory>;
+
+        $z0 = $r5 instanceof androidx.lifecycle.ViewModelProvider$OnRequeryFactory;
+
+        if $z0 == 0 goto label4;
+
+        $r6 = (androidx.lifecycle.ViewModelProvider$OnRequeryFactory) $r5;
+
+        virtualinvoke $r6.<androidx.lifecycle.ViewModelProvider$OnRequeryFactory: void onRequery(androidx.lifecycle.ViewModel)>($r4);
+
+        return $r4;
+
+     label1:
+        $r5 = r0.<androidx.lifecycle.ViewModelProvider: androidx.lifecycle.ViewModelProvider$Factory mFactory>;
+
+        $z0 = $r5 instanceof androidx.lifecycle.ViewModelProvider$KeyedFactory;
+
+        if $z0 == 0 goto label2;
+
+        $r7 = (androidx.lifecycle.ViewModelProvider$KeyedFactory) $r5;
+
+        $r4 = virtualinvoke $r7.<androidx.lifecycle.ViewModelProvider$KeyedFactory: androidx.lifecycle.ViewModel create(java.lang.String,java.lang.Class)>($r1, $r2);
+
+        goto label3;
+
+     label2:
+        $r4 = interfaceinvoke $r5.<androidx.lifecycle.ViewModelProvider$Factory: androidx.lifecycle.ViewModel create(java.lang.Class)>($r2);
+
+     label3:
+        $r3 = r0.<androidx.lifecycle.ViewModelProvider: androidx.lifecycle.ViewModelStore mViewModelStore>;
+
+        virtualinvoke $r3.<androidx.lifecycle.ViewModelStore: void put(java.lang.String,androidx.lifecycle.ViewModel)>($r1, $r4);
+
+     label4:
+        return $r4;
+    }
+
+    public static void <clinit>()
+    {
+        <androidx.lifecycle.ViewModelProvider: java.lang.String DEFAULT_KEY> = "androidx.lifecycle.ViewModelProvider.DefaultKey";
+
+        return;
+    }
+}

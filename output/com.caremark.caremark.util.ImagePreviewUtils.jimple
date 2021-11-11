@@ -1,0 +1,144 @@
+public class com.caremark.caremark.util.ImagePreviewUtils extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        com.caremark.caremark.util.ImagePreviewUtils r0;
+
+        r0 := @this: com.caremark.caremark.util.ImagePreviewUtils;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static android.graphics.Bitmap flip(android.graphics.Bitmap, boolean, boolean)
+    {
+        android.graphics.Bitmap $r1;
+        int $i0, $i1;
+        float $f0, $f1;
+        android.graphics.Matrix $r0;
+        boolean $z0, $z1;
+
+        $r1 := @parameter0: android.graphics.Bitmap;
+
+        $z1 := @parameter1: boolean;
+
+        $z0 := @parameter2: boolean;
+
+        $r0 = new android.graphics.Matrix;
+
+        specialinvoke $r0.<android.graphics.Matrix: void <init>()>();
+
+        $f0 = -1.0F;
+
+        if $z1 == 0 goto label1;
+
+        $f1 = -1.0F;
+
+        goto label2;
+
+     label1:
+        $f1 = 1.0F;
+
+     label2:
+        if $z0 == 0 goto label3;
+
+        goto label4;
+
+     label3:
+        $f0 = 1.0F;
+
+     label4:
+        virtualinvoke $r0.<android.graphics.Matrix: boolean preScale(float,float)>($f1, $f0);
+
+        $i0 = virtualinvoke $r1.<android.graphics.Bitmap: int getWidth()>();
+
+        $i1 = virtualinvoke $r1.<android.graphics.Bitmap: int getHeight()>();
+
+        $r1 = staticinvoke <android.graphics.Bitmap: android.graphics.Bitmap createBitmap(android.graphics.Bitmap,int,int,int,int,android.graphics.Matrix,boolean)>($r1, 0, 0, $i0, $i1, $r0, 1);
+
+        return $r1;
+    }
+
+    public static android.graphics.Bitmap modifyOrientation(android.graphics.Bitmap, java.lang.String)
+    {
+        android.graphics.Bitmap $r0;
+        int $i0;
+        java.lang.String $r1;
+        android.media.ExifInterface $r2;
+
+        $r0 := @parameter0: android.graphics.Bitmap;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = new android.media.ExifInterface;
+
+        specialinvoke $r2.<android.media.ExifInterface: void <init>(java.lang.String)>($r1);
+
+        $i0 = virtualinvoke $r2.<android.media.ExifInterface: int getAttributeInt(java.lang.String,int)>("Orientation", 1);
+
+        if $i0 == 2 goto label5;
+
+        if $i0 == 3 goto label4;
+
+        if $i0 == 4 goto label3;
+
+        if $i0 == 6 goto label2;
+
+        if $i0 == 8 goto label1;
+
+        return $r0;
+
+     label1:
+        $r0 = staticinvoke <com.caremark.caremark.util.ImagePreviewUtils: android.graphics.Bitmap rotate(android.graphics.Bitmap,float)>($r0, 270.0F);
+
+        return $r0;
+
+     label2:
+        $r0 = staticinvoke <com.caremark.caremark.util.ImagePreviewUtils: android.graphics.Bitmap rotate(android.graphics.Bitmap,float)>($r0, 90.0F);
+
+        return $r0;
+
+     label3:
+        $r0 = staticinvoke <com.caremark.caremark.util.ImagePreviewUtils: android.graphics.Bitmap flip(android.graphics.Bitmap,boolean,boolean)>($r0, 0, 1);
+
+        return $r0;
+
+     label4:
+        $r0 = staticinvoke <com.caremark.caremark.util.ImagePreviewUtils: android.graphics.Bitmap rotate(android.graphics.Bitmap,float)>($r0, 180.0F);
+
+        return $r0;
+
+     label5:
+        $r0 = staticinvoke <com.caremark.caremark.util.ImagePreviewUtils: android.graphics.Bitmap flip(android.graphics.Bitmap,boolean,boolean)>($r0, 1, 0);
+
+        return $r0;
+    }
+
+    public static android.graphics.Bitmap rotate(android.graphics.Bitmap, float)
+    {
+        android.graphics.Bitmap $r1;
+        int $i0, $i1;
+        float $f0;
+        android.graphics.Matrix $r0;
+
+        $r1 := @parameter0: android.graphics.Bitmap;
+
+        $f0 := @parameter1: float;
+
+        $r0 = new android.graphics.Matrix;
+
+        specialinvoke $r0.<android.graphics.Matrix: void <init>()>();
+
+        virtualinvoke $r0.<android.graphics.Matrix: boolean postRotate(float)>($f0);
+
+        $i0 = virtualinvoke $r1.<android.graphics.Bitmap: int getWidth()>();
+
+        $i1 = virtualinvoke $r1.<android.graphics.Bitmap: int getHeight()>();
+
+        $r1 = staticinvoke <android.graphics.Bitmap: android.graphics.Bitmap createBitmap(android.graphics.Bitmap,int,int,int,int,android.graphics.Matrix,boolean)>($r1, 0, 0, $i0, $i1, $r0, 1);
+
+        return $r1;
+    }
+}

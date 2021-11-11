@@ -1,0 +1,323 @@
+public abstract class com.google.common.io.CharSink extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        com.google.common.io.CharSink r0;
+
+        r0 := @this: com.google.common.io.CharSink;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    private void writeLines(java.util.Iterator, java.lang.String)
+    {
+        java.lang.Throwable $r7, $r8, $r9;
+        java.util.Iterator $r1;
+        java.lang.CharSequence $r5;
+        com.google.common.io.CharSink r0;
+        java.io.Writer $r3, $r6;
+        java.lang.Object $r4;
+        java.lang.String $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.common.io.CharSink;
+
+        $r1 := @parameter0: java.util.Iterator;
+
+        $r2 := @parameter1: java.lang.String;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        $r3 = virtualinvoke r0.<com.google.common.io.CharSink: java.io.Writer openBufferedStream()>();
+
+     label01:
+        $z0 = interfaceinvoke $r1.<java.util.Iterator: boolean hasNext()>();
+
+     label02:
+        if $z0 == 0 goto label05;
+
+     label03:
+        $r4 = interfaceinvoke $r1.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (java.lang.CharSequence) $r4;
+
+        $r6 = virtualinvoke $r3.<java.io.Writer: java.io.Writer append(java.lang.CharSequence)>($r5);
+
+        virtualinvoke $r6.<java.io.Writer: java.io.Writer append(java.lang.CharSequence)>($r2);
+
+     label04:
+        goto label01;
+
+     label05:
+        if $r3 == null goto label16;
+
+        virtualinvoke $r3.<java.io.Writer: void close()>();
+
+        return;
+
+     label06:
+        $r7 := @caughtexception;
+
+        goto label09;
+
+     label07:
+        $r8 := @caughtexception;
+
+     label08:
+        throw $r8;
+
+     label09:
+        if $r3 == null goto label14;
+
+        if $r8 == null goto label13;
+
+     label10:
+        virtualinvoke $r3.<java.io.Writer: void close()>();
+
+     label11:
+        goto label14;
+
+     label12:
+        $r9 := @caughtexception;
+
+        virtualinvoke $r8.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($r9);
+
+        goto label14;
+
+     label13:
+        virtualinvoke $r3.<java.io.Writer: void close()>();
+
+     label14:
+        goto label15;
+
+     label15:
+        throw $r7;
+
+     label16:
+        return;
+
+        catch java.lang.Throwable from label01 to label02 with label07;
+        catch java.lang.Throwable from label03 to label04 with label07;
+        catch java.lang.Throwable from label08 to label09 with label06;
+        catch java.lang.Throwable from label10 to label11 with label12;
+    }
+
+    public java.io.Writer openBufferedStream()
+    {
+        java.io.BufferedWriter $r2;
+        java.io.Writer $r1;
+        com.google.common.io.CharSink r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.io.CharSink;
+
+        $r1 = virtualinvoke r0.<com.google.common.io.CharSink: java.io.Writer openStream()>();
+
+        $z0 = $r1 instanceof java.io.BufferedWriter;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (java.io.BufferedWriter) $r1;
+
+        return $r2;
+
+     label1:
+        $r2 = new java.io.BufferedWriter;
+
+        specialinvoke $r2.<java.io.BufferedWriter: void <init>(java.io.Writer)>($r1);
+
+        return $r2;
+    }
+
+    public abstract java.io.Writer openStream();
+
+    public void write(java.lang.CharSequence)
+    {
+        java.lang.Throwable $r5, $r6;
+        java.lang.CharSequence $r1;
+        java.lang.RuntimeException $r7;
+        com.google.common.io.CharSink r0;
+        com.google.common.io.Closer $r2;
+        java.io.Closeable $r4;
+        java.io.Writer $r3;
+
+        r0 := @this: com.google.common.io.CharSink;
+
+        $r1 := @parameter0: java.lang.CharSequence;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = staticinvoke <com.google.common.io.Closer: com.google.common.io.Closer create()>();
+
+     label1:
+        $r3 = virtualinvoke r0.<com.google.common.io.CharSink: java.io.Writer openStream()>();
+
+        $r4 = virtualinvoke $r2.<com.google.common.io.Closer: java.io.Closeable register(java.io.Closeable)>($r3);
+
+        $r3 = (java.io.Writer) $r4;
+
+        virtualinvoke $r3.<java.io.Writer: java.io.Writer append(java.lang.CharSequence)>($r1);
+
+        virtualinvoke $r3.<java.io.Writer: void flush()>();
+
+     label2:
+        virtualinvoke $r2.<com.google.common.io.Closer: void close()>();
+
+        return;
+
+     label3:
+        $r5 := @caughtexception;
+
+        goto label6;
+
+     label4:
+        $r6 := @caughtexception;
+
+     label5:
+        $r7 = virtualinvoke $r2.<com.google.common.io.Closer: java.lang.RuntimeException rethrow(java.lang.Throwable)>($r6);
+
+        throw $r7;
+
+     label6:
+        virtualinvoke $r2.<com.google.common.io.Closer: void close()>();
+
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label5 to label6 with label3;
+    }
+
+    public long writeFrom(java.lang.Readable)
+    {
+        java.lang.Throwable $r5, $r6;
+        long $l0;
+        java.lang.RuntimeException $r7;
+        com.google.common.io.CharSink r0;
+        com.google.common.io.Closer $r2;
+        java.io.Closeable $r4;
+        java.lang.Readable $r1;
+        java.io.Writer $r3;
+
+        r0 := @this: com.google.common.io.CharSink;
+
+        $r1 := @parameter0: java.lang.Readable;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = staticinvoke <com.google.common.io.Closer: com.google.common.io.Closer create()>();
+
+     label1:
+        $r3 = virtualinvoke r0.<com.google.common.io.CharSink: java.io.Writer openStream()>();
+
+        $r4 = virtualinvoke $r2.<com.google.common.io.Closer: java.io.Closeable register(java.io.Closeable)>($r3);
+
+        $r3 = (java.io.Writer) $r4;
+
+        $l0 = staticinvoke <com.google.common.io.CharStreams: long copy(java.lang.Readable,java.lang.Appendable)>($r1, $r3);
+
+        virtualinvoke $r3.<java.io.Writer: void flush()>();
+
+     label2:
+        virtualinvoke $r2.<com.google.common.io.Closer: void close()>();
+
+        return $l0;
+
+     label3:
+        $r5 := @caughtexception;
+
+        goto label6;
+
+     label4:
+        $r6 := @caughtexception;
+
+     label5:
+        $r7 = virtualinvoke $r2.<com.google.common.io.Closer: java.lang.RuntimeException rethrow(java.lang.Throwable)>($r6);
+
+        throw $r7;
+
+     label6:
+        virtualinvoke $r2.<com.google.common.io.Closer: void close()>();
+
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label5 to label6 with label3;
+    }
+
+    public void writeLines(java.lang.Iterable)
+    {
+        java.lang.String $r2;
+        com.google.common.io.CharSink r0;
+        java.lang.Iterable $r1;
+
+        r0 := @this: com.google.common.io.CharSink;
+
+        $r1 := @parameter0: java.lang.Iterable;
+
+        $r2 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("line.separator");
+
+        virtualinvoke r0.<com.google.common.io.CharSink: void writeLines(java.lang.Iterable,java.lang.String)>($r1, $r2);
+
+        return;
+    }
+
+    public void writeLines(java.lang.Iterable, java.lang.String)
+    {
+        java.util.Iterator $r2;
+        java.lang.String $r1;
+        com.google.common.io.CharSink r0;
+        java.lang.Iterable $r3;
+
+        r0 := @this: com.google.common.io.CharSink;
+
+        $r3 := @parameter0: java.lang.Iterable;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = interfaceinvoke $r3.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+        specialinvoke r0.<com.google.common.io.CharSink: void writeLines(java.util.Iterator,java.lang.String)>($r2, $r1);
+
+        return;
+    }
+
+    public void writeLines(java.util.stream.Stream)
+    {
+        java.util.stream.Stream $r1;
+        java.lang.String $r2;
+        com.google.common.io.CharSink r0;
+
+        r0 := @this: com.google.common.io.CharSink;
+
+        $r1 := @parameter0: java.util.stream.Stream;
+
+        $r2 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("line.separator");
+
+        virtualinvoke r0.<com.google.common.io.CharSink: void writeLines(java.util.stream.Stream,java.lang.String)>($r1, $r2);
+
+        return;
+    }
+
+    public void writeLines(java.util.stream.Stream, java.lang.String)
+    {
+        java.util.stream.Stream $r3;
+        java.util.Iterator $r2;
+        java.lang.String $r1;
+        com.google.common.io.CharSink r0;
+
+        r0 := @this: com.google.common.io.CharSink;
+
+        $r3 := @parameter0: java.util.stream.Stream;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = interfaceinvoke $r3.<java.util.stream.Stream: java.util.Iterator iterator()>();
+
+        specialinvoke r0.<com.google.common.io.CharSink: void writeLines(java.util.Iterator,java.lang.String)>($r2, $r1);
+
+        return;
+    }
+}

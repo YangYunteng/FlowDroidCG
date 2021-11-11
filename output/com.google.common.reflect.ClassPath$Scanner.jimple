@@ -1,0 +1,593 @@
+public abstract class com.google.common.reflect.ClassPath$Scanner extends java.lang.Object
+{
+    public final java.util.Set scannedUris;
+
+    public void <init>()
+    {
+        java.util.HashSet $r1;
+        com.google.common.reflect.ClassPath$Scanner r0;
+
+        r0 := @this: com.google.common.reflect.ClassPath$Scanner;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r1 = staticinvoke <com.google.common.collect.Sets: java.util.HashSet newHashSet()>();
+
+        r0.<com.google.common.reflect.ClassPath$Scanner: java.util.Set scannedUris> = $r1;
+
+        return;
+    }
+
+    public static com.google.common.collect.ImmutableList getClassLoaderUrls(java.lang.ClassLoader)
+    {
+        java.net.URL[] $r2;
+        java.net.URLClassLoader $r1;
+        com.google.common.collect.ImmutableList $r3;
+        java.lang.ClassLoader $r0, $r4;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.ClassLoader;
+
+        $z0 = $r0 instanceof java.net.URLClassLoader;
+
+        if $z0 == 0 goto label1;
+
+        $r1 = (java.net.URLClassLoader) $r0;
+
+        $r2 = virtualinvoke $r1.<java.net.URLClassLoader: java.net.URL[] getURLs()>();
+
+        $r3 = staticinvoke <com.google.common.collect.ImmutableList: com.google.common.collect.ImmutableList copyOf(java.lang.Object[])>($r2);
+
+        return $r3;
+
+     label1:
+        $r4 = staticinvoke <java.lang.ClassLoader: java.lang.ClassLoader getSystemClassLoader()>();
+
+        $z0 = virtualinvoke $r0.<java.lang.Object: boolean equals(java.lang.Object)>($r4);
+
+        if $z0 == 0 goto label2;
+
+        $r3 = staticinvoke <com.google.common.reflect.ClassPath$Scanner: com.google.common.collect.ImmutableList parseJavaClassPath()>();
+
+        return $r3;
+
+     label2:
+        $r3 = staticinvoke <com.google.common.collect.ImmutableList: com.google.common.collect.ImmutableList of()>();
+
+        return $r3;
+    }
+
+    public static com.google.common.collect.ImmutableMap getClassPathEntries(java.lang.ClassLoader)
+    {
+        com.google.common.collect.ImmutableMap $r3;
+        java.net.URL $r7;
+        java.io.File $r9;
+        java.util.LinkedHashMap $r1;
+        com.google.common.collect.ImmutableList $r4;
+        java.lang.Object $r6;
+        java.lang.ClassLoader $r0, $r2;
+        com.google.common.collect.UnmodifiableIterator $r5;
+        java.lang.String $r8;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.ClassLoader;
+
+        $r1 = staticinvoke <com.google.common.collect.Maps: java.util.LinkedHashMap newLinkedHashMap()>();
+
+        $r2 = virtualinvoke $r0.<java.lang.ClassLoader: java.lang.ClassLoader getParent()>();
+
+        if $r2 == null goto label1;
+
+        $r3 = staticinvoke <com.google.common.reflect.ClassPath$Scanner: com.google.common.collect.ImmutableMap getClassPathEntries(java.lang.ClassLoader)>($r2);
+
+        virtualinvoke $r1.<java.util.LinkedHashMap: void putAll(java.util.Map)>($r3);
+
+     label1:
+        $r4 = staticinvoke <com.google.common.reflect.ClassPath$Scanner: com.google.common.collect.ImmutableList getClassLoaderUrls(java.lang.ClassLoader)>($r0);
+
+        $r5 = virtualinvoke $r4.<com.google.common.collect.ImmutableList: com.google.common.collect.UnmodifiableIterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r5.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r6 = interfaceinvoke $r5.<java.util.Iterator: java.lang.Object next()>();
+
+        $r7 = (java.net.URL) $r6;
+
+        $r8 = virtualinvoke $r7.<java.net.URL: java.lang.String getProtocol()>();
+
+        $z0 = virtualinvoke $r8.<java.lang.String: boolean equals(java.lang.Object)>("file");
+
+        if $z0 == 0 goto label2;
+
+        $r9 = staticinvoke <com.google.common.reflect.ClassPath: java.io.File toFile(java.net.URL)>($r7);
+
+        $z0 = virtualinvoke $r1.<java.util.LinkedHashMap: boolean containsKey(java.lang.Object)>($r9);
+
+        if $z0 != 0 goto label2;
+
+        virtualinvoke $r1.<java.util.LinkedHashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r9, $r0);
+
+        goto label2;
+
+     label3:
+        $r3 = staticinvoke <com.google.common.collect.ImmutableMap: com.google.common.collect.ImmutableMap copyOf(java.util.Map)>($r1);
+
+        return $r3;
+    }
+
+    public static java.net.URL getClassPathEntry(java.io.File, java.lang.String)
+    {
+        java.net.URL $r1, $r4;
+        java.lang.String $r0;
+        java.net.URI $r3;
+        java.io.File $r2;
+
+        $r2 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $r1 = new java.net.URL;
+
+        $r3 = virtualinvoke $r2.<java.io.File: java.net.URI toURI()>();
+
+        $r4 = virtualinvoke $r3.<java.net.URI: java.net.URL toURL()>();
+
+        specialinvoke $r1.<java.net.URL: void <init>(java.net.URL,java.lang.String)>($r4, $r0);
+
+        return $r1;
+    }
+
+    public static com.google.common.collect.ImmutableSet getClassPathFromManifest(java.io.File, java.util.jar.Manifest)
+    {
+        java.util.jar.Manifest $r2;
+        java.net.URL $r12;
+        com.google.common.collect.ImmutableSet$Builder $r4;
+        java.lang.Iterable $r9;
+        java.util.jar.Attributes$Name $r6;
+        java.lang.String $r7;
+        com.google.common.base.Splitter $r8;
+        boolean $z0;
+        com.google.common.collect.ImmutableSet $r3;
+        java.util.Iterator $r10;
+        java.net.MalformedURLException $r0;
+        java.util.logging.Logger $r14;
+        java.util.jar.Attributes $r5;
+        java.io.File $r1, $r13;
+        java.lang.Object $r11;
+        java.lang.StringBuilder $r15;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r2 := @parameter1: java.util.jar.Manifest;
+
+        if $r2 != null goto label1;
+
+        $r3 = staticinvoke <com.google.common.collect.ImmutableSet: com.google.common.collect.ImmutableSet of()>();
+
+        return $r3;
+
+     label1:
+        $r4 = staticinvoke <com.google.common.collect.ImmutableSet: com.google.common.collect.ImmutableSet$Builder builder()>();
+
+        $r5 = virtualinvoke $r2.<java.util.jar.Manifest: java.util.jar.Attributes getMainAttributes()>();
+
+        $r6 = <java.util.jar.Attributes$Name: java.util.jar.Attributes$Name CLASS_PATH>;
+
+        $r7 = virtualinvoke $r6.<java.util.jar.Attributes$Name: java.lang.String toString()>();
+
+        $r7 = virtualinvoke $r5.<java.util.jar.Attributes: java.lang.String getValue(java.lang.String)>($r7);
+
+        if $r7 == null goto label6;
+
+        $r8 = staticinvoke <com.google.common.reflect.ClassPath: com.google.common.base.Splitter access$200()>();
+
+        $r9 = virtualinvoke $r8.<com.google.common.base.Splitter: java.lang.Iterable split(java.lang.CharSequence)>($r7);
+
+        $r10 = interfaceinvoke $r9.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r10.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label6;
+
+        $r11 = interfaceinvoke $r10.<java.util.Iterator: java.lang.Object next()>();
+
+        $r7 = (java.lang.String) $r11;
+
+     label3:
+        $r12 = staticinvoke <com.google.common.reflect.ClassPath$Scanner: java.net.URL getClassPathEntry(java.io.File,java.lang.String)>($r1, $r7);
+
+     label4:
+        $r7 = virtualinvoke $r12.<java.net.URL: java.lang.String getProtocol()>();
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>("file");
+
+        if $z0 == 0 goto label2;
+
+        $r13 = staticinvoke <com.google.common.reflect.ClassPath: java.io.File toFile(java.net.URL)>($r12);
+
+        virtualinvoke $r4.<com.google.common.collect.ImmutableSet$Builder: com.google.common.collect.ImmutableSet$Builder add(java.lang.Object)>($r13);
+
+        goto label2;
+
+     label5:
+        $r14 = staticinvoke <com.google.common.reflect.ClassPath: java.util.logging.Logger access$100()>();
+
+        $r15 = new java.lang.StringBuilder;
+
+        specialinvoke $r15.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid Class-Path entry: ");
+
+        virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r7 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r14.<java.util.logging.Logger: void warning(java.lang.String)>($r7);
+
+        goto label2;
+
+     label6:
+        $r3 = virtualinvoke $r4.<com.google.common.collect.ImmutableSet$Builder: com.google.common.collect.ImmutableSet build()>();
+
+        return $r3;
+
+     label7:
+        $r0 := @caughtexception;
+
+        goto label5;
+
+        catch java.net.MalformedURLException from label3 to label4 with label7;
+    }
+
+    public static com.google.common.collect.ImmutableList parseJavaClassPath()
+    {
+        java.net.URL $r10;
+        java.lang.Iterable $r5;
+        java.util.logging.Level $r14;
+        com.google.common.base.StandardSystemProperty $r2;
+        com.google.common.collect.ImmutableList $r16;
+        java.lang.SecurityException $r0;
+        java.lang.String $r3, $r12;
+        java.net.URI $r9;
+        com.google.common.base.Splitter $r4;
+        boolean $z0;
+        java.util.Iterator $r6;
+        java.net.MalformedURLException $r11;
+        java.util.logging.Logger $r13;
+        java.io.File $r8;
+        java.lang.Object $r7;
+        java.lang.StringBuilder $r15;
+        com.google.common.collect.ImmutableList$Builder $r1;
+
+        $r1 = staticinvoke <com.google.common.collect.ImmutableList: com.google.common.collect.ImmutableList$Builder builder()>();
+
+        $r2 = <com.google.common.base.StandardSystemProperty: com.google.common.base.StandardSystemProperty PATH_SEPARATOR>;
+
+        $r3 = virtualinvoke $r2.<com.google.common.base.StandardSystemProperty: java.lang.String value()>();
+
+        $r4 = staticinvoke <com.google.common.base.Splitter: com.google.common.base.Splitter on(java.lang.String)>($r3);
+
+        $r2 = <com.google.common.base.StandardSystemProperty: com.google.common.base.StandardSystemProperty JAVA_CLASS_PATH>;
+
+        $r3 = virtualinvoke $r2.<com.google.common.base.StandardSystemProperty: java.lang.String value()>();
+
+        $r5 = virtualinvoke $r4.<com.google.common.base.Splitter: java.lang.Iterable split(java.lang.CharSequence)>($r3);
+
+        $r6 = interfaceinvoke $r5.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label01:
+        $z0 = interfaceinvoke $r6.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label09;
+
+        $r7 = interfaceinvoke $r6.<java.util.Iterator: java.lang.Object next()>();
+
+        $r3 = (java.lang.String) $r7;
+
+        $r8 = new java.io.File;
+
+     label02:
+        specialinvoke $r8.<java.io.File: void <init>(java.lang.String)>($r3);
+
+        $r9 = virtualinvoke $r8.<java.io.File: java.net.URI toURI()>();
+
+        $r10 = virtualinvoke $r9.<java.net.URI: java.net.URL toURL()>();
+
+        virtualinvoke $r1.<com.google.common.collect.ImmutableList$Builder: com.google.common.collect.ImmutableList$Builder add(java.lang.Object)>($r10);
+
+     label03:
+        goto label01;
+
+     label04:
+        $r11 := @caughtexception;
+
+        goto label08;
+
+     label05:
+        $r10 = new java.net.URL;
+
+        $r8 = new java.io.File;
+
+     label06:
+        specialinvoke $r8.<java.io.File: void <init>(java.lang.String)>($r3);
+
+        $r12 = virtualinvoke $r8.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        specialinvoke $r10.<java.net.URL: void <init>(java.lang.String,java.lang.String,java.lang.String)>("file", null, $r12);
+
+        virtualinvoke $r1.<com.google.common.collect.ImmutableList$Builder: com.google.common.collect.ImmutableList$Builder add(java.lang.Object)>($r10);
+
+     label07:
+        goto label01;
+
+     label08:
+        $r13 = staticinvoke <com.google.common.reflect.ClassPath: java.util.logging.Logger access$100()>();
+
+        $r14 = <java.util.logging.Level: java.util.logging.Level WARNING>;
+
+        $r15 = new java.lang.StringBuilder;
+
+        specialinvoke $r15.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("malformed classpath entry: ");
+
+        virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r13.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r14, $r3, $r11);
+
+        goto label01;
+
+     label09:
+        $r16 = virtualinvoke $r1.<com.google.common.collect.ImmutableList$Builder: com.google.common.collect.ImmutableList build()>();
+
+        return $r16;
+
+     label10:
+        $r0 := @caughtexception;
+
+        goto label05;
+
+        catch java.lang.SecurityException from label02 to label03 with label10;
+        catch java.net.MalformedURLException from label02 to label03 with label04;
+        catch java.net.MalformedURLException from label06 to label07 with label04;
+    }
+
+    private void scanFrom(java.io.File, java.lang.ClassLoader)
+    {
+        java.util.logging.Logger $r5;
+        java.io.File $r2;
+        com.google.common.reflect.ClassPath$Scanner r0;
+        java.lang.StringBuilder $r1;
+        java.lang.SecurityException $r4;
+        java.lang.ClassLoader $r3;
+        java.lang.String $r6;
+        boolean $z0;
+
+        r0 := @this: com.google.common.reflect.ClassPath$Scanner;
+
+        $r2 := @parameter0: java.io.File;
+
+        $r3 := @parameter1: java.lang.ClassLoader;
+
+     label1:
+        $z0 = virtualinvoke $r2.<java.io.File: boolean exists()>();
+
+     label2:
+        if $z0 != 0 goto label3;
+
+        return;
+
+     label3:
+        $z0 = virtualinvoke $r2.<java.io.File: boolean isDirectory()>();
+
+        if $z0 == 0 goto label4;
+
+        virtualinvoke r0.<com.google.common.reflect.ClassPath$Scanner: void scanDirectory(java.lang.ClassLoader,java.io.File)>($r3, $r2);
+
+        return;
+
+     label4:
+        specialinvoke r0.<com.google.common.reflect.ClassPath$Scanner: void scanJar(java.io.File,java.lang.ClassLoader)>($r2, $r3);
+
+        return;
+
+     label5:
+        $r4 := @caughtexception;
+
+        $r5 = staticinvoke <com.google.common.reflect.ClassPath: java.util.logging.Logger access$100()>();
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot access ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        $r6 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r5.<java.util.logging.Logger: void warning(java.lang.String)>($r6);
+
+        return;
+
+        catch java.lang.SecurityException from label1 to label2 with label5;
+    }
+
+    private void scanJar(java.io.File, java.lang.ClassLoader)
+    {
+        java.util.jar.Manifest $r7;
+        java.lang.Throwable $r11;
+        com.google.common.collect.ImmutableSet $r8;
+        java.util.jar.JarFile $r2;
+        java.io.IOException $r3, $r4, $r5;
+        java.io.File $r6;
+        com.google.common.reflect.ClassPath$Scanner r0;
+        java.lang.Object $r10;
+        java.lang.ClassLoader $r1;
+        com.google.common.collect.UnmodifiableIterator $r9;
+        boolean $z0;
+
+        r0 := @this: com.google.common.reflect.ClassPath$Scanner;
+
+        $r6 := @parameter0: java.io.File;
+
+        $r1 := @parameter1: java.lang.ClassLoader;
+
+        $r2 = new java.util.jar.JarFile;
+
+     label01:
+        specialinvoke $r2.<java.util.jar.JarFile: void <init>(java.io.File)>($r6);
+
+     label02:
+        $r7 = virtualinvoke $r2.<java.util.jar.JarFile: java.util.jar.Manifest getManifest()>();
+
+        $r8 = staticinvoke <com.google.common.reflect.ClassPath$Scanner: com.google.common.collect.ImmutableSet getClassPathFromManifest(java.io.File,java.util.jar.Manifest)>($r6, $r7);
+
+        $r9 = virtualinvoke $r8.<com.google.common.collect.ImmutableSet: com.google.common.collect.UnmodifiableIterator iterator()>();
+
+     label03:
+        $z0 = interfaceinvoke $r9.<java.util.Iterator: boolean hasNext()>();
+
+     label04:
+        if $z0 == 0 goto label07;
+
+     label05:
+        $r10 = interfaceinvoke $r9.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (java.io.File) $r10;
+
+        virtualinvoke r0.<com.google.common.reflect.ClassPath$Scanner: void scan(java.io.File,java.lang.ClassLoader)>($r6, $r1);
+
+     label06:
+        goto label03;
+
+     label07:
+        virtualinvoke r0.<com.google.common.reflect.ClassPath$Scanner: void scanJarFile(java.lang.ClassLoader,java.util.jar.JarFile)>($r1, $r2);
+
+     label08:
+        virtualinvoke $r2.<java.util.jar.JarFile: void close()>();
+
+     label09:
+        return;
+
+     label10:
+        $r11 := @caughtexception;
+
+     label11:
+        virtualinvoke $r2.<java.util.jar.JarFile: void close()>();
+
+     label12:
+        throw $r11;
+
+     label13:
+        $r3 := @caughtexception;
+
+        return;
+
+     label14:
+        $r4 := @caughtexception;
+
+        return;
+
+     label15:
+        $r5 := @caughtexception;
+
+        goto label12;
+
+        catch java.io.IOException from label01 to label02 with label13;
+        catch java.lang.Throwable from label02 to label04 with label10;
+        catch java.lang.Throwable from label05 to label06 with label10;
+        catch java.lang.Throwable from label07 to label08 with label10;
+        catch java.io.IOException from label08 to label09 with label14;
+        catch java.io.IOException from label11 to label12 with label15;
+    }
+
+    public final void scan(java.io.File, java.lang.ClassLoader)
+    {
+        com.google.common.reflect.ClassPath$Scanner r0;
+        java.util.Set $r3;
+        java.lang.ClassLoader $r2;
+        java.io.File $r1, $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.common.reflect.ClassPath$Scanner;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r2 := @parameter1: java.lang.ClassLoader;
+
+        $r3 = r0.<com.google.common.reflect.ClassPath$Scanner: java.util.Set scannedUris>;
+
+        $r4 = virtualinvoke $r1.<java.io.File: java.io.File getCanonicalFile()>();
+
+        $z0 = interfaceinvoke $r3.<java.util.Set: boolean add(java.lang.Object)>($r4);
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.google.common.reflect.ClassPath$Scanner: void scanFrom(java.io.File,java.lang.ClassLoader)>($r1, $r2);
+
+     label1:
+        return;
+    }
+
+    public final void scan(java.lang.ClassLoader)
+    {
+        java.util.Map$Entry $r6;
+        com.google.common.collect.ImmutableSet $r3;
+        com.google.common.collect.ImmutableMap $r2;
+        java.io.File $r7;
+        com.google.common.reflect.ClassPath$Scanner r0;
+        java.lang.Object $r5;
+        java.lang.ClassLoader $r1;
+        com.google.common.collect.UnmodifiableIterator $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.common.reflect.ClassPath$Scanner;
+
+        $r1 := @parameter0: java.lang.ClassLoader;
+
+        $r2 = staticinvoke <com.google.common.reflect.ClassPath$Scanner: com.google.common.collect.ImmutableMap getClassPathEntries(java.lang.ClassLoader)>($r1);
+
+        $r3 = virtualinvoke $r2.<com.google.common.collect.ImmutableMap: com.google.common.collect.ImmutableSet entrySet()>();
+
+        $r4 = virtualinvoke $r3.<com.google.common.collect.ImmutableSet: com.google.common.collect.UnmodifiableIterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (java.util.Map$Entry) $r5;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r7 = (java.io.File) $r5;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r1 = (java.lang.ClassLoader) $r5;
+
+        virtualinvoke r0.<com.google.common.reflect.ClassPath$Scanner: void scan(java.io.File,java.lang.ClassLoader)>($r7, $r1);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public abstract void scanDirectory(java.lang.ClassLoader, java.io.File);
+
+    public abstract void scanJarFile(java.lang.ClassLoader, java.util.jar.JarFile);
+}

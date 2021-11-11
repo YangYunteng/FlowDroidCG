@@ -1,0 +1,125 @@
+public abstract class org.apache.james.mime4j.message.SimpleContentHandler extends org.apache.james.mime4j.parser.AbstractContentHandler
+{
+    public org.apache.james.mime4j.message.Header currHeader;
+
+    public void <init>()
+    {
+        org.apache.james.mime4j.message.SimpleContentHandler r0;
+
+        r0 := @this: org.apache.james.mime4j.message.SimpleContentHandler;
+
+        specialinvoke r0.<org.apache.james.mime4j.parser.AbstractContentHandler: void <init>()>();
+
+        return;
+    }
+
+    public final void body(org.apache.james.mime4j.descriptor.BodyDescriptor, java.io.InputStream)
+    {
+        org.apache.james.mime4j.codec.QuotedPrintableInputStream $r5;
+        org.apache.james.mime4j.descriptor.BodyDescriptor $r1;
+        org.apache.james.mime4j.message.SimpleContentHandler r0;
+        java.lang.String $r3;
+        org.apache.james.mime4j.codec.Base64InputStream $r4;
+        java.io.InputStream $r2;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.message.SimpleContentHandler;
+
+        $r1 := @parameter0: org.apache.james.mime4j.descriptor.BodyDescriptor;
+
+        $r2 := @parameter1: java.io.InputStream;
+
+        $r3 = interfaceinvoke $r1.<org.apache.james.mime4j.descriptor.ContentDescriptor: java.lang.String getTransferEncoding()>();
+
+        $z0 = staticinvoke <org.apache.james.mime4j.util.MimeUtil: boolean isBase64Encoding(java.lang.String)>($r3);
+
+        if $z0 == 0 goto label1;
+
+        $r4 = new org.apache.james.mime4j.codec.Base64InputStream;
+
+        specialinvoke $r4.<org.apache.james.mime4j.codec.Base64InputStream: void <init>(java.io.InputStream)>($r2);
+
+        virtualinvoke r0.<org.apache.james.mime4j.message.SimpleContentHandler: void bodyDecoded(org.apache.james.mime4j.descriptor.BodyDescriptor,java.io.InputStream)>($r1, $r4);
+
+        return;
+
+     label1:
+        $r3 = interfaceinvoke $r1.<org.apache.james.mime4j.descriptor.ContentDescriptor: java.lang.String getTransferEncoding()>();
+
+        $z0 = staticinvoke <org.apache.james.mime4j.util.MimeUtil: boolean isQuotedPrintableEncoded(java.lang.String)>($r3);
+
+        if $z0 == 0 goto label2;
+
+        $r5 = new org.apache.james.mime4j.codec.QuotedPrintableInputStream;
+
+        specialinvoke $r5.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: void <init>(java.io.InputStream)>($r2);
+
+        virtualinvoke r0.<org.apache.james.mime4j.message.SimpleContentHandler: void bodyDecoded(org.apache.james.mime4j.descriptor.BodyDescriptor,java.io.InputStream)>($r1, $r5);
+
+        return;
+
+     label2:
+        virtualinvoke r0.<org.apache.james.mime4j.message.SimpleContentHandler: void bodyDecoded(org.apache.james.mime4j.descriptor.BodyDescriptor,java.io.InputStream)>($r1, $r2);
+
+        return;
+    }
+
+    public abstract void bodyDecoded(org.apache.james.mime4j.descriptor.BodyDescriptor, java.io.InputStream);
+
+    public final void endHeader()
+    {
+        org.apache.james.mime4j.message.SimpleContentHandler r0;
+        org.apache.james.mime4j.message.Header $r1;
+
+        r0 := @this: org.apache.james.mime4j.message.SimpleContentHandler;
+
+        $r1 = r0.<org.apache.james.mime4j.message.SimpleContentHandler: org.apache.james.mime4j.message.Header currHeader>;
+
+        r0.<org.apache.james.mime4j.message.SimpleContentHandler: org.apache.james.mime4j.message.Header currHeader> = null;
+
+        virtualinvoke r0.<org.apache.james.mime4j.message.SimpleContentHandler: void headers(org.apache.james.mime4j.message.Header)>($r1);
+
+        return;
+    }
+
+    public final void field(org.apache.james.mime4j.parser.Field)
+    {
+        org.apache.james.mime4j.util.ByteSequence $r3;
+        org.apache.james.mime4j.message.Header $r1;
+        org.apache.james.mime4j.message.SimpleContentHandler r0;
+        org.apache.james.mime4j.field.ParsedField $r4;
+        org.apache.james.mime4j.parser.Field $r2;
+
+        r0 := @this: org.apache.james.mime4j.message.SimpleContentHandler;
+
+        $r2 := @parameter0: org.apache.james.mime4j.parser.Field;
+
+        $r3 = interfaceinvoke $r2.<org.apache.james.mime4j.parser.Field: org.apache.james.mime4j.util.ByteSequence getRaw()>();
+
+        $r4 = staticinvoke <org.apache.james.mime4j.field.AbstractField: org.apache.james.mime4j.field.ParsedField parse(org.apache.james.mime4j.util.ByteSequence)>($r3);
+
+        $r1 = r0.<org.apache.james.mime4j.message.SimpleContentHandler: org.apache.james.mime4j.message.Header currHeader>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.message.Header: void addField(org.apache.james.mime4j.parser.Field)>($r4);
+
+        return;
+    }
+
+    public abstract void headers(org.apache.james.mime4j.message.Header);
+
+    public final void startHeader()
+    {
+        org.apache.james.mime4j.message.SimpleContentHandler r0;
+        org.apache.james.mime4j.message.Header $r1;
+
+        r0 := @this: org.apache.james.mime4j.message.SimpleContentHandler;
+
+        $r1 = new org.apache.james.mime4j.message.Header;
+
+        specialinvoke $r1.<org.apache.james.mime4j.message.Header: void <init>()>();
+
+        r0.<org.apache.james.mime4j.message.SimpleContentHandler: org.apache.james.mime4j.message.Header currHeader> = $r1;
+
+        return;
+    }
+}

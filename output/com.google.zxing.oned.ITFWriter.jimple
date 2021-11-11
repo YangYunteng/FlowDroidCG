@@ -1,0 +1,216 @@
+public final class com.google.zxing.oned.ITFWriter extends com.google.zxing.oned.OneDimensionalCodeWriter
+{
+    public static final int[] END_PATTERN;
+    public static final int[] START_PATTERN;
+
+    static void <clinit>()
+    {
+        int[] $r0;
+
+        $r0 = newarray (int)[4];
+
+        $r0[0] = 1;
+
+        $r0[1] = 1;
+
+        $r0[2] = 1;
+
+        $r0[3] = 1;
+
+        <com.google.zxing.oned.ITFWriter: int[] START_PATTERN> = $r0;
+
+        $r0 = newarray (int)[3];
+
+        $r0[0] = 3;
+
+        $r0[1] = 1;
+
+        $r0[2] = 1;
+
+        <com.google.zxing.oned.ITFWriter: int[] END_PATTERN> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.zxing.oned.ITFWriter r0;
+
+        r0 := @this: com.google.zxing.oned.ITFWriter;
+
+        specialinvoke r0.<com.google.zxing.oned.OneDimensionalCodeWriter: void <init>()>();
+
+        return;
+    }
+
+    public com.google.zxing.common.BitMatrix encode(java.lang.String, com.google.zxing.BarcodeFormat, int, int, java.util.Map)
+    {
+        com.google.zxing.oned.ITFWriter r0;
+        java.lang.IllegalArgumentException $r6;
+        java.util.Map $r1;
+        int $i0, $i1;
+        com.google.zxing.common.BitMatrix $r5;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r3;
+        com.google.zxing.BarcodeFormat $r2, $r4;
+
+        r0 := @this: com.google.zxing.oned.ITFWriter;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r4 := @parameter1: com.google.zxing.BarcodeFormat;
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        $r1 := @parameter4: java.util.Map;
+
+        $r2 = <com.google.zxing.BarcodeFormat: com.google.zxing.BarcodeFormat ITF>;
+
+        if $r4 != $r2 goto label1;
+
+        $r5 = specialinvoke r0.<com.google.zxing.oned.OneDimensionalCodeWriter: com.google.zxing.common.BitMatrix encode(java.lang.String,com.google.zxing.BarcodeFormat,int,int,java.util.Map)>($r3, $r4, $i0, $i1, $r1);
+
+        return $r5;
+
+     label1:
+        $r6 = new java.lang.IllegalArgumentException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Can only encode ITF, but got ");
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        $r3 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r3);
+
+        throw $r6;
+    }
+
+    public boolean[] encode(java.lang.String)
+    {
+        int[][] $r4;
+        com.google.zxing.oned.ITFWriter r0;
+        int[] $r3, $r5;
+        int $i0, $i1, $i2, $i4, $i5, $i6, $i7, $i8;
+        java.lang.String $r1;
+        boolean[] $r2;
+        char $c3;
+        java.lang.IllegalArgumentException $r6;
+        java.lang.StringBuilder $r7;
+
+        r0 := @this: com.google.zxing.oned.ITFWriter;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $i1 = $i0 % 2;
+
+        if $i1 != 0 goto label6;
+
+        if $i0 > 80 goto label5;
+
+        $i1 = $i0 * 9;
+
+        $i1 = $i1 + 9;
+
+        $r2 = newarray (boolean)[$i1];
+
+        $r3 = <com.google.zxing.oned.ITFWriter: int[] START_PATTERN>;
+
+        $i1 = staticinvoke <com.google.zxing.oned.OneDimensionalCodeWriter: int appendPattern(boolean[],int,int[],boolean)>($r2, 0, $r3, 1);
+
+        $i2 = 0;
+
+     label1:
+        if $i2 >= $i0 goto label4;
+
+        $c3 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i2);
+
+        $i4 = staticinvoke <java.lang.Character: int digit(char,int)>($c3, 10);
+
+        $i5 = $i2 + 1;
+
+        $c3 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i5);
+
+        $i5 = staticinvoke <java.lang.Character: int digit(char,int)>($c3, 10);
+
+        $r3 = newarray (int)[18];
+
+        $i6 = 0;
+
+     label2:
+        if $i6 >= 5 goto label3;
+
+        $i7 = $i6 << 1;
+
+        $r4 = <com.google.zxing.oned.ITFReader: int[][] PATTERNS>;
+
+        $r5 = $r4[$i4];
+
+        $i8 = $r5[$i6];
+
+        $r3[$i7] = $i8;
+
+        $i7 = $i7 + 1;
+
+        $r5 = $r4[$i5];
+
+        $i8 = $r5[$i6];
+
+        $r3[$i7] = $i8;
+
+        $i6 = $i6 + 1;
+
+        goto label2;
+
+     label3:
+        $i4 = staticinvoke <com.google.zxing.oned.OneDimensionalCodeWriter: int appendPattern(boolean[],int,int[],boolean)>($r2, $i1, $r3, 1);
+
+        $i1 = $i1 + $i4;
+
+        $i2 = $i2 + 2;
+
+        goto label1;
+
+     label4:
+        $r3 = <com.google.zxing.oned.ITFWriter: int[] END_PATTERN>;
+
+        staticinvoke <com.google.zxing.oned.OneDimensionalCodeWriter: int appendPattern(boolean[],int,int[],boolean)>($r2, $i1, $r3, 1);
+
+        return $r2;
+
+     label5:
+        $r6 = new java.lang.IllegalArgumentException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Requested contents should be less than 80 digits long, but got ");
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r1 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r1);
+
+        throw $r6;
+
+     label6:
+        $r6 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("The lenght of the input should be even");
+
+        goto label7;
+
+     label7:
+        throw $r6;
+    }
+}

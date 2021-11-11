@@ -1,0 +1,1325 @@
+public class com.google.common.collect.MapMakerInternalMap extends java.util.AbstractMap implements java.util.concurrent.ConcurrentMap, java.io.Serializable
+{
+    public static final long CLEANUP_EXECUTOR_DELAY_SECS;
+    public static final int CONTAINS_VALUE_RETRIES;
+    public static final int DRAIN_MAX;
+    public static final int DRAIN_THRESHOLD;
+    public static final int MAXIMUM_CAPACITY;
+    public static final int MAX_SEGMENTS;
+    public static final com.google.common.collect.MapMakerInternalMap$WeakValueReference UNSET_WEAK_VALUE_REFERENCE;
+    public static final long serialVersionUID;
+    public final int concurrencyLevel;
+    public final transient com.google.common.collect.MapMakerInternalMap$InternalEntryHelper entryHelper;
+    public transient java.util.Set entrySet;
+    public final com.google.common.base.Equivalence keyEquivalence;
+    public transient java.util.Set keySet;
+    public final transient int segmentMask;
+    public final transient int segmentShift;
+    public final transient com.google.common.collect.MapMakerInternalMap$Segment[] segments;
+    public transient java.util.Collection values;
+
+    static void <clinit>()
+    {
+        com.google.common.collect.MapMakerInternalMap$1 $r0;
+
+        <com.google.common.collect.MapMakerInternalMap: long serialVersionUID> = 5L;
+
+        <com.google.common.collect.MapMakerInternalMap: int MAX_SEGMENTS> = 65536;
+
+        <com.google.common.collect.MapMakerInternalMap: int MAXIMUM_CAPACITY> = 1073741824;
+
+        <com.google.common.collect.MapMakerInternalMap: int DRAIN_THRESHOLD> = 63;
+
+        <com.google.common.collect.MapMakerInternalMap: int DRAIN_MAX> = 16;
+
+        <com.google.common.collect.MapMakerInternalMap: int CONTAINS_VALUE_RETRIES> = 3;
+
+        <com.google.common.collect.MapMakerInternalMap: long CLEANUP_EXECUTOR_DELAY_SECS> = 60L;
+
+        $r0 = new com.google.common.collect.MapMakerInternalMap$1;
+
+        specialinvoke $r0.<com.google.common.collect.MapMakerInternalMap$1: void <init>()>();
+
+        <com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$WeakValueReference UNSET_WEAK_VALUE_REFERENCE> = $r0;
+
+        return;
+    }
+
+    public void <init>(com.google.common.collect.MapMaker, com.google.common.collect.MapMakerInternalMap$InternalEntryHelper)
+    {
+        com.google.common.base.Equivalence $r3;
+        com.google.common.collect.MapMakerInternalMap$Segment[] $r4;
+        com.google.common.collect.MapMakerInternalMap$Segment $r5;
+        com.google.common.collect.MapMakerInternalMap$InternalEntryHelper $r2;
+        int $i0, $i1, $i2, $i3, $i4, $i5;
+        com.google.common.collect.MapMakerInternalMap r0;
+        com.google.common.collect.MapMaker $r1;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 := @parameter0: com.google.common.collect.MapMaker;
+
+        $r2 := @parameter1: com.google.common.collect.MapMakerInternalMap$InternalEntryHelper;
+
+        specialinvoke r0.<java.util.AbstractMap: void <init>()>();
+
+        $i1 = virtualinvoke $r1.<com.google.common.collect.MapMaker: int getConcurrencyLevel()>();
+
+        $i1 = staticinvoke <java.lang.Math: int min(int,int)>($i1, 65536);
+
+        r0.<com.google.common.collect.MapMakerInternalMap: int concurrencyLevel> = $i1;
+
+        $r3 = virtualinvoke $r1.<com.google.common.collect.MapMaker: com.google.common.base.Equivalence getKeyEquivalence()>();
+
+        r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.base.Equivalence keyEquivalence> = $r3;
+
+        r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$InternalEntryHelper entryHelper> = $r2;
+
+        $i1 = virtualinvoke $r1.<com.google.common.collect.MapMaker: int getInitialCapacity()>();
+
+        $i2 = staticinvoke <java.lang.Math: int min(int,int)>($i1, 1073741824);
+
+        $i1 = 0;
+
+        $i3 = 1;
+
+        $i4 = 1;
+
+        $i5 = 0;
+
+     label1:
+        $i0 = r0.<com.google.common.collect.MapMakerInternalMap: int concurrencyLevel>;
+
+        if $i4 >= $i0 goto label2;
+
+        $i5 = $i5 + 1;
+
+        $i4 = $i4 << 1;
+
+        goto label1;
+
+     label2:
+        $i0 = 32 - $i5;
+
+        r0.<com.google.common.collect.MapMakerInternalMap: int segmentShift> = $i0;
+
+        $i0 = -1;
+
+        $i0 = $i4 + $i0;
+
+        r0.<com.google.common.collect.MapMakerInternalMap: int segmentMask> = $i0;
+
+        $r4 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment[] newSegmentArray(int)>($i4);
+
+        r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment[] segments> = $r4;
+
+        $i0 = $i2 / $i4;
+
+        $i4 = $i4 * $i0;
+
+        if $i4 >= $i2 goto label3;
+
+        $i0 = $i0 + 1;
+
+     label3:
+        if $i3 >= $i0 goto label4;
+
+        $i3 = $i3 << 1;
+
+        goto label3;
+
+     label4:
+        $r4 = r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment[] segments>;
+
+        $i2 = lengthof $r4;
+
+        if $i1 >= $i2 goto label5;
+
+        $i2 = -1;
+
+        $r5 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment createSegment(int,int)>($i3, $i2);
+
+        $r4[$i1] = $r5;
+
+        $i1 = $i1 + 1;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    public static java.util.ArrayList access$900(java.util.Collection)
+    {
+        java.util.ArrayList $r0;
+        java.util.Collection $r1;
+
+        $r1 := @parameter0: java.util.Collection;
+
+        $r0 = staticinvoke <com.google.common.collect.MapMakerInternalMap: java.util.ArrayList toArrayList(java.util.Collection)>($r1);
+
+        return $r0;
+    }
+
+    public static com.google.common.collect.MapMakerInternalMap create(com.google.common.collect.MapMaker)
+    {
+        com.google.common.collect.MapMakerInternalMap$Strength $r1, $r2;
+        java.lang.AssertionError $r8;
+        com.google.common.collect.MapMakerInternalMap$WeakKeyStrongValueEntry$Helper $r6;
+        com.google.common.collect.MapMakerInternalMap$StrongKeyWeakValueEntry$Helper $r5;
+        com.google.common.collect.MapMakerInternalMap $r3;
+        com.google.common.collect.MapMaker $r0;
+        com.google.common.collect.MapMakerInternalMap$WeakKeyWeakValueEntry$Helper $r7;
+        com.google.common.collect.MapMakerInternalMap$StrongKeyStrongValueEntry$Helper $r4;
+
+        $r0 := @parameter0: com.google.common.collect.MapMaker;
+
+        $r1 = virtualinvoke $r0.<com.google.common.collect.MapMaker: com.google.common.collect.MapMakerInternalMap$Strength getKeyStrength()>();
+
+        $r2 = <com.google.common.collect.MapMakerInternalMap$Strength: com.google.common.collect.MapMakerInternalMap$Strength STRONG>;
+
+        if $r1 != $r2 goto label1;
+
+        $r1 = virtualinvoke $r0.<com.google.common.collect.MapMaker: com.google.common.collect.MapMakerInternalMap$Strength getValueStrength()>();
+
+        $r2 = <com.google.common.collect.MapMakerInternalMap$Strength: com.google.common.collect.MapMakerInternalMap$Strength STRONG>;
+
+        if $r1 != $r2 goto label1;
+
+        $r3 = new com.google.common.collect.MapMakerInternalMap;
+
+        $r4 = staticinvoke <com.google.common.collect.MapMakerInternalMap$StrongKeyStrongValueEntry$Helper: com.google.common.collect.MapMakerInternalMap$StrongKeyStrongValueEntry$Helper instance()>();
+
+        specialinvoke $r3.<com.google.common.collect.MapMakerInternalMap: void <init>(com.google.common.collect.MapMaker,com.google.common.collect.MapMakerInternalMap$InternalEntryHelper)>($r0, $r4);
+
+        return $r3;
+
+     label1:
+        $r1 = virtualinvoke $r0.<com.google.common.collect.MapMaker: com.google.common.collect.MapMakerInternalMap$Strength getKeyStrength()>();
+
+        $r2 = <com.google.common.collect.MapMakerInternalMap$Strength: com.google.common.collect.MapMakerInternalMap$Strength STRONG>;
+
+        if $r1 != $r2 goto label2;
+
+        $r1 = virtualinvoke $r0.<com.google.common.collect.MapMaker: com.google.common.collect.MapMakerInternalMap$Strength getValueStrength()>();
+
+        $r2 = <com.google.common.collect.MapMakerInternalMap$Strength: com.google.common.collect.MapMakerInternalMap$Strength WEAK>;
+
+        if $r1 != $r2 goto label2;
+
+        $r3 = new com.google.common.collect.MapMakerInternalMap;
+
+        $r5 = staticinvoke <com.google.common.collect.MapMakerInternalMap$StrongKeyWeakValueEntry$Helper: com.google.common.collect.MapMakerInternalMap$StrongKeyWeakValueEntry$Helper instance()>();
+
+        specialinvoke $r3.<com.google.common.collect.MapMakerInternalMap: void <init>(com.google.common.collect.MapMaker,com.google.common.collect.MapMakerInternalMap$InternalEntryHelper)>($r0, $r5);
+
+        return $r3;
+
+     label2:
+        $r1 = virtualinvoke $r0.<com.google.common.collect.MapMaker: com.google.common.collect.MapMakerInternalMap$Strength getKeyStrength()>();
+
+        $r2 = <com.google.common.collect.MapMakerInternalMap$Strength: com.google.common.collect.MapMakerInternalMap$Strength WEAK>;
+
+        if $r1 != $r2 goto label3;
+
+        $r1 = virtualinvoke $r0.<com.google.common.collect.MapMaker: com.google.common.collect.MapMakerInternalMap$Strength getValueStrength()>();
+
+        $r2 = <com.google.common.collect.MapMakerInternalMap$Strength: com.google.common.collect.MapMakerInternalMap$Strength STRONG>;
+
+        if $r1 != $r2 goto label3;
+
+        $r3 = new com.google.common.collect.MapMakerInternalMap;
+
+        $r6 = staticinvoke <com.google.common.collect.MapMakerInternalMap$WeakKeyStrongValueEntry$Helper: com.google.common.collect.MapMakerInternalMap$WeakKeyStrongValueEntry$Helper instance()>();
+
+        specialinvoke $r3.<com.google.common.collect.MapMakerInternalMap: void <init>(com.google.common.collect.MapMaker,com.google.common.collect.MapMakerInternalMap$InternalEntryHelper)>($r0, $r6);
+
+        return $r3;
+
+     label3:
+        $r1 = virtualinvoke $r0.<com.google.common.collect.MapMaker: com.google.common.collect.MapMakerInternalMap$Strength getKeyStrength()>();
+
+        $r2 = <com.google.common.collect.MapMakerInternalMap$Strength: com.google.common.collect.MapMakerInternalMap$Strength WEAK>;
+
+        if $r1 != $r2 goto label4;
+
+        $r1 = virtualinvoke $r0.<com.google.common.collect.MapMaker: com.google.common.collect.MapMakerInternalMap$Strength getValueStrength()>();
+
+        $r2 = <com.google.common.collect.MapMakerInternalMap$Strength: com.google.common.collect.MapMakerInternalMap$Strength WEAK>;
+
+        if $r1 != $r2 goto label4;
+
+        $r3 = new com.google.common.collect.MapMakerInternalMap;
+
+        $r7 = staticinvoke <com.google.common.collect.MapMakerInternalMap$WeakKeyWeakValueEntry$Helper: com.google.common.collect.MapMakerInternalMap$WeakKeyWeakValueEntry$Helper instance()>();
+
+        specialinvoke $r3.<com.google.common.collect.MapMakerInternalMap: void <init>(com.google.common.collect.MapMaker,com.google.common.collect.MapMakerInternalMap$InternalEntryHelper)>($r0, $r7);
+
+        return $r3;
+
+     label4:
+        $r8 = new java.lang.AssertionError;
+
+        specialinvoke $r8.<java.lang.AssertionError: void <init>()>();
+
+        throw $r8;
+    }
+
+    public static com.google.common.collect.MapMakerInternalMap createWithDummyValues(com.google.common.collect.MapMaker)
+    {
+        com.google.common.collect.MapMakerInternalMap$WeakKeyDummyValueEntry$Helper $r5;
+        com.google.common.collect.MapMakerInternalMap$Strength $r1, $r2;
+        java.lang.AssertionError $r7;
+        java.lang.IllegalArgumentException $r6;
+        com.google.common.collect.MapMakerInternalMap $r3;
+        com.google.common.collect.MapMaker $r0;
+        com.google.common.collect.MapMakerInternalMap$StrongKeyDummyValueEntry$Helper $r4;
+
+        $r0 := @parameter0: com.google.common.collect.MapMaker;
+
+        $r1 = virtualinvoke $r0.<com.google.common.collect.MapMaker: com.google.common.collect.MapMakerInternalMap$Strength getKeyStrength()>();
+
+        $r2 = <com.google.common.collect.MapMakerInternalMap$Strength: com.google.common.collect.MapMakerInternalMap$Strength STRONG>;
+
+        if $r1 != $r2 goto label1;
+
+        $r1 = virtualinvoke $r0.<com.google.common.collect.MapMaker: com.google.common.collect.MapMakerInternalMap$Strength getValueStrength()>();
+
+        $r2 = <com.google.common.collect.MapMakerInternalMap$Strength: com.google.common.collect.MapMakerInternalMap$Strength STRONG>;
+
+        if $r1 != $r2 goto label1;
+
+        $r3 = new com.google.common.collect.MapMakerInternalMap;
+
+        $r4 = staticinvoke <com.google.common.collect.MapMakerInternalMap$StrongKeyDummyValueEntry$Helper: com.google.common.collect.MapMakerInternalMap$StrongKeyDummyValueEntry$Helper instance()>();
+
+        specialinvoke $r3.<com.google.common.collect.MapMakerInternalMap: void <init>(com.google.common.collect.MapMaker,com.google.common.collect.MapMakerInternalMap$InternalEntryHelper)>($r0, $r4);
+
+        return $r3;
+
+     label1:
+        $r1 = virtualinvoke $r0.<com.google.common.collect.MapMaker: com.google.common.collect.MapMakerInternalMap$Strength getKeyStrength()>();
+
+        $r2 = <com.google.common.collect.MapMakerInternalMap$Strength: com.google.common.collect.MapMakerInternalMap$Strength WEAK>;
+
+        if $r1 != $r2 goto label2;
+
+        $r1 = virtualinvoke $r0.<com.google.common.collect.MapMaker: com.google.common.collect.MapMakerInternalMap$Strength getValueStrength()>();
+
+        $r2 = <com.google.common.collect.MapMakerInternalMap$Strength: com.google.common.collect.MapMakerInternalMap$Strength STRONG>;
+
+        if $r1 != $r2 goto label2;
+
+        $r3 = new com.google.common.collect.MapMakerInternalMap;
+
+        $r5 = staticinvoke <com.google.common.collect.MapMakerInternalMap$WeakKeyDummyValueEntry$Helper: com.google.common.collect.MapMakerInternalMap$WeakKeyDummyValueEntry$Helper instance()>();
+
+        specialinvoke $r3.<com.google.common.collect.MapMakerInternalMap: void <init>(com.google.common.collect.MapMaker,com.google.common.collect.MapMakerInternalMap$InternalEntryHelper)>($r0, $r5);
+
+        return $r3;
+
+     label2:
+        $r1 = virtualinvoke $r0.<com.google.common.collect.MapMaker: com.google.common.collect.MapMakerInternalMap$Strength getValueStrength()>();
+
+        $r2 = <com.google.common.collect.MapMakerInternalMap$Strength: com.google.common.collect.MapMakerInternalMap$Strength WEAK>;
+
+        if $r1 != $r2 goto label3;
+
+        $r6 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Map cannot have both weak and dummy values");
+
+        throw $r6;
+
+     label3:
+        $r7 = new java.lang.AssertionError;
+
+        specialinvoke $r7.<java.lang.AssertionError: void <init>()>();
+
+        throw $r7;
+    }
+
+    public static int rehash(int)
+    {
+        int $i0, $i1, $i2;
+
+        $i1 := @parameter0: int;
+
+        $i0 = $i1 << 15;
+
+        $i2 = -12931;
+
+        $i0 = $i0 ^ $i2;
+
+        $i1 = $i1 + $i0;
+
+        $i0 = $i1 >>> 10;
+
+        $i1 = $i1 ^ $i0;
+
+        $i0 = $i1 << 3;
+
+        $i1 = $i1 + $i0;
+
+        $i0 = $i1 >>> 6;
+
+        $i1 = $i1 ^ $i0;
+
+        $i2 = $i1 << 2;
+
+        $i0 = $i1 << 14;
+
+        $i0 = $i2 + $i0;
+
+        $i1 = $i1 + $i0;
+
+        $i0 = $i1 >>> 16;
+
+        $i1 = $i1 ^ $i0;
+
+        return $i1;
+    }
+
+    public static java.util.ArrayList toArrayList(java.util.Collection)
+    {
+        java.util.Iterator $r2;
+        java.util.Collection $r1;
+        int $i0;
+        java.util.ArrayList $r0;
+
+        $r1 := @parameter0: java.util.Collection;
+
+        $r0 = new java.util.ArrayList;
+
+        $i0 = interfaceinvoke $r1.<java.util.Collection: int size()>();
+
+        specialinvoke $r0.<java.util.ArrayList: void <init>(int)>($i0);
+
+        $r2 = interfaceinvoke $r1.<java.util.Collection: java.util.Iterator iterator()>();
+
+        staticinvoke <com.google.common.collect.Iterators: boolean addAll(java.util.Collection,java.util.Iterator)>($r0, $r2);
+
+        return $r0;
+    }
+
+    public static com.google.common.collect.MapMakerInternalMap$WeakValueReference unsetWeakValueReference()
+    {
+        com.google.common.collect.MapMakerInternalMap$WeakValueReference r0;
+
+        r0 = <com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$WeakValueReference UNSET_WEAK_VALUE_REFERENCE>;
+
+        return r0;
+    }
+
+    public void clear()
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment[] $r1;
+        com.google.common.collect.MapMakerInternalMap$Segment $r2;
+        int $i0, $i1;
+        com.google.common.collect.MapMakerInternalMap r0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 = r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment[] segments>;
+
+        $i0 = lengthof $r1;
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label2;
+
+        $r2 = $r1[$i1];
+
+        virtualinvoke $r2.<com.google.common.collect.MapMakerInternalMap$Segment: void clear()>();
+
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public boolean containsKey(java.lang.Object)
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment $r2;
+        int $i0;
+        java.lang.Object $r1;
+        com.google.common.collect.MapMakerInternalMap r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        if $r1 != null goto label1;
+
+        return 0;
+
+     label1:
+        $i0 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: int hash(java.lang.Object)>($r1);
+
+        $r2 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment segmentFor(int)>($i0);
+
+        $z0 = virtualinvoke $r2.<com.google.common.collect.MapMakerInternalMap$Segment: boolean containsKey(java.lang.Object,int)>($r1, $i0);
+
+        return $z0;
+    }
+
+    public boolean containsValue(java.lang.Object)
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment[] $r2;
+        long $l1, $l3, $l7;
+        java.util.concurrent.atomic.AtomicReferenceArray $r4;
+        byte $b8;
+        int $i0, $i2, $i4, $i5, $i6;
+        boolean $z0;
+        com.google.common.base.Equivalence $r7;
+        com.google.common.collect.MapMakerInternalMap$Segment $r3;
+        java.lang.Object $r1, $r5;
+        com.google.common.collect.MapMakerInternalMap r0;
+        com.google.common.collect.MapMakerInternalMap$InternalEntry $r6;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        if $r1 != null goto label01;
+
+        return 0;
+
+     label01:
+        $r2 = r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment[] segments>;
+
+        $l1 = -1L;
+
+        $i2 = 0;
+
+     label02:
+        if $i2 >= 3 goto label11;
+
+        $i0 = lengthof $r2;
+
+        $l3 = 0L;
+
+        $i4 = 0;
+
+     label03:
+        if $i4 >= $i0 goto label09;
+
+        $r3 = $r2[$i4];
+
+        $i5 = $r3.<com.google.common.collect.MapMakerInternalMap$Segment: int count>;
+
+        $r4 = $r3.<com.google.common.collect.MapMakerInternalMap$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i5 = 0;
+
+     label04:
+        $i6 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+        if $i5 >= $i6 goto label08;
+
+        $r5 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i5);
+
+        $r6 = (com.google.common.collect.MapMakerInternalMap$InternalEntry) $r5;
+
+     label05:
+        if $r6 == null goto label07;
+
+        $r5 = virtualinvoke $r3.<com.google.common.collect.MapMakerInternalMap$Segment: java.lang.Object getLiveValue(com.google.common.collect.MapMakerInternalMap$InternalEntry)>($r6);
+
+        if $r5 == null goto label06;
+
+        $r7 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.base.Equivalence valueEquivalence()>();
+
+        $z0 = virtualinvoke $r7.<com.google.common.base.Equivalence: boolean equivalent(java.lang.Object,java.lang.Object)>($r1, $r5);
+
+        if $z0 == 0 goto label06;
+
+        return 1;
+
+     label06:
+        $r6 = interfaceinvoke $r6.<com.google.common.collect.MapMakerInternalMap$InternalEntry: com.google.common.collect.MapMakerInternalMap$InternalEntry getNext()>();
+
+        goto label05;
+
+     label07:
+        $i5 = $i5 + 1;
+
+        goto label04;
+
+     label08:
+        $i5 = $r3.<com.google.common.collect.MapMakerInternalMap$Segment: int modCount>;
+
+        $l7 = (long) $i5;
+
+        $l3 = $l3 + $l7;
+
+        $i4 = $i4 + 1;
+
+        goto label03;
+
+     label09:
+        $b8 = $l3 cmp $l1;
+
+        if $b8 != 0 goto label10;
+
+        goto label11;
+
+     label10:
+        $i2 = $i2 + 1;
+
+        $l1 = $l3;
+
+        goto label02;
+
+     label11:
+        return 0;
+    }
+
+    public com.google.common.collect.MapMakerInternalMap$InternalEntry copyEntry(com.google.common.collect.MapMakerInternalMap$InternalEntry, com.google.common.collect.MapMakerInternalMap$InternalEntry)
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment $r3;
+        int $i0;
+        com.google.common.collect.MapMakerInternalMap r0;
+        com.google.common.collect.MapMakerInternalMap$InternalEntry $r1, $r2;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r2 := @parameter0: com.google.common.collect.MapMakerInternalMap$InternalEntry;
+
+        $r1 := @parameter1: com.google.common.collect.MapMakerInternalMap$InternalEntry;
+
+        $i0 = interfaceinvoke $r2.<com.google.common.collect.MapMakerInternalMap$InternalEntry: int getHash()>();
+
+        $r3 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment segmentFor(int)>($i0);
+
+        $r2 = virtualinvoke $r3.<com.google.common.collect.MapMakerInternalMap$Segment: com.google.common.collect.MapMakerInternalMap$InternalEntry copyEntry(com.google.common.collect.MapMakerInternalMap$InternalEntry,com.google.common.collect.MapMakerInternalMap$InternalEntry)>($r2, $r1);
+
+        return $r2;
+    }
+
+    public com.google.common.collect.MapMakerInternalMap$Segment createSegment(int, int)
+    {
+        com.google.common.collect.MapMakerInternalMap$InternalEntryHelper $r1;
+        com.google.common.collect.MapMakerInternalMap$Segment $r2;
+        int $i0, $i1;
+        com.google.common.collect.MapMakerInternalMap r0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $i1 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $r1 = r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$InternalEntryHelper entryHelper>;
+
+        $r2 = interfaceinvoke $r1.<com.google.common.collect.MapMakerInternalMap$InternalEntryHelper: com.google.common.collect.MapMakerInternalMap$Segment newSegment(com.google.common.collect.MapMakerInternalMap,int,int)>(r0, $i1, $i0);
+
+        return $r2;
+    }
+
+    public java.util.Set entrySet()
+    {
+        java.util.Set $r1;
+        com.google.common.collect.MapMakerInternalMap r0;
+        com.google.common.collect.MapMakerInternalMap$EntrySet $r2;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 = r0.<com.google.common.collect.MapMakerInternalMap: java.util.Set entrySet>;
+
+        if $r1 == null goto label1;
+
+        return $r1;
+
+     label1:
+        $r2 = new com.google.common.collect.MapMakerInternalMap$EntrySet;
+
+        specialinvoke $r2.<com.google.common.collect.MapMakerInternalMap$EntrySet: void <init>(com.google.common.collect.MapMakerInternalMap)>(r0);
+
+        r0.<com.google.common.collect.MapMakerInternalMap: java.util.Set entrySet> = $r2;
+
+        return $r2;
+    }
+
+    public java.lang.Object get(java.lang.Object)
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment $r2;
+        int $i0;
+        java.lang.Object $r1;
+        com.google.common.collect.MapMakerInternalMap r0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        if $r1 != null goto label1;
+
+        return null;
+
+     label1:
+        $i0 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: int hash(java.lang.Object)>($r1);
+
+        $r2 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment segmentFor(int)>($i0);
+
+        $r1 = virtualinvoke $r2.<com.google.common.collect.MapMakerInternalMap$Segment: java.lang.Object get(java.lang.Object,int)>($r1, $i0);
+
+        return $r1;
+    }
+
+    public com.google.common.collect.MapMakerInternalMap$InternalEntry getEntry(java.lang.Object)
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment $r2;
+        int $i0;
+        java.lang.Object $r1;
+        com.google.common.collect.MapMakerInternalMap r0;
+        com.google.common.collect.MapMakerInternalMap$InternalEntry $r3;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        if $r1 != null goto label1;
+
+        return null;
+
+     label1:
+        $i0 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: int hash(java.lang.Object)>($r1);
+
+        $r2 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment segmentFor(int)>($i0);
+
+        $r3 = virtualinvoke $r2.<com.google.common.collect.MapMakerInternalMap$Segment: com.google.common.collect.MapMakerInternalMap$InternalEntry getEntry(java.lang.Object,int)>($r1, $i0);
+
+        return $r3;
+    }
+
+    public java.lang.Object getLiveValue(com.google.common.collect.MapMakerInternalMap$InternalEntry)
+    {
+        java.lang.Object $r2;
+        com.google.common.collect.MapMakerInternalMap r0;
+        com.google.common.collect.MapMakerInternalMap$InternalEntry $r1;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 := @parameter0: com.google.common.collect.MapMakerInternalMap$InternalEntry;
+
+        $r2 = interfaceinvoke $r1.<com.google.common.collect.MapMakerInternalMap$InternalEntry: java.lang.Object getKey()>();
+
+        if $r2 != null goto label1;
+
+        return null;
+
+     label1:
+        $r2 = interfaceinvoke $r1.<com.google.common.collect.MapMakerInternalMap$InternalEntry: java.lang.Object getValue()>();
+
+        if $r2 != null goto label2;
+
+        return null;
+
+     label2:
+        return $r2;
+    }
+
+    public int hash(java.lang.Object)
+    {
+        com.google.common.base.Equivalence $r1;
+        int $i0;
+        java.lang.Object $r2;
+        com.google.common.collect.MapMakerInternalMap r0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 = r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.base.Equivalence keyEquivalence>;
+
+        $i0 = virtualinvoke $r1.<com.google.common.base.Equivalence: int hash(java.lang.Object)>($r2);
+
+        $i0 = staticinvoke <com.google.common.collect.MapMakerInternalMap: int rehash(int)>($i0);
+
+        return $i0;
+    }
+
+    public boolean isEmpty()
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment[] $r1;
+        com.google.common.collect.MapMakerInternalMap$Segment $r2;
+        long $l0, $l3;
+        byte $b4;
+        int $i1, $i2;
+        com.google.common.collect.MapMakerInternalMap r0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 = r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment[] segments>;
+
+        $l0 = 0L;
+
+        $i1 = 0;
+
+     label1:
+        $i2 = lengthof $r1;
+
+        if $i1 >= $i2 goto label3;
+
+        $r2 = $r1[$i1];
+
+        $i2 = $r2.<com.google.common.collect.MapMakerInternalMap$Segment: int count>;
+
+        if $i2 == 0 goto label2;
+
+        return 0;
+
+     label2:
+        $r2 = $r1[$i1];
+
+        $i2 = $r2.<com.google.common.collect.MapMakerInternalMap$Segment: int modCount>;
+
+        $l3 = (long) $i2;
+
+        $l0 = $l0 + $l3;
+
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label3:
+        $b4 = $l0 cmp 0L;
+
+        if $b4 == 0 goto label7;
+
+        $i1 = 0;
+
+     label4:
+        $i2 = lengthof $r1;
+
+        if $i1 >= $i2 goto label6;
+
+        $r2 = $r1[$i1];
+
+        $i2 = $r2.<com.google.common.collect.MapMakerInternalMap$Segment: int count>;
+
+        if $i2 == 0 goto label5;
+
+        return 0;
+
+     label5:
+        $r2 = $r1[$i1];
+
+        $i2 = $r2.<com.google.common.collect.MapMakerInternalMap$Segment: int modCount>;
+
+        $l3 = (long) $i2;
+
+        $l0 = $l0 - $l3;
+
+        $i1 = $i1 + 1;
+
+        goto label4;
+
+     label6:
+        $b4 = $l0 cmp 0L;
+
+        if $b4 == 0 goto label7;
+
+        return 0;
+
+     label7:
+        return 1;
+    }
+
+    public boolean isLiveForTesting(com.google.common.collect.MapMakerInternalMap$InternalEntry)
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment $r2;
+        int $i0;
+        java.lang.Object $r3;
+        com.google.common.collect.MapMakerInternalMap r0;
+        com.google.common.collect.MapMakerInternalMap$InternalEntry $r1;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 := @parameter0: com.google.common.collect.MapMakerInternalMap$InternalEntry;
+
+        $i0 = interfaceinvoke $r1.<com.google.common.collect.MapMakerInternalMap$InternalEntry: int getHash()>();
+
+        $r2 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment segmentFor(int)>($i0);
+
+        $r3 = virtualinvoke $r2.<com.google.common.collect.MapMakerInternalMap$Segment: java.lang.Object getLiveValueForTesting(com.google.common.collect.MapMakerInternalMap$InternalEntry)>($r1);
+
+        if $r3 == null goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public java.util.Set keySet()
+    {
+        java.util.Set $r1;
+        com.google.common.collect.MapMakerInternalMap$KeySet $r2;
+        com.google.common.collect.MapMakerInternalMap r0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 = r0.<com.google.common.collect.MapMakerInternalMap: java.util.Set keySet>;
+
+        if $r1 == null goto label1;
+
+        return $r1;
+
+     label1:
+        $r2 = new com.google.common.collect.MapMakerInternalMap$KeySet;
+
+        specialinvoke $r2.<com.google.common.collect.MapMakerInternalMap$KeySet: void <init>(com.google.common.collect.MapMakerInternalMap)>(r0);
+
+        r0.<com.google.common.collect.MapMakerInternalMap: java.util.Set keySet> = $r2;
+
+        return $r2;
+    }
+
+    public com.google.common.collect.MapMakerInternalMap$Strength keyStrength()
+    {
+        com.google.common.collect.MapMakerInternalMap r0;
+        com.google.common.collect.MapMakerInternalMap$Strength $r1;
+        com.google.common.collect.MapMakerInternalMap$InternalEntryHelper $r2;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r2 = r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$InternalEntryHelper entryHelper>;
+
+        $r1 = interfaceinvoke $r2.<com.google.common.collect.MapMakerInternalMap$InternalEntryHelper: com.google.common.collect.MapMakerInternalMap$Strength keyStrength()>();
+
+        return $r1;
+    }
+
+    public final com.google.common.collect.MapMakerInternalMap$Segment[] newSegmentArray(int)
+    {
+        int $i0;
+        com.google.common.collect.MapMakerInternalMap r0;
+        com.google.common.collect.MapMakerInternalMap$Segment[] $r1;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $i0 := @parameter0: int;
+
+        $r1 = newarray (com.google.common.collect.MapMakerInternalMap$Segment)[$i0];
+
+        return $r1;
+    }
+
+    public java.lang.Object put(java.lang.Object, java.lang.Object)
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment $r3;
+        int $i0;
+        java.lang.Object $r1, $r2;
+        com.google.common.collect.MapMakerInternalMap r0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 := @parameter1: java.lang.Object;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $i0 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: int hash(java.lang.Object)>($r2);
+
+        $r3 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment segmentFor(int)>($i0);
+
+        $r2 = virtualinvoke $r3.<com.google.common.collect.MapMakerInternalMap$Segment: java.lang.Object put(java.lang.Object,int,java.lang.Object,boolean)>($r2, $i0, $r1, 0);
+
+        return $r2;
+    }
+
+    public void putAll(java.util.Map)
+    {
+        java.util.Map$Entry $r5;
+        java.util.Iterator $r3;
+        java.util.Set $r2;
+        java.util.Map $r1;
+        java.lang.Object $r4, $r6;
+        com.google.common.collect.MapMakerInternalMap r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 := @parameter0: java.util.Map;
+
+        $r2 = interfaceinvoke $r1.<java.util.Map: java.util.Set entrySet()>();
+
+        $r3 = interfaceinvoke $r2.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (java.util.Map$Entry) $r4;
+
+        $r4 = interfaceinvoke $r5.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r6 = interfaceinvoke $r5.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public java.lang.Object putIfAbsent(java.lang.Object, java.lang.Object)
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment $r3;
+        int $i0;
+        java.lang.Object $r1, $r2;
+        com.google.common.collect.MapMakerInternalMap r0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 := @parameter1: java.lang.Object;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $i0 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: int hash(java.lang.Object)>($r2);
+
+        $r3 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment segmentFor(int)>($i0);
+
+        $r2 = virtualinvoke $r3.<com.google.common.collect.MapMakerInternalMap$Segment: java.lang.Object put(java.lang.Object,int,java.lang.Object,boolean)>($r2, $i0, $r1, 1);
+
+        return $r2;
+    }
+
+    public void reclaimKey(com.google.common.collect.MapMakerInternalMap$InternalEntry)
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment $r2;
+        int $i0;
+        com.google.common.collect.MapMakerInternalMap r0;
+        com.google.common.collect.MapMakerInternalMap$InternalEntry $r1;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 := @parameter0: com.google.common.collect.MapMakerInternalMap$InternalEntry;
+
+        $i0 = interfaceinvoke $r1.<com.google.common.collect.MapMakerInternalMap$InternalEntry: int getHash()>();
+
+        $r2 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment segmentFor(int)>($i0);
+
+        virtualinvoke $r2.<com.google.common.collect.MapMakerInternalMap$Segment: boolean reclaimKey(com.google.common.collect.MapMakerInternalMap$InternalEntry,int)>($r1, $i0);
+
+        return;
+    }
+
+    public void reclaimValue(com.google.common.collect.MapMakerInternalMap$WeakValueReference)
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment $r3;
+        int $i0;
+        java.lang.Object $r4;
+        com.google.common.collect.MapMakerInternalMap r0;
+        com.google.common.collect.MapMakerInternalMap$WeakValueReference $r1;
+        com.google.common.collect.MapMakerInternalMap$InternalEntry $r2;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 := @parameter0: com.google.common.collect.MapMakerInternalMap$WeakValueReference;
+
+        $r2 = interfaceinvoke $r1.<com.google.common.collect.MapMakerInternalMap$WeakValueReference: com.google.common.collect.MapMakerInternalMap$InternalEntry getEntry()>();
+
+        $i0 = interfaceinvoke $r2.<com.google.common.collect.MapMakerInternalMap$InternalEntry: int getHash()>();
+
+        $r3 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment segmentFor(int)>($i0);
+
+        $r4 = interfaceinvoke $r2.<com.google.common.collect.MapMakerInternalMap$InternalEntry: java.lang.Object getKey()>();
+
+        virtualinvoke $r3.<com.google.common.collect.MapMakerInternalMap$Segment: boolean reclaimValue(java.lang.Object,int,com.google.common.collect.MapMakerInternalMap$WeakValueReference)>($r4, $i0, $r1);
+
+        return;
+    }
+
+    public java.lang.Object remove(java.lang.Object)
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment $r2;
+        int $i0;
+        java.lang.Object $r1;
+        com.google.common.collect.MapMakerInternalMap r0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        if $r1 != null goto label1;
+
+        return null;
+
+     label1:
+        $i0 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: int hash(java.lang.Object)>($r1);
+
+        $r2 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment segmentFor(int)>($i0);
+
+        $r1 = virtualinvoke $r2.<com.google.common.collect.MapMakerInternalMap$Segment: java.lang.Object remove(java.lang.Object,int)>($r1, $i0);
+
+        return $r1;
+    }
+
+    public boolean remove(java.lang.Object, java.lang.Object)
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment $r3;
+        int $i0;
+        java.lang.Object $r1, $r2;
+        com.google.common.collect.MapMakerInternalMap r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 := @parameter1: java.lang.Object;
+
+        if $r2 == null goto label2;
+
+        if $r1 != null goto label1;
+
+        goto label2;
+
+     label1:
+        $i0 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: int hash(java.lang.Object)>($r2);
+
+        $r3 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment segmentFor(int)>($i0);
+
+        $z0 = virtualinvoke $r3.<com.google.common.collect.MapMakerInternalMap$Segment: boolean remove(java.lang.Object,int,java.lang.Object)>($r2, $i0, $r1);
+
+        return $z0;
+
+     label2:
+        return 0;
+    }
+
+    public java.lang.Object replace(java.lang.Object, java.lang.Object)
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment $r3;
+        int $i0;
+        java.lang.Object $r1, $r2;
+        com.google.common.collect.MapMakerInternalMap r0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 := @parameter1: java.lang.Object;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $i0 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: int hash(java.lang.Object)>($r2);
+
+        $r3 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment segmentFor(int)>($i0);
+
+        $r2 = virtualinvoke $r3.<com.google.common.collect.MapMakerInternalMap$Segment: java.lang.Object replace(java.lang.Object,int,java.lang.Object)>($r2, $i0, $r1);
+
+        return $r2;
+    }
+
+    public boolean replace(java.lang.Object, java.lang.Object, java.lang.Object)
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment $r4;
+        int $i0;
+        java.lang.Object $r1, $r2, $r3;
+        com.google.common.collect.MapMakerInternalMap r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r3 := @parameter0: java.lang.Object;
+
+        $r1 := @parameter1: java.lang.Object;
+
+        $r2 := @parameter2: java.lang.Object;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r3);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        if $r1 != null goto label1;
+
+        return 0;
+
+     label1:
+        $i0 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: int hash(java.lang.Object)>($r3);
+
+        $r4 = virtualinvoke r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment segmentFor(int)>($i0);
+
+        $z0 = virtualinvoke $r4.<com.google.common.collect.MapMakerInternalMap$Segment: boolean replace(java.lang.Object,int,java.lang.Object,java.lang.Object)>($r3, $i0, $r1, $r2);
+
+        return $z0;
+    }
+
+    public com.google.common.collect.MapMakerInternalMap$Segment segmentFor(int)
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment[] $r1;
+        com.google.common.collect.MapMakerInternalMap$Segment $r2;
+        int $i0, $i1;
+        com.google.common.collect.MapMakerInternalMap r0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment[] segments>;
+
+        $i1 = r0.<com.google.common.collect.MapMakerInternalMap: int segmentShift>;
+
+        $i0 = $i0 >>> $i1;
+
+        $i1 = r0.<com.google.common.collect.MapMakerInternalMap: int segmentMask>;
+
+        $i0 = $i0 & $i1;
+
+        $r2 = $r1[$i0];
+
+        return $r2;
+    }
+
+    public int size()
+    {
+        com.google.common.collect.MapMakerInternalMap$Segment[] $r1;
+        com.google.common.collect.MapMakerInternalMap$Segment $r2;
+        int $i0, $i2;
+        long $l1, $l3;
+        com.google.common.collect.MapMakerInternalMap r0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 = r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$Segment[] segments>;
+
+        $l1 = 0L;
+
+        $i0 = 0;
+
+     label1:
+        $i2 = lengthof $r1;
+
+        if $i0 >= $i2 goto label2;
+
+        $r2 = $r1[$i0];
+
+        $i2 = $r2.<com.google.common.collect.MapMakerInternalMap$Segment: int count>;
+
+        $l3 = (long) $i2;
+
+        $l1 = $l1 + $l3;
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label2:
+        $i0 = staticinvoke <com.google.common.primitives.Ints: int saturatedCast(long)>($l1);
+
+        return $i0;
+    }
+
+    public com.google.common.base.Equivalence valueEquivalence()
+    {
+        com.google.common.collect.MapMakerInternalMap$InternalEntryHelper $r1;
+        com.google.common.collect.MapMakerInternalMap$Strength $r2;
+        com.google.common.base.Equivalence $r3;
+        com.google.common.collect.MapMakerInternalMap r0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 = r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$InternalEntryHelper entryHelper>;
+
+        $r2 = interfaceinvoke $r1.<com.google.common.collect.MapMakerInternalMap$InternalEntryHelper: com.google.common.collect.MapMakerInternalMap$Strength valueStrength()>();
+
+        $r3 = virtualinvoke $r2.<com.google.common.collect.MapMakerInternalMap$Strength: com.google.common.base.Equivalence defaultEquivalence()>();
+
+        return $r3;
+    }
+
+    public com.google.common.collect.MapMakerInternalMap$Strength valueStrength()
+    {
+        com.google.common.collect.MapMakerInternalMap r0;
+        com.google.common.collect.MapMakerInternalMap$Strength $r1;
+        com.google.common.collect.MapMakerInternalMap$InternalEntryHelper $r2;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r2 = r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$InternalEntryHelper entryHelper>;
+
+        $r1 = interfaceinvoke $r2.<com.google.common.collect.MapMakerInternalMap$InternalEntryHelper: com.google.common.collect.MapMakerInternalMap$Strength valueStrength()>();
+
+        return $r1;
+    }
+
+    public java.util.Collection values()
+    {
+        com.google.common.collect.MapMakerInternalMap r0;
+        com.google.common.collect.MapMakerInternalMap$Values $r2;
+        java.util.Collection $r1;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r1 = r0.<com.google.common.collect.MapMakerInternalMap: java.util.Collection values>;
+
+        if $r1 == null goto label1;
+
+        return $r1;
+
+     label1:
+        $r2 = new com.google.common.collect.MapMakerInternalMap$Values;
+
+        specialinvoke $r2.<com.google.common.collect.MapMakerInternalMap$Values: void <init>(com.google.common.collect.MapMakerInternalMap)>(r0);
+
+        r0.<com.google.common.collect.MapMakerInternalMap: java.util.Collection values> = $r2;
+
+        return $r2;
+    }
+
+    public java.lang.Object writeReplace()
+    {
+        com.google.common.base.Equivalence $r1, $r7;
+        com.google.common.collect.MapMakerInternalMap$Strength $r4, $r5, $r6;
+        com.google.common.collect.MapMakerInternalMap$SerializationProxy $r2;
+        com.google.common.collect.MapMakerInternalMap$InternalEntryHelper $r3;
+        int $i0;
+        com.google.common.collect.MapMakerInternalMap r0;
+
+        r0 := @this: com.google.common.collect.MapMakerInternalMap;
+
+        $r2 = new com.google.common.collect.MapMakerInternalMap$SerializationProxy;
+
+        $r3 = r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$InternalEntryHelper entryHelper>;
+
+        $r4 = interfaceinvoke $r3.<com.google.common.collect.MapMakerInternalMap$InternalEntryHelper: com.google.common.collect.MapMakerInternalMap$Strength keyStrength()>();
+
+        $r3 = r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$InternalEntryHelper entryHelper>;
+
+        $r5 = interfaceinvoke $r3.<com.google.common.collect.MapMakerInternalMap$InternalEntryHelper: com.google.common.collect.MapMakerInternalMap$Strength valueStrength()>();
+
+        $r1 = r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.base.Equivalence keyEquivalence>;
+
+        $r3 = r0.<com.google.common.collect.MapMakerInternalMap: com.google.common.collect.MapMakerInternalMap$InternalEntryHelper entryHelper>;
+
+        $r6 = interfaceinvoke $r3.<com.google.common.collect.MapMakerInternalMap$InternalEntryHelper: com.google.common.collect.MapMakerInternalMap$Strength valueStrength()>();
+
+        $r7 = virtualinvoke $r6.<com.google.common.collect.MapMakerInternalMap$Strength: com.google.common.base.Equivalence defaultEquivalence()>();
+
+        $i0 = r0.<com.google.common.collect.MapMakerInternalMap: int concurrencyLevel>;
+
+        specialinvoke $r2.<com.google.common.collect.MapMakerInternalMap$SerializationProxy: void <init>(com.google.common.collect.MapMakerInternalMap$Strength,com.google.common.collect.MapMakerInternalMap$Strength,com.google.common.base.Equivalence,com.google.common.base.Equivalence,int,java.util.concurrent.ConcurrentMap)>($r4, $r5, $r1, $r7, $i0, r0);
+
+        return $r2;
+    }
+}

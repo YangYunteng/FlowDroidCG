@@ -1,0 +1,752 @@
+public class com.google.android.material.snackbar.SnackbarManager extends java.lang.Object
+{
+    public static final int LONG_DURATION_MS;
+    public static final int MSG_TIMEOUT;
+    public static final int SHORT_DURATION_MS;
+    public static com.google.android.material.snackbar.SnackbarManager snackbarManager;
+    public com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar;
+    public final android.os.Handler handler;
+    public final java.lang.Object lock;
+    public com.google.android.material.snackbar.SnackbarManager$SnackbarRecord nextSnackbar;
+
+    public void <init>()
+    {
+        com.google.android.material.snackbar.SnackbarManager r0;
+        com.google.android.material.snackbar.SnackbarManager$1 $r1;
+        android.os.Looper $r2;
+        android.os.Handler $r4;
+        java.lang.Object $r3;
+
+        r0 := @this: com.google.android.material.snackbar.SnackbarManager;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r3 = new java.lang.Object;
+
+        specialinvoke $r3.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.android.material.snackbar.SnackbarManager: java.lang.Object lock> = $r3;
+
+        $r4 = new android.os.Handler;
+
+        $r2 = staticinvoke <android.os.Looper: android.os.Looper getMainLooper()>();
+
+        $r1 = new com.google.android.material.snackbar.SnackbarManager$1;
+
+        specialinvoke $r1.<com.google.android.material.snackbar.SnackbarManager$1: void <init>(com.google.android.material.snackbar.SnackbarManager)>(r0);
+
+        specialinvoke $r4.<android.os.Handler: void <init>(android.os.Looper,android.os.Handler$Callback)>($r2, $r1);
+
+        r0.<com.google.android.material.snackbar.SnackbarManager: android.os.Handler handler> = $r4;
+
+        return;
+    }
+
+    private boolean cancelSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$SnackbarRecord, int)
+    {
+        com.google.android.material.snackbar.SnackbarManager$Callback $r5;
+        com.google.android.material.snackbar.SnackbarManager r0;
+        android.os.Handler $r1;
+        int $i0;
+        java.lang.Object $r2;
+        com.google.android.material.snackbar.SnackbarManager$SnackbarRecord $r3;
+        java.lang.ref.WeakReference $r4;
+
+        r0 := @this: com.google.android.material.snackbar.SnackbarManager;
+
+        $r3 := @parameter0: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord;
+
+        $i0 := @parameter1: int;
+
+        $r4 = $r3.<com.google.android.material.snackbar.SnackbarManager$SnackbarRecord: java.lang.ref.WeakReference callback>;
+
+        $r2 = virtualinvoke $r4.<java.lang.ref.WeakReference: java.lang.Object get()>();
+
+        $r5 = (com.google.android.material.snackbar.SnackbarManager$Callback) $r2;
+
+        if $r5 == null goto label1;
+
+        $r1 = r0.<com.google.android.material.snackbar.SnackbarManager: android.os.Handler handler>;
+
+        virtualinvoke $r1.<android.os.Handler: void removeCallbacksAndMessages(java.lang.Object)>($r3);
+
+        interfaceinvoke $r5.<com.google.android.material.snackbar.SnackbarManager$Callback: void dismiss(int)>($i0);
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static com.google.android.material.snackbar.SnackbarManager getInstance()
+    {
+        com.google.android.material.snackbar.SnackbarManager $r0;
+
+        $r0 = <com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager snackbarManager>;
+
+        if $r0 != null goto label1;
+
+        $r0 = new com.google.android.material.snackbar.SnackbarManager;
+
+        specialinvoke $r0.<com.google.android.material.snackbar.SnackbarManager: void <init>()>();
+
+        <com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager snackbarManager> = $r0;
+
+     label1:
+        $r0 = <com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager snackbarManager>;
+
+        return $r0;
+    }
+
+    private boolean isCurrentSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$Callback)
+    {
+        com.google.android.material.snackbar.SnackbarManager$Callback $r2;
+        com.google.android.material.snackbar.SnackbarManager r0;
+        com.google.android.material.snackbar.SnackbarManager$SnackbarRecord $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.snackbar.SnackbarManager;
+
+        $r2 := @parameter0: com.google.android.material.snackbar.SnackbarManager$Callback;
+
+        $r1 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar>;
+
+        if $r1 == null goto label1;
+
+        $z0 = virtualinvoke $r1.<com.google.android.material.snackbar.SnackbarManager$SnackbarRecord: boolean isSnackbar(com.google.android.material.snackbar.SnackbarManager$Callback)>($r2);
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    private boolean isNextSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$Callback)
+    {
+        com.google.android.material.snackbar.SnackbarManager$Callback $r2;
+        com.google.android.material.snackbar.SnackbarManager r0;
+        com.google.android.material.snackbar.SnackbarManager$SnackbarRecord $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.snackbar.SnackbarManager;
+
+        $r2 := @parameter0: com.google.android.material.snackbar.SnackbarManager$Callback;
+
+        $r1 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord nextSnackbar>;
+
+        if $r1 == null goto label1;
+
+        $z0 = virtualinvoke $r1.<com.google.android.material.snackbar.SnackbarManager$SnackbarRecord: boolean isSnackbar(com.google.android.material.snackbar.SnackbarManager$Callback)>($r2);
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    private void scheduleTimeoutLocked(com.google.android.material.snackbar.SnackbarManager$SnackbarRecord)
+    {
+        com.google.android.material.snackbar.SnackbarManager r0;
+        android.os.Message $r1;
+        android.os.Handler $r3;
+        int $i0, $i2;
+        com.google.android.material.snackbar.SnackbarManager$SnackbarRecord $r2;
+        long $l1;
+
+        r0 := @this: com.google.android.material.snackbar.SnackbarManager;
+
+        $r2 := @parameter0: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord;
+
+        $i0 = $r2.<com.google.android.material.snackbar.SnackbarManager$SnackbarRecord: int duration>;
+
+        $i2 = -2;
+
+        if $i0 != $i2 goto label1;
+
+        return;
+
+     label1:
+        if $i0 <= 0 goto label2;
+
+        goto label4;
+
+     label2:
+        $i2 = -1;
+
+        if $i0 != $i2 goto label3;
+
+        $i0 = 1500;
+
+        goto label4;
+
+     label3:
+        $i0 = 2750;
+
+     label4:
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: android.os.Handler handler>;
+
+        virtualinvoke $r3.<android.os.Handler: void removeCallbacksAndMessages(java.lang.Object)>($r2);
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: android.os.Handler handler>;
+
+        $r1 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler,int,java.lang.Object)>($r3, 0, $r2);
+
+        $l1 = (long) $i0;
+
+        virtualinvoke $r3.<android.os.Handler: boolean sendMessageDelayed(android.os.Message,long)>($r1, $l1);
+
+        return;
+    }
+
+    private void showNextSnackbarLocked()
+    {
+        com.google.android.material.snackbar.SnackbarManager$Callback $r4;
+        com.google.android.material.snackbar.SnackbarManager r0;
+        java.lang.Object $r1;
+        com.google.android.material.snackbar.SnackbarManager$SnackbarRecord $r2;
+        java.lang.ref.WeakReference $r3;
+
+        r0 := @this: com.google.android.material.snackbar.SnackbarManager;
+
+        $r2 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord nextSnackbar>;
+
+        if $r2 == null goto label2;
+
+        r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar> = $r2;
+
+        r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord nextSnackbar> = null;
+
+        $r2 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar>;
+
+        $r3 = $r2.<com.google.android.material.snackbar.SnackbarManager$SnackbarRecord: java.lang.ref.WeakReference callback>;
+
+        $r1 = virtualinvoke $r3.<java.lang.ref.WeakReference: java.lang.Object get()>();
+
+        $r4 = (com.google.android.material.snackbar.SnackbarManager$Callback) $r1;
+
+        if $r4 == null goto label1;
+
+        interfaceinvoke $r4.<com.google.android.material.snackbar.SnackbarManager$Callback: void show()>();
+
+        return;
+
+     label1:
+        r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar> = null;
+
+     label2:
+        return;
+    }
+
+    public void dismiss(com.google.android.material.snackbar.SnackbarManager$Callback, int)
+    {
+        com.google.android.material.snackbar.SnackbarManager$Callback $r2;
+        java.lang.Throwable $r4;
+        com.google.android.material.snackbar.SnackbarManager r0;
+        int $i0;
+        java.lang.Object $r1;
+        com.google.android.material.snackbar.SnackbarManager$SnackbarRecord $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.snackbar.SnackbarManager;
+
+        $r2 := @parameter0: com.google.android.material.snackbar.SnackbarManager$Callback;
+
+        $i0 := @parameter1: int;
+
+        $r1 = r0.<com.google.android.material.snackbar.SnackbarManager: java.lang.Object lock>;
+
+        entermonitor $r1;
+
+     label1:
+        $z0 = specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: boolean isCurrentSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$Callback)>($r2);
+
+        if $z0 == 0 goto label2;
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar>;
+
+        specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: boolean cancelSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$SnackbarRecord,int)>($r3, $i0);
+
+        goto label3;
+
+     label2:
+        $z0 = specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: boolean isNextSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$Callback)>($r2);
+
+        if $z0 == 0 goto label3;
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord nextSnackbar>;
+
+        specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: boolean cancelSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$SnackbarRecord,int)>($r3, $i0);
+
+     label3:
+        exitmonitor $r1;
+
+     label4:
+        return;
+
+     label5:
+        $r4 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label6:
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void handleTimeout(com.google.android.material.snackbar.SnackbarManager$SnackbarRecord)
+    {
+        java.lang.Throwable $r4;
+        com.google.android.material.snackbar.SnackbarManager r0;
+        java.lang.Object $r1;
+        com.google.android.material.snackbar.SnackbarManager$SnackbarRecord $r2, $r3;
+
+        r0 := @this: com.google.android.material.snackbar.SnackbarManager;
+
+        $r2 := @parameter0: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord;
+
+        $r1 = r0.<com.google.android.material.snackbar.SnackbarManager: java.lang.Object lock>;
+
+        entermonitor $r1;
+
+     label1:
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar>;
+
+        if $r3 == $r2 goto label2;
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord nextSnackbar>;
+
+        if $r3 != $r2 goto label3;
+
+     label2:
+        specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: boolean cancelSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$SnackbarRecord,int)>($r2, 2);
+
+     label3:
+        exitmonitor $r1;
+
+     label4:
+        return;
+
+     label5:
+        $r4 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label6:
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public boolean isCurrent(com.google.android.material.snackbar.SnackbarManager$Callback)
+    {
+        com.google.android.material.snackbar.SnackbarManager$Callback $r2;
+        java.lang.Throwable $r3;
+        com.google.android.material.snackbar.SnackbarManager r0;
+        java.lang.Object $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.snackbar.SnackbarManager;
+
+        $r2 := @parameter0: com.google.android.material.snackbar.SnackbarManager$Callback;
+
+        $r1 = r0.<com.google.android.material.snackbar.SnackbarManager: java.lang.Object lock>;
+
+        entermonitor $r1;
+
+     label1:
+        $z0 = specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: boolean isCurrentSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$Callback)>($r2);
+
+        exitmonitor $r1;
+
+     label2:
+        return $z0;
+
+     label3:
+        $r3 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r3;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public boolean isCurrentOrNext(com.google.android.material.snackbar.SnackbarManager$Callback)
+    {
+        com.google.android.material.snackbar.SnackbarManager$Callback $r2;
+        java.lang.Throwable $r3;
+        com.google.android.material.snackbar.SnackbarManager r0;
+        java.lang.Object $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.snackbar.SnackbarManager;
+
+        $r2 := @parameter0: com.google.android.material.snackbar.SnackbarManager$Callback;
+
+        $r1 = r0.<com.google.android.material.snackbar.SnackbarManager: java.lang.Object lock>;
+
+        entermonitor $r1;
+
+     label1:
+        $z0 = specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: boolean isCurrentSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$Callback)>($r2);
+
+        if $z0 != 0 goto label3;
+
+        $z0 = specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: boolean isNextSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$Callback)>($r2);
+
+        if $z0 == 0 goto label2;
+
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+        goto label4;
+
+     label3:
+        $z0 = 1;
+
+     label4:
+        exitmonitor $r1;
+
+     label5:
+        return $z0;
+
+     label6:
+        $r3 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label7:
+        throw $r3;
+
+        catch java.lang.Throwable from label1 to label5 with label6;
+        catch java.lang.Throwable from label6 to label7 with label6;
+    }
+
+    public void onDismissed(com.google.android.material.snackbar.SnackbarManager$Callback)
+    {
+        com.google.android.material.snackbar.SnackbarManager$Callback $r2;
+        java.lang.Throwable $r4;
+        com.google.android.material.snackbar.SnackbarManager r0;
+        java.lang.Object $r1;
+        com.google.android.material.snackbar.SnackbarManager$SnackbarRecord $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.snackbar.SnackbarManager;
+
+        $r2 := @parameter0: com.google.android.material.snackbar.SnackbarManager$Callback;
+
+        $r1 = r0.<com.google.android.material.snackbar.SnackbarManager: java.lang.Object lock>;
+
+        entermonitor $r1;
+
+     label1:
+        $z0 = specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: boolean isCurrentSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$Callback)>($r2);
+
+        if $z0 == 0 goto label2;
+
+        r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar> = null;
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord nextSnackbar>;
+
+        if $r3 == null goto label2;
+
+        specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: void showNextSnackbarLocked()>();
+
+     label2:
+        exitmonitor $r1;
+
+     label3:
+        return;
+
+     label4:
+        $r4 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label5:
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public void onShown(com.google.android.material.snackbar.SnackbarManager$Callback)
+    {
+        com.google.android.material.snackbar.SnackbarManager$Callback $r2;
+        java.lang.Throwable $r4;
+        com.google.android.material.snackbar.SnackbarManager r0;
+        java.lang.Object $r1;
+        com.google.android.material.snackbar.SnackbarManager$SnackbarRecord $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.snackbar.SnackbarManager;
+
+        $r2 := @parameter0: com.google.android.material.snackbar.SnackbarManager$Callback;
+
+        $r1 = r0.<com.google.android.material.snackbar.SnackbarManager: java.lang.Object lock>;
+
+        entermonitor $r1;
+
+     label1:
+        $z0 = specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: boolean isCurrentSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$Callback)>($r2);
+
+        if $z0 == 0 goto label2;
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar>;
+
+        specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: void scheduleTimeoutLocked(com.google.android.material.snackbar.SnackbarManager$SnackbarRecord)>($r3);
+
+     label2:
+        exitmonitor $r1;
+
+     label3:
+        return;
+
+     label4:
+        $r4 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label5:
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public void pauseTimeout(com.google.android.material.snackbar.SnackbarManager$Callback)
+    {
+        com.google.android.material.snackbar.SnackbarManager$Callback $r2;
+        java.lang.Throwable $r5;
+        com.google.android.material.snackbar.SnackbarManager r0;
+        android.os.Handler $r4;
+        java.lang.Object $r1;
+        com.google.android.material.snackbar.SnackbarManager$SnackbarRecord $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.snackbar.SnackbarManager;
+
+        $r2 := @parameter0: com.google.android.material.snackbar.SnackbarManager$Callback;
+
+        $r1 = r0.<com.google.android.material.snackbar.SnackbarManager: java.lang.Object lock>;
+
+        entermonitor $r1;
+
+     label1:
+        $z0 = specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: boolean isCurrentSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$Callback)>($r2);
+
+        if $z0 == 0 goto label2;
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar>;
+
+        $z0 = $r3.<com.google.android.material.snackbar.SnackbarManager$SnackbarRecord: boolean paused>;
+
+        if $z0 != 0 goto label2;
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar>;
+
+        $r3.<com.google.android.material.snackbar.SnackbarManager$SnackbarRecord: boolean paused> = 1;
+
+        $r4 = r0.<com.google.android.material.snackbar.SnackbarManager: android.os.Handler handler>;
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar>;
+
+        virtualinvoke $r4.<android.os.Handler: void removeCallbacksAndMessages(java.lang.Object)>($r3);
+
+     label2:
+        exitmonitor $r1;
+
+     label3:
+        return;
+
+     label4:
+        $r5 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label5:
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public void restoreTimeoutIfPaused(com.google.android.material.snackbar.SnackbarManager$Callback)
+    {
+        com.google.android.material.snackbar.SnackbarManager$Callback $r2;
+        java.lang.Throwable $r4;
+        com.google.android.material.snackbar.SnackbarManager r0;
+        java.lang.Object $r1;
+        com.google.android.material.snackbar.SnackbarManager$SnackbarRecord $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.snackbar.SnackbarManager;
+
+        $r2 := @parameter0: com.google.android.material.snackbar.SnackbarManager$Callback;
+
+        $r1 = r0.<com.google.android.material.snackbar.SnackbarManager: java.lang.Object lock>;
+
+        entermonitor $r1;
+
+     label1:
+        $z0 = specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: boolean isCurrentSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$Callback)>($r2);
+
+        if $z0 == 0 goto label2;
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar>;
+
+        $z0 = $r3.<com.google.android.material.snackbar.SnackbarManager$SnackbarRecord: boolean paused>;
+
+        if $z0 == 0 goto label2;
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar>;
+
+        $r3.<com.google.android.material.snackbar.SnackbarManager$SnackbarRecord: boolean paused> = 0;
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar>;
+
+        specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: void scheduleTimeoutLocked(com.google.android.material.snackbar.SnackbarManager$SnackbarRecord)>($r3);
+
+     label2:
+        exitmonitor $r1;
+
+     label3:
+        return;
+
+     label4:
+        $r4 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label5:
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public void show(int, com.google.android.material.snackbar.SnackbarManager$Callback)
+    {
+        java.lang.Throwable $r5;
+        com.google.android.material.snackbar.SnackbarManager r0;
+        com.google.android.material.snackbar.SnackbarManager$Callback $r2;
+        android.os.Handler $r4;
+        int $i0;
+        java.lang.Object $r1;
+        com.google.android.material.snackbar.SnackbarManager$SnackbarRecord $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.snackbar.SnackbarManager;
+
+        $i0 := @parameter0: int;
+
+        $r2 := @parameter1: com.google.android.material.snackbar.SnackbarManager$Callback;
+
+        $r1 = r0.<com.google.android.material.snackbar.SnackbarManager: java.lang.Object lock>;
+
+        entermonitor $r1;
+
+     label01:
+        $z0 = specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: boolean isCurrentSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$Callback)>($r2);
+
+        if $z0 == 0 goto label03;
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar>;
+
+        $r3.<com.google.android.material.snackbar.SnackbarManager$SnackbarRecord: int duration> = $i0;
+
+        $r4 = r0.<com.google.android.material.snackbar.SnackbarManager: android.os.Handler handler>;
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar>;
+
+        virtualinvoke $r4.<android.os.Handler: void removeCallbacksAndMessages(java.lang.Object)>($r3);
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar>;
+
+        specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: void scheduleTimeoutLocked(com.google.android.material.snackbar.SnackbarManager$SnackbarRecord)>($r3);
+
+        exitmonitor $r1;
+
+     label02:
+        return;
+
+     label03:
+        $z0 = specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: boolean isNextSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$Callback)>($r2);
+
+        if $z0 == 0 goto label04;
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord nextSnackbar>;
+
+        $r3.<com.google.android.material.snackbar.SnackbarManager$SnackbarRecord: int duration> = $i0;
+
+        goto label05;
+
+     label04:
+        $r3 = new com.google.android.material.snackbar.SnackbarManager$SnackbarRecord;
+
+        specialinvoke $r3.<com.google.android.material.snackbar.SnackbarManager$SnackbarRecord: void <init>(int,com.google.android.material.snackbar.SnackbarManager$Callback)>($i0, $r2);
+
+        r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord nextSnackbar> = $r3;
+
+     label05:
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar>;
+
+        if $r3 == null goto label07;
+
+        $r3 = r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar>;
+
+        $z0 = specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: boolean cancelSnackbarLocked(com.google.android.material.snackbar.SnackbarManager$SnackbarRecord,int)>($r3, 4);
+
+        if $z0 == 0 goto label07;
+
+        exitmonitor $r1;
+
+     label06:
+        return;
+
+     label07:
+        r0.<com.google.android.material.snackbar.SnackbarManager: com.google.android.material.snackbar.SnackbarManager$SnackbarRecord currentSnackbar> = null;
+
+        specialinvoke r0.<com.google.android.material.snackbar.SnackbarManager: void showNextSnackbarLocked()>();
+
+        exitmonitor $r1;
+
+     label08:
+        return;
+
+     label09:
+        $r5 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label10:
+        throw $r5;
+
+        catch java.lang.Throwable from label01 to label02 with label09;
+        catch java.lang.Throwable from label03 to label06 with label09;
+        catch java.lang.Throwable from label07 to label08 with label09;
+        catch java.lang.Throwable from label09 to label10 with label09;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.android.material.snackbar.SnackbarManager: int SHORT_DURATION_MS> = 1500;
+
+        <com.google.android.material.snackbar.SnackbarManager: int MSG_TIMEOUT> = 0;
+
+        <com.google.android.material.snackbar.SnackbarManager: int LONG_DURATION_MS> = 2750;
+
+        return;
+    }
+}

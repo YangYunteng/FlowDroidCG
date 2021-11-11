@@ -1,0 +1,861 @@
+public class org.apache.james.mime4j.io.MimeBoundaryInputStream extends org.apache.james.mime4j.io.LineReaderInputStream
+{
+    public boolean atBoundary;
+    public final byte[] boundary;
+    public int boundaryLen;
+    public org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer;
+    public boolean completed;
+    public boolean eof;
+    public boolean lastPart;
+    public int limit;
+
+    public void <init>(org.apache.james.mime4j.io.BufferedLineReaderInputStream, java.lang.String)
+    {
+        byte[] $r3;
+        char $c2;
+        java.lang.IllegalArgumentException $r4;
+        org.apache.james.mime4j.io.BufferedLineReaderInputStream $r1;
+        byte $b3;
+        org.apache.james.mime4j.io.MimeBoundaryInputStream r0;
+        int $i0, $i1;
+        java.lang.String $r2;
+
+        r0 := @this: org.apache.james.mime4j.io.MimeBoundaryInputStream;
+
+        $r1 := @parameter0: org.apache.james.mime4j.io.BufferedLineReaderInputStream;
+
+        $r2 := @parameter1: java.lang.String;
+
+        specialinvoke r0.<org.apache.james.mime4j.io.LineReaderInputStream: void <init>(java.io.InputStream)>($r1);
+
+        $i0 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int capacity()>();
+
+        $i1 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        if $i0 <= $i1 goto label4;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer> = $r1;
+
+        $i0 = 0;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean eof> = 0;
+
+        $i1 = -1;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int limit> = $i1;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean atBoundary> = 0;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int boundaryLen> = 0;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean lastPart> = 0;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean completed> = 0;
+
+        $i1 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        $i1 = $i1 + 2;
+
+        $r3 = newarray (byte)[$i1];
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: byte[] boundary> = $r3;
+
+        $r3 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: byte[] boundary>;
+
+        $r3[0] = 45;
+
+        $r3[1] = 45;
+
+     label1:
+        $i1 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        if $i0 >= $i1 goto label3;
+
+        $c2 = virtualinvoke $r2.<java.lang.String: char charAt(int)>($i0);
+
+        $b3 = (byte) $c2;
+
+        $i1 = (int) $b3;
+
+        if $i1 == 13 goto label2;
+
+        $i1 = (int) $b3;
+
+        if $i1 == 10 goto label2;
+
+        $r3 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: byte[] boundary>;
+
+        $i1 = $i0 + 2;
+
+        $r3[$i1] = $b3;
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label2:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Boundary may not contain CR or LF");
+
+        throw $r4;
+
+     label3:
+        specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int fillBuffer()>();
+
+        return;
+
+     label4:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Boundary is too long");
+
+        goto label5;
+
+     label5:
+        throw $r4;
+    }
+
+    private void calculateBoundaryLen()
+    {
+        byte[] $r1;
+        org.apache.james.mime4j.io.BufferedLineReaderInputStream $r2;
+        byte $b2;
+        org.apache.james.mime4j.io.MimeBoundaryInputStream r0;
+        int $i0, $i1;
+
+        r0 := @this: org.apache.james.mime4j.io.MimeBoundaryInputStream;
+
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: byte[] boundary>;
+
+        $i0 = lengthof $r1;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int boundaryLen> = $i0;
+
+        $i0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int limit>;
+
+        $r2 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i1 = virtualinvoke $r2.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int pos()>();
+
+        $i0 = $i0 - $i1;
+
+        if $i0 <= 0 goto label1;
+
+        $r2 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int limit>;
+
+        $i1 = $i1 - 1;
+
+        $b2 = virtualinvoke $r2.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: byte charAt(int)>($i1);
+
+        $i1 = (int) $b2;
+
+        if $i1 != 10 goto label1;
+
+        $i1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int boundaryLen>;
+
+        $i1 = $i1 + 1;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int boundaryLen> = $i1;
+
+        $i1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int limit>;
+
+        $i1 = $i1 - 1;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int limit> = $i1;
+
+     label1:
+        if $i0 <= 1 goto label2;
+
+        $r2 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int limit>;
+
+        $i0 = $i0 - 1;
+
+        $b2 = virtualinvoke $r2.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: byte charAt(int)>($i0);
+
+        $i0 = (int) $b2;
+
+        if $i0 != 13 goto label2;
+
+        $i0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int boundaryLen>;
+
+        $i0 = $i0 + 1;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int boundaryLen> = $i0;
+
+        $i0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int limit>;
+
+        $i0 = $i0 - 1;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int limit> = $i0;
+
+     label2:
+        return;
+    }
+
+    private boolean endOfStream()
+    {
+        org.apache.james.mime4j.io.MimeBoundaryInputStream r0;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.io.MimeBoundaryInputStream;
+
+        $z0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean eof>;
+
+        if $z0 != 0 goto label2;
+
+        $z0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean atBoundary>;
+
+        if $z0 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    private int fillBuffer()
+    {
+        byte[] $r2;
+        org.apache.james.mime4j.io.BufferedLineReaderInputStream $r1;
+        byte $b3;
+        org.apache.james.mime4j.io.MimeBoundaryInputStream r0;
+        int $i0, $i1, $i2;
+        boolean $z0, $z1;
+
+        r0 := @this: org.apache.james.mime4j.io.MimeBoundaryInputStream;
+
+        $z0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean eof>;
+
+        if $z0 == 0 goto label1;
+
+        $i0 = -1;
+
+        return $i0;
+
+     label1:
+        $z0 = specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean hasData()>();
+
+        $z1 = 0;
+
+        if $z0 != 0 goto label2;
+
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i0 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int fillBuffer()>();
+
+        goto label3;
+
+     label2:
+        $i0 = 0;
+
+     label3:
+        $i1 = -1;
+
+        if $i0 != $i1 goto label4;
+
+        $z1 = 1;
+
+     label4:
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean eof> = $z1;
+
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $r2 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: byte[] boundary>;
+
+        $i1 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int indexOf(byte[])>($r2);
+
+     label5:
+        if $i1 <= 0 goto label6;
+
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i2 = -1;
+
+        $i2 = $i1 + $i2;
+
+        $b3 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: byte charAt(int)>($i2);
+
+        $i2 = (int) $b3;
+
+        if $i2 == 10 goto label6;
+
+        $r2 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: byte[] boundary>;
+
+        $i2 = lengthof $r2;
+
+        $i1 = $i1 + $i2;
+
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i2 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int limit()>();
+
+        $i2 = $i2 - $i1;
+
+        $i1 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int indexOf(byte[],int,int)>($r2, $i1, $i2);
+
+        goto label5;
+
+     label6:
+        $i2 = -1;
+
+        if $i1 == $i2 goto label7;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int limit> = $i1;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean atBoundary> = 1;
+
+        specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: void calculateBoundaryLen()>();
+
+        return $i0;
+
+     label7:
+        $z0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean eof>;
+
+        if $z0 == 0 goto label8;
+
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i1 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int limit()>();
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int limit> = $i1;
+
+        return $i0;
+
+     label8:
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i1 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int limit()>();
+
+        $r2 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: byte[] boundary>;
+
+        $i2 = lengthof $r2;
+
+        $i2 = $i2 + 1;
+
+        $i1 = $i1 - $i2;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int limit> = $i1;
+
+        return $i0;
+    }
+
+    private boolean hasData()
+    {
+        org.apache.james.mime4j.io.BufferedLineReaderInputStream $r1;
+        org.apache.james.mime4j.io.MimeBoundaryInputStream r0;
+        int $i0, $i1;
+
+        r0 := @this: org.apache.james.mime4j.io.MimeBoundaryInputStream;
+
+        $i0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int limit>;
+
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i1 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int pos()>();
+
+        if $i0 <= $i1 goto label1;
+
+        $i0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int limit>;
+
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i1 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int limit()>();
+
+        if $i0 > $i1 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    private void skipBoundary()
+    {
+        org.apache.james.mime4j.io.BufferedLineReaderInputStream $r1;
+        byte $b1, $b2;
+        org.apache.james.mime4j.io.MimeBoundaryInputStream r0;
+        int $i0;
+        boolean $z0, $z1;
+
+        r0 := @this: org.apache.james.mime4j.io.MimeBoundaryInputStream;
+
+        $z0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean completed>;
+
+        if $z0 != 0 goto label7;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean completed> = 1;
+
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int boundaryLen>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int skip(int)>($i0);
+
+        $z0 = 1;
+
+     label1:
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i0 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int length()>();
+
+        if $i0 <= 1 goto label5;
+
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i0 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int pos()>();
+
+        $b1 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: byte charAt(int)>($i0);
+
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i0 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int pos()>();
+
+        $i0 = $i0 + 1;
+
+        $b2 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: byte charAt(int)>($i0);
+
+        if $z0 == 0 goto label2;
+
+        $i0 = (int) $b1;
+
+        if $i0 != 45 goto label2;
+
+        $i0 = (int) $b2;
+
+        if $i0 != 45 goto label2;
+
+        r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean lastPart> = 1;
+
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int skip(int)>(2);
+
+        $z0 = 0;
+
+        goto label1;
+
+     label2:
+        $i0 = (int) $b1;
+
+        if $i0 != 13 goto label3;
+
+        $i0 = (int) $b2;
+
+        if $i0 != 10 goto label3;
+
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int skip(int)>(2);
+
+        return;
+
+     label3:
+        $i0 = (int) $b1;
+
+        if $i0 != 10 goto label4;
+
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int skip(int)>(1);
+
+        return;
+
+     label4:
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int skip(int)>(1);
+
+        goto label1;
+
+     label5:
+        $z1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean eof>;
+
+        if $z1 == 0 goto label6;
+
+        return;
+
+     label6:
+        specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int fillBuffer()>();
+
+        goto label1;
+
+     label7:
+        return;
+    }
+
+    public void close()
+    {
+        org.apache.james.mime4j.io.MimeBoundaryInputStream r0;
+
+        r0 := @this: org.apache.james.mime4j.io.MimeBoundaryInputStream;
+
+        return;
+    }
+
+    public boolean eof()
+    {
+        org.apache.james.mime4j.io.BufferedLineReaderInputStream $r1;
+        org.apache.james.mime4j.io.MimeBoundaryInputStream r0;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.io.MimeBoundaryInputStream;
+
+        $z0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean eof>;
+
+        if $z0 == 0 goto label1;
+
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $z0 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: boolean hasBufferedData()>();
+
+        if $z0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean isLastPart()
+    {
+        org.apache.james.mime4j.io.MimeBoundaryInputStream r0;
+        boolean z0;
+
+        r0 := @this: org.apache.james.mime4j.io.MimeBoundaryInputStream;
+
+        z0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean lastPart>;
+
+        return z0;
+    }
+
+    public boolean markSupported()
+    {
+        org.apache.james.mime4j.io.MimeBoundaryInputStream r0;
+
+        r0 := @this: org.apache.james.mime4j.io.MimeBoundaryInputStream;
+
+        return 0;
+    }
+
+    public int read()
+    {
+        org.apache.james.mime4j.io.BufferedLineReaderInputStream $r1;
+        org.apache.james.mime4j.io.MimeBoundaryInputStream r0;
+        int $i0;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.io.MimeBoundaryInputStream;
+
+        $z0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean completed>;
+
+        if $z0 == 0 goto label1;
+
+        $i0 = -1;
+
+        return $i0;
+
+     label1:
+        $z0 = specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean endOfStream()>();
+
+        if $z0 == 0 goto label2;
+
+        $z0 = specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean hasData()>();
+
+        if $z0 != 0 goto label2;
+
+        specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: void skipBoundary()>();
+
+        $i0 = -1;
+
+        return $i0;
+
+     label2:
+        $z0 = specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean hasData()>();
+
+        if $z0 == 0 goto label3;
+
+        $r1 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i0 = virtualinvoke $r1.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int read()>();
+
+        return $i0;
+
+     label3:
+        $z0 = specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean endOfStream()>();
+
+        if $z0 == 0 goto label4;
+
+        specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: void skipBoundary()>();
+
+        $i0 = -1;
+
+        return $i0;
+
+     label4:
+        specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int fillBuffer()>();
+
+        goto label2;
+    }
+
+    public int read(byte[], int, int)
+    {
+        byte[] $r1;
+        org.apache.james.mime4j.io.BufferedLineReaderInputStream $r2;
+        org.apache.james.mime4j.io.MimeBoundaryInputStream r0;
+        int $i0, $i1, $i2, $i3;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.io.MimeBoundaryInputStream;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $z0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean completed>;
+
+        if $z0 == 0 goto label1;
+
+        $i0 = -1;
+
+        return $i0;
+
+     label1:
+        $z0 = specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean endOfStream()>();
+
+        if $z0 == 0 goto label2;
+
+        $z0 = specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean hasData()>();
+
+        if $z0 != 0 goto label2;
+
+        specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: void skipBoundary()>();
+
+        $i0 = -1;
+
+        return $i0;
+
+     label2:
+        specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int fillBuffer()>();
+
+        $z0 = specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean hasData()>();
+
+        if $z0 != 0 goto label3;
+
+        $i0 = virtualinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int read(byte[],int,int)>($r1, $i0, $i1);
+
+        return $i0;
+
+     label3:
+        $i2 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int limit>;
+
+        $r2 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i3 = virtualinvoke $r2.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int pos()>();
+
+        $i2 = $i2 - $i3;
+
+        $i1 = staticinvoke <java.lang.Math: int min(int,int)>($i1, $i2);
+
+        $r2 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i0 = virtualinvoke $r2.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int read(byte[],int,int)>($r1, $i0, $i1);
+
+        return $i0;
+    }
+
+    public int readLine(org.apache.james.mime4j.util.ByteArrayBuffer)
+    {
+        byte[] $r3;
+        java.lang.IllegalArgumentException $r4;
+        org.apache.james.mime4j.io.BufferedLineReaderInputStream $r2;
+        org.apache.james.mime4j.io.MimeBoundaryInputStream r0;
+        int $i0, $i1, $i2, $i3, $i4;
+        org.apache.james.mime4j.util.ByteArrayBuffer $r1;
+        boolean $z0, $z1;
+
+        r0 := @this: org.apache.james.mime4j.io.MimeBoundaryInputStream;
+
+        $r1 := @parameter0: org.apache.james.mime4j.util.ByteArrayBuffer;
+
+        if $r1 == null goto label08;
+
+        $z0 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean completed>;
+
+        if $z0 == 0 goto label01;
+
+        $i0 = -1;
+
+        return $i0;
+
+     label01:
+        $z0 = specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean endOfStream()>();
+
+        if $z0 == 0 goto label02;
+
+        $z0 = specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean hasData()>();
+
+        if $z0 != 0 goto label02;
+
+        specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: void skipBoundary()>();
+
+        $i0 = -1;
+
+        return $i0;
+
+     label02:
+        $z0 = 0;
+
+        $i0 = 0;
+
+        $i1 = 0;
+
+     label03:
+        if $z0 != 0 goto label06;
+
+        $z1 = specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean hasData()>();
+
+        if $z1 != 0 goto label04;
+
+        $i1 = specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int fillBuffer()>();
+
+        $z1 = specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean hasData()>();
+
+        if $z1 != 0 goto label04;
+
+        $z1 = specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: boolean endOfStream()>();
+
+        if $z1 == 0 goto label04;
+
+        specialinvoke r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: void skipBoundary()>();
+
+        $i1 = -1;
+
+        goto label06;
+
+     label04:
+        $i2 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: int limit>;
+
+        $r2 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i3 = virtualinvoke $r2.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int pos()>();
+
+        $i2 = $i2 - $i3;
+
+        $r2 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i3 = virtualinvoke $r2.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int pos()>();
+
+        $i3 = virtualinvoke $r2.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int indexOf(byte,int,int)>(10, $i3, $i2);
+
+        $i4 = -1;
+
+        if $i3 == $i4 goto label05;
+
+        $i2 = $i3 + 1;
+
+        $r2 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i3 = virtualinvoke $r2.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int pos()>();
+
+        $i2 = $i2 - $i3;
+
+        $z0 = 1;
+
+     label05:
+        if $i2 <= 0 goto label03;
+
+        $r2 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $r3 = virtualinvoke $r2.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: byte[] buf()>();
+
+        $r2 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        $i3 = virtualinvoke $r2.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int pos()>();
+
+        virtualinvoke $r1.<org.apache.james.mime4j.util.ByteArrayBuffer: void append(byte[],int,int)>($r3, $i3, $i2);
+
+        $r2 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: org.apache.james.mime4j.io.BufferedLineReaderInputStream buffer>;
+
+        virtualinvoke $r2.<org.apache.james.mime4j.io.BufferedLineReaderInputStream: int skip(int)>($i2);
+
+        $i0 = $i0 + $i2;
+
+        goto label03;
+
+     label06:
+        if $i0 != 0 goto label07;
+
+        $i2 = -1;
+
+        if $i1 != $i2 goto label10;
+
+        $i0 = -1;
+
+     label07:
+        return $i0;
+
+     label08:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Destination buffer may not be null");
+
+        goto label09;
+
+     label09:
+        throw $r4;
+
+     label10:
+        return $i0;
+    }
+
+    public java.lang.String toString()
+    {
+        byte[] $r3;
+        char $c3;
+        byte $b2;
+        org.apache.james.mime4j.io.MimeBoundaryInputStream r0;
+        int $i0, $i1;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r1;
+
+        r0 := @this: org.apache.james.mime4j.io.MimeBoundaryInputStream;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("MimeBoundaryInputStream, boundary ");
+
+        $r3 = r0.<org.apache.james.mime4j.io.MimeBoundaryInputStream: byte[] boundary>;
+
+        $i0 = lengthof $r3;
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label2;
+
+        $b2 = $r3[$i1];
+
+        $c3 = (char) $b2;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c3);
+
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label2:
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+}

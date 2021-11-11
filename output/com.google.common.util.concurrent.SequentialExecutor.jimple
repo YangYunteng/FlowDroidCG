@@ -1,0 +1,197 @@
+public final class com.google.common.util.concurrent.SequentialExecutor extends java.lang.Object implements java.util.concurrent.Executor
+{
+    public static final java.util.logging.Logger log;
+    public final java.util.concurrent.Executor executor;
+    public boolean isWorkerRunning;
+    public final java.util.Queue queue;
+    public final com.google.common.util.concurrent.SequentialExecutor$QueueWorker worker;
+
+    static void <clinit>()
+    {
+        java.lang.Class $r0;
+        java.lang.String $r1;
+        java.util.logging.Logger $r2;
+
+        $r0 = class "Lcom/google/common/util/concurrent/SequentialExecutor;";
+
+        $r1 = virtualinvoke $r0.<java.lang.Class: java.lang.String getName()>();
+
+        $r2 = staticinvoke <java.util.logging.Logger: java.util.logging.Logger getLogger(java.lang.String)>($r1);
+
+        <com.google.common.util.concurrent.SequentialExecutor: java.util.logging.Logger log> = $r2;
+
+        return;
+    }
+
+    public void <init>(java.util.concurrent.Executor)
+    {
+        java.util.concurrent.Executor $r1;
+        com.google.common.util.concurrent.SequentialExecutor r0;
+        com.google.common.util.concurrent.SequentialExecutor$QueueWorker $r3;
+        java.util.ArrayDeque $r2;
+
+        r0 := @this: com.google.common.util.concurrent.SequentialExecutor;
+
+        $r1 := @parameter0: java.util.concurrent.Executor;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r2 = new java.util.ArrayDeque;
+
+        specialinvoke $r2.<java.util.ArrayDeque: void <init>()>();
+
+        r0.<com.google.common.util.concurrent.SequentialExecutor: java.util.Queue queue> = $r2;
+
+        r0.<com.google.common.util.concurrent.SequentialExecutor: boolean isWorkerRunning> = 0;
+
+        $r3 = new com.google.common.util.concurrent.SequentialExecutor$QueueWorker;
+
+        specialinvoke $r3.<com.google.common.util.concurrent.SequentialExecutor$QueueWorker: void <init>(com.google.common.util.concurrent.SequentialExecutor,com.google.common.util.concurrent.SequentialExecutor$1)>(r0, null);
+
+        r0.<com.google.common.util.concurrent.SequentialExecutor: com.google.common.util.concurrent.SequentialExecutor$QueueWorker worker> = $r3;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        r0.<com.google.common.util.concurrent.SequentialExecutor: java.util.concurrent.Executor executor> = $r1;
+
+        return;
+    }
+
+    public static java.util.Queue access$100(com.google.common.util.concurrent.SequentialExecutor)
+    {
+        com.google.common.util.concurrent.SequentialExecutor $r0;
+        java.util.Queue r1;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.SequentialExecutor;
+
+        r1 = $r0.<com.google.common.util.concurrent.SequentialExecutor: java.util.Queue queue>;
+
+        return r1;
+    }
+
+    public static boolean access$202(com.google.common.util.concurrent.SequentialExecutor, boolean)
+    {
+        com.google.common.util.concurrent.SequentialExecutor $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.SequentialExecutor;
+
+        $z0 := @parameter1: boolean;
+
+        $r0.<com.google.common.util.concurrent.SequentialExecutor: boolean isWorkerRunning> = $z0;
+
+        return $z0;
+    }
+
+    public static java.util.logging.Logger access$300()
+    {
+        java.util.logging.Logger r0;
+
+        r0 = <com.google.common.util.concurrent.SequentialExecutor: java.util.logging.Logger log>;
+
+        return r0;
+    }
+
+    private void startQueueWorker()
+    {
+        java.lang.Throwable $r3, $r5;
+        java.util.concurrent.Executor $r1;
+        com.google.common.util.concurrent.SequentialExecutor r0;
+        com.google.common.util.concurrent.SequentialExecutor$QueueWorker $r2;
+        java.util.Queue $r4;
+
+        r0 := @this: com.google.common.util.concurrent.SequentialExecutor;
+
+     label1:
+        $r1 = r0.<com.google.common.util.concurrent.SequentialExecutor: java.util.concurrent.Executor executor>;
+
+        $r2 = r0.<com.google.common.util.concurrent.SequentialExecutor: com.google.common.util.concurrent.SequentialExecutor$QueueWorker worker>;
+
+        interfaceinvoke $r1.<java.util.concurrent.Executor: void execute(java.lang.Runnable)>($r2);
+
+     label2:
+        return;
+
+     label3:
+        $r3 := @caughtexception;
+
+        $r4 = r0.<com.google.common.util.concurrent.SequentialExecutor: java.util.Queue queue>;
+
+        entermonitor $r4;
+
+     label4:
+        r0.<com.google.common.util.concurrent.SequentialExecutor: boolean isWorkerRunning> = 0;
+
+        exitmonitor $r4;
+
+     label5:
+        throw $r3;
+
+     label6:
+        $r5 := @caughtexception;
+
+     label7:
+        exitmonitor $r4;
+
+     label8:
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label6;
+        catch java.lang.Throwable from label7 to label8 with label6;
+    }
+
+    public void execute(java.lang.Runnable)
+    {
+        java.lang.Throwable $r4;
+        com.google.common.util.concurrent.SequentialExecutor r0;
+        java.util.Queue $r1, $r2;
+        java.lang.Runnable $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.SequentialExecutor;
+
+        $r3 := @parameter0: java.lang.Runnable;
+
+        $r1 = r0.<com.google.common.util.concurrent.SequentialExecutor: java.util.Queue queue>;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = r0.<com.google.common.util.concurrent.SequentialExecutor: java.util.Queue queue>;
+
+        interfaceinvoke $r2.<java.util.Queue: boolean add(java.lang.Object)>($r3);
+
+        $z0 = r0.<com.google.common.util.concurrent.SequentialExecutor: boolean isWorkerRunning>;
+
+        if $z0 == 0 goto label3;
+
+        exitmonitor $r1;
+
+     label2:
+        return;
+
+     label3:
+        r0.<com.google.common.util.concurrent.SequentialExecutor: boolean isWorkerRunning> = 1;
+
+        exitmonitor $r1;
+
+     label4:
+        specialinvoke r0.<com.google.common.util.concurrent.SequentialExecutor: void startQueueWorker()>();
+
+        return;
+
+     label5:
+        $r4 := @caughtexception;
+
+     label6:
+        exitmonitor $r1;
+
+     label7:
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label6 to label7 with label5;
+    }
+}

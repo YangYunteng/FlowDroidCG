@@ -1,0 +1,1024 @@
+public final class com.google.zxing.qrcode.decoder.DecodedBitStreamParser extends java.lang.Object
+{
+    public static final char[] ALPHANUMERIC_CHARS;
+    public static final int GB2312_SUBSET;
+
+    static void <clinit>()
+    {
+        char[] $r0;
+
+        <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: int GB2312_SUBSET> = 1;
+
+        $r0 = newarray (char)[45];
+
+        $r0[0] = 48;
+
+        $r0[1] = 49;
+
+        $r0[2] = 50;
+
+        $r0[3] = 51;
+
+        $r0[4] = 52;
+
+        $r0[5] = 53;
+
+        $r0[6] = 54;
+
+        $r0[7] = 55;
+
+        $r0[8] = 56;
+
+        $r0[9] = 57;
+
+        $r0[10] = 65;
+
+        $r0[11] = 66;
+
+        $r0[12] = 67;
+
+        $r0[13] = 68;
+
+        $r0[14] = 69;
+
+        $r0[15] = 70;
+
+        $r0[16] = 71;
+
+        $r0[17] = 72;
+
+        $r0[18] = 73;
+
+        $r0[19] = 74;
+
+        $r0[20] = 75;
+
+        $r0[21] = 76;
+
+        $r0[22] = 77;
+
+        $r0[23] = 78;
+
+        $r0[24] = 79;
+
+        $r0[25] = 80;
+
+        $r0[26] = 81;
+
+        $r0[27] = 82;
+
+        $r0[28] = 83;
+
+        $r0[29] = 84;
+
+        $r0[30] = 85;
+
+        $r0[31] = 86;
+
+        $r0[32] = 87;
+
+        $r0[33] = 88;
+
+        $r0[34] = 89;
+
+        $r0[35] = 90;
+
+        $r0[36] = 32;
+
+        $r0[37] = 36;
+
+        $r0[38] = 37;
+
+        $r0[39] = 42;
+
+        $r0[40] = 43;
+
+        $r0[41] = 45;
+
+        $r0[42] = 46;
+
+        $r0[43] = 47;
+
+        $r0[44] = 58;
+
+        <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: char[] ALPHANUMERIC_CHARS> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.zxing.qrcode.decoder.DecodedBitStreamParser r0;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.DecodedBitStreamParser;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static com.google.zxing.common.DecoderResult decode(byte[], com.google.zxing.qrcode.decoder.Version, com.google.zxing.qrcode.decoder.ErrorCorrectionLevel, java.util.Map)
+    {
+        byte[] $r0;
+        com.google.zxing.qrcode.decoder.ErrorCorrectionLevel $r2;
+        java.util.ArrayList $r8;
+        com.google.zxing.qrcode.decoder.Mode $r6, $r11, $r12;
+        java.util.Map $r3;
+        int $i0, $i1;
+        com.google.zxing.common.CharacterSetECI $r10, $r14;
+        java.lang.String $r9, $r16;
+        com.google.zxing.FormatException $r13;
+        com.google.zxing.common.BitSource $r4;
+        boolean $z0;
+        java.lang.IllegalArgumentException $r7;
+        com.google.zxing.common.DecoderResult $r15;
+        com.google.zxing.qrcode.decoder.Version $r1;
+        java.lang.StringBuilder $r5;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 := @parameter1: com.google.zxing.qrcode.decoder.Version;
+
+        $r2 := @parameter2: com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
+        $r3 := @parameter3: java.util.Map;
+
+        $r4 = new com.google.zxing.common.BitSource;
+
+        specialinvoke $r4.<com.google.zxing.common.BitSource: void <init>(byte[])>($r0);
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>(int)>(50);
+
+        $r8 = new java.util.ArrayList;
+
+        specialinvoke $r8.<java.util.ArrayList: void <init>(int)>(1);
+
+        $r9 = null;
+
+        $r10 = null;
+
+        $z0 = 0;
+
+     label01:
+        $i0 = virtualinvoke $r4.<com.google.zxing.common.BitSource: int available()>();
+
+     label02:
+        if $i0 >= 4 goto label04;
+
+        $r11 = <com.google.zxing.qrcode.decoder.Mode: com.google.zxing.qrcode.decoder.Mode TERMINATOR>;
+
+     label03:
+        $r6 = $r11;
+
+        goto label06;
+
+     label04:
+        $i0 = virtualinvoke $r4.<com.google.zxing.common.BitSource: int readBits(int)>(4);
+
+        $r6 = staticinvoke <com.google.zxing.qrcode.decoder.Mode: com.google.zxing.qrcode.decoder.Mode forBits(int)>($i0);
+
+     label05:
+        $r11 = $r6;
+
+        goto label03;
+
+     label06:
+        $r12 = <com.google.zxing.qrcode.decoder.Mode: com.google.zxing.qrcode.decoder.Mode TERMINATOR>;
+
+        if $r11 == $r12 goto label40;
+
+        $r12 = <com.google.zxing.qrcode.decoder.Mode: com.google.zxing.qrcode.decoder.Mode FNC1_FIRST_POSITION>;
+
+        if $r11 == $r12 goto label39;
+
+        $r12 = <com.google.zxing.qrcode.decoder.Mode: com.google.zxing.qrcode.decoder.Mode FNC1_SECOND_POSITION>;
+
+        if $r11 != $r12 goto label07;
+
+        goto label39;
+
+     label07:
+        $r12 = <com.google.zxing.qrcode.decoder.Mode: com.google.zxing.qrcode.decoder.Mode STRUCTURED_APPEND>;
+
+        if $r11 != $r12 goto label14;
+
+     label08:
+        $i0 = virtualinvoke $r4.<com.google.zxing.common.BitSource: int available()>();
+
+     label09:
+        if $i0 < 16 goto label12;
+
+     label10:
+        virtualinvoke $r4.<com.google.zxing.common.BitSource: int readBits(int)>(16);
+
+     label11:
+        goto label40;
+
+     label12:
+        $r13 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+     label13:
+        throw $r13;
+
+     label14:
+        $r12 = <com.google.zxing.qrcode.decoder.Mode: com.google.zxing.qrcode.decoder.Mode ECI>;
+
+        if $r11 != $r12 goto label19;
+
+     label15:
+        $i0 = staticinvoke <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: int parseECIValue(com.google.zxing.common.BitSource)>($r4);
+
+        $r14 = staticinvoke <com.google.zxing.common.CharacterSetECI: com.google.zxing.common.CharacterSetECI getCharacterSetECIByValue(int)>($i0);
+
+     label16:
+        $r10 = $r14;
+
+        if $r14 == null goto label17;
+
+        goto label40;
+
+     label17:
+        $r13 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+     label18:
+        throw $r13;
+
+     label19:
+        $r12 = <com.google.zxing.qrcode.decoder.Mode: com.google.zxing.qrcode.decoder.Mode HANZI>;
+
+        if $r11 != $r12 goto label24;
+
+     label20:
+        $i0 = virtualinvoke $r4.<com.google.zxing.common.BitSource: int readBits(int)>(4);
+
+        $i1 = virtualinvoke $r11.<com.google.zxing.qrcode.decoder.Mode: int getCharacterCountBits(com.google.zxing.qrcode.decoder.Version)>($r1);
+
+        $i1 = virtualinvoke $r4.<com.google.zxing.common.BitSource: int readBits(int)>($i1);
+
+     label21:
+        if $i0 != 1 goto label40;
+
+     label22:
+        staticinvoke <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: void decodeHanziSegment(com.google.zxing.common.BitSource,java.lang.StringBuilder,int)>($r4, $r5, $i1);
+
+     label23:
+        goto label40;
+
+     label24:
+        $i0 = virtualinvoke $r11.<com.google.zxing.qrcode.decoder.Mode: int getCharacterCountBits(com.google.zxing.qrcode.decoder.Version)>($r1);
+
+        $i0 = virtualinvoke $r4.<com.google.zxing.common.BitSource: int readBits(int)>($i0);
+
+     label25:
+        $r12 = <com.google.zxing.qrcode.decoder.Mode: com.google.zxing.qrcode.decoder.Mode NUMERIC>;
+
+        if $r11 != $r12 goto label28;
+
+     label26:
+        staticinvoke <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: void decodeNumericSegment(com.google.zxing.common.BitSource,java.lang.StringBuilder,int)>($r4, $r5, $i0);
+
+     label27:
+        goto label40;
+
+     label28:
+        $r12 = <com.google.zxing.qrcode.decoder.Mode: com.google.zxing.qrcode.decoder.Mode ALPHANUMERIC>;
+
+        if $r11 != $r12 goto label31;
+
+     label29:
+        staticinvoke <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: void decodeAlphanumericSegment(com.google.zxing.common.BitSource,java.lang.StringBuilder,int,boolean)>($r4, $r5, $i0, $z0);
+
+     label30:
+        goto label40;
+
+     label31:
+        $r12 = <com.google.zxing.qrcode.decoder.Mode: com.google.zxing.qrcode.decoder.Mode BYTE>;
+
+        if $r11 != $r12 goto label34;
+
+     label32:
+        staticinvoke <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: void decodeByteSegment(com.google.zxing.common.BitSource,java.lang.StringBuilder,int,com.google.zxing.common.CharacterSetECI,java.util.Collection,java.util.Map)>($r4, $r5, $i0, $r10, $r8, $r3);
+
+     label33:
+        goto label40;
+
+     label34:
+        $r12 = <com.google.zxing.qrcode.decoder.Mode: com.google.zxing.qrcode.decoder.Mode KANJI>;
+
+        if $r11 != $r12 goto label37;
+
+     label35:
+        staticinvoke <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: void decodeKanjiSegment(com.google.zxing.common.BitSource,java.lang.StringBuilder,int)>($r4, $r5, $i0);
+
+     label36:
+        goto label40;
+
+     label37:
+        $r13 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+     label38:
+        throw $r13;
+
+     label39:
+        $z0 = 1;
+
+     label40:
+        $r11 = <com.google.zxing.qrcode.decoder.Mode: com.google.zxing.qrcode.decoder.Mode TERMINATOR>;
+
+        if $r6 != $r11 goto label01;
+
+        $r15 = new com.google.zxing.common.DecoderResult;
+
+        $r16 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $z0 = interfaceinvoke $r8.<java.util.List: boolean isEmpty()>();
+
+        if $z0 == 0 goto label41;
+
+        $r8 = null;
+
+     label41:
+        if $r2 != null goto label42;
+
+        goto label43;
+
+     label42:
+        $r9 = virtualinvoke $r2.<java.lang.Enum: java.lang.String toString()>();
+
+     label43:
+        specialinvoke $r15.<com.google.zxing.common.DecoderResult: void <init>(byte[],java.lang.String,java.util.List,java.lang.String)>($r0, $r16, $r8, $r9);
+
+        return $r15;
+
+     label44:
+        $r13 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        goto label45;
+
+     label45:
+        throw $r13;
+
+     label46:
+        $r7 := @caughtexception;
+
+        goto label44;
+
+        catch java.lang.IllegalArgumentException from label01 to label02 with label46;
+        catch java.lang.IllegalArgumentException from label04 to label05 with label46;
+        catch java.lang.IllegalArgumentException from label08 to label09 with label46;
+        catch java.lang.IllegalArgumentException from label10 to label11 with label46;
+        catch java.lang.IllegalArgumentException from label12 to label13 with label46;
+        catch java.lang.IllegalArgumentException from label15 to label16 with label46;
+        catch java.lang.IllegalArgumentException from label17 to label18 with label46;
+        catch java.lang.IllegalArgumentException from label20 to label21 with label46;
+        catch java.lang.IllegalArgumentException from label22 to label23 with label46;
+        catch java.lang.IllegalArgumentException from label24 to label25 with label46;
+        catch java.lang.IllegalArgumentException from label26 to label27 with label46;
+        catch java.lang.IllegalArgumentException from label29 to label30 with label46;
+        catch java.lang.IllegalArgumentException from label32 to label33 with label46;
+        catch java.lang.IllegalArgumentException from label35 to label36 with label46;
+        catch java.lang.IllegalArgumentException from label37 to label38 with label46;
+    }
+
+    public static void decodeAlphanumericSegment(com.google.zxing.common.BitSource, java.lang.StringBuilder, int, boolean)
+    {
+        char $c4;
+        int $i0, $i1, $i2, $i3;
+        java.lang.StringBuilder $r0;
+        com.google.zxing.FormatException $r2;
+        com.google.zxing.common.BitSource $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: com.google.zxing.common.BitSource;
+
+        $r0 := @parameter1: java.lang.StringBuilder;
+
+        $i0 := @parameter2: int;
+
+        $z0 := @parameter3: boolean;
+
+        $i1 = virtualinvoke $r0.<java.lang.StringBuilder: int length()>();
+
+     label1:
+        if $i0 <= 1 goto label3;
+
+        $i2 = virtualinvoke $r1.<com.google.zxing.common.BitSource: int available()>();
+
+        if $i2 < 11 goto label2;
+
+        $i2 = virtualinvoke $r1.<com.google.zxing.common.BitSource: int readBits(int)>(11);
+
+        $i3 = $i2 / 45;
+
+        $c4 = staticinvoke <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: char toAlphaNumericChar(int)>($i3);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c4);
+
+        $i2 = $i2 % 45;
+
+        $c4 = staticinvoke <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: char toAlphaNumericChar(int)>($i2);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c4);
+
+        $i2 = -2;
+
+        $i0 = $i0 + $i2;
+
+        goto label1;
+
+     label2:
+        $r2 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        throw $r2;
+
+     label3:
+        if $i0 != 1 goto label5;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.common.BitSource: int available()>();
+
+        if $i0 < 6 goto label4;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.common.BitSource: int readBits(int)>(6);
+
+        $c4 = staticinvoke <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: char toAlphaNumericChar(int)>($i0);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c4);
+
+        goto label5;
+
+     label4:
+        $r2 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        throw $r2;
+
+     label5:
+        if $z0 == 0 goto label9;
+
+     label6:
+        $i0 = virtualinvoke $r0.<java.lang.StringBuilder: int length()>();
+
+        if $i1 >= $i0 goto label9;
+
+        $c4 = virtualinvoke $r0.<java.lang.StringBuilder: char charAt(int)>($i1);
+
+        $i0 = (int) $c4;
+
+        if $i0 != 37 goto label8;
+
+        $i0 = virtualinvoke $r0.<java.lang.StringBuilder: int length()>();
+
+        $i0 = $i0 - 1;
+
+        if $i1 >= $i0 goto label7;
+
+        $i0 = $i1 + 1;
+
+        $c4 = virtualinvoke $r0.<java.lang.StringBuilder: char charAt(int)>($i0);
+
+        $i2 = (int) $c4;
+
+        if $i2 != 37 goto label7;
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder deleteCharAt(int)>($i0);
+
+        goto label8;
+
+     label7:
+        virtualinvoke $r0.<java.lang.StringBuilder: void setCharAt(int,char)>($i1, 29);
+
+     label8:
+        $i1 = $i1 + 1;
+
+        goto label6;
+
+     label9:
+        return;
+    }
+
+    public static void decodeByteSegment(com.google.zxing.common.BitSource, java.lang.StringBuilder, int, com.google.zxing.common.CharacterSetECI, java.util.Collection, java.util.Map)
+    {
+        byte[] $r6;
+        java.util.Collection $r2;
+        byte $b3;
+        java.util.Map $r3;
+        int $i0, $i1, $i2;
+        java.lang.StringBuilder $r0;
+        com.google.zxing.common.CharacterSetECI $r1;
+        java.lang.String $r7, $r8;
+        com.google.zxing.FormatException $r9;
+        java.io.UnsupportedEncodingException $r4;
+        com.google.zxing.common.BitSource $r5;
+
+        $r5 := @parameter0: com.google.zxing.common.BitSource;
+
+        $r0 := @parameter1: java.lang.StringBuilder;
+
+        $i0 := @parameter2: int;
+
+        $r1 := @parameter3: com.google.zxing.common.CharacterSetECI;
+
+        $r2 := @parameter4: java.util.Collection;
+
+        $r3 := @parameter5: java.util.Map;
+
+        $i1 = $i0 << 3;
+
+        $i2 = virtualinvoke $r5.<com.google.zxing.common.BitSource: int available()>();
+
+        if $i1 > $i2 goto label08;
+
+        $r6 = newarray (byte)[$i0];
+
+        $i1 = 0;
+
+     label01:
+        if $i1 >= $i0 goto label02;
+
+        $i2 = virtualinvoke $r5.<com.google.zxing.common.BitSource: int readBits(int)>(8);
+
+        $b3 = (byte) $i2;
+
+        $r6[$i1] = $b3;
+
+        $i1 = $i1 + 1;
+
+        goto label01;
+
+     label02:
+        if $r1 != null goto label03;
+
+        $r7 = staticinvoke <com.google.zxing.common.StringUtils: java.lang.String guessEncoding(byte[],java.util.Map)>($r6, $r3);
+
+        goto label04;
+
+     label03:
+        $r7 = virtualinvoke $r1.<java.lang.Enum: java.lang.String name()>();
+
+     label04:
+        $r8 = new java.lang.String;
+
+     label05:
+        specialinvoke $r8.<java.lang.String: void <init>(byte[],java.lang.String)>($r6, $r7);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+     label06:
+        interfaceinvoke $r2.<java.util.Collection: boolean add(java.lang.Object)>($r6);
+
+        return;
+
+     label07:
+        $r9 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        throw $r9;
+
+     label08:
+        $r9 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        goto label09;
+
+     label09:
+        throw $r9;
+
+     label10:
+        $r4 := @caughtexception;
+
+        goto label07;
+
+        catch java.io.UnsupportedEncodingException from label05 to label06 with label10;
+    }
+
+    public static void decodeHanziSegment(com.google.zxing.common.BitSource, java.lang.StringBuilder, int)
+    {
+        byte[] $r3;
+        char $c4;
+        byte $b5;
+        int $i0, $i1, $i2, $i3;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r4, $r6;
+        com.google.zxing.FormatException $r5;
+        java.io.UnsupportedEncodingException $r1;
+        com.google.zxing.common.BitSource $r2;
+
+        $r2 := @parameter0: com.google.zxing.common.BitSource;
+
+        $r0 := @parameter1: java.lang.StringBuilder;
+
+        $i0 := @parameter2: int;
+
+        $i1 = $i0 * 13;
+
+        $i2 = virtualinvoke $r2.<com.google.zxing.common.BitSource: int available()>();
+
+        if $i1 > $i2 goto label08;
+
+        $i1 = $i0 * 2;
+
+        $r3 = newarray (byte)[$i1];
+
+        $i1 = 0;
+
+     label01:
+        if $i0 <= 0 goto label04;
+
+        $i2 = virtualinvoke $r2.<com.google.zxing.common.BitSource: int readBits(int)>(13);
+
+        $i3 = $i2 / 96;
+
+        $i3 = $i3 << 8;
+
+        $i2 = $i2 % 96;
+
+        $i2 = $i2 | $i3;
+
+        if $i2 >= 959 goto label02;
+
+        $c4 = 41377;
+
+        goto label03;
+
+     label02:
+        $c4 = 42657;
+
+     label03:
+        $i3 = (int) $c4;
+
+        $i2 = $i2 + $i3;
+
+        $i3 = $i2 >> 8;
+
+        $i3 = $i3 & 255;
+
+        $b5 = (byte) $i3;
+
+        $r3[$i1] = $b5;
+
+        $i3 = $i1 + 1;
+
+        $i2 = $i2 & 255;
+
+        $b5 = (byte) $i2;
+
+        $r3[$i3] = $b5;
+
+        $i1 = $i1 + 2;
+
+        $i2 = -1;
+
+        $i0 = $i0 + $i2;
+
+        goto label01;
+
+     label04:
+        $r6 = new java.lang.String;
+
+        $r4 = $r6;
+
+     label05:
+        specialinvoke $r6.<java.lang.String: void <init>(byte[],java.lang.String)>($r3, "GB2312");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+     label06:
+        return;
+
+     label07:
+        $r5 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        throw $r5;
+
+     label08:
+        $r5 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        goto label09;
+
+     label09:
+        throw $r5;
+
+     label10:
+        $r1 := @caughtexception;
+
+        goto label07;
+
+        catch java.io.UnsupportedEncodingException from label05 to label06 with label10;
+    }
+
+    public static void decodeKanjiSegment(com.google.zxing.common.BitSource, java.lang.StringBuilder, int)
+    {
+        byte[] $r3;
+        char $c4;
+        byte $b5;
+        int $i0, $i1, $i2, $i3;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r4, $r6;
+        com.google.zxing.FormatException $r5;
+        java.io.UnsupportedEncodingException $r1;
+        com.google.zxing.common.BitSource $r2;
+
+        $r2 := @parameter0: com.google.zxing.common.BitSource;
+
+        $r0 := @parameter1: java.lang.StringBuilder;
+
+        $i0 := @parameter2: int;
+
+        $i1 = $i0 * 13;
+
+        $i2 = virtualinvoke $r2.<com.google.zxing.common.BitSource: int available()>();
+
+        if $i1 > $i2 goto label08;
+
+        $i1 = $i0 * 2;
+
+        $r3 = newarray (byte)[$i1];
+
+        $i1 = 0;
+
+     label01:
+        if $i0 <= 0 goto label04;
+
+        $i2 = virtualinvoke $r2.<com.google.zxing.common.BitSource: int readBits(int)>(13);
+
+        $i3 = $i2 / 192;
+
+        $i3 = $i3 << 8;
+
+        $i2 = $i2 % 192;
+
+        $i2 = $i2 | $i3;
+
+        if $i2 >= 7936 goto label02;
+
+        $c4 = 33088;
+
+        goto label03;
+
+     label02:
+        $c4 = 49472;
+
+     label03:
+        $i3 = (int) $c4;
+
+        $i2 = $i2 + $i3;
+
+        $i3 = $i2 >> 8;
+
+        $b5 = (byte) $i3;
+
+        $r3[$i1] = $b5;
+
+        $i3 = $i1 + 1;
+
+        $b5 = (byte) $i2;
+
+        $r3[$i3] = $b5;
+
+        $i1 = $i1 + 2;
+
+        $i2 = -1;
+
+        $i0 = $i0 + $i2;
+
+        goto label01;
+
+     label04:
+        $r6 = new java.lang.String;
+
+        $r4 = $r6;
+
+     label05:
+        specialinvoke $r6.<java.lang.String: void <init>(byte[],java.lang.String)>($r3, "SJIS");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+     label06:
+        return;
+
+     label07:
+        $r5 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        throw $r5;
+
+     label08:
+        $r5 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        goto label09;
+
+     label09:
+        throw $r5;
+
+     label10:
+        $r1 := @caughtexception;
+
+        goto label07;
+
+        catch java.io.UnsupportedEncodingException from label05 to label06 with label10;
+    }
+
+    public static void decodeNumericSegment(com.google.zxing.common.BitSource, java.lang.StringBuilder, int)
+    {
+        int $i0, $i1, $i2;
+        java.lang.StringBuilder $r0;
+        char $c3;
+        com.google.zxing.FormatException $r2;
+        com.google.zxing.common.BitSource $r1;
+
+        $r1 := @parameter0: com.google.zxing.common.BitSource;
+
+        $r0 := @parameter1: java.lang.StringBuilder;
+
+        $i0 := @parameter2: int;
+
+     label01:
+        if $i0 < 3 goto label04;
+
+        $i1 = virtualinvoke $r1.<com.google.zxing.common.BitSource: int available()>();
+
+        if $i1 < 10 goto label03;
+
+        $i1 = virtualinvoke $r1.<com.google.zxing.common.BitSource: int readBits(int)>(10);
+
+        if $i1 >= 1000 goto label02;
+
+        $i2 = $i1 / 100;
+
+        $c3 = staticinvoke <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: char toAlphaNumericChar(int)>($i2);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c3);
+
+        $i2 = $i1 / 10;
+
+        $i2 = $i2 % 10;
+
+        $c3 = staticinvoke <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: char toAlphaNumericChar(int)>($i2);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c3);
+
+        $i1 = $i1 % 10;
+
+        $c3 = staticinvoke <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: char toAlphaNumericChar(int)>($i1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c3);
+
+        $i1 = -3;
+
+        $i0 = $i0 + $i1;
+
+        goto label01;
+
+     label02:
+        $r2 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        throw $r2;
+
+     label03:
+        $r2 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        throw $r2;
+
+     label04:
+        if $i0 != 2 goto label07;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.common.BitSource: int available()>();
+
+        if $i0 < 7 goto label06;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.common.BitSource: int readBits(int)>(7);
+
+        if $i0 >= 100 goto label05;
+
+        $i1 = $i0 / 10;
+
+        $c3 = staticinvoke <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: char toAlphaNumericChar(int)>($i1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c3);
+
+        $i0 = $i0 % 10;
+
+        $c3 = staticinvoke <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: char toAlphaNumericChar(int)>($i0);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c3);
+
+        return;
+
+     label05:
+        $r2 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        throw $r2;
+
+     label06:
+        $r2 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        throw $r2;
+
+     label07:
+        if $i0 != 1 goto label10;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.common.BitSource: int available()>();
+
+        if $i0 < 4 goto label09;
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.common.BitSource: int readBits(int)>(4);
+
+        if $i0 >= 10 goto label08;
+
+        $c3 = staticinvoke <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: char toAlphaNumericChar(int)>($i0);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c3);
+
+        return;
+
+     label08:
+        $r2 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        throw $r2;
+
+     label09:
+        $r2 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        throw $r2;
+
+     label10:
+        return;
+    }
+
+    public static int parseECIValue(com.google.zxing.common.BitSource)
+    {
+        int $i0, $i1;
+        com.google.zxing.FormatException $r1;
+        com.google.zxing.common.BitSource $r0;
+
+        $r0 := @parameter0: com.google.zxing.common.BitSource;
+
+        $i0 = virtualinvoke $r0.<com.google.zxing.common.BitSource: int readBits(int)>(8);
+
+        $i1 = $i0 & 128;
+
+        if $i1 != 0 goto label1;
+
+        $i0 = $i0 & 127;
+
+        return $i0;
+
+     label1:
+        $i1 = $i0 & 192;
+
+        if $i1 != 128 goto label2;
+
+        $i1 = virtualinvoke $r0.<com.google.zxing.common.BitSource: int readBits(int)>(8);
+
+        $i0 = $i0 & 63;
+
+        $i0 = $i0 << 8;
+
+        $i0 = $i1 | $i0;
+
+        return $i0;
+
+     label2:
+        $i1 = $i0 & 224;
+
+        if $i1 != 192 goto label3;
+
+        $i1 = virtualinvoke $r0.<com.google.zxing.common.BitSource: int readBits(int)>(16);
+
+        $i0 = $i0 & 31;
+
+        $i0 = $i0 << 16;
+
+        $i0 = $i1 | $i0;
+
+        return $i0;
+
+     label3:
+        $r1 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        throw $r1;
+    }
+
+    public static char toAlphaNumericChar(int)
+    {
+        int $i0, $i1;
+        char[] $r0;
+        char $c2;
+        com.google.zxing.FormatException $r1;
+
+        $i1 := @parameter0: int;
+
+        $r0 = <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: char[] ALPHANUMERIC_CHARS>;
+
+        $i0 = lengthof $r0;
+
+        if $i1 >= $i0 goto label1;
+
+        $c2 = $r0[$i1];
+
+        return $c2;
+
+     label1:
+        $r1 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        throw $r1;
+    }
+}

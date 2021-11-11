@@ -1,0 +1,698 @@
+public abstract class com.google.protobuf.CodedInputStream extends java.lang.Object
+{
+    public static final int DEFAULT_BUFFER_SIZE;
+    public static final int DEFAULT_RECURSION_LIMIT;
+    public static final int DEFAULT_SIZE_LIMIT;
+    public int recursionDepth;
+    public int recursionLimit;
+    public boolean shouldDiscardUnknownFields;
+    public int sizeLimit;
+    public com.google.protobuf.CodedInputStreamReader wrapper;
+
+    public void <init>()
+    {
+        com.google.protobuf.CodedInputStream r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.protobuf.CodedInputStream: int recursionLimit> = 100;
+
+        r0.<com.google.protobuf.CodedInputStream: int sizeLimit> = 2147483647;
+
+        r0.<com.google.protobuf.CodedInputStream: boolean shouldDiscardUnknownFields> = 0;
+
+        return;
+    }
+
+    public void <init>(com.google.protobuf.CodedInputStream$1)
+    {
+        com.google.protobuf.CodedInputStream$1 $r1;
+        com.google.protobuf.CodedInputStream r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream;
+
+        $r1 := @parameter0: com.google.protobuf.CodedInputStream$1;
+
+        specialinvoke r0.<com.google.protobuf.CodedInputStream: void <init>()>();
+
+        return;
+    }
+
+    public static int decodeZigZag32(int)
+    {
+        int $i0, $i1;
+
+        $i1 := @parameter0: int;
+
+        $i0 = $i1 >>> 1;
+
+        $i1 = $i1 & 1;
+
+        $i1 = neg $i1;
+
+        $i1 = $i1 ^ $i0;
+
+        return $i1;
+    }
+
+    public static long decodeZigZag64(long)
+    {
+        long $l0, $l1;
+
+        $l0 := @parameter0: long;
+
+        $l1 = $l0 >>> 1;
+
+        $l0 = $l0 & 1L;
+
+        $l0 = neg $l0;
+
+        $l0 = $l0 ^ $l1;
+
+        return $l0;
+    }
+
+    public static com.google.protobuf.CodedInputStream newInstance(java.io.InputStream)
+    {
+        com.google.protobuf.CodedInputStream $r0;
+        java.io.InputStream $r1;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        $r0 = staticinvoke <com.google.protobuf.CodedInputStream: com.google.protobuf.CodedInputStream newInstance(java.io.InputStream,int)>($r1, 4096);
+
+        return $r0;
+    }
+
+    public static com.google.protobuf.CodedInputStream newInstance(java.io.InputStream, int)
+    {
+        byte[] $r3;
+        com.google.protobuf.CodedInputStream $r1;
+        com.google.protobuf.CodedInputStream$StreamDecoder $r0;
+        int $i0;
+        java.lang.IllegalArgumentException $r4;
+        java.io.InputStream $r2;
+
+        $r2 := @parameter0: java.io.InputStream;
+
+        $i0 := @parameter1: int;
+
+        if $i0 <= 0 goto label2;
+
+        if $r2 != null goto label1;
+
+        $r3 = <com.google.protobuf.Internal: byte[] EMPTY_BYTE_ARRAY>;
+
+        $r1 = staticinvoke <com.google.protobuf.CodedInputStream: com.google.protobuf.CodedInputStream newInstance(byte[])>($r3);
+
+        return $r1;
+
+     label1:
+        $r0 = new com.google.protobuf.CodedInputStream$StreamDecoder;
+
+        specialinvoke $r0.<com.google.protobuf.CodedInputStream$StreamDecoder: void <init>(java.io.InputStream,int,com.google.protobuf.CodedInputStream$1)>($r2, $i0, null);
+
+        return $r0;
+
+     label2:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("bufferSize must be > 0");
+
+        throw $r4;
+    }
+
+    public static com.google.protobuf.CodedInputStream newInstance(java.lang.Iterable)
+    {
+        com.google.protobuf.CodedInputStream $r2;
+        com.google.protobuf.IterableByteBufferInputStream $r1;
+        java.lang.Iterable $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.Iterable;
+
+        $z0 = staticinvoke <com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: boolean isSupported()>();
+
+        if $z0 != 0 goto label1;
+
+        $r1 = new com.google.protobuf.IterableByteBufferInputStream;
+
+        specialinvoke $r1.<com.google.protobuf.IterableByteBufferInputStream: void <init>(java.lang.Iterable)>($r0);
+
+        $r2 = staticinvoke <com.google.protobuf.CodedInputStream: com.google.protobuf.CodedInputStream newInstance(java.io.InputStream)>($r1);
+
+        return $r2;
+
+     label1:
+        $r2 = staticinvoke <com.google.protobuf.CodedInputStream: com.google.protobuf.CodedInputStream newInstance(java.lang.Iterable,boolean)>($r0, 0);
+
+        return $r2;
+    }
+
+    public static com.google.protobuf.CodedInputStream newInstance(java.lang.Iterable, boolean)
+    {
+        java.util.Iterator $r1;
+        com.google.protobuf.IterableByteBufferInputStream $r5;
+        java.lang.Iterable $r0;
+        java.nio.ByteBuffer $r3;
+        byte $b0;
+        com.google.protobuf.CodedInputStream $r6;
+        int $i1, $i2;
+        com.google.protobuf.CodedInputStream$IterableDirectByteBufferDecoder $r4;
+        java.lang.Object $r2;
+        boolean $z0, $z1;
+
+        $r0 := @parameter0: java.lang.Iterable;
+
+        $z0 := @parameter1: boolean;
+
+        $r1 = interfaceinvoke $r0.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+        $b0 = 0;
+
+        $i1 = 0;
+
+     label1:
+        $z1 = interfaceinvoke $r1.<java.util.Iterator: boolean hasNext()>();
+
+        if $z1 == 0 goto label4;
+
+        $r2 = interfaceinvoke $r1.<java.util.Iterator: java.lang.Object next()>();
+
+        $r3 = (java.nio.ByteBuffer) $r2;
+
+        $i2 = virtualinvoke $r3.<java.nio.ByteBuffer: int remaining()>();
+
+        $i1 = $i1 + $i2;
+
+        $z1 = virtualinvoke $r3.<java.nio.ByteBuffer: boolean hasArray()>();
+
+        if $z1 == 0 goto label2;
+
+        $b0 = $b0 | 1;
+
+        goto label1;
+
+     label2:
+        $z1 = virtualinvoke $r3.<java.nio.ByteBuffer: boolean isDirect()>();
+
+        if $z1 == 0 goto label3;
+
+        $b0 = $b0 | 2;
+
+        goto label1;
+
+     label3:
+        $b0 = $b0 | 4;
+
+        goto label1;
+
+     label4:
+        if $b0 != 2 goto label5;
+
+        $r4 = new com.google.protobuf.CodedInputStream$IterableDirectByteBufferDecoder;
+
+        specialinvoke $r4.<com.google.protobuf.CodedInputStream$IterableDirectByteBufferDecoder: void <init>(java.lang.Iterable,int,boolean,com.google.protobuf.CodedInputStream$1)>($r0, $i1, $z0, null);
+
+        return $r4;
+
+     label5:
+        $r5 = new com.google.protobuf.IterableByteBufferInputStream;
+
+        specialinvoke $r5.<com.google.protobuf.IterableByteBufferInputStream: void <init>(java.lang.Iterable)>($r0);
+
+        $r6 = staticinvoke <com.google.protobuf.CodedInputStream: com.google.protobuf.CodedInputStream newInstance(java.io.InputStream)>($r5);
+
+        return $r6;
+    }
+
+    public static com.google.protobuf.CodedInputStream newInstance(java.nio.ByteBuffer)
+    {
+        com.google.protobuf.CodedInputStream $r0;
+        java.nio.ByteBuffer $r1;
+
+        $r1 := @parameter0: java.nio.ByteBuffer;
+
+        $r0 = staticinvoke <com.google.protobuf.CodedInputStream: com.google.protobuf.CodedInputStream newInstance(java.nio.ByteBuffer,boolean)>($r1, 0);
+
+        return $r0;
+    }
+
+    public static com.google.protobuf.CodedInputStream newInstance(java.nio.ByteBuffer, boolean)
+    {
+        byte[] $r1;
+        java.nio.ByteBuffer $r0;
+        com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder $r3;
+        com.google.protobuf.CodedInputStream $r2;
+        int $i0, $i1;
+        boolean $z0, $z1;
+
+        $r0 := @parameter0: java.nio.ByteBuffer;
+
+        $z0 := @parameter1: boolean;
+
+        $z1 = virtualinvoke $r0.<java.nio.ByteBuffer: boolean hasArray()>();
+
+        if $z1 == 0 goto label1;
+
+        $r1 = virtualinvoke $r0.<java.nio.ByteBuffer: byte[] array()>();
+
+        $i0 = virtualinvoke $r0.<java.nio.ByteBuffer: int arrayOffset()>();
+
+        $i1 = virtualinvoke $r0.<java.nio.ByteBuffer: int position()>();
+
+        $i0 = $i0 + $i1;
+
+        $i1 = virtualinvoke $r0.<java.nio.ByteBuffer: int remaining()>();
+
+        $r2 = staticinvoke <com.google.protobuf.CodedInputStream: com.google.protobuf.CodedInputStream newInstance(byte[],int,int,boolean)>($r1, $i0, $i1, $z0);
+
+        return $r2;
+
+     label1:
+        $z1 = virtualinvoke $r0.<java.nio.ByteBuffer: boolean isDirect()>();
+
+        if $z1 == 0 goto label2;
+
+        $z1 = staticinvoke <com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: boolean isSupported()>();
+
+        if $z1 == 0 goto label2;
+
+        $r3 = new com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder;
+
+        specialinvoke $r3.<com.google.protobuf.CodedInputStream$UnsafeDirectNioDecoder: void <init>(java.nio.ByteBuffer,boolean,com.google.protobuf.CodedInputStream$1)>($r0, $z0, null);
+
+        return $r3;
+
+     label2:
+        $i0 = virtualinvoke $r0.<java.nio.ByteBuffer: int remaining()>();
+
+        $r1 = newarray (byte)[$i0];
+
+        $r0 = virtualinvoke $r0.<java.nio.ByteBuffer: java.nio.ByteBuffer duplicate()>();
+
+        virtualinvoke $r0.<java.nio.ByteBuffer: java.nio.ByteBuffer get(byte[])>($r1);
+
+        $i0 = lengthof $r1;
+
+        $r2 = staticinvoke <com.google.protobuf.CodedInputStream: com.google.protobuf.CodedInputStream newInstance(byte[],int,int,boolean)>($r1, 0, $i0, 1);
+
+        return $r2;
+    }
+
+    public static com.google.protobuf.CodedInputStream newInstance(byte[])
+    {
+        int $i0;
+        byte[] $r1;
+        com.google.protobuf.CodedInputStream $r0;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 = lengthof $r1;
+
+        $r0 = staticinvoke <com.google.protobuf.CodedInputStream: com.google.protobuf.CodedInputStream newInstance(byte[],int,int)>($r1, 0, $i0);
+
+        return $r0;
+    }
+
+    public static com.google.protobuf.CodedInputStream newInstance(byte[], int, int)
+    {
+        byte[] $r1;
+        com.google.protobuf.CodedInputStream $r0;
+        int $i0, $i1;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r0 = staticinvoke <com.google.protobuf.CodedInputStream: com.google.protobuf.CodedInputStream newInstance(byte[],int,int,boolean)>($r1, $i0, $i1, 0);
+
+        return $r0;
+    }
+
+    public static com.google.protobuf.CodedInputStream newInstance(byte[], int, int, boolean)
+    {
+        byte[] $r1;
+        com.google.protobuf.InvalidProtocolBufferException $r2;
+        int $i0, $i1;
+        com.google.protobuf.CodedInputStream$ArrayDecoder $r0;
+        java.lang.IllegalArgumentException $r3;
+        boolean $z0;
+
+        $r1 := @parameter0: byte[];
+
+        $i1 := @parameter1: int;
+
+        $i0 := @parameter2: int;
+
+        $z0 := @parameter3: boolean;
+
+        $r0 = new com.google.protobuf.CodedInputStream$ArrayDecoder;
+
+        specialinvoke $r0.<com.google.protobuf.CodedInputStream$ArrayDecoder: void <init>(byte[],int,int,boolean,com.google.protobuf.CodedInputStream$1)>($r1, $i1, $i0, $z0, null);
+
+     label1:
+        virtualinvoke $r0.<com.google.protobuf.CodedInputStream$ArrayDecoder: int pushLimit(int)>($i0);
+
+     label2:
+        return $r0;
+
+     label3:
+        $r2 := @caughtexception;
+
+        $r3 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r3.<java.lang.IllegalArgumentException: void <init>(java.lang.Throwable)>($r2);
+
+        throw $r3;
+
+        catch com.google.protobuf.InvalidProtocolBufferException from label1 to label2 with label3;
+    }
+
+    public static int readRawVarint32(int, java.io.InputStream)
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r1;
+        int $i0, $i1, $i2, $i3;
+        java.io.InputStream $r0;
+
+        $i0 := @parameter0: int;
+
+        $r0 := @parameter1: java.io.InputStream;
+
+        $i1 = $i0 & 128;
+
+        if $i1 != 0 goto label1;
+
+        return $i0;
+
+     label1:
+        $i0 = $i0 & 127;
+
+        $i1 = 7;
+
+     label2:
+        if $i1 >= 32 goto label5;
+
+        $i2 = virtualinvoke $r0.<java.io.InputStream: int read()>();
+
+        $i3 = -1;
+
+        if $i2 == $i3 goto label4;
+
+        $i3 = $i2 & 127;
+
+        $i3 = $i3 << $i1;
+
+        $i0 = $i0 | $i3;
+
+        $i2 = $i2 & 128;
+
+        if $i2 != 0 goto label3;
+
+        return $i0;
+
+     label3:
+        $i1 = $i1 + 7;
+
+        goto label2;
+
+     label4:
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException truncatedMessage()>();
+
+        throw $r1;
+
+     label5:
+        if $i1 >= 64 goto label8;
+
+        $i2 = virtualinvoke $r0.<java.io.InputStream: int read()>();
+
+        $i3 = -1;
+
+        if $i2 == $i3 goto label7;
+
+        $i2 = $i2 & 128;
+
+        if $i2 != 0 goto label6;
+
+        return $i0;
+
+     label6:
+        $i1 = $i1 + 7;
+
+        goto label5;
+
+     label7:
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException truncatedMessage()>();
+
+        throw $r1;
+
+     label8:
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException malformedVarint()>();
+
+        goto label9;
+
+     label9:
+        throw $r1;
+    }
+
+    public static int readRawVarint32(java.io.InputStream)
+    {
+        com.google.protobuf.InvalidProtocolBufferException $r1;
+        int $i0, $i1;
+        java.io.InputStream $r0;
+
+        $r0 := @parameter0: java.io.InputStream;
+
+        $i0 = virtualinvoke $r0.<java.io.InputStream: int read()>();
+
+        $i1 = -1;
+
+        if $i0 == $i1 goto label1;
+
+        $i0 = staticinvoke <com.google.protobuf.CodedInputStream: int readRawVarint32(int,java.io.InputStream)>($i0, $r0);
+
+        return $i0;
+
+     label1:
+        $r1 = staticinvoke <com.google.protobuf.InvalidProtocolBufferException: com.google.protobuf.InvalidProtocolBufferException truncatedMessage()>();
+
+        throw $r1;
+    }
+
+    public abstract void checkLastTagWas(int);
+
+    public final void discardUnknownFields()
+    {
+        com.google.protobuf.CodedInputStream r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream;
+
+        r0.<com.google.protobuf.CodedInputStream: boolean shouldDiscardUnknownFields> = 1;
+
+        return;
+    }
+
+    public abstract void enableAliasing(boolean);
+
+    public abstract int getBytesUntilLimit();
+
+    public abstract int getLastTag();
+
+    public abstract int getTotalBytesRead();
+
+    public abstract boolean isAtEnd();
+
+    public abstract void popLimit(int);
+
+    public abstract int pushLimit(int);
+
+    public abstract boolean readBool();
+
+    public abstract byte[] readByteArray();
+
+    public abstract java.nio.ByteBuffer readByteBuffer();
+
+    public abstract com.google.protobuf.ByteString readBytes();
+
+    public abstract double readDouble();
+
+    public abstract int readEnum();
+
+    public abstract int readFixed32();
+
+    public abstract long readFixed64();
+
+    public abstract float readFloat();
+
+    public abstract com.google.protobuf.MessageLite readGroup(int, com.google.protobuf.Parser, com.google.protobuf.ExtensionRegistryLite);
+
+    public abstract void readGroup(int, com.google.protobuf.MessageLite$Builder, com.google.protobuf.ExtensionRegistryLite);
+
+    public abstract int readInt32();
+
+    public abstract long readInt64();
+
+    public abstract com.google.protobuf.MessageLite readMessage(com.google.protobuf.Parser, com.google.protobuf.ExtensionRegistryLite);
+
+    public abstract void readMessage(com.google.protobuf.MessageLite$Builder, com.google.protobuf.ExtensionRegistryLite);
+
+    public abstract byte readRawByte();
+
+    public abstract byte[] readRawBytes(int);
+
+    public abstract int readRawLittleEndian32();
+
+    public abstract long readRawLittleEndian64();
+
+    public abstract int readRawVarint32();
+
+    public abstract long readRawVarint64();
+
+    public abstract long readRawVarint64SlowPath();
+
+    public abstract int readSFixed32();
+
+    public abstract long readSFixed64();
+
+    public abstract int readSInt32();
+
+    public abstract long readSInt64();
+
+    public abstract java.lang.String readString();
+
+    public abstract java.lang.String readStringRequireUtf8();
+
+    public abstract int readTag();
+
+    public abstract int readUInt32();
+
+    public abstract long readUInt64();
+
+    public abstract void readUnknownGroup(int, com.google.protobuf.MessageLite$Builder);
+
+    public abstract void resetSizeCounter();
+
+    public final int setRecursionLimit(int)
+    {
+        com.google.protobuf.CodedInputStream r0;
+        int $i0, i1;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2;
+        java.lang.IllegalArgumentException $r3;
+
+        r0 := @this: com.google.protobuf.CodedInputStream;
+
+        $i0 := @parameter0: int;
+
+        if $i0 < 0 goto label1;
+
+        i1 = r0.<com.google.protobuf.CodedInputStream: int recursionLimit>;
+
+        r0.<com.google.protobuf.CodedInputStream: int recursionLimit> = $i0;
+
+        return i1;
+
+     label1:
+        $r3 = new java.lang.IllegalArgumentException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Recursion limit cannot be negative: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r2);
+
+        throw $r3;
+    }
+
+    public final int setSizeLimit(int)
+    {
+        com.google.protobuf.CodedInputStream r0;
+        int $i0, i1;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2;
+        java.lang.IllegalArgumentException $r3;
+
+        r0 := @this: com.google.protobuf.CodedInputStream;
+
+        $i0 := @parameter0: int;
+
+        if $i0 < 0 goto label1;
+
+        i1 = r0.<com.google.protobuf.CodedInputStream: int sizeLimit>;
+
+        r0.<com.google.protobuf.CodedInputStream: int sizeLimit> = $i0;
+
+        return i1;
+
+     label1:
+        $r3 = new java.lang.IllegalArgumentException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Size limit cannot be negative: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r2);
+
+        throw $r3;
+    }
+
+    public final boolean shouldDiscardUnknownFields()
+    {
+        com.google.protobuf.CodedInputStream r0;
+        boolean z0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream;
+
+        z0 = r0.<com.google.protobuf.CodedInputStream: boolean shouldDiscardUnknownFields>;
+
+        return z0;
+    }
+
+    public abstract boolean skipField(int);
+
+    public abstract boolean skipField(int, com.google.protobuf.CodedOutputStream);
+
+    public abstract void skipMessage();
+
+    public abstract void skipMessage(com.google.protobuf.CodedOutputStream);
+
+    public abstract void skipRawBytes(int);
+
+    public final void unsetDiscardUnknownFields()
+    {
+        com.google.protobuf.CodedInputStream r0;
+
+        r0 := @this: com.google.protobuf.CodedInputStream;
+
+        r0.<com.google.protobuf.CodedInputStream: boolean shouldDiscardUnknownFields> = 0;
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.protobuf.CodedInputStream: int DEFAULT_SIZE_LIMIT> = 2147483647;
+
+        <com.google.protobuf.CodedInputStream: int DEFAULT_RECURSION_LIMIT> = 100;
+
+        <com.google.protobuf.CodedInputStream: int DEFAULT_BUFFER_SIZE> = 4096;
+
+        return;
+    }
+}

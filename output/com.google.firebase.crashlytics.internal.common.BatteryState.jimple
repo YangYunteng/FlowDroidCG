@@ -1,0 +1,215 @@
+public class com.google.firebase.crashlytics.internal.common.BatteryState extends java.lang.Object
+{
+    public static final int VELOCITY_CHARGING;
+    public static final int VELOCITY_FULL;
+    public static final int VELOCITY_UNPLUGGED;
+    public final java.lang.Float level;
+    public final boolean powerConnected;
+
+    public void <init>(java.lang.Float, boolean)
+    {
+        java.lang.Float $r1;
+        com.google.firebase.crashlytics.internal.common.BatteryState r0;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.BatteryState;
+
+        $r1 := @parameter0: java.lang.Float;
+
+        $z0 := @parameter1: boolean;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.crashlytics.internal.common.BatteryState: boolean powerConnected> = $z0;
+
+        r0.<com.google.firebase.crashlytics.internal.common.BatteryState: java.lang.Float level> = $r1;
+
+        return;
+    }
+
+    public static com.google.firebase.crashlytics.internal.common.BatteryState get(android.content.Context)
+    {
+        android.content.Context $r0;
+        java.lang.Float $r2;
+        com.google.firebase.crashlytics.internal.common.BatteryState $r4;
+        android.content.IntentFilter $r1;
+        android.content.Intent $r3;
+        boolean $z0;
+
+        $r0 := @parameter0: android.content.Context;
+
+        $r1 = new android.content.IntentFilter;
+
+        specialinvoke $r1.<android.content.IntentFilter: void <init>(java.lang.String)>("android.intent.action.BATTERY_CHANGED");
+
+        $r2 = null;
+
+        $r3 = virtualinvoke $r0.<android.content.Context: android.content.Intent registerReceiver(android.content.BroadcastReceiver,android.content.IntentFilter)>(null, $r1);
+
+        if $r3 == null goto label1;
+
+        $z0 = staticinvoke <com.google.firebase.crashlytics.internal.common.BatteryState: boolean isPowerConnected(android.content.Intent)>($r3);
+
+        $r2 = staticinvoke <com.google.firebase.crashlytics.internal.common.BatteryState: java.lang.Float getLevel(android.content.Intent)>($r3);
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        $r4 = new com.google.firebase.crashlytics.internal.common.BatteryState;
+
+        specialinvoke $r4.<com.google.firebase.crashlytics.internal.common.BatteryState: void <init>(java.lang.Float,boolean)>($r2, $z0);
+
+        return $r4;
+    }
+
+    public static java.lang.Float getLevel(android.content.Intent)
+    {
+        java.lang.Float $r1;
+        int $i0, $i1, $i2;
+        float $f0, $f1;
+        android.content.Intent $r0;
+
+        $r0 := @parameter0: android.content.Intent;
+
+        $i0 = -1;
+
+        $i0 = virtualinvoke $r0.<android.content.Intent: int getIntExtra(java.lang.String,int)>("level", $i0);
+
+        $i1 = -1;
+
+        $i1 = virtualinvoke $r0.<android.content.Intent: int getIntExtra(java.lang.String,int)>("scale", $i1);
+
+        $i2 = -1;
+
+        if $i0 == $i2 goto label2;
+
+        $i2 = -1;
+
+        if $i1 != $i2 goto label1;
+
+        goto label2;
+
+     label1:
+        $f0 = (float) $i0;
+
+        $f1 = (float) $i1;
+
+        $f0 = $f0 / $f1;
+
+        $r1 = staticinvoke <java.lang.Float: java.lang.Float valueOf(float)>($f0);
+
+        return $r1;
+
+     label2:
+        return null;
+    }
+
+    public static boolean isPowerConnected(android.content.Intent)
+    {
+        int $i0, $i1;
+        android.content.Intent $r0;
+
+        $r0 := @parameter0: android.content.Intent;
+
+        $i0 = -1;
+
+        $i0 = virtualinvoke $r0.<android.content.Intent: int getIntExtra(java.lang.String,int)>("status", $i0);
+
+        $i1 = -1;
+
+        if $i0 != $i1 goto label1;
+
+        return 0;
+
+     label1:
+        if $i0 == 2 goto label2;
+
+        if $i0 != 5 goto label3;
+
+     label2:
+        return 1;
+
+     label3:
+        return 0;
+    }
+
+    public java.lang.Float getBatteryLevel()
+    {
+        java.lang.Float r1;
+        com.google.firebase.crashlytics.internal.common.BatteryState r0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.BatteryState;
+
+        r1 = r0.<com.google.firebase.crashlytics.internal.common.BatteryState: java.lang.Float level>;
+
+        return r1;
+    }
+
+    public int getBatteryVelocity()
+    {
+        java.lang.Float $r1;
+        com.google.firebase.crashlytics.internal.common.BatteryState r0;
+        byte $b0;
+        int $i1;
+        float $f0;
+        boolean $z0;
+        double $d0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.BatteryState;
+
+        $z0 = r0.<com.google.firebase.crashlytics.internal.common.BatteryState: boolean powerConnected>;
+
+        if $z0 == 0 goto label3;
+
+        $r1 = r0.<com.google.firebase.crashlytics.internal.common.BatteryState: java.lang.Float level>;
+
+        if $r1 != null goto label1;
+
+        goto label3;
+
+     label1:
+        $f0 = virtualinvoke $r1.<java.lang.Float: float floatValue()>();
+
+        $d0 = (double) $f0;
+
+        $b0 = $d0 cmpg 0.99;
+
+        $i1 = (int) $b0;
+
+        if $i1 >= 0 goto label2;
+
+        return 2;
+
+     label2:
+        return 3;
+
+     label3:
+        return 1;
+    }
+
+    public boolean isPowerConnected()
+    {
+        com.google.firebase.crashlytics.internal.common.BatteryState r0;
+        boolean z0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.BatteryState;
+
+        z0 = r0.<com.google.firebase.crashlytics.internal.common.BatteryState: boolean powerConnected>;
+
+        return z0;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.firebase.crashlytics.internal.common.BatteryState: int VELOCITY_UNPLUGGED> = 1;
+
+        <com.google.firebase.crashlytics.internal.common.BatteryState: int VELOCITY_FULL> = 3;
+
+        <com.google.firebase.crashlytics.internal.common.BatteryState: int VELOCITY_CHARGING> = 2;
+
+        return;
+    }
+}

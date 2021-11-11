@@ -1,0 +1,614 @@
+public final class com.google.zxing.client.result.CalendarParsedResult extends com.google.zxing.client.result.ParsedResult
+{
+    public static final java.text.DateFormat DATE_FORMAT;
+    public static final java.util.regex.Pattern DATE_TIME;
+    public static final java.text.DateFormat DATE_TIME_FORMAT;
+    public static final java.util.regex.Pattern RFC2445_DURATION;
+    public static final long[] RFC2445_DURATION_FIELD_UNITS;
+    public final java.lang.String[] attendees;
+    public final java.lang.String description;
+    public final java.util.Date end;
+    public final boolean endAllDay;
+    public final double latitude;
+    public final java.lang.String location;
+    public final double longitude;
+    public final java.lang.String organizer;
+    public final java.util.Date start;
+    public final boolean startAllDay;
+    public final java.lang.String summary;
+
+    static void <clinit>()
+    {
+        long[] $r1;
+        java.util.Locale $r3;
+        java.util.TimeZone $r5;
+        java.text.SimpleDateFormat $r2;
+        java.util.regex.Pattern $r0;
+        java.text.DateFormat $r4;
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>("P(?:(\\d+)W)?(?:(\\d+)D)?(?:T(?:(\\d+)H)?(?:(\\d+)M)?(?:(\\d+)S)?)?");
+
+        <com.google.zxing.client.result.CalendarParsedResult: java.util.regex.Pattern RFC2445_DURATION> = $r0;
+
+        $r1 = newarray (long)[5];
+
+        $r1[0] = 604800000L;
+
+        $r1[1] = 86400000L;
+
+        $r1[2] = 3600000L;
+
+        $r1[3] = 60000L;
+
+        $r1[4] = 1000L;
+
+        <com.google.zxing.client.result.CalendarParsedResult: long[] RFC2445_DURATION_FIELD_UNITS> = $r1;
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>("[0-9]{8}(T[0-9]{6}Z?)?");
+
+        <com.google.zxing.client.result.CalendarParsedResult: java.util.regex.Pattern DATE_TIME> = $r0;
+
+        $r2 = new java.text.SimpleDateFormat;
+
+        $r3 = <java.util.Locale: java.util.Locale ENGLISH>;
+
+        specialinvoke $r2.<java.text.SimpleDateFormat: void <init>(java.lang.String,java.util.Locale)>("yyyyMMdd", $r3);
+
+        <com.google.zxing.client.result.CalendarParsedResult: java.text.DateFormat DATE_FORMAT> = $r2;
+
+        $r4 = <com.google.zxing.client.result.CalendarParsedResult: java.text.DateFormat DATE_FORMAT>;
+
+        $r5 = staticinvoke <java.util.TimeZone: java.util.TimeZone getTimeZone(java.lang.String)>("GMT");
+
+        virtualinvoke $r4.<java.text.DateFormat: void setTimeZone(java.util.TimeZone)>($r5);
+
+        $r2 = new java.text.SimpleDateFormat;
+
+        $r3 = <java.util.Locale: java.util.Locale ENGLISH>;
+
+        specialinvoke $r2.<java.text.SimpleDateFormat: void <init>(java.lang.String,java.util.Locale)>("yyyyMMdd\'T\'HHmmss", $r3);
+
+        <com.google.zxing.client.result.CalendarParsedResult: java.text.DateFormat DATE_TIME_FORMAT> = $r2;
+
+        return;
+    }
+
+    public void <init>(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String[], java.lang.String, double, double)
+    {
+        com.google.zxing.client.result.CalendarParsedResult r0;
+        java.util.Date $r10, $r11, $r14;
+        java.lang.String[] $r7;
+        long $l0, $l2;
+        byte $b1;
+        int $i3;
+        java.lang.String $r1, $r2, $r3, $r4, $r5, $r6, $r8;
+        java.text.ParseException $r12, $r13;
+        com.google.zxing.client.result.ParsedResultType $r9;
+        double $d0, $d1;
+        boolean $z0, $z1;
+        java.lang.IllegalArgumentException $r15;
+
+        r0 := @this: com.google.zxing.client.result.CalendarParsedResult;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: java.lang.String;
+
+        $r4 := @parameter3: java.lang.String;
+
+        $r5 := @parameter4: java.lang.String;
+
+        $r6 := @parameter5: java.lang.String;
+
+        $r7 := @parameter6: java.lang.String[];
+
+        $r8 := @parameter7: java.lang.String;
+
+        $d0 := @parameter8: double;
+
+        $d1 := @parameter9: double;
+
+        $r9 = <com.google.zxing.client.result.ParsedResultType: com.google.zxing.client.result.ParsedResultType CALENDAR>;
+
+        specialinvoke r0.<com.google.zxing.client.result.ParsedResult: void <init>(com.google.zxing.client.result.ParsedResultType)>($r9);
+
+        r0.<com.google.zxing.client.result.CalendarParsedResult: java.lang.String summary> = $r1;
+
+     label01:
+        $r10 = staticinvoke <com.google.zxing.client.result.CalendarParsedResult: java.util.Date parseDate(java.lang.String)>($r2);
+
+     label02:
+        r0.<com.google.zxing.client.result.CalendarParsedResult: java.util.Date start> = $r10;
+
+        if $r3 != null goto label05;
+
+        $l0 = staticinvoke <com.google.zxing.client.result.CalendarParsedResult: long parseDurationMS(java.lang.CharSequence)>($r4);
+
+        $b1 = $l0 cmp 0L;
+
+        $i3 = (int) $b1;
+
+        if $i3 >= 0 goto label03;
+
+        $r10 = null;
+
+        goto label04;
+
+     label03:
+        $r14 = new java.util.Date;
+
+        $r10 = $r14;
+
+        $r11 = r0.<com.google.zxing.client.result.CalendarParsedResult: java.util.Date start>;
+
+        $l2 = virtualinvoke $r11.<java.util.Date: long getTime()>();
+
+        $l0 = $l2 + $l0;
+
+        specialinvoke $r14.<java.util.Date: void <init>(long)>($l0);
+
+     label04:
+        r0.<com.google.zxing.client.result.CalendarParsedResult: java.util.Date end> = $r10;
+
+        goto label07;
+
+     label05:
+        $r10 = staticinvoke <com.google.zxing.client.result.CalendarParsedResult: java.util.Date parseDate(java.lang.String)>($r3);
+
+     label06:
+        r0.<com.google.zxing.client.result.CalendarParsedResult: java.util.Date end> = $r10;
+
+     label07:
+        $i3 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        $z0 = 0;
+
+        if $i3 != 8 goto label08;
+
+        $z1 = 1;
+
+        goto label09;
+
+     label08:
+        $z1 = 0;
+
+     label09:
+        r0.<com.google.zxing.client.result.CalendarParsedResult: boolean startAllDay> = $z1;
+
+        if $r3 == null goto label10;
+
+        $i3 = virtualinvoke $r3.<java.lang.String: int length()>();
+
+        if $i3 != 8 goto label10;
+
+        $z0 = 1;
+
+     label10:
+        r0.<com.google.zxing.client.result.CalendarParsedResult: boolean endAllDay> = $z0;
+
+        r0.<com.google.zxing.client.result.CalendarParsedResult: java.lang.String location> = $r5;
+
+        r0.<com.google.zxing.client.result.CalendarParsedResult: java.lang.String organizer> = $r6;
+
+        r0.<com.google.zxing.client.result.CalendarParsedResult: java.lang.String[] attendees> = $r7;
+
+        r0.<com.google.zxing.client.result.CalendarParsedResult: java.lang.String description> = $r8;
+
+        r0.<com.google.zxing.client.result.CalendarParsedResult: double latitude> = $d0;
+
+        r0.<com.google.zxing.client.result.CalendarParsedResult: double longitude> = $d1;
+
+        return;
+
+     label11:
+        $r12 := @caughtexception;
+
+        $r15 = new java.lang.IllegalArgumentException;
+
+        $r1 = virtualinvoke $r12.<java.text.ParseException: java.lang.String toString()>();
+
+        specialinvoke $r15.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r1);
+
+        throw $r15;
+
+     label12:
+        $r13 := @caughtexception;
+
+        $r15 = new java.lang.IllegalArgumentException;
+
+        $r1 = virtualinvoke $r13.<java.text.ParseException: java.lang.String toString()>();
+
+        specialinvoke $r15.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r1);
+
+        throw $r15;
+
+        catch java.text.ParseException from label01 to label02 with label12;
+        catch java.text.ParseException from label05 to label06 with label11;
+    }
+
+    public static java.lang.String format(boolean, java.util.Date)
+    {
+        java.util.Date $r0;
+        java.lang.String $r2;
+        java.text.DateFormat $r1;
+        boolean $z0;
+
+        $z0 := @parameter0: boolean;
+
+        $r0 := @parameter1: java.util.Date;
+
+        if $r0 != null goto label1;
+
+        return null;
+
+     label1:
+        if $z0 == 0 goto label2;
+
+        $r1 = staticinvoke <java.text.DateFormat: java.text.DateFormat getDateInstance(int)>(2);
+
+        goto label3;
+
+     label2:
+        $r1 = staticinvoke <java.text.DateFormat: java.text.DateFormat getDateTimeInstance(int,int)>(2, 2);
+
+     label3:
+        $r2 = virtualinvoke $r1.<java.text.DateFormat: java.lang.String format(java.util.Date)>($r0);
+
+        return $r2;
+    }
+
+    public static java.util.Date parseDate(java.lang.String)
+    {
+        java.util.GregorianCalendar $r5, $r6;
+        java.util.Date $r4, $r7;
+        long $l0, $l3;
+        char $c2;
+        java.util.regex.Matcher $r2;
+        int $i1;
+        java.lang.String $r0;
+        java.util.regex.Pattern $r1;
+        java.text.ParseException $r8;
+        java.text.DateFormat $r3;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 = <com.google.zxing.client.result.CalendarParsedResult: java.util.regex.Pattern DATE_TIME>;
+
+        $r2 = virtualinvoke $r1.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r0);
+
+        $z0 = virtualinvoke $r2.<java.util.regex.Matcher: boolean matches()>();
+
+        if $z0 == 0 goto label3;
+
+        $i1 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if $i1 != 8 goto label1;
+
+        $r3 = <com.google.zxing.client.result.CalendarParsedResult: java.text.DateFormat DATE_FORMAT>;
+
+        $r4 = virtualinvoke $r3.<java.text.DateFormat: java.util.Date parse(java.lang.String)>($r0);
+
+        return $r4;
+
+     label1:
+        $i1 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if $i1 != 16 goto label2;
+
+        $c2 = virtualinvoke $r0.<java.lang.String: char charAt(int)>(15);
+
+        $i1 = (int) $c2;
+
+        if $i1 != 90 goto label2;
+
+        $r3 = <com.google.zxing.client.result.CalendarParsedResult: java.text.DateFormat DATE_TIME_FORMAT>;
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String substring(int,int)>(0, 15);
+
+        $r4 = virtualinvoke $r3.<java.text.DateFormat: java.util.Date parse(java.lang.String)>($r0);
+
+        $r6 = new java.util.GregorianCalendar;
+
+        $r5 = $r6;
+
+        specialinvoke $r6.<java.util.GregorianCalendar: void <init>()>();
+
+        $l3 = virtualinvoke $r4.<java.util.Date: long getTime()>();
+
+        $i1 = virtualinvoke $r5.<java.util.Calendar: int get(int)>(15);
+
+        $l0 = (long) $i1;
+
+        $l0 = $l3 + $l0;
+
+        $r7 = new java.util.Date;
+
+        specialinvoke $r7.<java.util.Date: void <init>(long)>($l0);
+
+        virtualinvoke $r5.<java.util.Calendar: void setTime(java.util.Date)>($r7);
+
+        $i1 = virtualinvoke $r5.<java.util.Calendar: int get(int)>(16);
+
+        $l3 = (long) $i1;
+
+        $l0 = $l0 + $l3;
+
+        $r7 = new java.util.Date;
+
+        specialinvoke $r7.<java.util.Date: void <init>(long)>($l0);
+
+        return $r7;
+
+     label2:
+        $r3 = <com.google.zxing.client.result.CalendarParsedResult: java.text.DateFormat DATE_TIME_FORMAT>;
+
+        $r4 = virtualinvoke $r3.<java.text.DateFormat: java.util.Date parse(java.lang.String)>($r0);
+
+        return $r4;
+
+     label3:
+        $r8 = new java.text.ParseException;
+
+        specialinvoke $r8.<java.text.ParseException: void <init>(java.lang.String,int)>($r0, 0);
+
+        throw $r8;
+    }
+
+    public static long parseDurationMS(java.lang.CharSequence)
+    {
+        java.lang.CharSequence $r1;
+        long $l0, $l3, $l4;
+        long[] $r0;
+        java.util.regex.Matcher $r3;
+        int $i1, $i2;
+        java.util.regex.Pattern $r2;
+        java.lang.String $r4;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.CharSequence;
+
+        if $r1 != null goto label1;
+
+        return -1L;
+
+     label1:
+        $r2 = <com.google.zxing.client.result.CalendarParsedResult: java.util.regex.Pattern RFC2445_DURATION>;
+
+        $r3 = virtualinvoke $r2.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r1);
+
+        $z0 = virtualinvoke $r3.<java.util.regex.Matcher: boolean matches()>();
+
+        if $z0 != 0 goto label2;
+
+        return -1L;
+
+     label2:
+        $l0 = 0L;
+
+        $i1 = 0;
+
+     label3:
+        $r0 = <com.google.zxing.client.result.CalendarParsedResult: long[] RFC2445_DURATION_FIELD_UNITS>;
+
+        $i2 = lengthof $r0;
+
+        if $i1 >= $i2 goto label5;
+
+        $i2 = $i1 + 1;
+
+        $r4 = virtualinvoke $r3.<java.util.regex.Matcher: java.lang.String group(int)>($i2);
+
+        if $r4 == null goto label4;
+
+        $r0 = <com.google.zxing.client.result.CalendarParsedResult: long[] RFC2445_DURATION_FIELD_UNITS>;
+
+        $l3 = $r0[$i1];
+
+        $i1 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r4);
+
+        $l4 = (long) $i1;
+
+        $l3 = $l3 * $l4;
+
+        $l0 = $l0 + $l3;
+
+     label4:
+        $i1 = $i2;
+
+        goto label3;
+
+     label5:
+        return $l0;
+    }
+
+    public java.lang.String[] getAttendees()
+    {
+        com.google.zxing.client.result.CalendarParsedResult r0;
+        java.lang.String[] r1;
+
+        r0 := @this: com.google.zxing.client.result.CalendarParsedResult;
+
+        r1 = r0.<com.google.zxing.client.result.CalendarParsedResult: java.lang.String[] attendees>;
+
+        return r1;
+    }
+
+    public java.lang.String getDescription()
+    {
+        com.google.zxing.client.result.CalendarParsedResult r0;
+        java.lang.String r1;
+
+        r0 := @this: com.google.zxing.client.result.CalendarParsedResult;
+
+        r1 = r0.<com.google.zxing.client.result.CalendarParsedResult: java.lang.String description>;
+
+        return r1;
+    }
+
+    public java.lang.String getDisplayResult()
+    {
+        com.google.zxing.client.result.CalendarParsedResult r0;
+        java.util.Date $r3;
+        java.lang.StringBuilder $r1;
+        java.lang.String[] $r4;
+        java.lang.String $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.client.result.CalendarParsedResult;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(int)>(100);
+
+        $r2 = r0.<com.google.zxing.client.result.CalendarParsedResult: java.lang.String summary>;
+
+        staticinvoke <com.google.zxing.client.result.ParsedResult: void maybeAppend(java.lang.String,java.lang.StringBuilder)>($r2, $r1);
+
+        $z0 = r0.<com.google.zxing.client.result.CalendarParsedResult: boolean startAllDay>;
+
+        $r3 = r0.<com.google.zxing.client.result.CalendarParsedResult: java.util.Date start>;
+
+        $r2 = staticinvoke <com.google.zxing.client.result.CalendarParsedResult: java.lang.String format(boolean,java.util.Date)>($z0, $r3);
+
+        staticinvoke <com.google.zxing.client.result.ParsedResult: void maybeAppend(java.lang.String,java.lang.StringBuilder)>($r2, $r1);
+
+        $z0 = r0.<com.google.zxing.client.result.CalendarParsedResult: boolean endAllDay>;
+
+        $r3 = r0.<com.google.zxing.client.result.CalendarParsedResult: java.util.Date end>;
+
+        $r2 = staticinvoke <com.google.zxing.client.result.CalendarParsedResult: java.lang.String format(boolean,java.util.Date)>($z0, $r3);
+
+        staticinvoke <com.google.zxing.client.result.ParsedResult: void maybeAppend(java.lang.String,java.lang.StringBuilder)>($r2, $r1);
+
+        $r2 = r0.<com.google.zxing.client.result.CalendarParsedResult: java.lang.String location>;
+
+        staticinvoke <com.google.zxing.client.result.ParsedResult: void maybeAppend(java.lang.String,java.lang.StringBuilder)>($r2, $r1);
+
+        $r2 = r0.<com.google.zxing.client.result.CalendarParsedResult: java.lang.String organizer>;
+
+        staticinvoke <com.google.zxing.client.result.ParsedResult: void maybeAppend(java.lang.String,java.lang.StringBuilder)>($r2, $r1);
+
+        $r4 = r0.<com.google.zxing.client.result.CalendarParsedResult: java.lang.String[] attendees>;
+
+        staticinvoke <com.google.zxing.client.result.ParsedResult: void maybeAppend(java.lang.String[],java.lang.StringBuilder)>($r4, $r1);
+
+        $r2 = r0.<com.google.zxing.client.result.CalendarParsedResult: java.lang.String description>;
+
+        staticinvoke <com.google.zxing.client.result.ParsedResult: void maybeAppend(java.lang.String,java.lang.StringBuilder)>($r2, $r1);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r2;
+    }
+
+    public java.util.Date getEnd()
+    {
+        com.google.zxing.client.result.CalendarParsedResult r0;
+        java.util.Date r1;
+
+        r0 := @this: com.google.zxing.client.result.CalendarParsedResult;
+
+        r1 = r0.<com.google.zxing.client.result.CalendarParsedResult: java.util.Date end>;
+
+        return r1;
+    }
+
+    public double getLatitude()
+    {
+        com.google.zxing.client.result.CalendarParsedResult r0;
+        double d0;
+
+        r0 := @this: com.google.zxing.client.result.CalendarParsedResult;
+
+        d0 = r0.<com.google.zxing.client.result.CalendarParsedResult: double latitude>;
+
+        return d0;
+    }
+
+    public java.lang.String getLocation()
+    {
+        com.google.zxing.client.result.CalendarParsedResult r0;
+        java.lang.String r1;
+
+        r0 := @this: com.google.zxing.client.result.CalendarParsedResult;
+
+        r1 = r0.<com.google.zxing.client.result.CalendarParsedResult: java.lang.String location>;
+
+        return r1;
+    }
+
+    public double getLongitude()
+    {
+        com.google.zxing.client.result.CalendarParsedResult r0;
+        double d0;
+
+        r0 := @this: com.google.zxing.client.result.CalendarParsedResult;
+
+        d0 = r0.<com.google.zxing.client.result.CalendarParsedResult: double longitude>;
+
+        return d0;
+    }
+
+    public java.lang.String getOrganizer()
+    {
+        com.google.zxing.client.result.CalendarParsedResult r0;
+        java.lang.String r1;
+
+        r0 := @this: com.google.zxing.client.result.CalendarParsedResult;
+
+        r1 = r0.<com.google.zxing.client.result.CalendarParsedResult: java.lang.String organizer>;
+
+        return r1;
+    }
+
+    public java.util.Date getStart()
+    {
+        com.google.zxing.client.result.CalendarParsedResult r0;
+        java.util.Date r1;
+
+        r0 := @this: com.google.zxing.client.result.CalendarParsedResult;
+
+        r1 = r0.<com.google.zxing.client.result.CalendarParsedResult: java.util.Date start>;
+
+        return r1;
+    }
+
+    public java.lang.String getSummary()
+    {
+        com.google.zxing.client.result.CalendarParsedResult r0;
+        java.lang.String r1;
+
+        r0 := @this: com.google.zxing.client.result.CalendarParsedResult;
+
+        r1 = r0.<com.google.zxing.client.result.CalendarParsedResult: java.lang.String summary>;
+
+        return r1;
+    }
+
+    public boolean isEndAllDay()
+    {
+        com.google.zxing.client.result.CalendarParsedResult r0;
+        boolean z0;
+
+        r0 := @this: com.google.zxing.client.result.CalendarParsedResult;
+
+        z0 = r0.<com.google.zxing.client.result.CalendarParsedResult: boolean endAllDay>;
+
+        return z0;
+    }
+
+    public boolean isStartAllDay()
+    {
+        com.google.zxing.client.result.CalendarParsedResult r0;
+        boolean z0;
+
+        r0 := @this: com.google.zxing.client.result.CalendarParsedResult;
+
+        z0 = r0.<com.google.zxing.client.result.CalendarParsedResult: boolean startAllDay>;
+
+        return z0;
+    }
+}

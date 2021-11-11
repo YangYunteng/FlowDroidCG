@@ -1,0 +1,342 @@
+public class com.google.firebase.messaging.FirebaseMessaging extends java.lang.Object
+{
+    public static final java.lang.String INSTANCE_ID_SCOPE;
+    public static final java.util.regex.Pattern zza;
+    public static com.google.firebase.messaging.FirebaseMessaging zzb;
+    public final com.google.firebase.iid.FirebaseInstanceId zzc;
+
+    static void <clinit>()
+    {
+        java.util.regex.Pattern $r0;
+
+        <com.google.firebase.messaging.FirebaseMessaging: java.lang.String INSTANCE_ID_SCOPE> = "FCM";
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>("[a-zA-Z0-9-_.~%]{1,900}");
+
+        <com.google.firebase.messaging.FirebaseMessaging: java.util.regex.Pattern zza> = $r0;
+
+        return;
+    }
+
+    public void <init>(com.google.firebase.iid.FirebaseInstanceId)
+    {
+        com.google.firebase.messaging.FirebaseMessaging r0;
+        com.google.firebase.iid.FirebaseInstanceId $r1;
+
+        r0 := @this: com.google.firebase.messaging.FirebaseMessaging;
+
+        $r1 := @parameter0: com.google.firebase.iid.FirebaseInstanceId;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.messaging.FirebaseMessaging: com.google.firebase.iid.FirebaseInstanceId zzc> = $r1;
+
+        return;
+    }
+
+    public static com.google.firebase.messaging.FirebaseMessaging getInstance()
+    {
+        com.google.firebase.messaging.FirebaseMessaging $r1;
+        java.lang.Throwable $r2;
+        com.google.firebase.iid.FirebaseInstanceId $r0;
+
+        entermonitor class "Lcom/google/firebase/messaging/FirebaseMessaging;";
+
+     label1:
+        $r1 = <com.google.firebase.messaging.FirebaseMessaging: com.google.firebase.messaging.FirebaseMessaging zzb>;
+
+        if $r1 != null goto label2;
+
+        $r1 = new com.google.firebase.messaging.FirebaseMessaging;
+
+        $r0 = staticinvoke <com.google.firebase.iid.FirebaseInstanceId: com.google.firebase.iid.FirebaseInstanceId getInstance()>();
+
+        specialinvoke $r1.<com.google.firebase.messaging.FirebaseMessaging: void <init>(com.google.firebase.iid.FirebaseInstanceId)>($r0);
+
+        <com.google.firebase.messaging.FirebaseMessaging: com.google.firebase.messaging.FirebaseMessaging zzb> = $r1;
+
+     label2:
+        $r1 = <com.google.firebase.messaging.FirebaseMessaging: com.google.firebase.messaging.FirebaseMessaging zzb>;
+
+     label3:
+        exitmonitor class "Lcom/google/firebase/messaging/FirebaseMessaging;";
+
+        return $r1;
+
+     label4:
+        $r2 := @caughtexception;
+
+        exitmonitor class "Lcom/google/firebase/messaging/FirebaseMessaging;";
+
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+    }
+
+    public boolean isAutoInitEnabled()
+    {
+        com.google.firebase.messaging.FirebaseMessaging r0;
+        com.google.firebase.iid.FirebaseInstanceId $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.messaging.FirebaseMessaging;
+
+        $r1 = r0.<com.google.firebase.messaging.FirebaseMessaging: com.google.firebase.iid.FirebaseInstanceId zzc>;
+
+        $z0 = virtualinvoke $r1.<com.google.firebase.iid.FirebaseInstanceId: boolean zzh()>();
+
+        return $z0;
+    }
+
+    public void send(com.google.firebase.messaging.RemoteMessage)
+    {
+        android.content.Context $r5;
+        android.os.Bundle $r8;
+        com.google.firebase.messaging.FirebaseMessaging r0;
+        android.content.Intent $r1, $r6;
+        android.app.PendingIntent $r7;
+        java.lang.IllegalArgumentException $r9;
+        com.google.firebase.messaging.RemoteMessage $r2;
+        java.lang.String $r3;
+        boolean $z0;
+        com.google.firebase.FirebaseApp $r4;
+
+        r0 := @this: com.google.firebase.messaging.FirebaseMessaging;
+
+        $r2 := @parameter0: com.google.firebase.messaging.RemoteMessage;
+
+        $r3 = virtualinvoke $r2.<com.google.firebase.messaging.RemoteMessage: java.lang.String getTo()>();
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r3);
+
+        if $z0 != 0 goto label1;
+
+        $r4 = staticinvoke <com.google.firebase.FirebaseApp: com.google.firebase.FirebaseApp getInstance()>();
+
+        $r5 = virtualinvoke $r4.<com.google.firebase.FirebaseApp: android.content.Context getApplicationContext()>();
+
+        $r1 = new android.content.Intent;
+
+        specialinvoke $r1.<android.content.Intent: void <init>(java.lang.String)>("com.google.android.gcm.intent.SEND");
+
+        $r6 = new android.content.Intent;
+
+        specialinvoke $r6.<android.content.Intent: void <init>()>();
+
+        virtualinvoke $r6.<android.content.Intent: android.content.Intent setPackage(java.lang.String)>("com.google.example.invalidpackage");
+
+        $r7 = staticinvoke <android.app.PendingIntent: android.app.PendingIntent getBroadcast(android.content.Context,int,android.content.Intent,int)>($r5, 0, $r6, 0);
+
+        virtualinvoke $r1.<android.content.Intent: android.content.Intent putExtra(java.lang.String,android.os.Parcelable)>("app", $r7);
+
+        virtualinvoke $r1.<android.content.Intent: android.content.Intent setPackage(java.lang.String)>("com.google.android.gms");
+
+        $r8 = $r2.<com.google.firebase.messaging.RemoteMessage: android.os.Bundle zza>;
+
+        virtualinvoke $r1.<android.content.Intent: android.content.Intent putExtras(android.os.Bundle)>($r8);
+
+        virtualinvoke $r5.<android.content.Context: void sendOrderedBroadcast(android.content.Intent,java.lang.String)>($r1, "com.google.android.gtalkservice.permission.GTALK_SERVICE");
+
+        return;
+
+     label1:
+        $r9 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r9.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Missing \'to\'");
+
+        throw $r9;
+    }
+
+    public void setAutoInitEnabled(boolean)
+    {
+        com.google.firebase.messaging.FirebaseMessaging r0;
+        com.google.firebase.iid.FirebaseInstanceId $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.messaging.FirebaseMessaging;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 = r0.<com.google.firebase.messaging.FirebaseMessaging: com.google.firebase.iid.FirebaseInstanceId zzc>;
+
+        virtualinvoke $r1.<com.google.firebase.iid.FirebaseInstanceId: void zzb(boolean)>($z0);
+
+        return;
+    }
+
+    public com.google.android.gms.tasks.Task subscribeToTopic(java.lang.String)
+    {
+        com.google.firebase.messaging.FirebaseMessaging r0;
+        java.lang.IllegalArgumentException $r7;
+        com.google.android.gms.tasks.Task $r6;
+        java.util.regex.Matcher $r3;
+        com.google.firebase.iid.FirebaseInstanceId $r4;
+        int $i0;
+        java.lang.StringBuilder $r8;
+        java.lang.String $r1, $r5;
+        java.util.regex.Pattern $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.messaging.FirebaseMessaging;
+
+        $r1 := @parameter0: java.lang.String;
+
+        if $r1 == null goto label1;
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean startsWith(java.lang.String)>("/topics/");
+
+        if $z0 == 0 goto label1;
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("FirebaseMessaging", "Format /topics/topic-name is deprecated. Only \'topic-name\' should be used in subscribeToTopic.");
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int)>(8);
+
+     label1:
+        if $r1 == null goto label4;
+
+        $r2 = <com.google.firebase.messaging.FirebaseMessaging: java.util.regex.Pattern zza>;
+
+        $r3 = virtualinvoke $r2.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r1);
+
+        $z0 = virtualinvoke $r3.<java.util.regex.Matcher: boolean matches()>();
+
+        if $z0 == 0 goto label4;
+
+        $r4 = r0.<com.google.firebase.messaging.FirebaseMessaging: com.google.firebase.iid.FirebaseInstanceId zzc>;
+
+        $r5 = "S!";
+
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r1);
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i0 == 0 goto label2;
+
+        $r1 = virtualinvoke $r5.<java.lang.String: java.lang.String concat(java.lang.String)>($r1);
+
+        goto label3;
+
+     label2:
+        $r1 = new java.lang.String;
+
+        specialinvoke $r1.<java.lang.String: void <init>(java.lang.String)>("S!");
+
+     label3:
+        $r6 = virtualinvoke $r4.<com.google.firebase.iid.FirebaseInstanceId: com.google.android.gms.tasks.Task zza(java.lang.String)>($r1);
+
+        return $r6;
+
+     label4:
+        $r7 = new java.lang.IllegalArgumentException;
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r1);
+
+        $i0 = virtualinvoke $r5.<java.lang.String: int length()>();
+
+        $i0 = $i0 + 78;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>(int)>($i0);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid topic name: ");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" does not match the allowed format [a-zA-Z0-9-_.~%]{1,900}");
+
+        $r1 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r7.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r1);
+
+        throw $r7;
+    }
+
+    public com.google.android.gms.tasks.Task unsubscribeFromTopic(java.lang.String)
+    {
+        com.google.firebase.messaging.FirebaseMessaging r0;
+        java.lang.IllegalArgumentException $r7;
+        com.google.android.gms.tasks.Task $r6;
+        java.util.regex.Matcher $r3;
+        com.google.firebase.iid.FirebaseInstanceId $r4;
+        int $i0;
+        java.lang.StringBuilder $r8;
+        java.lang.String $r1, $r5;
+        java.util.regex.Pattern $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.messaging.FirebaseMessaging;
+
+        $r1 := @parameter0: java.lang.String;
+
+        if $r1 == null goto label1;
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean startsWith(java.lang.String)>("/topics/");
+
+        if $z0 == 0 goto label1;
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("FirebaseMessaging", "Format /topics/topic-name is deprecated. Only \'topic-name\' should be used in unsubscribeFromTopic.");
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int)>(8);
+
+     label1:
+        if $r1 == null goto label4;
+
+        $r2 = <com.google.firebase.messaging.FirebaseMessaging: java.util.regex.Pattern zza>;
+
+        $r3 = virtualinvoke $r2.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r1);
+
+        $z0 = virtualinvoke $r3.<java.util.regex.Matcher: boolean matches()>();
+
+        if $z0 == 0 goto label4;
+
+        $r4 = r0.<com.google.firebase.messaging.FirebaseMessaging: com.google.firebase.iid.FirebaseInstanceId zzc>;
+
+        $r5 = "U!";
+
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r1);
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i0 == 0 goto label2;
+
+        $r1 = virtualinvoke $r5.<java.lang.String: java.lang.String concat(java.lang.String)>($r1);
+
+        goto label3;
+
+     label2:
+        $r1 = new java.lang.String;
+
+        specialinvoke $r1.<java.lang.String: void <init>(java.lang.String)>("U!");
+
+     label3:
+        $r6 = virtualinvoke $r4.<com.google.firebase.iid.FirebaseInstanceId: com.google.android.gms.tasks.Task zza(java.lang.String)>($r1);
+
+        return $r6;
+
+     label4:
+        $r7 = new java.lang.IllegalArgumentException;
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r1);
+
+        $i0 = virtualinvoke $r5.<java.lang.String: int length()>();
+
+        $i0 = $i0 + 78;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>(int)>($i0);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid topic name: ");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" does not match the allowed format [a-zA-Z0-9-_.~%]{1,900}");
+
+        $r1 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r7.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r1);
+
+        throw $r7;
+    }
+}

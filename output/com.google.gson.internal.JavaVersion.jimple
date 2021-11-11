@@ -1,0 +1,211 @@
+public final class com.google.gson.internal.JavaVersion extends java.lang.Object
+{
+    public static final int majorJavaVersion;
+
+    static void <clinit>()
+    {
+        int $i0;
+
+        $i0 = staticinvoke <com.google.gson.internal.JavaVersion: int determineMajorJavaVersion()>();
+
+        <com.google.gson.internal.JavaVersion: int majorJavaVersion> = $i0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.gson.internal.JavaVersion r0;
+
+        r0 := @this: com.google.gson.internal.JavaVersion;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static int determineMajorJavaVersion()
+    {
+        int $i0;
+        java.lang.String $r0;
+
+        $r0 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("java.version");
+
+        $i0 = staticinvoke <com.google.gson.internal.JavaVersion: int getMajorJavaVersion(java.lang.String)>($r0);
+
+        return $i0;
+    }
+
+    public static int extractBeginningInt(java.lang.String)
+    {
+        java.lang.NumberFormatException $r1;
+        char $c2;
+        int $i0, $i1;
+        java.lang.StringBuilder $r0, $r3;
+        java.lang.String $r2;
+        boolean $z0;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r3 = new java.lang.StringBuilder;
+
+        $r0 = $r3;
+
+     label01:
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+     label02:
+        $i0 = 0;
+
+     label03:
+        $i1 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+     label04:
+        if $i0 >= $i1 goto label09;
+
+     label05:
+        $c2 = virtualinvoke $r2.<java.lang.String: char charAt(int)>($i0);
+
+        $z0 = staticinvoke <java.lang.Character: boolean isDigit(char)>($c2);
+
+     label06:
+        if $z0 == 0 goto label09;
+
+     label07:
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c2);
+
+     label08:
+        $i0 = $i0 + 1;
+
+        goto label03;
+
+     label09:
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r2);
+
+     label10:
+        return $i0;
+
+     label11:
+        $i0 = -1;
+
+        return $i0;
+
+     label12:
+        $r1 := @caughtexception;
+
+        goto label11;
+
+        catch java.lang.NumberFormatException from label01 to label02 with label12;
+        catch java.lang.NumberFormatException from label03 to label04 with label12;
+        catch java.lang.NumberFormatException from label05 to label06 with label12;
+        catch java.lang.NumberFormatException from label07 to label08 with label12;
+        catch java.lang.NumberFormatException from label09 to label10 with label12;
+    }
+
+    public static int getMajorJavaVersion()
+    {
+        int i0;
+
+        i0 = <com.google.gson.internal.JavaVersion: int majorJavaVersion>;
+
+        return i0;
+    }
+
+    public static int getMajorJavaVersion(java.lang.String)
+    {
+        int $i0, $i1, $i2;
+        java.lang.String $r0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $i0 = staticinvoke <com.google.gson.internal.JavaVersion: int parseDotted(java.lang.String)>($r0);
+
+        $i1 = $i0;
+
+        $i2 = -1;
+
+        if $i0 != $i2 goto label1;
+
+        $i1 = staticinvoke <com.google.gson.internal.JavaVersion: int extractBeginningInt(java.lang.String)>($r0);
+
+     label1:
+        $i0 = -1;
+
+        if $i1 != $i0 goto label2;
+
+        return 6;
+
+     label2:
+        return $i1;
+    }
+
+    public static boolean isJava9OrLater()
+    {
+        int $i0;
+
+        $i0 = <com.google.gson.internal.JavaVersion: int majorJavaVersion>;
+
+        if $i0 < 9 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static int parseDotted(java.lang.String)
+    {
+        int $i0, $i1;
+        java.lang.NumberFormatException $r0;
+        java.lang.String[] $r2;
+        java.lang.String $r1;
+
+        $r1 := @parameter0: java.lang.String;
+
+     label01:
+        $r2 = virtualinvoke $r1.<java.lang.String: java.lang.String[] split(java.lang.String)>("[._]");
+
+     label02:
+        $r1 = $r2[0];
+
+     label03:
+        $i1 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r1);
+
+     label04:
+        if $i1 != 1 goto label07;
+
+        $i0 = lengthof $r2;
+
+        if $i0 <= 1 goto label10;
+
+        $r1 = $r2[1];
+
+     label05:
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r1);
+
+     label06:
+        return $i0;
+
+     label07:
+        return $i1;
+
+     label08:
+        $i0 = -1;
+
+        return $i0;
+
+     label09:
+        $r0 := @caughtexception;
+
+        goto label08;
+
+     label10:
+        return $i1;
+
+        catch java.lang.NumberFormatException from label01 to label02 with label09;
+        catch java.lang.NumberFormatException from label03 to label04 with label09;
+        catch java.lang.NumberFormatException from label05 to label06 with label09;
+    }
+}

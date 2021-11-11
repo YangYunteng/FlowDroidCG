@@ -1,0 +1,122 @@
+public class com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker extends java.lang.Object
+{
+    public final com.google.firebase.crashlytics.internal.persistence.FileStore fileStore;
+    public final java.lang.String markerName;
+
+    public void <init>(java.lang.String, com.google.firebase.crashlytics.internal.persistence.FileStore)
+    {
+        com.google.firebase.crashlytics.internal.persistence.FileStore $r2;
+        com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: com.google.firebase.crashlytics.internal.persistence.FileStore;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker: java.lang.String markerName> = $r1;
+
+        r0.<com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker: com.google.firebase.crashlytics.internal.persistence.FileStore fileStore> = $r2;
+
+        return;
+    }
+
+    private java.io.File getMarkerFile()
+    {
+        com.google.firebase.crashlytics.internal.persistence.FileStore $r4;
+        com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker r0;
+        java.lang.String $r2;
+        java.io.File $r1, $r3;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker;
+
+        $r1 = new java.io.File;
+
+        $r4 = r0.<com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker: com.google.firebase.crashlytics.internal.persistence.FileStore fileStore>;
+
+        $r3 = interfaceinvoke $r4.<com.google.firebase.crashlytics.internal.persistence.FileStore: java.io.File getFilesDir()>();
+
+        $r2 = r0.<com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker: java.lang.String markerName>;
+
+        specialinvoke $r1.<java.io.File: void <init>(java.io.File,java.lang.String)>($r3, $r2);
+
+        return $r1;
+    }
+
+    public boolean create()
+    {
+        com.google.firebase.crashlytics.internal.Logger $r3;
+        com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker r0;
+        java.io.IOException $r2;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r5;
+        java.io.File $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker;
+
+     label1:
+        $r1 = specialinvoke r0.<com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker: java.io.File getMarkerFile()>();
+
+        $z0 = virtualinvoke $r1.<java.io.File: boolean createNewFile()>();
+
+     label2:
+        return $z0;
+
+     label3:
+        $r2 := @caughtexception;
+
+        $r3 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error creating marker: ");
+
+        $r5 = r0.<com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker: java.lang.String markerName>;
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r3.<com.google.firebase.crashlytics.internal.Logger: void e(java.lang.String,java.lang.Throwable)>($r5, $r2);
+
+        return 0;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    public boolean isPresent()
+    {
+        com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker r0;
+        java.io.File $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker;
+
+        $r1 = specialinvoke r0.<com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker: java.io.File getMarkerFile()>();
+
+        $z0 = virtualinvoke $r1.<java.io.File: boolean exists()>();
+
+        return $z0;
+    }
+
+    public boolean remove()
+    {
+        com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker r0;
+        java.io.File $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker;
+
+        $r1 = specialinvoke r0.<com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker: java.io.File getMarkerFile()>();
+
+        $z0 = virtualinvoke $r1.<java.io.File: boolean delete()>();
+
+        return $z0;
+    }
+}

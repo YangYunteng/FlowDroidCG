@@ -1,0 +1,631 @@
+public abstract class com.google.android.material.appbar.HeaderBehavior extends com.google.android.material.appbar.ViewOffsetBehavior
+{
+    public static final int INVALID_POINTER;
+    public int activePointerId;
+    public java.lang.Runnable flingRunnable;
+    public boolean isBeingDragged;
+    public int lastMotionY;
+    public android.widget.OverScroller scroller;
+    public int touchSlop;
+    public android.view.VelocityTracker velocityTracker;
+
+    public void <init>()
+    {
+        int $i0;
+        com.google.android.material.appbar.HeaderBehavior r0;
+
+        r0 := @this: com.google.android.material.appbar.HeaderBehavior;
+
+        specialinvoke r0.<com.google.android.material.appbar.ViewOffsetBehavior: void <init>()>();
+
+        $i0 = -1;
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: int activePointerId> = $i0;
+
+        $i0 = -1;
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: int touchSlop> = $i0;
+
+        return;
+    }
+
+    public void <init>(android.content.Context, android.util.AttributeSet)
+    {
+        android.content.Context $r2;
+        com.google.android.material.appbar.HeaderBehavior r0;
+        android.util.AttributeSet $r1;
+        int $i0;
+
+        r0 := @this: com.google.android.material.appbar.HeaderBehavior;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r1 := @parameter1: android.util.AttributeSet;
+
+        specialinvoke r0.<com.google.android.material.appbar.ViewOffsetBehavior: void <init>(android.content.Context,android.util.AttributeSet)>($r2, $r1);
+
+        $i0 = -1;
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: int activePointerId> = $i0;
+
+        $i0 = -1;
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: int touchSlop> = $i0;
+
+        return;
+    }
+
+    private void ensureVelocityTracker()
+    {
+        android.view.VelocityTracker $r1;
+        com.google.android.material.appbar.HeaderBehavior r0;
+
+        r0 := @this: com.google.android.material.appbar.HeaderBehavior;
+
+        $r1 = r0.<com.google.android.material.appbar.HeaderBehavior: android.view.VelocityTracker velocityTracker>;
+
+        if $r1 != null goto label1;
+
+        $r1 = staticinvoke <android.view.VelocityTracker: android.view.VelocityTracker obtain()>();
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: android.view.VelocityTracker velocityTracker> = $r1;
+
+     label1:
+        return;
+    }
+
+    public boolean canDragView(android.view.View)
+    {
+        android.view.View $r1;
+        com.google.android.material.appbar.HeaderBehavior r0;
+
+        r0 := @this: com.google.android.material.appbar.HeaderBehavior;
+
+        $r1 := @parameter0: android.view.View;
+
+        return 0;
+    }
+
+    public final boolean fling(androidx.coordinatorlayout.widget.CoordinatorLayout, android.view.View, int, int, float)
+    {
+        android.widget.OverScroller $r3;
+        android.content.Context $r5;
+        androidx.coordinatorlayout.widget.CoordinatorLayout $r1;
+        com.google.android.material.appbar.HeaderBehavior$FlingRunnable $r6;
+        java.lang.Runnable $r4;
+        com.google.android.material.appbar.HeaderBehavior r0;
+        int $i0, $i1, $i2, $i3;
+        android.view.View $r2;
+        float $f0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.appbar.HeaderBehavior;
+
+        $r1 := @parameter0: androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+        $r2 := @parameter1: android.view.View;
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        $f0 := @parameter4: float;
+
+        $r4 = r0.<com.google.android.material.appbar.HeaderBehavior: java.lang.Runnable flingRunnable>;
+
+        if $r4 == null goto label1;
+
+        virtualinvoke $r2.<android.view.View: boolean removeCallbacks(java.lang.Runnable)>($r4);
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: java.lang.Runnable flingRunnable> = null;
+
+     label1:
+        $r3 = r0.<com.google.android.material.appbar.HeaderBehavior: android.widget.OverScroller scroller>;
+
+        if $r3 != null goto label2;
+
+        $r3 = new android.widget.OverScroller;
+
+        $r5 = virtualinvoke $r2.<android.view.View: android.content.Context getContext()>();
+
+        specialinvoke $r3.<android.widget.OverScroller: void <init>(android.content.Context)>($r5);
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: android.widget.OverScroller scroller> = $r3;
+
+     label2:
+        $r3 = r0.<com.google.android.material.appbar.HeaderBehavior: android.widget.OverScroller scroller>;
+
+        $i2 = virtualinvoke r0.<com.google.android.material.appbar.ViewOffsetBehavior: int getTopAndBottomOffset()>();
+
+        $i3 = staticinvoke <java.lang.Math: int round(float)>($f0);
+
+        virtualinvoke $r3.<android.widget.OverScroller: void fling(int,int,int,int,int,int,int,int)>(0, $i2, 0, $i3, 0, 0, $i0, $i1);
+
+        $r3 = r0.<com.google.android.material.appbar.HeaderBehavior: android.widget.OverScroller scroller>;
+
+        $z0 = virtualinvoke $r3.<android.widget.OverScroller: boolean computeScrollOffset()>();
+
+        if $z0 == 0 goto label3;
+
+        $r6 = new com.google.android.material.appbar.HeaderBehavior$FlingRunnable;
+
+        specialinvoke $r6.<com.google.android.material.appbar.HeaderBehavior$FlingRunnable: void <init>(com.google.android.material.appbar.HeaderBehavior,androidx.coordinatorlayout.widget.CoordinatorLayout,android.view.View)>(r0, $r1, $r2);
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: java.lang.Runnable flingRunnable> = $r6;
+
+        $r4 = r0.<com.google.android.material.appbar.HeaderBehavior: java.lang.Runnable flingRunnable>;
+
+        staticinvoke <b.i.i.y: void a(android.view.View,java.lang.Runnable)>($r2, $r4);
+
+        return 1;
+
+     label3:
+        virtualinvoke r0.<com.google.android.material.appbar.HeaderBehavior: void onFlingFinished(androidx.coordinatorlayout.widget.CoordinatorLayout,android.view.View)>($r1, $r2);
+
+        return 0;
+    }
+
+    public int getMaxDragOffset(android.view.View)
+    {
+        int $i0;
+        android.view.View $r1;
+        com.google.android.material.appbar.HeaderBehavior r0;
+
+        r0 := @this: com.google.android.material.appbar.HeaderBehavior;
+
+        $r1 := @parameter0: android.view.View;
+
+        $i0 = virtualinvoke $r1.<android.view.View: int getHeight()>();
+
+        $i0 = neg $i0;
+
+        return $i0;
+    }
+
+    public int getScrollRangeForDragFling(android.view.View)
+    {
+        int $i0;
+        android.view.View $r1;
+        com.google.android.material.appbar.HeaderBehavior r0;
+
+        r0 := @this: com.google.android.material.appbar.HeaderBehavior;
+
+        $r1 := @parameter0: android.view.View;
+
+        $i0 = virtualinvoke $r1.<android.view.View: int getHeight()>();
+
+        return $i0;
+    }
+
+    public int getTopBottomOffsetForScrollingSibling()
+    {
+        int $i0;
+        com.google.android.material.appbar.HeaderBehavior r0;
+
+        r0 := @this: com.google.android.material.appbar.HeaderBehavior;
+
+        $i0 = virtualinvoke r0.<com.google.android.material.appbar.ViewOffsetBehavior: int getTopAndBottomOffset()>();
+
+        return $i0;
+    }
+
+    public void onFlingFinished(androidx.coordinatorlayout.widget.CoordinatorLayout, android.view.View)
+    {
+        android.view.View $r2;
+        androidx.coordinatorlayout.widget.CoordinatorLayout $r1;
+        com.google.android.material.appbar.HeaderBehavior r0;
+
+        r0 := @this: com.google.android.material.appbar.HeaderBehavior;
+
+        $r1 := @parameter0: androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+        $r2 := @parameter1: android.view.View;
+
+        return;
+    }
+
+    public boolean onInterceptTouchEvent(androidx.coordinatorlayout.widget.CoordinatorLayout, android.view.View, android.view.MotionEvent)
+    {
+        android.widget.OverScroller $r6;
+        android.content.Context $r4;
+        androidx.coordinatorlayout.widget.CoordinatorLayout $r3;
+        android.view.ViewConfiguration $r5;
+        android.view.VelocityTracker $r7;
+        com.google.android.material.appbar.HeaderBehavior r0;
+        android.view.MotionEvent $r2;
+        int $i0, $i1, $i2;
+        android.view.View $r1;
+        float $f0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.appbar.HeaderBehavior;
+
+        $r3 := @parameter0: androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+        $r1 := @parameter1: android.view.View;
+
+        $r2 := @parameter2: android.view.MotionEvent;
+
+        $i1 = r0.<com.google.android.material.appbar.HeaderBehavior: int touchSlop>;
+
+        if $i1 >= 0 goto label1;
+
+        $r4 = virtualinvoke $r3.<android.view.ViewGroup: android.content.Context getContext()>();
+
+        $r5 = staticinvoke <android.view.ViewConfiguration: android.view.ViewConfiguration get(android.content.Context)>($r4);
+
+        $i1 = virtualinvoke $r5.<android.view.ViewConfiguration: int getScaledTouchSlop()>();
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: int touchSlop> = $i1;
+
+     label1:
+        $i1 = virtualinvoke $r2.<android.view.MotionEvent: int getActionMasked()>();
+
+        if $i1 != 2 goto label4;
+
+        $z0 = r0.<com.google.android.material.appbar.HeaderBehavior: boolean isBeingDragged>;
+
+        if $z0 == 0 goto label4;
+
+        $i1 = r0.<com.google.android.material.appbar.HeaderBehavior: int activePointerId>;
+
+        $i0 = -1;
+
+        if $i1 != $i0 goto label2;
+
+        return 0;
+
+     label2:
+        $i1 = virtualinvoke $r2.<android.view.MotionEvent: int findPointerIndex(int)>($i1);
+
+        $i0 = -1;
+
+        if $i1 != $i0 goto label3;
+
+        return 0;
+
+     label3:
+        $f0 = virtualinvoke $r2.<android.view.MotionEvent: float getY(int)>($i1);
+
+        $i1 = (int) $f0;
+
+        $i0 = r0.<com.google.android.material.appbar.HeaderBehavior: int lastMotionY>;
+
+        $i0 = $i1 - $i0;
+
+        $i2 = staticinvoke <java.lang.Math: int abs(int)>($i0);
+
+        $i0 = r0.<com.google.android.material.appbar.HeaderBehavior: int touchSlop>;
+
+        if $i2 <= $i0 goto label4;
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: int lastMotionY> = $i1;
+
+        return 1;
+
+     label4:
+        $i1 = virtualinvoke $r2.<android.view.MotionEvent: int getActionMasked()>();
+
+        if $i1 != 0 goto label7;
+
+        $i1 = -1;
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: int activePointerId> = $i1;
+
+        $f0 = virtualinvoke $r2.<android.view.MotionEvent: float getX()>();
+
+        $i1 = (int) $f0;
+
+        $f0 = virtualinvoke $r2.<android.view.MotionEvent: float getY()>();
+
+        $i0 = (int) $f0;
+
+        $z0 = virtualinvoke r0.<com.google.android.material.appbar.HeaderBehavior: boolean canDragView(android.view.View)>($r1);
+
+        if $z0 == 0 goto label5;
+
+        $z0 = virtualinvoke $r3.<androidx.coordinatorlayout.widget.CoordinatorLayout: boolean isPointInChildBounds(android.view.View,int,int)>($r1, $i1, $i0);
+
+        if $z0 == 0 goto label5;
+
+        $z0 = 1;
+
+        goto label6;
+
+     label5:
+        $z0 = 0;
+
+     label6:
+        r0.<com.google.android.material.appbar.HeaderBehavior: boolean isBeingDragged> = $z0;
+
+        $z0 = r0.<com.google.android.material.appbar.HeaderBehavior: boolean isBeingDragged>;
+
+        if $z0 == 0 goto label7;
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: int lastMotionY> = $i0;
+
+        $i1 = virtualinvoke $r2.<android.view.MotionEvent: int getPointerId(int)>(0);
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: int activePointerId> = $i1;
+
+        specialinvoke r0.<com.google.android.material.appbar.HeaderBehavior: void ensureVelocityTracker()>();
+
+        $r6 = r0.<com.google.android.material.appbar.HeaderBehavior: android.widget.OverScroller scroller>;
+
+        if $r6 == null goto label7;
+
+        $z0 = virtualinvoke $r6.<android.widget.OverScroller: boolean isFinished()>();
+
+        if $z0 != 0 goto label7;
+
+        $r6 = r0.<com.google.android.material.appbar.HeaderBehavior: android.widget.OverScroller scroller>;
+
+        virtualinvoke $r6.<android.widget.OverScroller: void abortAnimation()>();
+
+        return 1;
+
+     label7:
+        $r7 = r0.<com.google.android.material.appbar.HeaderBehavior: android.view.VelocityTracker velocityTracker>;
+
+        if $r7 == null goto label8;
+
+        virtualinvoke $r7.<android.view.VelocityTracker: void addMovement(android.view.MotionEvent)>($r2);
+
+     label8:
+        return 0;
+    }
+
+    public boolean onTouchEvent(androidx.coordinatorlayout.widget.CoordinatorLayout, android.view.View, android.view.MotionEvent)
+    {
+        androidx.coordinatorlayout.widget.CoordinatorLayout $r2;
+        android.view.VelocityTracker $r4;
+        com.google.android.material.appbar.HeaderBehavior r0;
+        byte $b1;
+        android.view.MotionEvent $r1;
+        int $i0, $i2;
+        android.view.View $r3;
+        float $f0;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.android.material.appbar.HeaderBehavior;
+
+        $r2 := @parameter0: androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+        $r3 := @parameter1: android.view.View;
+
+        $r1 := @parameter2: android.view.MotionEvent;
+
+        $i0 = virtualinvoke $r1.<android.view.MotionEvent: int getActionMasked()>();
+
+        if $i0 == 1 goto label07;
+
+        if $i0 == 2 goto label04;
+
+        if $i0 == 3 goto label08;
+
+        if $i0 == 6 goto label01;
+
+        goto label06;
+
+     label01:
+        $i0 = virtualinvoke $r1.<android.view.MotionEvent: int getActionIndex()>();
+
+        if $i0 != 0 goto label02;
+
+        $b1 = 1;
+
+        goto label03;
+
+     label02:
+        $b1 = 0;
+
+     label03:
+        $i0 = virtualinvoke $r1.<android.view.MotionEvent: int getPointerId(int)>($b1);
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: int activePointerId> = $i0;
+
+        $f0 = virtualinvoke $r1.<android.view.MotionEvent: float getY(int)>($b1);
+
+        $f0 = $f0 + 0.5F;
+
+        $i0 = (int) $f0;
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: int lastMotionY> = $i0;
+
+        goto label06;
+
+     label04:
+        $i0 = r0.<com.google.android.material.appbar.HeaderBehavior: int activePointerId>;
+
+        $i0 = virtualinvoke $r1.<android.view.MotionEvent: int findPointerIndex(int)>($i0);
+
+        $i2 = -1;
+
+        if $i0 != $i2 goto label05;
+
+        return 0;
+
+     label05:
+        $f0 = virtualinvoke $r1.<android.view.MotionEvent: float getY(int)>($i0);
+
+        $i0 = (int) $f0;
+
+        $i2 = r0.<com.google.android.material.appbar.HeaderBehavior: int lastMotionY>;
+
+        $i2 = $i2 - $i0;
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: int lastMotionY> = $i0;
+
+        $i0 = virtualinvoke r0.<com.google.android.material.appbar.HeaderBehavior: int getMaxDragOffset(android.view.View)>($r3);
+
+        virtualinvoke r0.<com.google.android.material.appbar.HeaderBehavior: int scroll(androidx.coordinatorlayout.widget.CoordinatorLayout,android.view.View,int,int,int)>($r2, $r3, $i2, $i0, 0);
+
+     label06:
+        $z0 = 0;
+
+        goto label10;
+
+     label07:
+        $r4 = r0.<com.google.android.material.appbar.HeaderBehavior: android.view.VelocityTracker velocityTracker>;
+
+        if $r4 == null goto label08;
+
+        virtualinvoke $r4.<android.view.VelocityTracker: void addMovement(android.view.MotionEvent)>($r1);
+
+        $r4 = r0.<com.google.android.material.appbar.HeaderBehavior: android.view.VelocityTracker velocityTracker>;
+
+        virtualinvoke $r4.<android.view.VelocityTracker: void computeCurrentVelocity(int)>(1000);
+
+        $r4 = r0.<com.google.android.material.appbar.HeaderBehavior: android.view.VelocityTracker velocityTracker>;
+
+        $i0 = r0.<com.google.android.material.appbar.HeaderBehavior: int activePointerId>;
+
+        $f0 = virtualinvoke $r4.<android.view.VelocityTracker: float getYVelocity(int)>($i0);
+
+        $i0 = virtualinvoke r0.<com.google.android.material.appbar.HeaderBehavior: int getScrollRangeForDragFling(android.view.View)>($r3);
+
+        $i0 = neg $i0;
+
+        virtualinvoke r0.<com.google.android.material.appbar.HeaderBehavior: boolean fling(androidx.coordinatorlayout.widget.CoordinatorLayout,android.view.View,int,int,float)>($r2, $r3, $i0, 0, $f0);
+
+        $z0 = 1;
+
+        goto label09;
+
+     label08:
+        $z0 = 0;
+
+     label09:
+        r0.<com.google.android.material.appbar.HeaderBehavior: boolean isBeingDragged> = 0;
+
+        $i0 = -1;
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: int activePointerId> = $i0;
+
+        $r4 = r0.<com.google.android.material.appbar.HeaderBehavior: android.view.VelocityTracker velocityTracker>;
+
+        if $r4 == null goto label10;
+
+        virtualinvoke $r4.<android.view.VelocityTracker: void recycle()>();
+
+        r0.<com.google.android.material.appbar.HeaderBehavior: android.view.VelocityTracker velocityTracker> = null;
+
+     label10:
+        $r4 = r0.<com.google.android.material.appbar.HeaderBehavior: android.view.VelocityTracker velocityTracker>;
+
+        if $r4 == null goto label11;
+
+        virtualinvoke $r4.<android.view.VelocityTracker: void addMovement(android.view.MotionEvent)>($r1);
+
+     label11:
+        $z1 = r0.<com.google.android.material.appbar.HeaderBehavior: boolean isBeingDragged>;
+
+        if $z1 != 0 goto label13;
+
+        if $z0 == 0 goto label12;
+
+        return 1;
+
+     label12:
+        return 0;
+
+     label13:
+        return 1;
+    }
+
+    public final int scroll(androidx.coordinatorlayout.widget.CoordinatorLayout, android.view.View, int, int, int)
+    {
+        androidx.coordinatorlayout.widget.CoordinatorLayout $r2;
+        com.google.android.material.appbar.HeaderBehavior r0;
+        int $i0, $i1, $i2, $i3;
+        android.view.View $r1;
+
+        r0 := @this: com.google.android.material.appbar.HeaderBehavior;
+
+        $r2 := @parameter0: androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+        $r1 := @parameter1: android.view.View;
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        $i2 := @parameter4: int;
+
+        $i3 = virtualinvoke r0.<com.google.android.material.appbar.HeaderBehavior: int getTopBottomOffsetForScrollingSibling()>();
+
+        $i0 = $i3 - $i0;
+
+        $i0 = virtualinvoke r0.<com.google.android.material.appbar.HeaderBehavior: int setHeaderTopBottomOffset(androidx.coordinatorlayout.widget.CoordinatorLayout,android.view.View,int,int,int)>($r2, $r1, $i0, $i1, $i2);
+
+        return $i0;
+    }
+
+    public int setHeaderTopBottomOffset(androidx.coordinatorlayout.widget.CoordinatorLayout, android.view.View, int)
+    {
+        androidx.coordinatorlayout.widget.CoordinatorLayout $r2;
+        com.google.android.material.appbar.HeaderBehavior r0;
+        int $i0;
+        android.view.View $r1;
+
+        r0 := @this: com.google.android.material.appbar.HeaderBehavior;
+
+        $r2 := @parameter0: androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+        $r1 := @parameter1: android.view.View;
+
+        $i0 := @parameter2: int;
+
+        $i0 = virtualinvoke r0.<com.google.android.material.appbar.HeaderBehavior: int setHeaderTopBottomOffset(androidx.coordinatorlayout.widget.CoordinatorLayout,android.view.View,int,int,int)>($r2, $r1, $i0, -2147483648, 2147483647);
+
+        return $i0;
+    }
+
+    public int setHeaderTopBottomOffset(androidx.coordinatorlayout.widget.CoordinatorLayout, android.view.View, int, int, int)
+    {
+        androidx.coordinatorlayout.widget.CoordinatorLayout $r1;
+        com.google.android.material.appbar.HeaderBehavior r0;
+        int $i0, $i1, $i2, $i3;
+        android.view.View $r2;
+
+        r0 := @this: com.google.android.material.appbar.HeaderBehavior;
+
+        $r1 := @parameter0: androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+        $r2 := @parameter1: android.view.View;
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        $i2 := @parameter4: int;
+
+        $i3 = virtualinvoke r0.<com.google.android.material.appbar.ViewOffsetBehavior: int getTopAndBottomOffset()>();
+
+        if $i1 == 0 goto label1;
+
+        if $i3 < $i1 goto label1;
+
+        if $i3 > $i2 goto label1;
+
+        $i0 = staticinvoke <b.i.d.a: int a(int,int,int)>($i0, $i1, $i2);
+
+        if $i3 == $i0 goto label1;
+
+        virtualinvoke r0.<com.google.android.material.appbar.ViewOffsetBehavior: boolean setTopAndBottomOffset(int)>($i0);
+
+        $i0 = $i3 - $i0;
+
+        return $i0;
+
+     label1:
+        return 0;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.android.material.appbar.HeaderBehavior: int INVALID_POINTER> = -1;
+
+        return;
+    }
+}

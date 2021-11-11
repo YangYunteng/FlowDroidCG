@@ -1,0 +1,638 @@
+public class com.google.firebase.components.ComponentRuntime extends com.google.firebase.components.AbstractComponentContainer
+{
+    public static final com.google.firebase.inject.Provider EMPTY_PROVIDER;
+    public final java.util.Map components;
+    public final com.google.firebase.components.EventBus eventBus;
+    public final java.util.Map lazyInstanceMap;
+    public final java.util.Map lazySetMap;
+
+    static void <clinit>()
+    {
+        com.google.firebase.inject.Provider $r0;
+
+        $r0 = staticinvoke <com.google.firebase.components.ComponentRuntime$$Lambda$5: com.google.firebase.inject.Provider lambdaFactory$()>();
+
+        <com.google.firebase.components.ComponentRuntime: com.google.firebase.inject.Provider EMPTY_PROVIDER> = $r0;
+
+        return;
+    }
+
+    public transient void <init>(java.util.concurrent.Executor, java.lang.Iterable, com.google.firebase.components.Component[])
+    {
+        com.google.firebase.components.EventBus $r5;
+        com.google.firebase.inject.Provider $r14;
+        com.google.firebase.components.Component[] $r3;
+        java.util.HashMap $r4;
+        com.google.firebase.components.Lazy $r13;
+        java.lang.Iterable $r2;
+        java.util.ArrayList $r6;
+        com.google.firebase.components.Component $r8;
+        java.util.Map $r15;
+        int $i0, $i1;
+        boolean $z0;
+        java.util.Iterator $r9;
+        java.util.concurrent.Executor $r1;
+        com.google.firebase.components.ComponentRegistrar $r11;
+        java.lang.Class[] $r7;
+        java.util.List $r12;
+        java.lang.Object $r10;
+        com.google.firebase.components.ComponentRuntime r0;
+
+        r0 := @this: com.google.firebase.components.ComponentRuntime;
+
+        $r1 := @parameter0: java.util.concurrent.Executor;
+
+        $r2 := @parameter1: java.lang.Iterable;
+
+        $r3 := @parameter2: com.google.firebase.components.Component[];
+
+        specialinvoke r0.<com.google.firebase.components.AbstractComponentContainer: void <init>()>();
+
+        $r4 = new java.util.HashMap;
+
+        specialinvoke $r4.<java.util.HashMap: void <init>()>();
+
+        r0.<com.google.firebase.components.ComponentRuntime: java.util.Map components> = $r4;
+
+        $r4 = new java.util.HashMap;
+
+        specialinvoke $r4.<java.util.HashMap: void <init>()>();
+
+        r0.<com.google.firebase.components.ComponentRuntime: java.util.Map lazyInstanceMap> = $r4;
+
+        $r4 = new java.util.HashMap;
+
+        specialinvoke $r4.<java.util.HashMap: void <init>()>();
+
+        r0.<com.google.firebase.components.ComponentRuntime: java.util.Map lazySetMap> = $r4;
+
+        $r5 = new com.google.firebase.components.EventBus;
+
+        specialinvoke $r5.<com.google.firebase.components.EventBus: void <init>(java.util.concurrent.Executor)>($r1);
+
+        r0.<com.google.firebase.components.ComponentRuntime: com.google.firebase.components.EventBus eventBus> = $r5;
+
+        $r6 = new java.util.ArrayList;
+
+        specialinvoke $r6.<java.util.ArrayList: void <init>()>();
+
+        $r5 = r0.<com.google.firebase.components.ComponentRuntime: com.google.firebase.components.EventBus eventBus>;
+
+        $r7 = newarray (java.lang.Class)[2];
+
+        $i0 = 0;
+
+        $r7[0] = class "Lcom/google/firebase/events/Subscriber;";
+
+        $r7[1] = class "Lcom/google/firebase/events/Publisher;";
+
+        $r8 = staticinvoke <com.google.firebase.components.Component: com.google.firebase.components.Component of(java.lang.Object,java.lang.Class,java.lang.Class[])>($r5, class "Lcom/google/firebase/components/EventBus;", $r7);
+
+        interfaceinvoke $r6.<java.util.List: boolean add(java.lang.Object)>($r8);
+
+        $r9 = interfaceinvoke $r2.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r9.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r10 = interfaceinvoke $r9.<java.util.Iterator: java.lang.Object next()>();
+
+        $r11 = (com.google.firebase.components.ComponentRegistrar) $r10;
+
+        $r12 = interfaceinvoke $r11.<com.google.firebase.components.ComponentRegistrar: java.util.List getComponents()>();
+
+        interfaceinvoke $r6.<java.util.List: boolean addAll(java.util.Collection)>($r12);
+
+        goto label1;
+
+     label2:
+        $i1 = lengthof $r3;
+
+     label3:
+        if $i0 >= $i1 goto label5;
+
+        $r8 = $r3[$i0];
+
+        if $r8 == null goto label4;
+
+        interfaceinvoke $r6.<java.util.List: boolean add(java.lang.Object)>($r8);
+
+     label4:
+        $i0 = $i0 + 1;
+
+        goto label3;
+
+     label5:
+        staticinvoke <com.google.firebase.components.CycleDetector: void detect(java.util.List)>($r6);
+
+        $r9 = interfaceinvoke $r6.<java.util.List: java.util.Iterator iterator()>();
+
+     label6:
+        $z0 = interfaceinvoke $r9.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label7;
+
+        $r10 = interfaceinvoke $r9.<java.util.Iterator: java.lang.Object next()>();
+
+        $r8 = (com.google.firebase.components.Component) $r10;
+
+        $r13 = new com.google.firebase.components.Lazy;
+
+        $r14 = staticinvoke <com.google.firebase.components.ComponentRuntime$$Lambda$1: com.google.firebase.inject.Provider lambdaFactory$(com.google.firebase.components.ComponentRuntime,com.google.firebase.components.Component)>(r0, $r8);
+
+        specialinvoke $r13.<com.google.firebase.components.Lazy: void <init>(com.google.firebase.inject.Provider)>($r14);
+
+        $r15 = r0.<com.google.firebase.components.ComponentRuntime: java.util.Map components>;
+
+        interfaceinvoke $r15.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r8, $r13);
+
+        goto label6;
+
+     label7:
+        specialinvoke r0.<com.google.firebase.components.ComponentRuntime: void processInstanceComponents()>();
+
+        specialinvoke r0.<com.google.firebase.components.ComponentRuntime: void processSetComponents()>();
+
+        return;
+    }
+
+    public static java.lang.Object lambda$new$0(com.google.firebase.components.ComponentRuntime, com.google.firebase.components.Component)
+    {
+        com.google.firebase.components.Component $r0;
+        com.google.firebase.components.ComponentFactory $r3;
+        com.google.firebase.components.RestrictedComponentContainer $r1;
+        java.lang.Object $r4;
+        com.google.firebase.components.ComponentRuntime $r2;
+
+        $r2 := @parameter0: com.google.firebase.components.ComponentRuntime;
+
+        $r0 := @parameter1: com.google.firebase.components.Component;
+
+        $r3 = virtualinvoke $r0.<com.google.firebase.components.Component: com.google.firebase.components.ComponentFactory getFactory()>();
+
+        $r1 = new com.google.firebase.components.RestrictedComponentContainer;
+
+        specialinvoke $r1.<com.google.firebase.components.RestrictedComponentContainer: void <init>(com.google.firebase.components.Component,com.google.firebase.components.ComponentContainer)>($r0, $r2);
+
+        $r4 = interfaceinvoke $r3.<com.google.firebase.components.ComponentFactory: java.lang.Object create(com.google.firebase.components.ComponentContainer)>($r1);
+
+        return $r4;
+    }
+
+    public static java.util.Set lambda$processSetComponents$1(java.util.Set)
+    {
+        java.util.HashSet $r0;
+        java.util.Iterator $r2;
+        java.util.Set $r1;
+        java.lang.Object $r3;
+        com.google.firebase.components.Lazy $r4;
+        boolean $z0;
+
+        $r1 := @parameter0: java.util.Set;
+
+        $r0 = new java.util.HashSet;
+
+        specialinvoke $r0.<java.util.HashSet: void <init>()>();
+
+        $r2 = interfaceinvoke $r1.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r3 = interfaceinvoke $r2.<java.util.Iterator: java.lang.Object next()>();
+
+        $r4 = (com.google.firebase.components.Lazy) $r3;
+
+        $r3 = virtualinvoke $r4.<com.google.firebase.components.Lazy: java.lang.Object get()>();
+
+        interfaceinvoke $r0.<java.util.Set: boolean add(java.lang.Object)>($r3);
+
+        goto label1;
+
+     label2:
+        $r1 = staticinvoke <java.util.Collections: java.util.Set unmodifiableSet(java.util.Set)>($r0);
+
+        return $r1;
+    }
+
+    private void processInstanceComponents()
+    {
+        java.util.Map$Entry $r5;
+        java.util.Iterator $r3, $r8;
+        java.util.Set $r2;
+        com.google.firebase.components.Lazy $r7;
+        com.google.firebase.components.Component $r6;
+        java.util.Map $r1;
+        java.lang.Object $r4;
+        java.lang.Class $r9;
+        com.google.firebase.components.ComponentRuntime r0;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.components.ComponentRuntime;
+
+        $r1 = r0.<com.google.firebase.components.ComponentRuntime: java.util.Map components>;
+
+        $r2 = interfaceinvoke $r1.<java.util.Map: java.util.Set entrySet()>();
+
+        $r3 = interfaceinvoke $r2.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label4;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (java.util.Map$Entry) $r4;
+
+        $r4 = interfaceinvoke $r5.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r6 = (com.google.firebase.components.Component) $r4;
+
+        $z0 = virtualinvoke $r6.<com.google.firebase.components.Component: boolean isValue()>();
+
+        if $z0 != 0 goto label2;
+
+        goto label1;
+
+     label2:
+        $r4 = interfaceinvoke $r5.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r7 = (com.google.firebase.components.Lazy) $r4;
+
+        $r2 = virtualinvoke $r6.<com.google.firebase.components.Component: java.util.Set getProvidedInterfaces()>();
+
+        $r8 = interfaceinvoke $r2.<java.util.Set: java.util.Iterator iterator()>();
+
+     label3:
+        $z0 = interfaceinvoke $r8.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label1;
+
+        $r4 = interfaceinvoke $r8.<java.util.Iterator: java.lang.Object next()>();
+
+        $r9 = (java.lang.Class) $r4;
+
+        $r1 = r0.<com.google.firebase.components.ComponentRuntime: java.util.Map lazyInstanceMap>;
+
+        interfaceinvoke $r1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r9, $r7);
+
+        goto label3;
+
+     label4:
+        specialinvoke r0.<com.google.firebase.components.ComponentRuntime: void validateDependencies()>();
+
+        return;
+    }
+
+    private void processSetComponents()
+    {
+        java.util.Map$Entry $r6;
+        java.util.Iterator $r4, $r9;
+        com.google.firebase.inject.Provider $r12;
+        java.util.Set $r3;
+        java.util.HashMap $r1;
+        com.google.firebase.components.Lazy $r8;
+        java.util.HashSet $r11;
+        com.google.firebase.components.Component $r7;
+        java.util.Map $r2;
+        java.lang.Object $r5;
+        java.lang.Class $r10;
+        com.google.firebase.components.ComponentRuntime r0;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.components.ComponentRuntime;
+
+        $r1 = new java.util.HashMap;
+
+        specialinvoke $r1.<java.util.HashMap: void <init>()>();
+
+        $r2 = r0.<com.google.firebase.components.ComponentRuntime: java.util.Map components>;
+
+        $r3 = interfaceinvoke $r2.<java.util.Map: java.util.Set entrySet()>();
+
+        $r4 = interfaceinvoke $r3.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label5;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (java.util.Map$Entry) $r5;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r7 = (com.google.firebase.components.Component) $r5;
+
+        $z0 = virtualinvoke $r7.<com.google.firebase.components.Component: boolean isValue()>();
+
+        if $z0 == 0 goto label2;
+
+        goto label1;
+
+     label2:
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r8 = (com.google.firebase.components.Lazy) $r5;
+
+        $r3 = virtualinvoke $r7.<com.google.firebase.components.Component: java.util.Set getProvidedInterfaces()>();
+
+        $r9 = interfaceinvoke $r3.<java.util.Set: java.util.Iterator iterator()>();
+
+     label3:
+        $z0 = interfaceinvoke $r9.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label1;
+
+        $r5 = interfaceinvoke $r9.<java.util.Iterator: java.lang.Object next()>();
+
+        $r10 = (java.lang.Class) $r5;
+
+        $z0 = interfaceinvoke $r1.<java.util.Map: boolean containsKey(java.lang.Object)>($r10);
+
+        if $z0 != 0 goto label4;
+
+        $r11 = new java.util.HashSet;
+
+        specialinvoke $r11.<java.util.HashSet: void <init>()>();
+
+        interfaceinvoke $r1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r10, $r11);
+
+     label4:
+        $r5 = interfaceinvoke $r1.<java.util.Map: java.lang.Object get(java.lang.Object)>($r10);
+
+        $r3 = (java.util.Set) $r5;
+
+        interfaceinvoke $r3.<java.util.Set: boolean add(java.lang.Object)>($r8);
+
+        goto label3;
+
+     label5:
+        $r3 = interfaceinvoke $r1.<java.util.Map: java.util.Set entrySet()>();
+
+        $r4 = interfaceinvoke $r3.<java.util.Set: java.util.Iterator iterator()>();
+
+     label6:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label7;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (java.util.Map$Entry) $r5;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r3 = (java.util.Set) $r5;
+
+        $r2 = r0.<com.google.firebase.components.ComponentRuntime: java.util.Map lazySetMap>;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r10 = (java.lang.Class) $r5;
+
+        $r8 = new com.google.firebase.components.Lazy;
+
+        $r12 = staticinvoke <com.google.firebase.components.ComponentRuntime$$Lambda$4: com.google.firebase.inject.Provider lambdaFactory$(java.util.Set)>($r3);
+
+        specialinvoke $r8.<com.google.firebase.components.Lazy: void <init>(com.google.firebase.inject.Provider)>($r12);
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r10, $r8);
+
+        goto label6;
+
+     label7:
+        return;
+    }
+
+    private void validateDependencies()
+    {
+        com.google.firebase.components.MissingDependencyException $r9;
+        java.lang.Object[] $r10;
+        java.util.Iterator $r3, $r6;
+        java.util.Set $r2;
+        com.google.firebase.components.Component $r5;
+        com.google.firebase.components.Dependency $r7;
+        java.util.Map $r1;
+        java.lang.Object $r4;
+        java.lang.Class $r8;
+        java.lang.String $r11;
+        com.google.firebase.components.ComponentRuntime r0;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.components.ComponentRuntime;
+
+        $r1 = r0.<com.google.firebase.components.ComponentRuntime: java.util.Map components>;
+
+        $r2 = interfaceinvoke $r1.<java.util.Map: java.util.Set keySet()>();
+
+        $r3 = interfaceinvoke $r2.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label4;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (com.google.firebase.components.Component) $r4;
+
+        $r2 = virtualinvoke $r5.<com.google.firebase.components.Component: java.util.Set getDependencies()>();
+
+        $r6 = interfaceinvoke $r2.<java.util.Set: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r6.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label1;
+
+        $r4 = interfaceinvoke $r6.<java.util.Iterator: java.lang.Object next()>();
+
+        $r7 = (com.google.firebase.components.Dependency) $r4;
+
+        $z0 = virtualinvoke $r7.<com.google.firebase.components.Dependency: boolean isRequired()>();
+
+        if $z0 == 0 goto label2;
+
+        $r1 = r0.<com.google.firebase.components.ComponentRuntime: java.util.Map lazyInstanceMap>;
+
+        $r8 = virtualinvoke $r7.<com.google.firebase.components.Dependency: java.lang.Class getInterface()>();
+
+        $z0 = interfaceinvoke $r1.<java.util.Map: boolean containsKey(java.lang.Object)>($r8);
+
+        if $z0 == 0 goto label3;
+
+        goto label2;
+
+     label3:
+        $r9 = new com.google.firebase.components.MissingDependencyException;
+
+        $r10 = newarray (java.lang.Object)[2];
+
+        $r10[0] = $r5;
+
+        $r8 = virtualinvoke $r7.<com.google.firebase.components.Dependency: java.lang.Class getInterface()>();
+
+        $r10[1] = $r8;
+
+        $r11 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Unsatisfied dependency for component %s: %s", $r10);
+
+        specialinvoke $r9.<com.google.firebase.components.MissingDependencyException: void <init>(java.lang.String)>($r11);
+
+        throw $r9;
+
+     label4:
+        return;
+    }
+
+    public volatile java.lang.Object get(java.lang.Class)
+    {
+        java.lang.Object $r1;
+        java.lang.Class $r2;
+        com.google.firebase.components.ComponentRuntime r0;
+
+        r0 := @this: com.google.firebase.components.ComponentRuntime;
+
+        $r2 := @parameter0: java.lang.Class;
+
+        $r1 = specialinvoke r0.<com.google.firebase.components.AbstractComponentContainer: java.lang.Object get(java.lang.Class)>($r2);
+
+        return $r1;
+    }
+
+    public com.google.firebase.inject.Provider getProvider(java.lang.Class)
+    {
+        com.google.firebase.inject.Provider $r4;
+        java.util.Map $r3;
+        java.lang.Object $r1;
+        java.lang.Class $r2;
+        com.google.firebase.components.ComponentRuntime r0;
+
+        r0 := @this: com.google.firebase.components.ComponentRuntime;
+
+        $r2 := @parameter0: java.lang.Class;
+
+        staticinvoke <com.google.firebase.components.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.String)>($r2, "Null interface requested.");
+
+        $r3 = r0.<com.google.firebase.components.ComponentRuntime: java.util.Map lazyInstanceMap>;
+
+        $r1 = interfaceinvoke $r3.<java.util.Map: java.lang.Object get(java.lang.Object)>($r2);
+
+        $r4 = (com.google.firebase.inject.Provider) $r1;
+
+        return $r4;
+    }
+
+    public void initializeEagerComponents(boolean)
+    {
+        java.util.Map$Entry $r5;
+        java.util.Iterator $r3;
+        com.google.firebase.components.EventBus $r8;
+        java.util.Set $r2;
+        com.google.firebase.components.Lazy $r7;
+        com.google.firebase.components.Component $r6;
+        java.util.Map $r1;
+        java.lang.Object $r4;
+        com.google.firebase.components.ComponentRuntime r0;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.firebase.components.ComponentRuntime;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 = r0.<com.google.firebase.components.ComponentRuntime: java.util.Map components>;
+
+        $r2 = interfaceinvoke $r1.<java.util.Map: java.util.Set entrySet()>();
+
+        $r3 = interfaceinvoke $r2.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z1 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z1 == 0 goto label3;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (java.util.Map$Entry) $r4;
+
+        $r4 = interfaceinvoke $r5.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r6 = (com.google.firebase.components.Component) $r4;
+
+        $r4 = interfaceinvoke $r5.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r7 = (com.google.firebase.components.Lazy) $r4;
+
+        $z1 = virtualinvoke $r6.<com.google.firebase.components.Component: boolean isAlwaysEager()>();
+
+        if $z1 != 0 goto label2;
+
+        $z1 = virtualinvoke $r6.<com.google.firebase.components.Component: boolean isEagerInDefaultApp()>();
+
+        if $z1 == 0 goto label1;
+
+        if $z0 == 0 goto label1;
+
+     label2:
+        virtualinvoke $r7.<com.google.firebase.components.Lazy: java.lang.Object get()>();
+
+        goto label1;
+
+     label3:
+        $r8 = r0.<com.google.firebase.components.ComponentRuntime: com.google.firebase.components.EventBus eventBus>;
+
+        virtualinvoke $r8.<com.google.firebase.components.EventBus: void enablePublishingAndFlushPending()>();
+
+        return;
+    }
+
+    public volatile java.util.Set setOf(java.lang.Class)
+    {
+        java.util.Set $r1;
+        java.lang.Class $r2;
+        com.google.firebase.components.ComponentRuntime r0;
+
+        r0 := @this: com.google.firebase.components.ComponentRuntime;
+
+        $r2 := @parameter0: java.lang.Class;
+
+        $r1 = specialinvoke r0.<com.google.firebase.components.AbstractComponentContainer: java.util.Set setOf(java.lang.Class)>($r2);
+
+        return $r1;
+    }
+
+    public com.google.firebase.inject.Provider setOfProvider(java.lang.Class)
+    {
+        com.google.firebase.inject.Provider r5;
+        java.util.Map $r1;
+        java.lang.Object $r2;
+        java.lang.Class $r3;
+        com.google.firebase.components.Lazy $r4;
+        com.google.firebase.components.ComponentRuntime r0;
+
+        r0 := @this: com.google.firebase.components.ComponentRuntime;
+
+        $r3 := @parameter0: java.lang.Class;
+
+        $r1 = r0.<com.google.firebase.components.ComponentRuntime: java.util.Map lazySetMap>;
+
+        $r2 = interfaceinvoke $r1.<java.util.Map: java.lang.Object get(java.lang.Object)>($r3);
+
+        $r4 = (com.google.firebase.components.Lazy) $r2;
+
+        if $r4 == null goto label1;
+
+        return $r4;
+
+     label1:
+        r5 = <com.google.firebase.components.ComponentRuntime: com.google.firebase.inject.Provider EMPTY_PROVIDER>;
+
+        return r5;
+    }
+}

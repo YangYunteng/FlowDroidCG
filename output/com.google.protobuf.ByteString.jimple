@@ -1,0 +1,1246 @@
+public abstract class com.google.protobuf.ByteString extends java.lang.Object implements java.lang.Iterable, java.io.Serializable
+{
+    public static final int CONCATENATE_BY_COPY_SIZE;
+    public static final com.google.protobuf.ByteString EMPTY;
+    public static final int MAX_READ_FROM_CHUNK_SIZE;
+    public static final int MIN_READ_FROM_CHUNK_SIZE;
+    public static final int UNSIGNED_BYTE_MASK;
+    public static final java.util.Comparator UNSIGNED_LEXICOGRAPHICAL_COMPARATOR;
+    public static final com.google.protobuf.ByteString$ByteArrayCopier byteArrayCopier;
+    public int hash;
+
+    static void <clinit>()
+    {
+        byte[] $r0;
+        com.google.protobuf.ByteString$LiteralByteString $r2;
+        com.google.protobuf.ByteString$ByteArrayCopier $r1;
+        com.google.protobuf.ByteString$SystemByteArrayCopier $r3;
+        com.google.protobuf.ByteString$ArraysByteArrayCopier $r4;
+        com.google.protobuf.ByteString$2 $r5;
+        boolean $z0;
+
+        <com.google.protobuf.ByteString: int UNSIGNED_BYTE_MASK> = 255;
+
+        <com.google.protobuf.ByteString: int MIN_READ_FROM_CHUNK_SIZE> = 256;
+
+        <com.google.protobuf.ByteString: int MAX_READ_FROM_CHUNK_SIZE> = 8192;
+
+        <com.google.protobuf.ByteString: int CONCATENATE_BY_COPY_SIZE> = 128;
+
+        $r2 = new com.google.protobuf.ByteString$LiteralByteString;
+
+        $r0 = <com.google.protobuf.Internal: byte[] EMPTY_BYTE_ARRAY>;
+
+        specialinvoke $r2.<com.google.protobuf.ByteString$LiteralByteString: void <init>(byte[])>($r0);
+
+        <com.google.protobuf.ByteString: com.google.protobuf.ByteString EMPTY> = $r2;
+
+        $z0 = staticinvoke <com.google.protobuf.Android: boolean isOnAndroidDevice()>();
+
+        if $z0 == 0 goto label1;
+
+        $r3 = new com.google.protobuf.ByteString$SystemByteArrayCopier;
+
+        $r1 = $r3;
+
+        specialinvoke $r3.<com.google.protobuf.ByteString$SystemByteArrayCopier: void <init>(com.google.protobuf.ByteString$1)>(null);
+
+        goto label2;
+
+     label1:
+        $r4 = new com.google.protobuf.ByteString$ArraysByteArrayCopier;
+
+        $r1 = $r4;
+
+        specialinvoke $r4.<com.google.protobuf.ByteString$ArraysByteArrayCopier: void <init>(com.google.protobuf.ByteString$1)>(null);
+
+     label2:
+        <com.google.protobuf.ByteString: com.google.protobuf.ByteString$ByteArrayCopier byteArrayCopier> = $r1;
+
+        $r5 = new com.google.protobuf.ByteString$2;
+
+        specialinvoke $r5.<com.google.protobuf.ByteString$2: void <init>()>();
+
+        <com.google.protobuf.ByteString: java.util.Comparator UNSIGNED_LEXICOGRAPHICAL_COMPARATOR> = $r5;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.protobuf.ByteString r0;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.protobuf.ByteString: int hash> = 0;
+
+        return;
+    }
+
+    public static int access$200(byte)
+    {
+        int $i0;
+        byte $b1;
+
+        $b1 := @parameter0: byte;
+
+        $i0 = staticinvoke <com.google.protobuf.ByteString: int toInt(byte)>($b1);
+
+        return $i0;
+    }
+
+    public static com.google.protobuf.ByteString balancedConcat(java.util.Iterator, int)
+    {
+        java.lang.Object[] $r5;
+        java.util.Iterator $r0;
+        java.lang.IllegalArgumentException $r4;
+        java.lang.Integer $r6;
+        com.google.protobuf.ByteString $r2, $r3;
+        int $i0, $i1;
+        java.lang.Object $r1;
+        java.lang.String $r7;
+
+        $r0 := @parameter0: java.util.Iterator;
+
+        $i0 := @parameter1: int;
+
+        if $i0 < 1 goto label2;
+
+        if $i0 != 1 goto label1;
+
+        $r1 = interfaceinvoke $r0.<java.util.Iterator: java.lang.Object next()>();
+
+        $r2 = (com.google.protobuf.ByteString) $r1;
+
+        return $r2;
+
+     label1:
+        $i1 = $i0 >>> 1;
+
+        $r2 = staticinvoke <com.google.protobuf.ByteString: com.google.protobuf.ByteString balancedConcat(java.util.Iterator,int)>($r0, $i1);
+
+        $i0 = $i0 - $i1;
+
+        $r3 = staticinvoke <com.google.protobuf.ByteString: com.google.protobuf.ByteString balancedConcat(java.util.Iterator,int)>($r0, $i0);
+
+        $r2 = virtualinvoke $r2.<com.google.protobuf.ByteString: com.google.protobuf.ByteString concat(com.google.protobuf.ByteString)>($r3);
+
+        return $r2;
+
+     label2:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        $r5 = newarray (java.lang.Object)[1];
+
+        $r6 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r5[0] = $r6;
+
+        $r7 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("length (%s) must be >= 1", $r5);
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r7);
+
+        throw $r4;
+    }
+
+    public static void checkIndex(int, int)
+    {
+        int $i0, $i1, $i2;
+        java.lang.StringBuilder $r1;
+        java.lang.ArrayIndexOutOfBoundsException $r0;
+        java.lang.String $r2;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 = $i0 + 1;
+
+        $i2 = $i1 - $i2;
+
+        $i2 = $i2 | $i0;
+
+        if $i2 >= 0 goto label2;
+
+        if $i0 >= 0 goto label1;
+
+        $r0 = new java.lang.ArrayIndexOutOfBoundsException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Index < 0: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r0.<java.lang.ArrayIndexOutOfBoundsException: void <init>(java.lang.String)>($r2);
+
+        throw $r0;
+
+     label1:
+        $r0 = new java.lang.ArrayIndexOutOfBoundsException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Index > length: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r0.<java.lang.ArrayIndexOutOfBoundsException: void <init>(java.lang.String)>($r2);
+
+        throw $r0;
+
+     label2:
+        return;
+    }
+
+    public static int checkRange(int, int, int)
+    {
+        java.lang.IndexOutOfBoundsException $r0;
+        int $i0, $i1, $i2, $i3, $i4, $i5;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2;
+
+        $i1 := @parameter0: int;
+
+        $i2 := @parameter1: int;
+
+        $i3 := @parameter2: int;
+
+        $i4 = $i2 - $i1;
+
+        $i0 = $i1 | $i2;
+
+        $i5 = $i0 | $i4;
+
+        $i0 = $i3 - $i2;
+
+        $i0 = $i5 | $i0;
+
+        if $i0 >= 0 goto label3;
+
+        if $i1 < 0 goto label2;
+
+        if $i2 >= $i1 goto label1;
+
+        $r0 = new java.lang.IndexOutOfBoundsException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Beginning index larger than ending index: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r0.<java.lang.IndexOutOfBoundsException: void <init>(java.lang.String)>($r2);
+
+        throw $r0;
+
+     label1:
+        $r0 = new java.lang.IndexOutOfBoundsException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("End index: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" >= ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r0.<java.lang.IndexOutOfBoundsException: void <init>(java.lang.String)>($r2);
+
+        throw $r0;
+
+     label2:
+        $r0 = new java.lang.IndexOutOfBoundsException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Beginning index: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" < 0");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r0.<java.lang.IndexOutOfBoundsException: void <init>(java.lang.String)>($r2);
+
+        throw $r0;
+
+     label3:
+        return $i4;
+    }
+
+    public static com.google.protobuf.ByteString copyFrom(java.lang.Iterable)
+    {
+        com.google.protobuf.ByteString $r3;
+        java.util.Iterator $r1;
+        java.util.Collection $r2;
+        int $i0;
+        java.lang.Iterable $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.Iterable;
+
+        $z0 = $r0 instanceof java.util.Collection;
+
+        if $z0 != 0 goto label2;
+
+        $i0 = 0;
+
+        $r1 = interfaceinvoke $r0.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r1.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        interfaceinvoke $r1.<java.util.Iterator: java.lang.Object next()>();
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label2:
+        $r2 = (java.util.Collection) $r0;
+
+        $i0 = interfaceinvoke $r2.<java.util.Collection: int size()>();
+
+     label3:
+        if $i0 != 0 goto label4;
+
+        $r3 = <com.google.protobuf.ByteString: com.google.protobuf.ByteString EMPTY>;
+
+        return $r3;
+
+     label4:
+        $r1 = interfaceinvoke $r0.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+        $r3 = staticinvoke <com.google.protobuf.ByteString: com.google.protobuf.ByteString balancedConcat(java.util.Iterator,int)>($r1, $i0);
+
+        return $r3;
+    }
+
+    public static com.google.protobuf.ByteString copyFrom(java.lang.String, java.lang.String)
+    {
+        com.google.protobuf.ByteString$LiteralByteString $r1;
+        byte[] $r2;
+        java.lang.String $r0, $r3;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $r1 = new com.google.protobuf.ByteString$LiteralByteString;
+
+        $r2 = virtualinvoke $r3.<java.lang.String: byte[] getBytes(java.lang.String)>($r0);
+
+        specialinvoke $r1.<com.google.protobuf.ByteString$LiteralByteString: void <init>(byte[])>($r2);
+
+        return $r1;
+    }
+
+    public static com.google.protobuf.ByteString copyFrom(java.lang.String, java.nio.charset.Charset)
+    {
+        com.google.protobuf.ByteString$LiteralByteString $r1;
+        byte[] $r2;
+        java.nio.charset.Charset $r0;
+        java.lang.String $r3;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r0 := @parameter1: java.nio.charset.Charset;
+
+        $r1 = new com.google.protobuf.ByteString$LiteralByteString;
+
+        $r2 = virtualinvoke $r3.<java.lang.String: byte[] getBytes(java.nio.charset.Charset)>($r0);
+
+        specialinvoke $r1.<com.google.protobuf.ByteString$LiteralByteString: void <init>(byte[])>($r2);
+
+        return $r1;
+    }
+
+    public static com.google.protobuf.ByteString copyFrom(java.nio.ByteBuffer)
+    {
+        int $i0;
+        com.google.protobuf.ByteString $r1;
+        java.nio.ByteBuffer $r0;
+
+        $r0 := @parameter0: java.nio.ByteBuffer;
+
+        $i0 = virtualinvoke $r0.<java.nio.ByteBuffer: int remaining()>();
+
+        $r1 = staticinvoke <com.google.protobuf.ByteString: com.google.protobuf.ByteString copyFrom(java.nio.ByteBuffer,int)>($r0, $i0);
+
+        return $r1;
+    }
+
+    public static com.google.protobuf.ByteString copyFrom(java.nio.ByteBuffer, int)
+    {
+        byte[] $r1;
+        com.google.protobuf.ByteString$LiteralByteString $r2;
+        int $i0, $i1;
+        java.nio.ByteBuffer $r0;
+
+        $r0 := @parameter0: java.nio.ByteBuffer;
+
+        $i1 := @parameter1: int;
+
+        $i0 = virtualinvoke $r0.<java.nio.ByteBuffer: int remaining()>();
+
+        staticinvoke <com.google.protobuf.ByteString: int checkRange(int,int,int)>(0, $i1, $i0);
+
+        $r1 = newarray (byte)[$i1];
+
+        virtualinvoke $r0.<java.nio.ByteBuffer: java.nio.ByteBuffer get(byte[])>($r1);
+
+        $r2 = new com.google.protobuf.ByteString$LiteralByteString;
+
+        specialinvoke $r2.<com.google.protobuf.ByteString$LiteralByteString: void <init>(byte[])>($r1);
+
+        return $r2;
+    }
+
+    public static com.google.protobuf.ByteString copyFrom(byte[])
+    {
+        int $i0;
+        com.google.protobuf.ByteString $r0;
+        byte[] $r1;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 = lengthof $r1;
+
+        $r0 = staticinvoke <com.google.protobuf.ByteString: com.google.protobuf.ByteString copyFrom(byte[],int,int)>($r1, 0, $i0);
+
+        return $r0;
+    }
+
+    public static com.google.protobuf.ByteString copyFrom(byte[], int, int)
+    {
+        byte[] $r0;
+        com.google.protobuf.ByteString$LiteralByteString $r1;
+        com.google.protobuf.ByteString$ByteArrayCopier $r2;
+        int $i0, $i1, $i2, $i3;
+
+        $r0 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 = $i0 + $i1;
+
+        $i3 = lengthof $r0;
+
+        staticinvoke <com.google.protobuf.ByteString: int checkRange(int,int,int)>($i0, $i2, $i3);
+
+        $r1 = new com.google.protobuf.ByteString$LiteralByteString;
+
+        $r2 = <com.google.protobuf.ByteString: com.google.protobuf.ByteString$ByteArrayCopier byteArrayCopier>;
+
+        $r0 = interfaceinvoke $r2.<com.google.protobuf.ByteString$ByteArrayCopier: byte[] copyFrom(byte[],int,int)>($r0, $i0, $i1);
+
+        specialinvoke $r1.<com.google.protobuf.ByteString$LiteralByteString: void <init>(byte[])>($r0);
+
+        return $r1;
+    }
+
+    public static com.google.protobuf.ByteString copyFromUtf8(java.lang.String)
+    {
+        com.google.protobuf.ByteString$LiteralByteString $r0;
+        byte[] $r2;
+        java.nio.charset.Charset $r1;
+        java.lang.String $r3;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r0 = new com.google.protobuf.ByteString$LiteralByteString;
+
+        $r1 = <com.google.protobuf.Internal: java.nio.charset.Charset UTF_8>;
+
+        $r2 = virtualinvoke $r3.<java.lang.String: byte[] getBytes(java.nio.charset.Charset)>($r1);
+
+        specialinvoke $r0.<com.google.protobuf.ByteString$LiteralByteString: void <init>(byte[])>($r2);
+
+        return $r0;
+    }
+
+    public static com.google.protobuf.ByteString$CodedBuilder newCodedBuilder(int)
+    {
+        int $i0;
+        com.google.protobuf.ByteString$CodedBuilder $r0;
+
+        $i0 := @parameter0: int;
+
+        $r0 = new com.google.protobuf.ByteString$CodedBuilder;
+
+        specialinvoke $r0.<com.google.protobuf.ByteString$CodedBuilder: void <init>(int,com.google.protobuf.ByteString$1)>($i0, null);
+
+        return $r0;
+    }
+
+    public static com.google.protobuf.ByteString$Output newOutput()
+    {
+        com.google.protobuf.ByteString$Output $r0;
+
+        $r0 = new com.google.protobuf.ByteString$Output;
+
+        specialinvoke $r0.<com.google.protobuf.ByteString$Output: void <init>(int)>(128);
+
+        return $r0;
+    }
+
+    public static com.google.protobuf.ByteString$Output newOutput(int)
+    {
+        int $i0;
+        com.google.protobuf.ByteString$Output $r0;
+
+        $i0 := @parameter0: int;
+
+        $r0 = new com.google.protobuf.ByteString$Output;
+
+        specialinvoke $r0.<com.google.protobuf.ByteString$Output: void <init>(int)>($i0);
+
+        return $r0;
+    }
+
+    public static com.google.protobuf.ByteString readChunk(java.io.InputStream, int)
+    {
+        com.google.protobuf.ByteString $r2;
+        byte[] $r0;
+        int $i0, $i1, $i2, $i3;
+        java.io.InputStream $r1;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        $i0 := @parameter1: int;
+
+        $r0 = newarray (byte)[$i0];
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label3;
+
+        $i2 = $i0 - $i1;
+
+        $i2 = virtualinvoke $r1.<java.io.InputStream: int read(byte[],int,int)>($r0, $i1, $i2);
+
+        $i3 = -1;
+
+        if $i2 != $i3 goto label2;
+
+        goto label3;
+
+     label2:
+        $i1 = $i1 + $i2;
+
+        goto label1;
+
+     label3:
+        if $i1 != 0 goto label4;
+
+        return null;
+
+     label4:
+        $r2 = staticinvoke <com.google.protobuf.ByteString: com.google.protobuf.ByteString copyFrom(byte[],int,int)>($r0, 0, $i1);
+
+        return $r2;
+    }
+
+    public static com.google.protobuf.ByteString readFrom(java.io.InputStream)
+    {
+        com.google.protobuf.ByteString $r0;
+        java.io.InputStream $r1;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        $r0 = staticinvoke <com.google.protobuf.ByteString: com.google.protobuf.ByteString readFrom(java.io.InputStream,int,int)>($r1, 256, 8192);
+
+        return $r0;
+    }
+
+    public static com.google.protobuf.ByteString readFrom(java.io.InputStream, int)
+    {
+        int $i0;
+        com.google.protobuf.ByteString $r0;
+        java.io.InputStream $r1;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        $i0 := @parameter1: int;
+
+        $r0 = staticinvoke <com.google.protobuf.ByteString: com.google.protobuf.ByteString readFrom(java.io.InputStream,int,int)>($r1, $i0, $i0);
+
+        return $r0;
+    }
+
+    public static com.google.protobuf.ByteString readFrom(java.io.InputStream, int, int)
+    {
+        com.google.protobuf.ByteString $r2;
+        int $i0, $i1;
+        java.util.ArrayList $r0;
+        java.io.InputStream $r1;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        $i1 := @parameter1: int;
+
+        $i0 := @parameter2: int;
+
+        $r0 = new java.util.ArrayList;
+
+        specialinvoke $r0.<java.util.ArrayList: void <init>()>();
+
+     label1:
+        $r2 = staticinvoke <com.google.protobuf.ByteString: com.google.protobuf.ByteString readChunk(java.io.InputStream,int)>($r1, $i1);
+
+        if $r2 != null goto label2;
+
+        $r2 = staticinvoke <com.google.protobuf.ByteString: com.google.protobuf.ByteString copyFrom(java.lang.Iterable)>($r0);
+
+        return $r2;
+
+     label2:
+        interfaceinvoke $r0.<java.util.Collection: boolean add(java.lang.Object)>($r2);
+
+        $i1 = $i1 * 2;
+
+        $i1 = staticinvoke <java.lang.Math: int min(int,int)>($i1, $i0);
+
+        goto label1;
+    }
+
+    public static int toInt(byte)
+    {
+        int $i2;
+        short $s1;
+        byte $b0;
+
+        $b0 := @parameter0: byte;
+
+        $s1 = (short) $b0;
+
+        $s1 = $s1 & 255;
+
+        $i2 = (int) $s1;
+
+        return $i2;
+    }
+
+    private java.lang.String truncateAndEscapeForDisplay()
+    {
+        com.google.protobuf.ByteString r0;
+        int $i0;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.ByteString: int size()>();
+
+        if $i0 > 50 goto label1;
+
+        $r1 = staticinvoke <com.google.protobuf.TextFormatEscaper: java.lang.String escapeBytes(com.google.protobuf.ByteString)>(r0);
+
+        return $r1;
+
+     label1:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        r0 = virtualinvoke r0.<com.google.protobuf.ByteString: com.google.protobuf.ByteString substring(int,int)>(0, 47);
+
+        $r1 = staticinvoke <com.google.protobuf.TextFormatEscaper: java.lang.String escapeBytes(com.google.protobuf.ByteString)>(r0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("...");
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+
+    public static java.util.Comparator unsignedLexicographicalComparator()
+    {
+        java.util.Comparator r0;
+
+        r0 = <com.google.protobuf.ByteString: java.util.Comparator UNSIGNED_LEXICOGRAPHICAL_COMPARATOR>;
+
+        return r0;
+    }
+
+    public static com.google.protobuf.ByteString wrap(java.nio.ByteBuffer)
+    {
+        com.google.protobuf.ByteString $r2;
+        byte[] $r1;
+        int $i0, $i1;
+        java.nio.ByteBuffer $r0;
+        com.google.protobuf.NioByteString $r3;
+        boolean $z0;
+
+        $r0 := @parameter0: java.nio.ByteBuffer;
+
+        $z0 = virtualinvoke $r0.<java.nio.ByteBuffer: boolean hasArray()>();
+
+        if $z0 == 0 goto label1;
+
+        $i0 = virtualinvoke $r0.<java.nio.ByteBuffer: int arrayOffset()>();
+
+        $r1 = virtualinvoke $r0.<java.nio.ByteBuffer: byte[] array()>();
+
+        $i1 = virtualinvoke $r0.<java.nio.ByteBuffer: int position()>();
+
+        $i0 = $i0 + $i1;
+
+        $i1 = virtualinvoke $r0.<java.nio.ByteBuffer: int remaining()>();
+
+        $r2 = staticinvoke <com.google.protobuf.ByteString: com.google.protobuf.ByteString wrap(byte[],int,int)>($r1, $i0, $i1);
+
+        return $r2;
+
+     label1:
+        $r3 = new com.google.protobuf.NioByteString;
+
+        specialinvoke $r3.<com.google.protobuf.NioByteString: void <init>(java.nio.ByteBuffer)>($r0);
+
+        return $r3;
+    }
+
+    public static com.google.protobuf.ByteString wrap(byte[])
+    {
+        byte[] $r0;
+        com.google.protobuf.ByteString$LiteralByteString $r1;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 = new com.google.protobuf.ByteString$LiteralByteString;
+
+        specialinvoke $r1.<com.google.protobuf.ByteString$LiteralByteString: void <init>(byte[])>($r0);
+
+        return $r1;
+    }
+
+    public static com.google.protobuf.ByteString wrap(byte[], int, int)
+    {
+        byte[] $r0;
+        com.google.protobuf.ByteString$BoundedByteString $r1;
+        int $i0, $i1;
+
+        $r0 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r1 = new com.google.protobuf.ByteString$BoundedByteString;
+
+        specialinvoke $r1.<com.google.protobuf.ByteString$BoundedByteString: void <init>(byte[],int,int)>($r0, $i0, $i1);
+
+        return $r1;
+    }
+
+    public abstract java.nio.ByteBuffer asReadOnlyByteBuffer();
+
+    public abstract java.util.List asReadOnlyByteBufferList();
+
+    public abstract byte byteAt(int);
+
+    public final com.google.protobuf.ByteString concat(com.google.protobuf.ByteString)
+    {
+        com.google.protobuf.ByteString r0, $r1;
+        int $i0, $i1;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r4;
+        java.lang.IllegalArgumentException $r2;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $r1 := @parameter0: com.google.protobuf.ByteString;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.ByteString: int size()>();
+
+        $i0 = 2147483647 - $i0;
+
+        $i1 = virtualinvoke $r1.<com.google.protobuf.ByteString: int size()>();
+
+        if $i0 < $i1 goto label1;
+
+        r0 = staticinvoke <com.google.protobuf.RopeByteString: com.google.protobuf.ByteString concatenate(com.google.protobuf.ByteString,com.google.protobuf.ByteString)>(r0, $r1);
+
+        return r0;
+
+     label1:
+        $r2 = new java.lang.IllegalArgumentException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ByteString would be too long: ");
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.ByteString: int size()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("+");
+
+        $i0 = virtualinvoke $r1.<com.google.protobuf.ByteString: int size()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r4);
+
+        throw $r2;
+    }
+
+    public abstract void copyTo(java.nio.ByteBuffer);
+
+    public void copyTo(byte[], int)
+    {
+        com.google.protobuf.ByteString r0;
+        byte[] $r1;
+        int $i0, $i1;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.ByteString: int size()>();
+
+        virtualinvoke r0.<com.google.protobuf.ByteString: void copyTo(byte[],int,int,int)>($r1, 0, $i0, $i1);
+
+        return;
+    }
+
+    public final void copyTo(byte[], int, int, int)
+    {
+        com.google.protobuf.ByteString r0;
+        byte[] $r1;
+        int $i0, $i1, $i2, $i3, $i4;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        $i4 = $i0 + $i2;
+
+        $i3 = virtualinvoke r0.<com.google.protobuf.ByteString: int size()>();
+
+        staticinvoke <com.google.protobuf.ByteString: int checkRange(int,int,int)>($i0, $i4, $i3);
+
+        $i3 = $i1 + $i2;
+
+        $i4 = lengthof $r1;
+
+        staticinvoke <com.google.protobuf.ByteString: int checkRange(int,int,int)>($i1, $i3, $i4);
+
+        if $i2 <= 0 goto label1;
+
+        virtualinvoke r0.<com.google.protobuf.ByteString: void copyToInternal(byte[],int,int,int)>($r1, $i0, $i1, $i2);
+
+     label1:
+        return;
+    }
+
+    public abstract void copyToInternal(byte[], int, int, int);
+
+    public final boolean endsWith(com.google.protobuf.ByteString)
+    {
+        com.google.protobuf.ByteString r0, $r1;
+        int $i0, $i1;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $r1 := @parameter0: com.google.protobuf.ByteString;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.ByteString: int size()>();
+
+        $i1 = virtualinvoke $r1.<com.google.protobuf.ByteString: int size()>();
+
+        if $i0 < $i1 goto label1;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.ByteString: int size()>();
+
+        $i1 = virtualinvoke $r1.<com.google.protobuf.ByteString: int size()>();
+
+        $i0 = $i0 - $i1;
+
+        r0 = virtualinvoke r0.<com.google.protobuf.ByteString: com.google.protobuf.ByteString substring(int)>($i0);
+
+        $z0 = virtualinvoke r0.<com.google.protobuf.ByteString: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public abstract boolean equals(java.lang.Object);
+
+    public abstract int getTreeDepth();
+
+    public final int hashCode()
+    {
+        com.google.protobuf.ByteString r0;
+        int $i0, $i1;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $i0 = r0.<com.google.protobuf.ByteString: int hash>;
+
+        if $i0 != 0 goto label2;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.ByteString: int size()>();
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.ByteString: int partialHash(int,int,int)>($i0, 0, $i0);
+
+        $i1 = $i0;
+
+        if $i0 != 0 goto label1;
+
+        $i1 = 1;
+
+     label1:
+        r0.<com.google.protobuf.ByteString: int hash> = $i1;
+
+        return $i1;
+
+     label2:
+        return $i0;
+    }
+
+    public abstract byte internalByteAt(int);
+
+    public abstract boolean isBalanced();
+
+    public final boolean isEmpty()
+    {
+        com.google.protobuf.ByteString r0;
+        int $i0;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.ByteString: int size()>();
+
+        if $i0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public abstract boolean isValidUtf8();
+
+    public com.google.protobuf.ByteString$ByteIterator iterator()
+    {
+        com.google.protobuf.ByteString r0;
+        com.google.protobuf.ByteString$1 $r1;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $r1 = new com.google.protobuf.ByteString$1;
+
+        specialinvoke $r1.<com.google.protobuf.ByteString$1: void <init>(com.google.protobuf.ByteString)>(r0);
+
+        return $r1;
+    }
+
+    public volatile java.util.Iterator iterator()
+    {
+        com.google.protobuf.ByteString r0;
+        com.google.protobuf.ByteString$ByteIterator $r1;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $r1 = virtualinvoke r0.<com.google.protobuf.ByteString: com.google.protobuf.ByteString$ByteIterator iterator()>();
+
+        return $r1;
+    }
+
+    public abstract com.google.protobuf.CodedInputStream newCodedInput();
+
+    public abstract java.io.InputStream newInput();
+
+    public abstract int partialHash(int, int, int);
+
+    public abstract int partialIsValidUtf8(int, int, int);
+
+    public final int peekCachedHashCode()
+    {
+        com.google.protobuf.ByteString r0;
+        int i0;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        i0 = r0.<com.google.protobuf.ByteString: int hash>;
+
+        return i0;
+    }
+
+    public abstract int size();
+
+    public final boolean startsWith(com.google.protobuf.ByteString)
+    {
+        com.google.protobuf.ByteString r0, $r1;
+        int $i0, $i1;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $r1 := @parameter0: com.google.protobuf.ByteString;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.ByteString: int size()>();
+
+        $i1 = virtualinvoke $r1.<com.google.protobuf.ByteString: int size()>();
+
+        if $i0 < $i1 goto label1;
+
+        $i0 = virtualinvoke $r1.<com.google.protobuf.ByteString: int size()>();
+
+        r0 = virtualinvoke r0.<com.google.protobuf.ByteString: com.google.protobuf.ByteString substring(int,int)>(0, $i0);
+
+        $z0 = virtualinvoke r0.<com.google.protobuf.ByteString: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public final com.google.protobuf.ByteString substring(int)
+    {
+        com.google.protobuf.ByteString r0;
+        int $i0, $i1;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $i0 := @parameter0: int;
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.ByteString: int size()>();
+
+        r0 = virtualinvoke r0.<com.google.protobuf.ByteString: com.google.protobuf.ByteString substring(int,int)>($i0, $i1);
+
+        return r0;
+    }
+
+    public abstract com.google.protobuf.ByteString substring(int, int);
+
+    public final byte[] toByteArray()
+    {
+        com.google.protobuf.ByteString r0;
+        int $i0;
+        byte[] $r1;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.ByteString: int size()>();
+
+        if $i0 != 0 goto label1;
+
+        $r1 = <com.google.protobuf.Internal: byte[] EMPTY_BYTE_ARRAY>;
+
+        return $r1;
+
+     label1:
+        $r1 = newarray (byte)[$i0];
+
+        virtualinvoke r0.<com.google.protobuf.ByteString: void copyToInternal(byte[],int,int,int)>($r1, 0, 0, $i0);
+
+        return $r1;
+    }
+
+    public final java.lang.String toString()
+    {
+        com.google.protobuf.ByteString r0;
+        java.lang.Object[] $r2;
+        java.util.Locale $r1;
+        int $i0;
+        java.lang.String $r3;
+        java.lang.Integer $r4;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $r1 = <java.util.Locale: java.util.Locale ROOT>;
+
+        $r2 = newarray (java.lang.Object)[3];
+
+        $i0 = staticinvoke <java.lang.System: int identityHashCode(java.lang.Object)>(r0);
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        $r2[0] = $r3;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.ByteString: int size()>();
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r2[1] = $r4;
+
+        $r3 = specialinvoke r0.<com.google.protobuf.ByteString: java.lang.String truncateAndEscapeForDisplay()>();
+
+        $r2[2] = $r3;
+
+        $r3 = staticinvoke <java.lang.String: java.lang.String format(java.util.Locale,java.lang.String,java.lang.Object[])>($r1, "<ByteString@%s size=%d contents=\"%s\">", $r2);
+
+        return $r3;
+    }
+
+    public final java.lang.String toString(java.lang.String)
+    {
+        com.google.protobuf.ByteString r0;
+        java.nio.charset.Charset $r3;
+        java.lang.String $r2, $r4;
+        java.nio.charset.UnsupportedCharsetException $r5;
+        java.io.UnsupportedEncodingException $r1;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $r2 := @parameter0: java.lang.String;
+
+     label1:
+        $r3 = staticinvoke <java.nio.charset.Charset: java.nio.charset.Charset forName(java.lang.String)>($r2);
+
+        $r4 = virtualinvoke r0.<com.google.protobuf.ByteString: java.lang.String toString(java.nio.charset.Charset)>($r3);
+
+     label2:
+        return $r4;
+
+     label3:
+        $r5 := @caughtexception;
+
+        $r1 = new java.io.UnsupportedEncodingException;
+
+        specialinvoke $r1.<java.io.UnsupportedEncodingException: void <init>(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.io.UnsupportedEncodingException: java.lang.Throwable initCause(java.lang.Throwable)>($r5);
+
+        throw $r1;
+
+        catch java.nio.charset.UnsupportedCharsetException from label1 to label2 with label3;
+    }
+
+    public final java.lang.String toString(java.nio.charset.Charset)
+    {
+        com.google.protobuf.ByteString r0;
+        java.nio.charset.Charset $r1;
+        int $i0;
+        java.lang.String $r2;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $r1 := @parameter0: java.nio.charset.Charset;
+
+        $i0 = virtualinvoke r0.<com.google.protobuf.ByteString: int size()>();
+
+        if $i0 != 0 goto label1;
+
+        return "";
+
+     label1:
+        $r2 = virtualinvoke r0.<com.google.protobuf.ByteString: java.lang.String toStringInternal(java.nio.charset.Charset)>($r1);
+
+        return $r2;
+    }
+
+    public abstract java.lang.String toStringInternal(java.nio.charset.Charset);
+
+    public final java.lang.String toStringUtf8()
+    {
+        com.google.protobuf.ByteString r0;
+        java.lang.String $r1;
+        java.nio.charset.Charset $r2;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $r2 = <com.google.protobuf.Internal: java.nio.charset.Charset UTF_8>;
+
+        $r1 = virtualinvoke r0.<com.google.protobuf.ByteString: java.lang.String toString(java.nio.charset.Charset)>($r2);
+
+        return $r1;
+    }
+
+    public abstract void writeTo(com.google.protobuf.ByteOutput);
+
+    public abstract void writeTo(java.io.OutputStream);
+
+    public final void writeTo(java.io.OutputStream, int, int)
+    {
+        com.google.protobuf.ByteString r0;
+        java.io.OutputStream $r1;
+        int $i0, $i1, $i2, $i3;
+
+        r0 := @this: com.google.protobuf.ByteString;
+
+        $r1 := @parameter0: java.io.OutputStream;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 = $i0 + $i1;
+
+        $i3 = virtualinvoke r0.<com.google.protobuf.ByteString: int size()>();
+
+        staticinvoke <com.google.protobuf.ByteString: int checkRange(int,int,int)>($i0, $i2, $i3);
+
+        if $i1 <= 0 goto label1;
+
+        virtualinvoke r0.<com.google.protobuf.ByteString: void writeToInternal(java.io.OutputStream,int,int)>($r1, $i0, $i1);
+
+     label1:
+        return;
+    }
+
+    public abstract void writeToInternal(java.io.OutputStream, int, int);
+
+    public abstract void writeToReverse(com.google.protobuf.ByteOutput);
+}

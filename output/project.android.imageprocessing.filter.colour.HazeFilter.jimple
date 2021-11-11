@@ -1,0 +1,96 @@
+public class project.android.imageprocessing.filter.colour.HazeFilter extends project.android.imageprocessing.filter.BasicFilter
+{
+    public static final java.lang.String UNIFORM_DISTANCE;
+    public static final java.lang.String UNIFORM_SLOPE;
+    public float distance;
+    public int distanceHandle;
+    public float slope;
+    public int slopeHandle;
+
+    public void <init>(float, float)
+    {
+        float $f0, $f1;
+        project.android.imageprocessing.filter.colour.HazeFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.HazeFilter;
+
+        $f0 := @parameter0: float;
+
+        $f1 := @parameter1: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.BasicFilter: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.colour.HazeFilter: float distance> = $f0;
+
+        r0.<project.android.imageprocessing.filter.colour.HazeFilter: float slope> = $f1;
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.colour.HazeFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.HazeFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform float u_Distance;\nuniform float u_Slope;\nvoid main(){\n   float d = v_TexCoord.y * u_Slope + u_Distance;\n   vec4 color = vec4(d);\n   vec4 c = texture2D(u_Texture0,v_TexCoord);\n   vec4 result = (c - color) / (1.0-d);\n   gl_FragColor = vec4(result.rgb, c.a);\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.colour.HazeFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.HazeFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_Distance");
+
+        r0.<project.android.imageprocessing.filter.colour.HazeFilter: int distanceHandle> = $i0;
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_Slope");
+
+        r0.<project.android.imageprocessing.filter.colour.HazeFilter: int slopeHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        int $i0;
+        float $f0;
+        project.android.imageprocessing.filter.colour.HazeFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.HazeFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.HazeFilter: int distanceHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.colour.HazeFilter: float distance>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.HazeFilter: int slopeHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.colour.HazeFilter: float slope>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.colour.HazeFilter: java.lang.String UNIFORM_SLOPE> = "u_Slope";
+
+        <project.android.imageprocessing.filter.colour.HazeFilter: java.lang.String UNIFORM_DISTANCE> = "u_Distance";
+
+        return;
+    }
+}

@@ -1,0 +1,197 @@
+public abstract class org.codehaus.jackson.io.BaseReader extends java.io.Reader
+{
+    public static final int LAST_VALID_UNICODE_CHAR;
+    public static final char NULL_BYTE;
+    public static final char NULL_CHAR;
+    public byte[] _buffer;
+    public final org.codehaus.jackson.io.IOContext _context;
+    public java.io.InputStream _in;
+    public int _length;
+    public int _ptr;
+    public char[] _tmpBuf;
+
+    public void <init>(org.codehaus.jackson.io.IOContext, java.io.InputStream, byte[], int, int)
+    {
+        org.codehaus.jackson.io.IOContext $r1;
+        byte[] $r3;
+        org.codehaus.jackson.io.BaseReader r0;
+        int $i0, $i1;
+        java.io.InputStream $r2;
+
+        r0 := @this: org.codehaus.jackson.io.BaseReader;
+
+        $r1 := @parameter0: org.codehaus.jackson.io.IOContext;
+
+        $r2 := @parameter1: java.io.InputStream;
+
+        $r3 := @parameter2: byte[];
+
+        $i0 := @parameter3: int;
+
+        $i1 := @parameter4: int;
+
+        specialinvoke r0.<java.io.Reader: void <init>()>();
+
+        r0.<org.codehaus.jackson.io.BaseReader: char[] _tmpBuf> = null;
+
+        r0.<org.codehaus.jackson.io.BaseReader: org.codehaus.jackson.io.IOContext _context> = $r1;
+
+        r0.<org.codehaus.jackson.io.BaseReader: java.io.InputStream _in> = $r2;
+
+        r0.<org.codehaus.jackson.io.BaseReader: byte[] _buffer> = $r3;
+
+        r0.<org.codehaus.jackson.io.BaseReader: int _ptr> = $i0;
+
+        r0.<org.codehaus.jackson.io.BaseReader: int _length> = $i1;
+
+        return;
+    }
+
+    public void close()
+    {
+        org.codehaus.jackson.io.BaseReader r0;
+        java.io.InputStream $r1;
+
+        r0 := @this: org.codehaus.jackson.io.BaseReader;
+
+        $r1 = r0.<org.codehaus.jackson.io.BaseReader: java.io.InputStream _in>;
+
+        if $r1 == null goto label1;
+
+        r0.<org.codehaus.jackson.io.BaseReader: java.io.InputStream _in> = null;
+
+        virtualinvoke r0.<org.codehaus.jackson.io.BaseReader: void freeBuffers()>();
+
+        virtualinvoke $r1.<java.io.InputStream: void close()>();
+
+     label1:
+        return;
+    }
+
+    public final void freeBuffers()
+    {
+        byte[] $r1;
+        org.codehaus.jackson.io.IOContext $r2;
+        org.codehaus.jackson.io.BaseReader r0;
+
+        r0 := @this: org.codehaus.jackson.io.BaseReader;
+
+        $r1 = r0.<org.codehaus.jackson.io.BaseReader: byte[] _buffer>;
+
+        if $r1 == null goto label1;
+
+        r0.<org.codehaus.jackson.io.BaseReader: byte[] _buffer> = null;
+
+        $r2 = r0.<org.codehaus.jackson.io.BaseReader: org.codehaus.jackson.io.IOContext _context>;
+
+        virtualinvoke $r2.<org.codehaus.jackson.io.IOContext: void releaseReadIOBuffer(byte[])>($r1);
+
+     label1:
+        return;
+    }
+
+    public int read()
+    {
+        org.codehaus.jackson.io.BaseReader r0;
+        int $i0;
+        char[] $r1;
+        char $c1;
+
+        r0 := @this: org.codehaus.jackson.io.BaseReader;
+
+        $r1 = r0.<org.codehaus.jackson.io.BaseReader: char[] _tmpBuf>;
+
+        if $r1 != null goto label1;
+
+        $r1 = newarray (char)[1];
+
+        r0.<org.codehaus.jackson.io.BaseReader: char[] _tmpBuf> = $r1;
+
+     label1:
+        $r1 = r0.<org.codehaus.jackson.io.BaseReader: char[] _tmpBuf>;
+
+        $i0 = virtualinvoke r0.<java.io.Reader: int read(char[],int,int)>($r1, 0, 1);
+
+        if $i0 >= 1 goto label2;
+
+        $i0 = -1;
+
+        return $i0;
+
+     label2:
+        $r1 = r0.<org.codehaus.jackson.io.BaseReader: char[] _tmpBuf>;
+
+        $c1 = $r1[0];
+
+        $i0 = (int) $c1;
+
+        return $i0;
+    }
+
+    public void reportBounds(char[], int, int)
+    {
+        org.codehaus.jackson.io.BaseReader r0;
+        int $i0, $i1;
+        char[] $r4;
+        java.lang.StringBuilder $r2;
+        java.lang.ArrayIndexOutOfBoundsException $r1;
+        java.lang.String $r3;
+
+        r0 := @this: org.codehaus.jackson.io.BaseReader;
+
+        $r4 := @parameter0: char[];
+
+        $i1 := @parameter1: int;
+
+        $i0 := @parameter2: int;
+
+        $r1 = new java.lang.ArrayIndexOutOfBoundsException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("read(buf,");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(",");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("), cbuf[");
+
+        $i1 = lengthof $r4;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r1.<java.lang.ArrayIndexOutOfBoundsException: void <init>(java.lang.String)>($r3);
+
+        throw $r1;
+    }
+
+    public void reportStrangeStream()
+    {
+        java.io.IOException $r1;
+        org.codehaus.jackson.io.BaseReader r0;
+
+        r0 := @this: org.codehaus.jackson.io.BaseReader;
+
+        $r1 = new java.io.IOException;
+
+        specialinvoke $r1.<java.io.IOException: void <init>(java.lang.String)>("Strange I/O stream, returned 0 bytes on read");
+
+        throw $r1;
+    }
+
+    public static void <clinit>()
+    {
+        <org.codehaus.jackson.io.BaseReader: int LAST_VALID_UNICODE_CHAR> = 1114111;
+
+        return;
+    }
+}

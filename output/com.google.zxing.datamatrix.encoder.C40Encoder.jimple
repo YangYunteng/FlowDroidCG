@@ -1,0 +1,598 @@
+public class com.google.zxing.datamatrix.encoder.C40Encoder extends java.lang.Object implements com.google.zxing.datamatrix.encoder.Encoder
+{
+
+    public void <init>()
+    {
+        com.google.zxing.datamatrix.encoder.C40Encoder r0;
+
+        r0 := @this: com.google.zxing.datamatrix.encoder.C40Encoder;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    private int backtrackOneCharacter(com.google.zxing.datamatrix.encoder.EncoderContext, java.lang.StringBuilder, java.lang.StringBuilder, int)
+    {
+        com.google.zxing.datamatrix.encoder.EncoderContext $r1;
+        int $i0, $i1;
+        java.lang.StringBuilder $r2, $r3;
+        char $c2;
+        com.google.zxing.datamatrix.encoder.C40Encoder r0;
+
+        r0 := @this: com.google.zxing.datamatrix.encoder.C40Encoder;
+
+        $r1 := @parameter0: com.google.zxing.datamatrix.encoder.EncoderContext;
+
+        $r3 := @parameter1: java.lang.StringBuilder;
+
+        $r2 := @parameter2: java.lang.StringBuilder;
+
+        $i0 := @parameter3: int;
+
+        $i1 = virtualinvoke $r3.<java.lang.StringBuilder: int length()>();
+
+        $i0 = $i1 - $i0;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder delete(int,int)>($i0, $i1);
+
+        $i0 = $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: int pos>;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: int pos> = $i0;
+
+        $c2 = virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: char getCurrentChar()>();
+
+        $i0 = virtualinvoke r0.<com.google.zxing.datamatrix.encoder.C40Encoder: int encodeChar(char,java.lang.StringBuilder)>($c2, $r2);
+
+        virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: void resetSymbolInfo()>();
+
+        return $i0;
+    }
+
+    public static java.lang.String encodeToCodewords(java.lang.CharSequence, int)
+    {
+        java.lang.CharSequence $r0;
+        char $c1, $c3, $c4;
+        int $i0, $i2;
+        char[] $r1;
+        java.lang.String $r2;
+
+        $r0 := @parameter0: java.lang.CharSequence;
+
+        $i0 := @parameter1: int;
+
+        $c1 = interfaceinvoke $r0.<java.lang.CharSequence: char charAt(int)>($i0);
+
+        $i2 = $i0 + 1;
+
+        $c3 = interfaceinvoke $r0.<java.lang.CharSequence: char charAt(int)>($i2);
+
+        $i0 = $i0 + 2;
+
+        $c4 = interfaceinvoke $r0.<java.lang.CharSequence: char charAt(int)>($i0);
+
+        $i0 = (int) $c1;
+
+        $i0 = $i0 * 1600;
+
+        $i2 = (int) $c3;
+
+        $i2 = $i2 * 40;
+
+        $i0 = $i0 + $i2;
+
+        $i2 = (int) $c4;
+
+        $i0 = $i0 + $i2;
+
+        $i0 = $i0 + 1;
+
+        $i2 = $i0 / 256;
+
+        $c1 = (char) $i2;
+
+        $i0 = $i0 % 256;
+
+        $c3 = (char) $i0;
+
+        $r2 = new java.lang.String;
+
+        $r1 = newarray (char)[2];
+
+        $r1[0] = $c1;
+
+        $r1[1] = $c3;
+
+        specialinvoke $r2.<java.lang.String: void <init>(char[])>($r1);
+
+        return $r2;
+    }
+
+    public static void writeNextTriplet(com.google.zxing.datamatrix.encoder.EncoderContext, java.lang.StringBuilder)
+    {
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+        com.google.zxing.datamatrix.encoder.EncoderContext $r2;
+
+        $r2 := @parameter0: com.google.zxing.datamatrix.encoder.EncoderContext;
+
+        $r0 := @parameter1: java.lang.StringBuilder;
+
+        $r1 = staticinvoke <com.google.zxing.datamatrix.encoder.C40Encoder: java.lang.String encodeToCodewords(java.lang.CharSequence,int)>($r0, 0);
+
+        virtualinvoke $r2.<com.google.zxing.datamatrix.encoder.EncoderContext: void writeCodewords(java.lang.String)>($r1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder delete(int,int)>(0, 3);
+
+        return;
+    }
+
+    public void encode(com.google.zxing.datamatrix.encoder.EncoderContext)
+    {
+        com.google.zxing.datamatrix.encoder.EncoderContext $r1;
+        char $c0;
+        com.google.zxing.datamatrix.encoder.C40Encoder r0;
+        int $i1, $i2, $i3, $i4;
+        java.lang.StringBuilder $r2, $r4;
+        com.google.zxing.datamatrix.encoder.SymbolInfo $r3;
+        java.lang.String $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.datamatrix.encoder.C40Encoder;
+
+        $r1 := @parameter0: com.google.zxing.datamatrix.encoder.EncoderContext;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+     label1:
+        $z0 = virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: boolean hasMoreCharacters()>();
+
+        if $z0 == 0 goto label7;
+
+        $c0 = virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: char getCurrentChar()>();
+
+        $i1 = $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: int pos>;
+
+        $i1 = $i1 + 1;
+
+        $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: int pos> = $i1;
+
+        $i2 = virtualinvoke r0.<com.google.zxing.datamatrix.encoder.C40Encoder: int encodeChar(char,java.lang.StringBuilder)>($c0, $r2);
+
+        $i1 = $i2;
+
+        $i3 = virtualinvoke $r2.<java.lang.StringBuilder: int length()>();
+
+        $i3 = $i3 / 3;
+
+        $i3 = $i3 * 2;
+
+        $i4 = virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: int getCodewordCount()>();
+
+        $i3 = $i4 + $i3;
+
+        virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: void updateSymbolInfo(int)>($i3);
+
+        $r3 = virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: com.google.zxing.datamatrix.encoder.SymbolInfo getSymbolInfo()>();
+
+        $i4 = virtualinvoke $r3.<com.google.zxing.datamatrix.encoder.SymbolInfo: int getDataCapacity()>();
+
+        $i3 = $i4 - $i3;
+
+        $z0 = virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: boolean hasMoreCharacters()>();
+
+        if $z0 != 0 goto label6;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $i4 = virtualinvoke $r2.<java.lang.StringBuilder: int length()>();
+
+        $i4 = $i4 % 3;
+
+        if $i4 != 2 goto label3;
+
+        if $i3 < 2 goto label2;
+
+        if $i3 <= 2 goto label3;
+
+     label2:
+        $i1 = specialinvoke r0.<com.google.zxing.datamatrix.encoder.C40Encoder: int backtrackOneCharacter(com.google.zxing.datamatrix.encoder.EncoderContext,java.lang.StringBuilder,java.lang.StringBuilder,int)>($r1, $r2, $r4, $i2);
+
+     label3:
+        $i2 = virtualinvoke $r2.<java.lang.StringBuilder: int length()>();
+
+        $i2 = $i2 % 3;
+
+        if $i2 != 1 goto label7;
+
+        if $i1 > 3 goto label4;
+
+        if $i3 != 1 goto label5;
+
+     label4:
+        if $i1 <= 3 goto label7;
+
+     label5:
+        $i1 = specialinvoke r0.<com.google.zxing.datamatrix.encoder.C40Encoder: int backtrackOneCharacter(com.google.zxing.datamatrix.encoder.EncoderContext,java.lang.StringBuilder,java.lang.StringBuilder,int)>($r1, $r2, $r4, $i1);
+
+        goto label3;
+
+     label6:
+        $i1 = virtualinvoke $r2.<java.lang.StringBuilder: int length()>();
+
+        $i1 = $i1 % 3;
+
+        if $i1 != 0 goto label1;
+
+        $r5 = virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: java.lang.String getMessage()>();
+
+        $i1 = $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: int pos>;
+
+        $i2 = virtualinvoke r0.<com.google.zxing.datamatrix.encoder.C40Encoder: int getEncodingMode()>();
+
+        $i1 = staticinvoke <com.google.zxing.datamatrix.encoder.HighLevelEncoder: int lookAheadTest(java.lang.CharSequence,int,int)>($r5, $i1, $i2);
+
+        $i2 = virtualinvoke r0.<com.google.zxing.datamatrix.encoder.C40Encoder: int getEncodingMode()>();
+
+        if $i1 == $i2 goto label1;
+
+        virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: void signalEncoderChange(int)>($i1);
+
+     label7:
+        virtualinvoke r0.<com.google.zxing.datamatrix.encoder.C40Encoder: void handleEOD(com.google.zxing.datamatrix.encoder.EncoderContext,java.lang.StringBuilder)>($r1, $r2);
+
+        return;
+    }
+
+    public int encodeChar(char, java.lang.StringBuilder)
+    {
+        int $i1;
+        char $c0;
+        java.lang.StringBuilder $r1, $r3;
+        com.google.zxing.datamatrix.encoder.C40Encoder r0;
+        java.lang.String $r2;
+        java.lang.IllegalArgumentException $r4;
+
+        r0 := @this: com.google.zxing.datamatrix.encoder.C40Encoder;
+
+        $c0 := @parameter0: char;
+
+        $r1 := @parameter1: java.lang.StringBuilder;
+
+        $i1 = (int) $c0;
+
+        if $i1 != 32 goto label1;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(3);
+
+        return 1;
+
+     label1:
+        $i1 = (int) $c0;
+
+        if $i1 < 48 goto label2;
+
+        $i1 = (int) $c0;
+
+        if $i1 > 57 goto label2;
+
+        $i1 = (int) $c0;
+
+        $i1 = $i1 - 48;
+
+        $i1 = $i1 + 4;
+
+        $c0 = (char) $i1;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        return 1;
+
+     label2:
+        $i1 = (int) $c0;
+
+        if $i1 < 65 goto label3;
+
+        $i1 = (int) $c0;
+
+        if $i1 > 90 goto label3;
+
+        $i1 = (int) $c0;
+
+        $i1 = $i1 - 65;
+
+        $i1 = $i1 + 14;
+
+        $c0 = (char) $i1;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        return 1;
+
+     label3:
+        $i1 = (int) $c0;
+
+        if $i1 < 0 goto label4;
+
+        $i1 = (int) $c0;
+
+        if $i1 > 31 goto label4;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        return 2;
+
+     label4:
+        $i1 = (int) $c0;
+
+        if $i1 < 33 goto label5;
+
+        $i1 = (int) $c0;
+
+        if $i1 > 47 goto label5;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(1);
+
+        $i1 = (int) $c0;
+
+        $i1 = $i1 - 33;
+
+        $c0 = (char) $i1;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        return 2;
+
+     label5:
+        $i1 = (int) $c0;
+
+        if $i1 < 58 goto label6;
+
+        $i1 = (int) $c0;
+
+        if $i1 > 64 goto label6;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(1);
+
+        $i1 = (int) $c0;
+
+        $i1 = $i1 - 58;
+
+        $i1 = $i1 + 15;
+
+        $c0 = (char) $i1;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        return 2;
+
+     label6:
+        $i1 = (int) $c0;
+
+        if $i1 < 91 goto label7;
+
+        $i1 = (int) $c0;
+
+        if $i1 > 95 goto label7;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(1);
+
+        $i1 = (int) $c0;
+
+        $i1 = $i1 - 91;
+
+        $i1 = $i1 + 22;
+
+        $c0 = (char) $i1;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        return 2;
+
+     label7:
+        $i1 = (int) $c0;
+
+        if $i1 < 96 goto label8;
+
+        $i1 = (int) $c0;
+
+        if $i1 > 127 goto label8;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(2);
+
+        $i1 = (int) $c0;
+
+        $i1 = $i1 - 96;
+
+        $c0 = (char) $i1;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        return 2;
+
+     label8:
+        $i1 = (int) $c0;
+
+        if $i1 < 128 goto label9;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\u0001\u001e");
+
+        $i1 = (int) $c0;
+
+        $i1 = $i1 - 128;
+
+        $c0 = (char) $i1;
+
+        $i1 = virtualinvoke r0.<com.google.zxing.datamatrix.encoder.C40Encoder: int encodeChar(char,java.lang.StringBuilder)>($c0, $r1);
+
+        $i1 = $i1 + 2;
+
+        return $i1;
+
+     label9:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        $r1 = $r3;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal character: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r2);
+
+        throw $r4;
+    }
+
+    public int getEncodingMode()
+    {
+        com.google.zxing.datamatrix.encoder.C40Encoder r0;
+
+        r0 := @this: com.google.zxing.datamatrix.encoder.C40Encoder;
+
+        return 1;
+    }
+
+    public void handleEOD(com.google.zxing.datamatrix.encoder.EncoderContext, java.lang.StringBuilder)
+    {
+        java.lang.IllegalStateException $r4;
+        com.google.zxing.datamatrix.encoder.EncoderContext $r1;
+        com.google.zxing.datamatrix.encoder.C40Encoder r0;
+        int $i0, $i1, $i2;
+        java.lang.StringBuilder $r2;
+        com.google.zxing.datamatrix.encoder.SymbolInfo $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.datamatrix.encoder.C40Encoder;
+
+        $r1 := @parameter0: com.google.zxing.datamatrix.encoder.EncoderContext;
+
+        $r2 := @parameter1: java.lang.StringBuilder;
+
+        $i0 = virtualinvoke $r2.<java.lang.StringBuilder: int length()>();
+
+        $i0 = $i0 / 3;
+
+        $i1 = $i0 * 2;
+
+        $i0 = virtualinvoke $r2.<java.lang.StringBuilder: int length()>();
+
+        $i0 = $i0 % 3;
+
+        $i2 = virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: int getCodewordCount()>();
+
+        $i1 = $i2 + $i1;
+
+        virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: void updateSymbolInfo(int)>($i1);
+
+        $r3 = virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: com.google.zxing.datamatrix.encoder.SymbolInfo getSymbolInfo()>();
+
+        $i2 = virtualinvoke $r3.<com.google.zxing.datamatrix.encoder.SymbolInfo: int getDataCapacity()>();
+
+        $i1 = $i2 - $i1;
+
+        if $i0 != 2 goto label03;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(0);
+
+     label01:
+        $i0 = virtualinvoke $r2.<java.lang.StringBuilder: int length()>();
+
+        if $i0 < 3 goto label02;
+
+        staticinvoke <com.google.zxing.datamatrix.encoder.C40Encoder: void writeNextTriplet(com.google.zxing.datamatrix.encoder.EncoderContext,java.lang.StringBuilder)>($r1, $r2);
+
+        goto label01;
+
+     label02:
+        $z0 = virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: boolean hasMoreCharacters()>();
+
+        if $z0 == 0 goto label11;
+
+        virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: void writeCodeword(char)>(254);
+
+        goto label11;
+
+     label03:
+        if $i1 != 1 goto label07;
+
+        if $i0 != 1 goto label07;
+
+     label04:
+        $i0 = virtualinvoke $r2.<java.lang.StringBuilder: int length()>();
+
+        if $i0 < 3 goto label05;
+
+        staticinvoke <com.google.zxing.datamatrix.encoder.C40Encoder: void writeNextTriplet(com.google.zxing.datamatrix.encoder.EncoderContext,java.lang.StringBuilder)>($r1, $r2);
+
+        goto label04;
+
+     label05:
+        $z0 = virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: boolean hasMoreCharacters()>();
+
+        if $z0 == 0 goto label06;
+
+        virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: void writeCodeword(char)>(254);
+
+     label06:
+        $i0 = $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: int pos>;
+
+        $i0 = $i0 - 1;
+
+        $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: int pos> = $i0;
+
+        goto label11;
+
+     label07:
+        if $i0 != 0 goto label12;
+
+     label08:
+        $i0 = virtualinvoke $r2.<java.lang.StringBuilder: int length()>();
+
+        if $i0 < 3 goto label09;
+
+        staticinvoke <com.google.zxing.datamatrix.encoder.C40Encoder: void writeNextTriplet(com.google.zxing.datamatrix.encoder.EncoderContext,java.lang.StringBuilder)>($r1, $r2);
+
+        goto label08;
+
+     label09:
+        if $i1 > 0 goto label10;
+
+        $z0 = virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: boolean hasMoreCharacters()>();
+
+        if $z0 == 0 goto label11;
+
+     label10:
+        virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: void writeCodeword(char)>(254);
+
+     label11:
+        virtualinvoke $r1.<com.google.zxing.datamatrix.encoder.EncoderContext: void signalEncoderChange(int)>(0);
+
+        return;
+
+     label12:
+        $r4 = new java.lang.IllegalStateException;
+
+        specialinvoke $r4.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Unexpected case. Please report!");
+
+        goto label13;
+
+     label13:
+        throw $r4;
+    }
+}

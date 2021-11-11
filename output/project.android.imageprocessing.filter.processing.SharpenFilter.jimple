@@ -1,0 +1,75 @@
+public class project.android.imageprocessing.filter.processing.SharpenFilter extends project.android.imageprocessing.filter.MultiPixelRenderer
+{
+    public static final java.lang.String UNIFORM_SHARPEN_AMOUNT;
+    public float sharpenAmount;
+    public int sharpenAmountHandle;
+
+    public void <init>(float)
+    {
+        project.android.imageprocessing.filter.processing.SharpenFilter r0;
+        float $f0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.SharpenFilter;
+
+        $f0 := @parameter0: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiPixelRenderer: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.processing.SharpenFilter: float sharpenAmount> = $f0;
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.processing.SharpenFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.SharpenFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform float u_TexelWidth;\nuniform float u_TexelHeight;\nuniform float u_SharpenAmount;\nvoid main(){\n   vec2 singleStepOffset = vec2(u_TexelWidth, u_TexelHeight);\n   vec4 sum = vec4(0,0,0,0);\n   vec2 up = vec2(0.0, u_TexelHeight);\n   vec2 left = vec2(u_TexelWidth, 0.0);\n   sum += texture2D(u_Texture0, v_TexCoord) * (1.0 + 4.0 * u_SharpenAmount);\n   sum += texture2D(u_Texture0, v_TexCoord + up) * -u_SharpenAmount;\n   sum += texture2D(u_Texture0, v_TexCoord - up) * -u_SharpenAmount;\n   sum += texture2D(u_Texture0, v_TexCoord + left) * -u_SharpenAmount;\n   sum += texture2D(u_Texture0, v_TexCoord - left) * -u_SharpenAmount;\n   gl_FragColor = sum;\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        project.android.imageprocessing.filter.processing.SharpenFilter r0;
+        int $i0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.SharpenFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiPixelRenderer: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_SharpenAmount");
+
+        r0.<project.android.imageprocessing.filter.processing.SharpenFilter: int sharpenAmountHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        project.android.imageprocessing.filter.processing.SharpenFilter r0;
+        int $i0;
+        float $f0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.SharpenFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiPixelRenderer: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.processing.SharpenFilter: int sharpenAmountHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.processing.SharpenFilter: float sharpenAmount>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.processing.SharpenFilter: java.lang.String UNIFORM_SHARPEN_AMOUNT> = "u_SharpenAmount";
+
+        return;
+    }
+}

@@ -1,0 +1,279 @@
+public abstract class com.google.common.escape.ArrayBasedUnicodeEscaper extends com.google.common.escape.UnicodeEscaper
+{
+    public final char[][] replacements;
+    public final int replacementsLength;
+    public final int safeMax;
+    public final char safeMaxChar;
+    public final int safeMin;
+    public final char safeMinChar;
+
+    public void <init>(com.google.common.escape.ArrayBasedEscaperMap, int, int, java.lang.String)
+    {
+        char $c3;
+        char[][] $r3;
+        com.google.common.escape.ArrayBasedUnicodeEscaper r0;
+        int $i0, $i1, $i2;
+        java.lang.String $r1;
+        com.google.common.escape.ArrayBasedEscaperMap $r2;
+
+        r0 := @this: com.google.common.escape.ArrayBasedUnicodeEscaper;
+
+        $r2 := @parameter0: com.google.common.escape.ArrayBasedEscaperMap;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r1 := @parameter3: java.lang.String;
+
+        specialinvoke r0.<com.google.common.escape.UnicodeEscaper: void <init>()>();
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        $r3 = virtualinvoke $r2.<com.google.common.escape.ArrayBasedEscaperMap: char[][] getReplacementArray()>();
+
+        r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: char[][] replacements> = $r3;
+
+        $r3 = r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: char[][] replacements>;
+
+        $i2 = lengthof $r3;
+
+        r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: int replacementsLength> = $i2;
+
+        if $i1 >= $i0 goto label1;
+
+        $i1 = -1;
+
+        $i0 = 2147483647;
+
+     label1:
+        r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: int safeMin> = $i0;
+
+        r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: int safeMax> = $i1;
+
+        $i2 = 55296;
+
+        if $i0 < $i2 goto label2;
+
+        r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: char safeMinChar> = 65535;
+
+        r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: char safeMaxChar> = 0;
+
+        return;
+
+     label2:
+        $c3 = (char) $i0;
+
+        r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: char safeMinChar> = $c3;
+
+        $i0 = 55295;
+
+        $i0 = staticinvoke <java.lang.Math: int min(int,int)>($i1, $i0);
+
+        $c3 = (char) $i0;
+
+        r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: char safeMaxChar> = $c3;
+
+        return;
+    }
+
+    public void <init>(java.util.Map, int, int, java.lang.String)
+    {
+        com.google.common.escape.ArrayBasedUnicodeEscaper r0;
+        java.util.Map $r3;
+        int $i0, $i1;
+        java.lang.String $r1;
+        com.google.common.escape.ArrayBasedEscaperMap $r2;
+
+        r0 := @this: com.google.common.escape.ArrayBasedUnicodeEscaper;
+
+        $r3 := @parameter0: java.util.Map;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r1 := @parameter3: java.lang.String;
+
+        $r2 = staticinvoke <com.google.common.escape.ArrayBasedEscaperMap: com.google.common.escape.ArrayBasedEscaperMap create(java.util.Map)>($r3);
+
+        specialinvoke r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: void <init>(com.google.common.escape.ArrayBasedEscaperMap,int,int,java.lang.String)>($r2, $i0, $i1, $r1);
+
+        return;
+    }
+
+    public final java.lang.String escape(java.lang.String)
+    {
+        char $c2, $c3;
+        char[][] $r2;
+        com.google.common.escape.ArrayBasedUnicodeEscaper r0;
+        int $i0, $i1, $i4;
+        char[] $r3;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.common.escape.ArrayBasedUnicodeEscaper;
+
+        $r1 := @parameter0: java.lang.String;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $i0 = 0;
+
+     label1:
+        $i1 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i0 >= $i1 goto label5;
+
+        $c2 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i0);
+
+        $i1 = r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: int replacementsLength>;
+
+        $i4 = (int) $c2;
+
+        if $i4 >= $i1 goto label2;
+
+        $r2 = r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: char[][] replacements>;
+
+        $i1 = (int) $c2;
+
+        $r3 = $r2[$i1];
+
+        if $r3 != null goto label4;
+
+     label2:
+        $c3 = r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: char safeMaxChar>;
+
+        $i1 = (int) $c2;
+
+        $i4 = (int) $c3;
+
+        if $i1 > $i4 goto label4;
+
+        $c3 = r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: char safeMinChar>;
+
+        $i1 = (int) $c2;
+
+        $i4 = (int) $c3;
+
+        if $i1 >= $i4 goto label3;
+
+        goto label4;
+
+     label3:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label4:
+        $r1 = virtualinvoke r0.<com.google.common.escape.UnicodeEscaper: java.lang.String escapeSlow(java.lang.String,int)>($r1, $i0);
+
+     label5:
+        return $r1;
+    }
+
+    public final char[] escape(int)
+    {
+        com.google.common.escape.ArrayBasedUnicodeEscaper r0;
+        int $i0, $i1;
+        char[] $r1;
+        char[][] $r2;
+
+        r0 := @this: com.google.common.escape.ArrayBasedUnicodeEscaper;
+
+        $i0 := @parameter0: int;
+
+        $i1 = r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: int replacementsLength>;
+
+        if $i0 >= $i1 goto label1;
+
+        $r2 = r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: char[][] replacements>;
+
+        $r1 = $r2[$i0];
+
+        if $r1 == null goto label1;
+
+        return $r1;
+
+     label1:
+        $i1 = r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: int safeMin>;
+
+        if $i0 < $i1 goto label2;
+
+        $i1 = r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: int safeMax>;
+
+        if $i0 > $i1 goto label2;
+
+        return null;
+
+     label2:
+        $r1 = virtualinvoke r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: char[] escapeUnsafe(int)>($i0);
+
+        return $r1;
+    }
+
+    public abstract char[] escapeUnsafe(int);
+
+    public final int nextEscapeIndex(java.lang.CharSequence, int, int)
+    {
+        java.lang.CharSequence $r1;
+        char $c1, $c4;
+        char[][] $r2;
+        com.google.common.escape.ArrayBasedUnicodeEscaper r0;
+        int $i0, $i2, $i3, $i5;
+        char[] $r3;
+
+        r0 := @this: com.google.common.escape.ArrayBasedUnicodeEscaper;
+
+        $r1 := @parameter0: java.lang.CharSequence;
+
+        $i2 := @parameter1: int;
+
+        $i0 := @parameter2: int;
+
+     label1:
+        if $i2 >= $i0 goto label4;
+
+        $c1 = interfaceinvoke $r1.<java.lang.CharSequence: char charAt(int)>($i2);
+
+        $i3 = r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: int replacementsLength>;
+
+        $i5 = (int) $c1;
+
+        if $i5 >= $i3 goto label2;
+
+        $r2 = r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: char[][] replacements>;
+
+        $i3 = (int) $c1;
+
+        $r3 = $r2[$i3];
+
+        if $r3 != null goto label4;
+
+     label2:
+        $c4 = r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: char safeMaxChar>;
+
+        $i3 = (int) $c1;
+
+        $i5 = (int) $c4;
+
+        if $i3 > $i5 goto label4;
+
+        $c4 = r0.<com.google.common.escape.ArrayBasedUnicodeEscaper: char safeMinChar>;
+
+        $i3 = (int) $c1;
+
+        $i5 = (int) $c4;
+
+        if $i3 >= $i5 goto label3;
+
+        return $i2;
+
+     label3:
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label4:
+        return $i2;
+    }
+}

@@ -1,0 +1,908 @@
+public class com.google.android.material.circularreveal.CircularRevealHelper extends java.lang.Object
+{
+    public static final int BITMAP_SHADER;
+    public static final int CLIP_PATH;
+    public static final boolean DEBUG;
+    public static final int REVEAL_ANIMATOR;
+    public static final int STRATEGY;
+    public boolean buildingCircularRevealCache;
+    public android.graphics.Paint debugPaint;
+    public final com.google.android.material.circularreveal.CircularRevealHelper$Delegate delegate;
+    public boolean hasCircularRevealCache;
+    public android.graphics.drawable.Drawable overlayDrawable;
+    public com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo revealInfo;
+    public final android.graphics.Paint revealPaint;
+    public final android.graphics.Path revealPath;
+    public final android.graphics.Paint scrimPaint;
+    public final android.view.View view;
+
+    static void <clinit>()
+    {
+        int $i0;
+
+        <com.google.android.material.circularreveal.CircularRevealHelper: int REVEAL_ANIMATOR> = 2;
+
+        <com.google.android.material.circularreveal.CircularRevealHelper: boolean DEBUG> = 0;
+
+        <com.google.android.material.circularreveal.CircularRevealHelper: int CLIP_PATH> = 1;
+
+        <com.google.android.material.circularreveal.CircularRevealHelper: int BITMAP_SHADER> = 0;
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 < 21 goto label1;
+
+        <com.google.android.material.circularreveal.CircularRevealHelper: int STRATEGY> = 2;
+
+        return;
+
+     label1:
+        if $i0 < 18 goto label2;
+
+        <com.google.android.material.circularreveal.CircularRevealHelper: int STRATEGY> = 1;
+
+        return;
+
+     label2:
+        <com.google.android.material.circularreveal.CircularRevealHelper: int STRATEGY> = 0;
+
+        return;
+    }
+
+    public void <init>(com.google.android.material.circularreveal.CircularRevealHelper$Delegate)
+    {
+        android.graphics.Path $r3;
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        android.view.View $r2;
+        android.graphics.Paint $r4;
+        com.google.android.material.circularreveal.CircularRevealHelper$Delegate $r1;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $r1 := @parameter0: com.google.android.material.circularreveal.CircularRevealHelper$Delegate;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealHelper$Delegate delegate> = $r1;
+
+        $r2 = (android.view.View) $r1;
+
+        r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view> = $r2;
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        virtualinvoke $r2.<android.view.View: void setWillNotDraw(boolean)>(0);
+
+        $r3 = new android.graphics.Path;
+
+        specialinvoke $r3.<android.graphics.Path: void <init>()>();
+
+        r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Path revealPath> = $r3;
+
+        $r4 = new android.graphics.Paint;
+
+        specialinvoke $r4.<android.graphics.Paint: void <init>(int)>(7);
+
+        r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint revealPaint> = $r4;
+
+        $r4 = new android.graphics.Paint;
+
+        specialinvoke $r4.<android.graphics.Paint: void <init>(int)>(1);
+
+        r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint scrimPaint> = $r4;
+
+        $r4 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint scrimPaint>;
+
+        virtualinvoke $r4.<android.graphics.Paint: void setColor(int)>(0);
+
+        return;
+    }
+
+    private void drawDebugCircle(android.graphics.Canvas, int, float)
+    {
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo $r3;
+        int $i0;
+        float $f0, $f1, $f2, $f3;
+        android.graphics.Canvas $r1;
+        android.graphics.Paint $r2;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $r1 := @parameter0: android.graphics.Canvas;
+
+        $i0 := @parameter1: int;
+
+        $f1 := @parameter2: float;
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint debugPaint>;
+
+        virtualinvoke $r2.<android.graphics.Paint: void setColor(int)>($i0);
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint debugPaint>;
+
+        virtualinvoke $r2.<android.graphics.Paint: void setStrokeWidth(float)>($f1);
+
+        $r3 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo revealInfo>;
+
+        $f2 = $r3.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float centerX>;
+
+        $f0 = $r3.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float centerY>;
+
+        $f3 = $r3.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float radius>;
+
+        $f1 = $f1 / 2.0F;
+
+        $f1 = $f3 - $f1;
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint debugPaint>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawCircle(float,float,float,android.graphics.Paint)>($f2, $f0, $f1, $r2);
+
+        return;
+    }
+
+    private void drawDebugMode(android.graphics.Canvas)
+    {
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo $r4;
+        com.google.android.material.circularreveal.CircularRevealHelper$Delegate $r3;
+        float $f0, $f1, $f2;
+        android.graphics.Canvas $r1;
+        android.graphics.Paint $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $r1 := @parameter0: android.graphics.Canvas;
+
+        $r3 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealHelper$Delegate delegate>;
+
+        interfaceinvoke $r3.<com.google.android.material.circularreveal.CircularRevealHelper$Delegate: void actualDraw(android.graphics.Canvas)>($r1);
+
+        $z0 = specialinvoke r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean shouldDrawScrim()>();
+
+        if $z0 == 0 goto label1;
+
+        $r4 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo revealInfo>;
+
+        $f1 = $r4.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float centerX>;
+
+        $f0 = $r4.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float centerY>;
+
+        $f2 = $r4.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float radius>;
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint scrimPaint>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawCircle(float,float,float,android.graphics.Paint)>($f1, $f0, $f2, $r2);
+
+     label1:
+        $z0 = specialinvoke r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean shouldDrawCircularReveal()>();
+
+        if $z0 == 0 goto label2;
+
+        specialinvoke r0.<com.google.android.material.circularreveal.CircularRevealHelper: void drawDebugCircle(android.graphics.Canvas,int,float)>($r1, -16777216, 10.0F);
+
+        specialinvoke r0.<com.google.android.material.circularreveal.CircularRevealHelper: void drawDebugCircle(android.graphics.Canvas,int,float)>($r1, -65536, 5.0F);
+
+     label2:
+        specialinvoke r0.<com.google.android.material.circularreveal.CircularRevealHelper: void drawOverlayDrawable(android.graphics.Canvas)>($r1);
+
+        return;
+    }
+
+    private void drawOverlayDrawable(android.graphics.Canvas)
+    {
+        android.graphics.Rect $r3;
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo $r4;
+        android.graphics.drawable.Drawable $r2;
+        int $i0;
+        float $f0, $f1, $f2;
+        android.graphics.Canvas $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $r1 := @parameter0: android.graphics.Canvas;
+
+        $z0 = specialinvoke r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean shouldDrawOverlayDrawable()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.drawable.Drawable overlayDrawable>;
+
+        $r3 = virtualinvoke $r2.<android.graphics.drawable.Drawable: android.graphics.Rect getBounds()>();
+
+        $r4 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo revealInfo>;
+
+        $f0 = $r4.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float centerX>;
+
+        $i0 = virtualinvoke $r3.<android.graphics.Rect: int width()>();
+
+        $f1 = (float) $i0;
+
+        $f1 = $f1 / 2.0F;
+
+        $f0 = $f0 - $f1;
+
+        $r4 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo revealInfo>;
+
+        $f1 = $r4.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float centerY>;
+
+        $i0 = virtualinvoke $r3.<android.graphics.Rect: int height()>();
+
+        $f2 = (float) $i0;
+
+        $f2 = $f2 / 2.0F;
+
+        $f1 = $f1 - $f2;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void translate(float,float)>($f0, $f1);
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.drawable.Drawable overlayDrawable>;
+
+        virtualinvoke $r2.<android.graphics.drawable.Drawable: void draw(android.graphics.Canvas)>($r1);
+
+        $f0 = neg $f0;
+
+        $f1 = neg $f1;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void translate(float,float)>($f0, $f1);
+
+     label1:
+        return;
+    }
+
+    private float getDistanceToFurthestCorner(com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo)
+    {
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo $r1;
+        int $i0;
+        float $f0, $f1, $f2, $f3;
+        android.view.View $r2;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $r1 := @parameter0: com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo;
+
+        $f0 = $r1.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float centerX>;
+
+        $f1 = $r1.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float centerY>;
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        $i0 = virtualinvoke $r2.<android.view.View: int getWidth()>();
+
+        $f2 = (float) $i0;
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        $i0 = virtualinvoke $r2.<android.view.View: int getHeight()>();
+
+        $f3 = (float) $i0;
+
+        $f0 = staticinvoke <com.google.android.material.math.MathUtils: float distanceToFurthestCorner(float,float,float,float,float,float)>($f0, $f1, 0.0F, 0.0F, $f2, $f3);
+
+        return $f0;
+    }
+
+    private void invalidateRevealInfo()
+    {
+        android.graphics.Path $r2;
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo $r3;
+        int $i0;
+        float $f0, $f1, $f2;
+        android.view.View $r4;
+        android.graphics.Path$Direction $r1;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $i0 = <com.google.android.material.circularreveal.CircularRevealHelper: int STRATEGY>;
+
+        if $i0 != 1 goto label1;
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Path revealPath>;
+
+        virtualinvoke $r2.<android.graphics.Path: void rewind()>();
+
+        $r3 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo revealInfo>;
+
+        if $r3 == null goto label1;
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Path revealPath>;
+
+        $f0 = $r3.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float centerX>;
+
+        $f1 = $r3.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float centerY>;
+
+        $f2 = $r3.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float radius>;
+
+        $r1 = <android.graphics.Path$Direction: android.graphics.Path$Direction CW>;
+
+        virtualinvoke $r2.<android.graphics.Path: void addCircle(float,float,float,android.graphics.Path$Direction)>($f0, $f1, $f2, $r1);
+
+     label1:
+        $r4 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        virtualinvoke $r4.<android.view.View: void invalidate()>();
+
+        return;
+    }
+
+    private boolean shouldDrawCircularReveal()
+    {
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        int $i0;
+        com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $r1 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo revealInfo>;
+
+        if $r1 == null goto label2;
+
+        $z0 = virtualinvoke $r1.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: boolean isInvalid()>();
+
+        if $z0 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+        goto label3;
+
+     label2:
+        $z0 = 1;
+
+     label3:
+        $i0 = <com.google.android.material.circularreveal.CircularRevealHelper: int STRATEGY>;
+
+        if $i0 != 0 goto label4;
+
+        if $z0 != 0 goto label5;
+
+        $z0 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean hasCircularRevealCache>;
+
+        if $z0 == 0 goto label5;
+
+        return 1;
+
+     label4:
+        $z0 = $z0 ^ 1;
+
+        return $z0;
+
+     label5:
+        return 0;
+    }
+
+    private boolean shouldDrawOverlayDrawable()
+    {
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo $r2;
+        android.graphics.drawable.Drawable $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $z0 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean buildingCircularRevealCache>;
+
+        if $z0 != 0 goto label1;
+
+        $r1 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.drawable.Drawable overlayDrawable>;
+
+        if $r1 == null goto label1;
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo revealInfo>;
+
+        if $r2 == null goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    private boolean shouldDrawScrim()
+    {
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        int $i0;
+        android.graphics.Paint $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $z0 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean buildingCircularRevealCache>;
+
+        if $z0 != 0 goto label1;
+
+        $r1 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint scrimPaint>;
+
+        $i0 = virtualinvoke $r1.<android.graphics.Paint: int getColor()>();
+
+        $i0 = staticinvoke <android.graphics.Color: int alpha(int)>($i0);
+
+        if $i0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public void buildCircularRevealCache()
+    {
+        android.graphics.Shader$TileMode $r1;
+        android.graphics.BitmapShader $r8;
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        android.graphics.Bitmap$Config $r5;
+        android.graphics.Bitmap $r3, $r4;
+        int $i0, $i1;
+        android.view.View $r2;
+        android.graphics.Canvas $r6;
+        android.graphics.Paint $r7;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $i0 = <com.google.android.material.circularreveal.CircularRevealHelper: int STRATEGY>;
+
+        if $i0 != 0 goto label3;
+
+        r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean buildingCircularRevealCache> = 1;
+
+        r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean hasCircularRevealCache> = 0;
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        virtualinvoke $r2.<android.view.View: void buildDrawingCache()>();
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        $r3 = virtualinvoke $r2.<android.view.View: android.graphics.Bitmap getDrawingCache()>();
+
+        $r4 = $r3;
+
+        if $r3 != null goto label1;
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        $i0 = virtualinvoke $r2.<android.view.View: int getWidth()>();
+
+        if $i0 == 0 goto label1;
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        $i0 = virtualinvoke $r2.<android.view.View: int getHeight()>();
+
+        if $i0 == 0 goto label1;
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        $i0 = virtualinvoke $r2.<android.view.View: int getWidth()>();
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        $i1 = virtualinvoke $r2.<android.view.View: int getHeight()>();
+
+        $r5 = <android.graphics.Bitmap$Config: android.graphics.Bitmap$Config ARGB_8888>;
+
+        $r3 = staticinvoke <android.graphics.Bitmap: android.graphics.Bitmap createBitmap(int,int,android.graphics.Bitmap$Config)>($i0, $i1, $r5);
+
+        $r4 = $r3;
+
+        $r6 = new android.graphics.Canvas;
+
+        specialinvoke $r6.<android.graphics.Canvas: void <init>(android.graphics.Bitmap)>($r3);
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        virtualinvoke $r2.<android.view.View: void draw(android.graphics.Canvas)>($r6);
+
+     label1:
+        if $r4 == null goto label2;
+
+        $r7 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint revealPaint>;
+
+        $r8 = new android.graphics.BitmapShader;
+
+        $r1 = <android.graphics.Shader$TileMode: android.graphics.Shader$TileMode CLAMP>;
+
+        specialinvoke $r8.<android.graphics.BitmapShader: void <init>(android.graphics.Bitmap,android.graphics.Shader$TileMode,android.graphics.Shader$TileMode)>($r4, $r1, $r1);
+
+        virtualinvoke $r7.<android.graphics.Paint: android.graphics.Shader setShader(android.graphics.Shader)>($r8);
+
+     label2:
+        r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean buildingCircularRevealCache> = 0;
+
+        r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean hasCircularRevealCache> = 1;
+
+     label3:
+        return;
+    }
+
+    public void destroyCircularRevealCache()
+    {
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        int $i0;
+        android.view.View $r1;
+        android.graphics.Paint $r2;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $i0 = <com.google.android.material.circularreveal.CircularRevealHelper: int STRATEGY>;
+
+        if $i0 != 0 goto label1;
+
+        r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean hasCircularRevealCache> = 0;
+
+        $r1 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        virtualinvoke $r1.<android.view.View: void destroyDrawingCache()>();
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint revealPaint>;
+
+        virtualinvoke $r2.<android.graphics.Paint: android.graphics.Shader setShader(android.graphics.Shader)>(null);
+
+        $r1 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        virtualinvoke $r1.<android.view.View: void invalidate()>();
+
+     label1:
+        return;
+    }
+
+    public void draw(android.graphics.Canvas)
+    {
+        java.lang.IllegalStateException $r5;
+        android.graphics.Path $r8;
+        com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo $r9;
+        com.google.android.material.circularreveal.CircularRevealHelper$Delegate $r3;
+        int $i0, $i1;
+        android.view.View $r4;
+        android.graphics.Canvas $r2;
+        java.lang.String $r7;
+        boolean $z0;
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        float $f0, $f1, $f2;
+        android.graphics.Paint $r1;
+        java.lang.StringBuilder $r6;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $r2 := @parameter0: android.graphics.Canvas;
+
+        $z0 = specialinvoke r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean shouldDrawCircularReveal()>();
+
+        if $z0 == 0 goto label5;
+
+        $i0 = <com.google.android.material.circularreveal.CircularRevealHelper: int STRATEGY>;
+
+        if $i0 == 0 goto label4;
+
+        if $i0 == 1 goto label2;
+
+        if $i0 != 2 goto label1;
+
+        $r3 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealHelper$Delegate delegate>;
+
+        interfaceinvoke $r3.<com.google.android.material.circularreveal.CircularRevealHelper$Delegate: void actualDraw(android.graphics.Canvas)>($r2);
+
+        $z0 = specialinvoke r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean shouldDrawScrim()>();
+
+        if $z0 == 0 goto label6;
+
+        $r4 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        $i0 = virtualinvoke $r4.<android.view.View: int getWidth()>();
+
+        $f0 = (float) $i0;
+
+        $r4 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        $i0 = virtualinvoke $r4.<android.view.View: int getHeight()>();
+
+        $f1 = (float) $i0;
+
+        $r1 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint scrimPaint>;
+
+        virtualinvoke $r2.<android.graphics.Canvas: void drawRect(float,float,float,float,android.graphics.Paint)>(0.0F, 0.0F, $f0, $f1, $r1);
+
+        goto label6;
+
+     label1:
+        $r5 = new java.lang.IllegalStateException;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unsupported strategy ");
+
+        $i0 = <com.google.android.material.circularreveal.CircularRevealHelper: int STRATEGY>;
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r7);
+
+        throw $r5;
+
+     label2:
+        $i0 = virtualinvoke $r2.<android.graphics.Canvas: int save()>();
+
+        $r8 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Path revealPath>;
+
+        virtualinvoke $r2.<android.graphics.Canvas: boolean clipPath(android.graphics.Path)>($r8);
+
+        $r3 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealHelper$Delegate delegate>;
+
+        interfaceinvoke $r3.<com.google.android.material.circularreveal.CircularRevealHelper$Delegate: void actualDraw(android.graphics.Canvas)>($r2);
+
+        $z0 = specialinvoke r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean shouldDrawScrim()>();
+
+        if $z0 == 0 goto label3;
+
+        $r4 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        $i1 = virtualinvoke $r4.<android.view.View: int getWidth()>();
+
+        $f0 = (float) $i1;
+
+        $r4 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        $i1 = virtualinvoke $r4.<android.view.View: int getHeight()>();
+
+        $f1 = (float) $i1;
+
+        $r1 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint scrimPaint>;
+
+        virtualinvoke $r2.<android.graphics.Canvas: void drawRect(float,float,float,float,android.graphics.Paint)>(0.0F, 0.0F, $f0, $f1, $r1);
+
+     label3:
+        virtualinvoke $r2.<android.graphics.Canvas: void restoreToCount(int)>($i0);
+
+        goto label6;
+
+     label4:
+        $r9 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo revealInfo>;
+
+        $f0 = $r9.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float centerX>;
+
+        $f1 = $r9.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float centerY>;
+
+        $f2 = $r9.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float radius>;
+
+        $r1 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint revealPaint>;
+
+        virtualinvoke $r2.<android.graphics.Canvas: void drawCircle(float,float,float,android.graphics.Paint)>($f0, $f1, $f2, $r1);
+
+        $z0 = specialinvoke r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean shouldDrawScrim()>();
+
+        if $z0 == 0 goto label6;
+
+        $r9 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo revealInfo>;
+
+        $f0 = $r9.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float centerX>;
+
+        $f1 = $r9.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float centerY>;
+
+        $f2 = $r9.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float radius>;
+
+        $r1 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint scrimPaint>;
+
+        virtualinvoke $r2.<android.graphics.Canvas: void drawCircle(float,float,float,android.graphics.Paint)>($f0, $f1, $f2, $r1);
+
+        goto label6;
+
+     label5:
+        $r3 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealHelper$Delegate delegate>;
+
+        interfaceinvoke $r3.<com.google.android.material.circularreveal.CircularRevealHelper$Delegate: void actualDraw(android.graphics.Canvas)>($r2);
+
+        $z0 = specialinvoke r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean shouldDrawScrim()>();
+
+        if $z0 == 0 goto label6;
+
+        $r4 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        $i0 = virtualinvoke $r4.<android.view.View: int getWidth()>();
+
+        $f0 = (float) $i0;
+
+        $r4 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        $i0 = virtualinvoke $r4.<android.view.View: int getHeight()>();
+
+        $f1 = (float) $i0;
+
+        $r1 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint scrimPaint>;
+
+        virtualinvoke $r2.<android.graphics.Canvas: void drawRect(float,float,float,float,android.graphics.Paint)>(0.0F, 0.0F, $f0, $f1, $r1);
+
+     label6:
+        specialinvoke r0.<com.google.android.material.circularreveal.CircularRevealHelper: void drawOverlayDrawable(android.graphics.Canvas)>($r2);
+
+        return;
+    }
+
+    public android.graphics.drawable.Drawable getCircularRevealOverlayDrawable()
+    {
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        android.graphics.drawable.Drawable r1;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        r1 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.drawable.Drawable overlayDrawable>;
+
+        return r1;
+    }
+
+    public int getCircularRevealScrimColor()
+    {
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        int $i0;
+        android.graphics.Paint $r1;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $r1 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint scrimPaint>;
+
+        $i0 = virtualinvoke $r1.<android.graphics.Paint: int getColor()>();
+
+        return $i0;
+    }
+
+    public com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo getRevealInfo()
+    {
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo $r1, $r2;
+        float $f0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo revealInfo>;
+
+        if $r2 != null goto label1;
+
+        return null;
+
+     label1:
+        $r1 = new com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo;
+
+        specialinvoke $r1.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: void <init>(com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo)>($r2);
+
+        $z0 = virtualinvoke $r1.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: boolean isInvalid()>();
+
+        if $z0 == 0 goto label2;
+
+        $f0 = specialinvoke r0.<com.google.android.material.circularreveal.CircularRevealHelper: float getDistanceToFurthestCorner(com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo)>($r1);
+
+        $r1.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float radius> = $f0;
+
+     label2:
+        return $r1;
+    }
+
+    public boolean isOpaque()
+    {
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        com.google.android.material.circularreveal.CircularRevealHelper$Delegate $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $r1 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealHelper$Delegate delegate>;
+
+        $z0 = interfaceinvoke $r1.<com.google.android.material.circularreveal.CircularRevealHelper$Delegate: boolean actualIsOpaque()>();
+
+        if $z0 == 0 goto label1;
+
+        $z0 = specialinvoke r0.<com.google.android.material.circularreveal.CircularRevealHelper: boolean shouldDrawCircularReveal()>();
+
+        if $z0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public void setCircularRevealOverlayDrawable(android.graphics.drawable.Drawable)
+    {
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        android.view.View $r2;
+        android.graphics.drawable.Drawable $r1;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $r1 := @parameter0: android.graphics.drawable.Drawable;
+
+        r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.drawable.Drawable overlayDrawable> = $r1;
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        virtualinvoke $r2.<android.view.View: void invalidate()>();
+
+        return;
+    }
+
+    public void setCircularRevealScrimColor(int)
+    {
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        int $i0;
+        android.view.View $r2;
+        android.graphics.Paint $r1;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.graphics.Paint scrimPaint>;
+
+        virtualinvoke $r1.<android.graphics.Paint: void setColor(int)>($i0);
+
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: android.view.View view>;
+
+        virtualinvoke $r2.<android.view.View: void invalidate()>();
+
+        return;
+    }
+
+    public void setRevealInfo(com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo)
+    {
+        com.google.android.material.circularreveal.CircularRevealHelper r0;
+        com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo $r1, $r2;
+        float $f0, $f1;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.circularreveal.CircularRevealHelper;
+
+        $r1 := @parameter0: com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo;
+
+        if $r1 != null goto label1;
+
+        r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo revealInfo> = null;
+
+        goto label4;
+
+     label1:
+        $r2 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo revealInfo>;
+
+        if $r2 != null goto label2;
+
+        $r2 = new com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo;
+
+        specialinvoke $r2.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: void <init>(com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo)>($r1);
+
+        r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo revealInfo> = $r2;
+
+        goto label3;
+
+     label2:
+        virtualinvoke $r2.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: void set(com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo)>($r1);
+
+     label3:
+        $f0 = $r1.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float radius>;
+
+        $f1 = specialinvoke r0.<com.google.android.material.circularreveal.CircularRevealHelper: float getDistanceToFurthestCorner(com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo)>($r1);
+
+        $z0 = staticinvoke <com.google.android.material.math.MathUtils: boolean geq(float,float,float)>($f0, $f1, 1.0E-4F);
+
+        if $z0 == 0 goto label4;
+
+        $r1 = r0.<com.google.android.material.circularreveal.CircularRevealHelper: com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo revealInfo>;
+
+        $r1.<com.google.android.material.circularreveal.CircularRevealWidget$RevealInfo: float radius> = 3.4028235E38F;
+
+     label4:
+        specialinvoke r0.<com.google.android.material.circularreveal.CircularRevealHelper: void invalidateRevealInfo()>();
+
+        return;
+    }
+}

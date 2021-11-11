@@ -1,0 +1,1548 @@
+public abstract class org.codehaus.jackson.impl.JsonNumericParserBase extends org.codehaus.jackson.impl.JsonParserBase
+{
+    public static final java.math.BigDecimal BD_MAX_INT;
+    public static final java.math.BigDecimal BD_MAX_LONG;
+    public static final java.math.BigDecimal BD_MIN_INT;
+    public static final java.math.BigDecimal BD_MIN_LONG;
+    public static final char CHAR_NULL;
+    public static final int INT_0;
+    public static final int INT_1;
+    public static final int INT_2;
+    public static final int INT_3;
+    public static final int INT_4;
+    public static final int INT_5;
+    public static final int INT_6;
+    public static final int INT_7;
+    public static final int INT_8;
+    public static final int INT_9;
+    public static final int INT_DECIMAL_POINT;
+    public static final int INT_E;
+    public static final int INT_MINUS;
+    public static final int INT_PLUS;
+    public static final int INT_e;
+    public static final double MAX_INT_D;
+    public static final long MAX_INT_L;
+    public static final double MAX_LONG_D;
+    public static final double MIN_INT_D;
+    public static final long MIN_INT_L;
+    public static final double MIN_LONG_D;
+    public static final int NR_BIGDECIMAL;
+    public static final int NR_BIGINT;
+    public static final int NR_DOUBLE;
+    public static final int NR_INT;
+    public static final int NR_LONG;
+    public static final int NR_UNKNOWN;
+    public int _expLength;
+    public int _fractLength;
+    public int _intLength;
+    public int _numTypesValid;
+    public java.math.BigDecimal _numberBigDecimal;
+    public java.math.BigInteger _numberBigInt;
+    public double _numberDouble;
+    public int _numberInt;
+    public long _numberLong;
+    public boolean _numberNegative;
+
+    static void <clinit>()
+    {
+        java.math.BigDecimal $r0;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int NR_LONG> = 2;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int NR_INT> = 1;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int NR_DOUBLE> = 8;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int NR_BIGINT> = 4;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int NR_BIGDECIMAL> = 16;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: double MIN_LONG_D> = -9.223372036854776E18;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: long MIN_INT_L> = -2147483648L;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: double MIN_INT_D> = -2.147483648E9;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: double MAX_LONG_D> = 9.223372036854776E18;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: long MAX_INT_L> = 2147483647L;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: double MAX_INT_D> = 2.147483647E9;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int INT_e> = 101;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int INT_PLUS> = 43;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int INT_MINUS> = 45;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int INT_E> = 69;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int INT_DECIMAL_POINT> = 46;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int INT_9> = 57;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int INT_8> = 56;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int INT_7> = 55;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int INT_6> = 54;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int INT_5> = 53;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int INT_4> = 52;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int INT_3> = 51;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int INT_2> = 50;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int INT_1> = 49;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: int INT_0> = 48;
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: char CHAR_NULL> = 0;
+
+        $r0 = new java.math.BigDecimal;
+
+        specialinvoke $r0.<java.math.BigDecimal: void <init>(long)>(-9223372036854775808L);
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal BD_MIN_LONG> = $r0;
+
+        $r0 = new java.math.BigDecimal;
+
+        specialinvoke $r0.<java.math.BigDecimal: void <init>(long)>(9223372036854775807L);
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal BD_MAX_LONG> = $r0;
+
+        $r0 = new java.math.BigDecimal;
+
+        specialinvoke $r0.<java.math.BigDecimal: void <init>(long)>(-9223372036854775808L);
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal BD_MIN_INT> = $r0;
+
+        $r0 = new java.math.BigDecimal;
+
+        specialinvoke $r0.<java.math.BigDecimal: void <init>(long)>(9223372036854775807L);
+
+        <org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal BD_MAX_INT> = $r0;
+
+        return;
+    }
+
+    public void <init>(org.codehaus.jackson.io.IOContext, int)
+    {
+        int $i0;
+        org.codehaus.jackson.io.IOContext $r1;
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $r1 := @parameter0: org.codehaus.jackson.io.IOContext;
+
+        $i0 := @parameter1: int;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.JsonParserBase: void <init>(org.codehaus.jackson.io.IOContext,int)>($r1, $i0);
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = 0;
+
+        return;
+    }
+
+    private final void _parseSlowFloatValue(int)
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        java.lang.NumberFormatException $r3;
+        java.math.BigDecimal $r2;
+        int $i0;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r5;
+        org.codehaus.jackson.util.TextBuffer $r1;
+        double $d0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $i0 := @parameter0: int;
+
+        if $i0 != 16 goto label3;
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.util.TextBuffer _textBuffer>;
+
+     label1:
+        $r2 = virtualinvoke $r1.<org.codehaus.jackson.util.TextBuffer: java.math.BigDecimal contentsAsDecimal()>();
+
+     label2:
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal _numberBigDecimal> = $r2;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = 16;
+
+        return;
+
+     label3:
+        $r1 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.util.TextBuffer _textBuffer>;
+
+     label4:
+        $d0 = virtualinvoke $r1.<org.codehaus.jackson.util.TextBuffer: double contentsAsDouble()>();
+
+     label5:
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: double _numberDouble> = $d0;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = 8;
+
+        return;
+
+     label6:
+        $r3 := @caughtexception;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Malformed numeric value \'");
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.util.TextBuffer _textBuffer>;
+
+        $r5 = virtualinvoke $r1.<org.codehaus.jackson.util.TextBuffer: java.lang.String contentsAsString()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _wrapError(java.lang.String,java.lang.Throwable)>($r5, $r3);
+
+        return;
+
+        catch java.lang.NumberFormatException from label1 to label2 with label6;
+        catch java.lang.NumberFormatException from label4 to label5 with label6;
+    }
+
+    private final void _parseSlowIntValue(int, char[], int, int)
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        long $l3;
+        java.lang.NumberFormatException $r5;
+        int $i0, $i1, $i2;
+        char[] $r1;
+        java.math.BigInteger $r4;
+        java.lang.StringBuilder $r6;
+        java.lang.String $r3;
+        org.codehaus.jackson.util.TextBuffer $r2;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: char[];
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        $r2 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.util.TextBuffer _textBuffer>;
+
+        $r3 = virtualinvoke $r2.<org.codehaus.jackson.util.TextBuffer: java.lang.String contentsAsString()>();
+
+        $z0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: boolean _numberNegative>;
+
+     label1:
+        $z0 = staticinvoke <org.codehaus.jackson.io.NumberInput: boolean inLongRange(char[],int,int,boolean)>($r1, $i1, $i2, $z0);
+
+     label2:
+        if $z0 == 0 goto label5;
+
+     label3:
+        $l3 = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>($r3);
+
+     label4:
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: long _numberLong> = $l3;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = 2;
+
+        return;
+
+     label5:
+        $r4 = new java.math.BigInteger;
+
+     label6:
+        specialinvoke $r4.<java.math.BigInteger: void <init>(java.lang.String)>($r3);
+
+     label7:
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigInteger _numberBigInt> = $r4;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = 4;
+
+        return;
+
+     label8:
+        $r5 := @caughtexception;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Malformed numeric value \'");
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $r3 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _wrapError(java.lang.String,java.lang.Throwable)>($r3, $r5);
+
+        return;
+
+        catch java.lang.NumberFormatException from label1 to label2 with label8;
+        catch java.lang.NumberFormatException from label3 to label4 with label8;
+        catch java.lang.NumberFormatException from label6 to label7 with label8;
+    }
+
+    public void _parseNumericValue(int)
+    {
+        org.codehaus.jackson.JsonToken $r1, $r2;
+        long $l4, $l5;
+        byte $b6;
+        int $i0, $i1, $i2, $i3;
+        java.lang.String $r6;
+        org.codehaus.jackson.util.TextBuffer $r3;
+        boolean $z0;
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        char[] $r4;
+        java.lang.StringBuilder $r5, $r7;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        $r2 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r1 != $r2 goto label8;
+
+        $r3 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.util.TextBuffer _textBuffer>;
+
+        $r4 = virtualinvoke $r3.<org.codehaus.jackson.util.TextBuffer: char[] getTextBuffer()>();
+
+        $r3 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.util.TextBuffer _textBuffer>;
+
+        $i1 = virtualinvoke $r3.<org.codehaus.jackson.util.TextBuffer: int getTextOffset()>();
+
+        $i2 = $i1;
+
+        $i3 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _intLength>;
+
+        $z0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: boolean _numberNegative>;
+
+        if $z0 == 0 goto label1;
+
+        $i2 = $i1 + 1;
+
+     label1:
+        if $i3 > 9 goto label3;
+
+        $i0 = staticinvoke <org.codehaus.jackson.io.NumberInput: int parseInt(char[],int,int)>($r4, $i2, $i3);
+
+        $i1 = $i0;
+
+        $z0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: boolean _numberNegative>;
+
+        if $z0 == 0 goto label2;
+
+        $i1 = neg $i0;
+
+     label2:
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numberInt> = $i1;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = 1;
+
+        return;
+
+     label3:
+        if $i3 > 18 goto label7;
+
+        $l4 = staticinvoke <org.codehaus.jackson.io.NumberInput: long parseLong(char[],int,int)>($r4, $i2, $i3);
+
+        $l5 = $l4;
+
+        $z0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: boolean _numberNegative>;
+
+        if $z0 == 0 goto label4;
+
+        $l5 = neg $l4;
+
+     label4:
+        if $i3 != 10 goto label6;
+
+        $z0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: boolean _numberNegative>;
+
+        if $z0 == 0 goto label5;
+
+        $b6 = $l5 cmp -2147483648L;
+
+        $i0 = (int) $b6;
+
+        if $i0 < 0 goto label6;
+
+        $i0 = (int) $l5;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numberInt> = $i0;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = 1;
+
+        return;
+
+     label5:
+        $b6 = $l5 cmp 2147483647L;
+
+        $i0 = (int) $b6;
+
+        if $i0 > 0 goto label6;
+
+        $i0 = (int) $l5;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numberInt> = $i0;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = 1;
+
+        return;
+
+     label6:
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: long _numberLong> = $l5;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = 2;
+
+        return;
+
+     label7:
+        specialinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void _parseSlowIntValue(int,char[],int,int)>($i0, $r4, $i2, $i3);
+
+        return;
+
+     label8:
+        $r2 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_FLOAT>;
+
+        if $r1 != $r2 goto label9;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void _parseSlowFloatValue(int)>($i0);
+
+        return;
+
+     label9:
+        $r7 = new java.lang.StringBuilder;
+
+        $r5 = $r7;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Current token (");
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r1);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") not numeric, can not use numeric value accessors");
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _reportError(java.lang.String)>($r6);
+
+        return;
+    }
+
+    public void convertNumberToBigDecimal()
+    {
+        java.math.BigDecimal $r1;
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        int $i0, $i1;
+        java.math.BigInteger $r3;
+        long $l2;
+        java.lang.String $r2;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i1 = $i0 & 8;
+
+        if $i1 == 0 goto label1;
+
+        $r1 = new java.math.BigDecimal;
+
+        $r2 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: java.lang.String getText()>();
+
+        specialinvoke $r1.<java.math.BigDecimal: void <init>(java.lang.String)>($r2);
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal _numberBigDecimal> = $r1;
+
+        goto label5;
+
+     label1:
+        $i1 = $i0 & 4;
+
+        if $i1 == 0 goto label2;
+
+        $r1 = new java.math.BigDecimal;
+
+        $r3 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigInteger _numberBigInt>;
+
+        specialinvoke $r1.<java.math.BigDecimal: void <init>(java.math.BigInteger)>($r3);
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal _numberBigDecimal> = $r1;
+
+        goto label5;
+
+     label2:
+        $i1 = $i0 & 2;
+
+        if $i1 == 0 goto label3;
+
+        $l2 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: long _numberLong>;
+
+        $r1 = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(long)>($l2);
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal _numberBigDecimal> = $r1;
+
+        goto label5;
+
+     label3:
+        $i0 = $i0 & 1;
+
+        if $i0 == 0 goto label4;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numberInt>;
+
+        $l2 = (long) $i0;
+
+        $r1 = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(long)>($l2);
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal _numberBigDecimal> = $r1;
+
+        goto label5;
+
+     label4:
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _throwInternal()>();
+
+     label5:
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i0 = $i0 | 16;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = $i0;
+
+        return;
+    }
+
+    public void convertNumberToBigInteger()
+    {
+        java.math.BigDecimal $r1;
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        int $i0, $i1;
+        java.math.BigInteger $r2;
+        long $l2;
+        double $d0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i1 = $i0 & 16;
+
+        if $i1 == 0 goto label1;
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal _numberBigDecimal>;
+
+        $r2 = virtualinvoke $r1.<java.math.BigDecimal: java.math.BigInteger toBigInteger()>();
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigInteger _numberBigInt> = $r2;
+
+        goto label5;
+
+     label1:
+        $i1 = $i0 & 2;
+
+        if $i1 == 0 goto label2;
+
+        $l2 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: long _numberLong>;
+
+        $r2 = staticinvoke <java.math.BigInteger: java.math.BigInteger valueOf(long)>($l2);
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigInteger _numberBigInt> = $r2;
+
+        goto label5;
+
+     label2:
+        $i1 = $i0 & 1;
+
+        if $i1 == 0 goto label3;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numberInt>;
+
+        $l2 = (long) $i0;
+
+        $r2 = staticinvoke <java.math.BigInteger: java.math.BigInteger valueOf(long)>($l2);
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigInteger _numberBigInt> = $r2;
+
+        goto label5;
+
+     label3:
+        $i0 = $i0 & 8;
+
+        if $i0 == 0 goto label4;
+
+        $d0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: double _numberDouble>;
+
+        $r1 = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(double)>($d0);
+
+        $r2 = virtualinvoke $r1.<java.math.BigDecimal: java.math.BigInteger toBigInteger()>();
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigInteger _numberBigInt> = $r2;
+
+        goto label5;
+
+     label4:
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _throwInternal()>();
+
+     label5:
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i0 = $i0 | 4;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = $i0;
+
+        return;
+    }
+
+    public void convertNumberToDouble()
+    {
+        java.math.BigDecimal $r1;
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        int $i0, $i1;
+        java.math.BigInteger $r2;
+        long $l2;
+        double $d0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i1 = $i0 & 16;
+
+        if $i1 == 0 goto label1;
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal _numberBigDecimal>;
+
+        $d0 = virtualinvoke $r1.<java.math.BigDecimal: double doubleValue()>();
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: double _numberDouble> = $d0;
+
+        goto label5;
+
+     label1:
+        $i1 = $i0 & 4;
+
+        if $i1 == 0 goto label2;
+
+        $r2 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigInteger _numberBigInt>;
+
+        $d0 = virtualinvoke $r2.<java.math.BigInteger: double doubleValue()>();
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: double _numberDouble> = $d0;
+
+        goto label5;
+
+     label2:
+        $i1 = $i0 & 2;
+
+        if $i1 == 0 goto label3;
+
+        $l2 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: long _numberLong>;
+
+        $d0 = (double) $l2;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: double _numberDouble> = $d0;
+
+        goto label5;
+
+     label3:
+        $i0 = $i0 & 1;
+
+        if $i0 == 0 goto label4;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numberInt>;
+
+        $d0 = (double) $i0;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: double _numberDouble> = $d0;
+
+        goto label5;
+
+     label4:
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _throwInternal()>();
+
+     label5:
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i0 = $i0 | 8;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = $i0;
+
+        return;
+    }
+
+    public void convertNumberToInt()
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        long $l0, $l4;
+        java.math.BigDecimal $r4, $r5;
+        byte $b1;
+        int $i2, $i3;
+        java.lang.StringBuilder $r1, $r6;
+        java.math.BigInteger $r3;
+        java.lang.String $r2;
+        double $d0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $i2 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i3 = $i2 & 2;
+
+        if $i3 == 0 goto label02;
+
+        $l4 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: long _numberLong>;
+
+        $i2 = (int) $l4;
+
+        $l0 = (long) $i2;
+
+        $b1 = $l0 cmp $l4;
+
+        if $b1 == 0 goto label01;
+
+        $r6 = new java.lang.StringBuilder;
+
+        $r1 = $r6;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Numeric value (");
+
+        $r2 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: java.lang.String getText()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") out of range of int");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _reportError(java.lang.String)>($r2);
+
+     label01:
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numberInt> = $i2;
+
+        goto label10;
+
+     label02:
+        $i3 = $i2 & 4;
+
+        if $i3 == 0 goto label03;
+
+        $r3 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigInteger _numberBigInt>;
+
+        $i2 = virtualinvoke $r3.<java.math.BigInteger: int intValue()>();
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numberInt> = $i2;
+
+        goto label10;
+
+     label03:
+        $i3 = $i2 & 8;
+
+        if $i3 == 0 goto label06;
+
+        $d0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: double _numberDouble>;
+
+        $b1 = $d0 cmpg -2.147483648E9;
+
+        $i2 = (int) $b1;
+
+        if $i2 < 0 goto label04;
+
+        $b1 = $d0 cmpl 2.147483647E9;
+
+        $i2 = (int) $b1;
+
+        if $i2 <= 0 goto label05;
+
+     label04:
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void reportOverflowInt()>();
+
+     label05:
+        $d0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: double _numberDouble>;
+
+        $i2 = (int) $d0;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numberInt> = $i2;
+
+        goto label10;
+
+     label06:
+        $i2 = $i2 & 16;
+
+        if $i2 == 0 goto label09;
+
+        $r4 = <org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal BD_MIN_INT>;
+
+        $r5 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal _numberBigDecimal>;
+
+        $i2 = virtualinvoke $r4.<java.math.BigDecimal: int compareTo(java.math.BigDecimal)>($r5);
+
+        if $i2 > 0 goto label07;
+
+        $r4 = <org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal BD_MAX_INT>;
+
+        $r5 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal _numberBigDecimal>;
+
+        $i2 = virtualinvoke $r4.<java.math.BigDecimal: int compareTo(java.math.BigDecimal)>($r5);
+
+        if $i2 >= 0 goto label08;
+
+     label07:
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void reportOverflowInt()>();
+
+     label08:
+        $r4 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal _numberBigDecimal>;
+
+        $i2 = virtualinvoke $r4.<java.math.BigDecimal: int intValue()>();
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numberInt> = $i2;
+
+        goto label10;
+
+     label09:
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _throwInternal()>();
+
+     label10:
+        $i2 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i2 = $i2 | 1;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = $i2;
+
+        return;
+    }
+
+    public void convertNumberToLong()
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        long $l2;
+        java.math.BigDecimal $r2, $r3;
+        byte $b3;
+        int $i0, $i1;
+        java.math.BigInteger $r1;
+        double $d0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i1 = $i0 & 1;
+
+        if $i1 == 0 goto label1;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numberInt>;
+
+        $l2 = (long) $i0;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: long _numberLong> = $l2;
+
+        goto label9;
+
+     label1:
+        $i1 = $i0 & 4;
+
+        if $i1 == 0 goto label2;
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigInteger _numberBigInt>;
+
+        $l2 = virtualinvoke $r1.<java.math.BigInteger: long longValue()>();
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: long _numberLong> = $l2;
+
+        goto label9;
+
+     label2:
+        $i1 = $i0 & 8;
+
+        if $i1 == 0 goto label5;
+
+        $d0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: double _numberDouble>;
+
+        $b3 = $d0 cmpg -9.223372036854776E18;
+
+        $i0 = (int) $b3;
+
+        if $i0 < 0 goto label3;
+
+        $b3 = $d0 cmpl 9.223372036854776E18;
+
+        $i0 = (int) $b3;
+
+        if $i0 <= 0 goto label4;
+
+     label3:
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void reportOverflowLong()>();
+
+     label4:
+        $d0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: double _numberDouble>;
+
+        $l2 = (long) $d0;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: long _numberLong> = $l2;
+
+        goto label9;
+
+     label5:
+        $i0 = $i0 & 16;
+
+        if $i0 == 0 goto label8;
+
+        $r2 = <org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal BD_MIN_LONG>;
+
+        $r3 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal _numberBigDecimal>;
+
+        $i0 = virtualinvoke $r2.<java.math.BigDecimal: int compareTo(java.math.BigDecimal)>($r3);
+
+        if $i0 > 0 goto label6;
+
+        $r2 = <org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal BD_MAX_LONG>;
+
+        $r3 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal _numberBigDecimal>;
+
+        $i0 = virtualinvoke $r2.<java.math.BigDecimal: int compareTo(java.math.BigDecimal)>($r3);
+
+        if $i0 >= 0 goto label7;
+
+     label6:
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void reportOverflowLong()>();
+
+     label7:
+        $r2 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal _numberBigDecimal>;
+
+        $l2 = virtualinvoke $r2.<java.math.BigDecimal: long longValue()>();
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: long _numberLong> = $l2;
+
+        goto label9;
+
+     label8:
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _throwInternal()>();
+
+     label9:
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i0 = $i0 | 2;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = $i0;
+
+        return;
+    }
+
+    public java.math.BigInteger getBigIntegerValue()
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        int $i0, $i1;
+        java.math.BigInteger r1;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i1 = $i0 & 4;
+
+        if $i1 != 0 goto label2;
+
+        if $i0 != 0 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void _parseNumericValue(int)>(4);
+
+     label1:
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i0 = $i0 & 4;
+
+        if $i0 != 0 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void convertNumberToBigInteger()>();
+
+     label2:
+        r1 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigInteger _numberBigInt>;
+
+        return r1;
+    }
+
+    public java.math.BigDecimal getDecimalValue()
+    {
+        java.math.BigDecimal r1;
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        int $i0, $i1;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i1 = $i0 & 16;
+
+        if $i1 != 0 goto label2;
+
+        if $i0 != 0 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void _parseNumericValue(int)>(16);
+
+     label1:
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i0 = $i0 & 16;
+
+        if $i0 != 0 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void convertNumberToBigDecimal()>();
+
+     label2:
+        r1 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal _numberBigDecimal>;
+
+        return r1;
+    }
+
+    public double getDoubleValue()
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        int $i0, $i1;
+        double d0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i1 = $i0 & 8;
+
+        if $i1 != 0 goto label2;
+
+        if $i0 != 0 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void _parseNumericValue(int)>(8);
+
+     label1:
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i0 = $i0 & 8;
+
+        if $i0 != 0 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void convertNumberToDouble()>();
+
+     label2:
+        d0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: double _numberDouble>;
+
+        return d0;
+    }
+
+    public float getFloatValue()
+    {
+        float $f0;
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        double $d0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $d0 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: double getDoubleValue()>();
+
+        $f0 = (float) $d0;
+
+        return $f0;
+    }
+
+    public int getIntValue()
+    {
+        int $i0, $i1;
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i1 = $i0 & 1;
+
+        if $i1 != 0 goto label2;
+
+        if $i0 != 0 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void _parseNumericValue(int)>(1);
+
+     label1:
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i0 = $i0 & 1;
+
+        if $i0 != 0 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void convertNumberToInt()>();
+
+     label2:
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numberInt>;
+
+        return $i0;
+    }
+
+    public long getLongValue()
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        int $i0, $i1;
+        long l2;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i1 = $i0 & 2;
+
+        if $i1 != 0 goto label2;
+
+        if $i0 != 0 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void _parseNumericValue(int)>(2);
+
+     label1:
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i0 = $i0 & 2;
+
+        if $i0 != 0 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void convertNumberToLong()>();
+
+     label2:
+        l2 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: long _numberLong>;
+
+        return l2;
+    }
+
+    public org.codehaus.jackson.JsonParser$NumberType getNumberType()
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        org.codehaus.jackson.JsonToken $r1, $r2;
+        int $i0, $i1;
+        org.codehaus.jackson.JsonParser$NumberType r3;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        if $i0 != 0 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void _parseNumericValue(int)>(0);
+
+     label1:
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        $r2 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r1 != $r2 goto label4;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i1 = $i0 & 1;
+
+        if $i1 == 0 goto label2;
+
+        r3 = <org.codehaus.jackson.JsonParser$NumberType: org.codehaus.jackson.JsonParser$NumberType INT>;
+
+        return r3;
+
+     label2:
+        $i0 = $i0 & 2;
+
+        if $i0 == 0 goto label3;
+
+        r3 = <org.codehaus.jackson.JsonParser$NumberType: org.codehaus.jackson.JsonParser$NumberType LONG>;
+
+        return r3;
+
+     label3:
+        r3 = <org.codehaus.jackson.JsonParser$NumberType: org.codehaus.jackson.JsonParser$NumberType BIG_INTEGER>;
+
+        return r3;
+
+     label4:
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i0 = $i0 & 16;
+
+        if $i0 == 0 goto label5;
+
+        r3 = <org.codehaus.jackson.JsonParser$NumberType: org.codehaus.jackson.JsonParser$NumberType BIG_DECIMAL>;
+
+        return r3;
+
+     label5:
+        r3 = <org.codehaus.jackson.JsonParser$NumberType: org.codehaus.jackson.JsonParser$NumberType DOUBLE>;
+
+        return r3;
+    }
+
+    public java.lang.Number getNumberValue()
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        org.codehaus.jackson.JsonToken $r1, $r2;
+        java.lang.Double $r5;
+        long $l2;
+        java.lang.Integer $r3;
+        java.math.BigDecimal r7;
+        java.lang.Long $r4;
+        int $i0, $i1;
+        java.math.BigInteger r6;
+        double $d0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        if $i0 != 0 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: void _parseNumericValue(int)>(0);
+
+     label1:
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        $r2 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r1 != $r2 goto label5;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i1 = $i0 & 1;
+
+        if $i1 == 0 goto label2;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numberInt>;
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        return $r3;
+
+     label2:
+        $i1 = $i0 & 2;
+
+        if $i1 == 0 goto label3;
+
+        $l2 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: long _numberLong>;
+
+        $r4 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l2);
+
+        return $r4;
+
+     label3:
+        $i0 = $i0 & 4;
+
+        if $i0 == 0 goto label4;
+
+        r6 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigInteger _numberBigInt>;
+
+        return r6;
+
+     label4:
+        r7 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal _numberBigDecimal>;
+
+        return r7;
+
+     label5:
+        $i0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid>;
+
+        $i1 = $i0 & 16;
+
+        if $i1 == 0 goto label6;
+
+        r7 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: java.math.BigDecimal _numberBigDecimal>;
+
+        return r7;
+
+     label6:
+        $i0 = $i0 & 8;
+
+        if $i0 != 0 goto label7;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _throwInternal()>();
+
+     label7:
+        $d0 = r0.<org.codehaus.jackson.impl.JsonNumericParserBase: double _numberDouble>;
+
+        $r5 = staticinvoke <java.lang.Double: java.lang.Double valueOf(double)>($d0);
+
+        return $r5;
+    }
+
+    public void reportInvalidNumber(java.lang.String)
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid numeric value: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _reportError(java.lang.String)>($r2);
+
+        return;
+    }
+
+    public void reportOverflowInt()
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Numeric value (");
+
+        $r2 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: java.lang.String getText()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") out of range of int (");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(-2147483648);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" - ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(2147483647);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _reportError(java.lang.String)>($r2);
+
+        return;
+    }
+
+    public void reportOverflowLong()
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Numeric value (");
+
+        $r2 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: java.lang.String getText()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") out of range of long (");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>(-9223372036854775808L);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" - ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>(9223372036854775807L);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _reportError(java.lang.String)>($r2);
+
+        return;
+    }
+
+    public void reportUnexpectedNumberChar(int, java.lang.String)
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        int $i0;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r1, $r3, $r4;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected character (");
+
+        $r3 = staticinvoke <org.codehaus.jackson.impl.JsonParserMinimalBase: java.lang.String _getCharDesc(int)>($i0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") in numeric value");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r4 = $r3;
+
+        if $r1 == null goto label1;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label1:
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _reportError(java.lang.String)>($r4);
+
+        return;
+    }
+
+    public final org.codehaus.jackson.JsonToken reset(boolean, int, int, int)
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        org.codehaus.jackson.JsonToken $r1;
+        int $i0, $i1, $i2;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $z0 := @parameter0: boolean;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        if $i1 >= 1 goto label1;
+
+        if $i2 >= 1 goto label1;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: org.codehaus.jackson.JsonToken resetInt(boolean,int)>($z0, $i0);
+
+        return $r1;
+
+     label1:
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonNumericParserBase: org.codehaus.jackson.JsonToken resetFloat(boolean,int,int,int)>($z0, $i0, $i1, $i2);
+
+        return $r1;
+    }
+
+    public final org.codehaus.jackson.JsonToken resetAsNaN(java.lang.String, double)
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        org.codehaus.jackson.JsonToken r3;
+        java.lang.String $r2;
+        org.codehaus.jackson.util.TextBuffer $r1;
+        double $d0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $d0 := @parameter1: double;
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.util.TextBuffer _textBuffer>;
+
+        virtualinvoke $r1.<org.codehaus.jackson.util.TextBuffer: void resetWithString(java.lang.String)>($r2);
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: double _numberDouble> = $d0;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = 8;
+
+        r3 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_FLOAT>;
+
+        return r3;
+    }
+
+    public final org.codehaus.jackson.JsonToken resetFloat(boolean, int, int, int)
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        org.codehaus.jackson.JsonToken r1;
+        int $i0, $i1, $i2;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $z0 := @parameter0: boolean;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: boolean _numberNegative> = $z0;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _intLength> = $i0;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _fractLength> = $i1;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _expLength> = $i2;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = 0;
+
+        r1 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_FLOAT>;
+
+        return r1;
+    }
+
+    public final org.codehaus.jackson.JsonToken resetInt(boolean, int)
+    {
+        org.codehaus.jackson.impl.JsonNumericParserBase r0;
+        org.codehaus.jackson.JsonToken r1;
+        int $i0;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonNumericParserBase;
+
+        $z0 := @parameter0: boolean;
+
+        $i0 := @parameter1: int;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: boolean _numberNegative> = $z0;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _intLength> = $i0;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _fractLength> = 0;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _expLength> = 0;
+
+        r0.<org.codehaus.jackson.impl.JsonNumericParserBase: int _numTypesValid> = 0;
+
+        r1 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        return r1;
+    }
+}

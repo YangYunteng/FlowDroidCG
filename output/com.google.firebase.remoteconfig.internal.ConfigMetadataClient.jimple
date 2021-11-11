@@ -1,0 +1,708 @@
+public class com.google.firebase.remoteconfig.internal.ConfigMetadataClient extends java.lang.Object
+{
+    public static final java.lang.String BACKOFF_END_TIME_IN_MILLIS_KEY;
+    public static final java.lang.String DEVELOPER_MODE_KEY;
+    public static final java.lang.String FETCH_TIMEOUT_IN_SECONDS_KEY;
+    public static final java.lang.String LAST_FETCH_ETAG_KEY;
+    public static final java.lang.String LAST_FETCH_STATUS_KEY;
+    public static final long LAST_FETCH_TIME_IN_MILLIS_NO_FETCH_YET;
+    public static final java.util.Date LAST_FETCH_TIME_NO_FETCH_YET;
+    public static final java.lang.String LAST_SUCCESSFUL_FETCH_TIME_IN_MILLIS_KEY;
+    public static final java.lang.String MINIMUM_FETCH_INTERVAL_IN_SECONDS_KEY;
+    public static final java.util.Date NO_BACKOFF_TIME;
+    public static final long NO_BACKOFF_TIME_IN_MILLIS;
+    public static final int NO_FAILED_FETCHES;
+    public static final java.lang.String NUM_FAILED_FETCHES_KEY;
+    public final java.lang.Object backoffMetadataLock;
+    public final java.lang.Object frcInfoLock;
+    public final android.content.SharedPreferences frcMetadata;
+
+    static void <clinit>()
+    {
+        java.util.Date $r0;
+
+        <com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.String NUM_FAILED_FETCHES_KEY> = "num_failed_fetches";
+
+        <com.google.firebase.remoteconfig.internal.ConfigMetadataClient: int NO_FAILED_FETCHES> = 0;
+
+        <com.google.firebase.remoteconfig.internal.ConfigMetadataClient: long NO_BACKOFF_TIME_IN_MILLIS> = -1L;
+
+        <com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.String MINIMUM_FETCH_INTERVAL_IN_SECONDS_KEY> = "minimum_fetch_interval_in_seconds";
+
+        <com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.String LAST_SUCCESSFUL_FETCH_TIME_IN_MILLIS_KEY> = "last_fetch_time_in_millis";
+
+        <com.google.firebase.remoteconfig.internal.ConfigMetadataClient: long LAST_FETCH_TIME_IN_MILLIS_NO_FETCH_YET> = -1L;
+
+        <com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.String LAST_FETCH_STATUS_KEY> = "last_fetch_status";
+
+        <com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.String LAST_FETCH_ETAG_KEY> = "last_fetch_etag";
+
+        <com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.String FETCH_TIMEOUT_IN_SECONDS_KEY> = "fetch_timeout_in_seconds";
+
+        <com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.String DEVELOPER_MODE_KEY> = "is_developer_mode_enabled";
+
+        <com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.String BACKOFF_END_TIME_IN_MILLIS_KEY> = "backoff_end_time_in_millis";
+
+        $r0 = new java.util.Date;
+
+        specialinvoke $r0.<java.util.Date: void <init>(long)>(-1L);
+
+        <com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.util.Date LAST_FETCH_TIME_NO_FETCH_YET> = $r0;
+
+        $r0 = new java.util.Date;
+
+        specialinvoke $r0.<java.util.Date: void <init>(long)>(-1L);
+
+        <com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.util.Date NO_BACKOFF_TIME> = $r0;
+
+        return;
+    }
+
+    public void <init>(android.content.SharedPreferences)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        java.lang.Object $r2;
+        android.content.SharedPreferences $r1;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r1 := @parameter0: android.content.SharedPreferences;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata> = $r1;
+
+        $r2 = new java.lang.Object;
+
+        specialinvoke $r2.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.Object frcInfoLock> = $r2;
+
+        $r2 = new java.lang.Object;
+
+        specialinvoke $r2.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.Object backoffMetadataLock> = $r2;
+
+        return;
+    }
+
+    public void clear()
+    {
+        android.content.SharedPreferences$Editor $r3;
+        java.lang.Throwable $r4;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        android.content.SharedPreferences $r2;
+        java.lang.Object $r1;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.Object frcInfoLock>;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $r3 = interfaceinvoke $r2.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $r3 = interfaceinvoke $r3.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor clear()>();
+
+        interfaceinvoke $r3.<android.content.SharedPreferences$Editor: boolean commit()>();
+
+        exitmonitor $r1;
+
+     label2:
+        return;
+
+     label3:
+        $r4 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata getBackoffMetadata()
+    {
+        java.lang.Throwable $r5;
+        java.util.Date $r4;
+        long $l1;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata $r2;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        android.content.SharedPreferences $r3;
+        int $i0;
+        java.lang.Object $r1;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.Object backoffMetadataLock>;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = new com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata;
+
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $i0 = interfaceinvoke $r3.<android.content.SharedPreferences: int getInt(java.lang.String,int)>("num_failed_fetches", 0);
+
+        $r4 = new java.util.Date;
+
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $l1 = interfaceinvoke $r3.<android.content.SharedPreferences: long getLong(java.lang.String,long)>("backoff_end_time_in_millis", -1L);
+
+        specialinvoke $r4.<java.util.Date: void <init>(long)>($l1);
+
+        specialinvoke $r2.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata: void <init>(int,java.util.Date)>($i0, $r4);
+
+        exitmonitor $r1;
+
+     label2:
+        return $r2;
+
+     label3:
+        $r5 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public long getFetchTimeoutInSeconds()
+    {
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        long $l0;
+        android.content.SharedPreferences $r1;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $l0 = interfaceinvoke $r1.<android.content.SharedPreferences: long getLong(java.lang.String,long)>("fetch_timeout_in_seconds", 60L);
+
+        return $l0;
+    }
+
+    public com.google.firebase.remoteconfig.FirebaseRemoteConfigInfo getInfo()
+    {
+        java.lang.Throwable $r7;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings $r4;
+        long $l0, $l2;
+        com.google.firebase.remoteconfig.internal.FirebaseRemoteConfigInfoImpl$Builder $r5;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings$Builder $r3;
+        android.content.SharedPreferences $r2;
+        int $i1;
+        java.lang.Object $r1;
+        com.google.firebase.remoteconfig.internal.FirebaseRemoteConfigInfoImpl $r6;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.Object frcInfoLock>;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $l0 = interfaceinvoke $r2.<android.content.SharedPreferences: long getLong(java.lang.String,long)>("last_fetch_time_in_millis", -1L);
+
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $i1 = interfaceinvoke $r2.<android.content.SharedPreferences: int getInt(java.lang.String,int)>("last_fetch_status", 0);
+
+        $r3 = new com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings$Builder;
+
+        specialinvoke $r3.<com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings$Builder: void <init>()>();
+
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $z0 = interfaceinvoke $r2.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("is_developer_mode_enabled", 0);
+
+        $r3 = virtualinvoke $r3.<com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings$Builder: com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings$Builder setDeveloperModeEnabled(boolean)>($z0);
+
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $l2 = interfaceinvoke $r2.<android.content.SharedPreferences: long getLong(java.lang.String,long)>("fetch_timeout_in_seconds", 60L);
+
+        $r3 = virtualinvoke $r3.<com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings$Builder: com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings$Builder setFetchTimeoutInSeconds(long)>($l2);
+
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $l2 = <com.google.firebase.remoteconfig.internal.ConfigFetchHandler: long DEFAULT_MINIMUM_FETCH_INTERVAL_IN_SECONDS>;
+
+        $l2 = interfaceinvoke $r2.<android.content.SharedPreferences: long getLong(java.lang.String,long)>("minimum_fetch_interval_in_seconds", $l2);
+
+        $r3 = virtualinvoke $r3.<com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings$Builder: com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings$Builder setMinimumFetchIntervalInSeconds(long)>($l2);
+
+        $r4 = virtualinvoke $r3.<com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings$Builder: com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings build()>();
+
+        $r5 = staticinvoke <com.google.firebase.remoteconfig.internal.FirebaseRemoteConfigInfoImpl: com.google.firebase.remoteconfig.internal.FirebaseRemoteConfigInfoImpl$Builder newBuilder()>();
+
+        $r5 = virtualinvoke $r5.<com.google.firebase.remoteconfig.internal.FirebaseRemoteConfigInfoImpl$Builder: com.google.firebase.remoteconfig.internal.FirebaseRemoteConfigInfoImpl$Builder withLastFetchStatus(int)>($i1);
+
+        $r5 = virtualinvoke $r5.<com.google.firebase.remoteconfig.internal.FirebaseRemoteConfigInfoImpl$Builder: com.google.firebase.remoteconfig.internal.FirebaseRemoteConfigInfoImpl$Builder withLastSuccessfulFetchTimeInMillis(long)>($l0);
+
+        $r5 = virtualinvoke $r5.<com.google.firebase.remoteconfig.internal.FirebaseRemoteConfigInfoImpl$Builder: com.google.firebase.remoteconfig.internal.FirebaseRemoteConfigInfoImpl$Builder withConfigSettings(com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings)>($r4);
+
+        $r6 = virtualinvoke $r5.<com.google.firebase.remoteconfig.internal.FirebaseRemoteConfigInfoImpl$Builder: com.google.firebase.remoteconfig.internal.FirebaseRemoteConfigInfoImpl build()>();
+
+        exitmonitor $r1;
+
+     label2:
+        return $r6;
+
+     label3:
+        $r7 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r7;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public java.lang.String getLastFetchETag()
+    {
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        java.lang.String $r1;
+        android.content.SharedPreferences $r2;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $r1 = interfaceinvoke $r2.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>("last_fetch_etag", null);
+
+        return $r1;
+    }
+
+    public int getLastFetchStatus()
+    {
+        int $i0;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        android.content.SharedPreferences $r1;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $i0 = interfaceinvoke $r1.<android.content.SharedPreferences: int getInt(java.lang.String,int)>("last_fetch_status", 0);
+
+        return $i0;
+    }
+
+    public java.util.Date getLastSuccessfulFetchTime()
+    {
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        android.content.SharedPreferences $r2;
+        java.util.Date $r1;
+        long $l0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r1 = new java.util.Date;
+
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $l0 = interfaceinvoke $r2.<android.content.SharedPreferences: long getLong(java.lang.String,long)>("last_fetch_time_in_millis", -1L);
+
+        specialinvoke $r1.<java.util.Date: void <init>(long)>($l0);
+
+        return $r1;
+    }
+
+    public long getMinimumFetchIntervalInSeconds()
+    {
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        long $l0;
+        android.content.SharedPreferences $r1;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $l0 = <com.google.firebase.remoteconfig.internal.ConfigFetchHandler: long DEFAULT_MINIMUM_FETCH_INTERVAL_IN_SECONDS>;
+
+        $l0 = interfaceinvoke $r1.<android.content.SharedPreferences: long getLong(java.lang.String,long)>("minimum_fetch_interval_in_seconds", $l0);
+
+        return $l0;
+    }
+
+    public boolean isDeveloperModeEnabled()
+    {
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        android.content.SharedPreferences $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $z0 = interfaceinvoke $r1.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("is_developer_mode_enabled", 0);
+
+        return $z0;
+    }
+
+    public void resetBackoff()
+    {
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        java.util.Date $r1;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r1 = <com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.util.Date NO_BACKOFF_TIME>;
+
+        virtualinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: void setBackoffMetadata(int,java.util.Date)>(0, $r1);
+
+        return;
+    }
+
+    public void setBackoffMetadata(int, java.util.Date)
+    {
+        android.content.SharedPreferences$Editor $r4;
+        java.lang.Throwable $r5;
+        java.util.Date $r1;
+        long $l1;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        android.content.SharedPreferences $r3;
+        int $i0;
+        java.lang.Object $r2;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.Date;
+
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.Object backoffMetadataLock>;
+
+        entermonitor $r2;
+
+     label1:
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $r4 = interfaceinvoke $r3.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $r4 = interfaceinvoke $r4.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putInt(java.lang.String,int)>("num_failed_fetches", $i0);
+
+        $l1 = virtualinvoke $r1.<java.util.Date: long getTime()>();
+
+        $r4 = interfaceinvoke $r4.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putLong(java.lang.String,long)>("backoff_end_time_in_millis", $l1);
+
+        interfaceinvoke $r4.<android.content.SharedPreferences$Editor: void apply()>();
+
+        exitmonitor $r2;
+
+     label2:
+        return;
+
+     label3:
+        $r5 := @caughtexception;
+
+        exitmonitor $r2;
+
+     label4:
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setConfigSettings(com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings)
+    {
+        android.content.SharedPreferences$Editor $r4;
+        java.lang.Throwable $r5;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings $r2;
+        long $l0;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        android.content.SharedPreferences $r3;
+        java.lang.Object $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r2 := @parameter0: com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.Object frcInfoLock>;
+
+        entermonitor $r1;
+
+     label1:
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $r4 = interfaceinvoke $r3.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $z0 = virtualinvoke $r2.<com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings: boolean isDeveloperModeEnabled()>();
+
+        $r4 = interfaceinvoke $r4.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putBoolean(java.lang.String,boolean)>("is_developer_mode_enabled", $z0);
+
+        $l0 = virtualinvoke $r2.<com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings: long getFetchTimeoutInSeconds()>();
+
+        $r4 = interfaceinvoke $r4.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putLong(java.lang.String,long)>("fetch_timeout_in_seconds", $l0);
+
+        $l0 = virtualinvoke $r2.<com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings: long getMinimumFetchIntervalInSeconds()>();
+
+        $r4 = interfaceinvoke $r4.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putLong(java.lang.String,long)>("minimum_fetch_interval_in_seconds", $l0);
+
+        interfaceinvoke $r4.<android.content.SharedPreferences$Editor: boolean commit()>();
+
+        exitmonitor $r1;
+
+     label2:
+        return;
+
+     label3:
+        $r5 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setConfigSettingsWithoutWaitingOnDiskWrite(com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings)
+    {
+        android.content.SharedPreferences$Editor $r4;
+        java.lang.Throwable $r5;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings $r2;
+        long $l0;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        android.content.SharedPreferences $r3;
+        java.lang.Object $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r2 := @parameter0: com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.Object frcInfoLock>;
+
+        entermonitor $r1;
+
+     label1:
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $r4 = interfaceinvoke $r3.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $z0 = virtualinvoke $r2.<com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings: boolean isDeveloperModeEnabled()>();
+
+        $r4 = interfaceinvoke $r4.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putBoolean(java.lang.String,boolean)>("is_developer_mode_enabled", $z0);
+
+        $l0 = virtualinvoke $r2.<com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings: long getFetchTimeoutInSeconds()>();
+
+        $r4 = interfaceinvoke $r4.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putLong(java.lang.String,long)>("fetch_timeout_in_seconds", $l0);
+
+        $l0 = virtualinvoke $r2.<com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings: long getMinimumFetchIntervalInSeconds()>();
+
+        $r4 = interfaceinvoke $r4.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putLong(java.lang.String,long)>("minimum_fetch_interval_in_seconds", $l0);
+
+        interfaceinvoke $r4.<android.content.SharedPreferences$Editor: void apply()>();
+
+        exitmonitor $r1;
+
+     label2:
+        return;
+
+     label3:
+        $r5 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setLastFetchETag(java.lang.String)
+    {
+        android.content.SharedPreferences$Editor $r4;
+        java.lang.Throwable $r5;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        android.content.SharedPreferences $r3;
+        java.lang.Object $r1;
+        java.lang.String $r2;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.Object frcInfoLock>;
+
+        entermonitor $r1;
+
+     label1:
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $r4 = interfaceinvoke $r3.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $r4 = interfaceinvoke $r4.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putString(java.lang.String,java.lang.String)>("last_fetch_etag", $r2);
+
+        interfaceinvoke $r4.<android.content.SharedPreferences$Editor: void apply()>();
+
+        exitmonitor $r1;
+
+     label2:
+        return;
+
+     label3:
+        $r5 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void updateLastFetchAsFailed()
+    {
+        android.content.SharedPreferences$Editor $r3;
+        java.lang.Throwable $r4;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        android.content.SharedPreferences $r2;
+        java.lang.Object $r1;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.Object frcInfoLock>;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $r3 = interfaceinvoke $r2.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $r3 = interfaceinvoke $r3.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putInt(java.lang.String,int)>("last_fetch_status", 1);
+
+        interfaceinvoke $r3.<android.content.SharedPreferences$Editor: void apply()>();
+
+        exitmonitor $r1;
+
+     label2:
+        return;
+
+     label3:
+        $r4 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void updateLastFetchAsSuccessfulAt(java.util.Date)
+    {
+        android.content.SharedPreferences$Editor $r4;
+        java.lang.Throwable $r5;
+        java.util.Date $r2;
+        long $l0;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        android.content.SharedPreferences $r3;
+        int $i1;
+        java.lang.Object $r1;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r2 := @parameter0: java.util.Date;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.Object frcInfoLock>;
+
+        entermonitor $r1;
+
+     label1:
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $r4 = interfaceinvoke $r3.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $i1 = -1;
+
+        $r4 = interfaceinvoke $r4.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putInt(java.lang.String,int)>("last_fetch_status", $i1);
+
+        $l0 = virtualinvoke $r2.<java.util.Date: long getTime()>();
+
+        $r4 = interfaceinvoke $r4.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putLong(java.lang.String,long)>("last_fetch_time_in_millis", $l0);
+
+        interfaceinvoke $r4.<android.content.SharedPreferences$Editor: void apply()>();
+
+        exitmonitor $r1;
+
+     label2:
+        return;
+
+     label3:
+        $r5 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void updateLastFetchAsThrottled()
+    {
+        android.content.SharedPreferences$Editor $r3;
+        java.lang.Throwable $r4;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient r0;
+        android.content.SharedPreferences $r2;
+        java.lang.Object $r1;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.Object frcInfoLock>;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: android.content.SharedPreferences frcMetadata>;
+
+        $r3 = interfaceinvoke $r2.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $r3 = interfaceinvoke $r3.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putInt(java.lang.String,int)>("last_fetch_status", 2);
+
+        interfaceinvoke $r3.<android.content.SharedPreferences$Editor: void apply()>();
+
+        exitmonitor $r1;
+
+     label2:
+        return;
+
+     label3:
+        $r4 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+}

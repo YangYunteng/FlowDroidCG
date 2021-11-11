@@ -1,0 +1,424 @@
+public class com.google.common.base.internal.Finalizer extends java.lang.Object implements java.lang.Runnable
+{
+    public static final java.lang.String FINALIZABLE_REFERENCE;
+    public static final java.lang.reflect.Constructor bigThreadConstructor;
+    public static final java.lang.reflect.Field inheritableThreadLocals;
+    public static final java.util.logging.Logger logger;
+    public final java.lang.ref.WeakReference finalizableReferenceClassReference;
+    public final java.lang.ref.PhantomReference frqReference;
+    public final java.lang.ref.ReferenceQueue queue;
+
+    static void <clinit>()
+    {
+        java.lang.Class $r0;
+        java.lang.String $r1;
+        java.util.logging.Logger $r2;
+        java.lang.reflect.Field $r4;
+        java.lang.reflect.Constructor $r3;
+
+        <com.google.common.base.internal.Finalizer: java.lang.String FINALIZABLE_REFERENCE> = "com.google.common.base.FinalizableReference";
+
+        $r0 = class "Lcom/google/common/base/internal/Finalizer;";
+
+        $r1 = virtualinvoke $r0.<java.lang.Class: java.lang.String getName()>();
+
+        $r2 = staticinvoke <java.util.logging.Logger: java.util.logging.Logger getLogger(java.lang.String)>($r1);
+
+        <com.google.common.base.internal.Finalizer: java.util.logging.Logger logger> = $r2;
+
+        $r3 = staticinvoke <com.google.common.base.internal.Finalizer: java.lang.reflect.Constructor getBigThreadConstructor()>();
+
+        <com.google.common.base.internal.Finalizer: java.lang.reflect.Constructor bigThreadConstructor> = $r3;
+
+        $r3 = <com.google.common.base.internal.Finalizer: java.lang.reflect.Constructor bigThreadConstructor>;
+
+        if $r3 != null goto label1;
+
+        $r4 = staticinvoke <com.google.common.base.internal.Finalizer: java.lang.reflect.Field getInheritableThreadLocalsField()>();
+
+        goto label2;
+
+     label1:
+        $r4 = null;
+
+     label2:
+        <com.google.common.base.internal.Finalizer: java.lang.reflect.Field inheritableThreadLocals> = $r4;
+
+        return;
+    }
+
+    public void <init>(java.lang.Class, java.lang.ref.ReferenceQueue, java.lang.ref.PhantomReference)
+    {
+        java.lang.ref.PhantomReference $r2;
+        com.google.common.base.internal.Finalizer r0;
+        java.lang.Class $r1;
+        java.lang.ref.WeakReference $r4;
+        java.lang.ref.ReferenceQueue $r3;
+
+        r0 := @this: com.google.common.base.internal.Finalizer;
+
+        $r1 := @parameter0: java.lang.Class;
+
+        $r3 := @parameter1: java.lang.ref.ReferenceQueue;
+
+        $r2 := @parameter2: java.lang.ref.PhantomReference;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.common.base.internal.Finalizer: java.lang.ref.ReferenceQueue queue> = $r3;
+
+        $r4 = new java.lang.ref.WeakReference;
+
+        specialinvoke $r4.<java.lang.ref.WeakReference: void <init>(java.lang.Object)>($r1);
+
+        r0.<com.google.common.base.internal.Finalizer: java.lang.ref.WeakReference finalizableReferenceClassReference> = $r4;
+
+        r0.<com.google.common.base.internal.Finalizer: java.lang.ref.PhantomReference frqReference> = $r2;
+
+        return;
+    }
+
+    private boolean cleanUp(java.lang.ref.Reference)
+    {
+        java.lang.ref.PhantomReference $r4;
+        java.lang.Throwable $r6;
+        java.lang.Object[] $r5;
+        java.util.logging.Logger $r7;
+        java.lang.ref.ReferenceQueue $r8;
+        java.util.logging.Level $r1;
+        java.lang.ref.Reference $r2, $r9;
+        com.google.common.base.internal.Finalizer r0;
+        java.lang.reflect.Method $r3;
+
+        r0 := @this: com.google.common.base.internal.Finalizer;
+
+        $r2 := @parameter0: java.lang.ref.Reference;
+
+        $r3 = specialinvoke r0.<com.google.common.base.internal.Finalizer: java.lang.reflect.Method getFinalizeReferentMethod()>();
+
+        if $r3 != null goto label1;
+
+        return 0;
+
+     label1:
+        virtualinvoke $r2.<java.lang.ref.Reference: void clear()>();
+
+        $r4 = r0.<com.google.common.base.internal.Finalizer: java.lang.ref.PhantomReference frqReference>;
+
+        if $r2 != $r4 goto label2;
+
+        return 0;
+
+     label2:
+        $r5 = newarray (java.lang.Object)[0];
+
+        virtualinvoke $r3.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>($r2, $r5);
+
+     label3:
+        goto label5;
+
+     label4:
+        $r6 := @caughtexception;
+
+        $r7 = <com.google.common.base.internal.Finalizer: java.util.logging.Logger logger>;
+
+        $r1 = <java.util.logging.Level: java.util.logging.Level SEVERE>;
+
+        virtualinvoke $r7.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r1, "Error cleaning up after reference.", $r6);
+
+     label5:
+        $r8 = r0.<com.google.common.base.internal.Finalizer: java.lang.ref.ReferenceQueue queue>;
+
+        $r9 = virtualinvoke $r8.<java.lang.ref.ReferenceQueue: java.lang.ref.Reference poll()>();
+
+        $r2 = $r9;
+
+        if $r9 != null goto label1;
+
+        return 1;
+
+        catch java.lang.Throwable from label2 to label3 with label4;
+    }
+
+    public static java.lang.reflect.Constructor getBigThreadConstructor()
+    {
+        java.lang.Throwable $r1;
+        java.lang.Class[] $r3;
+        java.lang.Class $r2, $r4;
+        java.lang.reflect.Constructor $r0;
+
+        $r2 = class "Ljava/lang/Thread;";
+
+     label1:
+        $r3 = newarray (java.lang.Class)[5];
+
+        $r3[0] = class "Ljava/lang/ThreadGroup;";
+
+        $r3[1] = class "Ljava/lang/Runnable;";
+
+        $r3[2] = class "Ljava/lang/String;";
+
+        $r4 = <java.lang.Long: java.lang.Class TYPE>;
+
+        $r3[3] = $r4;
+
+        $r4 = <java.lang.Boolean: java.lang.Class TYPE>;
+
+        $r3[4] = $r4;
+
+        $r0 = virtualinvoke $r2.<java.lang.Class: java.lang.reflect.Constructor getConstructor(java.lang.Class[])>($r3);
+
+     label2:
+        return $r0;
+
+     label3:
+        return null;
+
+     label4:
+        $r1 := @caughtexception;
+
+        goto label3;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+    }
+
+    private java.lang.reflect.Method getFinalizeReferentMethod()
+    {
+        java.lang.NoSuchMethodException $r6;
+        java.lang.Class[] $r4;
+        java.lang.AssertionError $r7;
+        com.google.common.base.internal.Finalizer r0;
+        java.lang.Object $r2;
+        java.lang.Class $r3;
+        java.lang.ref.WeakReference $r1;
+        java.lang.reflect.Method $r5;
+
+        r0 := @this: com.google.common.base.internal.Finalizer;
+
+        $r1 = r0.<com.google.common.base.internal.Finalizer: java.lang.ref.WeakReference finalizableReferenceClassReference>;
+
+        $r2 = virtualinvoke $r1.<java.lang.ref.WeakReference: java.lang.Object get()>();
+
+        $r3 = (java.lang.Class) $r2;
+
+        if $r3 != null goto label1;
+
+        return null;
+
+     label1:
+        $r4 = newarray (java.lang.Class)[0];
+
+     label2:
+        $r5 = virtualinvoke $r3.<java.lang.Class: java.lang.reflect.Method getMethod(java.lang.String,java.lang.Class[])>("finalizeReferent", $r4);
+
+     label3:
+        return $r5;
+
+     label4:
+        $r6 := @caughtexception;
+
+        $r7 = new java.lang.AssertionError;
+
+        specialinvoke $r7.<java.lang.AssertionError: void <init>(java.lang.Object)>($r6);
+
+        throw $r7;
+
+        catch java.lang.NoSuchMethodException from label2 to label3 with label4;
+    }
+
+    public static java.lang.reflect.Field getInheritableThreadLocalsField()
+    {
+        java.lang.Throwable $r1;
+        java.lang.Class $r2;
+        java.lang.reflect.Field $r0;
+        java.util.logging.Logger $r3;
+        java.util.logging.Level $r4;
+
+        $r2 = class "Ljava/lang/Thread;";
+
+     label1:
+        $r0 = virtualinvoke $r2.<java.lang.Class: java.lang.reflect.Field getDeclaredField(java.lang.String)>("inheritableThreadLocals");
+
+        virtualinvoke $r0.<java.lang.reflect.Field: void setAccessible(boolean)>(1);
+
+     label2:
+        return $r0;
+
+     label3:
+        $r3 = <com.google.common.base.internal.Finalizer: java.util.logging.Logger logger>;
+
+        $r4 = <java.util.logging.Level: java.util.logging.Level INFO>;
+
+        virtualinvoke $r3.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String)>($r4, "Couldn\'t access Thread.inheritableThreadLocals. Reference finalizer threads will inherit thread local values.");
+
+        return null;
+
+     label4:
+        $r1 := @caughtexception;
+
+        goto label3;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+    }
+
+    public static void startFinalizer(java.lang.Class, java.lang.ref.ReferenceQueue, java.lang.ref.PhantomReference)
+    {
+        java.lang.Throwable $r11, $r15;
+        java.lang.Object[] $r6;
+        java.lang.reflect.Constructor $r5;
+        java.lang.ref.ReferenceQueue $r1;
+        java.util.logging.Level $r13;
+        java.lang.Long $r7;
+        java.lang.Thread $r10;
+        com.google.common.base.internal.Finalizer $r4;
+        java.lang.Boolean $r8;
+        java.lang.String $r3;
+        boolean $z0;
+        java.lang.ref.PhantomReference $r2;
+        java.util.logging.Logger $r12;
+        java.lang.reflect.Field $r14;
+        java.lang.IllegalArgumentException $r16;
+        java.lang.Class $r0;
+        java.lang.Object $r9;
+
+        $r0 := @parameter0: java.lang.Class;
+
+        $r1 := @parameter1: java.lang.ref.ReferenceQueue;
+
+        $r2 := @parameter2: java.lang.ref.PhantomReference;
+
+        $r3 = virtualinvoke $r0.<java.lang.Class: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("com.google.common.base.FinalizableReference");
+
+        if $z0 == 0 goto label13;
+
+        $r4 = new com.google.common.base.internal.Finalizer;
+
+        specialinvoke $r4.<com.google.common.base.internal.Finalizer: void <init>(java.lang.Class,java.lang.ref.ReferenceQueue,java.lang.ref.PhantomReference)>($r0, $r1, $r2);
+
+        $r0 = class "Lcom/google/common/base/internal/Finalizer;";
+
+        $r3 = virtualinvoke $r0.<java.lang.Class: java.lang.String getName()>();
+
+        $r5 = <com.google.common.base.internal.Finalizer: java.lang.reflect.Constructor bigThreadConstructor>;
+
+        if $r5 == null goto label04;
+
+     label01:
+        $r6 = newarray (java.lang.Object)[5];
+
+        $r6[0] = null;
+
+        $r6[1] = $r4;
+
+        $r6[2] = $r3;
+
+        $r7 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>(0L);
+
+        $r6[3] = $r7;
+
+        $r8 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(0);
+
+        $r6[4] = $r8;
+
+        $r9 = virtualinvoke $r5.<java.lang.reflect.Constructor: java.lang.Object newInstance(java.lang.Object[])>($r6);
+
+        $r10 = (java.lang.Thread) $r9;
+
+     label02:
+        goto label05;
+
+     label03:
+        $r11 := @caughtexception;
+
+        $r12 = <com.google.common.base.internal.Finalizer: java.util.logging.Logger logger>;
+
+        $r13 = <java.util.logging.Level: java.util.logging.Level INFO>;
+
+        virtualinvoke $r12.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r13, "Failed to create a thread without inherited thread-local values", $r11);
+
+     label04:
+        $r10 = null;
+
+     label05:
+        if $r10 != null goto label06;
+
+        $r10 = new java.lang.Thread;
+
+        specialinvoke $r10.<java.lang.Thread: void <init>(java.lang.ThreadGroup,java.lang.Runnable,java.lang.String)>(null, $r4, $r3);
+
+     label06:
+        virtualinvoke $r10.<java.lang.Thread: void setDaemon(boolean)>(1);
+
+     label07:
+        $r14 = <com.google.common.base.internal.Finalizer: java.lang.reflect.Field inheritableThreadLocals>;
+
+     label08:
+        if $r14 == null goto label12;
+
+     label09:
+        $r14 = <com.google.common.base.internal.Finalizer: java.lang.reflect.Field inheritableThreadLocals>;
+
+        virtualinvoke $r14.<java.lang.reflect.Field: void set(java.lang.Object,java.lang.Object)>($r10, null);
+
+     label10:
+        goto label12;
+
+     label11:
+        $r15 := @caughtexception;
+
+        $r12 = <com.google.common.base.internal.Finalizer: java.util.logging.Logger logger>;
+
+        $r13 = <java.util.logging.Level: java.util.logging.Level INFO>;
+
+        virtualinvoke $r12.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r13, "Failed to clear thread local values inherited by reference finalizer thread.", $r15);
+
+     label12:
+        virtualinvoke $r10.<java.lang.Thread: void start()>();
+
+        return;
+
+     label13:
+        $r16 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r16.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Expected com.google.common.base.FinalizableReference.");
+
+        throw $r16;
+
+        catch java.lang.Throwable from label01 to label02 with label03;
+        catch java.lang.Throwable from label07 to label08 with label11;
+        catch java.lang.Throwable from label09 to label10 with label11;
+    }
+
+    public void run()
+    {
+        java.lang.ref.Reference $r3;
+        java.lang.InterruptedException $r1;
+        com.google.common.base.internal.Finalizer r0;
+        java.lang.ref.ReferenceQueue $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.common.base.internal.Finalizer;
+
+     label1:
+        $r2 = r0.<com.google.common.base.internal.Finalizer: java.lang.ref.ReferenceQueue queue>;
+
+     label2:
+        $r3 = virtualinvoke $r2.<java.lang.ref.ReferenceQueue: java.lang.ref.Reference remove()>();
+
+        $z0 = specialinvoke r0.<com.google.common.base.internal.Finalizer: boolean cleanUp(java.lang.ref.Reference)>($r3);
+
+     label3:
+        if $z0 != 0 goto label1;
+
+        return;
+
+     label4:
+        $r1 := @caughtexception;
+
+        goto label1;
+
+        catch java.lang.InterruptedException from label2 to label3 with label4;
+    }
+}

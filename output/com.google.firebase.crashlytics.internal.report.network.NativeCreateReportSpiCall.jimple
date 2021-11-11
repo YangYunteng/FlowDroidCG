@@ -1,0 +1,389 @@
+public class com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall extends com.google.firebase.crashlytics.internal.common.AbstractSpiCall implements com.google.firebase.crashlytics.internal.report.network.CreateReportSpiCall
+{
+    public static final java.lang.String APP_META_FILE_MULTIPART_PARAM;
+    public static final java.lang.String BINARY_IMAGES_FILE_MULTIPART_PARAM;
+    public static final java.lang.String DEVICE_META_FILE_MULTIPART_PARAM;
+    public static final java.lang.String GZIP_FILE_CONTENT_TYPE;
+    public static final java.lang.String KEYS_FILE_MULTIPART_PARAM;
+    public static final java.lang.String LOGS_FILE_MULTIPART_PARAM;
+    public static final java.lang.String METADATA_FILE_MULTIPART_PARAM;
+    public static final java.lang.String MINIDUMP_FILE_MULTIPART_PARAM;
+    public static final java.lang.String ORGANIZATION_IDENTIFIER_PARAM;
+    public static final java.lang.String OS_META_FILE_MULTIPART_PARAM;
+    public static final java.lang.String REPORT_IDENTIFIER_PARAM;
+    public static final java.lang.String SESSION_META_FILE_MULTIPART_PARAM;
+    public static final java.lang.String USER_META_FILE_MULTIPART_PARAM;
+    public final java.lang.String version;
+
+    public void <init>(java.lang.String, java.lang.String, com.google.firebase.crashlytics.internal.network.HttpRequestFactory, java.lang.String)
+    {
+        com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall r0;
+        com.google.firebase.crashlytics.internal.network.HttpRequestFactory $r3;
+        com.google.firebase.crashlytics.internal.network.HttpMethod $r5;
+        java.lang.String $r1, $r2, $r4;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: com.google.firebase.crashlytics.internal.network.HttpRequestFactory;
+
+        $r4 := @parameter3: java.lang.String;
+
+        $r5 = <com.google.firebase.crashlytics.internal.network.HttpMethod: com.google.firebase.crashlytics.internal.network.HttpMethod POST>;
+
+        specialinvoke r0.<com.google.firebase.crashlytics.internal.common.AbstractSpiCall: void <init>(java.lang.String,java.lang.String,com.google.firebase.crashlytics.internal.network.HttpRequestFactory,com.google.firebase.crashlytics.internal.network.HttpMethod)>($r1, $r2, $r3, $r5);
+
+        r0.<com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: java.lang.String version> = $r4;
+
+        return;
+    }
+
+    private com.google.firebase.crashlytics.internal.network.HttpRequest applyHeadersTo(com.google.firebase.crashlytics.internal.network.HttpRequest, java.lang.String)
+    {
+        com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall r0;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r2, $r4;
+        com.google.firebase.crashlytics.internal.network.HttpRequest $r1, $r5;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall;
+
+        $r1 := @parameter0: com.google.firebase.crashlytics.internal.network.HttpRequest;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Crashlytics Android SDK/");
+
+        $r4 = staticinvoke <com.google.firebase.crashlytics.internal.common.CrashlyticsCore: java.lang.String getVersion()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r5 = virtualinvoke $r1.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpRequest header(java.lang.String,java.lang.String)>("User-Agent", $r4);
+
+        $r5 = virtualinvoke $r5.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpRequest header(java.lang.String,java.lang.String)>("X-CRASHLYTICS-API-CLIENT-TYPE", "android");
+
+        $r4 = r0.<com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: java.lang.String version>;
+
+        $r5 = virtualinvoke $r5.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpRequest header(java.lang.String,java.lang.String)>("X-CRASHLYTICS-API-CLIENT-VERSION", $r4);
+
+        virtualinvoke $r5.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpRequest header(java.lang.String,java.lang.String)>("X-CRASHLYTICS-GOOGLE-APP-ID", $r2);
+
+        return $r1;
+    }
+
+    private com.google.firebase.crashlytics.internal.network.HttpRequest applyMultipartDataTo(com.google.firebase.crashlytics.internal.network.HttpRequest, java.lang.String, com.google.firebase.crashlytics.internal.report.model.Report)
+    {
+        com.google.firebase.crashlytics.internal.network.HttpRequest $r1;
+        java.io.File $r2;
+        com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall r0;
+        com.google.firebase.crashlytics.internal.report.model.Report $r4;
+        int $i0, $i1;
+        java.lang.String $r3;
+        java.io.File[] $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall;
+
+        $r1 := @parameter0: com.google.firebase.crashlytics.internal.network.HttpRequest;
+
+        $r3 := @parameter1: java.lang.String;
+
+        $r4 := @parameter2: com.google.firebase.crashlytics.internal.report.model.Report;
+
+        if $r3 == null goto label01;
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpRequest part(java.lang.String,java.lang.String)>("org_id", $r3);
+
+     label01:
+        $r3 = interfaceinvoke $r4.<com.google.firebase.crashlytics.internal.report.model.Report: java.lang.String getIdentifier()>();
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpRequest part(java.lang.String,java.lang.String)>("report_id", $r3);
+
+        $r5 = interfaceinvoke $r4.<com.google.firebase.crashlytics.internal.report.model.Report: java.io.File[] getFiles()>();
+
+        $i0 = lengthof $r5;
+
+        $i1 = 0;
+
+     label02:
+        if $i1 >= $i0 goto label13;
+
+        $r2 = $r5[$i1];
+
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("minidump");
+
+        if $z0 == 0 goto label03;
+
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpRequest part(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("minidump_file", $r3, "application/octet-stream", $r2);
+
+        goto label12;
+
+     label03:
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("metadata");
+
+        if $z0 == 0 goto label04;
+
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpRequest part(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("crash_meta_file", $r3, "application/octet-stream", $r2);
+
+        goto label12;
+
+     label04:
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("binaryImages");
+
+        if $z0 == 0 goto label05;
+
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpRequest part(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("binary_images_file", $r3, "application/octet-stream", $r2);
+
+        goto label12;
+
+     label05:
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("session");
+
+        if $z0 == 0 goto label06;
+
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpRequest part(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("session_meta_file", $r3, "application/octet-stream", $r2);
+
+        goto label12;
+
+     label06:
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("app");
+
+        if $z0 == 0 goto label07;
+
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpRequest part(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("app_meta_file", $r3, "application/octet-stream", $r2);
+
+        goto label12;
+
+     label07:
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("device");
+
+        if $z0 == 0 goto label08;
+
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpRequest part(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("device_meta_file", $r3, "application/octet-stream", $r2);
+
+        goto label12;
+
+     label08:
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("os");
+
+        if $z0 == 0 goto label09;
+
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpRequest part(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("os_meta_file", $r3, "application/octet-stream", $r2);
+
+        goto label12;
+
+     label09:
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("user");
+
+        if $z0 == 0 goto label10;
+
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpRequest part(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("user_meta_file", $r3, "application/octet-stream", $r2);
+
+        goto label12;
+
+     label10:
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("logs");
+
+        if $z0 == 0 goto label11;
+
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpRequest part(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("logs_file", $r3, "application/octet-stream", $r2);
+
+        goto label12;
+
+     label11:
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("keys");
+
+        if $z0 == 0 goto label12;
+
+        $r3 = virtualinvoke $r2.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpRequest part(java.lang.String,java.lang.String,java.lang.String,java.io.File)>("keys_file", $r3, "application/octet-stream", $r2);
+
+     label12:
+        $i1 = $i1 + 1;
+
+        goto label02;
+
+     label13:
+        return $r1;
+    }
+
+    public boolean invoke(com.google.firebase.crashlytics.internal.report.model.CreateReportRequest, boolean)
+    {
+        java.io.IOException $r8;
+        java.lang.RuntimeException $r9;
+        com.google.firebase.crashlytics.internal.network.HttpRequest $r2;
+        com.google.firebase.crashlytics.internal.Logger $r5;
+        com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall r0;
+        com.google.firebase.crashlytics.internal.report.model.Report $r4;
+        com.google.firebase.crashlytics.internal.network.HttpResponse $r7;
+        int $i0;
+        java.lang.StringBuilder $r6;
+        java.lang.String $r3;
+        com.google.firebase.crashlytics.internal.report.model.CreateReportRequest $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall;
+
+        $r1 := @parameter0: com.google.firebase.crashlytics.internal.report.model.CreateReportRequest;
+
+        $z0 := @parameter1: boolean;
+
+        if $z0 == 0 goto label7;
+
+        $r2 = virtualinvoke r0.<com.google.firebase.crashlytics.internal.common.AbstractSpiCall: com.google.firebase.crashlytics.internal.network.HttpRequest getHttpRequest()>();
+
+        $r3 = $r1.<com.google.firebase.crashlytics.internal.report.model.CreateReportRequest: java.lang.String googleAppId>;
+
+        specialinvoke r0.<com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: com.google.firebase.crashlytics.internal.network.HttpRequest applyHeadersTo(com.google.firebase.crashlytics.internal.network.HttpRequest,java.lang.String)>($r2, $r3);
+
+        $r3 = $r1.<com.google.firebase.crashlytics.internal.report.model.CreateReportRequest: java.lang.String organizationId>;
+
+        $r4 = $r1.<com.google.firebase.crashlytics.internal.report.model.CreateReportRequest: com.google.firebase.crashlytics.internal.report.model.Report report>;
+
+        specialinvoke r0.<com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: com.google.firebase.crashlytics.internal.network.HttpRequest applyMultipartDataTo(com.google.firebase.crashlytics.internal.network.HttpRequest,java.lang.String,com.google.firebase.crashlytics.internal.report.model.Report)>($r2, $r3, $r4);
+
+        $r5 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Sending report to: ");
+
+        $r3 = virtualinvoke r0.<com.google.firebase.crashlytics.internal.common.AbstractSpiCall: java.lang.String getUrl()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r5.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>($r3);
+
+     label1:
+        $r7 = virtualinvoke $r2.<com.google.firebase.crashlytics.internal.network.HttpRequest: com.google.firebase.crashlytics.internal.network.HttpResponse execute()>();
+
+        $i0 = virtualinvoke $r7.<com.google.firebase.crashlytics.internal.network.HttpResponse: int code()>();
+
+        $r5 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+     label2:
+        $r6 = new java.lang.StringBuilder;
+
+     label3:
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Result was: ");
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r3 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r5.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>($r3);
+
+        $i0 = staticinvoke <com.google.firebase.crashlytics.internal.common.ResponseParser: int parse(int)>($i0);
+
+     label4:
+        if $i0 != 0 goto label5;
+
+        return 1;
+
+     label5:
+        return 0;
+
+     label6:
+        $r8 := @caughtexception;
+
+        $r9 = new java.lang.RuntimeException;
+
+        specialinvoke $r9.<java.lang.RuntimeException: void <init>(java.lang.Throwable)>($r8);
+
+        throw $r9;
+
+     label7:
+        $r9 = new java.lang.RuntimeException;
+
+        specialinvoke $r9.<java.lang.RuntimeException: void <init>(java.lang.String)>("An invalid data collection token was used.");
+
+        throw $r9;
+
+        catch java.io.IOException from label1 to label2 with label6;
+        catch java.io.IOException from label3 to label4 with label6;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: java.lang.String USER_META_FILE_MULTIPART_PARAM> = "user_meta_file";
+
+        <com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: java.lang.String SESSION_META_FILE_MULTIPART_PARAM> = "session_meta_file";
+
+        <com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: java.lang.String REPORT_IDENTIFIER_PARAM> = "report_id";
+
+        <com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: java.lang.String OS_META_FILE_MULTIPART_PARAM> = "os_meta_file";
+
+        <com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: java.lang.String ORGANIZATION_IDENTIFIER_PARAM> = "org_id";
+
+        <com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: java.lang.String MINIDUMP_FILE_MULTIPART_PARAM> = "minidump_file";
+
+        <com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: java.lang.String METADATA_FILE_MULTIPART_PARAM> = "crash_meta_file";
+
+        <com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: java.lang.String LOGS_FILE_MULTIPART_PARAM> = "logs_file";
+
+        <com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: java.lang.String KEYS_FILE_MULTIPART_PARAM> = "keys_file";
+
+        <com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: java.lang.String GZIP_FILE_CONTENT_TYPE> = "application/octet-stream";
+
+        <com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: java.lang.String DEVICE_META_FILE_MULTIPART_PARAM> = "device_meta_file";
+
+        <com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: java.lang.String BINARY_IMAGES_FILE_MULTIPART_PARAM> = "binary_images_file";
+
+        <com.google.firebase.crashlytics.internal.report.network.NativeCreateReportSpiCall: java.lang.String APP_META_FILE_MULTIPART_PARAM> = "app_meta_file";
+
+        return;
+    }
+}

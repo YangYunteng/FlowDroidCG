@@ -1,0 +1,96 @@
+public class project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter extends project.android.imageprocessing.filter.MultiPixelRenderer
+{
+    public static final java.lang.String UNIFORM_LOWER_THRESHOLD;
+    public static final java.lang.String UNIFORM_UPPER_THRESHOLD;
+    public float lowerThreshold;
+    public int lowerThresholdHandle;
+    public float upperThreshold;
+    public int upperThresholdHandle;
+
+    public void <init>(float, float)
+    {
+        float $f0, $f1;
+        project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter;
+
+        $f0 := @parameter0: float;
+
+        $f1 := @parameter1: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiPixelRenderer: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter: float upperThreshold> = $f0;
+
+        r0.<project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter: float lowerThreshold> = $f1;
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform float u_TexelWidth;\nuniform float u_TexelHeight;\nuniform float u_UpperThreshold;\nuniform float u_LowerThreshold;\nvoid main(){\n   vec3 currentGradientAndDirection = texture2D(u_Texture0,v_TexCoord).rgb;\n   vec2 gradientDirection = ((currentGradientAndDirection.gb * 2.0) - 1.0) * vec2(u_TexelWidth, u_TexelHeight);\n   float firstSampledGradientMagnitude = texture2D(u_Texture0,v_TexCoord + gradientDirection).r;\n   float secondSampledGradientMagnitude = texture2D(u_Texture0,v_TexCoord - gradientDirection).r;\n   float multiplier = step(firstSampledGradientMagnitude, currentGradientAndDirection.r);\n   multiplier = multiplier * step(secondSampledGradientMagnitude, currentGradientAndDirection.r);\n   float thresholdCompliance = smoothstep(u_LowerThreshold, u_UpperThreshold, currentGradientAndDirection.r);\n   multiplier = multiplier * thresholdCompliance;\n   gl_FragColor = vec4(vec3(multiplier), 1.0);\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiPixelRenderer: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_UpperThreshold");
+
+        r0.<project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter: int upperThresholdHandle> = $i0;
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_LowerThreshold");
+
+        r0.<project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter: int lowerThresholdHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        int $i0;
+        float $f0;
+        project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiPixelRenderer: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter: int upperThresholdHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter: float upperThreshold>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        $i0 = r0.<project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter: int lowerThresholdHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter: float lowerThreshold>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter: java.lang.String UNIFORM_UPPER_THRESHOLD> = "u_UpperThreshold";
+
+        <project.android.imageprocessing.filter.processing.DirectionalNonMaximumSuppressionFilter: java.lang.String UNIFORM_LOWER_THRESHOLD> = "u_LowerThreshold";
+
+        return;
+    }
+}

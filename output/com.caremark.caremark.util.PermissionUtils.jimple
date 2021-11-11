@@ -1,0 +1,428 @@
+public class com.caremark.caremark.util.PermissionUtils extends java.lang.Object
+{
+    public static final java.lang.String[] PERMISSIONS_LIST;
+    public static final java.lang.String[] PERMISSIONS_LOCATION;
+    public static final java.lang.String[] PERMISSIONS_STORAGE;
+    public static final int REQUEST_CALL_PHONE;
+    public static final int REQUEST_CAMERA;
+    public static final int REQUEST_CONTACTS;
+    public static final int REQUEST_LOCATION;
+    public static final int REQUEST_READ_EXTERNAL_STORAGE;
+    public static final int REQUEST_WRITE_EXTERNAL_STORAGE;
+    public static final java.lang.String TAG;
+
+    static void <clinit>()
+    {
+        java.lang.String[] $r0;
+
+        <com.caremark.caremark.util.PermissionUtils: java.lang.String TAG> = "PermissionUtils";
+
+        <com.caremark.caremark.util.PermissionUtils: int REQUEST_WRITE_EXTERNAL_STORAGE> = 3;
+
+        <com.caremark.caremark.util.PermissionUtils: int REQUEST_READ_EXTERNAL_STORAGE> = 2;
+
+        <com.caremark.caremark.util.PermissionUtils: int REQUEST_LOCATION> = 5;
+
+        <com.caremark.caremark.util.PermissionUtils: int REQUEST_CONTACTS> = 1;
+
+        <com.caremark.caremark.util.PermissionUtils: int REQUEST_CAMERA> = 0;
+
+        <com.caremark.caremark.util.PermissionUtils: int REQUEST_CALL_PHONE> = 4;
+
+        $r0 = newarray (java.lang.String)[2];
+
+        $r0[0] = "android.permission.ACCESS_COARSE_LOCATION";
+
+        $r0[1] = "android.permission.ACCESS_FINE_LOCATION";
+
+        <com.caremark.caremark.util.PermissionUtils: java.lang.String[] PERMISSIONS_LOCATION> = $r0;
+
+        $r0 = newarray (java.lang.String)[2];
+
+        $r0[0] = "android.permission.READ_EXTERNAL_STORAGE";
+
+        $r0[1] = "android.permission.WRITE_EXTERNAL_STORAGE";
+
+        <com.caremark.caremark.util.PermissionUtils: java.lang.String[] PERMISSIONS_STORAGE> = $r0;
+
+        $r0 = newarray (java.lang.String)[6];
+
+        $r0[0] = "android.permission.ACCESS_FINE_LOCATION";
+
+        $r0[1] = "android.permission.ACCESS_COARSE_LOCATION";
+
+        $r0[2] = "android.permission.WRITE_EXTERNAL_STORAGE";
+
+        $r0[3] = "android.permission.READ_EXTERNAL_STORAGE";
+
+        $r0[4] = "android.permission.CAMERA";
+
+        $r0[5] = "android.permission.CALL_PHONE";
+
+        <com.caremark.caremark.util.PermissionUtils: java.lang.String[] PERMISSIONS_LIST> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.caremark.caremark.util.PermissionUtils r0;
+
+        r0 := @this: com.caremark.caremark.util.PermissionUtils;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static boolean didUserSelectNeverShow(android.app.Activity, java.lang.String)
+    {
+        int $i0;
+        java.lang.String $r0;
+        android.app.Activity $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 < 23 goto label1;
+
+        $z0 = virtualinvoke $r1.<android.app.Activity: boolean shouldShowRequestPermissionRationale(java.lang.String)>($r0);
+
+        if $z0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static transient boolean hasAllPermissions(android.content.Context, java.lang.String[])
+    {
+        android.content.Context $r1;
+        int $i0, $i1, $i2;
+        java.lang.String[] $r0;
+        java.lang.String $r2;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r0 := @parameter1: java.lang.String[];
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 < 23 goto label3;
+
+        if $r1 == null goto label3;
+
+        if $r0 == null goto label3;
+
+        $i1 = lengthof $r0;
+
+        $i2 = 0;
+
+     label1:
+        if $i2 >= $i1 goto label3;
+
+        $r2 = $r0[$i2];
+
+        $i0 = staticinvoke <b.i.b.a: int a(android.content.Context,java.lang.String)>($r1, $r2);
+
+        if $i0 == 0 goto label2;
+
+        return 0;
+
+     label2:
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label3:
+        return 1;
+    }
+
+    public static boolean hasPermission(android.content.Context, java.lang.String)
+    {
+        android.content.Context $r1;
+        android.content.pm.PackageManager $r2;
+        android.content.pm.PackageManager$NameNotFoundException $r6;
+        android.content.pm.PackageInfo $r4;
+        int $i0;
+        java.lang.String $r0, $r3;
+        android.content.pm.ApplicationInfo $r5;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 < 23 goto label8;
+
+     label1:
+        $r2 = virtualinvoke $r1.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+        $r3 = virtualinvoke $r1.<android.content.Context: java.lang.String getPackageName()>();
+
+        $r4 = virtualinvoke $r2.<android.content.pm.PackageManager: android.content.pm.PackageInfo getPackageInfo(java.lang.String,int)>($r3, 0);
+
+     label2:
+        $r5 = $r4.<android.content.pm.PackageInfo: android.content.pm.ApplicationInfo applicationInfo>;
+
+        $i0 = $r5.<android.content.pm.ApplicationInfo: int targetSdkVersion>;
+
+        goto label4;
+
+     label3:
+        $r6 := @caughtexception;
+
+        virtualinvoke $r6.<android.content.pm.PackageManager$NameNotFoundException: void printStackTrace()>();
+
+        $i0 = 0;
+
+     label4:
+        if $i0 < 23 goto label6;
+
+        $i0 = staticinvoke <b.i.b.a: int a(android.content.Context,java.lang.String)>($r1, $r0);
+
+        if $i0 != 0 goto label5;
+
+        return 1;
+
+     label5:
+        return 0;
+
+     label6:
+        $i0 = staticinvoke <b.i.b.b: int b(android.content.Context,java.lang.String)>($r1, $r0);
+
+        if $i0 != 0 goto label7;
+
+        return 1;
+
+     label7:
+        return 0;
+
+     label8:
+        $i0 = virtualinvoke $r1.<android.content.Context: int checkCallingOrSelfPermission(java.lang.String)>($r0);
+
+        if $i0 != 0 goto label9;
+
+        return 1;
+
+     label9:
+        return 0;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label1 to label2 with label3;
+    }
+
+    public static boolean hasPermissionRevoked(android.content.Context)
+    {
+        android.content.SharedPreferences$Editor $r8;
+        android.content.Context $r1;
+        java.lang.String[] $r3;
+        android.content.SharedPreferences $r7;
+        int $i0, $i1;
+        java.lang.StringBuilder $r5;
+        java.lang.String $r0, $r4, $r6;
+        c.c.a.d.i $r2;
+        boolean $z0, $z1;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $r3 = <com.caremark.caremark.util.PermissionUtils: java.lang.String[] PERMISSIONS_LIST>;
+
+        $i0 = lengthof $r3;
+
+        $i1 = 0;
+
+        $z0 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label3;
+
+        $r0 = $r3[$i1];
+
+        $r4 = <com.caremark.caremark.util.PermissionUtils: java.lang.String TAG>;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = <com.caremark.caremark.util.PermissionUtils: java.lang.String TAG>;
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" : Permission Revoked ");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r0);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" Status :: ");
+
+        $z1 = staticinvoke <com.caremark.caremark.util.PermissionUtils: boolean hasPermission(android.content.Context,java.lang.String)>($r1, $r0);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>($z1);
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r4, $r6);
+
+        $r4 = <com.caremark.caremark.util.PermissionUtils: java.lang.String TAG>;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = <com.caremark.caremark.util.PermissionUtils: java.lang.String TAG>;
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" : Permission Revoked Local");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r0);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" Status :: ");
+
+        $z1 = virtualinvoke $r2.<c.c.a.d.i: boolean d(java.lang.String)>($r0);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>($z1);
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r4, $r6);
+
+        $z1 = staticinvoke <com.caremark.caremark.util.PermissionUtils: boolean hasPermission(android.content.Context,java.lang.String)>($r1, $r0);
+
+        if $z1 != 0 goto label2;
+
+        $z1 = virtualinvoke $r2.<c.c.a.d.i: boolean d(java.lang.String)>($r0);
+
+        if $z1 == 0 goto label2;
+
+        $r7 = virtualinvoke $r1.<android.content.Context: android.content.SharedPreferences getSharedPreferences(java.lang.String,int)>("caremark_prefs", 0);
+
+        $r8 = interfaceinvoke $r7.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        interfaceinvoke $r8.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putBoolean(java.lang.String,boolean)>($r0, 0);
+
+        interfaceinvoke $r8.<android.content.SharedPreferences$Editor: boolean commit()>();
+
+        $z0 = 1;
+
+     label2:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label3:
+        $r0 = <com.caremark.caremark.util.PermissionUtils: java.lang.String TAG>;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = <com.caremark.caremark.util.PermissionUtils: java.lang.String TAG>;
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" : Permission Revoked :: ");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>($z0);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" Status :: ");
+
+        $r4 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r0, $r4);
+
+        return $z0;
+    }
+
+    public static transient void requestAllPermission(android.app.Activity, int, java.lang.String[])
+    {
+        int $i0;
+        java.lang.String[] $r1;
+        java.lang.String $r2;
+        android.app.Activity $r0;
+
+        $r0 := @parameter0: android.app.Activity;
+
+        $i0 := @parameter1: int;
+
+        $r1 := @parameter2: java.lang.String[];
+
+        $r2 = <com.caremark.caremark.util.PermissionUtils: java.lang.String TAG>;
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>($r2, "permission has NOT been granted. Requesting permission.");
+
+        staticinvoke <b.i.a.b: void a(android.app.Activity,java.lang.String[],int)>($r0, $r1, $i0);
+
+        return;
+    }
+
+    public static void requestPermission(android.app.Activity, java.lang.String, int)
+    {
+        int $i0;
+        java.lang.String[] $r3;
+        java.lang.String $r1, $r2;
+        android.app.Activity $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: android.app.Activity;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $i0 := @parameter2: int;
+
+        $r2 = <com.caremark.caremark.util.PermissionUtils: java.lang.String TAG>;
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>($r2, "permission has NOT been granted. Requesting permission.");
+
+        $r2 = "android.permission.WRITE_EXTERNAL_STORAGE";
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        $r3 = <com.caremark.caremark.util.PermissionUtils: java.lang.String[] PERMISSIONS_STORAGE>;
+
+        goto label3;
+
+     label1:
+        $r2 = "android.permission.ACCESS_FINE_LOCATION";
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r1);
+
+        if $z0 == 0 goto label2;
+
+        $r3 = <com.caremark.caremark.util.PermissionUtils: java.lang.String[] PERMISSIONS_LOCATION>;
+
+        goto label3;
+
+     label2:
+        $r3 = newarray (java.lang.String)[1];
+
+        $r3[0] = $r1;
+
+     label3:
+        $z0 = staticinvoke <b.i.a.b: boolean a(android.app.Activity,java.lang.String)>($r0, $r1);
+
+        if $z0 == 0 goto label4;
+
+        $r1 = <com.caremark.caremark.util.PermissionUtils: java.lang.String TAG>;
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>($r1, "Displaying  permission rationale to provide additional context.");
+
+        staticinvoke <b.i.a.b: void a(android.app.Activity,java.lang.String[],int)>($r0, $r3, $i0);
+
+        return;
+
+     label4:
+        staticinvoke <b.i.a.b: void a(android.app.Activity,java.lang.String[],int)>($r0, $r3, $i0);
+
+        return;
+    }
+}

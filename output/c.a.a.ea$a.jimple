@@ -1,0 +1,162 @@
+public class c.a.a.ea$a extends com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient
+{
+
+    public void <init>(com.adobe.mobile.MessageFullScreen)
+    {
+        com.adobe.mobile.MessageFullScreen $r1;
+        c.a.a.ea$a r0;
+
+        r0 := @this: c.a.a.ea$a;
+
+        $r1 := @parameter0: com.adobe.mobile.MessageFullScreen;
+
+        specialinvoke r0.<com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient: void <init>(com.adobe.mobile.MessageFullScreen)>($r1);
+
+        return;
+    }
+
+    public boolean shouldOverrideUrlLoading(android.webkit.WebView, java.lang.String)
+    {
+        android.content.Context $r3;
+        java.lang.Object[] $r7;
+        android.net.Uri $r9;
+        c.a.a._a $r5;
+        android.content.Intent $r8;
+        android.widget.Toast $r4;
+        int $i0, $i1, $i2;
+        java.lang.String $r2;
+        android.webkit.WebView $r1;
+        boolean $z0;
+        java.lang.Exception $r12;
+        com.adobe.mobile.MessageFullScreen $r10;
+        java.io.UnsupportedEncodingException $r6;
+        android.app.Activity $r11;
+        c.a.a.ea$a r0;
+
+        r0 := @this: c.a.a.ea$a;
+
+        $r1 := @parameter0: android.webkit.WebView;
+
+        $r2 := @parameter1: java.lang.String;
+
+        specialinvoke r0.<com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient: boolean shouldOverrideUrlLoading(android.webkit.WebView,java.lang.String)>($r1, $r2);
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean startsWith(java.lang.String)>("adbinapp");
+
+        if $z0 != 0 goto label01;
+
+        $r3 = virtualinvoke $r1.<android.webkit.WebView: android.content.Context getContext()>();
+
+        $r4 = staticinvoke <android.widget.Toast: android.widget.Toast makeText(android.content.Context,java.lang.CharSequence,int)>($r3, "Error while reading the response from the Experience UI! (Response mal-formed)", 0);
+
+        virtualinvoke $r4.<android.widget.Toast: void show()>();
+
+        virtualinvoke r0.<com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient: void dismissMessage(android.webkit.WebView)>($r1);
+
+        goto label11;
+
+     label01:
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean contains(java.lang.CharSequence)>("confirm");
+
+        if $z0 == 0 goto label10;
+
+        $i0 = virtualinvoke $r2.<java.lang.String: int indexOf(java.lang.String)>("at_preview_params=");
+
+        if $i0 < 0 goto label06;
+
+        $i1 = virtualinvoke $r2.<java.lang.String: int indexOf(int,int)>(38, $i0);
+
+        $i2 = $i1;
+
+        if $i1 >= 0 goto label02;
+
+        $i2 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+     label02:
+        $i0 = $i0 + 18;
+
+        $r2 = virtualinvoke $r2.<java.lang.String: java.lang.String substring(int,int)>($i0, $i2);
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean isEmpty()>();
+
+        if $z0 != 0 goto label06;
+
+     label03:
+        $r5 = staticinvoke <c.a.a._a: c.a.a._a d()>();
+
+        $r2 = staticinvoke <java.net.URLDecoder: java.lang.String decode(java.lang.String,java.lang.String)>($r2, "UTF-8");
+
+        virtualinvoke $r5.<c.a.a._a: void a(java.lang.String)>($r2);
+
+     label04:
+        goto label06;
+
+     label05:
+        $r6 := @caughtexception;
+
+        $r7 = newarray (java.lang.Object)[1];
+
+        $r7[0] = $r6;
+
+        staticinvoke <com.adobe.mobile.StaticMethods: void a(java.lang.String,java.lang.Object[])>("Could not decode the Target Preview parameters (%s)", $r7);
+
+     label06:
+        $r5 = staticinvoke <c.a.a._a: c.a.a._a d()>();
+
+        $r2 = virtualinvoke $r5.<c.a.a._a: java.lang.String h()>();
+
+        if $r2 == null goto label11;
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean isEmpty()>();
+
+        if $z0 != 0 goto label11;
+
+        $r8 = new android.content.Intent;
+
+     label07:
+        specialinvoke $r8.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.VIEW");
+
+        $r9 = staticinvoke <android.net.Uri: android.net.Uri parse(java.lang.String)>($r2);
+
+        virtualinvoke $r8.<android.content.Intent: android.content.Intent setData(android.net.Uri)>($r9);
+
+        $r10 = r0.<com.adobe.mobile.MessageFullScreen$MessageFullScreenWebViewClient: com.adobe.mobile.MessageFullScreen message>;
+
+        $r11 = $r10.<com.adobe.mobile.MessageFullScreen: android.app.Activity s>;
+
+        virtualinvoke $r11.<android.app.Activity: void startActivity(android.content.Intent)>($r8);
+
+     label08:
+        goto label11;
+
+     label09:
+        $r12 := @caughtexception;
+
+        $r7 = newarray (java.lang.Object)[1];
+
+        $r2 = virtualinvoke $r12.<java.lang.Exception: java.lang.String getMessage()>();
+
+        $r7[0] = $r2;
+
+        staticinvoke <com.adobe.mobile.StaticMethods: void a(java.lang.String,java.lang.Object[])>("Messages - unable to launch restart deeplink intent from Target Preview message (%s)", $r7);
+
+        goto label11;
+
+     label10:
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean contains(java.lang.CharSequence)>("cancel");
+
+        if $z0 == 0 goto label11;
+
+        $r5 = staticinvoke <c.a.a._a: c.a.a._a d()>();
+
+        virtualinvoke $r5.<c.a.a._a: void b()>();
+
+     label11:
+        staticinvoke <c.a.a.la: void a(c.a.a.I)>(null);
+
+        return 1;
+
+        catch java.io.UnsupportedEncodingException from label03 to label04 with label05;
+        catch java.lang.Exception from label07 to label08 with label09;
+    }
+}

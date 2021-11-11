@@ -1,0 +1,858 @@
+public abstract class org.apache.james.mime4j.parser.AbstractEntity extends java.lang.Object implements org.apache.james.mime4j.parser.EntityStateMachine
+{
+    public static final int T_IN_BODYPART;
+    public static final int T_IN_MESSAGE;
+    public static final java.util.BitSet fieldChars;
+    public final org.apache.james.mime4j.descriptor.MutableBodyDescriptor body;
+    public final org.apache.james.mime4j.parser.MimeEntityConfig config;
+    public boolean endOfHeader;
+    public final int endState;
+    public org.apache.james.mime4j.parser.Field field;
+    public int headerCount;
+    public int lineCount;
+    public final org.apache.james.mime4j.util.ByteArrayBuffer linebuf;
+    public final org.apache.commons.logging.Log log;
+    public final org.apache.james.mime4j.descriptor.BodyDescriptor parent;
+    public final int startState;
+    public int state;
+
+    static void <clinit>()
+    {
+        int $i0;
+        java.util.BitSet $r0;
+
+        <org.apache.james.mime4j.parser.AbstractEntity: int T_IN_MESSAGE> = -3;
+
+        <org.apache.james.mime4j.parser.AbstractEntity: int T_IN_BODYPART> = -2;
+
+        $r0 = new java.util.BitSet;
+
+        specialinvoke $r0.<java.util.BitSet: void <init>()>();
+
+        <org.apache.james.mime4j.parser.AbstractEntity: java.util.BitSet fieldChars> = $r0;
+
+        $i0 = 33;
+
+     label1:
+        if $i0 > 57 goto label2;
+
+        $r0 = <org.apache.james.mime4j.parser.AbstractEntity: java.util.BitSet fieldChars>;
+
+        virtualinvoke $r0.<java.util.BitSet: void set(int)>($i0);
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label2:
+        $i0 = 59;
+
+     label3:
+        if $i0 > 126 goto label4;
+
+        $r0 = <org.apache.james.mime4j.parser.AbstractEntity: java.util.BitSet fieldChars>;
+
+        virtualinvoke $r0.<java.util.BitSet: void set(int)>($i0);
+
+        $i0 = $i0 + 1;
+
+        goto label3;
+
+     label4:
+        return;
+    }
+
+    public void <init>(org.apache.james.mime4j.descriptor.BodyDescriptor, int, int, org.apache.james.mime4j.parser.MimeEntityConfig)
+    {
+        org.apache.james.mime4j.parser.AbstractEntity r0;
+        org.apache.james.mime4j.descriptor.MutableBodyDescriptor $r5;
+        org.apache.james.mime4j.descriptor.BodyDescriptor $r2;
+        int $i0, $i1;
+        org.apache.james.mime4j.parser.MimeEntityConfig $r1;
+        java.lang.Class $r3;
+        org.apache.commons.logging.Log $r4;
+        org.apache.james.mime4j.util.ByteArrayBuffer $r6;
+
+        r0 := @this: org.apache.james.mime4j.parser.AbstractEntity;
+
+        $r2 := @parameter0: org.apache.james.mime4j.descriptor.BodyDescriptor;
+
+        $i1 := @parameter1: int;
+
+        $i0 := @parameter2: int;
+
+        $r1 := @parameter3: org.apache.james.mime4j.parser.MimeEntityConfig;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r3 = virtualinvoke r0.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r4 = staticinvoke <org.apache.commons.logging.LogFactory: org.apache.commons.logging.Log getLog(java.lang.Class)>($r3);
+
+        r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.commons.logging.Log log> = $r4;
+
+        r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.descriptor.BodyDescriptor parent> = $r2;
+
+        r0.<org.apache.james.mime4j.parser.AbstractEntity: int state> = $i1;
+
+        r0.<org.apache.james.mime4j.parser.AbstractEntity: int startState> = $i1;
+
+        r0.<org.apache.james.mime4j.parser.AbstractEntity: int endState> = $i0;
+
+        r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.parser.MimeEntityConfig config> = $r1;
+
+        $r5 = virtualinvoke r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.descriptor.MutableBodyDescriptor newBodyDescriptor(org.apache.james.mime4j.descriptor.BodyDescriptor)>($r2);
+
+        r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.descriptor.MutableBodyDescriptor body> = $r5;
+
+        $r6 = new org.apache.james.mime4j.util.ByteArrayBuffer;
+
+        specialinvoke $r6.<org.apache.james.mime4j.util.ByteArrayBuffer: void <init>(int)>(64);
+
+        r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.util.ByteArrayBuffer linebuf> = $r6;
+
+        r0.<org.apache.james.mime4j.parser.AbstractEntity: int lineCount> = 0;
+
+        r0.<org.apache.james.mime4j.parser.AbstractEntity: boolean endOfHeader> = 0;
+
+        r0.<org.apache.james.mime4j.parser.AbstractEntity: int headerCount> = 0;
+
+        return;
+    }
+
+    private org.apache.james.mime4j.util.ByteArrayBuffer fillFieldBuffer()
+    {
+        byte[] $r5;
+        java.lang.IllegalStateException $r8;
+        org.apache.james.mime4j.io.MaxLineLimitException $r7;
+        org.apache.james.mime4j.parser.AbstractEntity r0;
+        org.apache.james.mime4j.parser.Event $r6;
+        byte $b4;
+        int $i0, $i1, $i2, $i3;
+        org.apache.james.mime4j.parser.MimeEntityConfig $r2;
+        org.apache.james.mime4j.io.LineReaderInputStream $r3;
+        org.apache.james.mime4j.util.ByteArrayBuffer $r1, $r4;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.parser.AbstractEntity;
+
+        $z0 = r0.<org.apache.james.mime4j.parser.AbstractEntity: boolean endOfHeader>;
+
+        if $z0 != 0 goto label09;
+
+        $r2 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.parser.MimeEntityConfig config>;
+
+        $i0 = virtualinvoke $r2.<org.apache.james.mime4j.parser.MimeEntityConfig: int getMaxLineLen()>();
+
+        $r3 = virtualinvoke r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.io.LineReaderInputStream getDataStream()>();
+
+        $r4 = new org.apache.james.mime4j.util.ByteArrayBuffer;
+
+        $r1 = $r4;
+
+        specialinvoke $r4.<org.apache.james.mime4j.util.ByteArrayBuffer: void <init>(int)>(64);
+
+     label01:
+        $r4 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.util.ByteArrayBuffer linebuf>;
+
+        $i1 = virtualinvoke $r4.<org.apache.james.mime4j.util.ByteArrayBuffer: int length()>();
+
+        if $i0 <= 0 goto label03;
+
+        $i2 = virtualinvoke $r1.<org.apache.james.mime4j.util.ByteArrayBuffer: int length()>();
+
+        $i2 = $i2 + $i1;
+
+        if $i2 >= $i0 goto label02;
+
+        goto label03;
+
+     label02:
+        $r7 = new org.apache.james.mime4j.io.MaxLineLimitException;
+
+        specialinvoke $r7.<org.apache.james.mime4j.io.MaxLineLimitException: void <init>(java.lang.String)>("Maximum line length limit exceeded");
+
+        throw $r7;
+
+     label03:
+        if $i1 <= 0 goto label04;
+
+        $r4 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.util.ByteArrayBuffer linebuf>;
+
+        $r5 = virtualinvoke $r4.<org.apache.james.mime4j.util.ByteArrayBuffer: byte[] buffer()>();
+
+        virtualinvoke $r1.<org.apache.james.mime4j.util.ByteArrayBuffer: void append(byte[],int,int)>($r5, 0, $i1);
+
+     label04:
+        $r4 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.util.ByteArrayBuffer linebuf>;
+
+        virtualinvoke $r4.<org.apache.james.mime4j.util.ByteArrayBuffer: void clear()>();
+
+        $r4 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.util.ByteArrayBuffer linebuf>;
+
+        $i1 = virtualinvoke $r3.<org.apache.james.mime4j.io.LineReaderInputStream: int readLine(org.apache.james.mime4j.util.ByteArrayBuffer)>($r4);
+
+        $i2 = -1;
+
+        if $i1 != $i2 goto label05;
+
+        $r6 = <org.apache.james.mime4j.parser.Event: org.apache.james.mime4j.parser.Event HEADERS_PREMATURE_END>;
+
+        virtualinvoke r0.<org.apache.james.mime4j.parser.AbstractEntity: void monitor(org.apache.james.mime4j.parser.Event)>($r6);
+
+        r0.<org.apache.james.mime4j.parser.AbstractEntity: boolean endOfHeader> = 1;
+
+        return $r1;
+
+     label05:
+        $r4 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.util.ByteArrayBuffer linebuf>;
+
+        $i2 = virtualinvoke $r4.<org.apache.james.mime4j.util.ByteArrayBuffer: int length()>();
+
+        $i1 = $i2;
+
+        if $i2 <= 0 goto label06;
+
+        $r4 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.util.ByteArrayBuffer linebuf>;
+
+        $i3 = -1;
+
+        $i3 = $i2 + $i3;
+
+        $b4 = virtualinvoke $r4.<org.apache.james.mime4j.util.ByteArrayBuffer: byte byteAt(int)>($i3);
+
+        $i3 = (int) $b4;
+
+        if $i3 != 10 goto label06;
+
+        $i1 = -1;
+
+        $i1 = $i2 + $i1;
+
+     label06:
+        if $i1 <= 0 goto label07;
+
+        $r4 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.util.ByteArrayBuffer linebuf>;
+
+        $i2 = -1;
+
+        $i2 = $i1 + $i2;
+
+        $b4 = virtualinvoke $r4.<org.apache.james.mime4j.util.ByteArrayBuffer: byte byteAt(int)>($i2);
+
+        $i2 = (int) $b4;
+
+        if $i2 != 13 goto label07;
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label07:
+        if $i1 != 0 goto label08;
+
+        r0.<org.apache.james.mime4j.parser.AbstractEntity: boolean endOfHeader> = 1;
+
+        return $r1;
+
+     label08:
+        $i1 = r0.<org.apache.james.mime4j.parser.AbstractEntity: int lineCount>;
+
+        $i1 = $i1 + 1;
+
+        r0.<org.apache.james.mime4j.parser.AbstractEntity: int lineCount> = $i1;
+
+        $i1 = r0.<org.apache.james.mime4j.parser.AbstractEntity: int lineCount>;
+
+        if $i1 <= 1 goto label01;
+
+        $r4 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.util.ByteArrayBuffer linebuf>;
+
+        $b4 = virtualinvoke $r4.<org.apache.james.mime4j.util.ByteArrayBuffer: byte byteAt(int)>(0);
+
+        $i1 = (int) $b4;
+
+        if $i1 == 32 goto label01;
+
+        $i1 = (int) $b4;
+
+        if $i1 == 9 goto label01;
+
+        return $r1;
+
+     label09:
+        $r8 = new java.lang.IllegalStateException;
+
+        specialinvoke $r8.<java.lang.IllegalStateException: void <init>()>();
+
+        goto label10;
+
+     label10:
+        throw $r8;
+    }
+
+    public static final java.lang.String stateToString(int)
+    {
+        int $i0;
+
+        $i0 := @parameter0: int;
+
+        lookupswitch($i0)
+        {
+            case -3: goto label17;
+            case -2: goto label16;
+            case -1: goto label15;
+            case 0: goto label14;
+            case 1: goto label13;
+            case 2: goto label12;
+            case 3: goto label11;
+            case 4: goto label10;
+            case 5: goto label09;
+            case 6: goto label08;
+            case 7: goto label07;
+            case 8: goto label06;
+            case 9: goto label05;
+            case 10: goto label04;
+            case 11: goto label03;
+            case 12: goto label02;
+            default: goto label01;
+        };
+
+     label01:
+        return "Unknown";
+
+     label02:
+        return "Body";
+
+     label03:
+        return "End bodypart";
+
+     label04:
+        return "Start bodypart";
+
+     label05:
+        return "Epilogue";
+
+     label06:
+        return "Preamble";
+
+     label07:
+        return "End multipart";
+
+     label08:
+        return "Start multipart";
+
+     label09:
+        return "End header";
+
+     label10:
+        return "Field";
+
+     label11:
+        return "Start header";
+
+     label12:
+        return "Raw entity";
+
+     label13:
+        return "End message";
+
+     label14:
+        return "Start message";
+
+     label15:
+        return "End of stream";
+
+     label16:
+        return "Bodypart";
+
+     label17:
+        return "In message";
+    }
+
+    public void debug(org.apache.james.mime4j.parser.Event)
+    {
+        org.apache.james.mime4j.parser.AbstractEntity r0;
+        org.apache.james.mime4j.parser.Event $r1;
+        org.apache.commons.logging.Log $r2;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.parser.AbstractEntity;
+
+        $r1 := @parameter0: org.apache.james.mime4j.parser.Event;
+
+        $r2 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.commons.logging.Log log>;
+
+        $z0 = interfaceinvoke $r2.<org.apache.commons.logging.Log: boolean isDebugEnabled()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.commons.logging.Log log>;
+
+        $r3 = virtualinvoke r0.<org.apache.james.mime4j.parser.AbstractEntity: java.lang.String message(org.apache.james.mime4j.parser.Event)>($r1);
+
+        interfaceinvoke $r2.<org.apache.commons.logging.Log: void debug(java.lang.Object)>($r3);
+
+     label1:
+        return;
+    }
+
+    public org.apache.james.mime4j.descriptor.BodyDescriptor getBodyDescriptor()
+    {
+        java.lang.IllegalStateException $r5;
+        org.apache.james.mime4j.parser.AbstractEntity r0;
+        org.apache.james.mime4j.descriptor.MutableBodyDescriptor r3;
+        int $i0, $i1;
+        java.lang.StringBuilder $r1, $r4;
+        java.lang.String $r2;
+
+        r0 := @this: org.apache.james.mime4j.parser.AbstractEntity;
+
+        $i0 = virtualinvoke r0.<org.apache.james.mime4j.parser.AbstractEntity: int getState()>();
+
+        $i1 = -1;
+
+        if $i0 == $i1 goto label2;
+
+        if $i0 == 6 goto label2;
+
+        if $i0 == 12 goto label2;
+
+        if $i0 == 8 goto label2;
+
+        if $i0 != 9 goto label1;
+
+        goto label2;
+
+     label1:
+        $r5 = new java.lang.IllegalStateException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        $r1 = $r4;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid state :");
+
+        $i0 = r0.<org.apache.james.mime4j.parser.AbstractEntity: int state>;
+
+        $r2 = staticinvoke <org.apache.james.mime4j.parser.AbstractEntity: java.lang.String stateToString(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r2);
+
+        throw $r5;
+
+     label2:
+        r3 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.descriptor.MutableBodyDescriptor body>;
+
+        return r3;
+    }
+
+    public abstract org.apache.james.mime4j.io.LineReaderInputStream getDataStream();
+
+    public org.apache.james.mime4j.parser.Field getField()
+    {
+        java.lang.IllegalStateException $r1;
+        org.apache.james.mime4j.parser.AbstractEntity r0;
+        int $i0;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r3;
+        org.apache.james.mime4j.parser.Field r4;
+
+        r0 := @this: org.apache.james.mime4j.parser.AbstractEntity;
+
+        $i0 = virtualinvoke r0.<org.apache.james.mime4j.parser.AbstractEntity: int getState()>();
+
+        if $i0 != 4 goto label1;
+
+        r4 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.parser.Field field>;
+
+        return r4;
+
+     label1:
+        $r1 = new java.lang.IllegalStateException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid state :");
+
+        $i0 = r0.<org.apache.james.mime4j.parser.AbstractEntity: int state>;
+
+        $r3 = staticinvoke <org.apache.james.mime4j.parser.AbstractEntity: java.lang.String stateToString(int)>($i0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r1.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r3);
+
+        throw $r1;
+    }
+
+    public abstract int getLineNumber();
+
+    public int getState()
+    {
+        int i0;
+        org.apache.james.mime4j.parser.AbstractEntity r0;
+
+        r0 := @this: org.apache.james.mime4j.parser.AbstractEntity;
+
+        i0 = r0.<org.apache.james.mime4j.parser.AbstractEntity: int state>;
+
+        return i0;
+    }
+
+    public java.lang.String message(org.apache.james.mime4j.parser.Event)
+    {
+        org.apache.james.mime4j.parser.AbstractEntity r0;
+        org.apache.james.mime4j.parser.Event $r2;
+        int $i0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r3;
+
+        r0 := @this: org.apache.james.mime4j.parser.AbstractEntity;
+
+        $r2 := @parameter0: org.apache.james.mime4j.parser.Event;
+
+        if $r2 != null goto label1;
+
+        $r3 = "Event is unexpectedly null.";
+
+        goto label2;
+
+     label1:
+        $r3 = virtualinvoke $r2.<org.apache.james.mime4j.parser.Event: java.lang.String toString()>();
+
+     label2:
+        $i0 = virtualinvoke r0.<org.apache.james.mime4j.parser.AbstractEntity: int getLineNumber()>();
+
+        if $i0 > 0 goto label3;
+
+        return $r3;
+
+     label3:
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Line ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r3;
+    }
+
+    public void monitor(org.apache.james.mime4j.parser.Event)
+    {
+        org.apache.james.mime4j.parser.AbstractEntity r0;
+        org.apache.james.mime4j.parser.Event $r1;
+        org.apache.james.mime4j.parser.MimeEntityConfig $r2;
+        boolean $z0;
+        org.apache.james.mime4j.parser.MimeParseEventException $r3;
+
+        r0 := @this: org.apache.james.mime4j.parser.AbstractEntity;
+
+        $r1 := @parameter0: org.apache.james.mime4j.parser.Event;
+
+        $r2 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.parser.MimeEntityConfig config>;
+
+        $z0 = virtualinvoke $r2.<org.apache.james.mime4j.parser.MimeEntityConfig: boolean isStrictParsing()>();
+
+        if $z0 != 0 goto label1;
+
+        virtualinvoke r0.<org.apache.james.mime4j.parser.AbstractEntity: void warn(org.apache.james.mime4j.parser.Event)>($r1);
+
+        return;
+
+     label1:
+        $r3 = new org.apache.james.mime4j.parser.MimeParseEventException;
+
+        specialinvoke $r3.<org.apache.james.mime4j.parser.MimeParseEventException: void <init>(org.apache.james.mime4j.parser.Event)>($r1);
+
+        throw $r3;
+    }
+
+    public org.apache.james.mime4j.descriptor.MutableBodyDescriptor newBodyDescriptor(org.apache.james.mime4j.descriptor.BodyDescriptor)
+    {
+        org.apache.james.mime4j.descriptor.DefaultBodyDescriptor $r4;
+        org.apache.james.mime4j.descriptor.MaximalBodyDescriptor $r3;
+        org.apache.james.mime4j.parser.AbstractEntity r0;
+        org.apache.james.mime4j.descriptor.BodyDescriptor $r1;
+        org.apache.james.mime4j.parser.MimeEntityConfig $r2;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.parser.AbstractEntity;
+
+        $r1 := @parameter0: org.apache.james.mime4j.descriptor.BodyDescriptor;
+
+        $r2 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.parser.MimeEntityConfig config>;
+
+        $z0 = virtualinvoke $r2.<org.apache.james.mime4j.parser.MimeEntityConfig: boolean isMaximalBodyDescriptor()>();
+
+        if $z0 == 0 goto label1;
+
+        $r3 = new org.apache.james.mime4j.descriptor.MaximalBodyDescriptor;
+
+        specialinvoke $r3.<org.apache.james.mime4j.descriptor.MaximalBodyDescriptor: void <init>(org.apache.james.mime4j.descriptor.BodyDescriptor)>($r1);
+
+        return $r3;
+
+     label1:
+        $r4 = new org.apache.james.mime4j.descriptor.DefaultBodyDescriptor;
+
+        specialinvoke $r4.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: void <init>(org.apache.james.mime4j.descriptor.BodyDescriptor)>($r1);
+
+        return $r4;
+    }
+
+    public boolean parseField()
+    {
+        short $s5;
+        org.apache.james.mime4j.descriptor.MutableBodyDescriptor $r5;
+        byte $b4;
+        int $i0, $i1, $i2, $i3;
+        org.apache.james.mime4j.parser.RawField $r7;
+        boolean $z0, $z1;
+        org.apache.james.mime4j.parser.Field $r6;
+        org.apache.james.mime4j.io.MaxHeaderLimitException $r8;
+        org.apache.james.mime4j.parser.AbstractEntity r0;
+        org.apache.james.mime4j.parser.Event $r3;
+        org.apache.james.mime4j.parser.MimeEntityConfig $r1;
+        java.util.BitSet $r4;
+        org.apache.james.mime4j.util.ByteArrayBuffer $r2;
+
+        r0 := @this: org.apache.james.mime4j.parser.AbstractEntity;
+
+        $r1 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.parser.MimeEntityConfig config>;
+
+        $i0 = virtualinvoke $r1.<org.apache.james.mime4j.parser.MimeEntityConfig: int getMaxHeaderCount()>();
+
+     label01:
+        $z0 = r0.<org.apache.james.mime4j.parser.AbstractEntity: boolean endOfHeader>;
+
+        $z1 = 0;
+
+        if $z0 == 0 goto label02;
+
+        return 0;
+
+     label02:
+        $i1 = r0.<org.apache.james.mime4j.parser.AbstractEntity: int headerCount>;
+
+        if $i1 >= $i0 goto label10;
+
+        $r2 = specialinvoke r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.util.ByteArrayBuffer fillFieldBuffer()>();
+
+        $i1 = r0.<org.apache.james.mime4j.parser.AbstractEntity: int headerCount>;
+
+        $i1 = $i1 + 1;
+
+        r0.<org.apache.james.mime4j.parser.AbstractEntity: int headerCount> = $i1;
+
+        $i2 = virtualinvoke $r2.<org.apache.james.mime4j.util.ByteArrayBuffer: int length()>();
+
+        $i1 = $i2;
+
+        if $i2 <= 0 goto label03;
+
+        $i3 = -1;
+
+        $i3 = $i2 + $i3;
+
+        $b4 = virtualinvoke $r2.<org.apache.james.mime4j.util.ByteArrayBuffer: byte byteAt(int)>($i3);
+
+        $i3 = (int) $b4;
+
+        if $i3 != 10 goto label03;
+
+        $i1 = -1;
+
+        $i1 = $i2 + $i1;
+
+     label03:
+        if $i1 <= 0 goto label04;
+
+        $i2 = -1;
+
+        $i2 = $i1 + $i2;
+
+        $b4 = virtualinvoke $r2.<org.apache.james.mime4j.util.ByteArrayBuffer: byte byteAt(int)>($i2);
+
+        $i2 = (int) $b4;
+
+        if $i2 != 13 goto label04;
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label04:
+        virtualinvoke $r2.<org.apache.james.mime4j.util.ByteArrayBuffer: void setLength(int)>($i1);
+
+        $i1 = virtualinvoke $r2.<org.apache.james.mime4j.util.ByteArrayBuffer: int indexOf(byte)>(58);
+
+        if $i1 > 0 goto label05;
+
+        $r3 = <org.apache.james.mime4j.parser.Event: org.apache.james.mime4j.parser.Event INALID_HEADER>;
+
+        virtualinvoke r0.<org.apache.james.mime4j.parser.AbstractEntity: void monitor(org.apache.james.mime4j.parser.Event)>($r3);
+
+        goto label09;
+
+     label05:
+        $i2 = 0;
+
+     label06:
+        if $i2 >= $i1 goto label08;
+
+        $r4 = <org.apache.james.mime4j.parser.AbstractEntity: java.util.BitSet fieldChars>;
+
+        $b4 = virtualinvoke $r2.<org.apache.james.mime4j.util.ByteArrayBuffer: byte byteAt(int)>($i2);
+
+        $s5 = (short) $b4;
+
+        $s5 = $s5 & 255;
+
+        $i3 = (int) $s5;
+
+        $z0 = virtualinvoke $r4.<java.util.BitSet: boolean get(int)>($i3);
+
+        if $z0 != 0 goto label07;
+
+        $r3 = <org.apache.james.mime4j.parser.Event: org.apache.james.mime4j.parser.Event INALID_HEADER>;
+
+        virtualinvoke r0.<org.apache.james.mime4j.parser.AbstractEntity: void monitor(org.apache.james.mime4j.parser.Event)>($r3);
+
+        goto label09;
+
+     label07:
+        $i2 = $i2 + 1;
+
+        goto label06;
+
+     label08:
+        $z1 = 1;
+
+     label09:
+        if $z1 == 0 goto label01;
+
+        $r7 = new org.apache.james.mime4j.parser.RawField;
+
+        specialinvoke $r7.<org.apache.james.mime4j.parser.RawField: void <init>(org.apache.james.mime4j.util.ByteSequence,int)>($r2, $i1);
+
+        r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.parser.Field field> = $r7;
+
+        $r5 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.descriptor.MutableBodyDescriptor body>;
+
+        $r6 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.parser.Field field>;
+
+        interfaceinvoke $r5.<org.apache.james.mime4j.descriptor.MutableBodyDescriptor: void addField(org.apache.james.mime4j.parser.Field)>($r6);
+
+        return 1;
+
+     label10:
+        $r8 = new org.apache.james.mime4j.io.MaxHeaderLimitException;
+
+        specialinvoke $r8.<org.apache.james.mime4j.io.MaxHeaderLimitException: void <init>(java.lang.String)>("Maximum header limit exceeded");
+
+        goto label11;
+
+     label11:
+        throw $r8;
+    }
+
+    public java.lang.String toString()
+    {
+        org.apache.james.mime4j.descriptor.MutableBodyDescriptor $r4;
+        org.apache.james.mime4j.parser.AbstractEntity r0;
+        int $i0;
+        java.lang.StringBuilder $r1;
+        java.lang.Class $r2;
+        java.lang.String $r3;
+
+        r0 := @this: org.apache.james.mime4j.parser.AbstractEntity;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke r0.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r3 = virtualinvoke $r2.<java.lang.Class: java.lang.String getName()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" [");
+
+        $i0 = r0.<org.apache.james.mime4j.parser.AbstractEntity: int state>;
+
+        $r3 = staticinvoke <org.apache.james.mime4j.parser.AbstractEntity: java.lang.String stateToString(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("][");
+
+        $r4 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.descriptor.MutableBodyDescriptor body>;
+
+        $r3 = interfaceinvoke $r4.<org.apache.james.mime4j.descriptor.ContentDescriptor: java.lang.String getMimeType()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("][");
+
+        $r4 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.james.mime4j.descriptor.MutableBodyDescriptor body>;
+
+        $r3 = interfaceinvoke $r4.<org.apache.james.mime4j.descriptor.BodyDescriptor: java.lang.String getBoundary()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r3;
+    }
+
+    public void warn(org.apache.james.mime4j.parser.Event)
+    {
+        org.apache.james.mime4j.parser.AbstractEntity r0;
+        org.apache.james.mime4j.parser.Event $r1;
+        org.apache.commons.logging.Log $r2;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.parser.AbstractEntity;
+
+        $r1 := @parameter0: org.apache.james.mime4j.parser.Event;
+
+        $r2 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.commons.logging.Log log>;
+
+        $z0 = interfaceinvoke $r2.<org.apache.commons.logging.Log: boolean isWarnEnabled()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = r0.<org.apache.james.mime4j.parser.AbstractEntity: org.apache.commons.logging.Log log>;
+
+        $r3 = virtualinvoke r0.<org.apache.james.mime4j.parser.AbstractEntity: java.lang.String message(org.apache.james.mime4j.parser.Event)>($r1);
+
+        interfaceinvoke $r2.<org.apache.commons.logging.Log: void warn(java.lang.Object)>($r3);
+
+     label1:
+        return;
+    }
+}

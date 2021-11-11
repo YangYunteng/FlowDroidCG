@@ -1,0 +1,368 @@
+public final class com.google.firebase.messaging.zzj extends java.lang.Object implements java.io.Closeable
+{
+    public final java.net.URL zza;
+    public com.google.android.gms.tasks.Task zzb;
+    public volatile java.io.InputStream zzc;
+
+    public void <init>(java.net.URL)
+    {
+        com.google.firebase.messaging.zzj r0;
+        java.net.URL $r1;
+
+        r0 := @this: com.google.firebase.messaging.zzj;
+
+        $r1 := @parameter0: java.net.URL;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.messaging.zzj: java.net.URL zza> = $r1;
+
+        return;
+    }
+
+    public static com.google.firebase.messaging.zzj zza(java.lang.String)
+    {
+        com.google.firebase.messaging.zzj $r2;
+        java.net.MalformedURLException $r0;
+        java.net.URL $r3;
+        int $i0;
+        java.lang.String $r1, $r4;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        return null;
+
+     label1:
+        $r2 = new com.google.firebase.messaging.zzj;
+
+        $r3 = new java.net.URL;
+
+     label2:
+        specialinvoke $r3.<java.net.URL: void <init>(java.lang.String)>($r1);
+
+        specialinvoke $r2.<com.google.firebase.messaging.zzj: void <init>(java.net.URL)>($r3);
+
+     label3:
+        return $r2;
+
+     label4:
+        $r4 = "Not downloading image, bad URL: ";
+
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r1);
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i0 == 0 goto label5;
+
+        $r1 = virtualinvoke $r4.<java.lang.String: java.lang.String concat(java.lang.String)>($r1);
+
+        goto label6;
+
+     label5:
+        $r1 = new java.lang.String;
+
+        specialinvoke $r1.<java.lang.String: void <init>(java.lang.String)>("Not downloading image, bad URL: ");
+
+     label6:
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("FirebaseMessaging", $r1);
+
+        return null;
+
+     label7:
+        $r0 := @caughtexception;
+
+        goto label4;
+
+        catch java.net.MalformedURLException from label2 to label3 with label7;
+    }
+
+    private final byte[] zzc()
+    {
+        java.lang.Throwable $r10, $r11, $r12;
+        com.google.firebase.messaging.zzj r0;
+        byte[] $r6;
+        java.net.URL $r2;
+        java.net.URLConnection $r3;
+        int $i0, $i1;
+        java.lang.String $r7, $r8;
+        boolean $z0;
+        java.io.IOException $r9;
+        java.lang.StringBuilder $r1;
+        java.io.InputStream $r4, $r5;
+
+        r0 := @this: com.google.firebase.messaging.zzj;
+
+        $r2 = r0.<com.google.firebase.messaging.zzj: java.net.URL zza>;
+
+        $r3 = virtualinvoke $r2.<java.net.URL: java.net.URLConnection openConnection()>();
+
+        $i0 = virtualinvoke $r3.<java.net.URLConnection: int getContentLength()>();
+
+        if $i0 > 1048576 goto label15;
+
+        $r4 = virtualinvoke $r3.<java.net.URLConnection: java.io.InputStream getInputStream()>();
+
+     label01:
+        r0.<com.google.firebase.messaging.zzj: java.io.InputStream zzc> = $r4;
+
+        $r5 = staticinvoke <com.google.android.gms.internal.firebase_messaging.zzj: java.io.InputStream zza(java.io.InputStream,long)>($r4, 1048577L);
+
+        $r6 = staticinvoke <com.google.android.gms.internal.firebase_messaging.zzj: byte[] zza(java.io.InputStream)>($r5);
+
+     label02:
+        if $r4 == null goto label03;
+
+        virtualinvoke $r4.<java.io.InputStream: void close()>();
+
+     label03:
+        $z0 = staticinvoke <android.util.Log: boolean isLoggable(java.lang.String,int)>("FirebaseMessaging", 2);
+
+        if $z0 == 0 goto label04;
+
+        $i0 = lengthof $r6;
+
+        $r2 = r0.<com.google.firebase.messaging.zzj: java.net.URL zza>;
+
+        $r7 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r2);
+
+        $r8 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r7);
+
+        $i1 = virtualinvoke $r8.<java.lang.String: int length()>();
+
+        $i1 = $i1 + 34;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(int)>($i1);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Downloaded ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" bytes from ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r7 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int v(java.lang.String,java.lang.String)>("FirebaseMessaging", $r7);
+
+     label04:
+        $i0 = lengthof $r6;
+
+        if $i0 > 1048576 goto label05;
+
+        return $r6;
+
+     label05:
+        $r9 = new java.io.IOException;
+
+        specialinvoke $r9.<java.io.IOException: void <init>(java.lang.String)>("Image exceeds max size of 1048576");
+
+        throw $r9;
+
+     label06:
+        $r10 := @caughtexception;
+
+        goto label09;
+
+     label07:
+        $r11 := @caughtexception;
+
+     label08:
+        throw $r11;
+
+     label09:
+        if $r4 == null goto label14;
+
+        if $r11 == null goto label13;
+
+     label10:
+        virtualinvoke $r4.<java.io.InputStream: void close()>();
+
+     label11:
+        goto label14;
+
+     label12:
+        $r12 := @caughtexception;
+
+        staticinvoke <com.google.android.gms.internal.firebase_messaging.zzm: void zza(java.lang.Throwable,java.lang.Throwable)>($r11, $r12);
+
+        goto label14;
+
+     label13:
+        virtualinvoke $r4.<java.io.InputStream: void close()>();
+
+     label14:
+        throw $r10;
+
+     label15:
+        $r9 = new java.io.IOException;
+
+        specialinvoke $r9.<java.io.IOException: void <init>(java.lang.String)>("Content-Length exceeds max size of 1048576");
+
+        throw $r9;
+
+        catch java.lang.Throwable from label01 to label02 with label07;
+        catch java.lang.Throwable from label08 to label09 with label06;
+        catch java.lang.Throwable from label10 to label11 with label12;
+    }
+
+    public final void close()
+    {
+        com.google.firebase.messaging.zzj r0;
+        java.io.InputStream $r1;
+
+        r0 := @this: com.google.firebase.messaging.zzj;
+
+        $r1 = r0.<com.google.firebase.messaging.zzj: java.io.InputStream zzc>;
+
+        staticinvoke <com.google.android.gms.internal.firebase_messaging.zzk: void zza(java.io.InputStream)>($r1);
+
+        return;
+    }
+
+    public final com.google.android.gms.tasks.Task zza()
+    {
+        com.google.firebase.messaging.zzj r0;
+        com.google.android.gms.tasks.Task $r1;
+
+        r0 := @this: com.google.firebase.messaging.zzj;
+
+        $r1 = r0.<com.google.firebase.messaging.zzj: com.google.android.gms.tasks.Task zzb>;
+
+        staticinvoke <com.google.android.gms.common.internal.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        return $r1;
+    }
+
+    public final void zza(java.util.concurrent.Executor)
+    {
+        com.google.firebase.messaging.zzi $r1;
+        com.google.firebase.messaging.zzj r0;
+        java.util.concurrent.Executor $r3;
+        com.google.android.gms.tasks.Task $r2;
+
+        r0 := @this: com.google.firebase.messaging.zzj;
+
+        $r3 := @parameter0: java.util.concurrent.Executor;
+
+        $r1 = new com.google.firebase.messaging.zzi;
+
+        specialinvoke $r1.<com.google.firebase.messaging.zzi: void <init>(com.google.firebase.messaging.zzj)>(r0);
+
+        $r2 = staticinvoke <com.google.android.gms.tasks.Tasks: com.google.android.gms.tasks.Task call(java.util.concurrent.Executor,java.util.concurrent.Callable)>($r3, $r1);
+
+        r0.<com.google.firebase.messaging.zzj: com.google.android.gms.tasks.Task zzb> = $r2;
+
+        return;
+    }
+
+    public final android.graphics.Bitmap zzb()
+    {
+        com.google.firebase.messaging.zzj r0;
+        byte[] $r5;
+        java.net.URL $r2;
+        java.io.IOException $r7;
+        android.graphics.Bitmap $r6;
+        int $i0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r3, $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.messaging.zzj;
+
+        $r2 = r0.<com.google.firebase.messaging.zzj: java.net.URL zza>;
+
+        $r3 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r2);
+
+        $r4 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r3);
+
+        $i0 = virtualinvoke $r4.<java.lang.String: int length()>();
+
+        $i0 = $i0 + 22;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Starting download of: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("FirebaseMessaging", $r3);
+
+        $r5 = specialinvoke r0.<com.google.firebase.messaging.zzj: byte[] zzc()>();
+
+        $i0 = lengthof $r5;
+
+        $r6 = staticinvoke <android.graphics.BitmapFactory: android.graphics.Bitmap decodeByteArray(byte[],int,int)>($r5, 0, $i0);
+
+        if $r6 == null goto label1;
+
+        $z0 = staticinvoke <android.util.Log: boolean isLoggable(java.lang.String,int)>("FirebaseMessaging", 3);
+
+        if $z0 == 0 goto label2;
+
+        $r2 = r0.<com.google.firebase.messaging.zzj: java.net.URL zza>;
+
+        $r3 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r2);
+
+        $r4 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r3);
+
+        $i0 = virtualinvoke $r4.<java.lang.String: int length()>();
+
+        $i0 = $i0 + 31;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Successfully downloaded image: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("FirebaseMessaging", $r3);
+
+        return $r6;
+
+     label1:
+        $r7 = new java.io.IOException;
+
+        $r2 = r0.<com.google.firebase.messaging.zzj: java.net.URL zza>;
+
+        $r3 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r2);
+
+        $r4 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r3);
+
+        $i0 = virtualinvoke $r4.<java.lang.String: int length()>();
+
+        $i0 = $i0 + 24;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to decode image: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r7.<java.io.IOException: void <init>(java.lang.String)>($r3);
+
+        throw $r7;
+
+     label2:
+        return $r6;
+    }
+}

@@ -1,0 +1,316 @@
+public class com.google.firebase.internal.DataCollectionConfigStorage extends java.lang.Object
+{
+    public static final java.lang.String DATA_COLLECTION_DEFAULT_ENABLED;
+    public static final java.lang.String FIREBASE_APP_PREFS;
+    public boolean dataCollectionDefaultEnabled;
+    public final android.content.Context deviceProtectedContext;
+    public final com.google.firebase.events.Publisher publisher;
+    public final android.content.SharedPreferences sharedPreferences;
+
+    public void <init>(android.content.Context, java.lang.String, com.google.firebase.events.Publisher)
+    {
+        com.google.firebase.events.Publisher $r1;
+        android.content.Context $r2;
+        android.content.SharedPreferences $r5;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r3;
+        com.google.firebase.internal.DataCollectionConfigStorage r0;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.internal.DataCollectionConfigStorage;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r3 := @parameter1: java.lang.String;
+
+        $r1 := @parameter2: com.google.firebase.events.Publisher;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r2 = staticinvoke <com.google.firebase.internal.DataCollectionConfigStorage: android.content.Context directBootSafe(android.content.Context)>($r2);
+
+        r0.<com.google.firebase.internal.DataCollectionConfigStorage: android.content.Context deviceProtectedContext> = $r2;
+
+        $r2 = r0.<com.google.firebase.internal.DataCollectionConfigStorage: android.content.Context deviceProtectedContext>;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("com.google.firebase.common.prefs:");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r5 = virtualinvoke $r2.<android.content.Context: android.content.SharedPreferences getSharedPreferences(java.lang.String,int)>($r3, 0);
+
+        r0.<com.google.firebase.internal.DataCollectionConfigStorage: android.content.SharedPreferences sharedPreferences> = $r5;
+
+        r0.<com.google.firebase.internal.DataCollectionConfigStorage: com.google.firebase.events.Publisher publisher> = $r1;
+
+        $z0 = specialinvoke r0.<com.google.firebase.internal.DataCollectionConfigStorage: boolean readAutoDataCollectionEnabled()>();
+
+        r0.<com.google.firebase.internal.DataCollectionConfigStorage: boolean dataCollectionDefaultEnabled> = $z0;
+
+        return;
+    }
+
+    public static android.content.Context directBootSafe(android.content.Context)
+    {
+        int $i0;
+        android.content.Context $r0;
+
+        $r0 := @parameter0: android.content.Context;
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 >= 24 goto label1;
+
+        return $r0;
+
+     label1:
+        $r0 = staticinvoke <b.i.b.a: android.content.Context a(android.content.Context)>($r0);
+
+        return $r0;
+    }
+
+    private boolean readAutoDataCollectionEnabled()
+    {
+        android.content.SharedPreferences $r1;
+        com.google.firebase.internal.DataCollectionConfigStorage r0;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.internal.DataCollectionConfigStorage;
+
+        $r1 = r0.<com.google.firebase.internal.DataCollectionConfigStorage: android.content.SharedPreferences sharedPreferences>;
+
+        $z0 = interfaceinvoke $r1.<android.content.SharedPreferences: boolean contains(java.lang.String)>("firebase_data_collection_default_enabled");
+
+        if $z0 == 0 goto label1;
+
+        $r1 = r0.<com.google.firebase.internal.DataCollectionConfigStorage: android.content.SharedPreferences sharedPreferences>;
+
+        $z0 = interfaceinvoke $r1.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("firebase_data_collection_default_enabled", 1);
+
+        return $z0;
+
+     label1:
+        $z0 = specialinvoke r0.<com.google.firebase.internal.DataCollectionConfigStorage: boolean readManifestDataCollectionEnabled()>();
+
+        return $z0;
+    }
+
+    private boolean readManifestDataCollectionEnabled()
+    {
+        android.content.Context $r2;
+        android.os.Bundle $r6;
+        android.content.pm.PackageManager $r3;
+        android.content.pm.PackageManager$NameNotFoundException $r1;
+        java.lang.String $r4;
+        android.content.pm.ApplicationInfo $r5;
+        com.google.firebase.internal.DataCollectionConfigStorage r0;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.internal.DataCollectionConfigStorage;
+
+        $r2 = r0.<com.google.firebase.internal.DataCollectionConfigStorage: android.content.Context deviceProtectedContext>;
+
+     label01:
+        $r3 = virtualinvoke $r2.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+     label02:
+        if $r3 == null goto label09;
+
+        $r2 = r0.<com.google.firebase.internal.DataCollectionConfigStorage: android.content.Context deviceProtectedContext>;
+
+     label03:
+        $r4 = virtualinvoke $r2.<android.content.Context: java.lang.String getPackageName()>();
+
+        $r5 = virtualinvoke $r3.<android.content.pm.PackageManager: android.content.pm.ApplicationInfo getApplicationInfo(java.lang.String,int)>($r4, 128);
+
+     label04:
+        if $r5 == null goto label09;
+
+        $r6 = $r5.<android.content.pm.ApplicationInfo: android.os.Bundle metaData>;
+
+        if $r6 == null goto label09;
+
+        $r6 = $r5.<android.content.pm.ApplicationInfo: android.os.Bundle metaData>;
+
+     label05:
+        $z0 = virtualinvoke $r6.<android.os.Bundle: boolean containsKey(java.lang.String)>("firebase_data_collection_default_enabled");
+
+     label06:
+        if $z0 == 0 goto label09;
+
+        $r6 = $r5.<android.content.pm.ApplicationInfo: android.os.Bundle metaData>;
+
+     label07:
+        $z0 = virtualinvoke $r6.<android.os.Bundle: boolean getBoolean(java.lang.String)>("firebase_data_collection_default_enabled");
+
+     label08:
+        return $z0;
+
+     label09:
+        return 1;
+
+     label10:
+        $r1 := @caughtexception;
+
+        goto label09;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label01 to label02 with label10;
+        catch android.content.pm.PackageManager$NameNotFoundException from label03 to label04 with label10;
+        catch android.content.pm.PackageManager$NameNotFoundException from label05 to label06 with label10;
+        catch android.content.pm.PackageManager$NameNotFoundException from label07 to label08 with label10;
+    }
+
+    private void updateDataCollectionDefaultEnabled(boolean)
+    {
+        java.lang.Throwable $r4;
+        com.google.firebase.events.Event $r1;
+        com.google.firebase.events.Publisher $r3;
+        com.google.firebase.DataCollectionDefaultChange $r2;
+        com.google.firebase.internal.DataCollectionConfigStorage r0;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.firebase.internal.DataCollectionConfigStorage;
+
+        $z0 := @parameter0: boolean;
+
+        entermonitor r0;
+
+     label1:
+        $z1 = r0.<com.google.firebase.internal.DataCollectionConfigStorage: boolean dataCollectionDefaultEnabled>;
+
+        if $z1 == $z0 goto label2;
+
+        r0.<com.google.firebase.internal.DataCollectionConfigStorage: boolean dataCollectionDefaultEnabled> = $z0;
+
+        $r3 = r0.<com.google.firebase.internal.DataCollectionConfigStorage: com.google.firebase.events.Publisher publisher>;
+
+        $r1 = new com.google.firebase.events.Event;
+
+        $r2 = new com.google.firebase.DataCollectionDefaultChange;
+
+        specialinvoke $r2.<com.google.firebase.DataCollectionDefaultChange: void <init>(boolean)>($z0);
+
+        specialinvoke $r1.<com.google.firebase.events.Event: void <init>(java.lang.Class,java.lang.Object)>(class "Lcom/google/firebase/DataCollectionDefaultChange;", $r2);
+
+        interfaceinvoke $r3.<com.google.firebase.events.Publisher: void publish(com.google.firebase.events.Event)>($r1);
+
+     label2:
+        exitmonitor r0;
+
+        return;
+
+     label3:
+        $r4 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public boolean isEnabled()
+    {
+        java.lang.Throwable $r1;
+        com.google.firebase.internal.DataCollectionConfigStorage r0;
+        boolean z0;
+
+        r0 := @this: com.google.firebase.internal.DataCollectionConfigStorage;
+
+        entermonitor r0;
+
+     label1:
+        z0 = r0.<com.google.firebase.internal.DataCollectionConfigStorage: boolean dataCollectionDefaultEnabled>;
+
+     label2:
+        exitmonitor r0;
+
+        return z0;
+
+     label3:
+        $r1 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r1;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public void setEnabled(java.lang.Boolean)
+    {
+        android.content.SharedPreferences$Editor $r3;
+        java.lang.Throwable $r5;
+        android.content.SharedPreferences $r2;
+        java.lang.Boolean $r1, $r4;
+        com.google.firebase.internal.DataCollectionConfigStorage r0;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.internal.DataCollectionConfigStorage;
+
+        $r1 := @parameter0: java.lang.Boolean;
+
+        entermonitor r0;
+
+        if $r1 != null goto label2;
+
+     label1:
+        $r2 = r0.<com.google.firebase.internal.DataCollectionConfigStorage: android.content.SharedPreferences sharedPreferences>;
+
+        $r3 = interfaceinvoke $r2.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $r3 = interfaceinvoke $r3.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor remove(java.lang.String)>("firebase_data_collection_default_enabled");
+
+        interfaceinvoke $r3.<android.content.SharedPreferences$Editor: void apply()>();
+
+        $z0 = specialinvoke r0.<com.google.firebase.internal.DataCollectionConfigStorage: boolean readManifestDataCollectionEnabled()>();
+
+        specialinvoke r0.<com.google.firebase.internal.DataCollectionConfigStorage: void updateDataCollectionDefaultEnabled(boolean)>($z0);
+
+        goto label3;
+
+     label2:
+        $r4 = <java.lang.Boolean: java.lang.Boolean TRUE>;
+
+        $z0 = virtualinvoke $r4.<java.lang.Boolean: boolean equals(java.lang.Object)>($r1);
+
+        $r2 = r0.<com.google.firebase.internal.DataCollectionConfigStorage: android.content.SharedPreferences sharedPreferences>;
+
+        $r3 = interfaceinvoke $r2.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $r3 = interfaceinvoke $r3.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putBoolean(java.lang.String,boolean)>("firebase_data_collection_default_enabled", $z0);
+
+        interfaceinvoke $r3.<android.content.SharedPreferences$Editor: void apply()>();
+
+        specialinvoke r0.<com.google.firebase.internal.DataCollectionConfigStorage: void updateDataCollectionDefaultEnabled(boolean)>($z0);
+
+     label3:
+        exitmonitor r0;
+
+        return;
+
+     label4:
+        $r5 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.firebase.internal.DataCollectionConfigStorage: java.lang.String FIREBASE_APP_PREFS> = "com.google.firebase.common.prefs:";
+
+        <com.google.firebase.internal.DataCollectionConfigStorage: java.lang.String DATA_COLLECTION_DEFAULT_ENABLED> = "firebase_data_collection_default_enabled";
+
+        return;
+    }
+}

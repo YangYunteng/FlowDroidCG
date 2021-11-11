@@ -1,0 +1,568 @@
+public class com.google.firebase.crashlytics.FirebaseCrashlytics extends java.lang.Object
+{
+    public static final int APP_EXCEPTION_CALLBACK_TIMEOUT_MS;
+    public static final java.lang.String FIREBASE_CRASHLYTICS_ANALYTICS_ORIGIN;
+    public static final java.lang.String LEGACY_CRASH_ANALYTICS_ORIGIN;
+    public final com.google.firebase.crashlytics.internal.common.CrashlyticsCore core;
+
+    public void <init>(com.google.firebase.crashlytics.internal.common.CrashlyticsCore)
+    {
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r1;
+        com.google.firebase.crashlytics.FirebaseCrashlytics r0;
+
+        r0 := @this: com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        $r1 := @parameter0: com.google.firebase.crashlytics.internal.common.CrashlyticsCore;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.internal.common.CrashlyticsCore core> = $r1;
+
+        return;
+    }
+
+    public static com.google.firebase.crashlytics.FirebaseCrashlytics getInstance()
+    {
+        java.lang.Object $r1;
+        com.google.firebase.crashlytics.FirebaseCrashlytics $r2;
+        java.lang.NullPointerException $r3;
+        com.google.firebase.FirebaseApp $r0;
+
+        $r0 = staticinvoke <com.google.firebase.FirebaseApp: com.google.firebase.FirebaseApp getInstance()>();
+
+        $r1 = virtualinvoke $r0.<com.google.firebase.FirebaseApp: java.lang.Object get(java.lang.Class)>(class "Lcom/google/firebase/crashlytics/FirebaseCrashlytics;");
+
+        $r2 = (com.google.firebase.crashlytics.FirebaseCrashlytics) $r1;
+
+        if $r2 == null goto label1;
+
+        return $r2;
+
+     label1:
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("FirebaseCrashlytics component is not present.");
+
+        throw $r3;
+    }
+
+    public static com.google.firebase.crashlytics.FirebaseCrashlytics init(com.google.firebase.FirebaseApp, com.google.firebase.installations.FirebaseInstallationsApi, com.google.firebase.crashlytics.internal.CrashlyticsNativeComponent, com.google.firebase.analytics.connector.AnalyticsConnector)
+    {
+        com.google.firebase.analytics.connector.AnalyticsConnector $r3;
+        com.google.firebase.crashlytics.FirebaseCrashlytics$1 $r30;
+        boolean $z0;
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r6, $r29;
+        com.google.firebase.analytics.connector.AnalyticsConnector$AnalyticsConnectorHandle $r13;
+        com.google.firebase.installations.FirebaseInstallationsApi $r1;
+        com.google.firebase.crashlytics.internal.analytics.BreadcrumbAnalyticsEventReceiver $r25;
+        com.google.firebase.crashlytics.internal.common.DataCollectionArbiter $r4, $r20;
+        com.google.firebase.crashlytics.internal.CrashlyticsNativeComponent $r2;
+        com.google.firebase.crashlytics.CrashlyticsAnalyticsListener $r12, $r24;
+        com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver $r32;
+        android.content.Context $r7;
+        com.google.firebase.crashlytics.internal.analytics.UnavailableAnalyticsEventLogger $r28;
+        com.google.firebase.crashlytics.internal.common.IdManager $r9, $r19;
+        com.google.firebase.crashlytics.internal.settings.SettingsController $r18;
+        com.google.firebase.crashlytics.internal.Onboarding $r5, $r22;
+        java.lang.String $r8;
+        com.google.firebase.crashlytics.internal.MissingNativeComponent $r21;
+        com.google.firebase.crashlytics.internal.analytics.AnalyticsEventLogger $r11;
+        java.util.concurrent.ExecutorService $r17;
+        com.google.firebase.crashlytics.FirebaseCrashlytics $r31;
+        com.google.firebase.crashlytics.internal.breadcrumbs.BreadcrumbSource $r14;
+        com.google.firebase.crashlytics.internal.analytics.CrashlyticsOriginAnalyticsEventLogger $r23;
+        java.util.concurrent.TimeUnit $r16;
+        com.google.firebase.crashlytics.internal.Logger $r10;
+        com.google.firebase.crashlytics.internal.analytics.BlockingAnalyticsEventLogger $r15, $r26;
+        com.google.firebase.crashlytics.internal.breadcrumbs.DisabledBreadcrumbSource $r27;
+        com.google.firebase.FirebaseApp $r0;
+
+        $r0 := @parameter0: com.google.firebase.FirebaseApp;
+
+        $r1 := @parameter1: com.google.firebase.installations.FirebaseInstallationsApi;
+
+        $r2 := @parameter2: com.google.firebase.crashlytics.internal.CrashlyticsNativeComponent;
+
+        $r3 := @parameter3: com.google.firebase.analytics.connector.AnalyticsConnector;
+
+        $r7 = virtualinvoke $r0.<com.google.firebase.FirebaseApp: android.content.Context getApplicationContext()>();
+
+        $r8 = virtualinvoke $r7.<android.content.Context: java.lang.String getPackageName()>();
+
+        $r19 = new com.google.firebase.crashlytics.internal.common.IdManager;
+
+        $r9 = $r19;
+
+        specialinvoke $r19.<com.google.firebase.crashlytics.internal.common.IdManager: void <init>(android.content.Context,java.lang.String,com.google.firebase.installations.FirebaseInstallationsApi)>($r7, $r8, $r1);
+
+        $r20 = new com.google.firebase.crashlytics.internal.common.DataCollectionArbiter;
+
+        $r4 = $r20;
+
+        specialinvoke $r20.<com.google.firebase.crashlytics.internal.common.DataCollectionArbiter: void <init>(com.google.firebase.FirebaseApp)>($r0);
+
+        if $r2 != null goto label1;
+
+        $r21 = new com.google.firebase.crashlytics.internal.MissingNativeComponent;
+
+        specialinvoke $r21.<com.google.firebase.crashlytics.internal.MissingNativeComponent: void <init>()>();
+
+        $r2 = $r21;
+
+        goto label1;
+
+     label1:
+        $r22 = new com.google.firebase.crashlytics.internal.Onboarding;
+
+        $r5 = $r22;
+
+        specialinvoke $r22.<com.google.firebase.crashlytics.internal.Onboarding: void <init>(com.google.firebase.FirebaseApp,android.content.Context,com.google.firebase.crashlytics.internal.common.IdManager,com.google.firebase.crashlytics.internal.common.DataCollectionArbiter)>($r0, $r7, $r9, $r4);
+
+        if $r3 == null goto label3;
+
+        $r10 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        virtualinvoke $r10.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>("Firebase Analytics is available.");
+
+        $r23 = new com.google.firebase.crashlytics.internal.analytics.CrashlyticsOriginAnalyticsEventLogger;
+
+        $r11 = $r23;
+
+        specialinvoke $r23.<com.google.firebase.crashlytics.internal.analytics.CrashlyticsOriginAnalyticsEventLogger: void <init>(com.google.firebase.analytics.connector.AnalyticsConnector)>($r3);
+
+        $r24 = new com.google.firebase.crashlytics.CrashlyticsAnalyticsListener;
+
+        $r12 = $r24;
+
+        specialinvoke $r24.<com.google.firebase.crashlytics.CrashlyticsAnalyticsListener: void <init>()>();
+
+        $r13 = staticinvoke <com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.analytics.connector.AnalyticsConnector$AnalyticsConnectorHandle subscribeToAnalyticsEvents(com.google.firebase.analytics.connector.AnalyticsConnector,com.google.firebase.crashlytics.CrashlyticsAnalyticsListener)>($r3, $r12);
+
+        if $r13 == null goto label2;
+
+        $r10 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        virtualinvoke $r10.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>("Firebase Analytics listener registered successfully.");
+
+        $r25 = new com.google.firebase.crashlytics.internal.analytics.BreadcrumbAnalyticsEventReceiver;
+
+        $r14 = $r25;
+
+        specialinvoke $r25.<com.google.firebase.crashlytics.internal.analytics.BreadcrumbAnalyticsEventReceiver: void <init>()>();
+
+        $r26 = new com.google.firebase.crashlytics.internal.analytics.BlockingAnalyticsEventLogger;
+
+        $r15 = $r26;
+
+        $r16 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit MILLISECONDS>;
+
+        $r23 = (com.google.firebase.crashlytics.internal.analytics.CrashlyticsOriginAnalyticsEventLogger) $r11;
+
+        specialinvoke $r26.<com.google.firebase.crashlytics.internal.analytics.BlockingAnalyticsEventLogger: void <init>(com.google.firebase.crashlytics.internal.analytics.CrashlyticsOriginAnalyticsEventLogger,int,java.util.concurrent.TimeUnit)>($r23, 500, $r16);
+
+        $r32 = (com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver) $r14;
+
+        virtualinvoke $r12.<com.google.firebase.crashlytics.CrashlyticsAnalyticsListener: void setBreadcrumbEventReceiver(com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver)>($r32);
+
+        virtualinvoke $r12.<com.google.firebase.crashlytics.CrashlyticsAnalyticsListener: void setCrashlyticsOriginEventReceiver(com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver)>($r15);
+
+        $r11 = $r15;
+
+        goto label4;
+
+     label2:
+        $r10 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        virtualinvoke $r10.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>("Firebase Analytics listener registration failed.");
+
+        $r27 = new com.google.firebase.crashlytics.internal.breadcrumbs.DisabledBreadcrumbSource;
+
+        $r14 = $r27;
+
+        specialinvoke $r27.<com.google.firebase.crashlytics.internal.breadcrumbs.DisabledBreadcrumbSource: void <init>()>();
+
+        goto label4;
+
+     label3:
+        $r10 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        virtualinvoke $r10.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>("Firebase Analytics is unavailable.");
+
+        $r27 = new com.google.firebase.crashlytics.internal.breadcrumbs.DisabledBreadcrumbSource;
+
+        $r14 = $r27;
+
+        specialinvoke $r27.<com.google.firebase.crashlytics.internal.breadcrumbs.DisabledBreadcrumbSource: void <init>()>();
+
+        $r28 = new com.google.firebase.crashlytics.internal.analytics.UnavailableAnalyticsEventLogger;
+
+        $r11 = $r28;
+
+        specialinvoke $r28.<com.google.firebase.crashlytics.internal.analytics.UnavailableAnalyticsEventLogger: void <init>()>();
+
+     label4:
+        $r17 = staticinvoke <com.google.firebase.crashlytics.internal.common.ExecutorUtils: java.util.concurrent.ExecutorService buildSingleThreadExecutorService(java.lang.String)>("Crashlytics Exception Handler");
+
+        $r29 = new com.google.firebase.crashlytics.internal.common.CrashlyticsCore;
+
+        $r6 = $r29;
+
+        specialinvoke $r29.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: void <init>(com.google.firebase.FirebaseApp,com.google.firebase.crashlytics.internal.common.IdManager,com.google.firebase.crashlytics.internal.CrashlyticsNativeComponent,com.google.firebase.crashlytics.internal.common.DataCollectionArbiter,com.google.firebase.crashlytics.internal.breadcrumbs.BreadcrumbSource,com.google.firebase.crashlytics.internal.analytics.AnalyticsEventLogger,java.util.concurrent.ExecutorService)>($r0, $r9, $r2, $r4, $r14, $r11, $r17);
+
+        $z0 = virtualinvoke $r5.<com.google.firebase.crashlytics.internal.Onboarding: boolean onPreExecute()>();
+
+        if $z0 != 0 goto label5;
+
+        $r10 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        virtualinvoke $r10.<com.google.firebase.crashlytics.internal.Logger: void e(java.lang.String)>("Unable to start Crashlytics.");
+
+        return null;
+
+     label5:
+        $r17 = staticinvoke <com.google.firebase.crashlytics.internal.common.ExecutorUtils: java.util.concurrent.ExecutorService buildSingleThreadExecutorService(java.lang.String)>("com.google.firebase.crashlytics.startup");
+
+        $r18 = virtualinvoke $r5.<com.google.firebase.crashlytics.internal.Onboarding: com.google.firebase.crashlytics.internal.settings.SettingsController retrieveSettingsData(android.content.Context,com.google.firebase.FirebaseApp,java.util.concurrent.Executor)>($r7, $r0, $r17);
+
+        $z0 = virtualinvoke $r6.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: boolean onPreExecute(com.google.firebase.crashlytics.internal.settings.SettingsDataProvider)>($r18);
+
+        $r30 = new com.google.firebase.crashlytics.FirebaseCrashlytics$1;
+
+        specialinvoke $r30.<com.google.firebase.crashlytics.FirebaseCrashlytics$1: void <init>(com.google.firebase.crashlytics.internal.Onboarding,java.util.concurrent.ExecutorService,com.google.firebase.crashlytics.internal.settings.SettingsController,boolean,com.google.firebase.crashlytics.internal.common.CrashlyticsCore)>($r5, $r17, $r18, $z0, $r6);
+
+        staticinvoke <com.google.android.gms.tasks.Tasks: com.google.android.gms.tasks.Task call(java.util.concurrent.Executor,java.util.concurrent.Callable)>($r17, $r30);
+
+        $r31 = new com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        specialinvoke $r31.<com.google.firebase.crashlytics.FirebaseCrashlytics: void <init>(com.google.firebase.crashlytics.internal.common.CrashlyticsCore)>($r6);
+
+        return $r31;
+    }
+
+    public static com.google.firebase.analytics.connector.AnalyticsConnector$AnalyticsConnectorHandle subscribeToAnalyticsEvents(com.google.firebase.analytics.connector.AnalyticsConnector, com.google.firebase.crashlytics.CrashlyticsAnalyticsListener)
+    {
+        com.google.firebase.crashlytics.internal.Logger $r3;
+        com.google.firebase.analytics.connector.AnalyticsConnector$AnalyticsConnectorHandle $r2;
+        com.google.firebase.analytics.connector.AnalyticsConnector $r0;
+        com.google.firebase.crashlytics.CrashlyticsAnalyticsListener $r1;
+
+        $r0 := @parameter0: com.google.firebase.analytics.connector.AnalyticsConnector;
+
+        $r1 := @parameter1: com.google.firebase.crashlytics.CrashlyticsAnalyticsListener;
+
+        $r2 = interfaceinvoke $r0.<com.google.firebase.analytics.connector.AnalyticsConnector: com.google.firebase.analytics.connector.AnalyticsConnector$AnalyticsConnectorHandle registerAnalyticsConnectorListener(java.lang.String,com.google.firebase.analytics.connector.AnalyticsConnector$AnalyticsConnectorListener)>("clx", $r1);
+
+        if $r2 != null goto label1;
+
+        $r3 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        virtualinvoke $r3.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>("Could not register AnalyticsConnectorListener with Crashlytics origin.");
+
+        $r2 = interfaceinvoke $r0.<com.google.firebase.analytics.connector.AnalyticsConnector: com.google.firebase.analytics.connector.AnalyticsConnector$AnalyticsConnectorHandle registerAnalyticsConnectorListener(java.lang.String,com.google.firebase.analytics.connector.AnalyticsConnector$AnalyticsConnectorListener)>("crash", $r1);
+
+        if $r2 == null goto label1;
+
+        $r3 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        virtualinvoke $r3.<com.google.firebase.crashlytics.internal.Logger: void w(java.lang.String)>("A new version of the Google Analytics for Firebase SDK is now available. For improved performance and compatibility with Crashlytics, please update to the latest version.");
+
+     label1:
+        return $r2;
+    }
+
+    public com.google.android.gms.tasks.Task checkForUnsentReports()
+    {
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r2;
+        com.google.firebase.crashlytics.FirebaseCrashlytics r0;
+        com.google.android.gms.tasks.Task $r1;
+
+        r0 := @this: com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        $r2 = r0.<com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.internal.common.CrashlyticsCore core>;
+
+        $r1 = virtualinvoke $r2.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: com.google.android.gms.tasks.Task checkForUnsentReports()>();
+
+        return $r1;
+    }
+
+    public void deleteUnsentReports()
+    {
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r1;
+        com.google.firebase.crashlytics.FirebaseCrashlytics r0;
+
+        r0 := @this: com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        $r1 = r0.<com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.internal.common.CrashlyticsCore core>;
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: com.google.android.gms.tasks.Task deleteUnsentReports()>();
+
+        return;
+    }
+
+    public boolean didCrashOnPreviousExecution()
+    {
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r1;
+        com.google.firebase.crashlytics.FirebaseCrashlytics r0;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        $r1 = r0.<com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.internal.common.CrashlyticsCore core>;
+
+        $z0 = virtualinvoke $r1.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: boolean didCrashOnPreviousExecution()>();
+
+        return $z0;
+    }
+
+    public void log(java.lang.String)
+    {
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r2;
+        com.google.firebase.crashlytics.FirebaseCrashlytics r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = r0.<com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.internal.common.CrashlyticsCore core>;
+
+        virtualinvoke $r2.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: void log(java.lang.String)>($r1);
+
+        return;
+    }
+
+    public void recordException(java.lang.Throwable)
+    {
+        java.lang.Throwable $r2;
+        com.google.firebase.crashlytics.internal.Logger $r1;
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r3;
+        com.google.firebase.crashlytics.FirebaseCrashlytics r0;
+
+        r0 := @this: com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        $r2 := @parameter0: java.lang.Throwable;
+
+        if $r2 != null goto label1;
+
+        $r1 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.Logger: void w(java.lang.String)>("Crashlytics is ignoring a request to log a null exception.");
+
+        return;
+
+     label1:
+        $r3 = r0.<com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.internal.common.CrashlyticsCore core>;
+
+        virtualinvoke $r3.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: void logException(java.lang.Throwable)>($r2);
+
+        return;
+    }
+
+    public void sendUnsentReports()
+    {
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r1;
+        com.google.firebase.crashlytics.FirebaseCrashlytics r0;
+
+        r0 := @this: com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        $r1 = r0.<com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.internal.common.CrashlyticsCore core>;
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: com.google.android.gms.tasks.Task sendUnsentReports()>();
+
+        return;
+    }
+
+    public void setCrashlyticsCollectionEnabled(java.lang.Boolean)
+    {
+        java.lang.Boolean $r1;
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r2;
+        com.google.firebase.crashlytics.FirebaseCrashlytics r0;
+
+        r0 := @this: com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        $r1 := @parameter0: java.lang.Boolean;
+
+        $r2 = r0.<com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.internal.common.CrashlyticsCore core>;
+
+        virtualinvoke $r2.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: void setCrashlyticsCollectionEnabled(java.lang.Boolean)>($r1);
+
+        return;
+    }
+
+    public void setCrashlyticsCollectionEnabled(boolean)
+    {
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r1;
+        java.lang.Boolean $r2;
+        com.google.firebase.crashlytics.FirebaseCrashlytics r0;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 = r0.<com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.internal.common.CrashlyticsCore core>;
+
+        $r2 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>($z0);
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: void setCrashlyticsCollectionEnabled(java.lang.Boolean)>($r2);
+
+        return;
+    }
+
+    public void setCustomKey(java.lang.String, double)
+    {
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r2;
+        com.google.firebase.crashlytics.FirebaseCrashlytics r0;
+        java.lang.String $r1, $r3;
+        double $d0;
+
+        r0 := @this: com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $d0 := @parameter1: double;
+
+        $r2 = r0.<com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.internal.common.CrashlyticsCore core>;
+
+        $r3 = staticinvoke <java.lang.Double: java.lang.String toString(double)>($d0);
+
+        virtualinvoke $r2.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: void setCustomKey(java.lang.String,java.lang.String)>($r1, $r3);
+
+        return;
+    }
+
+    public void setCustomKey(java.lang.String, float)
+    {
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r2;
+        float $f0;
+        com.google.firebase.crashlytics.FirebaseCrashlytics r0;
+        java.lang.String $r1, $r3;
+
+        r0 := @this: com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $f0 := @parameter1: float;
+
+        $r2 = r0.<com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.internal.common.CrashlyticsCore core>;
+
+        $r3 = staticinvoke <java.lang.Float: java.lang.String toString(float)>($f0);
+
+        virtualinvoke $r2.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: void setCustomKey(java.lang.String,java.lang.String)>($r1, $r3);
+
+        return;
+    }
+
+    public void setCustomKey(java.lang.String, int)
+    {
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r2;
+        int $i0;
+        com.google.firebase.crashlytics.FirebaseCrashlytics r0;
+        java.lang.String $r1, $r3;
+
+        r0 := @this: com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        $r2 = r0.<com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.internal.common.CrashlyticsCore core>;
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.String toString(int)>($i0);
+
+        virtualinvoke $r2.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: void setCustomKey(java.lang.String,java.lang.String)>($r1, $r3);
+
+        return;
+    }
+
+    public void setCustomKey(java.lang.String, long)
+    {
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r2;
+        long $l0;
+        com.google.firebase.crashlytics.FirebaseCrashlytics r0;
+        java.lang.String $r1, $r3;
+
+        r0 := @this: com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $l0 := @parameter1: long;
+
+        $r2 = r0.<com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.internal.common.CrashlyticsCore core>;
+
+        $r3 = staticinvoke <java.lang.Long: java.lang.String toString(long)>($l0);
+
+        virtualinvoke $r2.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: void setCustomKey(java.lang.String,java.lang.String)>($r1, $r3);
+
+        return;
+    }
+
+    public void setCustomKey(java.lang.String, java.lang.String)
+    {
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r3;
+        com.google.firebase.crashlytics.FirebaseCrashlytics r0;
+        java.lang.String $r1, $r2;
+
+        r0 := @this: com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 = r0.<com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.internal.common.CrashlyticsCore core>;
+
+        virtualinvoke $r3.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: void setCustomKey(java.lang.String,java.lang.String)>($r1, $r2);
+
+        return;
+    }
+
+    public void setCustomKey(java.lang.String, boolean)
+    {
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r2;
+        com.google.firebase.crashlytics.FirebaseCrashlytics r0;
+        java.lang.String $r1, $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $z0 := @parameter1: boolean;
+
+        $r2 = r0.<com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.internal.common.CrashlyticsCore core>;
+
+        $r3 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>($z0);
+
+        virtualinvoke $r2.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: void setCustomKey(java.lang.String,java.lang.String)>($r1, $r3);
+
+        return;
+    }
+
+    public void setUserId(java.lang.String)
+    {
+        com.google.firebase.crashlytics.internal.common.CrashlyticsCore $r2;
+        com.google.firebase.crashlytics.FirebaseCrashlytics r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = r0.<com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.internal.common.CrashlyticsCore core>;
+
+        virtualinvoke $r2.<com.google.firebase.crashlytics.internal.common.CrashlyticsCore: void setUserId(java.lang.String)>($r1);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.firebase.crashlytics.FirebaseCrashlytics: java.lang.String LEGACY_CRASH_ANALYTICS_ORIGIN> = "crash";
+
+        <com.google.firebase.crashlytics.FirebaseCrashlytics: java.lang.String FIREBASE_CRASHLYTICS_ANALYTICS_ORIGIN> = "clx";
+
+        <com.google.firebase.crashlytics.FirebaseCrashlytics: int APP_EXCEPTION_CALLBACK_TIMEOUT_MS> = 500;
+
+        return;
+    }
+}

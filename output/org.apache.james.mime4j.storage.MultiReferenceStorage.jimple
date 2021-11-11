@@ -1,0 +1,180 @@
+public class org.apache.james.mime4j.storage.MultiReferenceStorage extends java.lang.Object implements org.apache.james.mime4j.storage.Storage
+{
+    public int referenceCounter;
+    public final org.apache.james.mime4j.storage.Storage storage;
+
+    public void <init>(org.apache.james.mime4j.storage.Storage)
+    {
+        java.lang.IllegalArgumentException $r2;
+        org.apache.james.mime4j.storage.MultiReferenceStorage r0;
+        org.apache.james.mime4j.storage.Storage $r1;
+
+        r0 := @this: org.apache.james.mime4j.storage.MultiReferenceStorage;
+
+        $r1 := @parameter0: org.apache.james.mime4j.storage.Storage;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        if $r1 == null goto label1;
+
+        r0.<org.apache.james.mime4j.storage.MultiReferenceStorage: org.apache.james.mime4j.storage.Storage storage> = $r1;
+
+        r0.<org.apache.james.mime4j.storage.MultiReferenceStorage: int referenceCounter> = 1;
+
+        return;
+
+     label1:
+        $r2 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r2.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r2;
+    }
+
+    private boolean decrementCounter()
+    {
+        java.lang.Throwable $r2;
+        java.lang.IllegalStateException $r1;
+        int $i0;
+        org.apache.james.mime4j.storage.MultiReferenceStorage r0;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.storage.MultiReferenceStorage;
+
+        entermonitor r0;
+
+     label1:
+        $i0 = r0.<org.apache.james.mime4j.storage.MultiReferenceStorage: int referenceCounter>;
+
+        if $i0 == 0 goto label5;
+
+        $i0 = r0.<org.apache.james.mime4j.storage.MultiReferenceStorage: int referenceCounter>;
+
+        $z0 = 1;
+
+        $i0 = $i0 - 1;
+
+        r0.<org.apache.james.mime4j.storage.MultiReferenceStorage: int referenceCounter> = $i0;
+
+     label2:
+        if $i0 != 0 goto label3;
+
+        goto label4;
+
+     label3:
+        $z0 = 0;
+
+     label4:
+        exitmonitor r0;
+
+        return $z0;
+
+     label5:
+        $r1 = new java.lang.IllegalStateException;
+
+        specialinvoke $r1.<java.lang.IllegalStateException: void <init>(java.lang.String)>("storage has been deleted");
+
+        throw $r1;
+
+     label6:
+        $r2 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label2 with label6;
+        catch java.lang.Throwable from label5 to label6 with label6;
+    }
+
+    private void incrementCounter()
+    {
+        java.lang.Throwable $r2;
+        java.lang.IllegalStateException $r1;
+        int $i0;
+        org.apache.james.mime4j.storage.MultiReferenceStorage r0;
+
+        r0 := @this: org.apache.james.mime4j.storage.MultiReferenceStorage;
+
+        entermonitor r0;
+
+     label1:
+        $i0 = r0.<org.apache.james.mime4j.storage.MultiReferenceStorage: int referenceCounter>;
+
+        if $i0 == 0 goto label3;
+
+        $i0 = r0.<org.apache.james.mime4j.storage.MultiReferenceStorage: int referenceCounter>;
+
+        $i0 = $i0 + 1;
+
+        r0.<org.apache.james.mime4j.storage.MultiReferenceStorage: int referenceCounter> = $i0;
+
+     label2:
+        exitmonitor r0;
+
+        return;
+
+     label3:
+        $r1 = new java.lang.IllegalStateException;
+
+        specialinvoke $r1.<java.lang.IllegalStateException: void <init>(java.lang.String)>("storage has been deleted");
+
+        throw $r1;
+
+     label4:
+        $r2 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label3 to label4 with label4;
+    }
+
+    public void addReference()
+    {
+        org.apache.james.mime4j.storage.MultiReferenceStorage r0;
+
+        r0 := @this: org.apache.james.mime4j.storage.MultiReferenceStorage;
+
+        specialinvoke r0.<org.apache.james.mime4j.storage.MultiReferenceStorage: void incrementCounter()>();
+
+        return;
+    }
+
+    public void delete()
+    {
+        org.apache.james.mime4j.storage.MultiReferenceStorage r0;
+        org.apache.james.mime4j.storage.Storage $r1;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.storage.MultiReferenceStorage;
+
+        $z0 = specialinvoke r0.<org.apache.james.mime4j.storage.MultiReferenceStorage: boolean decrementCounter()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = r0.<org.apache.james.mime4j.storage.MultiReferenceStorage: org.apache.james.mime4j.storage.Storage storage>;
+
+        interfaceinvoke $r1.<org.apache.james.mime4j.storage.Storage: void delete()>();
+
+     label1:
+        return;
+    }
+
+    public java.io.InputStream getInputStream()
+    {
+        org.apache.james.mime4j.storage.MultiReferenceStorage r0;
+        org.apache.james.mime4j.storage.Storage $r2;
+        java.io.InputStream $r1;
+
+        r0 := @this: org.apache.james.mime4j.storage.MultiReferenceStorage;
+
+        $r2 = r0.<org.apache.james.mime4j.storage.MultiReferenceStorage: org.apache.james.mime4j.storage.Storage storage>;
+
+        $r1 = interfaceinvoke $r2.<org.apache.james.mime4j.storage.Storage: java.io.InputStream getInputStream()>();
+
+        return $r1;
+    }
+}

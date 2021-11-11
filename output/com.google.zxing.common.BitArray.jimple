@@ -1,0 +1,1144 @@
+public final class com.google.zxing.common.BitArray extends java.lang.Object
+{
+    public int[] bits;
+    public int size;
+
+    public void <init>()
+    {
+        com.google.zxing.common.BitArray r0;
+        int[] $r1;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.zxing.common.BitArray: int size> = 0;
+
+        $r1 = newarray (int)[1];
+
+        r0.<com.google.zxing.common.BitArray: int[] bits> = $r1;
+
+        return;
+    }
+
+    public void <init>(int)
+    {
+        int $i0;
+        com.google.zxing.common.BitArray r0;
+        int[] $r1;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $i0 := @parameter0: int;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.zxing.common.BitArray: int size> = $i0;
+
+        $r1 = staticinvoke <com.google.zxing.common.BitArray: int[] makeArray(int)>($i0);
+
+        r0.<com.google.zxing.common.BitArray: int[] bits> = $r1;
+
+        return;
+    }
+
+    public void <init>(int[], int)
+    {
+        int $i0;
+        com.google.zxing.common.BitArray r0;
+        int[] $r1;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $r1 := @parameter0: int[];
+
+        $i0 := @parameter1: int;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.zxing.common.BitArray: int[] bits> = $r1;
+
+        r0.<com.google.zxing.common.BitArray: int size> = $i0;
+
+        return;
+    }
+
+    private void ensureCapacity(int)
+    {
+        int[] $r1, $r2;
+        int $i0, $i1;
+        com.google.zxing.common.BitArray r0;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i1 = lengthof $r1;
+
+        $i1 = $i1 * 32;
+
+        if $i0 <= $i1 goto label1;
+
+        $r1 = staticinvoke <com.google.zxing.common.BitArray: int[] makeArray(int)>($i0);
+
+        $r2 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i0 = lengthof $r2;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, 0, $r1, 0, $i0);
+
+        r0.<com.google.zxing.common.BitArray: int[] bits> = $r1;
+
+     label1:
+        return;
+    }
+
+    public static int[] makeArray(int)
+    {
+        int $i0;
+        int[] $r0;
+
+        $i0 := @parameter0: int;
+
+        $i0 = $i0 + 31;
+
+        $i0 = $i0 / 32;
+
+        $r0 = newarray (int)[$i0];
+
+        return $r0;
+    }
+
+    public void appendBit(boolean)
+    {
+        int[] $r1;
+        int $i0, $i1, $i2;
+        com.google.zxing.common.BitArray r0;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $z0 := @parameter0: boolean;
+
+        $i0 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        $i0 = $i0 + 1;
+
+        specialinvoke r0.<com.google.zxing.common.BitArray: void ensureCapacity(int)>($i0);
+
+        if $z0 == 0 goto label1;
+
+        $r1 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i2 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        $i0 = $i2 / 32;
+
+        $i1 = $r1[$i0];
+
+        $i2 = $i2 & 31;
+
+        $i2 = 1 << $i2;
+
+        $i1 = $i2 | $i1;
+
+        $r1[$i0] = $i1;
+
+     label1:
+        $i0 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        $i0 = $i0 + 1;
+
+        r0.<com.google.zxing.common.BitArray: int size> = $i0;
+
+        return;
+    }
+
+    public void appendBitArray(com.google.zxing.common.BitArray)
+    {
+        int $i0, $i1;
+        com.google.zxing.common.BitArray r0, $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $r1 := @parameter0: com.google.zxing.common.BitArray;
+
+        $i0 = $r1.<com.google.zxing.common.BitArray: int size>;
+
+        $i1 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        $i1 = $i1 + $i0;
+
+        specialinvoke r0.<com.google.zxing.common.BitArray: void ensureCapacity(int)>($i1);
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label2;
+
+        $z0 = virtualinvoke $r1.<com.google.zxing.common.BitArray: boolean get(int)>($i1);
+
+        virtualinvoke r0.<com.google.zxing.common.BitArray: void appendBit(boolean)>($z0);
+
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public void appendBits(int, int)
+    {
+        int $i0, $i1, $i2;
+        com.google.zxing.common.BitArray r0;
+        java.lang.IllegalArgumentException $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        if $i1 < 0 goto label5;
+
+        if $i1 > 32 goto label5;
+
+        $i2 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        $i2 = $i2 + $i1;
+
+        specialinvoke r0.<com.google.zxing.common.BitArray: void ensureCapacity(int)>($i2);
+
+     label1:
+        if $i1 <= 0 goto label4;
+
+        $i2 = -1;
+
+        $i2 = $i1 + $i2;
+
+        $i2 = $i0 >> $i2;
+
+        $z0 = 1;
+
+        $i2 = $i2 & 1;
+
+        if $i2 != 1 goto label2;
+
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        virtualinvoke r0.<com.google.zxing.common.BitArray: void appendBit(boolean)>($z0);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label1;
+
+     label4:
+        return;
+
+     label5:
+        $r1 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Num bits must be between 0 and 32");
+
+        goto label6;
+
+     label6:
+        throw $r1;
+    }
+
+    public void clear()
+    {
+        int[] $r1;
+        int $i0, $i1;
+        com.google.zxing.common.BitArray r0;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $r1 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i0 = lengthof $r1;
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label2;
+
+        $r1 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $r1[$i1] = 0;
+
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public void flip(int)
+    {
+        int[] $r1;
+        int $i0, $i1, $i2;
+        com.google.zxing.common.BitArray r0;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $i2 := @parameter0: int;
+
+        $r1 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i0 = $i2 / 32;
+
+        $i1 = $r1[$i0];
+
+        $i2 = $i2 & 31;
+
+        $i2 = 1 << $i2;
+
+        $i2 = $i2 ^ $i1;
+
+        $r1[$i0] = $i2;
+
+        return;
+    }
+
+    public boolean get(int)
+    {
+        int[] $r1;
+        int $i0, $i1;
+        com.google.zxing.common.BitArray r0;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i1 = $i0 / 32;
+
+        $i1 = $r1[$i1];
+
+        $i0 = $i0 & 31;
+
+        $i0 = 1 << $i0;
+
+        $i0 = $i0 & $i1;
+
+        if $i0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public int[] getBitArray()
+    {
+        com.google.zxing.common.BitArray r0;
+        int[] r1;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        r1 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        return r1;
+    }
+
+    public int getNextSet(int)
+    {
+        int[] $r1;
+        int $i0, $i1, $i2, $i3;
+        com.google.zxing.common.BitArray r0;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $i0 := @parameter0: int;
+
+        $i1 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        if $i0 < $i1 goto label1;
+
+        return $i1;
+
+     label1:
+        $i1 = $i0 / 32;
+
+        $r1 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i2 = $r1[$i1];
+
+        $i0 = $i0 & 31;
+
+        $i0 = 1 << $i0;
+
+        $i0 = $i0 - 1;
+
+        $i3 = -1;
+
+        $i0 = $i0 ^ $i3;
+
+        $i0 = $i0 & $i2;
+
+     label2:
+        if $i0 != 0 goto label4;
+
+        $i1 = $i1 + 1;
+
+        $r1 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i0 = lengthof $r1;
+
+        if $i1 != $i0 goto label3;
+
+        $i0 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        return $i0;
+
+     label3:
+        $i0 = $r1[$i1];
+
+        goto label2;
+
+     label4:
+        $i1 = $i1 * 32;
+
+        $i0 = staticinvoke <java.lang.Integer: int numberOfTrailingZeros(int)>($i0);
+
+        $i0 = $i1 + $i0;
+
+        $i1 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        if $i0 <= $i1 goto label5;
+
+        return $i1;
+
+     label5:
+        return $i0;
+    }
+
+    public int getNextUnset(int)
+    {
+        int[] $r1;
+        int $i0, $i1, $i2, $i3;
+        com.google.zxing.common.BitArray r0;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $i0 := @parameter0: int;
+
+        $i1 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        if $i0 < $i1 goto label1;
+
+        return $i1;
+
+     label1:
+        $i1 = $i0 / 32;
+
+        $r1 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i2 = $r1[$i1];
+
+        $i3 = -1;
+
+        $i2 = $i2 ^ $i3;
+
+        $i0 = $i0 & 31;
+
+        $i0 = 1 << $i0;
+
+        $i0 = $i0 - 1;
+
+        $i3 = -1;
+
+        $i0 = $i0 ^ $i3;
+
+        $i0 = $i0 & $i2;
+
+     label2:
+        if $i0 != 0 goto label4;
+
+        $i1 = $i1 + 1;
+
+        $r1 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i0 = lengthof $r1;
+
+        if $i1 != $i0 goto label3;
+
+        $i0 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        return $i0;
+
+     label3:
+        $i0 = $r1[$i1];
+
+        $i2 = -1;
+
+        $i0 = $i0 ^ $i2;
+
+        goto label2;
+
+     label4:
+        $i1 = $i1 * 32;
+
+        $i0 = staticinvoke <java.lang.Integer: int numberOfTrailingZeros(int)>($i0);
+
+        $i0 = $i1 + $i0;
+
+        $i1 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        if $i0 <= $i1 goto label5;
+
+        return $i1;
+
+     label5:
+        return $i0;
+    }
+
+    public int getSize()
+    {
+        int i0;
+        com.google.zxing.common.BitArray r0;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        i0 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        return i0;
+    }
+
+    public int getSizeInBytes()
+    {
+        int $i0;
+        com.google.zxing.common.BitArray r0;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $i0 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        $i0 = $i0 + 7;
+
+        $i0 = $i0 / 8;
+
+        return $i0;
+    }
+
+    public boolean isRange(int, int, boolean)
+    {
+        com.google.zxing.common.BitArray r0;
+        java.lang.IllegalArgumentException $r2;
+        int[] $r1;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $i3 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $z0 := @parameter2: boolean;
+
+        if $i0 < $i3 goto label14;
+
+        if $i0 != $i3 goto label01;
+
+        return 1;
+
+     label01:
+        $i1 = -1;
+
+        $i4 = $i0 + $i1;
+
+        $i0 = $i3 / 32;
+
+        $i1 = $i4 / 32;
+
+        $i5 = $i0;
+
+     label02:
+        if $i5 > $i1 goto label13;
+
+        if $i5 <= $i0 goto label03;
+
+        $i6 = 0;
+
+        goto label04;
+
+     label03:
+        $i6 = $i3 & 31;
+
+     label04:
+        if $i5 >= $i1 goto label05;
+
+        $i7 = 31;
+
+        goto label06;
+
+     label05:
+        $i7 = $i4 & 31;
+
+     label06:
+        if $i6 != 0 goto label07;
+
+        if $i7 != 31 goto label07;
+
+        $i8 = -1;
+
+        goto label09;
+
+     label07:
+        $i8 = 0;
+
+     label08:
+        if $i6 > $i7 goto label09;
+
+        $i2 = 1 << $i6;
+
+        $i8 = $i8 | $i2;
+
+        $i6 = $i6 + 1;
+
+        goto label08;
+
+     label09:
+        $r1 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i2 = $r1[$i5];
+
+        $i2 = $i2 & $i8;
+
+        if $z0 == 0 goto label10;
+
+        goto label11;
+
+     label10:
+        $i8 = 0;
+
+     label11:
+        if $i2 == $i8 goto label12;
+
+        return 0;
+
+     label12:
+        $i5 = $i5 + 1;
+
+        goto label02;
+
+     label13:
+        return 1;
+
+     label14:
+        $r2 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r2.<java.lang.IllegalArgumentException: void <init>()>();
+
+        goto label15;
+
+     label15:
+        throw $r2;
+    }
+
+    public void reverse()
+    {
+        long $l4, $l5;
+        com.google.zxing.common.BitArray r0;
+        int[] $r1, $r2;
+        int $i0, $i1, $i2, $i3, $i6, $i7, $i8;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $r1 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i0 = lengthof $r1;
+
+        $r1 = newarray (int)[$i0];
+
+        $i0 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        $i0 = $i0 - 1;
+
+        $i1 = $i0 / 32;
+
+        $i0 = $i1 + 1;
+
+        $i2 = 0;
+
+     label1:
+        if $i2 >= $i0 goto label2;
+
+        $r2 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i3 = $r2[$i2];
+
+        $l4 = (long) $i3;
+
+        $l5 = $l4 >> 1;
+
+        $l5 = $l5 & 1431655765L;
+
+        $l4 = $l4 & 1431655765L;
+
+        $l4 = $l4 << 1;
+
+        $l4 = $l4 | $l5;
+
+        $l5 = $l4 >> 2;
+
+        $l5 = $l5 & 858993459L;
+
+        $l4 = $l4 & 858993459L;
+
+        $l4 = $l4 << 2;
+
+        $l4 = $l4 | $l5;
+
+        $l5 = $l4 >> 4;
+
+        $l5 = $l5 & 252645135L;
+
+        $l4 = $l4 & 252645135L;
+
+        $l4 = $l4 << 4;
+
+        $l4 = $l4 | $l5;
+
+        $l5 = $l4 >> 8;
+
+        $l5 = $l5 & 16711935L;
+
+        $l4 = $l4 & 16711935L;
+
+        $l4 = $l4 << 8;
+
+        $l4 = $l4 | $l5;
+
+        $l5 = $l4 >> 16;
+
+        $l5 = $l5 & 65535L;
+
+        $l4 = $l4 & 65535L;
+
+        $l4 = $l4 << 16;
+
+        $l5 = $l4 | $l5;
+
+        $i3 = $i1 - $i2;
+
+        $i6 = (int) $l5;
+
+        $r1[$i3] = $i6;
+
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label2:
+        $i1 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        $i2 = $i0 * 32;
+
+        if $i1 == $i2 goto label7;
+
+        $i1 = $i2 - $i1;
+
+        $i3 = 0;
+
+        $i2 = 1;
+
+     label3:
+        $i6 = 31 - $i1;
+
+        if $i3 >= $i6 goto label4;
+
+        $i2 = $i2 << 1;
+
+        $i2 = $i2 | 1;
+
+        $i3 = $i3 + 1;
+
+        goto label3;
+
+     label4:
+        $i3 = $r1[0];
+
+        $i3 = $i3 >> $i1;
+
+        $i7 = $i3 & $i2;
+
+        $i3 = 1;
+
+     label5:
+        if $i3 >= $i0 goto label6;
+
+        $i6 = $r1[$i3];
+
+        $i8 = 32 - $i1;
+
+        $i8 = $i6 << $i8;
+
+        $i7 = $i7 | $i8;
+
+        $i8 = -1;
+
+        $i8 = $i3 + $i8;
+
+        $r1[$i8] = $i7;
+
+        $i6 = $i6 >> $i1;
+
+        $i7 = $i6 & $i2;
+
+        $i3 = $i3 + 1;
+
+        goto label5;
+
+     label6:
+        $i0 = $i0 - 1;
+
+        $r1[$i0] = $i7;
+
+     label7:
+        r0.<com.google.zxing.common.BitArray: int[] bits> = $r1;
+
+        return;
+    }
+
+    public void set(int)
+    {
+        int[] $r1;
+        int $i0, $i1, $i2;
+        com.google.zxing.common.BitArray r0;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $i2 := @parameter0: int;
+
+        $r1 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i0 = $i2 / 32;
+
+        $i1 = $r1[$i0];
+
+        $i2 = $i2 & 31;
+
+        $i2 = 1 << $i2;
+
+        $i2 = $i2 | $i1;
+
+        $r1[$i0] = $i2;
+
+        return;
+    }
+
+    public void setBulk(int, int)
+    {
+        int[] $r1;
+        int $i0, $i1;
+        com.google.zxing.common.BitArray r0;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $i1 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $r1 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i1 = $i1 / 32;
+
+        $r1[$i1] = $i0;
+
+        return;
+    }
+
+    public void setRange(int, int)
+    {
+        com.google.zxing.common.BitArray r0;
+        java.lang.IllegalArgumentException $r2;
+        int[] $r1;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $i2 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        if $i0 < $i2 goto label10;
+
+        if $i0 != $i2 goto label01;
+
+        return;
+
+     label01:
+        $i1 = -1;
+
+        $i3 = $i0 + $i1;
+
+        $i0 = $i2 / 32;
+
+        $i1 = $i3 / 32;
+
+        $i4 = $i0;
+
+     label02:
+        if $i4 > $i1 goto label09;
+
+        $i5 = 0;
+
+        if $i4 <= $i0 goto label03;
+
+        $i6 = 0;
+
+        goto label04;
+
+     label03:
+        $i6 = $i2 & 31;
+
+     label04:
+        if $i4 >= $i1 goto label05;
+
+        $i7 = 31;
+
+        goto label06;
+
+     label05:
+        $i7 = $i3 & 31;
+
+     label06:
+        if $i6 != 0 goto label07;
+
+        if $i7 != 31 goto label07;
+
+        $i5 = -1;
+
+        goto label08;
+
+     label07:
+        if $i6 > $i7 goto label08;
+
+        $i8 = 1 << $i6;
+
+        $i5 = $i5 | $i8;
+
+        $i6 = $i6 + 1;
+
+        goto label07;
+
+     label08:
+        $r1 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i6 = $r1[$i4];
+
+        $i5 = $i5 | $i6;
+
+        $r1[$i4] = $i5;
+
+        $i4 = $i4 + 1;
+
+        goto label02;
+
+     label09:
+        return;
+
+     label10:
+        $r2 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r2.<java.lang.IllegalArgumentException: void <init>()>();
+
+        goto label11;
+
+     label11:
+        throw $r2;
+    }
+
+    public void toBytes(int, byte[], int, int)
+    {
+        byte[] $r1;
+        com.google.zxing.common.BitArray r0;
+        byte $b7;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $i2 := @parameter0: int;
+
+        $r1 := @parameter1: byte[];
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        $i3 = $i2;
+
+        $i2 = 0;
+
+     label1:
+        if $i2 >= $i1 goto label5;
+
+        $i4 = 0;
+
+        $i5 = 0;
+
+     label2:
+        if $i4 >= 8 goto label4;
+
+        $z0 = virtualinvoke r0.<com.google.zxing.common.BitArray: boolean get(int)>($i3);
+
+        if $z0 == 0 goto label3;
+
+        $i6 = 7 - $i4;
+
+        $i6 = 1 << $i6;
+
+        $i5 = $i5 | $i6;
+
+     label3:
+        $i3 = $i3 + 1;
+
+        $i4 = $i4 + 1;
+
+        goto label2;
+
+     label4:
+        $i4 = $i0 + $i2;
+
+        $b7 = (byte) $i5;
+
+        $r1[$i4] = $b7;
+
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label5:
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        int $i0, $i1;
+        java.lang.StringBuilder $r1;
+        char $c2;
+        java.lang.String $r2;
+        com.google.zxing.common.BitArray r0;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $r1 = new java.lang.StringBuilder;
+
+        $i0 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(int)>($i0);
+
+        $i0 = 0;
+
+     label1:
+        $i1 = r0.<com.google.zxing.common.BitArray: int size>;
+
+        if $i0 >= $i1 goto label5;
+
+        $i1 = $i0 & 7;
+
+        if $i1 != 0 goto label2;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+     label2:
+        $z0 = virtualinvoke r0.<com.google.zxing.common.BitArray: boolean get(int)>($i0);
+
+        if $z0 == 0 goto label3;
+
+        $c2 = 88;
+
+        goto label4;
+
+     label3:
+        $c2 = 46;
+
+     label4:
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c2);
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label5:
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r2;
+    }
+
+    public void xor(com.google.zxing.common.BitArray)
+    {
+        com.google.zxing.common.BitArray r0, $r1;
+        java.lang.IllegalArgumentException $r4;
+        int[] $r2, $r3;
+        int $i0, $i1, $i2;
+
+        r0 := @this: com.google.zxing.common.BitArray;
+
+        $r1 := @parameter0: com.google.zxing.common.BitArray;
+
+        $r2 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i0 = lengthof $r2;
+
+        $r2 = $r1.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i1 = lengthof $r2;
+
+        if $i0 != $i1 goto label3;
+
+        $i0 = 0;
+
+     label1:
+        $r2 = r0.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i1 = lengthof $r2;
+
+        if $i0 >= $i1 goto label2;
+
+        $i1 = $r2[$i0];
+
+        $r3 = $r1.<com.google.zxing.common.BitArray: int[] bits>;
+
+        $i2 = $r3[$i0];
+
+        $i1 = $i1 ^ $i2;
+
+        $r2[$i0] = $i1;
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label2:
+        return;
+
+     label3:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Sizes don\'t match");
+
+        goto label4;
+
+     label4:
+        throw $r4;
+    }
+}

@@ -1,0 +1,1801 @@
+public class androidx.fragment.app.FragmentActivity extends androidx.activity.ComponentActivity implements b.i.a.b$a, b.i.a.b$c
+{
+    public static final java.lang.String ALLOCATED_REQUEST_INDICIES_TAG;
+    public static final java.lang.String FRAGMENTS_TAG;
+    public static final int MAX_NUM_PENDING_FRAGMENT_ACTIVITY_RESULTS;
+    public static final java.lang.String NEXT_CANDIDATE_REQUEST_INDEX_TAG;
+    public static final java.lang.String REQUEST_FRAGMENT_WHO_TAG;
+    public static final java.lang.String TAG;
+    public boolean mCreated;
+    public final androidx.lifecycle.LifecycleRegistry mFragmentLifecycleRegistry;
+    public final b.m.a.i mFragments;
+    public int mNextCandidateRequestIndex;
+    public b.f.j mPendingFragmentActivityResults;
+    public boolean mRequestedPermissionsFromFragment;
+    public boolean mResumed;
+    public boolean mStartedActivityFromFragment;
+    public boolean mStartedIntentSenderFromFragment;
+    public boolean mStopped;
+
+    public void <init>()
+    {
+        b.m.a.i $r1;
+        androidx.fragment.app.FragmentActivity$a $r2;
+        androidx.lifecycle.LifecycleRegistry $r3;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        specialinvoke r0.<androidx.activity.ComponentActivity: void <init>()>();
+
+        $r2 = new androidx.fragment.app.FragmentActivity$a;
+
+        specialinvoke $r2.<androidx.fragment.app.FragmentActivity$a: void <init>(androidx.fragment.app.FragmentActivity)>(r0);
+
+        $r1 = staticinvoke <b.m.a.i: b.m.a.i a(b.m.a.k)>($r2);
+
+        r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments> = $r1;
+
+        $r3 = new androidx.lifecycle.LifecycleRegistry;
+
+        specialinvoke $r3.<androidx.lifecycle.LifecycleRegistry: void <init>(androidx.lifecycle.LifecycleOwner)>(r0);
+
+        r0.<androidx.fragment.app.FragmentActivity: androidx.lifecycle.LifecycleRegistry mFragmentLifecycleRegistry> = $r3;
+
+        r0.<androidx.fragment.app.FragmentActivity: boolean mStopped> = 1;
+
+        return;
+    }
+
+    public void <init>(int)
+    {
+        b.m.a.i $r1;
+        int $i0;
+        androidx.fragment.app.FragmentActivity$a $r2;
+        androidx.lifecycle.LifecycleRegistry $r3;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $i0 := @parameter0: int;
+
+        specialinvoke r0.<androidx.activity.ComponentActivity: void <init>(int)>($i0);
+
+        $r2 = new androidx.fragment.app.FragmentActivity$a;
+
+        specialinvoke $r2.<androidx.fragment.app.FragmentActivity$a: void <init>(androidx.fragment.app.FragmentActivity)>(r0);
+
+        $r1 = staticinvoke <b.m.a.i: b.m.a.i a(b.m.a.k)>($r2);
+
+        r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments> = $r1;
+
+        $r3 = new androidx.lifecycle.LifecycleRegistry;
+
+        specialinvoke $r3.<androidx.lifecycle.LifecycleRegistry: void <init>(androidx.lifecycle.LifecycleOwner)>(r0);
+
+        r0.<androidx.fragment.app.FragmentActivity: androidx.lifecycle.LifecycleRegistry mFragmentLifecycleRegistry> = $r3;
+
+        r0.<androidx.fragment.app.FragmentActivity: boolean mStopped> = 1;
+
+        return;
+    }
+
+    private int allocateRequestIndex(androidx.fragment.app.Fragment)
+    {
+        java.lang.IllegalStateException $r4;
+        b.f.j $r2;
+        androidx.fragment.app.FragmentActivity r0;
+        androidx.fragment.app.Fragment $r1;
+        int $i0, $i1, $i2;
+        java.lang.String $r3;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r1 := @parameter0: androidx.fragment.app.Fragment;
+
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults>;
+
+        $i0 = virtualinvoke $r2.<b.f.j: int b()>();
+
+        $i1 = 65534;
+
+        if $i0 >= $i1 goto label3;
+
+     label1:
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults>;
+
+        $i0 = r0.<androidx.fragment.app.FragmentActivity: int mNextCandidateRequestIndex>;
+
+        $i0 = virtualinvoke $r2.<b.f.j: int b(int)>($i0);
+
+        if $i0 < 0 goto label2;
+
+        $i0 = r0.<androidx.fragment.app.FragmentActivity: int mNextCandidateRequestIndex>;
+
+        $i0 = $i0 + 1;
+
+        $i1 = 65534;
+
+        $i0 = $i0 % $i1;
+
+        r0.<androidx.fragment.app.FragmentActivity: int mNextCandidateRequestIndex> = $i0;
+
+        goto label1;
+
+     label2:
+        $i0 = r0.<androidx.fragment.app.FragmentActivity: int mNextCandidateRequestIndex>;
+
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults>;
+
+        $r3 = $r1.<androidx.fragment.app.Fragment: java.lang.String mWho>;
+
+        virtualinvoke $r2.<b.f.j: void c(int,java.lang.Object)>($i0, $r3);
+
+        $i1 = r0.<androidx.fragment.app.FragmentActivity: int mNextCandidateRequestIndex>;
+
+        $i1 = $i1 + 1;
+
+        $i2 = 65534;
+
+        $i1 = $i1 % $i2;
+
+        r0.<androidx.fragment.app.FragmentActivity: int mNextCandidateRequestIndex> = $i1;
+
+        return $i0;
+
+     label3:
+        $r4 = new java.lang.IllegalStateException;
+
+        specialinvoke $r4.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Too many pending Fragment activity results.");
+
+        goto label4;
+
+     label4:
+        throw $r4;
+    }
+
+    public static void checkForValidRequestCode(int)
+    {
+        int $i0;
+        java.lang.IllegalArgumentException $r0;
+
+        $i0 := @parameter0: int;
+
+        $i0 = $i0 & -65536;
+
+        if $i0 != 0 goto label1;
+
+        return;
+
+     label1:
+        $r0 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Can only use lower 16 bits for requestCode");
+
+        throw $r0;
+    }
+
+    private void markFragmentsCreated()
+    {
+        androidx.lifecycle.Lifecycle$State $r1;
+        b.m.a.l $r2;
+        androidx.fragment.app.FragmentActivity r0;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+     label1:
+        $r2 = virtualinvoke r0.<androidx.fragment.app.FragmentActivity: b.m.a.l getSupportFragmentManager()>();
+
+        $r1 = <androidx.lifecycle.Lifecycle$State: androidx.lifecycle.Lifecycle$State CREATED>;
+
+        $z0 = staticinvoke <androidx.fragment.app.FragmentActivity: boolean markState(b.m.a.l,androidx.lifecycle.Lifecycle$State)>($r2, $r1);
+
+        if $z0 != 0 goto label1;
+
+        return;
+    }
+
+    public static boolean markState(b.m.a.l, androidx.lifecycle.Lifecycle$State)
+    {
+        java.util.Iterator $r4;
+        b.m.a.l $r2;
+        androidx.lifecycle.LifecycleRegistry $r9;
+        androidx.lifecycle.Lifecycle $r7;
+        androidx.lifecycle.Lifecycle$State $r0, $r1, $r8;
+        java.util.List $r3;
+        androidx.fragment.app.Fragment $r6;
+        java.lang.Object $r5;
+        boolean $z0, $z1;
+
+        $r2 := @parameter0: b.m.a.l;
+
+        $r0 := @parameter1: androidx.lifecycle.Lifecycle$State;
+
+        $r3 = virtualinvoke $r2.<b.m.a.l: java.util.List e()>();
+
+        $r4 = interfaceinvoke $r3.<java.util.Collection: java.util.Iterator iterator()>();
+
+        $z0 = 0;
+
+     label1:
+        $z1 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z1 == 0 goto label4;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (androidx.fragment.app.Fragment) $r5;
+
+        if $r6 != null goto label2;
+
+        goto label1;
+
+     label2:
+        $r7 = virtualinvoke $r6.<androidx.fragment.app.Fragment: androidx.lifecycle.Lifecycle getLifecycle()>();
+
+        $r8 = virtualinvoke $r7.<androidx.lifecycle.Lifecycle: androidx.lifecycle.Lifecycle$State getCurrentState()>();
+
+        $r1 = <androidx.lifecycle.Lifecycle$State: androidx.lifecycle.Lifecycle$State STARTED>;
+
+        $z1 = virtualinvoke $r8.<androidx.lifecycle.Lifecycle$State: boolean isAtLeast(androidx.lifecycle.Lifecycle$State)>($r1);
+
+        if $z1 == 0 goto label3;
+
+        $r9 = $r6.<androidx.fragment.app.Fragment: androidx.lifecycle.LifecycleRegistry mLifecycleRegistry>;
+
+        virtualinvoke $r9.<androidx.lifecycle.LifecycleRegistry: void setCurrentState(androidx.lifecycle.Lifecycle$State)>($r0);
+
+        $z0 = 1;
+
+     label3:
+        $r5 = virtualinvoke $r6.<androidx.fragment.app.Fragment: java.lang.Object getHost()>();
+
+        if $r5 == null goto label1;
+
+        $r2 = virtualinvoke $r6.<androidx.fragment.app.Fragment: b.m.a.l getChildFragmentManager()>();
+
+        $z1 = staticinvoke <androidx.fragment.app.FragmentActivity: boolean markState(b.m.a.l,androidx.lifecycle.Lifecycle$State)>($r2, $r0);
+
+        $z0 = $z0 | $z1;
+
+        goto label1;
+
+     label4:
+        return $z0;
+    }
+
+    public final android.view.View dispatchFragmentsOnCreateView(android.view.View, java.lang.String, android.content.Context, android.util.AttributeSet)
+    {
+        android.content.Context $r2;
+        android.util.AttributeSet $r3;
+        b.m.a.i $r4;
+        android.view.View $r5;
+        java.lang.String $r1;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r5 := @parameter0: android.view.View;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 := @parameter2: android.content.Context;
+
+        $r3 := @parameter3: android.util.AttributeSet;
+
+        $r4 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        $r5 = virtualinvoke $r4.<b.m.a.i: android.view.View a(android.view.View,java.lang.String,android.content.Context,android.util.AttributeSet)>($r5, $r1, $r2, $r3);
+
+        return $r5;
+    }
+
+    public void dump(java.lang.String, java.io.FileDescriptor, java.io.PrintWriter, java.lang.String[])
+    {
+        java.io.PrintWriter $r3;
+        b.m.a.l $r10;
+        java.lang.String[] $r4;
+        androidx.fragment.app.FragmentActivity r0;
+        android.app.Application $r7;
+        java.io.FileDescriptor $r2;
+        int $i0;
+        b.m.a.i $r9;
+        java.lang.StringBuilder $r6;
+        java.lang.String $r1, $r5;
+        b.o.a.a $r8;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.io.FileDescriptor;
+
+        $r3 := @parameter2: java.io.PrintWriter;
+
+        $r4 := @parameter3: java.lang.String[];
+
+        specialinvoke r0.<android.app.Activity: void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[])>($r1, $r2, $r3, $r4);
+
+        virtualinvoke $r3.<java.io.PrintWriter: void print(java.lang.String)>($r1);
+
+        virtualinvoke $r3.<java.io.PrintWriter: void print(java.lang.String)>("Local FragmentActivity ");
+
+        $i0 = staticinvoke <java.lang.System: int identityHashCode(java.lang.Object)>(r0);
+
+        $r5 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        virtualinvoke $r3.<java.io.PrintWriter: void print(java.lang.String)>($r5);
+
+        virtualinvoke $r3.<java.io.PrintWriter: void println(java.lang.String)>(" State:");
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("  ");
+
+        $r5 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r3.<java.io.PrintWriter: void print(java.lang.String)>($r5);
+
+        virtualinvoke $r3.<java.io.PrintWriter: void print(java.lang.String)>("mCreated=");
+
+        $z0 = r0.<androidx.fragment.app.FragmentActivity: boolean mCreated>;
+
+        virtualinvoke $r3.<java.io.PrintWriter: void print(boolean)>($z0);
+
+        virtualinvoke $r3.<java.io.PrintWriter: void print(java.lang.String)>(" mResumed=");
+
+        $z0 = r0.<androidx.fragment.app.FragmentActivity: boolean mResumed>;
+
+        virtualinvoke $r3.<java.io.PrintWriter: void print(boolean)>($z0);
+
+        virtualinvoke $r3.<java.io.PrintWriter: void print(java.lang.String)>(" mStopped=");
+
+        $z0 = r0.<androidx.fragment.app.FragmentActivity: boolean mStopped>;
+
+        virtualinvoke $r3.<java.io.PrintWriter: void print(boolean)>($z0);
+
+        $r7 = virtualinvoke r0.<android.app.Activity: android.app.Application getApplication()>();
+
+        if $r7 == null goto label1;
+
+        $r8 = staticinvoke <b.o.a.a: b.o.a.a a(androidx.lifecycle.LifecycleOwner)>(r0);
+
+        virtualinvoke $r8.<b.o.a.a: void a(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[])>($r5, $r2, $r3, $r4);
+
+     label1:
+        $r9 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        $r10 = virtualinvoke $r9.<b.m.a.i: b.m.a.l j()>();
+
+        virtualinvoke $r10.<b.m.a.l: void a(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[])>($r1, $r2, $r3, $r4);
+
+        return;
+    }
+
+    public b.m.a.l getSupportFragmentManager()
+    {
+        b.m.a.i $r2;
+        b.m.a.l $r1;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        $r1 = virtualinvoke $r2.<b.m.a.i: b.m.a.l j()>();
+
+        return $r1;
+    }
+
+    public b.o.a.a getSupportLoaderManager()
+    {
+        b.o.a.a $r1;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r1 = staticinvoke <b.o.a.a: b.o.a.a a(androidx.lifecycle.LifecycleOwner)>(r0);
+
+        return $r1;
+    }
+
+    public void onActivityResult(int, int, android.content.Intent)
+    {
+        b.i.a.b$b $r8;
+        android.content.Intent $r1;
+        b.f.j $r3;
+        androidx.fragment.app.FragmentActivity r0;
+        int $i0, $i1, $i2, $i3;
+        b.m.a.i $r2;
+        androidx.fragment.app.Fragment $r6;
+        java.lang.Object $r4;
+        java.lang.StringBuilder $r7, $r9;
+        java.lang.String $r5;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $r1 := @parameter2: android.content.Intent;
+
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r2.<b.m.a.i: void k()>();
+
+        $i2 = $i0 >> 16;
+
+        if $i2 == 0 goto label3;
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        $r3 = r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults>;
+
+        $r4 = virtualinvoke $r3.<b.f.j: java.lang.Object a(int)>($i2);
+
+        $r5 = (java.lang.String) $r4;
+
+        $r3 = r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults>;
+
+        virtualinvoke $r3.<b.f.j: void d(int)>($i2);
+
+        if $r5 != null goto label1;
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("FragmentActivity", "Activity result delivered for unknown Fragment.");
+
+        return;
+
+     label1:
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        $r6 = virtualinvoke $r2.<b.m.a.i: androidx.fragment.app.Fragment a(java.lang.String)>($r5);
+
+        if $r6 != null goto label2;
+
+        $r9 = new java.lang.StringBuilder;
+
+        $r7 = $r9;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Activity result no fragment exists for who: ");
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r5 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("FragmentActivity", $r5);
+
+        return;
+
+     label2:
+        $i2 = 65535;
+
+        $i0 = $i0 & $i2;
+
+        virtualinvoke $r6.<androidx.fragment.app.Fragment: void onActivityResult(int,int,android.content.Intent)>($i0, $i1, $r1);
+
+        return;
+
+     label3:
+        $r8 = staticinvoke <b.i.a.b: b.i.a.b$b a()>();
+
+        if $r8 == null goto label4;
+
+        $z0 = interfaceinvoke $r8.<b.i.a.b$b: boolean a(android.app.Activity,int,int,android.content.Intent)>(r0, $i0, $i1, $r1);
+
+        if $z0 == 0 goto label4;
+
+        return;
+
+     label4:
+        specialinvoke r0.<android.app.Activity: void onActivityResult(int,int,android.content.Intent)>($i0, $i1, $r1);
+
+        return;
+    }
+
+    public void onAttachFragment(androidx.fragment.app.Fragment)
+    {
+        androidx.fragment.app.Fragment $r1;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r1 := @parameter0: androidx.fragment.app.Fragment;
+
+        return;
+    }
+
+    public void onConfigurationChanged(android.content.res.Configuration)
+    {
+        b.m.a.i $r2;
+        androidx.fragment.app.FragmentActivity r0;
+        android.content.res.Configuration $r1;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r1 := @parameter0: android.content.res.Configuration;
+
+        specialinvoke r0.<android.app.Activity: void onConfigurationChanged(android.content.res.Configuration)>($r1);
+
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r2.<b.m.a.i: void k()>();
+
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r2.<b.m.a.i: void a(android.content.res.Configuration)>($r1);
+
+        return;
+    }
+
+    public void onCreate(android.os.Bundle)
+    {
+        android.os.Bundle $r2;
+        android.os.Parcelable $r4;
+        java.lang.String[] $r6;
+        b.f.j $r7;
+        androidx.lifecycle.LifecycleRegistry $r8;
+        androidx.fragment.app.FragmentActivity r0;
+        androidx.lifecycle.Lifecycle$Event $r9;
+        int[] $r5;
+        int $i0, $i1;
+        b.m.a.i $r3;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r2 := @parameter0: android.os.Bundle;
+
+        $r3 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r3.<b.m.a.i: void a(androidx.fragment.app.Fragment)>(null);
+
+        if $r2 == null goto label4;
+
+        $r4 = virtualinvoke $r2.<android.os.Bundle: android.os.Parcelable getParcelable(java.lang.String)>("android:support:fragments");
+
+        $r3 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r3.<b.m.a.i: void a(android.os.Parcelable)>($r4);
+
+        $z0 = virtualinvoke $r2.<android.os.Bundle: boolean containsKey(java.lang.String)>("android:support:next_request_index");
+
+        if $z0 == 0 goto label4;
+
+        $i1 = virtualinvoke $r2.<android.os.Bundle: int getInt(java.lang.String)>("android:support:next_request_index");
+
+        r0.<androidx.fragment.app.FragmentActivity: int mNextCandidateRequestIndex> = $i1;
+
+        $r5 = virtualinvoke $r2.<android.os.Bundle: int[] getIntArray(java.lang.String)>("android:support:request_indicies");
+
+        $r6 = virtualinvoke $r2.<android.os.Bundle: java.lang.String[] getStringArray(java.lang.String)>("android:support:request_fragment_who");
+
+        if $r5 == null goto label3;
+
+        if $r6 == null goto label3;
+
+        $i1 = lengthof $r5;
+
+        $i0 = lengthof $r6;
+
+        if $i1 == $i0 goto label1;
+
+        goto label3;
+
+     label1:
+        $r7 = new b.f.j;
+
+        $i1 = lengthof $r5;
+
+        specialinvoke $r7.<b.f.j: void <init>(int)>($i1);
+
+        r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults> = $r7;
+
+        $i1 = 0;
+
+     label2:
+        $i0 = lengthof $r5;
+
+        if $i1 >= $i0 goto label4;
+
+        $r7 = r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults>;
+
+        $i0 = $r5[$i1];
+
+        $r1 = $r6[$i1];
+
+        virtualinvoke $r7.<b.f.j: void c(int,java.lang.Object)>($i0, $r1);
+
+        $i1 = $i1 + 1;
+
+        goto label2;
+
+     label3:
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("FragmentActivity", "Invalid requestCode mapping in savedInstanceState.");
+
+     label4:
+        $r7 = r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults>;
+
+        if $r7 != null goto label5;
+
+        $r7 = new b.f.j;
+
+        specialinvoke $r7.<b.f.j: void <init>()>();
+
+        r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults> = $r7;
+
+        r0.<androidx.fragment.app.FragmentActivity: int mNextCandidateRequestIndex> = 0;
+
+     label5:
+        specialinvoke r0.<androidx.activity.ComponentActivity: void onCreate(android.os.Bundle)>($r2);
+
+        $r8 = r0.<androidx.fragment.app.FragmentActivity: androidx.lifecycle.LifecycleRegistry mFragmentLifecycleRegistry>;
+
+        $r9 = <androidx.lifecycle.Lifecycle$Event: androidx.lifecycle.Lifecycle$Event ON_CREATE>;
+
+        virtualinvoke $r8.<androidx.lifecycle.LifecycleRegistry: void handleLifecycleEvent(androidx.lifecycle.Lifecycle$Event)>($r9);
+
+        $r3 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r3.<b.m.a.i: void b()>();
+
+        return;
+    }
+
+    public boolean onCreatePanelMenu(int, android.view.Menu)
+    {
+        android.view.MenuInflater $r3;
+        b.m.a.i $r1;
+        int $i0;
+        android.view.Menu $r2;
+        androidx.fragment.app.FragmentActivity r0;
+        boolean $z0, $z1;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $i0 := @parameter0: int;
+
+        $r2 := @parameter1: android.view.Menu;
+
+        if $i0 != 0 goto label1;
+
+        $z0 = specialinvoke r0.<android.app.Activity: boolean onCreatePanelMenu(int,android.view.Menu)>($i0, $r2);
+
+        $r1 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        $r3 = virtualinvoke r0.<android.app.Activity: android.view.MenuInflater getMenuInflater()>();
+
+        $z1 = virtualinvoke $r1.<b.m.a.i: boolean a(android.view.Menu,android.view.MenuInflater)>($r2, $r3);
+
+        $z0 = $z0 | $z1;
+
+        return $z0;
+
+     label1:
+        $z0 = specialinvoke r0.<android.app.Activity: boolean onCreatePanelMenu(int,android.view.Menu)>($i0, $r2);
+
+        return $z0;
+    }
+
+    public android.view.View onCreateView(android.view.View, java.lang.String, android.content.Context, android.util.AttributeSet)
+    {
+        android.content.Context $r2;
+        android.util.AttributeSet $r3;
+        android.view.View $r4, $r5;
+        java.lang.String $r1;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r4 := @parameter0: android.view.View;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 := @parameter2: android.content.Context;
+
+        $r3 := @parameter3: android.util.AttributeSet;
+
+        $r5 = virtualinvoke r0.<androidx.fragment.app.FragmentActivity: android.view.View dispatchFragmentsOnCreateView(android.view.View,java.lang.String,android.content.Context,android.util.AttributeSet)>($r4, $r1, $r2, $r3);
+
+        if $r5 != null goto label1;
+
+        $r4 = specialinvoke r0.<android.app.Activity: android.view.View onCreateView(android.view.View,java.lang.String,android.content.Context,android.util.AttributeSet)>($r4, $r1, $r2, $r3);
+
+        return $r4;
+
+     label1:
+        return $r5;
+    }
+
+    public android.view.View onCreateView(java.lang.String, android.content.Context, android.util.AttributeSet)
+    {
+        android.content.Context $r1;
+        android.util.AttributeSet $r2;
+        android.view.View $r4;
+        java.lang.String $r3;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: android.content.Context;
+
+        $r2 := @parameter2: android.util.AttributeSet;
+
+        $r4 = virtualinvoke r0.<androidx.fragment.app.FragmentActivity: android.view.View dispatchFragmentsOnCreateView(android.view.View,java.lang.String,android.content.Context,android.util.AttributeSet)>(null, $r3, $r1, $r2);
+
+        if $r4 != null goto label1;
+
+        $r4 = specialinvoke r0.<android.app.Activity: android.view.View onCreateView(java.lang.String,android.content.Context,android.util.AttributeSet)>($r3, $r1, $r2);
+
+     label1:
+        return $r4;
+    }
+
+    public void onDestroy()
+    {
+        b.m.a.i $r2;
+        androidx.lifecycle.LifecycleRegistry $r3;
+        androidx.fragment.app.FragmentActivity r0;
+        androidx.lifecycle.Lifecycle$Event $r1;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        specialinvoke r0.<android.app.Activity: void onDestroy()>();
+
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r2.<b.m.a.i: void c()>();
+
+        $r3 = r0.<androidx.fragment.app.FragmentActivity: androidx.lifecycle.LifecycleRegistry mFragmentLifecycleRegistry>;
+
+        $r1 = <androidx.lifecycle.Lifecycle$Event: androidx.lifecycle.Lifecycle$Event ON_DESTROY>;
+
+        virtualinvoke $r3.<androidx.lifecycle.LifecycleRegistry: void handleLifecycleEvent(androidx.lifecycle.Lifecycle$Event)>($r1);
+
+        return;
+    }
+
+    public void onLowMemory()
+    {
+        b.m.a.i $r1;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        specialinvoke r0.<android.app.Activity: void onLowMemory()>();
+
+        $r1 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r1.<b.m.a.i: void d()>();
+
+        return;
+    }
+
+    public boolean onMenuItemSelected(int, android.view.MenuItem)
+    {
+        int $i0;
+        b.m.a.i $r2;
+        androidx.fragment.app.FragmentActivity r0;
+        android.view.MenuItem $r1;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: android.view.MenuItem;
+
+        $z0 = specialinvoke r0.<android.app.Activity: boolean onMenuItemSelected(int,android.view.MenuItem)>($i0, $r1);
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        if $i0 == 0 goto label3;
+
+        if $i0 == 6 goto label2;
+
+        return 0;
+
+     label2:
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        $z0 = virtualinvoke $r2.<b.m.a.i: boolean a(android.view.MenuItem)>($r1);
+
+        return $z0;
+
+     label3:
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        $z0 = virtualinvoke $r2.<b.m.a.i: boolean b(android.view.MenuItem)>($r1);
+
+        return $z0;
+    }
+
+    public void onMultiWindowModeChanged(boolean)
+    {
+        b.m.a.i $r1;
+        androidx.fragment.app.FragmentActivity r0;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r1.<b.m.a.i: void a(boolean)>($z0);
+
+        return;
+    }
+
+    public void onNewIntent(android.content.Intent)
+    {
+        b.m.a.i $r2;
+        android.content.Intent $r1;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r1 := @parameter0: android.content.Intent;
+
+        specialinvoke r0.<android.app.Activity: void onNewIntent(android.content.Intent)>($r1);
+
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r2.<b.m.a.i: void k()>();
+
+        return;
+    }
+
+    public void onPanelClosed(int, android.view.Menu)
+    {
+        int $i0;
+        android.view.Menu $r1;
+        b.m.a.i $r2;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: android.view.Menu;
+
+        if $i0 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r2.<b.m.a.i: void a(android.view.Menu)>($r1);
+
+     label2:
+        specialinvoke r0.<android.app.Activity: void onPanelClosed(int,android.view.Menu)>($i0, $r1);
+
+        return;
+    }
+
+    public void onPause()
+    {
+        b.m.a.i $r2;
+        androidx.lifecycle.LifecycleRegistry $r3;
+        androidx.fragment.app.FragmentActivity r0;
+        androidx.lifecycle.Lifecycle$Event $r1;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        specialinvoke r0.<android.app.Activity: void onPause()>();
+
+        r0.<androidx.fragment.app.FragmentActivity: boolean mResumed> = 0;
+
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r2.<b.m.a.i: void e()>();
+
+        $r3 = r0.<androidx.fragment.app.FragmentActivity: androidx.lifecycle.LifecycleRegistry mFragmentLifecycleRegistry>;
+
+        $r1 = <androidx.lifecycle.Lifecycle$Event: androidx.lifecycle.Lifecycle$Event ON_PAUSE>;
+
+        virtualinvoke $r3.<androidx.lifecycle.LifecycleRegistry: void handleLifecycleEvent(androidx.lifecycle.Lifecycle$Event)>($r1);
+
+        return;
+    }
+
+    public void onPictureInPictureModeChanged(boolean)
+    {
+        b.m.a.i $r1;
+        androidx.fragment.app.FragmentActivity r0;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r1.<b.m.a.i: void b(boolean)>($z0);
+
+        return;
+    }
+
+    public void onPostResume()
+    {
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        specialinvoke r0.<android.app.Activity: void onPostResume()>();
+
+        virtualinvoke r0.<androidx.fragment.app.FragmentActivity: void onResumeFragments()>();
+
+        return;
+    }
+
+    public boolean onPrepareOptionsPanel(android.view.View, android.view.Menu)
+    {
+        android.view.Menu $r1;
+        android.view.View $r2;
+        androidx.fragment.app.FragmentActivity r0;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r2 := @parameter0: android.view.View;
+
+        $r1 := @parameter1: android.view.Menu;
+
+        $z0 = specialinvoke r0.<android.app.Activity: boolean onPreparePanel(int,android.view.View,android.view.Menu)>(0, $r2, $r1);
+
+        return $z0;
+    }
+
+    public boolean onPreparePanel(int, android.view.View, android.view.Menu)
+    {
+        android.view.Menu $r1;
+        int $i0;
+        b.m.a.i $r3;
+        android.view.View $r2;
+        androidx.fragment.app.FragmentActivity r0;
+        boolean $z0, $z1;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $i0 := @parameter0: int;
+
+        $r2 := @parameter1: android.view.View;
+
+        $r1 := @parameter2: android.view.Menu;
+
+        if $i0 != 0 goto label1;
+
+        $z0 = virtualinvoke r0.<androidx.fragment.app.FragmentActivity: boolean onPrepareOptionsPanel(android.view.View,android.view.Menu)>($r2, $r1);
+
+        $r3 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        $z1 = virtualinvoke $r3.<b.m.a.i: boolean b(android.view.Menu)>($r1);
+
+        $z0 = $z0 | $z1;
+
+        return $z0;
+
+     label1:
+        $z0 = specialinvoke r0.<android.app.Activity: boolean onPreparePanel(int,android.view.View,android.view.Menu)>($i0, $r2, $r1);
+
+        return $z0;
+    }
+
+    public void onRequestPermissionsResult(int, java.lang.String[], int[])
+    {
+        java.lang.String[] $r2;
+        b.f.j $r4;
+        androidx.fragment.app.FragmentActivity r0;
+        int[] $r1;
+        int $i0, $i1, $i2;
+        b.m.a.i $r3;
+        androidx.fragment.app.Fragment $r7;
+        java.lang.Object $r5;
+        java.lang.StringBuilder $r8, $r9;
+        java.lang.String $r6;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $i0 := @parameter0: int;
+
+        $r2 := @parameter1: java.lang.String[];
+
+        $r1 := @parameter2: int[];
+
+        $r3 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r3.<b.m.a.i: void k()>();
+
+        $i1 = $i0 >> 16;
+
+        $i2 = 65535;
+
+        $i1 = $i1 & $i2;
+
+        if $i1 == 0 goto label3;
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        $r4 = r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults>;
+
+        $r5 = virtualinvoke $r4.<b.f.j: java.lang.Object a(int)>($i1);
+
+        $r6 = (java.lang.String) $r5;
+
+        $r4 = r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults>;
+
+        virtualinvoke $r4.<b.f.j: void d(int)>($i1);
+
+        if $r6 != null goto label1;
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("FragmentActivity", "Activity result delivered for unknown Fragment.");
+
+        return;
+
+     label1:
+        $r3 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        $r7 = virtualinvoke $r3.<b.m.a.i: androidx.fragment.app.Fragment a(java.lang.String)>($r6);
+
+        if $r7 != null goto label2;
+
+        $r9 = new java.lang.StringBuilder;
+
+        $r8 = $r9;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Activity result no fragment exists for who: ");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r6 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("FragmentActivity", $r6);
+
+        return;
+
+     label2:
+        $i1 = 65535;
+
+        $i0 = $i0 & $i1;
+
+        virtualinvoke $r7.<androidx.fragment.app.Fragment: void onRequestPermissionsResult(int,java.lang.String[],int[])>($i0, $r2, $r1);
+
+     label3:
+        return;
+    }
+
+    public void onResume()
+    {
+        b.m.a.i $r1;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        specialinvoke r0.<android.app.Activity: void onResume()>();
+
+        r0.<androidx.fragment.app.FragmentActivity: boolean mResumed> = 1;
+
+        $r1 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r1.<b.m.a.i: void k()>();
+
+        $r1 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r1.<b.m.a.i: boolean i()>();
+
+        return;
+    }
+
+    public void onResumeFragments()
+    {
+        b.m.a.i $r3;
+        androidx.lifecycle.LifecycleRegistry $r2;
+        androidx.fragment.app.FragmentActivity r0;
+        androidx.lifecycle.Lifecycle$Event $r1;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: androidx.lifecycle.LifecycleRegistry mFragmentLifecycleRegistry>;
+
+        $r1 = <androidx.lifecycle.Lifecycle$Event: androidx.lifecycle.Lifecycle$Event ON_RESUME>;
+
+        virtualinvoke $r2.<androidx.lifecycle.LifecycleRegistry: void handleLifecycleEvent(androidx.lifecycle.Lifecycle$Event)>($r1);
+
+        $r3 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r3.<b.m.a.i: void f()>();
+
+        return;
+    }
+
+    public void onSaveInstanceState(android.os.Bundle)
+    {
+        android.os.Bundle $r1;
+        android.os.Parcelable $r5;
+        java.lang.String[] $r8;
+        androidx.lifecycle.LifecycleRegistry $r2;
+        b.f.j $r6;
+        androidx.fragment.app.FragmentActivity r0;
+        androidx.lifecycle.Lifecycle$Event $r3;
+        int[] $r7;
+        b.m.a.i $r4;
+        int $i0, $i1;
+        java.lang.Object $r9;
+        java.lang.String $r10;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        specialinvoke r0.<androidx.activity.ComponentActivity: void onSaveInstanceState(android.os.Bundle)>($r1);
+
+        specialinvoke r0.<androidx.fragment.app.FragmentActivity: void markFragmentsCreated()>();
+
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: androidx.lifecycle.LifecycleRegistry mFragmentLifecycleRegistry>;
+
+        $r3 = <androidx.lifecycle.Lifecycle$Event: androidx.lifecycle.Lifecycle$Event ON_STOP>;
+
+        virtualinvoke $r2.<androidx.lifecycle.LifecycleRegistry: void handleLifecycleEvent(androidx.lifecycle.Lifecycle$Event)>($r3);
+
+        $r4 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        $r5 = virtualinvoke $r4.<b.m.a.i: android.os.Parcelable l()>();
+
+        if $r5 == null goto label1;
+
+        virtualinvoke $r1.<android.os.Bundle: void putParcelable(java.lang.String,android.os.Parcelable)>("android:support:fragments", $r5);
+
+     label1:
+        $r6 = r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults>;
+
+        $i0 = virtualinvoke $r6.<b.f.j: int b()>();
+
+        if $i0 <= 0 goto label4;
+
+        $i0 = r0.<androidx.fragment.app.FragmentActivity: int mNextCandidateRequestIndex>;
+
+        virtualinvoke $r1.<android.os.Bundle: void putInt(java.lang.String,int)>("android:support:next_request_index", $i0);
+
+        $r6 = r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults>;
+
+        $i0 = virtualinvoke $r6.<b.f.j: int b()>();
+
+        $r7 = newarray (int)[$i0];
+
+        $r6 = r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults>;
+
+        $i0 = virtualinvoke $r6.<b.f.j: int b()>();
+
+        $r8 = newarray (java.lang.String)[$i0];
+
+        $i0 = 0;
+
+     label2:
+        $r6 = r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults>;
+
+        $i1 = virtualinvoke $r6.<b.f.j: int b()>();
+
+        if $i0 >= $i1 goto label3;
+
+        $r6 = r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults>;
+
+        $i1 = virtualinvoke $r6.<b.f.j: int c(int)>($i0);
+
+        $r7[$i0] = $i1;
+
+        $r6 = r0.<androidx.fragment.app.FragmentActivity: b.f.j mPendingFragmentActivityResults>;
+
+        $r9 = virtualinvoke $r6.<b.f.j: java.lang.Object e(int)>($i0);
+
+        $r10 = (java.lang.String) $r9;
+
+        $r8[$i0] = $r10;
+
+        $i0 = $i0 + 1;
+
+        goto label2;
+
+     label3:
+        virtualinvoke $r1.<android.os.Bundle: void putIntArray(java.lang.String,int[])>("android:support:request_indicies", $r7);
+
+        virtualinvoke $r1.<android.os.Bundle: void putStringArray(java.lang.String,java.lang.String[])>("android:support:request_fragment_who", $r8);
+
+     label4:
+        return;
+    }
+
+    public void onStart()
+    {
+        b.m.a.i $r2;
+        androidx.lifecycle.LifecycleRegistry $r3;
+        androidx.fragment.app.FragmentActivity r0;
+        androidx.lifecycle.Lifecycle$Event $r1;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        specialinvoke r0.<android.app.Activity: void onStart()>();
+
+        r0.<androidx.fragment.app.FragmentActivity: boolean mStopped> = 0;
+
+        $z0 = r0.<androidx.fragment.app.FragmentActivity: boolean mCreated>;
+
+        if $z0 != 0 goto label1;
+
+        r0.<androidx.fragment.app.FragmentActivity: boolean mCreated> = 1;
+
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r2.<b.m.a.i: void a()>();
+
+     label1:
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r2.<b.m.a.i: void k()>();
+
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r2.<b.m.a.i: boolean i()>();
+
+        $r3 = r0.<androidx.fragment.app.FragmentActivity: androidx.lifecycle.LifecycleRegistry mFragmentLifecycleRegistry>;
+
+        $r1 = <androidx.lifecycle.Lifecycle$Event: androidx.lifecycle.Lifecycle$Event ON_START>;
+
+        virtualinvoke $r3.<androidx.lifecycle.LifecycleRegistry: void handleLifecycleEvent(androidx.lifecycle.Lifecycle$Event)>($r1);
+
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r2.<b.m.a.i: void g()>();
+
+        return;
+    }
+
+    public void onStateNotSaved()
+    {
+        b.m.a.i $r1;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r1 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r1.<b.m.a.i: void k()>();
+
+        return;
+    }
+
+    public void onStop()
+    {
+        b.m.a.i $r2;
+        androidx.lifecycle.LifecycleRegistry $r3;
+        androidx.fragment.app.FragmentActivity r0;
+        androidx.lifecycle.Lifecycle$Event $r1;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        specialinvoke r0.<android.app.Activity: void onStop()>();
+
+        r0.<androidx.fragment.app.FragmentActivity: boolean mStopped> = 1;
+
+        specialinvoke r0.<androidx.fragment.app.FragmentActivity: void markFragmentsCreated()>();
+
+        $r2 = r0.<androidx.fragment.app.FragmentActivity: b.m.a.i mFragments>;
+
+        virtualinvoke $r2.<b.m.a.i: void h()>();
+
+        $r3 = r0.<androidx.fragment.app.FragmentActivity: androidx.lifecycle.LifecycleRegistry mFragmentLifecycleRegistry>;
+
+        $r1 = <androidx.lifecycle.Lifecycle$Event: androidx.lifecycle.Lifecycle$Event ON_STOP>;
+
+        virtualinvoke $r3.<androidx.lifecycle.LifecycleRegistry: void handleLifecycleEvent(androidx.lifecycle.Lifecycle$Event)>($r1);
+
+        return;
+    }
+
+    public void requestPermissionsFromFragment(androidx.fragment.app.Fragment, java.lang.String[], int)
+    {
+        java.lang.Throwable $r3;
+        int $i0, $i1, $i2;
+        androidx.fragment.app.Fragment $r2;
+        java.lang.String[] $r1;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r2 := @parameter0: androidx.fragment.app.Fragment;
+
+        $r1 := @parameter1: java.lang.String[];
+
+        $i1 := @parameter2: int;
+
+        $i0 = -1;
+
+        if $i1 != $i0 goto label1;
+
+        staticinvoke <b.i.a.b: void a(android.app.Activity,java.lang.String[],int)>(r0, $r1, $i1);
+
+        return;
+
+     label1:
+        staticinvoke <androidx.fragment.app.FragmentActivity: void checkForValidRequestCode(int)>($i1);
+
+     label2:
+        r0.<androidx.fragment.app.FragmentActivity: boolean mRequestedPermissionsFromFragment> = 1;
+
+        $i0 = specialinvoke r0.<androidx.fragment.app.FragmentActivity: int allocateRequestIndex(androidx.fragment.app.Fragment)>($r2);
+
+     label3:
+        $i0 = $i0 + 1;
+
+        $i0 = $i0 << 16;
+
+        $i2 = 65535;
+
+        $i1 = $i1 & $i2;
+
+        $i1 = $i0 + $i1;
+
+     label4:
+        staticinvoke <b.i.a.b: void a(android.app.Activity,java.lang.String[],int)>(r0, $r1, $i1);
+
+     label5:
+        r0.<androidx.fragment.app.FragmentActivity: boolean mRequestedPermissionsFromFragment> = 0;
+
+        return;
+
+     label6:
+        $r3 := @caughtexception;
+
+        r0.<androidx.fragment.app.FragmentActivity: boolean mRequestedPermissionsFromFragment> = 0;
+
+        throw $r3;
+
+        catch java.lang.Throwable from label2 to label3 with label6;
+        catch java.lang.Throwable from label4 to label5 with label6;
+    }
+
+    public void setEnterSharedElementCallback(b.i.a.s)
+    {
+        b.i.a.s $r1;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r1 := @parameter0: b.i.a.s;
+
+        staticinvoke <b.i.a.b: void a(android.app.Activity,b.i.a.s)>(r0, $r1);
+
+        return;
+    }
+
+    public void setExitSharedElementCallback(b.i.a.s)
+    {
+        b.i.a.s $r1;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r1 := @parameter0: b.i.a.s;
+
+        staticinvoke <b.i.a.b: void b(android.app.Activity,b.i.a.s)>(r0, $r1);
+
+        return;
+    }
+
+    public void startActivityForResult(android.content.Intent, int)
+    {
+        int $i0, $i1;
+        android.content.Intent $r1;
+        androidx.fragment.app.FragmentActivity r0;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r1 := @parameter0: android.content.Intent;
+
+        $i0 := @parameter1: int;
+
+        $z0 = r0.<androidx.fragment.app.FragmentActivity: boolean mStartedActivityFromFragment>;
+
+        if $z0 != 0 goto label1;
+
+        $i1 = -1;
+
+        if $i0 == $i1 goto label1;
+
+        staticinvoke <androidx.fragment.app.FragmentActivity: void checkForValidRequestCode(int)>($i0);
+
+     label1:
+        specialinvoke r0.<android.app.Activity: void startActivityForResult(android.content.Intent,int)>($r1, $i0);
+
+        return;
+    }
+
+    public void startActivityForResult(android.content.Intent, int, android.os.Bundle)
+    {
+        android.os.Bundle $r2;
+        int $i0, $i1;
+        android.content.Intent $r1;
+        androidx.fragment.app.FragmentActivity r0;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r1 := @parameter0: android.content.Intent;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: android.os.Bundle;
+
+        $z0 = r0.<androidx.fragment.app.FragmentActivity: boolean mStartedActivityFromFragment>;
+
+        if $z0 != 0 goto label1;
+
+        $i1 = -1;
+
+        if $i0 == $i1 goto label1;
+
+        staticinvoke <androidx.fragment.app.FragmentActivity: void checkForValidRequestCode(int)>($i0);
+
+     label1:
+        specialinvoke r0.<android.app.Activity: void startActivityForResult(android.content.Intent,int,android.os.Bundle)>($r1, $i0, $r2);
+
+        return;
+    }
+
+    public void startActivityFromFragment(androidx.fragment.app.Fragment, android.content.Intent, int)
+    {
+        androidx.fragment.app.Fragment $r1;
+        int $i0;
+        android.content.Intent $r2;
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r1 := @parameter0: androidx.fragment.app.Fragment;
+
+        $r2 := @parameter1: android.content.Intent;
+
+        $i0 := @parameter2: int;
+
+        virtualinvoke r0.<androidx.fragment.app.FragmentActivity: void startActivityFromFragment(androidx.fragment.app.Fragment,android.content.Intent,int,android.os.Bundle)>($r1, $r2, $i0, null);
+
+        return;
+    }
+
+    public void startActivityFromFragment(androidx.fragment.app.Fragment, android.content.Intent, int, android.os.Bundle)
+    {
+        java.lang.Throwable $r4;
+        android.os.Bundle $r2;
+        android.content.Intent $r1;
+        androidx.fragment.app.FragmentActivity r0;
+        int $i0, $i1, $i2;
+        androidx.fragment.app.Fragment $r3;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r3 := @parameter0: androidx.fragment.app.Fragment;
+
+        $r1 := @parameter1: android.content.Intent;
+
+        $i1 := @parameter2: int;
+
+        $r2 := @parameter3: android.os.Bundle;
+
+        r0.<androidx.fragment.app.FragmentActivity: boolean mStartedActivityFromFragment> = 1;
+
+        $i0 = -1;
+
+        if $i1 != $i0 goto label3;
+
+        $i1 = -1;
+
+     label1:
+        staticinvoke <b.i.a.b: void a(android.app.Activity,android.content.Intent,int,android.os.Bundle)>(r0, $r1, $i1, $r2);
+
+     label2:
+        r0.<androidx.fragment.app.FragmentActivity: boolean mStartedActivityFromFragment> = 0;
+
+        return;
+
+     label3:
+        staticinvoke <androidx.fragment.app.FragmentActivity: void checkForValidRequestCode(int)>($i1);
+
+        $i0 = specialinvoke r0.<androidx.fragment.app.FragmentActivity: int allocateRequestIndex(androidx.fragment.app.Fragment)>($r3);
+
+     label4:
+        $i0 = $i0 + 1;
+
+        $i0 = $i0 << 16;
+
+        $i2 = 65535;
+
+        $i1 = $i1 & $i2;
+
+        $i1 = $i0 + $i1;
+
+     label5:
+        staticinvoke <b.i.a.b: void a(android.app.Activity,android.content.Intent,int,android.os.Bundle)>(r0, $r1, $i1, $r2);
+
+     label6:
+        r0.<androidx.fragment.app.FragmentActivity: boolean mStartedActivityFromFragment> = 0;
+
+        return;
+
+     label7:
+        $r4 := @caughtexception;
+
+        r0.<androidx.fragment.app.FragmentActivity: boolean mStartedActivityFromFragment> = 0;
+
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label7;
+        catch java.lang.Throwable from label3 to label4 with label7;
+        catch java.lang.Throwable from label5 to label6 with label7;
+    }
+
+    public void startIntentSenderForResult(android.content.IntentSender, int, android.content.Intent, int, int, int)
+    {
+        android.content.Intent $r2;
+        androidx.fragment.app.FragmentActivity r0;
+        android.content.IntentSender $r1;
+        int $i0, $i1, $i2, $i3, $i4;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r1 := @parameter0: android.content.IntentSender;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: android.content.Intent;
+
+        $i1 := @parameter3: int;
+
+        $i2 := @parameter4: int;
+
+        $i3 := @parameter5: int;
+
+        $z0 = r0.<androidx.fragment.app.FragmentActivity: boolean mStartedIntentSenderFromFragment>;
+
+        if $z0 != 0 goto label1;
+
+        $i4 = -1;
+
+        if $i0 == $i4 goto label1;
+
+        staticinvoke <androidx.fragment.app.FragmentActivity: void checkForValidRequestCode(int)>($i0);
+
+     label1:
+        specialinvoke r0.<android.app.Activity: void startIntentSenderForResult(android.content.IntentSender,int,android.content.Intent,int,int,int)>($r1, $i0, $r2, $i1, $i2, $i3);
+
+        return;
+    }
+
+    public void startIntentSenderForResult(android.content.IntentSender, int, android.content.Intent, int, int, int, android.os.Bundle)
+    {
+        android.os.Bundle $r3;
+        android.content.Intent $r2;
+        androidx.fragment.app.FragmentActivity r0;
+        android.content.IntentSender $r1;
+        int $i0, $i1, $i2, $i3, $i4;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r1 := @parameter0: android.content.IntentSender;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: android.content.Intent;
+
+        $i1 := @parameter3: int;
+
+        $i2 := @parameter4: int;
+
+        $i3 := @parameter5: int;
+
+        $r3 := @parameter6: android.os.Bundle;
+
+        $z0 = r0.<androidx.fragment.app.FragmentActivity: boolean mStartedIntentSenderFromFragment>;
+
+        if $z0 != 0 goto label1;
+
+        $i4 = -1;
+
+        if $i0 == $i4 goto label1;
+
+        staticinvoke <androidx.fragment.app.FragmentActivity: void checkForValidRequestCode(int)>($i0);
+
+     label1:
+        specialinvoke r0.<android.app.Activity: void startIntentSenderForResult(android.content.IntentSender,int,android.content.Intent,int,int,int,android.os.Bundle)>($r1, $i0, $r2, $i1, $i2, $i3, $r3);
+
+        return;
+    }
+
+    public void startIntentSenderFromFragment(androidx.fragment.app.Fragment, android.content.IntentSender, int, android.content.Intent, int, int, int, android.os.Bundle)
+    {
+        java.lang.Throwable $r5;
+        android.os.Bundle $r4;
+        android.content.Intent $r3;
+        androidx.fragment.app.FragmentActivity r0;
+        android.content.IntentSender $r2;
+        androidx.fragment.app.Fragment $r1;
+        int $i0, $i1, $i2, $i3, $i4, $i5;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $r1 := @parameter0: androidx.fragment.app.Fragment;
+
+        $r2 := @parameter1: android.content.IntentSender;
+
+        $i0 := @parameter2: int;
+
+        $r3 := @parameter3: android.content.Intent;
+
+        $i1 := @parameter4: int;
+
+        $i2 := @parameter5: int;
+
+        $i3 := @parameter6: int;
+
+        $r4 := @parameter7: android.os.Bundle;
+
+        r0.<androidx.fragment.app.FragmentActivity: boolean mStartedIntentSenderFromFragment> = 1;
+
+        $i4 = -1;
+
+        if $i0 != $i4 goto label3;
+
+     label1:
+        staticinvoke <b.i.a.b: void a(android.app.Activity,android.content.IntentSender,int,android.content.Intent,int,int,int,android.os.Bundle)>(r0, $r2, $i0, $r3, $i1, $i2, $i3, $r4);
+
+     label2:
+        r0.<androidx.fragment.app.FragmentActivity: boolean mStartedIntentSenderFromFragment> = 0;
+
+        return;
+
+     label3:
+        staticinvoke <androidx.fragment.app.FragmentActivity: void checkForValidRequestCode(int)>($i0);
+
+        $i4 = specialinvoke r0.<androidx.fragment.app.FragmentActivity: int allocateRequestIndex(androidx.fragment.app.Fragment)>($r1);
+
+     label4:
+        $i4 = $i4 + 1;
+
+        $i4 = $i4 << 16;
+
+        $i5 = 65535;
+
+        $i0 = $i0 & $i5;
+
+        $i0 = $i4 + $i0;
+
+     label5:
+        staticinvoke <b.i.a.b: void a(android.app.Activity,android.content.IntentSender,int,android.content.Intent,int,int,int,android.os.Bundle)>(r0, $r2, $i0, $r3, $i1, $i2, $i3, $r4);
+
+     label6:
+        r0.<androidx.fragment.app.FragmentActivity: boolean mStartedIntentSenderFromFragment> = 0;
+
+        return;
+
+     label7:
+        $r5 := @caughtexception;
+
+        r0.<androidx.fragment.app.FragmentActivity: boolean mStartedIntentSenderFromFragment> = 0;
+
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label2 with label7;
+        catch java.lang.Throwable from label3 to label4 with label7;
+        catch java.lang.Throwable from label5 to label6 with label7;
+    }
+
+    public void supportFinishAfterTransition()
+    {
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        staticinvoke <b.i.a.b: void b(android.app.Activity)>(r0);
+
+        return;
+    }
+
+    public void supportInvalidateOptionsMenu()
+    {
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        virtualinvoke r0.<android.app.Activity: void invalidateOptionsMenu()>();
+
+        return;
+    }
+
+    public void supportPostponeEnterTransition()
+    {
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        staticinvoke <b.i.a.b: void c(android.app.Activity)>(r0);
+
+        return;
+    }
+
+    public void supportStartPostponedEnterTransition()
+    {
+        androidx.fragment.app.FragmentActivity r0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        staticinvoke <b.i.a.b: void e(android.app.Activity)>(r0);
+
+        return;
+    }
+
+    public final void validateRequestPermissionsRequestCode(int)
+    {
+        int $i0, $i1;
+        androidx.fragment.app.FragmentActivity r0;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.FragmentActivity;
+
+        $i0 := @parameter0: int;
+
+        $z0 = r0.<androidx.fragment.app.FragmentActivity: boolean mRequestedPermissionsFromFragment>;
+
+        if $z0 != 0 goto label1;
+
+        $i1 = -1;
+
+        if $i0 == $i1 goto label1;
+
+        staticinvoke <androidx.fragment.app.FragmentActivity: void checkForValidRequestCode(int)>($i0);
+
+     label1:
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <androidx.fragment.app.FragmentActivity: java.lang.String TAG> = "FragmentActivity";
+
+        <androidx.fragment.app.FragmentActivity: java.lang.String REQUEST_FRAGMENT_WHO_TAG> = "android:support:request_fragment_who";
+
+        <androidx.fragment.app.FragmentActivity: java.lang.String NEXT_CANDIDATE_REQUEST_INDEX_TAG> = "android:support:next_request_index";
+
+        <androidx.fragment.app.FragmentActivity: int MAX_NUM_PENDING_FRAGMENT_ACTIVITY_RESULTS> = 65534;
+
+        <androidx.fragment.app.FragmentActivity: java.lang.String FRAGMENTS_TAG> = "android:support:fragments";
+
+        <androidx.fragment.app.FragmentActivity: java.lang.String ALLOCATED_REQUEST_INDICIES_TAG> = "android:support:request_indicies";
+
+        return;
+    }
+}

@@ -1,0 +1,3354 @@
+public abstract class com.google.protobuf.BinaryWriter extends com.google.protobuf.ByteOutput implements com.google.protobuf.Writer
+{
+    public static final int DEFAULT_CHUNK_SIZE;
+    public static final int MAP_KEY_NUMBER;
+    public static final int MAP_VALUE_NUMBER;
+    public final com.google.protobuf.BufferAllocator alloc;
+    public final java.util.ArrayDeque buffers;
+    public final int chunkSize;
+    public int totalDoneBytes;
+
+    public void <init>(com.google.protobuf.BufferAllocator, int)
+    {
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        java.util.ArrayDeque $r2;
+        java.lang.IllegalArgumentException $r3;
+        com.google.protobuf.BufferAllocator $r1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $r1 := @parameter0: com.google.protobuf.BufferAllocator;
+
+        $i0 := @parameter1: int;
+
+        specialinvoke r0.<com.google.protobuf.ByteOutput: void <init>()>();
+
+        $r2 = new java.util.ArrayDeque;
+
+        specialinvoke $r2.<java.util.ArrayDeque: void <init>(int)>(4);
+
+        r0.<com.google.protobuf.BinaryWriter: java.util.ArrayDeque buffers> = $r2;
+
+        if $i0 <= 0 goto label1;
+
+        staticinvoke <com.google.protobuf.Internal: java.lang.Object checkNotNull(java.lang.Object,java.lang.String)>($r1, "alloc");
+
+        r0.<com.google.protobuf.BinaryWriter: com.google.protobuf.BufferAllocator alloc> = $r1;
+
+        r0.<com.google.protobuf.BinaryWriter: int chunkSize> = $i0;
+
+        return;
+
+     label1:
+        $r3 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r3.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("chunkSize must be > 0");
+
+        throw $r3;
+    }
+
+    public void <init>(com.google.protobuf.BufferAllocator, int, com.google.protobuf.BinaryWriter$1)
+    {
+        int $i0;
+        com.google.protobuf.BinaryWriter$1 $r2;
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.BufferAllocator $r1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $r1 := @parameter0: com.google.protobuf.BufferAllocator;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: com.google.protobuf.BinaryWriter$1;
+
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void <init>(com.google.protobuf.BufferAllocator,int)>($r1, $i0);
+
+        return;
+    }
+
+    public static byte access$200(long)
+    {
+        long $l1;
+        byte $b0;
+
+        $l1 := @parameter0: long;
+
+        $b0 = staticinvoke <com.google.protobuf.BinaryWriter: byte computeUInt64SizeNoTag(long)>($l1);
+
+        return $b0;
+    }
+
+    public static byte computeUInt64SizeNoTag(long)
+    {
+        byte $b2, $b3;
+        int $i4;
+        long $l0, $l1;
+
+        $l0 := @parameter0: long;
+
+        $l1 = -128L & $l0;
+
+        $b2 = $l1 cmp 0L;
+
+        if $b2 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        $b2 = $l0 cmp 0L;
+
+        $i4 = (int) $b2;
+
+        if $i4 >= 0 goto label2;
+
+        return 10;
+
+     label2:
+        $l1 = -34359738368L & $l0;
+
+        $b2 = $l1 cmp 0L;
+
+        if $b2 == 0 goto label3;
+
+        $b2 = (byte) 6;
+
+        $l0 = $l0 >>> 28;
+
+        goto label4;
+
+     label3:
+        $b2 = 2;
+
+     label4:
+        $l1 = -2097152L & $l0;
+
+        $b3 = $l1 cmp 0L;
+
+        if $b3 == 0 goto label5;
+
+        $i4 = $b2 + 2;
+
+        $b2 = (byte) $i4;
+
+        $l0 = $l0 >>> 14;
+
+     label5:
+        $l0 = $l0 & -16384L;
+
+        $b3 = $l0 cmp 0L;
+
+        if $b3 == 0 goto label6;
+
+        $i4 = $b2 + 1;
+
+        $b2 = (byte) $i4;
+
+     label6:
+        return $b2;
+    }
+
+    public static boolean isUnsafeDirectSupported()
+    {
+        boolean $z0;
+
+        $z0 = staticinvoke <com.google.protobuf.BinaryWriter$UnsafeDirectWriter: boolean access$000()>();
+
+        return $z0;
+    }
+
+    public static boolean isUnsafeHeapSupported()
+    {
+        boolean $z0;
+
+        $z0 = staticinvoke <com.google.protobuf.BinaryWriter$UnsafeHeapWriter: boolean isSupported()>();
+
+        return $z0;
+    }
+
+    public static com.google.protobuf.BinaryWriter newDirectInstance(com.google.protobuf.BufferAllocator)
+    {
+        com.google.protobuf.BinaryWriter $r0;
+        com.google.protobuf.BufferAllocator $r1;
+
+        $r1 := @parameter0: com.google.protobuf.BufferAllocator;
+
+        $r0 = staticinvoke <com.google.protobuf.BinaryWriter: com.google.protobuf.BinaryWriter newDirectInstance(com.google.protobuf.BufferAllocator,int)>($r1, 4096);
+
+        return $r0;
+    }
+
+    public static com.google.protobuf.BinaryWriter newDirectInstance(com.google.protobuf.BufferAllocator, int)
+    {
+        int $i0;
+        com.google.protobuf.BinaryWriter $r1;
+        com.google.protobuf.BufferAllocator $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: com.google.protobuf.BufferAllocator;
+
+        $i0 := @parameter1: int;
+
+        $z0 = staticinvoke <com.google.protobuf.BinaryWriter: boolean isUnsafeDirectSupported()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = staticinvoke <com.google.protobuf.BinaryWriter: com.google.protobuf.BinaryWriter newUnsafeDirectInstance(com.google.protobuf.BufferAllocator,int)>($r0, $i0);
+
+        return $r1;
+
+     label1:
+        $r1 = staticinvoke <com.google.protobuf.BinaryWriter: com.google.protobuf.BinaryWriter newSafeDirectInstance(com.google.protobuf.BufferAllocator,int)>($r0, $i0);
+
+        return $r1;
+    }
+
+    public static com.google.protobuf.BinaryWriter newHeapInstance(com.google.protobuf.BufferAllocator)
+    {
+        com.google.protobuf.BinaryWriter $r0;
+        com.google.protobuf.BufferAllocator $r1;
+
+        $r1 := @parameter0: com.google.protobuf.BufferAllocator;
+
+        $r0 = staticinvoke <com.google.protobuf.BinaryWriter: com.google.protobuf.BinaryWriter newHeapInstance(com.google.protobuf.BufferAllocator,int)>($r1, 4096);
+
+        return $r0;
+    }
+
+    public static com.google.protobuf.BinaryWriter newHeapInstance(com.google.protobuf.BufferAllocator, int)
+    {
+        int $i0;
+        com.google.protobuf.BinaryWriter $r1;
+        com.google.protobuf.BufferAllocator $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: com.google.protobuf.BufferAllocator;
+
+        $i0 := @parameter1: int;
+
+        $z0 = staticinvoke <com.google.protobuf.BinaryWriter: boolean isUnsafeHeapSupported()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = staticinvoke <com.google.protobuf.BinaryWriter: com.google.protobuf.BinaryWriter newUnsafeHeapInstance(com.google.protobuf.BufferAllocator,int)>($r0, $i0);
+
+        return $r1;
+
+     label1:
+        $r1 = staticinvoke <com.google.protobuf.BinaryWriter: com.google.protobuf.BinaryWriter newSafeHeapInstance(com.google.protobuf.BufferAllocator,int)>($r0, $i0);
+
+        return $r1;
+    }
+
+    public static com.google.protobuf.BinaryWriter newSafeDirectInstance(com.google.protobuf.BufferAllocator, int)
+    {
+        int $i0;
+        com.google.protobuf.BufferAllocator $r0;
+        com.google.protobuf.BinaryWriter$SafeDirectWriter $r1;
+
+        $r0 := @parameter0: com.google.protobuf.BufferAllocator;
+
+        $i0 := @parameter1: int;
+
+        $r1 = new com.google.protobuf.BinaryWriter$SafeDirectWriter;
+
+        specialinvoke $r1.<com.google.protobuf.BinaryWriter$SafeDirectWriter: void <init>(com.google.protobuf.BufferAllocator,int)>($r0, $i0);
+
+        return $r1;
+    }
+
+    public static com.google.protobuf.BinaryWriter newSafeHeapInstance(com.google.protobuf.BufferAllocator, int)
+    {
+        int $i0;
+        com.google.protobuf.BinaryWriter$SafeHeapWriter $r1;
+        com.google.protobuf.BufferAllocator $r0;
+
+        $r0 := @parameter0: com.google.protobuf.BufferAllocator;
+
+        $i0 := @parameter1: int;
+
+        $r1 = new com.google.protobuf.BinaryWriter$SafeHeapWriter;
+
+        specialinvoke $r1.<com.google.protobuf.BinaryWriter$SafeHeapWriter: void <init>(com.google.protobuf.BufferAllocator,int)>($r0, $i0);
+
+        return $r1;
+    }
+
+    public static com.google.protobuf.BinaryWriter newUnsafeDirectInstance(com.google.protobuf.BufferAllocator, int)
+    {
+        java.lang.UnsupportedOperationException $r2;
+        com.google.protobuf.BinaryWriter$UnsafeDirectWriter $r1;
+        int $i0;
+        com.google.protobuf.BufferAllocator $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: com.google.protobuf.BufferAllocator;
+
+        $i0 := @parameter1: int;
+
+        $z0 = staticinvoke <com.google.protobuf.BinaryWriter: boolean isUnsafeDirectSupported()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = new com.google.protobuf.BinaryWriter$UnsafeDirectWriter;
+
+        specialinvoke $r1.<com.google.protobuf.BinaryWriter$UnsafeDirectWriter: void <init>(com.google.protobuf.BufferAllocator,int)>($r0, $i0);
+
+        return $r1;
+
+     label1:
+        $r2 = new java.lang.UnsupportedOperationException;
+
+        specialinvoke $r2.<java.lang.UnsupportedOperationException: void <init>(java.lang.String)>("Unsafe operations not supported");
+
+        throw $r2;
+    }
+
+    public static com.google.protobuf.BinaryWriter newUnsafeHeapInstance(com.google.protobuf.BufferAllocator, int)
+    {
+        java.lang.UnsupportedOperationException $r2;
+        int $i0;
+        com.google.protobuf.BinaryWriter$UnsafeHeapWriter $r1;
+        com.google.protobuf.BufferAllocator $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: com.google.protobuf.BufferAllocator;
+
+        $i0 := @parameter1: int;
+
+        $z0 = staticinvoke <com.google.protobuf.BinaryWriter: boolean isUnsafeHeapSupported()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = new com.google.protobuf.BinaryWriter$UnsafeHeapWriter;
+
+        specialinvoke $r1.<com.google.protobuf.BinaryWriter$UnsafeHeapWriter: void <init>(com.google.protobuf.BufferAllocator,int)>($r0, $i0);
+
+        return $r1;
+
+     label1:
+        $r2 = new java.lang.UnsupportedOperationException;
+
+        specialinvoke $r2.<java.lang.UnsupportedOperationException: void <init>(java.lang.String)>("Unsafe operations not supported");
+
+        throw $r2;
+    }
+
+    private final void writeBoolList_Internal(int, com.google.protobuf.BooleanArrayList, boolean)
+    {
+        int $i0, $i1, $i2, $i3;
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.BooleanArrayList $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: com.google.protobuf.BooleanArrayList;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = virtualinvoke $r1.<com.google.protobuf.BooleanArrayList: int size()>();
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = virtualinvoke $r1.<com.google.protobuf.BooleanArrayList: int size()>();
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $z0 = virtualinvoke $r1.<com.google.protobuf.BooleanArrayList: boolean getBoolean(int)>($i2);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeBool(boolean)>($z0);
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = virtualinvoke $r1.<com.google.protobuf.BooleanArrayList: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $z0 = virtualinvoke $r1.<com.google.protobuf.BooleanArrayList: boolean getBoolean(int)>($i1);
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeBool(int,boolean)>($i0, $z0);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeBoolList_Internal(int, java.util.List, boolean)
+    {
+        com.google.protobuf.BinaryWriter r0;
+        java.util.List $r1;
+        int $i0, $i1, $i2, $i3;
+        java.lang.Boolean $r3;
+        java.lang.Object $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i2);
+
+        $r3 = (java.lang.Boolean) $r2;
+
+        $z0 = virtualinvoke $r3.<java.lang.Boolean: boolean booleanValue()>();
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeBool(boolean)>($z0);
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r3 = (java.lang.Boolean) $r2;
+
+        $z0 = virtualinvoke $r3.<java.lang.Boolean: boolean booleanValue()>();
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeBool(int,boolean)>($i0, $z0);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeDoubleList_Internal(int, com.google.protobuf.DoubleArrayList, boolean)
+    {
+        com.google.protobuf.BinaryWriter r0;
+        long $l3;
+        int $i0, $i1, $i2, $i4;
+        com.google.protobuf.DoubleArrayList $r1;
+        boolean $z0;
+        double $d0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: com.google.protobuf.DoubleArrayList;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = virtualinvoke $r1.<com.google.protobuf.DoubleArrayList: int size()>();
+
+        $i1 = $i1 * 8;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = virtualinvoke $r1.<com.google.protobuf.DoubleArrayList: int size()>();
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $d0 = virtualinvoke $r1.<com.google.protobuf.DoubleArrayList: double getDouble(int)>($i2);
+
+        $l3 = staticinvoke <java.lang.Double: long doubleToRawLongBits(double)>($d0);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeFixed64(long)>($l3);
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = virtualinvoke $r1.<com.google.protobuf.DoubleArrayList: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $d0 = virtualinvoke $r1.<com.google.protobuf.DoubleArrayList: double getDouble(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeDouble(int,double)>($i0, $d0);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeDoubleList_Internal(int, java.util.List, boolean)
+    {
+        java.lang.Double $r3;
+        com.google.protobuf.BinaryWriter r0;
+        long $l3;
+        java.util.List $r1;
+        int $i0, $i1, $i2, $i4;
+        java.lang.Object $r2;
+        boolean $z0;
+        double $d0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i1 = $i1 * 8;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i2);
+
+        $r3 = (java.lang.Double) $r2;
+
+        $d0 = virtualinvoke $r3.<java.lang.Double: double doubleValue()>();
+
+        $l3 = staticinvoke <java.lang.Double: long doubleToRawLongBits(double)>($d0);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeFixed64(long)>($l3);
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r3 = (java.lang.Double) $r2;
+
+        $d0 = virtualinvoke $r3.<java.lang.Double: double doubleValue()>();
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeDouble(int,double)>($i0, $d0);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeFixed32List_Internal(int, com.google.protobuf.IntArrayList, boolean)
+    {
+        int $i0, $i1, $i2, $i3;
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.IntArrayList $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: com.google.protobuf.IntArrayList;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int size()>();
+
+        $i1 = $i1 * 4;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int size()>();
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $i3 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int getInt(int)>($i2);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeFixed32(int)>($i3);
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $i2 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int getInt(int)>($i1);
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeFixed32(int,int)>($i0, $i2);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeFixed32List_Internal(int, java.util.List, boolean)
+    {
+        com.google.protobuf.BinaryWriter r0;
+        java.lang.Integer $r3;
+        java.util.List $r1;
+        int $i0, $i1, $i2, $i3;
+        java.lang.Object $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i1 = $i1 * 4;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i2);
+
+        $r3 = (java.lang.Integer) $r2;
+
+        $i3 = virtualinvoke $r3.<java.lang.Integer: int intValue()>();
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeFixed32(int)>($i3);
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r3 = (java.lang.Integer) $r2;
+
+        $i2 = virtualinvoke $r3.<java.lang.Integer: int intValue()>();
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeFixed32(int,int)>($i0, $i2);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeFixed64List_Internal(int, com.google.protobuf.LongArrayList, boolean)
+    {
+        com.google.protobuf.BinaryWriter r0;
+        long $l3;
+        int $i0, $i1, $i2, $i4;
+        com.google.protobuf.LongArrayList $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: com.google.protobuf.LongArrayList;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = virtualinvoke $r1.<com.google.protobuf.LongArrayList: int size()>();
+
+        $i1 = $i1 * 8;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = virtualinvoke $r1.<com.google.protobuf.LongArrayList: int size()>();
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $l3 = virtualinvoke $r1.<com.google.protobuf.LongArrayList: long getLong(int)>($i2);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeFixed64(long)>($l3);
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = virtualinvoke $r1.<com.google.protobuf.LongArrayList: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $l3 = virtualinvoke $r1.<com.google.protobuf.LongArrayList: long getLong(int)>($i1);
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeFixed64(int,long)>($i0, $l3);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeFixed64List_Internal(int, java.util.List, boolean)
+    {
+        com.google.protobuf.BinaryWriter r0;
+        long $l3;
+        java.util.List $r1;
+        java.lang.Long $r3;
+        int $i0, $i1, $i2, $i4;
+        java.lang.Object $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i1 = $i1 * 8;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i2);
+
+        $r3 = (java.lang.Long) $r2;
+
+        $l3 = virtualinvoke $r3.<java.lang.Long: long longValue()>();
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeFixed64(long)>($l3);
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r3 = (java.lang.Long) $r2;
+
+        $l3 = virtualinvoke $r3.<java.lang.Long: long longValue()>();
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeFixed64(int,long)>($i0, $l3);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeFloatList_Internal(int, com.google.protobuf.FloatArrayList, boolean)
+    {
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.FloatArrayList $r1;
+        int $i0, $i1, $i2, $i3;
+        float $f0;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: com.google.protobuf.FloatArrayList;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = virtualinvoke $r1.<com.google.protobuf.FloatArrayList: int size()>();
+
+        $i1 = $i1 * 4;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = virtualinvoke $r1.<com.google.protobuf.FloatArrayList: int size()>();
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $f0 = virtualinvoke $r1.<com.google.protobuf.FloatArrayList: float getFloat(int)>($i2);
+
+        $i3 = staticinvoke <java.lang.Float: int floatToRawIntBits(float)>($f0);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeFixed32(int)>($i3);
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = virtualinvoke $r1.<com.google.protobuf.FloatArrayList: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $f0 = virtualinvoke $r1.<com.google.protobuf.FloatArrayList: float getFloat(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeFloat(int,float)>($i0, $f0);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeFloatList_Internal(int, java.util.List, boolean)
+    {
+        java.lang.Float $r3;
+        com.google.protobuf.BinaryWriter r0;
+        java.util.List $r1;
+        int $i0, $i1, $i2, $i3;
+        float $f0;
+        java.lang.Object $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i1 = $i1 * 4;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i2);
+
+        $r3 = (java.lang.Float) $r2;
+
+        $f0 = virtualinvoke $r3.<java.lang.Float: float floatValue()>();
+
+        $i3 = staticinvoke <java.lang.Float: int floatToRawIntBits(float)>($f0);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeFixed32(int)>($i3);
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r3 = (java.lang.Float) $r2;
+
+        $f0 = virtualinvoke $r3.<java.lang.Float: float floatValue()>();
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeFloat(int,float)>($i0, $f0);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeInt32List_Internal(int, com.google.protobuf.IntArrayList, boolean)
+    {
+        int $i0, $i1, $i2, $i3;
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.IntArrayList $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: com.google.protobuf.IntArrayList;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int size()>();
+
+        $i1 = $i1 * 10;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int size()>();
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $i3 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int getInt(int)>($i2);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeInt32(int)>($i3);
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $i2 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int getInt(int)>($i1);
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeInt32(int,int)>($i0, $i2);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeInt32List_Internal(int, java.util.List, boolean)
+    {
+        com.google.protobuf.BinaryWriter r0;
+        java.lang.Integer $r3;
+        java.util.List $r1;
+        int $i0, $i1, $i2, $i3;
+        java.lang.Object $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i1 = $i1 * 10;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i2);
+
+        $r3 = (java.lang.Integer) $r2;
+
+        $i3 = virtualinvoke $r3.<java.lang.Integer: int intValue()>();
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeInt32(int)>($i3);
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r3 = (java.lang.Integer) $r2;
+
+        $i2 = virtualinvoke $r3.<java.lang.Integer: int intValue()>();
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeInt32(int,int)>($i0, $i2);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private void writeLazyString(int, java.lang.Object)
+    {
+        com.google.protobuf.ByteString $r3;
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        java.lang.Object $r1;
+        java.lang.String $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.lang.Object;
+
+        $z0 = $r1 instanceof java.lang.String;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (java.lang.String) $r1;
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeString(int,java.lang.String)>($i0, $r2);
+
+        return;
+
+     label1:
+        $r3 = (com.google.protobuf.ByteString) $r1;
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeBytes(int,com.google.protobuf.ByteString)>($i0, $r3);
+
+        return;
+    }
+
+    public static final void writeMapEntryField(com.google.protobuf.Writer, int, com.google.protobuf.WireFormat$FieldType, java.lang.Object)
+    {
+        java.lang.Float $r11;
+        java.lang.Double $r10;
+        long $l2;
+        java.lang.Integer $r8;
+        int[] $r3;
+        java.lang.Long $r12;
+        int $i0, $i1;
+        java.lang.Boolean $r13;
+        com.google.protobuf.WireFormat$FieldType $r1;
+        java.lang.String $r6;
+        boolean $z0;
+        double $d0;
+        java.lang.IllegalArgumentException $r4;
+        com.google.protobuf.ByteString $r9;
+        com.google.protobuf.Internal$EnumLite $r7;
+        float $f0;
+        java.lang.Object $r2;
+        java.lang.StringBuilder $r5;
+        com.google.protobuf.Writer $r0;
+
+        $r0 := @parameter0: com.google.protobuf.Writer;
+
+        $i0 := @parameter1: int;
+
+        $r1 := @parameter2: com.google.protobuf.WireFormat$FieldType;
+
+        $r2 := @parameter3: java.lang.Object;
+
+        $r3 = <com.google.protobuf.BinaryWriter$1: int[] $SwitchMap$com$google$protobuf$WireFormat$FieldType>;
+
+        $i1 = virtualinvoke $r1.<java.lang.Enum: int ordinal()>();
+
+        $i1 = $r3[$i1];
+
+        lookupswitch($i1)
+        {
+            case 1: goto label20;
+            case 2: goto label19;
+            case 3: goto label18;
+            case 4: goto label17;
+            case 5: goto label16;
+            case 6: goto label15;
+            case 7: goto label14;
+            case 8: goto label13;
+            case 9: goto label12;
+            case 10: goto label11;
+            case 11: goto label10;
+            case 12: goto label09;
+            case 13: goto label08;
+            case 14: goto label07;
+            case 15: goto label06;
+            case 16: goto label05;
+            case 17: goto label02;
+            default: goto label01;
+        };
+
+     label01:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unsupported map value type for: ");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r1);
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r6);
+
+        throw $r4;
+
+     label02:
+        $z0 = $r2 instanceof com.google.protobuf.Internal$EnumLite;
+
+        if $z0 == 0 goto label03;
+
+        $r7 = (com.google.protobuf.Internal$EnumLite) $r2;
+
+        $i1 = interfaceinvoke $r7.<com.google.protobuf.Internal$EnumLite: int getNumber()>();
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeEnum(int,int)>($i0, $i1);
+
+        return;
+
+     label03:
+        $z0 = $r2 instanceof java.lang.Integer;
+
+        if $z0 == 0 goto label04;
+
+        $r8 = (java.lang.Integer) $r2;
+
+        $i1 = virtualinvoke $r8.<java.lang.Integer: int intValue()>();
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeEnum(int,int)>($i0, $i1);
+
+        return;
+
+     label04:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Unexpected type for enum in map.");
+
+        throw $r4;
+
+     label05:
+        $r9 = (com.google.protobuf.ByteString) $r2;
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeBytes(int,com.google.protobuf.ByteString)>($i0, $r9);
+
+        return;
+
+     label06:
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeMessage(int,java.lang.Object)>($i0, $r2);
+
+        return;
+
+     label07:
+        $r10 = (java.lang.Double) $r2;
+
+        $d0 = virtualinvoke $r10.<java.lang.Double: double doubleValue()>();
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeDouble(int,double)>($i0, $d0);
+
+        return;
+
+     label08:
+        $r11 = (java.lang.Float) $r2;
+
+        $f0 = virtualinvoke $r11.<java.lang.Float: float floatValue()>();
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeFloat(int,float)>($i0, $f0);
+
+        return;
+
+     label09:
+        $r12 = (java.lang.Long) $r2;
+
+        $l2 = virtualinvoke $r12.<java.lang.Long: long longValue()>();
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeUInt64(int,long)>($i0, $l2);
+
+        return;
+
+     label10:
+        $r8 = (java.lang.Integer) $r2;
+
+        $i1 = virtualinvoke $r8.<java.lang.Integer: int intValue()>();
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeUInt32(int,int)>($i0, $i1);
+
+        return;
+
+     label11:
+        $r6 = (java.lang.String) $r2;
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeString(int,java.lang.String)>($i0, $r6);
+
+        return;
+
+     label12:
+        $r12 = (java.lang.Long) $r2;
+
+        $l2 = virtualinvoke $r12.<java.lang.Long: long longValue()>();
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeSInt64(int,long)>($i0, $l2);
+
+        return;
+
+     label13:
+        $r8 = (java.lang.Integer) $r2;
+
+        $i1 = virtualinvoke $r8.<java.lang.Integer: int intValue()>();
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeSInt32(int,int)>($i0, $i1);
+
+        return;
+
+     label14:
+        $r12 = (java.lang.Long) $r2;
+
+        $l2 = virtualinvoke $r12.<java.lang.Long: long longValue()>();
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeSFixed64(int,long)>($i0, $l2);
+
+        return;
+
+     label15:
+        $r8 = (java.lang.Integer) $r2;
+
+        $i1 = virtualinvoke $r8.<java.lang.Integer: int intValue()>();
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeSFixed32(int,int)>($i0, $i1);
+
+        return;
+
+     label16:
+        $r12 = (java.lang.Long) $r2;
+
+        $l2 = virtualinvoke $r12.<java.lang.Long: long longValue()>();
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeInt64(int,long)>($i0, $l2);
+
+        return;
+
+     label17:
+        $r8 = (java.lang.Integer) $r2;
+
+        $i1 = virtualinvoke $r8.<java.lang.Integer: int intValue()>();
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeInt32(int,int)>($i0, $i1);
+
+        return;
+
+     label18:
+        $r12 = (java.lang.Long) $r2;
+
+        $l2 = virtualinvoke $r12.<java.lang.Long: long longValue()>();
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeFixed64(int,long)>($i0, $l2);
+
+        return;
+
+     label19:
+        $r8 = (java.lang.Integer) $r2;
+
+        $i1 = virtualinvoke $r8.<java.lang.Integer: int intValue()>();
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeFixed32(int,int)>($i0, $i1);
+
+        return;
+
+     label20:
+        $r13 = (java.lang.Boolean) $r2;
+
+        $z0 = virtualinvoke $r13.<java.lang.Boolean: boolean booleanValue()>();
+
+        interfaceinvoke $r0.<com.google.protobuf.Writer: void writeBool(int,boolean)>($i0, $z0);
+
+        return;
+    }
+
+    private final void writeSInt32List_Internal(int, com.google.protobuf.IntArrayList, boolean)
+    {
+        int $i0, $i1, $i2, $i3;
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.IntArrayList $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: com.google.protobuf.IntArrayList;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int size()>();
+
+        $i1 = $i1 * 5;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int size()>();
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $i3 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int getInt(int)>($i2);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeSInt32(int)>($i3);
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $i2 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int getInt(int)>($i1);
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeSInt32(int,int)>($i0, $i2);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeSInt32List_Internal(int, java.util.List, boolean)
+    {
+        com.google.protobuf.BinaryWriter r0;
+        java.lang.Integer $r3;
+        java.util.List $r1;
+        int $i0, $i1, $i2, $i3;
+        java.lang.Object $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i1 = $i1 * 5;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i2);
+
+        $r3 = (java.lang.Integer) $r2;
+
+        $i3 = virtualinvoke $r3.<java.lang.Integer: int intValue()>();
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeSInt32(int)>($i3);
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r3 = (java.lang.Integer) $r2;
+
+        $i2 = virtualinvoke $r3.<java.lang.Integer: int intValue()>();
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeSInt32(int,int)>($i0, $i2);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeSInt64List_Internal(int, com.google.protobuf.LongArrayList, boolean)
+    {
+        com.google.protobuf.BinaryWriter r0;
+        long $l3;
+        int $i0, $i1, $i2, $i4;
+        com.google.protobuf.LongArrayList $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: com.google.protobuf.LongArrayList;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = virtualinvoke $r1.<com.google.protobuf.LongArrayList: int size()>();
+
+        $i1 = $i1 * 10;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = virtualinvoke $r1.<com.google.protobuf.LongArrayList: int size()>();
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $l3 = virtualinvoke $r1.<com.google.protobuf.LongArrayList: long getLong(int)>($i2);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeSInt64(long)>($l3);
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = virtualinvoke $r1.<com.google.protobuf.LongArrayList: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $l3 = virtualinvoke $r1.<com.google.protobuf.LongArrayList: long getLong(int)>($i1);
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeSInt64(int,long)>($i0, $l3);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeSInt64List_Internal(int, java.util.List, boolean)
+    {
+        com.google.protobuf.BinaryWriter r0;
+        long $l3;
+        java.util.List $r1;
+        java.lang.Long $r3;
+        int $i0, $i1, $i2, $i4;
+        java.lang.Object $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i1 = $i1 * 10;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i2);
+
+        $r3 = (java.lang.Long) $r2;
+
+        $l3 = virtualinvoke $r3.<java.lang.Long: long longValue()>();
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeSInt64(long)>($l3);
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r3 = (java.lang.Long) $r2;
+
+        $l3 = virtualinvoke $r3.<java.lang.Long: long longValue()>();
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeSInt64(int,long)>($i0, $l3);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeUInt32List_Internal(int, com.google.protobuf.IntArrayList, boolean)
+    {
+        int $i0, $i1, $i2, $i3;
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.IntArrayList $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: com.google.protobuf.IntArrayList;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int size()>();
+
+        $i1 = $i1 * 5;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int size()>();
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $i3 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int getInt(int)>($i2);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i3);
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $i2 = virtualinvoke $r1.<com.google.protobuf.IntArrayList: int getInt(int)>($i1);
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeUInt32(int,int)>($i0, $i2);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeUInt32List_Internal(int, java.util.List, boolean)
+    {
+        com.google.protobuf.BinaryWriter r0;
+        java.lang.Integer $r3;
+        java.util.List $r1;
+        int $i0, $i1, $i2, $i3;
+        java.lang.Object $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i1 = $i1 * 5;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i2);
+
+        $r3 = (java.lang.Integer) $r2;
+
+        $i3 = virtualinvoke $r3.<java.lang.Integer: int intValue()>();
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i3);
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r3 = (java.lang.Integer) $r2;
+
+        $i2 = virtualinvoke $r3.<java.lang.Integer: int intValue()>();
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeUInt32(int,int)>($i0, $i2);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeUInt64List_Internal(int, com.google.protobuf.LongArrayList, boolean)
+    {
+        com.google.protobuf.BinaryWriter r0;
+        long $l3;
+        int $i0, $i1, $i2, $i4;
+        com.google.protobuf.LongArrayList $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: com.google.protobuf.LongArrayList;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = virtualinvoke $r1.<com.google.protobuf.LongArrayList: int size()>();
+
+        $i1 = $i1 * 10;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = virtualinvoke $r1.<com.google.protobuf.LongArrayList: int size()>();
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $l3 = virtualinvoke $r1.<com.google.protobuf.LongArrayList: long getLong(int)>($i2);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint64(long)>($l3);
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = virtualinvoke $r1.<com.google.protobuf.LongArrayList: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $l3 = virtualinvoke $r1.<com.google.protobuf.LongArrayList: long getLong(int)>($i1);
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeUInt64(int,long)>($i0, $l3);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    private final void writeUInt64List_Internal(int, java.util.List, boolean)
+    {
+        com.google.protobuf.BinaryWriter r0;
+        long $l3;
+        java.util.List $r1;
+        java.lang.Long $r3;
+        int $i0, $i1, $i2, $i4;
+        java.lang.Object $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i1 = $i1 * 10;
+
+        $i1 = $i1 + 10;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void requireSpace(int)>($i1);
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i2 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+     label1:
+        if $i2 < 0 goto label2;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i2);
+
+        $r3 = (java.lang.Long) $r2;
+
+        $l3 = virtualinvoke $r3.<java.lang.Long: long longValue()>();
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint64(long)>($l3);
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+        goto label1;
+
+     label2:
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        return;
+
+     label3:
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label4:
+        if $i1 < 0 goto label5;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r3 = (java.lang.Long) $r2;
+
+        $l3 = virtualinvoke $r3.<java.lang.Long: long longValue()>();
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeUInt64(int,long)>($i0, $l3);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    public final java.util.Queue complete()
+    {
+        com.google.protobuf.BinaryWriter r0;
+        java.util.ArrayDeque r1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void finishCurrentBuffer()>();
+
+        r1 = r0.<com.google.protobuf.BinaryWriter: java.util.ArrayDeque buffers>;
+
+        return r1;
+    }
+
+    public final com.google.protobuf.Writer$FieldOrder fieldOrder()
+    {
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.Writer$FieldOrder r1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        r1 = <com.google.protobuf.Writer$FieldOrder: com.google.protobuf.Writer$FieldOrder DESCENDING>;
+
+        return r1;
+    }
+
+    public abstract void finishCurrentBuffer();
+
+    public abstract int getTotalBytesWritten();
+
+    public final com.google.protobuf.AllocatedBuffer newDirectBuffer()
+    {
+        com.google.protobuf.AllocatedBuffer $r1;
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.BufferAllocator $r2;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $r2 = r0.<com.google.protobuf.BinaryWriter: com.google.protobuf.BufferAllocator alloc>;
+
+        $i0 = r0.<com.google.protobuf.BinaryWriter: int chunkSize>;
+
+        $r1 = virtualinvoke $r2.<com.google.protobuf.BufferAllocator: com.google.protobuf.AllocatedBuffer allocateDirectBuffer(int)>($i0);
+
+        return $r1;
+    }
+
+    public final com.google.protobuf.AllocatedBuffer newDirectBuffer(int)
+    {
+        com.google.protobuf.AllocatedBuffer $r2;
+        int $i0, $i1;
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.BufferAllocator $r1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i1 := @parameter0: int;
+
+        $r1 = r0.<com.google.protobuf.BinaryWriter: com.google.protobuf.BufferAllocator alloc>;
+
+        $i0 = r0.<com.google.protobuf.BinaryWriter: int chunkSize>;
+
+        $i1 = staticinvoke <java.lang.Math: int max(int,int)>($i1, $i0);
+
+        $r2 = virtualinvoke $r1.<com.google.protobuf.BufferAllocator: com.google.protobuf.AllocatedBuffer allocateDirectBuffer(int)>($i1);
+
+        return $r2;
+    }
+
+    public final com.google.protobuf.AllocatedBuffer newHeapBuffer()
+    {
+        com.google.protobuf.AllocatedBuffer $r1;
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.BufferAllocator $r2;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $r2 = r0.<com.google.protobuf.BinaryWriter: com.google.protobuf.BufferAllocator alloc>;
+
+        $i0 = r0.<com.google.protobuf.BinaryWriter: int chunkSize>;
+
+        $r1 = virtualinvoke $r2.<com.google.protobuf.BufferAllocator: com.google.protobuf.AllocatedBuffer allocateHeapBuffer(int)>($i0);
+
+        return $r1;
+    }
+
+    public final com.google.protobuf.AllocatedBuffer newHeapBuffer(int)
+    {
+        com.google.protobuf.AllocatedBuffer $r2;
+        int $i0, $i1;
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.BufferAllocator $r1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i1 := @parameter0: int;
+
+        $r1 = r0.<com.google.protobuf.BinaryWriter: com.google.protobuf.BufferAllocator alloc>;
+
+        $i0 = r0.<com.google.protobuf.BinaryWriter: int chunkSize>;
+
+        $i1 = staticinvoke <java.lang.Math: int max(int,int)>($i1, $i0);
+
+        $r2 = virtualinvoke $r1.<com.google.protobuf.BufferAllocator: com.google.protobuf.AllocatedBuffer allocateHeapBuffer(int)>($i1);
+
+        return $r2;
+    }
+
+    public abstract void requireSpace(int);
+
+    public abstract void writeBool(boolean);
+
+    public final void writeBoolList(int, java.util.List, boolean)
+    {
+        java.util.List $r1;
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.BooleanArrayList $r2;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 = $r1 instanceof com.google.protobuf.BooleanArrayList;
+
+        if $z1 == 0 goto label1;
+
+        $r2 = (com.google.protobuf.BooleanArrayList) $r1;
+
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeBoolList_Internal(int,com.google.protobuf.BooleanArrayList,boolean)>($i0, $r2, $z0);
+
+        return;
+
+     label1:
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeBoolList_Internal(int,java.util.List,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+
+    public final void writeBytesList(int, java.util.List)
+    {
+        com.google.protobuf.ByteString $r3;
+        java.util.List $r1;
+        int $i0, $i1, $i2;
+        com.google.protobuf.BinaryWriter r0;
+        java.lang.Object $r2;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label1:
+        if $i1 < 0 goto label2;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r3 = (com.google.protobuf.ByteString) $r2;
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeBytes(int,com.google.protobuf.ByteString)>($i0, $r3);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public final void writeDouble(int, double)
+    {
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        long $l1;
+        double $d0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $d0 := @parameter1: double;
+
+        $l1 = staticinvoke <java.lang.Double: long doubleToRawLongBits(double)>($d0);
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeFixed64(int,long)>($i0, $l1);
+
+        return;
+    }
+
+    public final void writeDoubleList(int, java.util.List, boolean)
+    {
+        java.util.List $r1;
+        int $i0;
+        com.google.protobuf.DoubleArrayList $r2;
+        com.google.protobuf.BinaryWriter r0;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 = $r1 instanceof com.google.protobuf.DoubleArrayList;
+
+        if $z1 == 0 goto label1;
+
+        $r2 = (com.google.protobuf.DoubleArrayList) $r1;
+
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeDoubleList_Internal(int,com.google.protobuf.DoubleArrayList,boolean)>($i0, $r2, $z0);
+
+        return;
+
+     label1:
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeDoubleList_Internal(int,java.util.List,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+
+    public final void writeEnum(int, int)
+    {
+        int $i0, $i1;
+        com.google.protobuf.BinaryWriter r0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeInt32(int,int)>($i0, $i1);
+
+        return;
+    }
+
+    public final void writeEnumList(int, java.util.List, boolean)
+    {
+        java.util.List $r1;
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeInt32List(int,java.util.List,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+
+    public abstract void writeFixed32(int);
+
+    public final void writeFixed32List(int, java.util.List, boolean)
+    {
+        java.util.List $r1;
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.IntArrayList $r2;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 = $r1 instanceof com.google.protobuf.IntArrayList;
+
+        if $z1 == 0 goto label1;
+
+        $r2 = (com.google.protobuf.IntArrayList) $r1;
+
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeFixed32List_Internal(int,com.google.protobuf.IntArrayList,boolean)>($i0, $r2, $z0);
+
+        return;
+
+     label1:
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeFixed32List_Internal(int,java.util.List,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+
+    public abstract void writeFixed64(long);
+
+    public final void writeFixed64List(int, java.util.List, boolean)
+    {
+        java.util.List $r1;
+        int $i0;
+        com.google.protobuf.LongArrayList $r2;
+        com.google.protobuf.BinaryWriter r0;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 = $r1 instanceof com.google.protobuf.LongArrayList;
+
+        if $z1 == 0 goto label1;
+
+        $r2 = (com.google.protobuf.LongArrayList) $r1;
+
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeFixed64List_Internal(int,com.google.protobuf.LongArrayList,boolean)>($i0, $r2, $z0);
+
+        return;
+
+     label1:
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeFixed64List_Internal(int,java.util.List,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+
+    public final void writeFloat(int, float)
+    {
+        int $i0, $i1;
+        com.google.protobuf.BinaryWriter r0;
+        float $f0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $f0 := @parameter1: float;
+
+        $i1 = staticinvoke <java.lang.Float: int floatToRawIntBits(float)>($f0);
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeFixed32(int,int)>($i0, $i1);
+
+        return;
+    }
+
+    public final void writeFloatList(int, java.util.List, boolean)
+    {
+        java.util.List $r1;
+        com.google.protobuf.FloatArrayList $r2;
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 = $r1 instanceof com.google.protobuf.FloatArrayList;
+
+        if $z1 == 0 goto label1;
+
+        $r2 = (com.google.protobuf.FloatArrayList) $r1;
+
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeFloatList_Internal(int,com.google.protobuf.FloatArrayList,boolean)>($i0, $r2, $z0);
+
+        return;
+
+     label1:
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeFloatList_Internal(int,java.util.List,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+
+    public final void writeGroupList(int, java.util.List)
+    {
+        java.util.List $r1;
+        int $i0, $i1, $i2;
+        com.google.protobuf.BinaryWriter r0;
+        java.lang.Object $r2;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label1:
+        if $i1 < 0 goto label2;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i1);
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeGroup(int,java.lang.Object)>($i0, $r2);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public final void writeGroupList(int, java.util.List, com.google.protobuf.Schema)
+    {
+        java.util.List $r1;
+        com.google.protobuf.Schema $r2;
+        int $i0, $i1, $i2;
+        com.google.protobuf.BinaryWriter r0;
+        java.lang.Object $r3;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $r2 := @parameter2: com.google.protobuf.Schema;
+
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label1:
+        if $i1 < 0 goto label2;
+
+        $r3 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i1);
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeGroup(int,java.lang.Object,com.google.protobuf.Schema)>($i0, $r3, $r2);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public abstract void writeInt32(int);
+
+    public final void writeInt32List(int, java.util.List, boolean)
+    {
+        java.util.List $r1;
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.IntArrayList $r2;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 = $r1 instanceof com.google.protobuf.IntArrayList;
+
+        if $z1 == 0 goto label1;
+
+        $r2 = (com.google.protobuf.IntArrayList) $r1;
+
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeInt32List_Internal(int,com.google.protobuf.IntArrayList,boolean)>($i0, $r2, $z0);
+
+        return;
+
+     label1:
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeInt32List_Internal(int,java.util.List,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+
+    public final void writeInt64(int, long)
+    {
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        long $l1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $l1 := @parameter1: long;
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeUInt64(int,long)>($i0, $l1);
+
+        return;
+    }
+
+    public final void writeInt64List(int, java.util.List, boolean)
+    {
+        java.util.List $r1;
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeUInt64List(int,java.util.List,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+
+    public void writeMap(int, com.google.protobuf.MapEntryLite$Metadata, java.util.Map)
+    {
+        java.util.Map$Entry $r6;
+        java.util.Iterator $r4;
+        com.google.protobuf.BinaryWriter r0;
+        java.util.Set $r3;
+        java.util.Map $r2;
+        int $i0, $i1, $i2;
+        java.lang.Object $r5;
+        com.google.protobuf.WireFormat$FieldType $r7;
+        com.google.protobuf.MapEntryLite$Metadata $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: com.google.protobuf.MapEntryLite$Metadata;
+
+        $r2 := @parameter2: java.util.Map;
+
+        $r3 = interfaceinvoke $r2.<java.util.Map: java.util.Set entrySet()>();
+
+        $r4 = interfaceinvoke $r3.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (java.util.Map$Entry) $r5;
+
+        $i1 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $r7 = $r1.<com.google.protobuf.MapEntryLite$Metadata: com.google.protobuf.WireFormat$FieldType valueType>;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        staticinvoke <com.google.protobuf.BinaryWriter: void writeMapEntryField(com.google.protobuf.Writer,int,com.google.protobuf.WireFormat$FieldType,java.lang.Object)>(r0, 2, $r7, $r5);
+
+        $r7 = $r1.<com.google.protobuf.MapEntryLite$Metadata: com.google.protobuf.WireFormat$FieldType keyType>;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        staticinvoke <com.google.protobuf.BinaryWriter: void writeMapEntryField(com.google.protobuf.Writer,int,com.google.protobuf.WireFormat$FieldType,java.lang.Object)>(r0, 1, $r7, $r5);
+
+        $i2 = virtualinvoke r0.<com.google.protobuf.BinaryWriter: int getTotalBytesWritten()>();
+
+        $i1 = $i2 - $i1;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeVarint32(int)>($i1);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>($i0, 2);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public final void writeMessageList(int, java.util.List)
+    {
+        java.util.List $r1;
+        int $i0, $i1, $i2;
+        com.google.protobuf.BinaryWriter r0;
+        java.lang.Object $r2;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label1:
+        if $i1 < 0 goto label2;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i1);
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeMessage(int,java.lang.Object)>($i0, $r2);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public final void writeMessageList(int, java.util.List, com.google.protobuf.Schema)
+    {
+        java.util.List $r1;
+        com.google.protobuf.Schema $r2;
+        int $i0, $i1, $i2;
+        com.google.protobuf.BinaryWriter r0;
+        java.lang.Object $r3;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $r2 := @parameter2: com.google.protobuf.Schema;
+
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label1:
+        if $i1 < 0 goto label2;
+
+        $r3 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i1);
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeMessage(int,java.lang.Object,com.google.protobuf.Schema)>($i0, $r3, $r2);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public final void writeMessageSetItem(int, java.lang.Object)
+    {
+        com.google.protobuf.ByteString $r2;
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        java.lang.Object $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.lang.Object;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>(1, 4);
+
+        $z0 = $r1 instanceof com.google.protobuf.ByteString;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (com.google.protobuf.ByteString) $r1;
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeBytes(int,com.google.protobuf.ByteString)>(3, $r2);
+
+        goto label2;
+
+     label1:
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeMessage(int,java.lang.Object)>(3, $r1);
+
+     label2:
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeUInt32(int,int)>(2, $i0);
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeTag(int,int)>(1, 3);
+
+        return;
+    }
+
+    public final void writeSFixed32(int, int)
+    {
+        int $i0, $i1;
+        com.google.protobuf.BinaryWriter r0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeFixed32(int,int)>($i0, $i1);
+
+        return;
+    }
+
+    public final void writeSFixed32List(int, java.util.List, boolean)
+    {
+        java.util.List $r1;
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeFixed32List(int,java.util.List,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+
+    public final void writeSFixed64(int, long)
+    {
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        long $l1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $l1 := @parameter1: long;
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeFixed64(int,long)>($i0, $l1);
+
+        return;
+    }
+
+    public final void writeSFixed64List(int, java.util.List, boolean)
+    {
+        java.util.List $r1;
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        virtualinvoke r0.<com.google.protobuf.BinaryWriter: void writeFixed64List(int,java.util.List,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+
+    public abstract void writeSInt32(int);
+
+    public final void writeSInt32List(int, java.util.List, boolean)
+    {
+        java.util.List $r1;
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.IntArrayList $r2;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 = $r1 instanceof com.google.protobuf.IntArrayList;
+
+        if $z1 == 0 goto label1;
+
+        $r2 = (com.google.protobuf.IntArrayList) $r1;
+
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeSInt32List_Internal(int,com.google.protobuf.IntArrayList,boolean)>($i0, $r2, $z0);
+
+        return;
+
+     label1:
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeSInt32List_Internal(int,java.util.List,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+
+    public abstract void writeSInt64(long);
+
+    public final void writeSInt64List(int, java.util.List, boolean)
+    {
+        java.util.List $r1;
+        int $i0;
+        com.google.protobuf.LongArrayList $r2;
+        com.google.protobuf.BinaryWriter r0;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 = $r1 instanceof com.google.protobuf.LongArrayList;
+
+        if $z1 == 0 goto label1;
+
+        $r2 = (com.google.protobuf.LongArrayList) $r1;
+
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeSInt64List_Internal(int,com.google.protobuf.LongArrayList,boolean)>($i0, $r2, $z0);
+
+        return;
+
+     label1:
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeSInt64List_Internal(int,java.util.List,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+
+    public abstract void writeString(java.lang.String);
+
+    public final void writeStringList(int, java.util.List)
+    {
+        com.google.protobuf.BinaryWriter r0;
+        java.util.List $r1;
+        com.google.protobuf.LazyStringList $r2;
+        int $i0, $i1, $i2;
+        java.lang.Object $r3;
+        java.lang.String $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 = $r1 instanceof com.google.protobuf.LazyStringList;
+
+        if $z0 == 0 goto label2;
+
+        $r2 = (com.google.protobuf.LazyStringList) $r1;
+
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label1:
+        if $i1 < 0 goto label4;
+
+        $r3 = interfaceinvoke $r2.<com.google.protobuf.LazyStringList: java.lang.Object getRaw(int)>($i1);
+
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeLazyString(int,java.lang.Object)>($i0, $r3);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label1;
+
+     label2:
+        $i1 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label3:
+        if $i1 < 0 goto label4;
+
+        $r3 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r4 = (java.lang.String) $r3;
+
+        interfaceinvoke r0.<com.google.protobuf.Writer: void writeString(int,java.lang.String)>($i0, $r4);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label3;
+
+     label4:
+        return;
+    }
+
+    public abstract void writeTag(int, int);
+
+    public final void writeUInt32List(int, java.util.List, boolean)
+    {
+        java.util.List $r1;
+        int $i0;
+        com.google.protobuf.BinaryWriter r0;
+        com.google.protobuf.IntArrayList $r2;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 = $r1 instanceof com.google.protobuf.IntArrayList;
+
+        if $z1 == 0 goto label1;
+
+        $r2 = (com.google.protobuf.IntArrayList) $r1;
+
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeUInt32List_Internal(int,com.google.protobuf.IntArrayList,boolean)>($i0, $r2, $z0);
+
+        return;
+
+     label1:
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeUInt32List_Internal(int,java.util.List,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+
+    public final void writeUInt64List(int, java.util.List, boolean)
+    {
+        java.util.List $r1;
+        int $i0;
+        com.google.protobuf.LongArrayList $r2;
+        com.google.protobuf.BinaryWriter r0;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.protobuf.BinaryWriter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 = $r1 instanceof com.google.protobuf.LongArrayList;
+
+        if $z1 == 0 goto label1;
+
+        $r2 = (com.google.protobuf.LongArrayList) $r1;
+
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeUInt64List_Internal(int,com.google.protobuf.LongArrayList,boolean)>($i0, $r2, $z0);
+
+        return;
+
+     label1:
+        specialinvoke r0.<com.google.protobuf.BinaryWriter: void writeUInt64List_Internal(int,java.util.List,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+
+    public abstract void writeVarint32(int);
+
+    public abstract void writeVarint64(long);
+
+    public static void <clinit>()
+    {
+        <com.google.protobuf.BinaryWriter: int MAP_VALUE_NUMBER> = 2;
+
+        <com.google.protobuf.BinaryWriter: int MAP_KEY_NUMBER> = 1;
+
+        <com.google.protobuf.BinaryWriter: int DEFAULT_CHUNK_SIZE> = 4096;
+
+        return;
+    }
+}

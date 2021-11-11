@@ -1,0 +1,204 @@
+public class android.support.v4.media.MediaBrowserCompat$CallbackHandler extends android.os.Handler
+{
+    public final java.lang.ref.WeakReference mCallbackImplRef;
+    public java.lang.ref.WeakReference mCallbacksMessengerRef;
+
+    public void <init>(android.support.v4.media.MediaBrowserCompat$MediaBrowserServiceCallbackImpl)
+    {
+        java.lang.ref.WeakReference $r2;
+        android.support.v4.media.MediaBrowserCompat$CallbackHandler r0;
+        android.support.v4.media.MediaBrowserCompat$MediaBrowserServiceCallbackImpl $r1;
+
+        r0 := @this: android.support.v4.media.MediaBrowserCompat$CallbackHandler;
+
+        $r1 := @parameter0: android.support.v4.media.MediaBrowserCompat$MediaBrowserServiceCallbackImpl;
+
+        specialinvoke r0.<android.os.Handler: void <init>()>();
+
+        $r2 = new java.lang.ref.WeakReference;
+
+        specialinvoke $r2.<java.lang.ref.WeakReference: void <init>(java.lang.Object)>($r1);
+
+        r0.<android.support.v4.media.MediaBrowserCompat$CallbackHandler: java.lang.ref.WeakReference mCallbackImplRef> = $r2;
+
+        return;
+    }
+
+    public void handleMessage(android.os.Message)
+    {
+        android.os.Bundle $r5, $r10, $r11;
+        android.support.v4.media.session.MediaSessionCompat$Token $r14;
+        java.util.ArrayList $r12;
+        android.support.v4.media.MediaBrowserCompat$MediaBrowserServiceCallbackImpl $r6;
+        int $i0;
+        java.lang.String $r9;
+        java.lang.ref.WeakReference $r3;
+        android.support.v4.media.MediaBrowserCompat$CallbackHandler r0;
+        android.os.Parcelable $r13;
+        android.os.Messenger $r7;
+        android.os.Message $r2;
+        android.os.BadParcelableException $r1;
+        java.lang.Object $r4;
+        java.lang.StringBuilder $r8;
+
+        r0 := @this: android.support.v4.media.MediaBrowserCompat$CallbackHandler;
+
+        $r2 := @parameter0: android.os.Message;
+
+        $r3 = r0.<android.support.v4.media.MediaBrowserCompat$CallbackHandler: java.lang.ref.WeakReference mCallbacksMessengerRef>;
+
+        if $r3 == null goto label16;
+
+        $r4 = virtualinvoke $r3.<java.lang.ref.WeakReference: java.lang.Object get()>();
+
+        if $r4 == null goto label16;
+
+        $r3 = r0.<android.support.v4.media.MediaBrowserCompat$CallbackHandler: java.lang.ref.WeakReference mCallbackImplRef>;
+
+        $r4 = virtualinvoke $r3.<java.lang.ref.WeakReference: java.lang.Object get()>();
+
+        if $r4 != null goto label01;
+
+        return;
+
+     label01:
+        $r5 = virtualinvoke $r2.<android.os.Message: android.os.Bundle getData()>();
+
+        staticinvoke <android.support.v4.media.session.MediaSessionCompat: void ensureClassLoader(android.os.Bundle)>($r5);
+
+        $r3 = r0.<android.support.v4.media.MediaBrowserCompat$CallbackHandler: java.lang.ref.WeakReference mCallbackImplRef>;
+
+        $r4 = virtualinvoke $r3.<java.lang.ref.WeakReference: java.lang.Object get()>();
+
+        $r6 = (android.support.v4.media.MediaBrowserCompat$MediaBrowserServiceCallbackImpl) $r4;
+
+        $r3 = r0.<android.support.v4.media.MediaBrowserCompat$CallbackHandler: java.lang.ref.WeakReference mCallbacksMessengerRef>;
+
+        $r4 = virtualinvoke $r3.<java.lang.ref.WeakReference: java.lang.Object get()>();
+
+        $r7 = (android.os.Messenger) $r4;
+
+        $i0 = $r2.<android.os.Message: int what>;
+
+        if $i0 == 1 goto label10;
+
+        if $i0 == 2 goto label08;
+
+        if $i0 == 3 goto label06;
+
+        $r8 = new java.lang.StringBuilder;
+
+     label02:
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unhandled message: ");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n  Client version: ");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(1);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n  Service version: ");
+
+     label03:
+        $i0 = $r2.<android.os.Message: int arg1>;
+
+     label04:
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("MediaBrowserCompat", $r9);
+
+     label05:
+        return;
+
+     label06:
+        $r10 = virtualinvoke $r5.<android.os.Bundle: android.os.Bundle getBundle(java.lang.String)>("data_options");
+
+        staticinvoke <android.support.v4.media.session.MediaSessionCompat: void ensureClassLoader(android.os.Bundle)>($r10);
+
+        $r11 = virtualinvoke $r5.<android.os.Bundle: android.os.Bundle getBundle(java.lang.String)>("data_notify_children_changed_options");
+
+        staticinvoke <android.support.v4.media.session.MediaSessionCompat: void ensureClassLoader(android.os.Bundle)>($r11);
+
+        $r9 = virtualinvoke $r5.<android.os.Bundle: java.lang.String getString(java.lang.String)>("data_media_item_id");
+
+        $r12 = virtualinvoke $r5.<android.os.Bundle: java.util.ArrayList getParcelableArrayList(java.lang.String)>("data_media_item_list");
+
+        interfaceinvoke $r6.<android.support.v4.media.MediaBrowserCompat$MediaBrowserServiceCallbackImpl: void onLoadChildren(android.os.Messenger,java.lang.String,java.util.List,android.os.Bundle,android.os.Bundle)>($r7, $r9, $r12, $r10, $r11);
+
+     label07:
+        return;
+
+     label08:
+        interfaceinvoke $r6.<android.support.v4.media.MediaBrowserCompat$MediaBrowserServiceCallbackImpl: void onConnectionFailed(android.os.Messenger)>($r7);
+
+     label09:
+        return;
+
+     label10:
+        $r10 = virtualinvoke $r5.<android.os.Bundle: android.os.Bundle getBundle(java.lang.String)>("data_root_hints");
+
+        staticinvoke <android.support.v4.media.session.MediaSessionCompat: void ensureClassLoader(android.os.Bundle)>($r10);
+
+        $r9 = virtualinvoke $r5.<android.os.Bundle: java.lang.String getString(java.lang.String)>("data_media_item_id");
+
+        $r13 = virtualinvoke $r5.<android.os.Bundle: android.os.Parcelable getParcelable(java.lang.String)>("data_media_session_token");
+
+     label11:
+        $r14 = (android.support.v4.media.session.MediaSessionCompat$Token) $r13;
+
+     label12:
+        interfaceinvoke $r6.<android.support.v4.media.MediaBrowserCompat$MediaBrowserServiceCallbackImpl: void onServiceConnected(android.os.Messenger,java.lang.String,android.support.v4.media.session.MediaSessionCompat$Token,android.os.Bundle)>($r7, $r9, $r14, $r10);
+
+     label13:
+        return;
+
+     label14:
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("MediaBrowserCompat", "Could not unparcel the data.");
+
+        $i0 = $r2.<android.os.Message: int what>;
+
+        if $i0 != 1 goto label16;
+
+        interfaceinvoke $r6.<android.support.v4.media.MediaBrowserCompat$MediaBrowserServiceCallbackImpl: void onConnectionFailed(android.os.Messenger)>($r7);
+
+        return;
+
+     label15:
+        $r1 := @caughtexception;
+
+        goto label14;
+
+     label16:
+        return;
+
+        catch android.os.BadParcelableException from label02 to label03 with label15;
+        catch android.os.BadParcelableException from label04 to label05 with label15;
+        catch android.os.BadParcelableException from label06 to label07 with label15;
+        catch android.os.BadParcelableException from label08 to label09 with label15;
+        catch android.os.BadParcelableException from label10 to label11 with label15;
+        catch android.os.BadParcelableException from label12 to label13 with label15;
+    }
+
+    public void setCallbacksMessenger(android.os.Messenger)
+    {
+        android.os.Messenger $r1;
+        java.lang.ref.WeakReference $r2;
+        android.support.v4.media.MediaBrowserCompat$CallbackHandler r0;
+
+        r0 := @this: android.support.v4.media.MediaBrowserCompat$CallbackHandler;
+
+        $r1 := @parameter0: android.os.Messenger;
+
+        $r2 = new java.lang.ref.WeakReference;
+
+        specialinvoke $r2.<java.lang.ref.WeakReference: void <init>(java.lang.Object)>($r1);
+
+        r0.<android.support.v4.media.MediaBrowserCompat$CallbackHandler: java.lang.ref.WeakReference mCallbacksMessengerRef> = $r2;
+
+        return;
+    }
+}

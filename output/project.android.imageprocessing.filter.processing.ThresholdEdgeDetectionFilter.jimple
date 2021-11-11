@@ -1,0 +1,88 @@
+public class project.android.imageprocessing.filter.processing.ThresholdEdgeDetectionFilter extends project.android.imageprocessing.filter.CompositeMultiPixelFilter
+{
+    public static final java.lang.String UNIFORM_THRESHOLD;
+    public float threshold;
+    public int thresholdHandle;
+
+    public void <init>(float)
+    {
+        project.android.imageprocessing.filter.processing.ThresholdEdgeDetectionFilter r0;
+        float $f0;
+        project.android.imageprocessing.filter.colour.GreyScaleFilter $r1;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.ThresholdEdgeDetectionFilter;
+
+        $f0 := @parameter0: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.CompositeMultiPixelFilter: void <init>(int)>(1);
+
+        r0.<project.android.imageprocessing.filter.processing.ThresholdEdgeDetectionFilter: float threshold> = $f0;
+
+        $r1 = new project.android.imageprocessing.filter.colour.GreyScaleFilter;
+
+        specialinvoke $r1.<project.android.imageprocessing.filter.colour.GreyScaleFilter: void <init>()>();
+
+        virtualinvoke $r1.<project.android.imageprocessing.input.GLTextureOutputRenderer: void addTarget(project.android.imageprocessing.output.GLTextureInputRenderer)>(r0);
+
+        virtualinvoke r0.<project.android.imageprocessing.filter.CompositeMultiPixelFilter: void registerInitialFilter(project.android.imageprocessing.filter.BasicFilter)>($r1);
+
+        virtualinvoke r0.<project.android.imageprocessing.filter.CompositeMultiPixelFilter: void registerTerminalFilter(project.android.imageprocessing.input.GLTextureOutputRenderer)>($r1);
+
+        virtualinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void registerFilterLocation(project.android.imageprocessing.input.GLTextureOutputRenderer)>($r1);
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.processing.ThresholdEdgeDetectionFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.ThresholdEdgeDetectionFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform float u_Threshold;\nuniform float u_TexelWidth;\nuniform float u_TexelHeight;\nvoid main(){\n   vec2 up = vec2(0.0, u_TexelHeight);\n   vec2 right = vec2(u_TexelWidth, 0.0);\n   float bottomLeftIntensity = texture2D(u_Texture0, v_TexCoord - up - right).r;\n   float topRightIntensity = texture2D(u_Texture0, v_TexCoord + up + right).r;\n   float topLeftIntensity = texture2D(u_Texture0, v_TexCoord + up - right).r;\n   float bottomRightIntensity = texture2D(u_Texture0, v_TexCoord - up + right).r;\n   float leftIntensity = texture2D(u_Texture0, v_TexCoord - right).r;\n   float rightIntensity = texture2D(u_Texture0, v_TexCoord + right).r;\n   float bottomIntensity = texture2D(u_Texture0, v_TexCoord - up).r;\n   float topIntensity = texture2D(u_Texture0, v_TexCoord + up).r;\n   float h = -topLeftIntensity - 2.0 * topIntensity - topRightIntensity + bottomLeftIntensity + 2.0 * bottomIntensity + bottomRightIntensity;\n   float v = -bottomLeftIntensity - 2.0 * leftIntensity - topLeftIntensity + bottomRightIntensity + 2.0 * rightIntensity + topRightIntensity;\n   float mag = length(vec2(h, v));\n   mag = step(u_Threshold, mag);\n   gl_FragColor = vec4(vec3(mag), 1.0);\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.processing.ThresholdEdgeDetectionFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.ThresholdEdgeDetectionFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiInputPixelFilter: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_Threshold");
+
+        r0.<project.android.imageprocessing.filter.processing.ThresholdEdgeDetectionFilter: int thresholdHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.processing.ThresholdEdgeDetectionFilter r0;
+        float $f0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.ThresholdEdgeDetectionFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiInputPixelFilter: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.processing.ThresholdEdgeDetectionFilter: int thresholdHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.processing.ThresholdEdgeDetectionFilter: float threshold>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.processing.ThresholdEdgeDetectionFilter: java.lang.String UNIFORM_THRESHOLD> = "u_Threshold";
+
+        return;
+    }
+}

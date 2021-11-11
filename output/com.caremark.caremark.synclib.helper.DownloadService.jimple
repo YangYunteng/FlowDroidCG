@@ -1,0 +1,1069 @@
+public class com.caremark.caremark.synclib.helper.DownloadService extends android.app.IntentService
+{
+    public static final java.lang.String BUNDLE;
+    public static final java.lang.String COMPLIST;
+    public static final java.lang.String DOWNLOADED_COMPONENTS;
+    public static final java.lang.String FAILED;
+    public static final java.lang.String REFID;
+    public static final java.lang.String RESULT;
+    public static final java.lang.String SERVICE_TAG;
+    public static final java.lang.String TAG;
+    public java.util.ArrayList componentList;
+    public java.lang.String file;
+    public java.lang.String key;
+    public java.lang.String path;
+    public java.lang.String refId;
+    public java.lang.String version;
+
+    public void <init>()
+    {
+        com.caremark.caremark.synclib.helper.DownloadService r0;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.DownloadService;
+
+        specialinvoke r0.<android.app.IntentService: void <init>(java.lang.String)>("DownloadService");
+
+        return;
+    }
+
+    private void deleteZip(java.lang.String)
+    {
+        com.caremark.caremark.synclib.helper.DownloadService r0;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r1;
+        java.io.File $r2;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.DownloadService;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = new java.io.File;
+
+        specialinvoke $r2.<java.io.File: void <init>(java.lang.String)>($r1);
+
+        $z0 = virtualinvoke $r2.<java.io.File: boolean exists()>();
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke $r2.<java.io.File: boolean delete()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" deleted...");
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("DownloadService", $r1);
+
+     label1:
+        return;
+    }
+
+    private boolean downloadAndSave(java.lang.String, java.lang.String)
+    {
+        byte[] $r19;
+        java.net.URL $r7, $r33;
+        boolean $z0;
+        java.security.KeyManagementException $r13;
+        java.lang.Exception $r25, $r26;
+        javax.net.ssl.SSLSocketFactory $r15;
+        java.security.NoSuchAlgorithmException $r12;
+        java.lang.StringBuilder $r5, $r31;
+        com.caremark.caremark.synclib.util.CVSURLConnectionSocketFactory $r11, $r34;
+        java.lang.Throwable $r22, $r24;
+        java.io.DataInputStream $r17, $r35;
+        long $l1;
+        java.net.URLConnection $r8;
+        int $i0;
+        java.lang.String $r1, $r2, $r6;
+        c.f.a.a.b $r14;
+        javax.net.ssl.HttpsURLConnection $r10;
+        com.caremark.caremark.synclib.helper.DownloadService r0;
+        java.io.FileOutputStream $r18;
+        java.io.IOException $r20, $r21, $r27, $r28, $r29, $r30;
+        java.io.File $r4, $r32;
+        java.io.Closeable $r3, $r23;
+        java.lang.Object $r9;
+        java.io.InputStream $r16;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.DownloadService;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 = null;
+
+     label01:
+        $r32 = new java.io.File;
+
+     label02:
+        $r4 = $r32;
+
+     label03:
+        $r31 = new java.lang.StringBuilder;
+
+     label04:
+        $r5 = $r31;
+
+     label05:
+        specialinvoke $r31.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String path>;
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+     label06:
+        $r6 = <java.io.File: java.lang.String separator>;
+
+     label07:
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r32.<java.io.File: void <init>(java.lang.String)>($r6);
+
+        $z0 = virtualinvoke $r4.<java.io.File: boolean exists()>();
+
+     label08:
+        if $z0 == 0 goto label10;
+
+     label09:
+        virtualinvoke $r4.<java.io.File: boolean delete()>();
+
+     label10:
+        $r33 = new java.net.URL;
+
+     label11:
+        $r7 = $r33;
+
+     label12:
+        specialinvoke $r33.<java.net.URL: void <init>(java.lang.String)>($r1);
+
+        $r8 = virtualinvoke $r7.<java.net.URL: java.net.URLConnection openConnection()>();
+
+        $r9 = staticinvoke <com.google.firebase.perf.network.FirebasePerfUrlConnection: java.lang.Object instrument(java.lang.Object)>($r8);
+
+        $r8 = (java.net.URLConnection) $r9;
+
+        $r10 = (javax.net.ssl.HttpsURLConnection) $r8;
+
+     label13:
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+     label14:
+        if $i0 < 16 goto label26;
+
+     label15:
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+     label16:
+        if $i0 > 19 goto label26;
+
+     label17:
+        $r34 = new com.caremark.caremark.synclib.util.CVSURLConnectionSocketFactory;
+
+     label18:
+        $r11 = $r34;
+
+     label19:
+        specialinvoke $r34.<com.caremark.caremark.synclib.util.CVSURLConnectionSocketFactory: void <init>()>();
+
+        virtualinvoke $r10.<javax.net.ssl.HttpsURLConnection: void setSSLSocketFactory(javax.net.ssl.SSLSocketFactory)>($r11);
+
+     label20:
+        goto label26;
+
+     label21:
+        $r12 := @caughtexception;
+
+     label22:
+        virtualinvoke $r12.<java.security.NoSuchAlgorithmException: void printStackTrace()>();
+
+     label23:
+        goto label26;
+
+     label24:
+        $r13 := @caughtexception;
+
+     label25:
+        virtualinvoke $r13.<java.security.KeyManagementException: void printStackTrace()>();
+
+     label26:
+        $r14 = staticinvoke <c.f.a.a.b: c.f.a.a.b b()>();
+
+        $r1 = virtualinvoke $r7.<java.net.URL: java.lang.String getHost()>();
+
+        $r15 = virtualinvoke $r14.<c.f.a.a.b: javax.net.ssl.SSLSocketFactory a(java.lang.String)>($r1);
+
+        virtualinvoke $r10.<javax.net.ssl.HttpsURLConnection: void setSSLSocketFactory(javax.net.ssl.SSLSocketFactory)>($r15);
+
+        $i0 = virtualinvoke $r10.<javax.net.ssl.HttpsURLConnection: int getContentLength()>();
+
+     label27:
+        $r31 = new java.lang.StringBuilder;
+
+     label28:
+        $r5 = $r31;
+
+     label29:
+        specialinvoke $r31.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Content size : ");
+
+     label30:
+        $l1 = (long) $i0;
+
+     label31:
+        $r1 = staticinvoke <com.caremark.caremark.synclib.util.Util: java.lang.String formatSize(long)>($l1);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("DownloadService", $r1);
+
+        virtualinvoke $r10.<javax.net.ssl.HttpsURLConnection: void connect()>();
+
+        $r16 = virtualinvoke $r10.<javax.net.ssl.HttpsURLConnection: java.io.InputStream getInputStream()>();
+
+     label32:
+        $r35 = new java.io.DataInputStream;
+
+     label33:
+        $r17 = $r35;
+
+     label34:
+        specialinvoke $r35.<java.io.DataInputStream: void <init>(java.io.InputStream)>($r16);
+
+     label35:
+        $r31 = new java.lang.StringBuilder;
+
+     label36:
+        $r5 = $r31;
+
+     label37:
+        specialinvoke $r31.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("File downloading.. ");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r1 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("DownloadService", $r1);
+
+        $r18 = virtualinvoke r0.<android.app.IntentService: java.io.FileOutputStream openFileOutput(java.lang.String,int)>($r2, 0);
+
+     label38:
+        $r3 = $r18;
+
+        $r19 = newarray (byte)[4096];
+
+     label39:
+        $i0 = virtualinvoke $r17.<java.io.DataInputStream: int read(byte[])>($r19);
+
+     label40:
+        if $i0 <= 0 goto label43;
+
+     label41:
+        virtualinvoke $r18.<java.io.FileOutputStream: void write(byte[],int,int)>($r19, 0, $i0);
+
+     label42:
+        goto label39;
+
+     label43:
+        $r31 = new java.lang.StringBuilder;
+
+     label44:
+        $r5 = $r31;
+
+     label45:
+        specialinvoke $r31.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("File downloaded.. ");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r1 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("DownloadService", $r1);
+
+     label46:
+        if $r16 == null goto label50;
+
+     label47:
+        virtualinvoke $r16.<java.io.InputStream: void close()>();
+
+     label48:
+        goto label50;
+
+     label49:
+        $r20 := @caughtexception;
+
+        virtualinvoke $r20.<java.io.IOException: void printStackTrace()>();
+
+     label50:
+        if $r18 == null goto label78;
+
+     label51:
+        virtualinvoke $r18.<java.io.FileOutputStream: void close()>();
+
+     label52:
+        return 1;
+
+     label53:
+        $r21 := @caughtexception;
+
+        virtualinvoke $r21.<java.io.IOException: void printStackTrace()>();
+
+        return 1;
+
+     label54:
+        $r22 := @caughtexception;
+
+        $r23 = $r3;
+
+        $r3 = $r16;
+
+        $r24 = $r22;
+
+        goto label68;
+
+     label55:
+        $r25 := @caughtexception;
+
+        $r23 = $r3;
+
+        $r3 = $r16;
+
+        $r26 = $r25;
+
+        goto label58;
+
+     label56:
+        $r24 := @caughtexception;
+
+        $r23 = null;
+
+        goto label68;
+
+     label57:
+        $r26 := @caughtexception;
+
+        $r23 = null;
+
+     label58:
+        virtualinvoke $r26.<java.lang.Exception: void printStackTrace()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("DownloadService", "Error Occurred... downloadAndSave");
+
+     label59:
+        if $r3 == null goto label63;
+
+        $r16 = (java.io.InputStream) $r3;
+
+     label60:
+        virtualinvoke $r16.<java.io.InputStream: void close()>();
+
+     label61:
+        goto label63;
+
+     label62:
+        $r27 := @caughtexception;
+
+        virtualinvoke $r27.<java.io.IOException: void printStackTrace()>();
+
+     label63:
+        if $r23 == null goto label79;
+
+        $r18 = (java.io.FileOutputStream) $r23;
+
+     label64:
+        virtualinvoke $r18.<java.io.FileOutputStream: void close()>();
+
+     label65:
+        return 0;
+
+     label66:
+        $r28 := @caughtexception;
+
+        virtualinvoke $r28.<java.io.IOException: void printStackTrace()>();
+
+        return 0;
+
+     label67:
+        $r24 := @caughtexception;
+
+     label68:
+        if $r3 == null goto label72;
+
+        $r16 = (java.io.InputStream) $r3;
+
+     label69:
+        virtualinvoke $r16.<java.io.InputStream: void close()>();
+
+     label70:
+        goto label72;
+
+     label71:
+        $r29 := @caughtexception;
+
+        virtualinvoke $r29.<java.io.IOException: void printStackTrace()>();
+
+     label72:
+        if $r23 == null goto label76;
+
+        $r18 = (java.io.FileOutputStream) $r23;
+
+     label73:
+        virtualinvoke $r18.<java.io.FileOutputStream: void close()>();
+
+     label74:
+        goto label76;
+
+     label75:
+        $r30 := @caughtexception;
+
+        virtualinvoke $r30.<java.io.IOException: void printStackTrace()>();
+
+     label76:
+        goto label77;
+
+     label77:
+        throw $r24;
+
+     label78:
+        return 1;
+
+     label79:
+        return 0;
+
+        catch java.lang.Exception from label05 to label06 with label57;
+        catch java.lang.Exception from label07 to label08 with label57;
+        catch java.lang.Exception from label09 to label10 with label57;
+        catch java.lang.Exception from label12 to label13 with label57;
+        catch java.lang.Throwable from label01 to label02 with label56;
+        catch java.lang.Throwable from label03 to label04 with label56;
+        catch java.lang.Throwable from label05 to label08 with label56;
+        catch java.lang.Throwable from label09 to label11 with label56;
+        catch java.lang.Throwable from label12 to label14 with label56;
+        catch java.lang.Throwable from label15 to label16 with label56;
+        catch java.security.KeyManagementException from label19 to label20 with label24;
+        catch java.security.NoSuchAlgorithmException from label19 to label20 with label21;
+        catch java.lang.Exception from label19 to label20 with label57;
+        catch java.lang.Throwable from label17 to label18 with label56;
+        catch java.lang.Throwable from label19 to label20 with label56;
+        catch java.lang.Exception from label22 to label23 with label57;
+        catch java.lang.Exception from label25 to label27 with label57;
+        catch java.lang.Exception from label29 to label30 with label57;
+        catch java.lang.Exception from label31 to label32 with label57;
+        catch java.lang.Throwable from label22 to label23 with label56;
+        catch java.lang.Throwable from label25 to label28 with label56;
+        catch java.lang.Throwable from label29 to label30 with label56;
+        catch java.lang.Throwable from label31 to label32 with label56;
+        catch java.lang.Exception from label34 to label35 with label55;
+        catch java.lang.Exception from label37 to label38 with label55;
+        catch java.lang.Exception from label39 to label40 with label55;
+        catch java.lang.Exception from label41 to label42 with label55;
+        catch java.lang.Exception from label45 to label46 with label55;
+        catch java.lang.Throwable from label32 to label33 with label54;
+        catch java.lang.Throwable from label34 to label36 with label54;
+        catch java.lang.Throwable from label37 to label38 with label54;
+        catch java.lang.Throwable from label39 to label40 with label54;
+        catch java.lang.Throwable from label41 to label42 with label54;
+        catch java.lang.Throwable from label43 to label44 with label54;
+        catch java.lang.Throwable from label45 to label46 with label54;
+        catch java.io.IOException from label47 to label48 with label49;
+        catch java.io.IOException from label51 to label52 with label53;
+        catch java.lang.Throwable from label58 to label59 with label67;
+        catch java.io.IOException from label60 to label61 with label62;
+        catch java.io.IOException from label64 to label65 with label66;
+        catch java.io.IOException from label69 to label70 with label71;
+        catch java.io.IOException from label73 to label74 with label75;
+    }
+
+    public void onHandleIntent(android.content.Intent)
+    {
+        android.content.Context $r2;
+        android.content.Intent $r1;
+        java.lang.String[] $r11;
+        java.util.ArrayList $r5;
+        java.lang.String $r3, $r10, $r13;
+        com.caremark.caremark.synclib.dao.ComponentDetails $r8;
+        boolean $z0;
+        java.util.Iterator $r6;
+        com.caremark.caremark.synclib.helper.DownloadService r0;
+        java.lang.Exception $r12, $r14;
+        java.io.Serializable $r4;
+        java.lang.Object $r7;
+        java.lang.StringBuilder $r9;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.DownloadService;
+
+        $r1 := @parameter0: android.content.Intent;
+
+        $r2 = virtualinvoke r0.<android.app.IntentService: android.content.Context getApplicationContext()>();
+
+        $r3 = staticinvoke <com.caremark.caremark.synclib.util.Util: java.lang.String getStoragePath(android.content.Context)>($r2);
+
+        r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String path> = $r3;
+
+        $r3 = virtualinvoke $r1.<android.content.Intent: java.lang.String getStringExtra(java.lang.String)>("ref_id");
+
+        r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String refId> = $r3;
+
+        $r4 = virtualinvoke $r1.<android.content.Intent: java.io.Serializable getSerializableExtra(java.lang.String)>("component_list");
+
+        $r5 = (java.util.ArrayList) $r4;
+
+        r0.<com.caremark.caremark.synclib.helper.DownloadService: java.util.ArrayList componentList> = $r5;
+
+     label01:
+        $r5 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.util.ArrayList componentList>;
+
+        virtualinvoke $r5.<java.util.ArrayList: int size()>();
+
+        $r5 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.util.ArrayList componentList>;
+
+        $r6 = virtualinvoke $r5.<java.util.ArrayList: java.util.Iterator iterator()>();
+
+     label02:
+        $z0 = interfaceinvoke $r6.<java.util.Iterator: boolean hasNext()>();
+
+     label03:
+        if $z0 == 0 goto label37;
+
+     label04:
+        $r7 = interfaceinvoke $r6.<java.util.Iterator: java.lang.Object next()>();
+
+        $r8 = (com.caremark.caremark.synclib.dao.ComponentDetails) $r7;
+
+        $r3 = virtualinvoke $r8.<com.caremark.caremark.synclib.dao.ComponentDetails: java.lang.String getVersion()>();
+
+        r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String version> = $r3;
+
+        $r3 = virtualinvoke $r8.<com.caremark.caremark.synclib.dao.ComponentDetails: java.lang.String getName()>();
+
+        r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String key> = $r3;
+
+     label05:
+        $r9 = new java.lang.StringBuilder;
+
+     label06:
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String version>;
+
+        $r3 = staticinvoke <com.caremark.caremark.synclib.util.Util: java.lang.String formatVersion(java.lang.String)>($r3);
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("_");
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String key>;
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".zip");
+
+        $r3 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String file> = $r3;
+
+        $r2 = virtualinvoke r0.<android.app.IntentService: android.content.Context getApplicationContext()>();
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String key>;
+
+        $r3 = staticinvoke <com.caremark.caremark.synclib.util.SharedPreferencesManager: java.lang.String getStringInfo(android.content.Context,java.lang.String,java.lang.String)>($r2, $r3, "");
+
+     label07:
+        $r10 = virtualinvoke $r3.<java.lang.String: java.lang.String trim()>();
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r10);
+
+     label08:
+        if $z0 != 0 goto label13;
+
+     label09:
+        $r11 = virtualinvoke $r3.<java.lang.String: java.lang.String[] split(java.lang.String)>(";;");
+
+        $r3 = $r11[2];
+
+        $z0 = staticinvoke <java.lang.Boolean: boolean getBoolean(java.lang.String)>($r3);
+
+     label10:
+        goto label14;
+
+     label11:
+        $r12 := @caughtexception;
+
+     label12:
+        virtualinvoke $r12.<java.lang.Exception: void printStackTrace()>();
+
+     label13:
+        $z0 = 0;
+
+     label14:
+        if $z0 == 0 goto label15;
+
+        goto label02;
+
+     label15:
+        $r3 = virtualinvoke $r8.<com.caremark.caremark.synclib.dao.ComponentDetails: java.lang.String getLocation()>();
+
+        $r10 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String file>;
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.synclib.helper.DownloadService: boolean downloadAndSave(java.lang.String,java.lang.String)>($r3, $r10);
+
+     label16:
+        if $z0 == 0 goto label33;
+
+        $r9 = new java.lang.StringBuilder;
+
+     label17:
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String path>;
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+     label18:
+        $r3 = <java.io.File: java.lang.String separator>;
+
+     label19:
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String file>;
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r10 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String path>;
+
+        $z0 = virtualinvoke r0.<com.caremark.caremark.synclib.helper.DownloadService: boolean unzip(java.lang.String,java.lang.String)>($r3, $r10);
+
+     label20:
+        if $z0 != 0 goto label23;
+
+     label21:
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("DownloadService", "Unzipping Failur.. Rolling back to previous version!");
+
+        $r2 = virtualinvoke r0.<android.app.IntentService: android.content.Context getApplicationContext()>();
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String key>;
+
+        $r3 = staticinvoke <com.caremark.caremark.synclib.util.SharedPreferencesManager: java.lang.String getStringInfo(android.content.Context,java.lang.String,java.lang.String)>($r2, $r3, "0.0.0");
+
+        r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String version> = $r3;
+
+     label22:
+        goto label30;
+
+     label23:
+        $r2 = virtualinvoke r0.<android.app.IntentService: android.content.Context getApplicationContext()>();
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String key>;
+
+        $r3 = staticinvoke <com.caremark.caremark.synclib.util.SharedPreferencesManager: java.lang.String getStringInfo(android.content.Context,java.lang.String,java.lang.String)>($r2, $r3, "0.0.0");
+
+     label24:
+        $r9 = new java.lang.StringBuilder;
+
+     label25:
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Deleteing file.. ");
+
+        $r10 = staticinvoke <com.caremark.caremark.synclib.util.Util: java.lang.String formatVersion(java.lang.String)>($r3);
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("_");
+
+        $r10 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String key>;
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".zip");
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("DownloadService", $r10);
+
+     label26:
+        $r9 = new java.lang.StringBuilder;
+
+     label27:
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r10 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String path>;
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+     label28:
+        $r10 = <java.io.File: java.lang.String separator>;
+
+     label29:
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        $r3 = staticinvoke <com.caremark.caremark.synclib.util.Util: java.lang.String formatVersion(java.lang.String)>($r3);
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("_");
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String key>;
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".zip");
+
+        $r3 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke r0.<com.caremark.caremark.synclib.helper.DownloadService: void deleteZip(java.lang.String)>($r3);
+
+     label30:
+        if $z0 == 0 goto label02;
+
+     label31:
+        $r2 = virtualinvoke r0.<android.app.IntentService: android.content.Context getApplicationContext()>();
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String key>;
+
+        $r10 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String version>;
+
+        $r13 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String refId>;
+
+        staticinvoke <com.caremark.caremark.synclib.util.SharedPreferencesManager: void setStringInfo(android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean)>($r2, $r3, $r10, $r13, 0);
+
+     label32:
+        goto label02;
+
+     label33:
+        $r9 = new java.lang.StringBuilder;
+
+     label34:
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.DownloadService: java.lang.String key>;
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".zip");
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" Download Failure.. Try again later!");
+
+        $r3 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("DownloadService", $r3);
+
+     label35:
+        goto label02;
+
+     label36:
+        $r14 := @caughtexception;
+
+        virtualinvoke $r14.<java.lang.Exception: void printStackTrace()>();
+
+     label37:
+        return;
+
+        catch java.lang.Exception from label01 to label03 with label36;
+        catch java.lang.Exception from label04 to label05 with label36;
+        catch java.lang.Exception from label06 to label07 with label36;
+        catch java.lang.Exception from label07 to label08 with label11;
+        catch java.lang.Exception from label09 to label10 with label11;
+        catch java.lang.Exception from label12 to label13 with label36;
+        catch java.lang.Exception from label15 to label16 with label36;
+        catch java.lang.Exception from label17 to label18 with label36;
+        catch java.lang.Exception from label19 to label20 with label36;
+        catch java.lang.Exception from label21 to label22 with label36;
+        catch java.lang.Exception from label23 to label24 with label36;
+        catch java.lang.Exception from label25 to label26 with label36;
+        catch java.lang.Exception from label27 to label28 with label36;
+        catch java.lang.Exception from label29 to label30 with label36;
+        catch java.lang.Exception from label31 to label32 with label36;
+        catch java.lang.Exception from label34 to label35 with label36;
+    }
+
+    public boolean unzip(java.lang.String, java.lang.String)
+    {
+        byte[] $r13;
+        java.io.BufferedInputStream $r11, $r23;
+        java.util.Enumeration $r7;
+        java.util.ArrayList $r4, $r21;
+        java.io.BufferedOutputStream $r15, $r25;
+        int $i0, $i2;
+        java.util.zip.ZipFile $r2, $r22;
+        java.lang.String $r1, $r3, $r19;
+        java.util.zip.ZipEntry $r9;
+        boolean $z0;
+        java.util.Iterator $r17;
+        com.caremark.caremark.synclib.helper.DownloadService r0;
+        java.io.FileOutputStream $r14, $r24;
+        java.io.IOException $r16;
+        char $c1;
+        java.io.File $r5, $r6, $r10;
+        java.lang.Exception $r20;
+        java.lang.Object $r8;
+        java.lang.StringBuilder $r18, $r26;
+        java.io.InputStream $r12;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.DownloadService;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r21 = new java.util.ArrayList;
+
+        $r4 = $r21;
+
+     label01:
+        specialinvoke $r21.<java.util.ArrayList: void <init>()>();
+
+     label02:
+        $r6 = new java.io.File;
+
+        $r5 = $r6;
+
+     label03:
+        specialinvoke $r6.<java.io.File: void <init>(java.lang.String)>($r3);
+
+     label04:
+        $r10 = new java.io.File;
+
+        $r6 = $r10;
+
+     label05:
+        specialinvoke $r10.<java.io.File: void <init>(java.lang.String)>($r1);
+
+        virtualinvoke $r6.<java.io.File: boolean mkdir()>();
+
+     label06:
+        $r22 = new java.util.zip.ZipFile;
+
+        $r2 = $r22;
+
+     label07:
+        specialinvoke $r22.<java.util.zip.ZipFile: void <init>(java.io.File,int)>($r5, 1);
+
+        $r7 = virtualinvoke $r2.<java.util.zip.ZipFile: java.util.Enumeration entries()>();
+
+     label08:
+        $z0 = interfaceinvoke $r7.<java.util.Enumeration: boolean hasMoreElements()>();
+
+     label09:
+        if $z0 == 0 goto label32;
+
+     label10:
+        $r8 = interfaceinvoke $r7.<java.util.Enumeration: java.lang.Object nextElement()>();
+
+        $r9 = (java.util.zip.ZipEntry) $r8;
+
+        $r3 = virtualinvoke $r9.<java.util.zip.ZipEntry: java.lang.String getName()>();
+
+     label11:
+        $r10 = new java.io.File;
+
+        $r5 = $r10;
+
+     label12:
+        specialinvoke $r10.<java.io.File: void <init>(java.io.File,java.lang.String)>($r6, $r3);
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean endsWith(java.lang.String)>(".zip");
+
+     label13:
+        if $z0 == 0 goto label15;
+
+     label14:
+        $r3 = virtualinvoke $r5.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        interfaceinvoke $r4.<java.util.List: boolean add(java.lang.Object)>($r3);
+
+     label15:
+        $r10 = virtualinvoke $r5.<java.io.File: java.io.File getParentFile()>();
+
+        virtualinvoke $r10.<java.io.File: boolean mkdirs()>();
+
+     label16:
+        $z0 = virtualinvoke $r9.<java.util.zip.ZipEntry: boolean isDirectory()>();
+
+     label17:
+        if $z0 != 0 goto label08;
+
+        $r23 = new java.io.BufferedInputStream;
+
+        $r11 = $r23;
+
+     label18:
+        $r12 = virtualinvoke $r2.<java.util.zip.ZipFile: java.io.InputStream getInputStream(java.util.zip.ZipEntry)>($r9);
+
+        specialinvoke $r23.<java.io.BufferedInputStream: void <init>(java.io.InputStream)>($r12);
+
+     label19:
+        $r13 = newarray (byte)[4096];
+
+        $r24 = new java.io.FileOutputStream;
+
+        $r14 = $r24;
+
+     label20:
+        specialinvoke $r24.<java.io.FileOutputStream: void <init>(java.io.File)>($r5);
+
+     label21:
+        $r25 = new java.io.BufferedOutputStream;
+
+        $r15 = $r25;
+
+     label22:
+        specialinvoke $r25.<java.io.BufferedOutputStream: void <init>(java.io.OutputStream,int)>($r14, 4096);
+
+     label23:
+        $i0 = virtualinvoke $r11.<java.io.BufferedInputStream: int read(byte[],int,int)>($r13, 0, 4096);
+
+     label24:
+        $i2 = -1;
+
+        if $i0 == $i2 goto label27;
+
+     label25:
+        virtualinvoke $r15.<java.io.BufferedOutputStream: void write(byte[],int,int)>($r13, 0, $i0);
+
+     label26:
+        goto label23;
+
+     label27:
+        virtualinvoke $r15.<java.io.BufferedOutputStream: void flush()>();
+
+        virtualinvoke $r15.<java.io.BufferedOutputStream: void close()>();
+
+        virtualinvoke $r11.<java.io.BufferedInputStream: void close()>();
+
+     label28:
+        goto label08;
+
+     label29:
+        $r16 := @caughtexception;
+
+     label30:
+        virtualinvoke $r16.<java.io.IOException: void printStackTrace()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("DownloadService", "Error Occurred... unzip_1");
+
+     label31:
+        goto label08;
+
+     label32:
+        virtualinvoke $r2.<java.util.zip.ZipFile: void close()>();
+
+        $r17 = interfaceinvoke $r4.<java.util.List: java.util.Iterator iterator()>();
+
+     label33:
+        $z0 = interfaceinvoke $r17.<java.util.Iterator: boolean hasNext()>();
+
+     label34:
+        if $z0 == 0 goto label41;
+
+     label35:
+        $r8 = interfaceinvoke $r17.<java.util.Iterator: java.lang.Object next()>();
+
+        $r3 = (java.lang.String) $r8;
+
+     label36:
+        $r26 = new java.lang.StringBuilder;
+
+        $r18 = $r26;
+
+     label37:
+        specialinvoke $r26.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+     label38:
+        $c1 = <java.io.File: char separatorChar>;
+
+     label39:
+        virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c1);
+
+        $i0 = virtualinvoke $r3.<java.lang.String: int lastIndexOf(java.lang.String)>(".zip");
+
+        $r19 = virtualinvoke $r3.<java.lang.String: java.lang.String substring(int,int)>(0, $i0);
+
+        virtualinvoke $r18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r19);
+
+        $r19 = virtualinvoke $r18.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<com.caremark.caremark.synclib.helper.DownloadService: boolean unzip(java.lang.String,java.lang.String)>($r3, $r19);
+
+     label40:
+        goto label33;
+
+     label41:
+        return 1;
+
+     label42:
+        $r20 := @caughtexception;
+
+        virtualinvoke $r20.<java.lang.Exception: void printStackTrace()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("DownloadService", "Error Occurred... unzip_2");
+
+        return 0;
+
+        catch java.lang.Exception from label01 to label02 with label42;
+        catch java.lang.Exception from label03 to label04 with label42;
+        catch java.lang.Exception from label05 to label06 with label42;
+        catch java.lang.Exception from label07 to label09 with label42;
+        catch java.lang.Exception from label10 to label11 with label42;
+        catch java.lang.Exception from label12 to label13 with label42;
+        catch java.lang.Exception from label14 to label16 with label42;
+        catch java.io.IOException from label16 to label17 with label29;
+        catch java.io.IOException from label18 to label19 with label29;
+        catch java.io.IOException from label20 to label21 with label29;
+        catch java.io.IOException from label22 to label24 with label29;
+        catch java.io.IOException from label25 to label26 with label29;
+        catch java.io.IOException from label27 to label28 with label29;
+        catch java.lang.Exception from label16 to label17 with label42;
+        catch java.lang.Exception from label18 to label19 with label42;
+        catch java.lang.Exception from label20 to label21 with label42;
+        catch java.lang.Exception from label22 to label24 with label42;
+        catch java.lang.Exception from label25 to label26 with label42;
+        catch java.lang.Exception from label27 to label28 with label42;
+        catch java.lang.Exception from label30 to label31 with label42;
+        catch java.lang.Exception from label32 to label34 with label42;
+        catch java.lang.Exception from label35 to label36 with label42;
+        catch java.lang.Exception from label37 to label38 with label42;
+        catch java.lang.Exception from label39 to label40 with label42;
+    }
+
+    public static void <clinit>()
+    {
+        <com.caremark.caremark.synclib.helper.DownloadService: java.lang.String TAG> = "DownloadService";
+
+        <com.caremark.caremark.synclib.helper.DownloadService: java.lang.String SERVICE_TAG> = "download_service_receiver";
+
+        <com.caremark.caremark.synclib.helper.DownloadService: java.lang.String RESULT> = "result";
+
+        <com.caremark.caremark.synclib.helper.DownloadService: java.lang.String REFID> = "ref_id";
+
+        <com.caremark.caremark.synclib.helper.DownloadService: java.lang.String FAILED> = "failed";
+
+        <com.caremark.caremark.synclib.helper.DownloadService: java.lang.String DOWNLOADED_COMPONENTS> = "downloadedComponents";
+
+        <com.caremark.caremark.synclib.helper.DownloadService: java.lang.String COMPLIST> = "component_list";
+
+        <com.caremark.caremark.synclib.helper.DownloadService: java.lang.String BUNDLE> = "bundle";
+
+        return;
+    }
+}

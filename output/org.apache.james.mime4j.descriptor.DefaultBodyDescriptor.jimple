@@ -1,0 +1,523 @@
+public class org.apache.james.mime4j.descriptor.DefaultBodyDescriptor extends java.lang.Object implements org.apache.james.mime4j.descriptor.MutableBodyDescriptor
+{
+    public static final java.lang.String DEFAULT_MEDIA_TYPE;
+    public static final java.lang.String DEFAULT_MIME_TYPE;
+    public static final java.lang.String DEFAULT_SUB_TYPE;
+    public static final java.lang.String EMAIL_MESSAGE_MIME_TYPE;
+    public static final java.lang.String MEDIA_TYPE_MESSAGE;
+    public static final java.lang.String MEDIA_TYPE_TEXT;
+    public static final java.lang.String SUB_TYPE_EMAIL;
+    public static final java.lang.String US_ASCII;
+    public static org.apache.commons.logging.Log log;
+    public java.lang.String boundary;
+    public java.lang.String charset;
+    public long contentLength;
+    public boolean contentTransferEncSet;
+    public boolean contentTypeSet;
+    public java.lang.String mediaType;
+    public java.lang.String mimeType;
+    public java.util.Map parameters;
+    public java.lang.String subType;
+    public java.lang.String transferEncoding;
+
+    static void <clinit>()
+    {
+        org.apache.commons.logging.Log $r0;
+
+        <org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String US_ASCII> = "us-ascii";
+
+        <org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String SUB_TYPE_EMAIL> = "rfc822";
+
+        <org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String MEDIA_TYPE_TEXT> = "text";
+
+        <org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String MEDIA_TYPE_MESSAGE> = "message";
+
+        <org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String EMAIL_MESSAGE_MIME_TYPE> = "message/rfc822";
+
+        <org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String DEFAULT_SUB_TYPE> = "plain";
+
+        <org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String DEFAULT_MIME_TYPE> = "text/plain";
+
+        <org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String DEFAULT_MEDIA_TYPE> = "text";
+
+        $r0 = staticinvoke <org.apache.commons.logging.LogFactory: org.apache.commons.logging.Log getLog(java.lang.Class)>(class "Lorg/apache/james/mime4j/descriptor/DefaultBodyDescriptor;");
+
+        <org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: org.apache.commons.logging.Log log> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.apache.james.mime4j.descriptor.DefaultBodyDescriptor r0;
+
+        r0 := @this: org.apache.james.mime4j.descriptor.DefaultBodyDescriptor;
+
+        specialinvoke r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: void <init>(org.apache.james.mime4j.descriptor.BodyDescriptor)>(null);
+
+        return;
+    }
+
+    public void <init>(org.apache.james.mime4j.descriptor.BodyDescriptor)
+    {
+        org.apache.james.mime4j.descriptor.DefaultBodyDescriptor r0;
+        org.apache.james.mime4j.descriptor.BodyDescriptor $r1;
+        java.util.HashMap $r2;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.descriptor.DefaultBodyDescriptor;
+
+        $r1 := @parameter0: org.apache.james.mime4j.descriptor.BodyDescriptor;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String mediaType> = "text";
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String subType> = "plain";
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String mimeType> = "text/plain";
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String boundary> = null;
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String charset> = "us-ascii";
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String transferEncoding> = "7bit";
+
+        $r2 = new java.util.HashMap;
+
+        specialinvoke $r2.<java.util.HashMap: void <init>()>();
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.util.Map parameters> = $r2;
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: long contentLength> = -1L;
+
+        if $r1 == null goto label1;
+
+        $r3 = interfaceinvoke $r1.<org.apache.james.mime4j.descriptor.ContentDescriptor: java.lang.String getMimeType()>();
+
+        $z0 = staticinvoke <org.apache.james.mime4j.util.MimeUtil: boolean isSameMimeType(java.lang.String,java.lang.String)>("multipart/digest", $r3);
+
+        if $z0 == 0 goto label1;
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String mimeType> = "message/rfc822";
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String subType> = "rfc822";
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String mediaType> = "message";
+
+        return;
+
+     label1:
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String mimeType> = "text/plain";
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String subType> = "plain";
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String mediaType> = "text";
+
+        return;
+    }
+
+    private void parseContentType(java.lang.String)
+    {
+        org.apache.james.mime4j.descriptor.DefaultBodyDescriptor r0;
+        java.util.Map $r2, $r9;
+        int $i0, $i1;
+        java.lang.Object $r3;
+        java.lang.StringBuilder $r8, $r10;
+        java.lang.String $r1, $r4, $r5, $r6, $r7;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.descriptor.DefaultBodyDescriptor;
+
+        $r1 := @parameter0: java.lang.String;
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: boolean contentTypeSet> = 1;
+
+        $r2 = staticinvoke <org.apache.james.mime4j.util.MimeUtil: java.util.Map getHeaderParams(java.lang.String)>($r1);
+
+        $r3 = interfaceinvoke $r2.<java.util.Map: java.lang.Object get(java.lang.Object)>("");
+
+        $r1 = (java.lang.String) $r3;
+
+        if $r1 == null goto label03;
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String toLowerCase()>();
+
+        $r4 = virtualinvoke $r1.<java.lang.String: java.lang.String trim()>();
+
+        $r1 = $r4;
+
+        $i0 = virtualinvoke $r4.<java.lang.String: int indexOf(int)>(47);
+
+        $z0 = 0;
+
+        $i1 = -1;
+
+        if $i0 == $i1 goto label01;
+
+        $r5 = virtualinvoke $r4.<java.lang.String: java.lang.String substring(int,int)>(0, $i0);
+
+        $r6 = virtualinvoke $r5.<java.lang.String: java.lang.String trim()>();
+
+        $r5 = $r6;
+
+        $i0 = $i0 + 1;
+
+        $r4 = virtualinvoke $r4.<java.lang.String: java.lang.String substring(int)>($i0);
+
+        $r7 = virtualinvoke $r4.<java.lang.String: java.lang.String trim()>();
+
+        $r4 = $r7;
+
+        $i0 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+        if $i0 <= 0 goto label02;
+
+        $i0 = virtualinvoke $r7.<java.lang.String: int length()>();
+
+        if $i0 <= 0 goto label02;
+
+        $r10 = new java.lang.StringBuilder;
+
+        $r8 = $r10;
+
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r1 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $z0 = 1;
+
+        goto label02;
+
+     label01:
+        $r4 = null;
+
+        $r5 = null;
+
+     label02:
+        if $z0 != 0 goto label05;
+
+        $r1 = null;
+
+        $r4 = null;
+
+        goto label04;
+
+     label03:
+        $r4 = null;
+
+     label04:
+        $r5 = null;
+
+     label05:
+        $r3 = interfaceinvoke $r2.<java.util.Map: java.lang.Object get(java.lang.Object)>("boundary");
+
+        $r6 = (java.lang.String) $r3;
+
+        if $r1 == null goto label08;
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean startsWith(java.lang.String)>("multipart/");
+
+        if $z0 == 0 goto label06;
+
+        if $r6 != null goto label07;
+
+     label06:
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean startsWith(java.lang.String)>("multipart/");
+
+        if $z0 != 0 goto label08;
+
+     label07:
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String mimeType> = $r1;
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String subType> = $r4;
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String mediaType> = $r5;
+
+     label08:
+        $r1 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String mimeType>;
+
+        $z0 = staticinvoke <org.apache.james.mime4j.util.MimeUtil: boolean isMultipart(java.lang.String)>($r1);
+
+        if $z0 == 0 goto label09;
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String boundary> = $r6;
+
+     label09:
+        $r3 = interfaceinvoke $r2.<java.util.Map: java.lang.Object get(java.lang.Object)>("charset");
+
+        $r1 = (java.lang.String) $r3;
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String charset> = null;
+
+        if $r1 == null goto label10;
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String trim()>();
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i0 <= 0 goto label10;
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String toLowerCase()>();
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String charset> = $r1;
+
+     label10:
+        $r1 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String charset>;
+
+        if $r1 != null goto label11;
+
+        $r1 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String mediaType>;
+
+        $r5 = "text";
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label11;
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String charset> = "us-ascii";
+
+     label11:
+        $r9 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.util.Map parameters>;
+
+        interfaceinvoke $r9.<java.util.Map: void putAll(java.util.Map)>($r2);
+
+        $r2 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.util.Map parameters>;
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object remove(java.lang.Object)>("");
+
+        $r2 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.util.Map parameters>;
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object remove(java.lang.Object)>("boundary");
+
+        $r2 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.util.Map parameters>;
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object remove(java.lang.Object)>("charset");
+
+        return;
+    }
+
+    public void addField(org.apache.james.mime4j.parser.Field)
+    {
+        org.apache.james.mime4j.descriptor.DefaultBodyDescriptor r0;
+        java.lang.NumberFormatException $r1;
+        long $l2;
+        byte $b0;
+        int $i1;
+        org.apache.commons.logging.Log $r5;
+        java.lang.StringBuilder $r6;
+        java.lang.String $r3, $r4;
+        org.apache.james.mime4j.parser.Field $r2;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.descriptor.DefaultBodyDescriptor;
+
+        $r2 := @parameter0: org.apache.james.mime4j.parser.Field;
+
+        $r3 = interfaceinvoke $r2.<org.apache.james.mime4j.parser.Field: java.lang.String getName()>();
+
+        $r4 = interfaceinvoke $r2.<org.apache.james.mime4j.parser.Field: java.lang.String getBody()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.String: java.lang.String trim()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.String: java.lang.String toLowerCase()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("content-transfer-encoding");
+
+        if $z0 == 0 goto label1;
+
+        $z0 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: boolean contentTransferEncSet>;
+
+        if $z0 != 0 goto label1;
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: boolean contentTransferEncSet> = 1;
+
+        $r4 = virtualinvoke $r4.<java.lang.String: java.lang.String trim()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.String: java.lang.String toLowerCase()>();
+
+        $i1 = virtualinvoke $r4.<java.lang.String: int length()>();
+
+        if $i1 <= 0 goto label7;
+
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String transferEncoding> = $r4;
+
+        return;
+
+     label1:
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("content-length");
+
+        if $z0 == 0 goto label5;
+
+        $l2 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: long contentLength>;
+
+        $b0 = $l2 cmp -1L;
+
+        if $b0 != 0 goto label5;
+
+     label2:
+        $r3 = virtualinvoke $r4.<java.lang.String: java.lang.String trim()>();
+
+        $l2 = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>($r3);
+
+     label3:
+        r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: long contentLength> = $l2;
+
+        return;
+
+     label4:
+        $r5 = <org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: org.apache.commons.logging.Log log>;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid content-length: ");
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r4 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r5.<org.apache.commons.logging.Log: void error(java.lang.Object)>($r4);
+
+        return;
+
+     label5:
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("content-type");
+
+        if $z0 == 0 goto label7;
+
+        $z0 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: boolean contentTypeSet>;
+
+        if $z0 != 0 goto label7;
+
+        specialinvoke r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: void parseContentType(java.lang.String)>($r4);
+
+        return;
+
+     label6:
+        $r1 := @caughtexception;
+
+        goto label4;
+
+     label7:
+        return;
+
+        catch java.lang.NumberFormatException from label2 to label3 with label6;
+    }
+
+    public java.lang.String getBoundary()
+    {
+        org.apache.james.mime4j.descriptor.DefaultBodyDescriptor r0;
+        java.lang.String r1;
+
+        r0 := @this: org.apache.james.mime4j.descriptor.DefaultBodyDescriptor;
+
+        r1 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String boundary>;
+
+        return r1;
+    }
+
+    public java.lang.String getCharset()
+    {
+        org.apache.james.mime4j.descriptor.DefaultBodyDescriptor r0;
+        java.lang.String r1;
+
+        r0 := @this: org.apache.james.mime4j.descriptor.DefaultBodyDescriptor;
+
+        r1 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String charset>;
+
+        return r1;
+    }
+
+    public long getContentLength()
+    {
+        org.apache.james.mime4j.descriptor.DefaultBodyDescriptor r0;
+        long l0;
+
+        r0 := @this: org.apache.james.mime4j.descriptor.DefaultBodyDescriptor;
+
+        l0 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: long contentLength>;
+
+        return l0;
+    }
+
+    public java.util.Map getContentTypeParameters()
+    {
+        org.apache.james.mime4j.descriptor.DefaultBodyDescriptor r0;
+        java.util.Map r1;
+
+        r0 := @this: org.apache.james.mime4j.descriptor.DefaultBodyDescriptor;
+
+        r1 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.util.Map parameters>;
+
+        return r1;
+    }
+
+    public java.lang.String getMediaType()
+    {
+        org.apache.james.mime4j.descriptor.DefaultBodyDescriptor r0;
+        java.lang.String r1;
+
+        r0 := @this: org.apache.james.mime4j.descriptor.DefaultBodyDescriptor;
+
+        r1 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String mediaType>;
+
+        return r1;
+    }
+
+    public java.lang.String getMimeType()
+    {
+        org.apache.james.mime4j.descriptor.DefaultBodyDescriptor r0;
+        java.lang.String r1;
+
+        r0 := @this: org.apache.james.mime4j.descriptor.DefaultBodyDescriptor;
+
+        r1 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String mimeType>;
+
+        return r1;
+    }
+
+    public java.lang.String getSubType()
+    {
+        org.apache.james.mime4j.descriptor.DefaultBodyDescriptor r0;
+        java.lang.String r1;
+
+        r0 := @this: org.apache.james.mime4j.descriptor.DefaultBodyDescriptor;
+
+        r1 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String subType>;
+
+        return r1;
+    }
+
+    public java.lang.String getTransferEncoding()
+    {
+        org.apache.james.mime4j.descriptor.DefaultBodyDescriptor r0;
+        java.lang.String r1;
+
+        r0 := @this: org.apache.james.mime4j.descriptor.DefaultBodyDescriptor;
+
+        r1 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String transferEncoding>;
+
+        return r1;
+    }
+
+    public java.lang.String toString()
+    {
+        org.apache.james.mime4j.descriptor.DefaultBodyDescriptor r0;
+        java.lang.String r1;
+
+        r0 := @this: org.apache.james.mime4j.descriptor.DefaultBodyDescriptor;
+
+        r1 = r0.<org.apache.james.mime4j.descriptor.DefaultBodyDescriptor: java.lang.String mimeType>;
+
+        return r1;
+    }
+}

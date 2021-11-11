@@ -1,0 +1,272 @@
+public final class com.google.common.math.DoubleUtils extends java.lang.Object
+{
+    public static final int EXPONENT_BIAS;
+    public static final long EXPONENT_MASK;
+    public static final long IMPLICIT_BIT;
+    public static final long ONE_BITS;
+    public static final int SIGNIFICAND_BITS;
+    public static final long SIGNIFICAND_MASK;
+    public static final long SIGN_MASK;
+
+    public void <init>()
+    {
+        com.google.common.math.DoubleUtils r0;
+
+        r0 := @this: com.google.common.math.DoubleUtils;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static double bigToDouble(java.math.BigInteger)
+    {
+        long $l1, $l3;
+        byte $b4;
+        int $i0, $i2, $i5;
+        java.math.BigInteger $r0, $r1, $r2;
+        boolean $z0;
+        double $d0;
+
+        $r0 := @parameter0: java.math.BigInteger;
+
+        $r1 = virtualinvoke $r0.<java.math.BigInteger: java.math.BigInteger abs()>();
+
+        $i0 = virtualinvoke $r1.<java.math.BigInteger: int bitLength()>();
+
+        $z0 = 1;
+
+        $i0 = $i0 - 1;
+
+        if $i0 >= 63 goto label1;
+
+        $l1 = virtualinvoke $r0.<java.math.BigInteger: long longValue()>();
+
+        $d0 = (double) $l1;
+
+        return $d0;
+
+     label1:
+        if $i0 <= 1023 goto label2;
+
+        $i0 = virtualinvoke $r0.<java.math.BigInteger: int signum()>();
+
+        $d0 = (double) $i0;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        $d0 = $d0 * #Infinity;
+
+        return $d0;
+
+     label2:
+        $i2 = -52;
+
+        $i2 = $i0 + $i2;
+
+        $i2 = $i2 - 1;
+
+        $r2 = virtualinvoke $r1.<java.math.BigInteger: java.math.BigInteger shiftRight(int)>($i2);
+
+        $l3 = virtualinvoke $r2.<java.math.BigInteger: long longValue()>();
+
+        $l1 = $l3 >> 1;
+
+        $l1 = $l1 & 4503599627370495L;
+
+        $l3 = $l3 & 1L;
+
+        $b4 = $l3 cmp 0L;
+
+        if $b4 == 0 goto label3;
+
+        $l3 = $l1 & 1L;
+
+        $b4 = $l3 cmp 0L;
+
+        if $b4 != 0 goto label4;
+
+        $i5 = virtualinvoke $r1.<java.math.BigInteger: int getLowestSetBit()>();
+
+        if $i5 >= $i2 goto label3;
+
+        goto label4;
+
+     label3:
+        $z0 = 0;
+
+     label4:
+        if $z0 == 0 goto label5;
+
+        $l1 = $l1 + 1L;
+
+     label5:
+        $i0 = $i0 + 1023;
+
+        $l3 = (long) $i0;
+
+        $l3 = $l3 << 52;
+
+        $l1 = $l3 + $l1;
+
+        $i0 = virtualinvoke $r0.<java.math.BigInteger: int signum()>();
+
+        $l3 = (long) $i0;
+
+        $l3 = $l3 & -9223372036854775808L;
+
+        $l1 = $l1 | $l3;
+
+        $d0 = staticinvoke <java.lang.Double: double longBitsToDouble(long)>($l1);
+
+        return $d0;
+    }
+
+    public static double ensureNonNegative(double)
+    {
+        byte $b0;
+        int $i1;
+        double $d0;
+        boolean $z0;
+
+        $d0 := @parameter0: double;
+
+        $z0 = staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        $z0 = $z0 ^ 1;
+
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean)>($z0);
+
+        $b0 = $d0 cmpl 0.0;
+
+        $i1 = (int) $b0;
+
+        if $i1 <= 0 goto label1;
+
+        return $d0;
+
+     label1:
+        return 0.0;
+    }
+
+    public static long getSignificand(double)
+    {
+        int $i0, $i2;
+        long $l1;
+        double $d0;
+        boolean $z0;
+
+        $d0 := @parameter0: double;
+
+        $z0 = staticinvoke <com.google.common.math.DoubleUtils: boolean isFinite(double)>($d0);
+
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.Object)>($z0, "not a normal value");
+
+        $i0 = staticinvoke <java.lang.Math: int getExponent(double)>($d0);
+
+        $l1 = staticinvoke <java.lang.Double: long doubleToRawLongBits(double)>($d0);
+
+        $l1 = $l1 & 4503599627370495L;
+
+        $i2 = -1023;
+
+        if $i0 != $i2 goto label1;
+
+        $l1 = $l1 << 1;
+
+        return $l1;
+
+     label1:
+        $l1 = $l1 | 4503599627370496L;
+
+        return $l1;
+    }
+
+    public static boolean isFinite(double)
+    {
+        int $i0;
+        double $d0;
+
+        $d0 := @parameter0: double;
+
+        $i0 = staticinvoke <java.lang.Math: int getExponent(double)>($d0);
+
+        if $i0 > 1023 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static boolean isNormal(double)
+    {
+        int $i0, $i1;
+        double $d0;
+
+        $d0 := @parameter0: double;
+
+        $i0 = staticinvoke <java.lang.Math: int getExponent(double)>($d0);
+
+        $i1 = -1022;
+
+        if $i0 < $i1 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static double nextDown(double)
+    {
+        double $d0;
+
+        $d0 := @parameter0: double;
+
+        $d0 = neg $d0;
+
+        $d0 = staticinvoke <java.lang.Math: double nextUp(double)>($d0);
+
+        $d0 = neg $d0;
+
+        return $d0;
+    }
+
+    public static double scaleNormalize(double)
+    {
+        long $l0;
+        double $d0;
+
+        $d0 := @parameter0: double;
+
+        $l0 = staticinvoke <java.lang.Double: long doubleToRawLongBits(double)>($d0);
+
+        $l0 = $l0 & 4503599627370495L;
+
+        $l0 = $l0 | 4607182418800017408L;
+
+        $d0 = staticinvoke <java.lang.Double: double longBitsToDouble(long)>($l0);
+
+        return $d0;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.common.math.DoubleUtils: long SIGN_MASK> = -9223372036854775808L;
+
+        <com.google.common.math.DoubleUtils: long SIGNIFICAND_MASK> = 4503599627370495L;
+
+        <com.google.common.math.DoubleUtils: int SIGNIFICAND_BITS> = 52;
+
+        <com.google.common.math.DoubleUtils: long ONE_BITS> = 4607182418800017408L;
+
+        <com.google.common.math.DoubleUtils: long IMPLICIT_BIT> = 4503599627370496L;
+
+        <com.google.common.math.DoubleUtils: long EXPONENT_MASK> = 9218868437227405312L;
+
+        <com.google.common.math.DoubleUtils: int EXPONENT_BIAS> = 1023;
+
+        return;
+    }
+}

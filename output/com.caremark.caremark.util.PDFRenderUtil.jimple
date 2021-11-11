@@ -1,0 +1,206 @@
+public class com.caremark.caremark.util.PDFRenderUtil extends java.lang.Object
+{
+    public java.lang.String FILENAME;
+    public android.graphics.pdf.PdfRenderer$Page mCurrentPage;
+    public android.os.ParcelFileDescriptor mFileDescriptor;
+    public android.graphics.pdf.PdfRenderer mPdfRenderer;
+
+    public void <init>(java.lang.String)
+    {
+        com.caremark.caremark.util.PDFRenderUtil r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.caremark.caremark.util.PDFRenderUtil;
+
+        $r1 := @parameter0: java.lang.String;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.caremark.caremark.util.PDFRenderUtil: java.lang.String FILENAME> = "";
+
+        r0.<com.caremark.caremark.util.PDFRenderUtil: java.lang.String FILENAME> = $r1;
+
+        return;
+    }
+
+    public void closeRenderer()
+    {
+        com.caremark.caremark.util.PDFRenderUtil r0;
+        android.os.ParcelFileDescriptor $r3;
+        android.graphics.pdf.PdfRenderer $r2;
+        android.graphics.pdf.PdfRenderer$Page $r1;
+
+        r0 := @this: com.caremark.caremark.util.PDFRenderUtil;
+
+        $r1 = r0.<com.caremark.caremark.util.PDFRenderUtil: android.graphics.pdf.PdfRenderer$Page mCurrentPage>;
+
+        if $r1 == null goto label1;
+
+        virtualinvoke $r1.<android.graphics.pdf.PdfRenderer$Page: void close()>();
+
+     label1:
+        $r2 = r0.<com.caremark.caremark.util.PDFRenderUtil: android.graphics.pdf.PdfRenderer mPdfRenderer>;
+
+        virtualinvoke $r2.<android.graphics.pdf.PdfRenderer: void close()>();
+
+        $r3 = r0.<com.caremark.caremark.util.PDFRenderUtil: android.os.ParcelFileDescriptor mFileDescriptor>;
+
+        virtualinvoke $r3.<android.os.ParcelFileDescriptor: void close()>();
+
+        return;
+    }
+
+    public int getPageCount()
+    {
+        int $i0;
+        com.caremark.caremark.util.PDFRenderUtil r0;
+        android.graphics.pdf.PdfRenderer $r1;
+
+        r0 := @this: com.caremark.caremark.util.PDFRenderUtil;
+
+        $r1 = r0.<com.caremark.caremark.util.PDFRenderUtil: android.graphics.pdf.PdfRenderer mPdfRenderer>;
+
+        if $r1 == null goto label1;
+
+        $i0 = virtualinvoke $r1.<android.graphics.pdf.PdfRenderer: int getPageCount()>();
+
+        return $i0;
+
+     label1:
+        return 0;
+    }
+
+    public void openRenderer(android.content.Context)
+    {
+        com.caremark.caremark.util.PDFRenderUtil r0;
+        android.content.Context $r1;
+        byte[] $r7;
+        android.os.ParcelFileDescriptor $r8;
+        android.graphics.pdf.PdfRenderer $r11;
+        java.io.FileOutputStream $r6, $r10;
+        java.io.File $r2, $r9;
+        android.content.res.AssetManager $r4;
+        int $i0, $i1;
+        java.lang.String $r3;
+        boolean $z0;
+        java.io.InputStream $r5;
+
+        r0 := @this: com.caremark.caremark.util.PDFRenderUtil;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r9 = new java.io.File;
+
+        $r2 = $r9;
+
+        $r3 = r0.<com.caremark.caremark.util.PDFRenderUtil: java.lang.String FILENAME>;
+
+        specialinvoke $r9.<java.io.File: void <init>(java.lang.String)>($r3);
+
+        $z0 = virtualinvoke $r2.<java.io.File: boolean exists()>();
+
+        if $z0 != 0 goto label3;
+
+        $r4 = virtualinvoke $r1.<android.content.Context: android.content.res.AssetManager getAssets()>();
+
+        $r3 = r0.<com.caremark.caremark.util.PDFRenderUtil: java.lang.String FILENAME>;
+
+        $r5 = virtualinvoke $r4.<android.content.res.AssetManager: java.io.InputStream open(java.lang.String)>($r3);
+
+        $r10 = new java.io.FileOutputStream;
+
+        $r6 = $r10;
+
+        specialinvoke $r10.<java.io.FileOutputStream: void <init>(java.io.File)>($r2);
+
+        $r7 = newarray (byte)[1024];
+
+     label1:
+        $i0 = virtualinvoke $r5.<java.io.InputStream: int read(byte[])>($r7);
+
+        $i1 = -1;
+
+        if $i0 == $i1 goto label2;
+
+        virtualinvoke $r6.<java.io.FileOutputStream: void write(byte[],int,int)>($r7, 0, $i0);
+
+        goto label1;
+
+     label2:
+        virtualinvoke $r5.<java.io.InputStream: void close()>();
+
+        virtualinvoke $r6.<java.io.FileOutputStream: void close()>();
+
+     label3:
+        $r8 = staticinvoke <android.os.ParcelFileDescriptor: android.os.ParcelFileDescriptor open(java.io.File,int)>($r2, 268435456);
+
+        r0.<com.caremark.caremark.util.PDFRenderUtil: android.os.ParcelFileDescriptor mFileDescriptor> = $r8;
+
+        $r8 = r0.<com.caremark.caremark.util.PDFRenderUtil: android.os.ParcelFileDescriptor mFileDescriptor>;
+
+        if $r8 == null goto label4;
+
+        $r11 = new android.graphics.pdf.PdfRenderer;
+
+        specialinvoke $r11.<android.graphics.pdf.PdfRenderer: void <init>(android.os.ParcelFileDescriptor)>($r8);
+
+        r0.<com.caremark.caremark.util.PDFRenderUtil: android.graphics.pdf.PdfRenderer mPdfRenderer> = $r11;
+
+     label4:
+        return;
+    }
+
+    public android.graphics.Bitmap showPage(int)
+    {
+        com.caremark.caremark.util.PDFRenderUtil r0;
+        android.graphics.pdf.PdfRenderer $r1;
+        android.graphics.Bitmap $r4;
+        int $i0, $i1;
+        android.graphics.pdf.PdfRenderer$Page $r2;
+        android.graphics.Bitmap$Config $r3;
+
+        r0 := @this: com.caremark.caremark.util.PDFRenderUtil;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.caremark.caremark.util.PDFRenderUtil: android.graphics.pdf.PdfRenderer mPdfRenderer>;
+
+        $i1 = virtualinvoke $r1.<android.graphics.pdf.PdfRenderer: int getPageCount()>();
+
+        if $i1 > $i0 goto label1;
+
+        return null;
+
+     label1:
+        $r2 = r0.<com.caremark.caremark.util.PDFRenderUtil: android.graphics.pdf.PdfRenderer$Page mCurrentPage>;
+
+        if $r2 == null goto label2;
+
+        virtualinvoke $r2.<android.graphics.pdf.PdfRenderer$Page: void close()>();
+
+     label2:
+        $r1 = r0.<com.caremark.caremark.util.PDFRenderUtil: android.graphics.pdf.PdfRenderer mPdfRenderer>;
+
+        $r2 = virtualinvoke $r1.<android.graphics.pdf.PdfRenderer: android.graphics.pdf.PdfRenderer$Page openPage(int)>($i0);
+
+        r0.<com.caremark.caremark.util.PDFRenderUtil: android.graphics.pdf.PdfRenderer$Page mCurrentPage> = $r2;
+
+        $r2 = r0.<com.caremark.caremark.util.PDFRenderUtil: android.graphics.pdf.PdfRenderer$Page mCurrentPage>;
+
+        $i0 = virtualinvoke $r2.<android.graphics.pdf.PdfRenderer$Page: int getWidth()>();
+
+        $r2 = r0.<com.caremark.caremark.util.PDFRenderUtil: android.graphics.pdf.PdfRenderer$Page mCurrentPage>;
+
+        $i1 = virtualinvoke $r2.<android.graphics.pdf.PdfRenderer$Page: int getHeight()>();
+
+        $r3 = <android.graphics.Bitmap$Config: android.graphics.Bitmap$Config ARGB_8888>;
+
+        $r4 = staticinvoke <android.graphics.Bitmap: android.graphics.Bitmap createBitmap(int,int,android.graphics.Bitmap$Config)>($i0, $i1, $r3);
+
+        $r2 = r0.<com.caremark.caremark.util.PDFRenderUtil: android.graphics.pdf.PdfRenderer$Page mCurrentPage>;
+
+        virtualinvoke $r2.<android.graphics.pdf.PdfRenderer$Page: void render(android.graphics.Bitmap,android.graphics.Rect,android.graphics.Matrix,int)>($r4, null, null, 1);
+
+        return $r4;
+    }
+}

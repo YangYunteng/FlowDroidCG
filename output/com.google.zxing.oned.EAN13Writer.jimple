@@ -1,0 +1,237 @@
+public final class com.google.zxing.oned.EAN13Writer extends com.google.zxing.oned.UPCEANWriter
+{
+    public static final int CODE_WIDTH;
+
+    public void <init>()
+    {
+        com.google.zxing.oned.EAN13Writer r0;
+
+        r0 := @this: com.google.zxing.oned.EAN13Writer;
+
+        specialinvoke r0.<com.google.zxing.oned.UPCEANWriter: void <init>()>();
+
+        return;
+    }
+
+    public com.google.zxing.common.BitMatrix encode(java.lang.String, com.google.zxing.BarcodeFormat, int, int, java.util.Map)
+    {
+        com.google.zxing.oned.EAN13Writer r0;
+        java.lang.IllegalArgumentException $r6;
+        java.util.Map $r1;
+        int $i0, $i1;
+        com.google.zxing.common.BitMatrix $r5;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r3;
+        com.google.zxing.BarcodeFormat $r2, $r4;
+
+        r0 := @this: com.google.zxing.oned.EAN13Writer;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r4 := @parameter1: com.google.zxing.BarcodeFormat;
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        $r1 := @parameter4: java.util.Map;
+
+        $r2 = <com.google.zxing.BarcodeFormat: com.google.zxing.BarcodeFormat EAN_13>;
+
+        if $r4 != $r2 goto label1;
+
+        $r5 = specialinvoke r0.<com.google.zxing.oned.OneDimensionalCodeWriter: com.google.zxing.common.BitMatrix encode(java.lang.String,com.google.zxing.BarcodeFormat,int,int,java.util.Map)>($r3, $r4, $i0, $i1, $r1);
+
+        return $r5;
+
+     label1:
+        $r6 = new java.lang.IllegalArgumentException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Can only encode EAN_13, but got ");
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        $r3 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r3);
+
+        throw $r6;
+    }
+
+    public boolean[] encode(java.lang.String)
+    {
+        com.google.zxing.oned.EAN13Writer r0;
+        int[][] $r7;
+        int[] $r5;
+        int $i0, $i1, $i2, $i3, $i4, $i5;
+        java.lang.String $r3, $r4;
+        com.google.zxing.FormatException $r1, $r2;
+        boolean $z0;
+        boolean[] $r6;
+        java.lang.IllegalArgumentException $r8;
+        java.lang.StringBuilder $r9;
+
+        r0 := @this: com.google.zxing.oned.EAN13Writer;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $i1 = virtualinvoke $r3.<java.lang.String: int length()>();
+
+        if $i1 != 13 goto label12;
+
+     label01:
+        $z0 = staticinvoke <com.google.zxing.oned.UPCEANReader: boolean checkStandardUPCEANChecksum(java.lang.CharSequence)>($r3);
+
+     label02:
+        if $z0 == 0 goto label08;
+
+        $r4 = virtualinvoke $r3.<java.lang.String: java.lang.String substring(int,int)>(0, 1);
+
+        $i1 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r4);
+
+        $r5 = <com.google.zxing.oned.EAN13Reader: int[] FIRST_DIGIT_ENCODINGS>;
+
+        $i1 = $r5[$i1];
+
+        $r6 = newarray (boolean)[95];
+
+        $r5 = <com.google.zxing.oned.UPCEANReader: int[] START_END_PATTERN>;
+
+        $i2 = staticinvoke <com.google.zxing.oned.OneDimensionalCodeWriter: int appendPattern(boolean[],int,int[],boolean)>($r6, 0, $r5, 1);
+
+        $i3 = 1;
+
+     label03:
+        if $i3 > 6 goto label05;
+
+        $i0 = $i3 + 1;
+
+        $r4 = virtualinvoke $r3.<java.lang.String: java.lang.String substring(int,int)>($i3, $i0);
+
+        $i4 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r4);
+
+        $i5 = $i4;
+
+        $i3 = 6 - $i3;
+
+        $i3 = $i1 >> $i3;
+
+        $i3 = $i3 & 1;
+
+        if $i3 != 1 goto label04;
+
+        $i5 = $i4 + 10;
+
+     label04:
+        $r7 = <com.google.zxing.oned.UPCEANReader: int[][] L_AND_G_PATTERNS>;
+
+        $r5 = $r7[$i5];
+
+        $i4 = staticinvoke <com.google.zxing.oned.OneDimensionalCodeWriter: int appendPattern(boolean[],int,int[],boolean)>($r6, $i2, $r5, 0);
+
+        $i2 = $i2 + $i4;
+
+        $i3 = $i0;
+
+        goto label03;
+
+     label05:
+        $r5 = <com.google.zxing.oned.UPCEANReader: int[] MIDDLE_PATTERN>;
+
+        $i1 = staticinvoke <com.google.zxing.oned.OneDimensionalCodeWriter: int appendPattern(boolean[],int,int[],boolean)>($r6, $i2, $r5, 0);
+
+        $i1 = $i2 + $i1;
+
+        $i0 = 7;
+
+     label06:
+        if $i0 > 12 goto label07;
+
+        $i2 = $i0 + 1;
+
+        $r4 = virtualinvoke $r3.<java.lang.String: java.lang.String substring(int,int)>($i0, $i2);
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r4);
+
+        $r7 = <com.google.zxing.oned.UPCEANReader: int[][] L_PATTERNS>;
+
+        $r5 = $r7[$i0];
+
+        $i0 = staticinvoke <com.google.zxing.oned.OneDimensionalCodeWriter: int appendPattern(boolean[],int,int[],boolean)>($r6, $i1, $r5, 1);
+
+        $i1 = $i1 + $i0;
+
+        $i0 = $i2;
+
+        goto label06;
+
+     label07:
+        $r5 = <com.google.zxing.oned.UPCEANReader: int[] START_END_PATTERN>;
+
+        staticinvoke <com.google.zxing.oned.OneDimensionalCodeWriter: int appendPattern(boolean[],int,int[],boolean)>($r6, $i1, $r5, 1);
+
+        return $r6;
+
+     label08:
+        $r8 = new java.lang.IllegalArgumentException;
+
+     label09:
+        specialinvoke $r8.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Contents do not pass checksum");
+
+     label10:
+        throw $r8;
+
+     label11:
+        $r8 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r8.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Illegal contents");
+
+        throw $r8;
+
+     label12:
+        $r8 = new java.lang.IllegalArgumentException;
+
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Requested contents should be 13 digits long, but got ");
+
+        $i1 = virtualinvoke $r3.<java.lang.String: int length()>();
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r3 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r8.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r3);
+
+        goto label13;
+
+     label13:
+        throw $r8;
+
+     label14:
+        $r1 := @caughtexception;
+
+        goto label11;
+
+     label15:
+        $r2 := @caughtexception;
+
+        goto label11;
+
+        catch com.google.zxing.FormatException from label01 to label02 with label14;
+        catch com.google.zxing.FormatException from label09 to label10 with label15;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.zxing.oned.EAN13Writer: int CODE_WIDTH> = 95;
+
+        return;
+    }
+}

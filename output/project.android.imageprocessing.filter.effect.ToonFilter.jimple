@@ -1,0 +1,96 @@
+public class project.android.imageprocessing.filter.effect.ToonFilter extends project.android.imageprocessing.filter.MultiPixelRenderer
+{
+    public static final java.lang.String UNIFORM_QUANTIZATION;
+    public static final java.lang.String UNIFORM_THRESHOLD;
+    public float quantizationLevels;
+    public int quantizationLevelsHandle;
+    public float threshold;
+    public int thresholdHandle;
+
+    public void <init>(float, float)
+    {
+        float $f0, $f1;
+        project.android.imageprocessing.filter.effect.ToonFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.ToonFilter;
+
+        $f0 := @parameter0: float;
+
+        $f1 := @parameter1: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiPixelRenderer: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.effect.ToonFilter: float threshold> = $f0;
+
+        r0.<project.android.imageprocessing.filter.effect.ToonFilter: float quantizationLevels> = $f1;
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.effect.ToonFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.ToonFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform float u_Threshold;\nuniform float u_Quantization;\nuniform float u_TexelWidth;\nuniform float u_TexelHeight;\nvoid main(){\n   vec4 color = texture2D(u_Texture0, v_TexCoord);\n   vec2 up = vec2(0.0, u_TexelHeight);\n   vec2 right = vec2(u_TexelWidth, 0.0);\n   float bottomLeftIntensity = texture2D(u_Texture0, v_TexCoord - up - right).r;\n   float topRightIntensity = texture2D(u_Texture0, v_TexCoord + up + right).r;\n   float topLeftIntensity = texture2D(u_Texture0, v_TexCoord + up - right).r;\n   float bottomRightIntensity = texture2D(u_Texture0, v_TexCoord - up + right).r;\n   float leftIntensity = texture2D(u_Texture0, v_TexCoord - right).r;\n   float rightIntensity = texture2D(u_Texture0, v_TexCoord + right).r;\n   float bottomIntensity = texture2D(u_Texture0, v_TexCoord - up).r;\n   float topIntensity = texture2D(u_Texture0, v_TexCoord + up).r;\n   float h = -topLeftIntensity - 2.0 * topIntensity - topRightIntensity + bottomLeftIntensity + 2.0 * bottomIntensity + bottomRightIntensity;\n   float v = -bottomLeftIntensity - 2.0 * leftIntensity - topLeftIntensity + bottomRightIntensity + 2.0 * rightIntensity + topRightIntensity;\n   float mag = length(vec2(h, v));\n   vec3 posterizedImageColor = floor((color.rgb * u_Quantization) + 0.5) / u_Quantization;\n   float thresholdTest = 1.0 - step(u_Threshold, mag);\n   gl_FragColor = vec4(posterizedImageColor * thresholdTest, color.a);\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.effect.ToonFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.ToonFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiPixelRenderer: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_Threshold");
+
+        r0.<project.android.imageprocessing.filter.effect.ToonFilter: int thresholdHandle> = $i0;
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_Quantization");
+
+        r0.<project.android.imageprocessing.filter.effect.ToonFilter: int quantizationLevelsHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        int $i0;
+        float $f0;
+        project.android.imageprocessing.filter.effect.ToonFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.ToonFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiPixelRenderer: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.effect.ToonFilter: int thresholdHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.effect.ToonFilter: float threshold>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        $i0 = r0.<project.android.imageprocessing.filter.effect.ToonFilter: int quantizationLevelsHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.effect.ToonFilter: float quantizationLevels>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.effect.ToonFilter: java.lang.String UNIFORM_THRESHOLD> = "u_Threshold";
+
+        <project.android.imageprocessing.filter.effect.ToonFilter: java.lang.String UNIFORM_QUANTIZATION> = "u_Quantization";
+
+        return;
+    }
+}

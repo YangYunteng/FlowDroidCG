@@ -1,0 +1,225 @@
+public class com.caremark.caremark.util.ForeseeHelper extends java.lang.Object
+{
+    public static final java.lang.String TAG;
+    public static android.app.Application mApplication;
+
+    static void <clinit>()
+    {
+        <com.caremark.caremark.util.ForeseeHelper: java.lang.String TAG> = "ForeseeHelper";
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.caremark.caremark.util.ForeseeHelper r0;
+
+        r0 := @this: com.caremark.caremark.util.ForeseeHelper;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.lang.String access$000()
+    {
+        java.lang.String r0;
+
+        r0 = <com.caremark.caremark.util.ForeseeHelper: java.lang.String TAG>;
+
+        return r0;
+    }
+
+    public static void addCPPValue(java.lang.String, java.lang.String)
+    {
+        java.lang.String $r0, $r1;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: java.lang.String;
+
+        staticinvoke <com.foresee.sdk.ForeSee: void addCPPValue(java.lang.String,java.lang.String)>($r1, $r0);
+
+        return;
+    }
+
+    public static void displaySurveyInviteIfEligible()
+    {
+        staticinvoke <com.foresee.sdk.ForeSee: void checkIfEligibleForSurvey()>();
+
+        return;
+    }
+
+    public static void displaySurveyInviteNow(android.content.Context)
+    {
+        android.content.Context $r1;
+        java.lang.String $r0;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r0 = virtualinvoke $r1.<android.content.Context: java.lang.String getString(int)>(2131821576);
+
+        staticinvoke <com.foresee.sdk.ForeSee: void showInviteForSurveyID(java.lang.String)>($r0);
+
+        return;
+    }
+
+    public static int getVersion()
+    {
+        android.app.Application $r1;
+        android.content.pm.PackageManager $r2;
+        android.content.pm.PackageManager$NameNotFoundException $r0;
+        int i0;
+        java.lang.String $r3;
+        android.content.pm.PackageInfo $r4;
+
+        $r1 = <com.caremark.caremark.util.ForeseeHelper: android.app.Application mApplication>;
+
+     label1:
+        $r2 = virtualinvoke $r1.<android.app.Application: android.content.pm.PackageManager getPackageManager()>();
+
+     label2:
+        $r1 = <com.caremark.caremark.util.ForeseeHelper: android.app.Application mApplication>;
+
+     label3:
+        $r3 = virtualinvoke $r1.<android.app.Application: java.lang.String getPackageName()>();
+
+        $r4 = virtualinvoke $r2.<android.content.pm.PackageManager: android.content.pm.PackageInfo getPackageInfo(java.lang.String,int)>($r3, 0);
+
+     label4:
+        i0 = $r4.<android.content.pm.PackageInfo: int versionCode>;
+
+        return i0;
+
+     label5:
+        $r0 := @caughtexception;
+
+        return 0;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label1 to label2 with label5;
+        catch android.content.pm.PackageManager$NameNotFoundException from label3 to label4 with label5;
+    }
+
+    public static void initialize(android.app.Application)
+    {
+        com.caremark.caremark.util.ForeseeHelper$1 $r1;
+        android.app.Application $r0;
+
+        $r0 := @parameter0: android.app.Application;
+
+        <com.caremark.caremark.util.ForeseeHelper: android.app.Application mApplication> = $r0;
+
+        staticinvoke <com.foresee.sdk.ForeSee: void setDebugLogEnabled(boolean)>(1);
+
+        $r1 = new com.caremark.caremark.util.ForeseeHelper$1;
+
+        specialinvoke $r1.<com.caremark.caremark.util.ForeseeHelper$1: void <init>()>();
+
+        staticinvoke <com.foresee.sdk.ForeSee: void start(android.app.Application,com.foresee.sdk.ForeSee$ForeSeeSDKConfigurationListener)>($r0, $r1);
+
+        return;
+    }
+
+    public static com.google.gson.JsonElement loadForeSeeConfigFromFile(android.content.Context, java.lang.String)
+    {
+        android.content.Context $r0;
+        byte[] $r5;
+        java.io.IOException $r6;
+        com.google.gson.JsonParser $r2;
+        com.google.gson.JsonElement $r7;
+        int $i0;
+        java.lang.String $r1;
+        android.content.res.Resources $r3;
+        java.io.InputStream $r4;
+
+        $r0 := @parameter0: android.content.Context;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = new com.google.gson.JsonParser;
+
+        specialinvoke $r2.<com.google.gson.JsonParser: void <init>()>();
+
+     label1:
+        $r3 = virtualinvoke $r0.<android.content.Context: android.content.res.Resources getResources()>();
+
+        $r4 = virtualinvoke $r3.<android.content.res.Resources: java.io.InputStream openRawResource(int)>(2131755009);
+
+        $i0 = virtualinvoke $r4.<java.io.InputStream: int available()>();
+
+     label2:
+        $r5 = newarray (byte)[$i0];
+
+     label3:
+        virtualinvoke $r4.<java.io.InputStream: int read(byte[])>($r5);
+
+        virtualinvoke $r4.<java.io.InputStream: void close()>();
+
+     label4:
+        $r1 = new java.lang.String;
+
+     label5:
+        specialinvoke $r1.<java.lang.String: void <init>(byte[],java.lang.String)>($r5, "UTF-8");
+
+     label6:
+        goto label8;
+
+     label7:
+        $r6 := @caughtexception;
+
+        virtualinvoke $r6.<java.io.IOException: void printStackTrace()>();
+
+        $r1 = null;
+
+     label8:
+        if $r1 == null goto label9;
+
+        $r7 = virtualinvoke $r2.<com.google.gson.JsonParser: com.google.gson.JsonElement parse(java.lang.String)>($r1);
+
+        return $r7;
+
+     label9:
+        return null;
+
+        catch java.io.IOException from label1 to label2 with label7;
+        catch java.io.IOException from label3 to label4 with label7;
+        catch java.io.IOException from label5 to label6 with label7;
+    }
+
+    public static void resetState()
+    {
+        staticinvoke <com.foresee.sdk.ForeSee: void resetState()>();
+
+        return;
+    }
+
+    public static void resetSurveyIfNeeded(int)
+    {
+        int $i0, $i1;
+        c.c.a.d.i $r0;
+
+        $i0 := @parameter0: int;
+
+        $i1 = staticinvoke <com.caremark.caremark.util.ForeseeHelper: int getVersion()>();
+
+        if $i1 <= $i0 goto label1;
+
+        $r0 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        virtualinvoke $r0.<c.c.a.d.i: void a(int)>($i1);
+
+        staticinvoke <com.caremark.caremark.util.ForeseeHelper: void resetState()>();
+
+     label1:
+        return;
+    }
+
+    public static void setContactDetails(java.lang.String)
+    {
+        java.lang.String $r0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        return;
+    }
+}

@@ -1,0 +1,237 @@
+public final class androidx.lifecycle.SavedStateHandleController extends java.lang.Object implements androidx.lifecycle.LifecycleEventObserver
+{
+    public static final java.lang.String TAG_SAVED_STATE_HANDLE_CONTROLLER;
+    public final androidx.lifecycle.SavedStateHandle mHandle;
+    public boolean mIsAttached;
+    public final java.lang.String mKey;
+
+    public void <init>(java.lang.String, androidx.lifecycle.SavedStateHandle)
+    {
+        androidx.lifecycle.SavedStateHandleController r0;
+        java.lang.String $r1;
+        androidx.lifecycle.SavedStateHandle $r2;
+
+        r0 := @this: androidx.lifecycle.SavedStateHandleController;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: androidx.lifecycle.SavedStateHandle;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<androidx.lifecycle.SavedStateHandleController: boolean mIsAttached> = 0;
+
+        r0.<androidx.lifecycle.SavedStateHandleController: java.lang.String mKey> = $r1;
+
+        r0.<androidx.lifecycle.SavedStateHandleController: androidx.lifecycle.SavedStateHandle mHandle> = $r2;
+
+        return;
+    }
+
+    public static void attachHandleIfNeeded(androidx.lifecycle.ViewModel, b.t.a, androidx.lifecycle.Lifecycle)
+    {
+        b.t.a $r0;
+        androidx.lifecycle.Lifecycle $r1;
+        androidx.lifecycle.ViewModel $r2;
+        java.lang.Object $r3;
+        androidx.lifecycle.SavedStateHandleController $r4;
+        boolean $z0;
+
+        $r2 := @parameter0: androidx.lifecycle.ViewModel;
+
+        $r0 := @parameter1: b.t.a;
+
+        $r1 := @parameter2: androidx.lifecycle.Lifecycle;
+
+        $r3 = virtualinvoke $r2.<androidx.lifecycle.ViewModel: java.lang.Object getTag(java.lang.String)>("androidx.lifecycle.savedstate.vm.tag");
+
+        $r4 = (androidx.lifecycle.SavedStateHandleController) $r3;
+
+        if $r4 == null goto label1;
+
+        $z0 = virtualinvoke $r4.<androidx.lifecycle.SavedStateHandleController: boolean isAttached()>();
+
+        if $z0 != 0 goto label1;
+
+        virtualinvoke $r4.<androidx.lifecycle.SavedStateHandleController: void attachToLifecycle(b.t.a,androidx.lifecycle.Lifecycle)>($r0, $r1);
+
+        staticinvoke <androidx.lifecycle.SavedStateHandleController: void tryToAddRecreator(b.t.a,androidx.lifecycle.Lifecycle)>($r0, $r1);
+
+     label1:
+        return;
+    }
+
+    public static androidx.lifecycle.SavedStateHandleController create(b.t.a, androidx.lifecycle.Lifecycle, java.lang.String, android.os.Bundle)
+    {
+        b.t.a $r0;
+        androidx.lifecycle.Lifecycle $r1;
+        android.os.Bundle $r3, $r4;
+        androidx.lifecycle.SavedStateHandle $r5;
+        java.lang.String $r2;
+        androidx.lifecycle.SavedStateHandleController $r6;
+
+        $r0 := @parameter0: b.t.a;
+
+        $r1 := @parameter1: androidx.lifecycle.Lifecycle;
+
+        $r2 := @parameter2: java.lang.String;
+
+        $r3 := @parameter3: android.os.Bundle;
+
+        $r4 = virtualinvoke $r0.<b.t.a: android.os.Bundle a(java.lang.String)>($r2);
+
+        $r5 = staticinvoke <androidx.lifecycle.SavedStateHandle: androidx.lifecycle.SavedStateHandle createHandle(android.os.Bundle,android.os.Bundle)>($r4, $r3);
+
+        $r6 = new androidx.lifecycle.SavedStateHandleController;
+
+        specialinvoke $r6.<androidx.lifecycle.SavedStateHandleController: void <init>(java.lang.String,androidx.lifecycle.SavedStateHandle)>($r2, $r5);
+
+        virtualinvoke $r6.<androidx.lifecycle.SavedStateHandleController: void attachToLifecycle(b.t.a,androidx.lifecycle.Lifecycle)>($r0, $r1);
+
+        staticinvoke <androidx.lifecycle.SavedStateHandleController: void tryToAddRecreator(b.t.a,androidx.lifecycle.Lifecycle)>($r0, $r1);
+
+        return $r6;
+    }
+
+    public static void tryToAddRecreator(b.t.a, androidx.lifecycle.Lifecycle)
+    {
+        b.t.a $r0;
+        androidx.lifecycle.Lifecycle $r1;
+        androidx.lifecycle.Lifecycle$State $r2, $r3;
+        boolean $z0;
+        androidx.lifecycle.SavedStateHandleController$1 $r4;
+
+        $r0 := @parameter0: b.t.a;
+
+        $r1 := @parameter1: androidx.lifecycle.Lifecycle;
+
+        $r2 = virtualinvoke $r1.<androidx.lifecycle.Lifecycle: androidx.lifecycle.Lifecycle$State getCurrentState()>();
+
+        $r3 = <androidx.lifecycle.Lifecycle$State: androidx.lifecycle.Lifecycle$State INITIALIZED>;
+
+        if $r2 == $r3 goto label2;
+
+        $r3 = <androidx.lifecycle.Lifecycle$State: androidx.lifecycle.Lifecycle$State STARTED>;
+
+        $z0 = virtualinvoke $r2.<androidx.lifecycle.Lifecycle$State: boolean isAtLeast(androidx.lifecycle.Lifecycle$State)>($r3);
+
+        if $z0 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        $r4 = new androidx.lifecycle.SavedStateHandleController$1;
+
+        specialinvoke $r4.<androidx.lifecycle.SavedStateHandleController$1: void <init>(androidx.lifecycle.Lifecycle,b.t.a)>($r1, $r0);
+
+        virtualinvoke $r1.<androidx.lifecycle.Lifecycle: void addObserver(androidx.lifecycle.LifecycleObserver)>($r4);
+
+        return;
+
+     label2:
+        virtualinvoke $r0.<b.t.a: void a(java.lang.Class)>(class "Landroidx/lifecycle/SavedStateHandleController$OnRecreation;");
+
+        return;
+    }
+
+    public void attachToLifecycle(b.t.a, androidx.lifecycle.Lifecycle)
+    {
+        b.t.a $r2;
+        java.lang.IllegalStateException $r6;
+        b.t.a$b $r1;
+        androidx.lifecycle.Lifecycle $r3;
+        androidx.lifecycle.SavedStateHandle $r5;
+        androidx.lifecycle.SavedStateHandleController r0;
+        java.lang.String $r4;
+        boolean $z0;
+
+        r0 := @this: androidx.lifecycle.SavedStateHandleController;
+
+        $r2 := @parameter0: b.t.a;
+
+        $r3 := @parameter1: androidx.lifecycle.Lifecycle;
+
+        $z0 = r0.<androidx.lifecycle.SavedStateHandleController: boolean mIsAttached>;
+
+        if $z0 != 0 goto label1;
+
+        r0.<androidx.lifecycle.SavedStateHandleController: boolean mIsAttached> = 1;
+
+        virtualinvoke $r3.<androidx.lifecycle.Lifecycle: void addObserver(androidx.lifecycle.LifecycleObserver)>(r0);
+
+        $r4 = r0.<androidx.lifecycle.SavedStateHandleController: java.lang.String mKey>;
+
+        $r5 = r0.<androidx.lifecycle.SavedStateHandleController: androidx.lifecycle.SavedStateHandle mHandle>;
+
+        $r1 = virtualinvoke $r5.<androidx.lifecycle.SavedStateHandle: b.t.a$b savedStateProvider()>();
+
+        virtualinvoke $r2.<b.t.a: void a(java.lang.String,b.t.a$b)>($r4, $r1);
+
+        return;
+
+     label1:
+        $r6 = new java.lang.IllegalStateException;
+
+        specialinvoke $r6.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Already attached to lifecycleOwner");
+
+        throw $r6;
+    }
+
+    public androidx.lifecycle.SavedStateHandle getHandle()
+    {
+        androidx.lifecycle.SavedStateHandleController r0;
+        androidx.lifecycle.SavedStateHandle r1;
+
+        r0 := @this: androidx.lifecycle.SavedStateHandleController;
+
+        r1 = r0.<androidx.lifecycle.SavedStateHandleController: androidx.lifecycle.SavedStateHandle mHandle>;
+
+        return r1;
+    }
+
+    public boolean isAttached()
+    {
+        androidx.lifecycle.SavedStateHandleController r0;
+        boolean z0;
+
+        r0 := @this: androidx.lifecycle.SavedStateHandleController;
+
+        z0 = r0.<androidx.lifecycle.SavedStateHandleController: boolean mIsAttached>;
+
+        return z0;
+    }
+
+    public void onStateChanged(androidx.lifecycle.LifecycleOwner, androidx.lifecycle.Lifecycle$Event)
+    {
+        androidx.lifecycle.Lifecycle $r2;
+        androidx.lifecycle.LifecycleOwner $r3;
+        androidx.lifecycle.SavedStateHandleController r0;
+        androidx.lifecycle.Lifecycle$Event $r1, $r4;
+
+        r0 := @this: androidx.lifecycle.SavedStateHandleController;
+
+        $r3 := @parameter0: androidx.lifecycle.LifecycleOwner;
+
+        $r4 := @parameter1: androidx.lifecycle.Lifecycle$Event;
+
+        $r1 = <androidx.lifecycle.Lifecycle$Event: androidx.lifecycle.Lifecycle$Event ON_DESTROY>;
+
+        if $r4 != $r1 goto label1;
+
+        r0.<androidx.lifecycle.SavedStateHandleController: boolean mIsAttached> = 0;
+
+        $r2 = interfaceinvoke $r3.<androidx.lifecycle.LifecycleOwner: androidx.lifecycle.Lifecycle getLifecycle()>();
+
+        virtualinvoke $r2.<androidx.lifecycle.Lifecycle: void removeObserver(androidx.lifecycle.LifecycleObserver)>(r0);
+
+     label1:
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <androidx.lifecycle.SavedStateHandleController: java.lang.String TAG_SAVED_STATE_HANDLE_CONTROLLER> = "androidx.lifecycle.savedstate.vm.tag";
+
+        return;
+    }
+}

@@ -1,0 +1,108 @@
+public class com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService extends android.app.job.JobService
+{
+
+    public void <init>()
+    {
+        com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService r0;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService;
+
+        specialinvoke r0.<android.app.job.JobService: void <init>()>();
+
+        return;
+    }
+
+    public static void lambda$onStartJob$0(com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService, android.app.job.JobParameters)
+    {
+        android.app.job.JobParameters $r1;
+        com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService $r0;
+
+        $r0 := @parameter0: com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService;
+
+        $r1 := @parameter1: android.app.job.JobParameters;
+
+        virtualinvoke $r0.<android.app.job.JobService: void jobFinished(android.app.job.JobParameters,boolean)>($r1, 0);
+
+        return;
+    }
+
+    public boolean onStartJob(android.app.job.JobParameters)
+    {
+        android.content.Context $r5;
+        byte[] $r8;
+        com.google.android.datatransport.runtime.TransportContext$Builder $r6;
+        com.google.android.datatransport.runtime.TransportRuntime $r9;
+        com.google.android.datatransport.Priority $r7;
+        java.lang.Runnable $r12;
+        com.google.android.datatransport.runtime.TransportContext $r11;
+        com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService r0;
+        com.google.android.datatransport.runtime.scheduling.jobscheduling.Uploader $r10;
+        android.os.PersistableBundle $r2;
+        int $i0, $i1;
+        android.app.job.JobParameters $r1;
+        java.lang.String $r3, $r4;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService;
+
+        $r1 := @parameter0: android.app.job.JobParameters;
+
+        $r2 = virtualinvoke $r1.<android.app.job.JobParameters: android.os.PersistableBundle getExtras()>();
+
+        $r3 = virtualinvoke $r2.<android.os.PersistableBundle: java.lang.String getString(java.lang.String)>("backendName");
+
+        $r2 = virtualinvoke $r1.<android.app.job.JobParameters: android.os.PersistableBundle getExtras()>();
+
+        $r4 = virtualinvoke $r2.<android.os.PersistableBundle: java.lang.String getString(java.lang.String)>("extras");
+
+        $r2 = virtualinvoke $r1.<android.app.job.JobParameters: android.os.PersistableBundle getExtras()>();
+
+        $i0 = virtualinvoke $r2.<android.os.PersistableBundle: int getInt(java.lang.String)>("priority");
+
+        $r2 = virtualinvoke $r1.<android.app.job.JobParameters: android.os.PersistableBundle getExtras()>();
+
+        $i1 = virtualinvoke $r2.<android.os.PersistableBundle: int getInt(java.lang.String)>("attemptNumber");
+
+        $r5 = virtualinvoke r0.<android.app.job.JobService: android.content.Context getApplicationContext()>();
+
+        staticinvoke <com.google.android.datatransport.runtime.TransportRuntime: void initialize(android.content.Context)>($r5);
+
+        $r6 = staticinvoke <com.google.android.datatransport.runtime.TransportContext: com.google.android.datatransport.runtime.TransportContext$Builder builder()>();
+
+        $r6 = virtualinvoke $r6.<com.google.android.datatransport.runtime.TransportContext$Builder: com.google.android.datatransport.runtime.TransportContext$Builder setBackendName(java.lang.String)>($r3);
+
+        $r7 = staticinvoke <com.google.android.datatransport.runtime.util.PriorityMapping: com.google.android.datatransport.Priority valueOf(int)>($i0);
+
+        $r6 = virtualinvoke $r6.<com.google.android.datatransport.runtime.TransportContext$Builder: com.google.android.datatransport.runtime.TransportContext$Builder setPriority(com.google.android.datatransport.Priority)>($r7);
+
+        if $r4 == null goto label1;
+
+        $r8 = staticinvoke <android.util.Base64: byte[] decode(java.lang.String,int)>($r4, 0);
+
+        virtualinvoke $r6.<com.google.android.datatransport.runtime.TransportContext$Builder: com.google.android.datatransport.runtime.TransportContext$Builder setExtras(byte[])>($r8);
+
+     label1:
+        $r9 = staticinvoke <com.google.android.datatransport.runtime.TransportRuntime: com.google.android.datatransport.runtime.TransportRuntime getInstance()>();
+
+        $r10 = virtualinvoke $r9.<com.google.android.datatransport.runtime.TransportRuntime: com.google.android.datatransport.runtime.scheduling.jobscheduling.Uploader getUploader()>();
+
+        $r11 = virtualinvoke $r6.<com.google.android.datatransport.runtime.TransportContext$Builder: com.google.android.datatransport.runtime.TransportContext build()>();
+
+        $r12 = staticinvoke <com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService$$Lambda$1: java.lang.Runnable lambdaFactory$(com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService,android.app.job.JobParameters)>(r0, $r1);
+
+        virtualinvoke $r10.<com.google.android.datatransport.runtime.scheduling.jobscheduling.Uploader: void upload(com.google.android.datatransport.runtime.TransportContext,int,java.lang.Runnable)>($r11, $i1, $r12);
+
+        return 1;
+    }
+
+    public boolean onStopJob(android.app.job.JobParameters)
+    {
+        android.app.job.JobParameters $r1;
+        com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService r0;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService;
+
+        $r1 := @parameter0: android.app.job.JobParameters;
+
+        return 1;
+    }
+}

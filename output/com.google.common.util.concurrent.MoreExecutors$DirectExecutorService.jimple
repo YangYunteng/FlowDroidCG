@@ -1,0 +1,387 @@
+public final class com.google.common.util.concurrent.MoreExecutors$DirectExecutorService extends com.google.common.util.concurrent.AbstractListeningExecutorService
+{
+    public final java.lang.Object lock;
+    public int runningTasks;
+    public boolean shutdown;
+
+    public void <init>()
+    {
+        java.lang.Object $r1;
+        com.google.common.util.concurrent.MoreExecutors$DirectExecutorService r0;
+
+        r0 := @this: com.google.common.util.concurrent.MoreExecutors$DirectExecutorService;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractListeningExecutorService: void <init>()>();
+
+        $r1 = new java.lang.Object;
+
+        specialinvoke $r1.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: java.lang.Object lock> = $r1;
+
+        r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: int runningTasks> = 0;
+
+        r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: boolean shutdown> = 0;
+
+        return;
+    }
+
+    public void <init>(com.google.common.util.concurrent.MoreExecutors$1)
+    {
+        com.google.common.util.concurrent.MoreExecutors$1 $r1;
+        com.google.common.util.concurrent.MoreExecutors$DirectExecutorService r0;
+
+        r0 := @this: com.google.common.util.concurrent.MoreExecutors$DirectExecutorService;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.MoreExecutors$1;
+
+        specialinvoke r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: void <init>()>();
+
+        return;
+    }
+
+    private void endTask()
+    {
+        java.lang.Throwable $r3;
+        int $i0, $i1;
+        java.lang.Object $r1, $r2;
+        com.google.common.util.concurrent.MoreExecutors$DirectExecutorService r0;
+
+        r0 := @this: com.google.common.util.concurrent.MoreExecutors$DirectExecutorService;
+
+        $r1 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: java.lang.Object lock>;
+
+        entermonitor $r1;
+
+     label1:
+        $i0 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: int runningTasks>;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: int runningTasks> = $i0;
+
+        if $i0 != 0 goto label2;
+
+        $r2 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: java.lang.Object lock>;
+
+        virtualinvoke $r2.<java.lang.Object: void notifyAll()>();
+
+     label2:
+        exitmonitor $r1;
+
+     label3:
+        return;
+
+     label4:
+        $r3 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label5:
+        throw $r3;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    private void startTask()
+    {
+        java.lang.Throwable $r3;
+        java.util.concurrent.RejectedExecutionException $r2;
+        int $i0;
+        java.lang.Object $r1;
+        com.google.common.util.concurrent.MoreExecutors$DirectExecutorService r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.MoreExecutors$DirectExecutorService;
+
+        $r1 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: java.lang.Object lock>;
+
+        entermonitor $r1;
+
+     label1:
+        $z0 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: boolean shutdown>;
+
+        if $z0 != 0 goto label3;
+
+        $i0 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: int runningTasks>;
+
+        $i0 = $i0 + 1;
+
+        r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: int runningTasks> = $i0;
+
+        exitmonitor $r1;
+
+     label2:
+        return;
+
+     label3:
+        $r2 = new java.util.concurrent.RejectedExecutionException;
+
+        specialinvoke $r2.<java.util.concurrent.RejectedExecutionException: void <init>(java.lang.String)>("Executor already shutdown");
+
+        throw $r2;
+
+     label4:
+        $r3 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label5:
+        throw $r3;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label3 to label5 with label4;
+    }
+
+    public boolean awaitTermination(long, java.util.concurrent.TimeUnit)
+    {
+        java.lang.Throwable $r4;
+        long $l0, $l3, $l4;
+        java.util.concurrent.TimeUnit $r2;
+        byte $b2;
+        int $i1;
+        java.lang.Object $r1, $r3;
+        com.google.common.util.concurrent.MoreExecutors$DirectExecutorService r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.MoreExecutors$DirectExecutorService;
+
+        $l0 := @parameter0: long;
+
+        $r2 := @parameter1: java.util.concurrent.TimeUnit;
+
+        $l0 = virtualinvoke $r2.<java.util.concurrent.TimeUnit: long toNanos(long)>($l0);
+
+        $r3 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: java.lang.Object lock>;
+
+        entermonitor $r3;
+
+     label1:
+        $z0 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: boolean shutdown>;
+
+        if $z0 == 0 goto label3;
+
+        $i1 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: int runningTasks>;
+
+        if $i1 != 0 goto label3;
+
+        exitmonitor $r3;
+
+     label2:
+        return 1;
+
+     label3:
+        $b2 = $l0 cmp 0L;
+
+        $i1 = (int) $b2;
+
+        if $i1 > 0 goto label5;
+
+        exitmonitor $r3;
+
+     label4:
+        return 0;
+
+     label5:
+        $l3 = staticinvoke <java.lang.System: long nanoTime()>();
+
+        $r2 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit NANOSECONDS>;
+
+        $r1 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: java.lang.Object lock>;
+
+        virtualinvoke $r2.<java.util.concurrent.TimeUnit: void timedWait(java.lang.Object,long)>($r1, $l0);
+
+        $l4 = staticinvoke <java.lang.System: long nanoTime()>();
+
+        $l3 = $l4 - $l3;
+
+        $l0 = $l0 - $l3;
+
+        goto label1;
+
+     label6:
+        $r4 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label7:
+        goto label8;
+
+     label8:
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label6;
+        catch java.lang.Throwable from label3 to label4 with label6;
+        catch java.lang.Throwable from label5 to label7 with label6;
+    }
+
+    public void execute(java.lang.Runnable)
+    {
+        java.lang.Throwable $r2;
+        java.lang.Runnable $r1;
+        com.google.common.util.concurrent.MoreExecutors$DirectExecutorService r0;
+
+        r0 := @this: com.google.common.util.concurrent.MoreExecutors$DirectExecutorService;
+
+        $r1 := @parameter0: java.lang.Runnable;
+
+        specialinvoke r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: void startTask()>();
+
+     label1:
+        interfaceinvoke $r1.<java.lang.Runnable: void run()>();
+
+     label2:
+        specialinvoke r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: void endTask()>();
+
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        specialinvoke r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: void endTask()>();
+
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public boolean isShutdown()
+    {
+        java.lang.Throwable $r2;
+        java.lang.Object $r1;
+        com.google.common.util.concurrent.MoreExecutors$DirectExecutorService r0;
+        boolean z0;
+
+        r0 := @this: com.google.common.util.concurrent.MoreExecutors$DirectExecutorService;
+
+        $r1 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: java.lang.Object lock>;
+
+        entermonitor $r1;
+
+     label1:
+        z0 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: boolean shutdown>;
+
+        exitmonitor $r1;
+
+     label2:
+        return z0;
+
+     label3:
+        $r2 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public boolean isTerminated()
+    {
+        java.lang.Throwable $r2;
+        int $i0;
+        java.lang.Object $r1;
+        com.google.common.util.concurrent.MoreExecutors$DirectExecutorService r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.MoreExecutors$DirectExecutorService;
+
+        $r1 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: java.lang.Object lock>;
+
+        entermonitor $r1;
+
+     label1:
+        $z0 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: boolean shutdown>;
+
+        if $z0 == 0 goto label2;
+
+        $i0 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: int runningTasks>;
+
+        if $i0 != 0 goto label2;
+
+        $z0 = 1;
+
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        exitmonitor $r1;
+
+     label4:
+        return $z0;
+
+     label5:
+        $r2 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label6:
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void shutdown()
+    {
+        java.lang.Throwable $r3;
+        int $i0;
+        java.lang.Object $r1, $r2;
+        com.google.common.util.concurrent.MoreExecutors$DirectExecutorService r0;
+
+        r0 := @this: com.google.common.util.concurrent.MoreExecutors$DirectExecutorService;
+
+        $r1 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: java.lang.Object lock>;
+
+        entermonitor $r1;
+
+     label1:
+        r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: boolean shutdown> = 1;
+
+        $i0 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: int runningTasks>;
+
+        if $i0 != 0 goto label2;
+
+        $r2 = r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: java.lang.Object lock>;
+
+        virtualinvoke $r2.<java.lang.Object: void notifyAll()>();
+
+     label2:
+        exitmonitor $r1;
+
+     label3:
+        return;
+
+     label4:
+        $r3 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label5:
+        throw $r3;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public java.util.List shutdownNow()
+    {
+        java.util.List $r1;
+        com.google.common.util.concurrent.MoreExecutors$DirectExecutorService r0;
+
+        r0 := @this: com.google.common.util.concurrent.MoreExecutors$DirectExecutorService;
+
+        virtualinvoke r0.<com.google.common.util.concurrent.MoreExecutors$DirectExecutorService: void shutdown()>();
+
+        $r1 = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        return $r1;
+    }
+}

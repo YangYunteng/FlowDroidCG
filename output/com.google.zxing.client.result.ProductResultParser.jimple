@@ -1,0 +1,113 @@
+public final class com.google.zxing.client.result.ProductResultParser extends com.google.zxing.client.result.ResultParser
+{
+
+    public void <init>()
+    {
+        com.google.zxing.client.result.ProductResultParser r0;
+
+        r0 := @this: com.google.zxing.client.result.ProductResultParser;
+
+        specialinvoke r0.<com.google.zxing.client.result.ResultParser: void <init>()>();
+
+        return;
+    }
+
+    public volatile com.google.zxing.client.result.ParsedResult parse(com.google.zxing.Result)
+    {
+        com.google.zxing.Result $r2;
+        com.google.zxing.client.result.ProductResultParser r0;
+        com.google.zxing.client.result.ProductParsedResult $r1;
+
+        r0 := @this: com.google.zxing.client.result.ProductResultParser;
+
+        $r2 := @parameter0: com.google.zxing.Result;
+
+        $r1 = virtualinvoke r0.<com.google.zxing.client.result.ProductResultParser: com.google.zxing.client.result.ProductParsedResult parse(com.google.zxing.Result)>($r2);
+
+        return $r1;
+    }
+
+    public com.google.zxing.client.result.ProductParsedResult parse(com.google.zxing.Result)
+    {
+        com.google.zxing.Result $r1;
+        com.google.zxing.client.result.ProductResultParser r0;
+        com.google.zxing.client.result.ProductParsedResult $r6;
+        char $c2;
+        int $i0, $i1, $i3;
+        java.lang.String $r4, $r5;
+        com.google.zxing.BarcodeFormat $r2, $r3;
+
+        r0 := @this: com.google.zxing.client.result.ProductResultParser;
+
+        $r1 := @parameter0: com.google.zxing.Result;
+
+        $r2 = virtualinvoke $r1.<com.google.zxing.Result: com.google.zxing.BarcodeFormat getBarcodeFormat()>();
+
+        $r3 = <com.google.zxing.BarcodeFormat: com.google.zxing.BarcodeFormat UPC_A>;
+
+        if $r2 == $r3 goto label1;
+
+        $r3 = <com.google.zxing.BarcodeFormat: com.google.zxing.BarcodeFormat UPC_E>;
+
+        if $r2 == $r3 goto label1;
+
+        $r3 = <com.google.zxing.BarcodeFormat: com.google.zxing.BarcodeFormat EAN_8>;
+
+        if $r2 == $r3 goto label1;
+
+        $r3 = <com.google.zxing.BarcodeFormat: com.google.zxing.BarcodeFormat EAN_13>;
+
+        if $r2 == $r3 goto label1;
+
+        return null;
+
+     label1:
+        $r4 = staticinvoke <com.google.zxing.client.result.ResultParser: java.lang.String getMassagedText(com.google.zxing.Result)>($r1);
+
+        $i0 = virtualinvoke $r4.<java.lang.String: int length()>();
+
+        $i1 = 0;
+
+     label2:
+        if $i1 >= $i0 goto label5;
+
+        $c2 = virtualinvoke $r4.<java.lang.String: char charAt(int)>($i1);
+
+        $i3 = (int) $c2;
+
+        if $i3 < 48 goto label4;
+
+        $i3 = (int) $c2;
+
+        if $i3 <= 57 goto label3;
+
+        return null;
+
+     label3:
+        $i1 = $i1 + 1;
+
+        goto label2;
+
+     label4:
+        return null;
+
+     label5:
+        $r3 = <com.google.zxing.BarcodeFormat: com.google.zxing.BarcodeFormat UPC_E>;
+
+        if $r2 != $r3 goto label6;
+
+        $r5 = staticinvoke <com.google.zxing.oned.UPCEReader: java.lang.String convertUPCEtoUPCA(java.lang.String)>($r4);
+
+        goto label7;
+
+     label6:
+        $r5 = $r4;
+
+     label7:
+        $r6 = new com.google.zxing.client.result.ProductParsedResult;
+
+        specialinvoke $r6.<com.google.zxing.client.result.ProductParsedResult: void <init>(java.lang.String,java.lang.String)>($r4, $r5);
+
+        return $r6;
+    }
+}

@@ -1,0 +1,294 @@
+public final class com.google.zxing.qrcode.decoder.DataBlock extends java.lang.Object
+{
+    public final byte[] codewords;
+    public final int numDataCodewords;
+
+    public void <init>(int, byte[])
+    {
+        com.google.zxing.qrcode.decoder.DataBlock r0;
+        int $i0;
+        byte[] $r1;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.DataBlock;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: byte[];
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.zxing.qrcode.decoder.DataBlock: int numDataCodewords> = $i0;
+
+        r0.<com.google.zxing.qrcode.decoder.DataBlock: byte[] codewords> = $r1;
+
+        return;
+    }
+
+    public static com.google.zxing.qrcode.decoder.DataBlock[] getDataBlocks(byte[], com.google.zxing.qrcode.decoder.Version, com.google.zxing.qrcode.decoder.ErrorCorrectionLevel)
+    {
+        com.google.zxing.qrcode.decoder.DataBlock $r0, $r9;
+        byte[] $r1, $r8;
+        com.google.zxing.qrcode.decoder.Version$ECB[] $r5;
+        com.google.zxing.qrcode.decoder.ErrorCorrectionLevel $r3;
+        byte $b7;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6;
+        com.google.zxing.qrcode.decoder.Version$ECB $r6;
+        java.lang.IllegalArgumentException $r10;
+        com.google.zxing.qrcode.decoder.Version $r2;
+        com.google.zxing.qrcode.decoder.DataBlock[] $r7;
+        com.google.zxing.qrcode.decoder.Version$ECBlocks $r4;
+
+        $r1 := @parameter0: byte[];
+
+        $r2 := @parameter1: com.google.zxing.qrcode.decoder.Version;
+
+        $r3 := @parameter2: com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
+        $i1 = lengthof $r1;
+
+        $i2 = virtualinvoke $r2.<com.google.zxing.qrcode.decoder.Version: int getTotalCodewords()>();
+
+        if $i1 != $i2 goto label22;
+
+        $r4 = virtualinvoke $r2.<com.google.zxing.qrcode.decoder.Version: com.google.zxing.qrcode.decoder.Version$ECBlocks getECBlocksForLevel(com.google.zxing.qrcode.decoder.ErrorCorrectionLevel)>($r3);
+
+        $r5 = virtualinvoke $r4.<com.google.zxing.qrcode.decoder.Version$ECBlocks: com.google.zxing.qrcode.decoder.Version$ECB[] getECBlocks()>();
+
+        $i1 = lengthof $r5;
+
+        $i2 = 0;
+
+        $i3 = 0;
+
+     label01:
+        if $i2 >= $i1 goto label02;
+
+        $r6 = $r5[$i2];
+
+        $i4 = virtualinvoke $r6.<com.google.zxing.qrcode.decoder.Version$ECB: int getCount()>();
+
+        $i3 = $i3 + $i4;
+
+        $i2 = $i2 + 1;
+
+        goto label01;
+
+     label02:
+        $r7 = newarray (com.google.zxing.qrcode.decoder.DataBlock)[$i3];
+
+        $i2 = lengthof $r5;
+
+        $i3 = 0;
+
+        $i1 = 0;
+
+     label03:
+        if $i3 >= $i2 goto label06;
+
+        $r6 = $r5[$i3];
+
+        $i4 = 0;
+
+     label04:
+        $i5 = virtualinvoke $r6.<com.google.zxing.qrcode.decoder.Version$ECB: int getCount()>();
+
+        if $i4 >= $i5 goto label05;
+
+        $i5 = virtualinvoke $r6.<com.google.zxing.qrcode.decoder.Version$ECB: int getDataCodewords()>();
+
+        $i0 = virtualinvoke $r4.<com.google.zxing.qrcode.decoder.Version$ECBlocks: int getECCodewordsPerBlock()>();
+
+        $i6 = $i0 + $i5;
+
+        $r9 = new com.google.zxing.qrcode.decoder.DataBlock;
+
+        $r8 = newarray (byte)[$i6];
+
+        specialinvoke $r9.<com.google.zxing.qrcode.decoder.DataBlock: void <init>(int,byte[])>($i5, $r8);
+
+        $r7[$i1] = $r9;
+
+        $i4 = $i4 + 1;
+
+        $i1 = $i1 + 1;
+
+        goto label04;
+
+     label05:
+        $i3 = $i3 + 1;
+
+        goto label03;
+
+     label06:
+        $r0 = $r7[0];
+
+        $r8 = $r0.<com.google.zxing.qrcode.decoder.DataBlock: byte[] codewords>;
+
+        $i3 = lengthof $r8;
+
+        $i2 = lengthof $r7;
+
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+     label07:
+        if $i2 < 0 goto label09;
+
+        $r0 = $r7[$i2];
+
+        $r8 = $r0.<com.google.zxing.qrcode.decoder.DataBlock: byte[] codewords>;
+
+        $i4 = lengthof $r8;
+
+        if $i4 != $i3 goto label08;
+
+        goto label09;
+
+     label08:
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+        goto label07;
+
+     label09:
+        $i2 = $i2 + 1;
+
+        $i4 = virtualinvoke $r4.<com.google.zxing.qrcode.decoder.Version$ECBlocks: int getECCodewordsPerBlock()>();
+
+        $i3 = $i3 - $i4;
+
+        $i4 = 0;
+
+        $i5 = 0;
+
+     label10:
+        if $i4 >= $i3 goto label13;
+
+        $i0 = 0;
+
+     label11:
+        if $i0 >= $i1 goto label12;
+
+        $r0 = $r7[$i0];
+
+        $r8 = $r0.<com.google.zxing.qrcode.decoder.DataBlock: byte[] codewords>;
+
+        $b7 = $r1[$i5];
+
+        $r8[$i4] = $b7;
+
+        $i0 = $i0 + 1;
+
+        $i5 = $i5 + 1;
+
+        goto label11;
+
+     label12:
+        $i4 = $i4 + 1;
+
+        goto label10;
+
+     label13:
+        $i4 = $i2;
+
+     label14:
+        if $i4 >= $i1 goto label15;
+
+        $r0 = $r7[$i4];
+
+        $r8 = $r0.<com.google.zxing.qrcode.decoder.DataBlock: byte[] codewords>;
+
+        $b7 = $r1[$i5];
+
+        $r8[$i3] = $b7;
+
+        $i4 = $i4 + 1;
+
+        $i5 = $i5 + 1;
+
+        goto label14;
+
+     label15:
+        $r0 = $r7[0];
+
+        $r8 = $r0.<com.google.zxing.qrcode.decoder.DataBlock: byte[] codewords>;
+
+        $i4 = lengthof $r8;
+
+     label16:
+        if $i3 >= $i4 goto label21;
+
+        $i0 = 0;
+
+     label17:
+        if $i0 >= $i1 goto label20;
+
+        if $i0 >= $i2 goto label18;
+
+        $i6 = $i3;
+
+        goto label19;
+
+     label18:
+        $i6 = $i3 + 1;
+
+     label19:
+        $r0 = $r7[$i0];
+
+        $r8 = $r0.<com.google.zxing.qrcode.decoder.DataBlock: byte[] codewords>;
+
+        $b7 = $r1[$i5];
+
+        $r8[$i6] = $b7;
+
+        $i0 = $i0 + 1;
+
+        $i5 = $i5 + 1;
+
+        goto label17;
+
+     label20:
+        $i3 = $i3 + 1;
+
+        goto label16;
+
+     label21:
+        return $r7;
+
+     label22:
+        $r10 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r10.<java.lang.IllegalArgumentException: void <init>()>();
+
+        goto label23;
+
+     label23:
+        throw $r10;
+    }
+
+    public byte[] getCodewords()
+    {
+        com.google.zxing.qrcode.decoder.DataBlock r0;
+        byte[] r1;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.DataBlock;
+
+        r1 = r0.<com.google.zxing.qrcode.decoder.DataBlock: byte[] codewords>;
+
+        return r1;
+    }
+
+    public int getNumDataCodewords()
+    {
+        com.google.zxing.qrcode.decoder.DataBlock r0;
+        int i0;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.DataBlock;
+
+        i0 = r0.<com.google.zxing.qrcode.decoder.DataBlock: int numDataCodewords>;
+
+        return i0;
+    }
+}

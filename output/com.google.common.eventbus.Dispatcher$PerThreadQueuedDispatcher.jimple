@@ -1,0 +1,157 @@
+public final class com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher extends com.google.common.eventbus.Dispatcher
+{
+    public final java.lang.ThreadLocal dispatching;
+    public final java.lang.ThreadLocal queue;
+
+    public void <init>()
+    {
+        com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher r0;
+        com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher$2 $r2;
+        com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher$1 $r1;
+
+        r0 := @this: com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher;
+
+        specialinvoke r0.<com.google.common.eventbus.Dispatcher: void <init>()>();
+
+        $r1 = new com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher$1;
+
+        specialinvoke $r1.<com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher$1: void <init>(com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher)>(r0);
+
+        r0.<com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher: java.lang.ThreadLocal queue> = $r1;
+
+        $r2 = new com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher$2;
+
+        specialinvoke $r2.<com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher$2: void <init>(com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher)>(r0);
+
+        r0.<com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher: java.lang.ThreadLocal dispatching> = $r2;
+
+        return;
+    }
+
+    public void <init>(com.google.common.eventbus.Dispatcher$1)
+    {
+        com.google.common.eventbus.Dispatcher$1 $r1;
+        com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher r0;
+
+        r0 := @this: com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher;
+
+        $r1 := @parameter0: com.google.common.eventbus.Dispatcher$1;
+
+        specialinvoke r0.<com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher: void <init>()>();
+
+        return;
+    }
+
+    public void dispatch(java.lang.Object, java.util.Iterator)
+    {
+        java.lang.Throwable $r9;
+        java.lang.ThreadLocal $r3;
+        java.util.Iterator $r2;
+        com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher r0;
+        com.google.common.eventbus.Subscriber $r8;
+        com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher$Event $r6;
+        java.lang.Boolean $r7;
+        java.lang.Object $r1, $r4;
+        java.util.Queue $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $r2 := @parameter1: java.util.Iterator;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        $r3 = r0.<com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher: java.lang.ThreadLocal queue>;
+
+        $r4 = virtualinvoke $r3.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        $r5 = (java.util.Queue) $r4;
+
+        $r6 = new com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher$Event;
+
+        specialinvoke $r6.<com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher$Event: void <init>(java.lang.Object,java.util.Iterator,com.google.common.eventbus.Dispatcher$1)>($r1, $r2, null);
+
+        interfaceinvoke $r5.<java.util.Queue: boolean offer(java.lang.Object)>($r6);
+
+        $r3 = r0.<com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher: java.lang.ThreadLocal dispatching>;
+
+        $r1 = virtualinvoke $r3.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        $r7 = (java.lang.Boolean) $r1;
+
+        $z0 = virtualinvoke $r7.<java.lang.Boolean: boolean booleanValue()>();
+
+        if $z0 != 0 goto label9;
+
+        $r3 = r0.<com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher: java.lang.ThreadLocal dispatching>;
+
+        $r7 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+        virtualinvoke $r3.<java.lang.ThreadLocal: void set(java.lang.Object)>($r7);
+
+     label1:
+        $r1 = interfaceinvoke $r5.<java.util.Queue: java.lang.Object poll()>();
+
+        $r6 = (com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher$Event) $r1;
+
+     label2:
+        if $r6 == null goto label7;
+
+     label3:
+        $r2 = staticinvoke <com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher$Event: java.util.Iterator access$400(com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher$Event)>($r6);
+
+        $z0 = interfaceinvoke $r2.<java.util.Iterator: boolean hasNext()>();
+
+     label4:
+        if $z0 == 0 goto label1;
+
+     label5:
+        $r2 = staticinvoke <com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher$Event: java.util.Iterator access$400(com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher$Event)>($r6);
+
+        $r1 = interfaceinvoke $r2.<java.util.Iterator: java.lang.Object next()>();
+
+        $r8 = (com.google.common.eventbus.Subscriber) $r1;
+
+        $r1 = staticinvoke <com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher$Event: java.lang.Object access$500(com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher$Event)>($r6);
+
+        virtualinvoke $r8.<com.google.common.eventbus.Subscriber: void dispatchEvent(java.lang.Object)>($r1);
+
+     label6:
+        goto label3;
+
+     label7:
+        $r3 = r0.<com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher: java.lang.ThreadLocal dispatching>;
+
+        virtualinvoke $r3.<java.lang.ThreadLocal: void remove()>();
+
+        $r3 = r0.<com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher: java.lang.ThreadLocal queue>;
+
+        virtualinvoke $r3.<java.lang.ThreadLocal: void remove()>();
+
+        return;
+
+     label8:
+        $r9 := @caughtexception;
+
+        $r3 = r0.<com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher: java.lang.ThreadLocal dispatching>;
+
+        virtualinvoke $r3.<java.lang.ThreadLocal: void remove()>();
+
+        $r3 = r0.<com.google.common.eventbus.Dispatcher$PerThreadQueuedDispatcher: java.lang.ThreadLocal queue>;
+
+        virtualinvoke $r3.<java.lang.ThreadLocal: void remove()>();
+
+        throw $r9;
+
+     label9:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label8;
+        catch java.lang.Throwable from label3 to label4 with label8;
+        catch java.lang.Throwable from label5 to label6 with label8;
+    }
+}

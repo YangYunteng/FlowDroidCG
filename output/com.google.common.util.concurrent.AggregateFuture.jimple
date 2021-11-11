@@ -1,0 +1,218 @@
+public abstract class com.google.common.util.concurrent.AggregateFuture extends com.google.common.util.concurrent.AbstractFuture$TrustedFuture
+{
+    public static final java.util.logging.Logger logger;
+    public com.google.common.util.concurrent.AggregateFuture$RunningState runningState;
+
+    static void <clinit>()
+    {
+        java.lang.Class $r0;
+        java.lang.String $r1;
+        java.util.logging.Logger $r2;
+
+        $r0 = class "Lcom/google/common/util/concurrent/AggregateFuture;";
+
+        $r1 = virtualinvoke $r0.<java.lang.Class: java.lang.String getName()>();
+
+        $r2 = staticinvoke <java.util.logging.Logger: java.util.logging.Logger getLogger(java.lang.String)>($r1);
+
+        <com.google.common.util.concurrent.AggregateFuture: java.util.logging.Logger logger> = $r2;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.common.util.concurrent.AggregateFuture r0;
+
+        r0 := @this: com.google.common.util.concurrent.AggregateFuture;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractFuture$TrustedFuture: void <init>()>();
+
+        return;
+    }
+
+    public static boolean access$400(java.util.Set, java.lang.Throwable)
+    {
+        java.lang.Throwable $r0;
+        java.util.Set $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.util.Set;
+
+        $r0 := @parameter1: java.lang.Throwable;
+
+        $z0 = staticinvoke <com.google.common.util.concurrent.AggregateFuture: boolean addCausalChain(java.util.Set,java.lang.Throwable)>($r1, $r0);
+
+        return $z0;
+    }
+
+    public static java.util.logging.Logger access$500()
+    {
+        java.util.logging.Logger r0;
+
+        r0 = <com.google.common.util.concurrent.AggregateFuture: java.util.logging.Logger logger>;
+
+        return r0;
+    }
+
+    public static com.google.common.util.concurrent.AggregateFuture$RunningState access$602(com.google.common.util.concurrent.AggregateFuture, com.google.common.util.concurrent.AggregateFuture$RunningState)
+    {
+        com.google.common.util.concurrent.AggregateFuture $r0;
+        com.google.common.util.concurrent.AggregateFuture$RunningState $r1;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.AggregateFuture;
+
+        $r1 := @parameter1: com.google.common.util.concurrent.AggregateFuture$RunningState;
+
+        $r0.<com.google.common.util.concurrent.AggregateFuture: com.google.common.util.concurrent.AggregateFuture$RunningState runningState> = $r1;
+
+        return $r1;
+    }
+
+    public static boolean addCausalChain(java.util.Set, java.lang.Throwable)
+    {
+        java.lang.Throwable $r1;
+        java.util.Set $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.util.Set;
+
+        $r1 := @parameter1: java.lang.Throwable;
+
+     label1:
+        if $r1 == null goto label3;
+
+        $z0 = interfaceinvoke $r0.<java.util.Set: boolean add(java.lang.Object)>($r1);
+
+        if $z0 != 0 goto label2;
+
+        return 0;
+
+     label2:
+        $r1 = virtualinvoke $r1.<java.lang.Throwable: java.lang.Throwable getCause()>();
+
+        goto label1;
+
+     label3:
+        return 1;
+    }
+
+    public final void afterDone()
+    {
+        com.google.common.util.concurrent.ListenableFuture $r5;
+        com.google.common.util.concurrent.AggregateFuture$RunningState $r1;
+        com.google.common.collect.ImmutableCollection $r2;
+        com.google.common.util.concurrent.AggregateFuture r0;
+        java.lang.Object $r4;
+        com.google.common.collect.UnmodifiableIterator $r3;
+        boolean $z0, $z1, $z2;
+
+        r0 := @this: com.google.common.util.concurrent.AggregateFuture;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractFuture: void afterDone()>();
+
+        $r1 = r0.<com.google.common.util.concurrent.AggregateFuture: com.google.common.util.concurrent.AggregateFuture$RunningState runningState>;
+
+        if $r1 == null goto label5;
+
+        r0.<com.google.common.util.concurrent.AggregateFuture: com.google.common.util.concurrent.AggregateFuture$RunningState runningState> = null;
+
+        $r2 = staticinvoke <com.google.common.util.concurrent.AggregateFuture$RunningState: com.google.common.collect.ImmutableCollection access$000(com.google.common.util.concurrent.AggregateFuture$RunningState)>($r1);
+
+        $z0 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractFuture: boolean wasInterrupted()>();
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.AggregateFuture$RunningState: void interruptTask()>();
+
+     label1:
+        $z1 = virtualinvoke r0.<com.google.common.util.concurrent.AbstractFuture$TrustedFuture: boolean isCancelled()>();
+
+        if $r2 == null goto label2;
+
+        $z2 = 1;
+
+        goto label3;
+
+     label2:
+        $z2 = 0;
+
+     label3:
+        $z1 = $z1 & $z2;
+
+        if $z1 == 0 goto label5;
+
+        $r3 = virtualinvoke $r2.<com.google.common.collect.ImmutableCollection: com.google.common.collect.UnmodifiableIterator iterator()>();
+
+     label4:
+        $z1 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z1 == 0 goto label5;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (com.google.common.util.concurrent.ListenableFuture) $r4;
+
+        interfaceinvoke $r5.<java.util.concurrent.Future: boolean cancel(boolean)>($z0);
+
+        goto label4;
+
+     label5:
+        return;
+    }
+
+    public final void init(com.google.common.util.concurrent.AggregateFuture$RunningState)
+    {
+        com.google.common.util.concurrent.AggregateFuture r0;
+        com.google.common.util.concurrent.AggregateFuture$RunningState $r1;
+
+        r0 := @this: com.google.common.util.concurrent.AggregateFuture;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.AggregateFuture$RunningState;
+
+        r0.<com.google.common.util.concurrent.AggregateFuture: com.google.common.util.concurrent.AggregateFuture$RunningState runningState> = $r1;
+
+        staticinvoke <com.google.common.util.concurrent.AggregateFuture$RunningState: void access$100(com.google.common.util.concurrent.AggregateFuture$RunningState)>($r1);
+
+        return;
+    }
+
+    public java.lang.String pendingToString()
+    {
+        com.google.common.util.concurrent.AggregateFuture r0;
+        com.google.common.util.concurrent.AggregateFuture$RunningState $r1;
+        com.google.common.collect.ImmutableCollection $r2;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r4;
+
+        r0 := @this: com.google.common.util.concurrent.AggregateFuture;
+
+        $r1 = r0.<com.google.common.util.concurrent.AggregateFuture: com.google.common.util.concurrent.AggregateFuture$RunningState runningState>;
+
+        if $r1 != null goto label1;
+
+        return null;
+
+     label1:
+        $r2 = staticinvoke <com.google.common.util.concurrent.AggregateFuture$RunningState: com.google.common.collect.ImmutableCollection access$000(com.google.common.util.concurrent.AggregateFuture$RunningState)>($r1);
+
+        if $r2 == null goto label2;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("futures=[");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r4;
+
+     label2:
+        return null;
+    }
+}

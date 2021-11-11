@@ -1,0 +1,846 @@
+public final class org.codehaus.jackson.io.NumberInput extends java.lang.Object
+{
+    public static final long L_BILLION;
+    public static final java.lang.String MAX_LONG_STR;
+    public static final java.lang.String MIN_LONG_STR_NO_SIGN;
+    public static final java.lang.String NASTY_SMALL_DOUBLE;
+
+    static void <clinit>()
+    {
+        java.lang.String $r0;
+
+        <org.codehaus.jackson.io.NumberInput: java.lang.String NASTY_SMALL_DOUBLE> = "2.2250738585072012e-308";
+
+        <org.codehaus.jackson.io.NumberInput: long L_BILLION> = 1000000000L;
+
+        $r0 = staticinvoke <java.lang.String: java.lang.String valueOf(long)>(-9223372036854775808L);
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String substring(int)>(1);
+
+        <org.codehaus.jackson.io.NumberInput: java.lang.String MIN_LONG_STR_NO_SIGN> = $r0;
+
+        $r0 = staticinvoke <java.lang.String: java.lang.String valueOf(long)>(9223372036854775807L);
+
+        <org.codehaus.jackson.io.NumberInput: java.lang.String MAX_LONG_STR> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.codehaus.jackson.io.NumberInput r0;
+
+        r0 := @this: org.codehaus.jackson.io.NumberInput;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static final boolean inLongRange(java.lang.String, boolean)
+    {
+        char $c2, $c3;
+        int $i0, $i1, $i4, $i5;
+        java.lang.String $r0, $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $z0 := @parameter1: boolean;
+
+        if $z0 == 0 goto label1;
+
+        $r1 = <org.codehaus.jackson.io.NumberInput: java.lang.String MIN_LONG_STR_NO_SIGN>;
+
+        goto label2;
+
+     label1:
+        $r1 = <org.codehaus.jackson.io.NumberInput: java.lang.String MAX_LONG_STR>;
+
+     label2:
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $i1 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if $i1 >= $i0 goto label3;
+
+        return 1;
+
+     label3:
+        if $i1 <= $i0 goto label4;
+
+        return 0;
+
+     label4:
+        $i1 = 0;
+
+     label5:
+        if $i1 >= $i0 goto label8;
+
+        $c2 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i1);
+
+        $c3 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i1);
+
+        $i4 = (int) $c2;
+
+        $i5 = (int) $c3;
+
+        $i4 = $i4 - $i5;
+
+        if $i4 == 0 goto label7;
+
+        if $i4 >= 0 goto label6;
+
+        return 1;
+
+     label6:
+        return 0;
+
+     label7:
+        $i1 = $i1 + 1;
+
+        goto label5;
+
+     label8:
+        return 1;
+    }
+
+    public static final boolean inLongRange(char[], int, int, boolean)
+    {
+        char $c4, $c5;
+        int $i0, $i1, $i2, $i3, $i6;
+        char[] $r0;
+        java.lang.String $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: char[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $z0 := @parameter3: boolean;
+
+        if $z0 == 0 goto label1;
+
+        $r1 = <org.codehaus.jackson.io.NumberInput: java.lang.String MIN_LONG_STR_NO_SIGN>;
+
+        goto label2;
+
+     label1:
+        $r1 = <org.codehaus.jackson.io.NumberInput: java.lang.String MAX_LONG_STR>;
+
+     label2:
+        $i2 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i1 >= $i2 goto label3;
+
+        return 1;
+
+     label3:
+        if $i1 <= $i2 goto label4;
+
+        return 0;
+
+     label4:
+        $i1 = 0;
+
+     label5:
+        if $i1 >= $i2 goto label8;
+
+        $i3 = $i0 + $i1;
+
+        $c4 = $r0[$i3];
+
+        $c5 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i1);
+
+        $i3 = (int) $c4;
+
+        $i6 = (int) $c5;
+
+        $i3 = $i3 - $i6;
+
+        if $i3 == 0 goto label7;
+
+        if $i3 >= 0 goto label6;
+
+        return 1;
+
+     label6:
+        return 0;
+
+     label7:
+        $i1 = $i1 + 1;
+
+        goto label5;
+
+     label8:
+        return 1;
+    }
+
+    public static double parseAsDouble(java.lang.String, double)
+    {
+        int $i0;
+        java.lang.NumberFormatException $r0;
+        java.lang.String $r1;
+        double $d0, $d1;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $d0 := @parameter1: double;
+
+        if $r1 != null goto label1;
+
+        return $d0;
+
+     label1:
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String trim()>();
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i0 != 0 goto label2;
+
+        return $d0;
+
+     label2:
+        $d1 = staticinvoke <org.codehaus.jackson.io.NumberInput: double parseDouble(java.lang.String)>($r1);
+
+     label3:
+        return $d1;
+
+     label4:
+        $r0 := @caughtexception;
+
+        return $d0;
+
+        catch java.lang.NumberFormatException from label2 to label3 with label4;
+    }
+
+    public static int parseAsInt(java.lang.String, int)
+    {
+        java.lang.NumberFormatException $r0, $r1;
+        char $c4;
+        int $i0, $i1, $i2, $i3;
+        java.lang.String $r2, $r3;
+        double $d0;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        if $r2 != null goto label01;
+
+        return $i0;
+
+     label01:
+        $r3 = virtualinvoke $r2.<java.lang.String: java.lang.String trim()>();
+
+        $r2 = $r3;
+
+        $i1 = virtualinvoke $r3.<java.lang.String: int length()>();
+
+        $i2 = $i1;
+
+        if $i1 != 0 goto label02;
+
+        return $i0;
+
+     label02:
+        $i3 = 0;
+
+        if $i1 <= 0 goto label04;
+
+        $c4 = virtualinvoke $r3.<java.lang.String: char charAt(int)>(0);
+
+        $i1 = (int) $c4;
+
+        if $i1 != 43 goto label03;
+
+        $r3 = virtualinvoke $r3.<java.lang.String: java.lang.String substring(int)>(1);
+
+        $r2 = $r3;
+
+        $i2 = virtualinvoke $r3.<java.lang.String: int length()>();
+
+        goto label04;
+
+     label03:
+        $i1 = (int) $c4;
+
+        if $i1 != 45 goto label04;
+
+        $i3 = 1;
+
+     label04:
+        if $i3 >= $i2 goto label08;
+
+        $c4 = virtualinvoke $r2.<java.lang.String: char charAt(int)>($i3);
+
+        $i1 = (int) $c4;
+
+        if $i1 > 57 goto label06;
+
+        $i1 = (int) $c4;
+
+        if $i1 >= 48 goto label05;
+
+        goto label06;
+
+     label05:
+        $i3 = $i3 + 1;
+
+        goto label04;
+
+     label06:
+        $d0 = staticinvoke <org.codehaus.jackson.io.NumberInput: double parseDouble(java.lang.String)>($r2);
+
+     label07:
+        $i0 = (int) $d0;
+
+        return $i0;
+
+     label08:
+        $i3 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r2);
+
+     label09:
+        return $i3;
+
+     label10:
+        $r0 := @caughtexception;
+
+        return $i0;
+
+     label11:
+        $r1 := @caughtexception;
+
+        return $i0;
+
+        catch java.lang.NumberFormatException from label06 to label07 with label10;
+        catch java.lang.NumberFormatException from label08 to label09 with label11;
+    }
+
+    public static long parseAsLong(java.lang.String, long)
+    {
+        long $l0, $l5;
+        java.lang.NumberFormatException $r0, $r1;
+        char $c4;
+        int $i1, $i2, $i3;
+        java.lang.String $r2, $r3;
+        double $d0;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $l0 := @parameter1: long;
+
+        if $r2 != null goto label01;
+
+        return $l0;
+
+     label01:
+        $r3 = virtualinvoke $r2.<java.lang.String: java.lang.String trim()>();
+
+        $r2 = $r3;
+
+        $i1 = virtualinvoke $r3.<java.lang.String: int length()>();
+
+        $i2 = $i1;
+
+        if $i1 != 0 goto label02;
+
+        return $l0;
+
+     label02:
+        $i3 = 0;
+
+        if $i1 <= 0 goto label04;
+
+        $c4 = virtualinvoke $r3.<java.lang.String: char charAt(int)>(0);
+
+        $i1 = (int) $c4;
+
+        if $i1 != 43 goto label03;
+
+        $r3 = virtualinvoke $r3.<java.lang.String: java.lang.String substring(int)>(1);
+
+        $r2 = $r3;
+
+        $i2 = virtualinvoke $r3.<java.lang.String: int length()>();
+
+        goto label04;
+
+     label03:
+        $i1 = (int) $c4;
+
+        if $i1 != 45 goto label04;
+
+        $i3 = 1;
+
+     label04:
+        if $i3 >= $i2 goto label08;
+
+        $c4 = virtualinvoke $r2.<java.lang.String: char charAt(int)>($i3);
+
+        $i1 = (int) $c4;
+
+        if $i1 > 57 goto label06;
+
+        $i1 = (int) $c4;
+
+        if $i1 >= 48 goto label05;
+
+        goto label06;
+
+     label05:
+        $i3 = $i3 + 1;
+
+        goto label04;
+
+     label06:
+        $d0 = staticinvoke <org.codehaus.jackson.io.NumberInput: double parseDouble(java.lang.String)>($r2);
+
+     label07:
+        $l0 = (long) $d0;
+
+        return $l0;
+
+     label08:
+        $l5 = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>($r2);
+
+     label09:
+        return $l5;
+
+     label10:
+        $r0 := @caughtexception;
+
+        return $l0;
+
+     label11:
+        $r1 := @caughtexception;
+
+        return $l0;
+
+        catch java.lang.NumberFormatException from label06 to label07 with label10;
+        catch java.lang.NumberFormatException from label08 to label09 with label11;
+    }
+
+    public static final double parseDouble(java.lang.String)
+    {
+        java.lang.String $r0, $r1;
+        boolean $z0;
+        double $d0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 = "2.2250738585072012e-308";
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>($r0);
+
+        if $z0 == 0 goto label1;
+
+        return 2.2250738585072014E-308;
+
+     label1:
+        $d0 = staticinvoke <java.lang.Double: double parseDouble(java.lang.String)>($r0);
+
+        return $d0;
+    }
+
+    public static final int parseInt(java.lang.String)
+    {
+        char $c0, $c1;
+        byte $b3;
+        int $i2, $i4, $i5, $i6, $i7;
+        java.lang.String $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $z0 = 0;
+
+        $c0 = virtualinvoke $r0.<java.lang.String: char charAt(int)>(0);
+
+        $c1 = $c0;
+
+        $i2 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        $b3 = 1;
+
+        $i4 = (int) $c0;
+
+        if $i4 != 45 goto label01;
+
+        $z0 = 1;
+
+     label01:
+        if $z0 == 0 goto label04;
+
+        if $i2 == 1 goto label03;
+
+        if $i2 <= 10 goto label02;
+
+        goto label03;
+
+     label02:
+        $c1 = virtualinvoke $r0.<java.lang.String: char charAt(int)>(1);
+
+        $b3 = 2;
+
+        goto label05;
+
+     label03:
+        $i2 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r0);
+
+        return $i2;
+
+     label04:
+        if $i2 <= 9 goto label05;
+
+        $i2 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r0);
+
+        return $i2;
+
+     label05:
+        $i4 = (int) $c1;
+
+        if $i4 > 57 goto label16;
+
+        $i4 = (int) $c1;
+
+        if $i4 >= 48 goto label06;
+
+        goto label16;
+
+     label06:
+        $i4 = (int) $c1;
+
+        $i4 = $i4 - 48;
+
+        if $b3 >= $i2 goto label15;
+
+        $i5 = $b3 + 1;
+
+        $c0 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($b3);
+
+        $i6 = (int) $c0;
+
+        if $i6 > 57 goto label14;
+
+        $i6 = (int) $c0;
+
+        if $i6 >= 48 goto label07;
+
+        goto label14;
+
+     label07:
+        $i4 = $i4 * 10;
+
+        $i6 = (int) $c0;
+
+        $i6 = $i6 - 48;
+
+        $i4 = $i4 + $i6;
+
+        if $i5 >= $i2 goto label15;
+
+        $i6 = $i5 + 1;
+
+        $c0 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i5);
+
+        $i5 = (int) $c0;
+
+        if $i5 > 57 goto label13;
+
+        $i5 = (int) $c0;
+
+        if $i5 >= 48 goto label08;
+
+        goto label13;
+
+     label08:
+        $i4 = $i4 * 10;
+
+        $i5 = (int) $c0;
+
+        $i5 = $i5 - 48;
+
+        $i4 = $i4 + $i5;
+
+        if $i6 >= $i2 goto label15;
+
+     label09:
+        $i5 = $i6 + 1;
+
+        $c0 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i6);
+
+        $i6 = (int) $c0;
+
+        if $i6 > 57 goto label12;
+
+        $i6 = (int) $c0;
+
+        if $i6 >= 48 goto label10;
+
+        goto label12;
+
+     label10:
+        $i4 = $i4 * 10;
+
+        $i6 = (int) $c0;
+
+        $i7 = -48;
+
+        $i6 = $i6 + $i7;
+
+        $i4 = $i4 + $i6;
+
+        if $i5 < $i2 goto label11;
+
+        goto label15;
+
+     label11:
+        $i6 = $i5;
+
+        goto label09;
+
+     label12:
+        $i2 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r0);
+
+        return $i2;
+
+     label13:
+        $i2 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r0);
+
+        return $i2;
+
+     label14:
+        $i2 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r0);
+
+        return $i2;
+
+     label15:
+        if $z0 == 0 goto label17;
+
+        $i2 = neg $i4;
+
+        return $i2;
+
+     label16:
+        $i2 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r0);
+
+        return $i2;
+
+     label17:
+        return $i4;
+    }
+
+    public static final int parseInt(char[], int, int)
+    {
+        int $i0, $i1, $i3, $i4, $i5;
+        char[] $r0;
+        char $c2;
+
+        $r0 := @parameter0: char[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $c2 = $r0[$i0];
+
+        $i3 = (int) $c2;
+
+        $i4 = -48;
+
+        $i3 = $i3 + $i4;
+
+        $i1 = $i1 + $i0;
+
+        $i0 = $i0 + 1;
+
+        if $i0 >= $i1 goto label1;
+
+        $i3 = $i3 * 10;
+
+        $c2 = $r0[$i0];
+
+        $i4 = (int) $c2;
+
+        $i5 = -48;
+
+        $i4 = $i4 + $i5;
+
+        $i3 = $i3 + $i4;
+
+        $i0 = $i0 + 1;
+
+        if $i0 >= $i1 goto label1;
+
+        $i3 = $i3 * 10;
+
+        $c2 = $r0[$i0];
+
+        $i4 = (int) $c2;
+
+        $i5 = -48;
+
+        $i4 = $i4 + $i5;
+
+        $i3 = $i3 + $i4;
+
+        $i0 = $i0 + 1;
+
+        if $i0 >= $i1 goto label1;
+
+        $i3 = $i3 * 10;
+
+        $c2 = $r0[$i0];
+
+        $i4 = (int) $c2;
+
+        $i5 = -48;
+
+        $i4 = $i4 + $i5;
+
+        $i3 = $i3 + $i4;
+
+        $i0 = $i0 + 1;
+
+        if $i0 >= $i1 goto label1;
+
+        $i3 = $i3 * 10;
+
+        $c2 = $r0[$i0];
+
+        $i4 = (int) $c2;
+
+        $i5 = -48;
+
+        $i4 = $i4 + $i5;
+
+        $i3 = $i3 + $i4;
+
+        $i0 = $i0 + 1;
+
+        if $i0 >= $i1 goto label1;
+
+        $i3 = $i3 * 10;
+
+        $c2 = $r0[$i0];
+
+        $i4 = (int) $c2;
+
+        $i5 = -48;
+
+        $i4 = $i4 + $i5;
+
+        $i3 = $i3 + $i4;
+
+        $i0 = $i0 + 1;
+
+        if $i0 >= $i1 goto label1;
+
+        $i3 = $i3 * 10;
+
+        $c2 = $r0[$i0];
+
+        $i4 = (int) $c2;
+
+        $i5 = -48;
+
+        $i4 = $i4 + $i5;
+
+        $i3 = $i3 + $i4;
+
+        $i0 = $i0 + 1;
+
+        if $i0 >= $i1 goto label1;
+
+        $i3 = $i3 * 10;
+
+        $c2 = $r0[$i0];
+
+        $i4 = (int) $c2;
+
+        $i5 = -48;
+
+        $i4 = $i4 + $i5;
+
+        $i3 = $i3 + $i4;
+
+        $i4 = $i0 + 1;
+
+        if $i4 >= $i1 goto label1;
+
+        $i0 = $i3 * 10;
+
+        $c2 = $r0[$i4];
+
+        $i1 = (int) $c2;
+
+        $i3 = -48;
+
+        $i1 = $i1 + $i3;
+
+        $i0 = $i0 + $i1;
+
+        return $i0;
+
+     label1:
+        return $i3;
+    }
+
+    public static final long parseLong(java.lang.String)
+    {
+        int $i0;
+        long $l1;
+        java.lang.String $r0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if $i0 > 9 goto label1;
+
+        $i0 = staticinvoke <org.codehaus.jackson.io.NumberInput: int parseInt(java.lang.String)>($r0);
+
+        $l1 = (long) $i0;
+
+        return $l1;
+
+     label1:
+        $l1 = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>($r0);
+
+        return $l1;
+    }
+
+    public static final long parseLong(char[], int, int)
+    {
+        int $i0, $i1, $i2;
+        char[] $r0;
+        long $l3, $l4;
+
+        $r0 := @parameter0: char[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i1 = $i1 - 9;
+
+        $i2 = staticinvoke <org.codehaus.jackson.io.NumberInput: int parseInt(char[],int,int)>($r0, $i0, $i1);
+
+        $l3 = (long) $i2;
+
+        $l3 = $l3 * 1000000000L;
+
+        $i0 = $i0 + $i1;
+
+        $i0 = staticinvoke <org.codehaus.jackson.io.NumberInput: int parseInt(char[],int,int)>($r0, $i0, 9);
+
+        $l4 = (long) $i0;
+
+        $l3 = $l3 + $l4;
+
+        return $l3;
+    }
+}

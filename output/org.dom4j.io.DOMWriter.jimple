@@ -1,0 +1,936 @@
+public class org.dom4j.io.DOMWriter extends java.lang.Object
+{
+    public static final java.lang.String[] DEFAULT_DOM_DOCUMENT_CLASSES;
+    public static boolean loggedWarning;
+    public java.lang.Class domDocumentClass;
+    public org.dom4j.tree.NamespaceStack namespaceStack;
+
+    static void <clinit>()
+    {
+        java.lang.String[] $r0;
+
+        <org.dom4j.io.DOMWriter: boolean loggedWarning> = 0;
+
+        $r0 = newarray (java.lang.String)[7];
+
+        $r0[0] = "org.apache.xerces.dom.DocumentImpl";
+
+        $r0[1] = "gnu.xml.dom.DomDocument";
+
+        $r0[2] = "org.apache.crimson.tree.XmlDocument";
+
+        $r0[3] = "com.sun.xml.tree.XmlDocument";
+
+        $r0[4] = "oracle.xml.parser.v2.XMLDocument";
+
+        $r0[5] = "oracle.xml.parser.XMLDocument";
+
+        $r0[6] = "org.dom4j.dom.DOMDocument";
+
+        <org.dom4j.io.DOMWriter: java.lang.String[] DEFAULT_DOM_DOCUMENT_CLASSES> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.dom4j.io.DOMWriter r0;
+        org.dom4j.tree.NamespaceStack $r1;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r1 = new org.dom4j.tree.NamespaceStack;
+
+        specialinvoke $r1.<org.dom4j.tree.NamespaceStack: void <init>()>();
+
+        r0.<org.dom4j.io.DOMWriter: org.dom4j.tree.NamespaceStack namespaceStack> = $r1;
+
+        return;
+    }
+
+    public void <init>(java.lang.Class)
+    {
+        org.dom4j.io.DOMWriter r0;
+        org.dom4j.tree.NamespaceStack $r2;
+        java.lang.Class $r1;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r1 := @parameter0: java.lang.Class;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r2 = new org.dom4j.tree.NamespaceStack;
+
+        specialinvoke $r2.<org.dom4j.tree.NamespaceStack: void <init>()>();
+
+        r0.<org.dom4j.io.DOMWriter: org.dom4j.tree.NamespaceStack namespaceStack> = $r2;
+
+        r0.<org.dom4j.io.DOMWriter: java.lang.Class domDocumentClass> = $r1;
+
+        return;
+    }
+
+    public void appendDOMTree(org.w3c.dom.Document, org.w3c.dom.Node, java.lang.String)
+    {
+        org.w3c.dom.Text $r3;
+        org.w3c.dom.Document $r4;
+        org.w3c.dom.Node $r1;
+        org.dom4j.io.DOMWriter r0;
+        java.lang.String $r2;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r4 := @parameter0: org.w3c.dom.Document;
+
+        $r1 := @parameter1: org.w3c.dom.Node;
+
+        $r2 := @parameter2: java.lang.String;
+
+        $r3 = interfaceinvoke $r4.<org.w3c.dom.Document: org.w3c.dom.Text createTextNode(java.lang.String)>($r2);
+
+        interfaceinvoke $r1.<org.w3c.dom.Node: org.w3c.dom.Node appendChild(org.w3c.dom.Node)>($r3);
+
+        return;
+    }
+
+    public void appendDOMTree(org.w3c.dom.Document, org.w3c.dom.Node, java.util.List)
+    {
+        org.dom4j.Text $r7;
+        org.dom4j.Entity $r10;
+        java.util.List $r3;
+        org.w3c.dom.Document $r1;
+        org.dom4j.CDATA $r8;
+        org.w3c.dom.Node $r2;
+        org.dom4j.Comment $r9;
+        org.dom4j.io.DOMWriter r0;
+        int $i0, $i1;
+        java.lang.Object $r4;
+        org.dom4j.Element $r5;
+        java.lang.String $r6;
+        org.dom4j.ProcessingInstruction $r11;
+        boolean $z0;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r1 := @parameter0: org.w3c.dom.Document;
+
+        $r2 := @parameter1: org.w3c.dom.Node;
+
+        $r3 := @parameter2: java.util.List;
+
+        $i0 = interfaceinvoke $r3.<java.util.List: int size()>();
+
+        $i1 = 0;
+
+     label1:
+        if $i1 < $i0 goto label2;
+
+        return;
+
+     label2:
+        $r4 = interfaceinvoke $r3.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $z0 = $r4 instanceof org.dom4j.Element;
+
+        if $z0 == 0 goto label3;
+
+        $r5 = (org.dom4j.Element) $r4;
+
+        virtualinvoke r0.<org.dom4j.io.DOMWriter: void appendDOMTree(org.w3c.dom.Document,org.w3c.dom.Node,org.dom4j.Element)>($r1, $r2, $r5);
+
+        goto label9;
+
+     label3:
+        $z0 = $r4 instanceof java.lang.String;
+
+        if $z0 == 0 goto label4;
+
+        $r6 = (java.lang.String) $r4;
+
+        virtualinvoke r0.<org.dom4j.io.DOMWriter: void appendDOMTree(org.w3c.dom.Document,org.w3c.dom.Node,java.lang.String)>($r1, $r2, $r6);
+
+        goto label9;
+
+     label4:
+        $z0 = $r4 instanceof org.dom4j.Text;
+
+        if $z0 == 0 goto label5;
+
+        $r7 = (org.dom4j.Text) $r4;
+
+        $r6 = interfaceinvoke $r7.<org.dom4j.Node: java.lang.String getText()>();
+
+        virtualinvoke r0.<org.dom4j.io.DOMWriter: void appendDOMTree(org.w3c.dom.Document,org.w3c.dom.Node,java.lang.String)>($r1, $r2, $r6);
+
+        goto label9;
+
+     label5:
+        $z0 = $r4 instanceof org.dom4j.CDATA;
+
+        if $z0 == 0 goto label6;
+
+        $r8 = (org.dom4j.CDATA) $r4;
+
+        virtualinvoke r0.<org.dom4j.io.DOMWriter: void appendDOMTree(org.w3c.dom.Document,org.w3c.dom.Node,org.dom4j.CDATA)>($r1, $r2, $r8);
+
+        goto label9;
+
+     label6:
+        $z0 = $r4 instanceof org.dom4j.Comment;
+
+        if $z0 == 0 goto label7;
+
+        $r9 = (org.dom4j.Comment) $r4;
+
+        virtualinvoke r0.<org.dom4j.io.DOMWriter: void appendDOMTree(org.w3c.dom.Document,org.w3c.dom.Node,org.dom4j.Comment)>($r1, $r2, $r9);
+
+        goto label9;
+
+     label7:
+        $z0 = $r4 instanceof org.dom4j.Entity;
+
+        if $z0 == 0 goto label8;
+
+        $r10 = (org.dom4j.Entity) $r4;
+
+        virtualinvoke r0.<org.dom4j.io.DOMWriter: void appendDOMTree(org.w3c.dom.Document,org.w3c.dom.Node,org.dom4j.Entity)>($r1, $r2, $r10);
+
+        goto label9;
+
+     label8:
+        $z0 = $r4 instanceof org.dom4j.ProcessingInstruction;
+
+        if $z0 == 0 goto label9;
+
+        $r11 = (org.dom4j.ProcessingInstruction) $r4;
+
+        virtualinvoke r0.<org.dom4j.io.DOMWriter: void appendDOMTree(org.w3c.dom.Document,org.w3c.dom.Node,org.dom4j.ProcessingInstruction)>($r1, $r2, $r11);
+
+     label9:
+        $i1 = $i1 + 1;
+
+        goto label1;
+    }
+
+    public void appendDOMTree(org.w3c.dom.Document, org.w3c.dom.Node, org.dom4j.CDATA)
+    {
+        org.w3c.dom.Document $r2;
+        org.dom4j.CDATA $r3;
+        org.w3c.dom.Node $r1;
+        org.dom4j.io.DOMWriter r0;
+        org.w3c.dom.CDATASection $r5;
+        java.lang.String $r4;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r2 := @parameter0: org.w3c.dom.Document;
+
+        $r1 := @parameter1: org.w3c.dom.Node;
+
+        $r3 := @parameter2: org.dom4j.CDATA;
+
+        $r4 = interfaceinvoke $r3.<org.dom4j.Node: java.lang.String getText()>();
+
+        $r5 = interfaceinvoke $r2.<org.w3c.dom.Document: org.w3c.dom.CDATASection createCDATASection(java.lang.String)>($r4);
+
+        interfaceinvoke $r1.<org.w3c.dom.Node: org.w3c.dom.Node appendChild(org.w3c.dom.Node)>($r5);
+
+        return;
+    }
+
+    public void appendDOMTree(org.w3c.dom.Document, org.w3c.dom.Node, org.dom4j.Comment)
+    {
+        org.w3c.dom.Document $r2;
+        org.w3c.dom.Node $r1;
+        org.dom4j.Comment $r3;
+        org.dom4j.io.DOMWriter r0;
+        java.lang.String $r4;
+        org.w3c.dom.Comment $r5;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r2 := @parameter0: org.w3c.dom.Document;
+
+        $r1 := @parameter1: org.w3c.dom.Node;
+
+        $r3 := @parameter2: org.dom4j.Comment;
+
+        $r4 = interfaceinvoke $r3.<org.dom4j.Node: java.lang.String getText()>();
+
+        $r5 = interfaceinvoke $r2.<org.w3c.dom.Document: org.w3c.dom.Comment createComment(java.lang.String)>($r4);
+
+        interfaceinvoke $r1.<org.w3c.dom.Node: org.w3c.dom.Node appendChild(org.w3c.dom.Node)>($r5);
+
+        return;
+    }
+
+    public void appendDOMTree(org.w3c.dom.Document, org.w3c.dom.Node, org.dom4j.Element)
+    {
+        org.dom4j.tree.NamespaceStack $r7;
+        org.w3c.dom.Document $r2;
+        org.w3c.dom.Node $r1;
+        int $i0, $i1, $i2, $i3;
+        java.lang.String $r4, $r5, $r11;
+        boolean $z0;
+        org.dom4j.Namespace $r8;
+        java.util.List $r9;
+        org.w3c.dom.Element $r6;
+        org.dom4j.io.DOMWriter r0;
+        org.dom4j.Element $r3;
+        java.lang.Object $r12;
+        org.dom4j.Attribute $r10;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r2 := @parameter0: org.w3c.dom.Document;
+
+        $r1 := @parameter1: org.w3c.dom.Node;
+
+        $r3 := @parameter2: org.dom4j.Element;
+
+        $r4 = interfaceinvoke $r3.<org.dom4j.Element: java.lang.String getNamespaceURI()>();
+
+        $r5 = interfaceinvoke $r3.<org.dom4j.Element: java.lang.String getQualifiedName()>();
+
+        $r6 = interfaceinvoke $r2.<org.w3c.dom.Document: org.w3c.dom.Element createElementNS(java.lang.String,java.lang.String)>($r4, $r5);
+
+        $r7 = r0.<org.dom4j.io.DOMWriter: org.dom4j.tree.NamespaceStack namespaceStack>;
+
+        $i0 = virtualinvoke $r7.<org.dom4j.tree.NamespaceStack: int size()>();
+
+        $r8 = interfaceinvoke $r3.<org.dom4j.Element: org.dom4j.Namespace getNamespace()>();
+
+        $z0 = virtualinvoke r0.<org.dom4j.io.DOMWriter: boolean isNamespaceDeclaration(org.dom4j.Namespace)>($r8);
+
+        if $z0 == 0 goto label1;
+
+        $r7 = r0.<org.dom4j.io.DOMWriter: org.dom4j.tree.NamespaceStack namespaceStack>;
+
+        virtualinvoke $r7.<org.dom4j.tree.NamespaceStack: void push(org.dom4j.Namespace)>($r8);
+
+        virtualinvoke r0.<org.dom4j.io.DOMWriter: void writeNamespace(org.w3c.dom.Element,org.dom4j.Namespace)>($r6, $r8);
+
+     label1:
+        $r9 = interfaceinvoke $r3.<org.dom4j.Element: java.util.List declaredNamespaces()>();
+
+        $i1 = interfaceinvoke $r9.<java.util.List: int size()>();
+
+        $i2 = 0;
+
+        $i3 = 0;
+
+     label2:
+        if $i3 < $i1 goto label7;
+
+        $i1 = interfaceinvoke $r3.<org.dom4j.Element: int attributeCount()>();
+
+     label3:
+        if $i2 < $i1 goto label6;
+
+        $r9 = interfaceinvoke $r3.<org.dom4j.Branch: java.util.List content()>();
+
+        virtualinvoke r0.<org.dom4j.io.DOMWriter: void appendDOMTree(org.w3c.dom.Document,org.w3c.dom.Node,java.util.List)>($r2, $r6, $r9);
+
+        interfaceinvoke $r1.<org.w3c.dom.Node: org.w3c.dom.Node appendChild(org.w3c.dom.Node)>($r6);
+
+     label4:
+        $r7 = r0.<org.dom4j.io.DOMWriter: org.dom4j.tree.NamespaceStack namespaceStack>;
+
+        $i2 = virtualinvoke $r7.<org.dom4j.tree.NamespaceStack: int size()>();
+
+        if $i2 > $i0 goto label5;
+
+        return;
+
+     label5:
+        $r7 = r0.<org.dom4j.io.DOMWriter: org.dom4j.tree.NamespaceStack namespaceStack>;
+
+        virtualinvoke $r7.<org.dom4j.tree.NamespaceStack: org.dom4j.Namespace pop()>();
+
+        goto label4;
+
+     label6:
+        $r10 = interfaceinvoke $r3.<org.dom4j.Element: org.dom4j.Attribute attribute(int)>($i2);
+
+        $r4 = interfaceinvoke $r10.<org.dom4j.Attribute: java.lang.String getNamespaceURI()>();
+
+        $r5 = interfaceinvoke $r10.<org.dom4j.Attribute: java.lang.String getQualifiedName()>();
+
+        $r11 = interfaceinvoke $r10.<org.dom4j.Attribute: java.lang.String getValue()>();
+
+        interfaceinvoke $r6.<org.w3c.dom.Element: void setAttributeNS(java.lang.String,java.lang.String,java.lang.String)>($r4, $r5, $r11);
+
+        $i2 = $i2 + 1;
+
+        goto label3;
+
+     label7:
+        $r12 = interfaceinvoke $r9.<java.util.List: java.lang.Object get(int)>($i3);
+
+        $r8 = (org.dom4j.Namespace) $r12;
+
+        $z0 = virtualinvoke r0.<org.dom4j.io.DOMWriter: boolean isNamespaceDeclaration(org.dom4j.Namespace)>($r8);
+
+        if $z0 == 0 goto label8;
+
+        $r7 = r0.<org.dom4j.io.DOMWriter: org.dom4j.tree.NamespaceStack namespaceStack>;
+
+        virtualinvoke $r7.<org.dom4j.tree.NamespaceStack: void push(org.dom4j.Namespace)>($r8);
+
+        virtualinvoke r0.<org.dom4j.io.DOMWriter: void writeNamespace(org.w3c.dom.Element,org.dom4j.Namespace)>($r6, $r8);
+
+     label8:
+        $i3 = $i3 + 1;
+
+        goto label2;
+    }
+
+    public void appendDOMTree(org.w3c.dom.Document, org.w3c.dom.Node, org.dom4j.Entity)
+    {
+        org.dom4j.Entity $r3;
+        org.w3c.dom.EntityReference $r5;
+        org.w3c.dom.Document $r2;
+        org.w3c.dom.Node $r1;
+        org.dom4j.io.DOMWriter r0;
+        java.lang.String $r4;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r2 := @parameter0: org.w3c.dom.Document;
+
+        $r1 := @parameter1: org.w3c.dom.Node;
+
+        $r3 := @parameter2: org.dom4j.Entity;
+
+        $r4 = interfaceinvoke $r3.<org.dom4j.Node: java.lang.String getName()>();
+
+        $r5 = interfaceinvoke $r2.<org.w3c.dom.Document: org.w3c.dom.EntityReference createEntityReference(java.lang.String)>($r4);
+
+        interfaceinvoke $r1.<org.w3c.dom.Node: org.w3c.dom.Node appendChild(org.w3c.dom.Node)>($r5);
+
+        return;
+    }
+
+    public void appendDOMTree(org.w3c.dom.Document, org.w3c.dom.Node, org.dom4j.ProcessingInstruction)
+    {
+        org.w3c.dom.ProcessingInstruction $r6;
+        org.w3c.dom.Document $r2;
+        org.w3c.dom.Node $r1;
+        org.dom4j.io.DOMWriter r0;
+        java.lang.String $r4, $r5;
+        org.dom4j.ProcessingInstruction $r3;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r2 := @parameter0: org.w3c.dom.Document;
+
+        $r1 := @parameter1: org.w3c.dom.Node;
+
+        $r3 := @parameter2: org.dom4j.ProcessingInstruction;
+
+        $r4 = interfaceinvoke $r3.<org.dom4j.ProcessingInstruction: java.lang.String getTarget()>();
+
+        $r5 = interfaceinvoke $r3.<org.dom4j.ProcessingInstruction: java.lang.String getText()>();
+
+        $r6 = interfaceinvoke $r2.<org.w3c.dom.Document: org.w3c.dom.ProcessingInstruction createProcessingInstruction(java.lang.String,java.lang.String)>($r4, $r5);
+
+        interfaceinvoke $r1.<org.w3c.dom.Node: org.w3c.dom.Node appendChild(org.w3c.dom.Node)>($r6);
+
+        return;
+    }
+
+    public java.lang.String attributeNameForNamespace(org.dom4j.Namespace)
+    {
+        org.dom4j.Namespace $r1;
+        org.dom4j.io.DOMWriter r0;
+        int $i0;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r2;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r1 := @parameter0: org.dom4j.Namespace;
+
+        $r2 = virtualinvoke $r1.<org.dom4j.Namespace: java.lang.String getPrefix()>();
+
+        $i0 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        if $i0 <= 0 goto label1;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>(java.lang.String)>("xmlns");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r2;
+
+     label1:
+        return "xmlns";
+    }
+
+    public org.w3c.dom.Document createDomDocument(org.dom4j.Document)
+    {
+        org.dom4j.Document $r2;
+        java.lang.Exception $r6, $r9;
+        org.dom4j.DocumentException $r7;
+        org.w3c.dom.Document $r5;
+        org.dom4j.io.DOMWriter r0;
+        java.lang.StringBuilder $r1;
+        java.lang.Class $r3;
+        java.lang.Object $r4;
+        java.lang.String $r8;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r2 := @parameter0: org.dom4j.Document;
+
+        $r3 = r0.<org.dom4j.io.DOMWriter: java.lang.Class domDocumentClass>;
+
+        if $r3 == null goto label4;
+
+     label1:
+        $r4 = virtualinvoke $r3.<java.lang.Class: java.lang.Object newInstance()>();
+
+        $r5 = (org.w3c.dom.Document) $r4;
+
+     label2:
+        return $r5;
+
+     label3:
+        $r6 := @caughtexception;
+
+        $r7 = new org.dom4j.DocumentException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("Could not instantiate an instance of DOM Document with class: ");
+
+        $r3 = r0.<org.dom4j.io.DOMWriter: java.lang.Class domDocumentClass>;
+
+        $r8 = virtualinvoke $r3.<java.lang.Class: java.lang.String getName()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r8 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r7.<org.dom4j.DocumentException: void <init>(java.lang.String,java.lang.Throwable)>($r8, $r6);
+
+        throw $r7;
+
+     label4:
+        $r5 = virtualinvoke r0.<org.dom4j.io.DOMWriter: org.w3c.dom.Document createDomDocumentViaJAXP()>();
+
+        if $r5 != null goto label8;
+
+        $r3 = virtualinvoke r0.<org.dom4j.io.DOMWriter: java.lang.Class getDomDocumentClass()>();
+
+     label5:
+        $r4 = virtualinvoke $r3.<java.lang.Class: java.lang.Object newInstance()>();
+
+        $r5 = (org.w3c.dom.Document) $r4;
+
+     label6:
+        return $r5;
+
+     label7:
+        $r9 := @caughtexception;
+
+        $r7 = new org.dom4j.DocumentException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("Could not instantiate an instance of DOM Document with class: ");
+
+        $r8 = virtualinvoke $r3.<java.lang.Class: java.lang.String getName()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r8 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r7.<org.dom4j.DocumentException: void <init>(java.lang.String,java.lang.Throwable)>($r8, $r9);
+
+        throw $r7;
+
+     label8:
+        return $r5;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+        catch java.lang.Exception from label5 to label6 with label7;
+    }
+
+    public org.w3c.dom.Document createDomDocument(org.dom4j.Document, org.w3c.dom.DOMImplementation)
+    {
+        org.dom4j.Document $r3;
+        org.w3c.dom.Document $r2;
+        org.dom4j.io.DOMWriter r0;
+        org.w3c.dom.DOMImplementation $r1;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r3 := @parameter0: org.dom4j.Document;
+
+        $r1 := @parameter1: org.w3c.dom.DOMImplementation;
+
+        $r2 = interfaceinvoke $r1.<org.w3c.dom.DOMImplementation: org.w3c.dom.Document createDocument(java.lang.String,java.lang.String,org.w3c.dom.DocumentType)>(null, null, null);
+
+        return $r2;
+    }
+
+    public org.w3c.dom.Document createDomDocumentViaJAXP()
+    {
+        java.lang.Throwable $r2;
+        java.io.PrintStream $r3;
+        org.w3c.dom.Document $r1;
+        org.dom4j.io.DOMWriter r0;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r5;
+        boolean $z0;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+     label1:
+        $r1 = staticinvoke <org.dom4j.io.JAXPHelper: org.w3c.dom.Document createDocument(boolean,boolean)>(0, 1);
+
+     label2:
+        return $r1;
+
+     label3:
+        $r2 := @caughtexception;
+
+        $z0 = <org.dom4j.io.DOMWriter: boolean loggedWarning>;
+
+        if $z0 != 0 goto label5;
+
+        <org.dom4j.io.DOMWriter: boolean loggedWarning> = 1;
+
+        $z0 = staticinvoke <org.dom4j.io.SAXHelper: boolean isVerboseErrorReporting()>();
+
+        if $z0 == 0 goto label4;
+
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("Warning: Caught exception attempting to use JAXP to create a W3C DOM document");
+
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>(java.lang.String)>("Warning: Exception was: ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>($r5);
+
+        virtualinvoke $r2.<java.lang.Throwable: void printStackTrace()>();
+
+        goto label5;
+
+     label4:
+        $r3 = <java.lang.System: java.io.PrintStream out>;
+
+        virtualinvoke $r3.<java.io.PrintStream: void println(java.lang.String)>("Warning: Error occurred using JAXP to create a DOM document.");
+
+     label5:
+        return null;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public java.lang.Class getDomDocumentClass()
+    {
+        java.lang.String[] $r3;
+        java.lang.Exception $r1;
+        org.dom4j.io.DOMWriter r0;
+        int $i0, $i1;
+        java.lang.Class $r2, $r5;
+        java.lang.String $r4;
+        java.lang.ClassLoader $r6;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r2 = r0.<org.dom4j.io.DOMWriter: java.lang.Class domDocumentClass>;
+
+        if $r2 != null goto label8;
+
+        $r3 = <org.dom4j.io.DOMWriter: java.lang.String[] DEFAULT_DOM_DOCUMENT_CLASSES>;
+
+        $i0 = lengthof $r3;
+
+        $i1 = 0;
+
+     label1:
+        if $i1 < $i0 goto label2;
+
+        return $r2;
+
+     label2:
+        $r3 = <org.dom4j.io.DOMWriter: java.lang.String[] DEFAULT_DOM_DOCUMENT_CLASSES>;
+
+     label3:
+        $r4 = $r3[$i1];
+
+     label4:
+        $r5 = class "Lorg/dom4j/io/DOMWriter;";
+
+     label5:
+        $r6 = virtualinvoke $r5.<java.lang.Class: java.lang.ClassLoader getClassLoader()>();
+
+        $r5 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String,boolean,java.lang.ClassLoader)>($r4, 1, $r6);
+
+     label6:
+        $r2 = $r5;
+
+        if $r5 == null goto label7;
+
+        return $r5;
+
+     label7:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label8:
+        return $r2;
+
+     label9:
+        $r1 := @caughtexception;
+
+        goto label7;
+
+        catch java.lang.Exception from label3 to label4 with label9;
+        catch java.lang.Exception from label5 to label6 with label9;
+    }
+
+    public boolean isNamespaceDeclaration(org.dom4j.Namespace)
+    {
+        org.dom4j.tree.NamespaceStack $r4;
+        org.dom4j.Namespace $r1, $r2;
+        org.dom4j.io.DOMWriter r0;
+        int $i0;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r1 := @parameter0: org.dom4j.Namespace;
+
+        if $r1 == null goto label1;
+
+        $r2 = <org.dom4j.Namespace: org.dom4j.Namespace NO_NAMESPACE>;
+
+        if $r1 == $r2 goto label1;
+
+        $r2 = <org.dom4j.Namespace: org.dom4j.Namespace XML_NAMESPACE>;
+
+        if $r1 == $r2 goto label1;
+
+        $r3 = virtualinvoke $r1.<org.dom4j.Namespace: java.lang.String getURI()>();
+
+        if $r3 == null goto label1;
+
+        $i0 = virtualinvoke $r3.<java.lang.String: int length()>();
+
+        if $i0 <= 0 goto label1;
+
+        $r4 = r0.<org.dom4j.io.DOMWriter: org.dom4j.tree.NamespaceStack namespaceStack>;
+
+        $z0 = virtualinvoke $r4.<org.dom4j.tree.NamespaceStack: boolean contains(org.dom4j.Namespace)>($r1);
+
+        if $z0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public void resetNamespaceStack()
+    {
+        org.dom4j.io.DOMWriter r0;
+        org.dom4j.tree.NamespaceStack $r2;
+        org.dom4j.Namespace $r1;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r2 = r0.<org.dom4j.io.DOMWriter: org.dom4j.tree.NamespaceStack namespaceStack>;
+
+        virtualinvoke $r2.<org.dom4j.tree.NamespaceStack: void clear()>();
+
+        $r2 = r0.<org.dom4j.io.DOMWriter: org.dom4j.tree.NamespaceStack namespaceStack>;
+
+        $r1 = <org.dom4j.Namespace: org.dom4j.Namespace XML_NAMESPACE>;
+
+        virtualinvoke $r2.<org.dom4j.tree.NamespaceStack: void push(org.dom4j.Namespace)>($r1);
+
+        return;
+    }
+
+    public void setDomDocumentClass(java.lang.Class)
+    {
+        org.dom4j.io.DOMWriter r0;
+        java.lang.Class $r1;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r1 := @parameter0: java.lang.Class;
+
+        r0.<org.dom4j.io.DOMWriter: java.lang.Class domDocumentClass> = $r1;
+
+        return;
+    }
+
+    public void setDomDocumentClassName(java.lang.String)
+    {
+        org.dom4j.DocumentException $r6;
+        org.dom4j.io.DOMWriter r0;
+        java.lang.StringBuilder $r1;
+        java.lang.Class $r3;
+        java.lang.String $r2;
+        java.lang.ClassLoader $r4;
+        java.lang.Exception $r5;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r3 = class "Lorg/dom4j/io/DOMWriter;";
+
+     label1:
+        $r4 = virtualinvoke $r3.<java.lang.Class: java.lang.ClassLoader getClassLoader()>();
+
+        $r3 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String,boolean,java.lang.ClassLoader)>($r2, 1, $r4);
+
+        r0.<org.dom4j.io.DOMWriter: java.lang.Class domDocumentClass> = $r3;
+
+     label2:
+        return;
+
+     label3:
+        $r5 := @caughtexception;
+
+        $r6 = new org.dom4j.DocumentException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("Could not load the DOM Document class: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<org.dom4j.DocumentException: void <init>(java.lang.String,java.lang.Throwable)>($r2, $r5);
+
+        throw $r6;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    public org.w3c.dom.Document write(org.dom4j.Document)
+    {
+        org.dom4j.tree.NamespaceStack $r4;
+        org.dom4j.Document $r1;
+        java.util.List $r3;
+        org.w3c.dom.Document $r2;
+        org.dom4j.io.DOMWriter r0;
+        boolean $z0;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r1 := @parameter0: org.dom4j.Document;
+
+        $z0 = $r1 instanceof org.w3c.dom.Document;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (org.w3c.dom.Document) $r1;
+
+        return $r2;
+
+     label1:
+        virtualinvoke r0.<org.dom4j.io.DOMWriter: void resetNamespaceStack()>();
+
+        $r2 = virtualinvoke r0.<org.dom4j.io.DOMWriter: org.w3c.dom.Document createDomDocument(org.dom4j.Document)>($r1);
+
+        $r3 = interfaceinvoke $r1.<org.dom4j.Branch: java.util.List content()>();
+
+        virtualinvoke r0.<org.dom4j.io.DOMWriter: void appendDOMTree(org.w3c.dom.Document,org.w3c.dom.Node,java.util.List)>($r2, $r2, $r3);
+
+        $r4 = r0.<org.dom4j.io.DOMWriter: org.dom4j.tree.NamespaceStack namespaceStack>;
+
+        virtualinvoke $r4.<org.dom4j.tree.NamespaceStack: void clear()>();
+
+        return $r2;
+    }
+
+    public org.w3c.dom.Document write(org.dom4j.Document, org.w3c.dom.DOMImplementation)
+    {
+        org.dom4j.tree.NamespaceStack $r5;
+        org.dom4j.Document $r1;
+        java.util.List $r4;
+        org.w3c.dom.Document $r3;
+        org.dom4j.io.DOMWriter r0;
+        org.w3c.dom.DOMImplementation $r2;
+        boolean $z0;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r1 := @parameter0: org.dom4j.Document;
+
+        $r2 := @parameter1: org.w3c.dom.DOMImplementation;
+
+        $z0 = $r1 instanceof org.w3c.dom.Document;
+
+        if $z0 == 0 goto label1;
+
+        $r3 = (org.w3c.dom.Document) $r1;
+
+        return $r3;
+
+     label1:
+        virtualinvoke r0.<org.dom4j.io.DOMWriter: void resetNamespaceStack()>();
+
+        $r3 = virtualinvoke r0.<org.dom4j.io.DOMWriter: org.w3c.dom.Document createDomDocument(org.dom4j.Document,org.w3c.dom.DOMImplementation)>($r1, $r2);
+
+        $r4 = interfaceinvoke $r1.<org.dom4j.Branch: java.util.List content()>();
+
+        virtualinvoke r0.<org.dom4j.io.DOMWriter: void appendDOMTree(org.w3c.dom.Document,org.w3c.dom.Node,java.util.List)>($r3, $r3, $r4);
+
+        $r5 = r0.<org.dom4j.io.DOMWriter: org.dom4j.tree.NamespaceStack namespaceStack>;
+
+        virtualinvoke $r5.<org.dom4j.tree.NamespaceStack: void clear()>();
+
+        return $r3;
+    }
+
+    public void writeNamespace(org.w3c.dom.Element, org.dom4j.Namespace)
+    {
+        org.w3c.dom.Element $r1;
+        org.dom4j.Namespace $r2;
+        org.dom4j.io.DOMWriter r0;
+        java.lang.String $r3, $r4;
+
+        r0 := @this: org.dom4j.io.DOMWriter;
+
+        $r1 := @parameter0: org.w3c.dom.Element;
+
+        $r2 := @parameter1: org.dom4j.Namespace;
+
+        $r3 = virtualinvoke r0.<org.dom4j.io.DOMWriter: java.lang.String attributeNameForNamespace(org.dom4j.Namespace)>($r2);
+
+        $r4 = virtualinvoke $r2.<org.dom4j.Namespace: java.lang.String getURI()>();
+
+        interfaceinvoke $r1.<org.w3c.dom.Element: void setAttribute(java.lang.String,java.lang.String)>($r3, $r4);
+
+        return;
+    }
+}

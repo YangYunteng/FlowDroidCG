@@ -1,0 +1,168 @@
+public final class org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream extends org.apache.james.mime4j.storage.StorageOutputStream
+{
+    public final org.apache.james.mime4j.util.ByteArrayBuffer head;
+    public org.apache.james.mime4j.storage.StorageOutputStream tail;
+    public final org.apache.james.mime4j.storage.ThresholdStorageProvider this$0;
+
+    public void <init>(org.apache.james.mime4j.storage.ThresholdStorageProvider)
+    {
+        int $i0;
+        org.apache.james.mime4j.storage.ThresholdStorageProvider $r1;
+        org.apache.james.mime4j.util.ByteArrayBuffer $r2;
+        org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream r0;
+
+        r0 := @this: org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream;
+
+        $r1 := @parameter0: org.apache.james.mime4j.storage.ThresholdStorageProvider;
+
+        r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream: org.apache.james.mime4j.storage.ThresholdStorageProvider this$0> = $r1;
+
+        specialinvoke r0.<org.apache.james.mime4j.storage.StorageOutputStream: void <init>()>();
+
+        $i0 = staticinvoke <org.apache.james.mime4j.storage.ThresholdStorageProvider: int access$000(org.apache.james.mime4j.storage.ThresholdStorageProvider)>($r1);
+
+        $i0 = staticinvoke <java.lang.Math: int min(int,int)>($i0, 1024);
+
+        $r2 = new org.apache.james.mime4j.util.ByteArrayBuffer;
+
+        specialinvoke $r2.<org.apache.james.mime4j.util.ByteArrayBuffer: void <init>(int)>($i0);
+
+        r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream: org.apache.james.mime4j.util.ByteArrayBuffer head> = $r2;
+
+        return;
+    }
+
+    public void close()
+    {
+        org.apache.james.mime4j.storage.StorageOutputStream $r1;
+        org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream r0;
+
+        r0 := @this: org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream;
+
+        specialinvoke r0.<org.apache.james.mime4j.storage.StorageOutputStream: void close()>();
+
+        $r1 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream: org.apache.james.mime4j.storage.StorageOutputStream tail>;
+
+        if $r1 == null goto label1;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.storage.StorageOutputStream: void close()>();
+
+     label1:
+        return;
+    }
+
+    public org.apache.james.mime4j.storage.Storage toStorage0()
+    {
+        byte[] $r4;
+        org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage $r5;
+        org.apache.james.mime4j.storage.StorageOutputStream $r1;
+        org.apache.james.mime4j.storage.MemoryStorageProvider$MemoryStorage $r2;
+        org.apache.james.mime4j.storage.Storage $r6;
+        int $i0;
+        org.apache.james.mime4j.util.ByteArrayBuffer $r3;
+        org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream r0;
+
+        r0 := @this: org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream;
+
+        $r1 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream: org.apache.james.mime4j.storage.StorageOutputStream tail>;
+
+        if $r1 != null goto label1;
+
+        $r2 = new org.apache.james.mime4j.storage.MemoryStorageProvider$MemoryStorage;
+
+        $r3 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream: org.apache.james.mime4j.util.ByteArrayBuffer head>;
+
+        $r4 = virtualinvoke $r3.<org.apache.james.mime4j.util.ByteArrayBuffer: byte[] buffer()>();
+
+        $r3 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream: org.apache.james.mime4j.util.ByteArrayBuffer head>;
+
+        $i0 = virtualinvoke $r3.<org.apache.james.mime4j.util.ByteArrayBuffer: int length()>();
+
+        specialinvoke $r2.<org.apache.james.mime4j.storage.MemoryStorageProvider$MemoryStorage: void <init>(byte[],int)>($r4, $i0);
+
+        return $r2;
+
+     label1:
+        $r5 = new org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage;
+
+        $r3 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream: org.apache.james.mime4j.util.ByteArrayBuffer head>;
+
+        $r4 = virtualinvoke $r3.<org.apache.james.mime4j.util.ByteArrayBuffer: byte[] buffer()>();
+
+        $r3 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream: org.apache.james.mime4j.util.ByteArrayBuffer head>;
+
+        $i0 = virtualinvoke $r3.<org.apache.james.mime4j.util.ByteArrayBuffer: int length()>();
+
+        $r1 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream: org.apache.james.mime4j.storage.StorageOutputStream tail>;
+
+        $r6 = virtualinvoke $r1.<org.apache.james.mime4j.storage.StorageOutputStream: org.apache.james.mime4j.storage.Storage toStorage()>();
+
+        specialinvoke $r5.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage: void <init>(byte[],int,org.apache.james.mime4j.storage.Storage)>($r4, $i0, $r6);
+
+        return $r5;
+    }
+
+    public void write0(byte[], int, int)
+    {
+        byte[] $r1;
+        org.apache.james.mime4j.storage.StorageProvider $r5;
+        org.apache.james.mime4j.storage.StorageOutputStream $r4;
+        int $i0, $i1, $i2, $i3;
+        org.apache.james.mime4j.storage.ThresholdStorageProvider $r2;
+        org.apache.james.mime4j.util.ByteArrayBuffer $r3;
+        org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream r0;
+
+        r0 := @this: org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream: org.apache.james.mime4j.storage.ThresholdStorageProvider this$0>;
+
+        $i2 = staticinvoke <org.apache.james.mime4j.storage.ThresholdStorageProvider: int access$000(org.apache.james.mime4j.storage.ThresholdStorageProvider)>($r2);
+
+        $r3 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream: org.apache.james.mime4j.util.ByteArrayBuffer head>;
+
+        $i3 = virtualinvoke $r3.<org.apache.james.mime4j.util.ByteArrayBuffer: int length()>();
+
+        $i2 = $i2 - $i3;
+
+        if $i2 <= 0 goto label1;
+
+        $i2 = staticinvoke <java.lang.Math: int min(int,int)>($i2, $i1);
+
+        $r3 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream: org.apache.james.mime4j.util.ByteArrayBuffer head>;
+
+        virtualinvoke $r3.<org.apache.james.mime4j.util.ByteArrayBuffer: void append(byte[],int,int)>($r1, $i0, $i2);
+
+        $i0 = $i0 + $i2;
+
+        $i1 = $i1 - $i2;
+
+     label1:
+        if $i1 <= 0 goto label3;
+
+        $r4 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream: org.apache.james.mime4j.storage.StorageOutputStream tail>;
+
+        if $r4 != null goto label2;
+
+        $r2 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream: org.apache.james.mime4j.storage.ThresholdStorageProvider this$0>;
+
+        $r5 = staticinvoke <org.apache.james.mime4j.storage.ThresholdStorageProvider: org.apache.james.mime4j.storage.StorageProvider access$100(org.apache.james.mime4j.storage.ThresholdStorageProvider)>($r2);
+
+        $r4 = interfaceinvoke $r5.<org.apache.james.mime4j.storage.StorageProvider: org.apache.james.mime4j.storage.StorageOutputStream createStorageOutputStream()>();
+
+        r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream: org.apache.james.mime4j.storage.StorageOutputStream tail> = $r4;
+
+     label2:
+        $r4 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorageOutputStream: org.apache.james.mime4j.storage.StorageOutputStream tail>;
+
+        virtualinvoke $r4.<org.apache.james.mime4j.storage.StorageOutputStream: void write(byte[],int,int)>($r1, $i0, $i1);
+
+     label3:
+        return;
+    }
+}

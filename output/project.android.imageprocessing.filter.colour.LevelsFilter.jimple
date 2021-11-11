@@ -1,0 +1,170 @@
+public class project.android.imageprocessing.filter.colour.LevelsFilter extends project.android.imageprocessing.filter.BasicFilter
+{
+    public static final java.lang.String UNIFORM_GAMMA;
+    public static final java.lang.String UNIFORM_MAXIN;
+    public static final java.lang.String UNIFORM_MAXOUT;
+    public static final java.lang.String UNIFORM_MININ;
+    public static final java.lang.String UNIFORM_MINOUT;
+    public float gamma;
+    public int gammaHandle;
+    public float maxIn;
+    public int maxInHandle;
+    public float maxOut;
+    public int maxOutHandle;
+    public float minIn;
+    public int minInHandle;
+    public float minOut;
+    public int minOutHandle;
+
+    public void <init>(float, float, float, float, float)
+    {
+        byte $b0;
+        project.android.imageprocessing.filter.colour.LevelsFilter r0;
+        int $i1;
+        float $f0, $f1, $f2, $f3, $f4;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.LevelsFilter;
+
+        $f0 := @parameter0: float;
+
+        $f1 := @parameter1: float;
+
+        $f4 := @parameter2: float;
+
+        $f2 := @parameter3: float;
+
+        $f3 := @parameter4: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.BasicFilter: void <init>()>();
+
+        $b0 = $f4 cmpg 0.0F;
+
+        $i1 = (int) $b0;
+
+        if $i1 >= 0 goto label1;
+
+        $f4 = 0.0F;
+
+     label1:
+        r0.<project.android.imageprocessing.filter.colour.LevelsFilter: float gamma> = $f4;
+
+        r0.<project.android.imageprocessing.filter.colour.LevelsFilter: float minIn> = $f0;
+
+        r0.<project.android.imageprocessing.filter.colour.LevelsFilter: float minOut> = $f2;
+
+        r0.<project.android.imageprocessing.filter.colour.LevelsFilter: float maxIn> = $f1;
+
+        r0.<project.android.imageprocessing.filter.colour.LevelsFilter: float maxOut> = $f3;
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.colour.LevelsFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.LevelsFilter;
+
+        return "#define GammaCorrection(color, gamma)\t\t\t\t\t\t\t\t\t\t\t\tpow(color, 1.0 / gamma)\n#define LevelsControlInputRange(color, minInput, maxInput)\t\t\t\t\t\tmin(max(color - minInput, vec3(0.0)) / (maxInput - minInput), vec3(1.0))\n#define LevelsControlInput(color, minInput, gamma, maxInput)\t\t\t\t\t\tGammaCorrection(LevelsControlInputRange(color, minInput, maxInput), gamma)\n#define LevelsControlOutputRange(color, minOutput, maxOutput) \t\t\t\t\tmix(minOutput, maxOutput, color)\n#define LevelsControl(color, minInput, gamma, maxInput, minOutput, maxOutput) \tLevelsControlOutputRange(LevelsControlInput(color, minInput, gamma, maxInput), minOutput, maxOutput)\nprecision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform float u_Gamma;\nuniform float u_MinIn;\nuniform float u_MaxIn;\nuniform float u_MinOut;\nuniform float u_MaxOut;\nvoid main(){\n   vec4 color = texture2D(u_Texture0, v_TexCoord);\n   gl_FragColor = vec4(LevelsControl(color.rgb, vec3(u_MinIn), vec3(u_Gamma), vec3(u_MaxIn), vec3(u_MinOut), vec3(u_MaxOut)), color.a);\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        project.android.imageprocessing.filter.colour.LevelsFilter r0;
+        int $i0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.LevelsFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_Gamma");
+
+        r0.<project.android.imageprocessing.filter.colour.LevelsFilter: int gammaHandle> = $i0;
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_MinIn");
+
+        r0.<project.android.imageprocessing.filter.colour.LevelsFilter: int minInHandle> = $i0;
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_MaxIn");
+
+        r0.<project.android.imageprocessing.filter.colour.LevelsFilter: int maxInHandle> = $i0;
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_MinOut");
+
+        r0.<project.android.imageprocessing.filter.colour.LevelsFilter: int minOutHandle> = $i0;
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_MaxOut");
+
+        r0.<project.android.imageprocessing.filter.colour.LevelsFilter: int maxOutHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        project.android.imageprocessing.filter.colour.LevelsFilter r0;
+        int $i0;
+        float $f0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.LevelsFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.LevelsFilter: int gammaHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.colour.LevelsFilter: float gamma>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.LevelsFilter: int minInHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.colour.LevelsFilter: float minIn>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.LevelsFilter: int maxInHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.colour.LevelsFilter: float maxIn>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.LevelsFilter: int minOutHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.colour.LevelsFilter: float minOut>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.LevelsFilter: int maxOutHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.colour.LevelsFilter: float maxOut>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.colour.LevelsFilter: java.lang.String UNIFORM_MINOUT> = "u_MinOut";
+
+        <project.android.imageprocessing.filter.colour.LevelsFilter: java.lang.String UNIFORM_MININ> = "u_MinIn";
+
+        <project.android.imageprocessing.filter.colour.LevelsFilter: java.lang.String UNIFORM_MAXOUT> = "u_MaxOut";
+
+        <project.android.imageprocessing.filter.colour.LevelsFilter: java.lang.String UNIFORM_MAXIN> = "u_MaxIn";
+
+        <project.android.imageprocessing.filter.colour.LevelsFilter: java.lang.String UNIFORM_GAMMA> = "u_Gamma";
+
+        return;
+    }
+}

@@ -1,0 +1,1021 @@
+public class com.google.firebase.remoteconfig.internal.ConfigFetchHandler extends java.lang.Object
+{
+    public static final int[] BACKOFF_TIME_DURATIONS_IN_MINUTES;
+    public static final long DEFAULT_MINIMUM_FETCH_INTERVAL_IN_SECONDS;
+    public static final int HTTP_TOO_MANY_REQUESTS;
+    public final com.google.firebase.analytics.connector.AnalyticsConnector analyticsConnector;
+    public final com.google.android.gms.common.util.Clock clock;
+    public final java.util.Map customHttpHeaders;
+    public final java.util.concurrent.Executor executor;
+    public final com.google.firebase.remoteconfig.internal.ConfigCacheClient fetchedConfigsCache;
+    public final com.google.firebase.installations.FirebaseInstallationsApi firebaseInstallations;
+    public final com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient frcBackendApiClient;
+    public final com.google.firebase.remoteconfig.internal.ConfigMetadataClient frcMetadata;
+    public final java.util.Random randomGenerator;
+
+    static void <clinit>()
+    {
+        java.util.concurrent.TimeUnit $r0;
+        long $l0;
+        int[] $r1;
+
+        <com.google.firebase.remoteconfig.internal.ConfigFetchHandler: int HTTP_TOO_MANY_REQUESTS> = 429;
+
+        <com.google.firebase.remoteconfig.internal.ConfigFetchHandler: long DEFAULT_MINIMUM_FETCH_INTERVAL_IN_SECONDS> = 0L;
+
+        $r0 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit HOURS>;
+
+        $l0 = virtualinvoke $r0.<java.util.concurrent.TimeUnit: long toSeconds(long)>(12L);
+
+        <com.google.firebase.remoteconfig.internal.ConfigFetchHandler: long DEFAULT_MINIMUM_FETCH_INTERVAL_IN_SECONDS> = $l0;
+
+        $r1 = newarray (int)[8];
+
+        $r1[0] = 2;
+
+        $r1[1] = 4;
+
+        $r1[2] = 8;
+
+        $r1[3] = 16;
+
+        $r1[4] = 32;
+
+        $r1[5] = 64;
+
+        $r1[6] = 128;
+
+        $r1[7] = 256;
+
+        <com.google.firebase.remoteconfig.internal.ConfigFetchHandler: int[] BACKOFF_TIME_DURATIONS_IN_MINUTES> = $r1;
+
+        return;
+    }
+
+    public void <init>(com.google.firebase.installations.FirebaseInstallationsApi, com.google.firebase.analytics.connector.AnalyticsConnector, java.util.concurrent.Executor, com.google.android.gms.common.util.Clock, java.util.Random, com.google.firebase.remoteconfig.internal.ConfigCacheClient, com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient, com.google.firebase.remoteconfig.internal.ConfigMetadataClient, java.util.Map)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        com.google.android.gms.common.util.Clock $r4;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient $r7;
+        java.util.concurrent.Executor $r3;
+        java.util.Random $r5;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient $r8;
+        com.google.firebase.installations.FirebaseInstallationsApi $r1;
+        java.util.Map $r9;
+        com.google.firebase.analytics.connector.AnalyticsConnector $r2;
+        com.google.firebase.remoteconfig.internal.ConfigCacheClient $r6;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $r1 := @parameter0: com.google.firebase.installations.FirebaseInstallationsApi;
+
+        $r2 := @parameter1: com.google.firebase.analytics.connector.AnalyticsConnector;
+
+        $r3 := @parameter2: java.util.concurrent.Executor;
+
+        $r4 := @parameter3: com.google.android.gms.common.util.Clock;
+
+        $r5 := @parameter4: java.util.Random;
+
+        $r6 := @parameter5: com.google.firebase.remoteconfig.internal.ConfigCacheClient;
+
+        $r7 := @parameter6: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient;
+
+        $r8 := @parameter7: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r9 := @parameter8: java.util.Map;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.installations.FirebaseInstallationsApi firebaseInstallations> = $r1;
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.analytics.connector.AnalyticsConnector analyticsConnector> = $r2;
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: java.util.concurrent.Executor executor> = $r3;
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.android.gms.common.util.Clock clock> = $r4;
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: java.util.Random randomGenerator> = $r5;
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigCacheClient fetchedConfigsCache> = $r6;
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient frcBackendApiClient> = $r7;
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigMetadataClient frcMetadata> = $r8;
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: java.util.Map customHttpHeaders> = $r9;
+
+        return;
+    }
+
+    private boolean areCachedFetchConfigsValid(long, java.util.Date)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        java.util.Date $r1, $r3, $r4;
+        long $l0, $l1;
+        java.util.concurrent.TimeUnit $r5;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $l0 := @parameter0: long;
+
+        $r1 := @parameter1: java.util.Date;
+
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigMetadataClient frcMetadata>;
+
+        $r3 = virtualinvoke $r2.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.util.Date getLastSuccessfulFetchTime()>();
+
+        $r4 = <com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.util.Date LAST_FETCH_TIME_NO_FETCH_YET>;
+
+        $z0 = virtualinvoke $r3.<java.util.Date: boolean equals(java.lang.Object)>($r4);
+
+        if $z0 == 0 goto label1;
+
+        return 0;
+
+     label1:
+        $r4 = new java.util.Date;
+
+        $l1 = virtualinvoke $r3.<java.util.Date: long getTime()>();
+
+        $r5 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit SECONDS>;
+
+        $l0 = virtualinvoke $r5.<java.util.concurrent.TimeUnit: long toMillis(long)>($l0);
+
+        $l0 = $l1 + $l0;
+
+        specialinvoke $r4.<java.util.Date: void <init>(long)>($l0);
+
+        $z0 = virtualinvoke $r1.<java.util.Date: boolean before(java.util.Date)>($r4);
+
+        return $z0;
+    }
+
+    private com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException createExceptionWithGenericMessage(com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException $r4;
+        int $i0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r3;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException $r2, $r5;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $r2 := @parameter0: com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException;
+
+        $i0 = virtualinvoke $r2.<com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException: int getHttpStatusCode()>();
+
+        if $i0 == 401 goto label6;
+
+        if $i0 == 403 goto label5;
+
+        if $i0 == 429 goto label4;
+
+        if $i0 == 500 goto label3;
+
+        lookupswitch($i0)
+        {
+            case 502: goto label2;
+            case 503: goto label2;
+            case 504: goto label2;
+            default: goto label1;
+        };
+
+     label1:
+        $r3 = "The server returned an unexpected error.";
+
+        goto label7;
+
+     label2:
+        $r3 = "The server is unavailable. Please try again later.";
+
+        goto label7;
+
+     label3:
+        $r3 = "There was an internal server error.";
+
+        goto label7;
+
+     label4:
+        $r4 = new com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException;
+
+        specialinvoke $r4.<com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException: void <init>(java.lang.String)>("The throttled response from the server was not handled correctly by the FRC SDK.");
+
+        throw $r4;
+
+     label5:
+        $r3 = "The user is not authorized to access the project. Please make sure you are using the API key that corresponds to your Firebase project.";
+
+        goto label7;
+
+     label6:
+        $r3 = "The request did not have the required credentials. Please make sure your google-services.json is valid.";
+
+     label7:
+        $r5 = new com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException;
+
+        $i0 = virtualinvoke $r2.<com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException: int getHttpStatusCode()>();
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Fetch failed: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException: void <init>(int,java.lang.String,java.lang.Throwable)>($i0, $r3, $r2);
+
+        return $r5;
+    }
+
+    private java.lang.String createThrottledMessage(long)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        java.util.concurrent.TimeUnit $r1;
+        java.lang.Object[] $r2;
+        long $l0;
+        java.lang.String $r3;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $l0 := @parameter0: long;
+
+        $r2 = newarray (java.lang.Object)[1];
+
+        $r1 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit MILLISECONDS>;
+
+        $l0 = virtualinvoke $r1.<java.util.concurrent.TimeUnit: long toSeconds(long)>($l0);
+
+        $r3 = staticinvoke <android.text.format.DateUtils: java.lang.String formatElapsedTime(long)>($l0);
+
+        $r2[0] = $r3;
+
+        $r3 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Fetch is throttled. Please wait before calling fetch again: %s", $r2);
+
+        return $r3;
+    }
+
+    private com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse fetchFromBackend(java.lang.String, java.lang.String, java.util.Date)
+    {
+        java.net.HttpURLConnection $r6;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient $r1;
+        java.util.Date $r5;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse $r10;
+        long $l1;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata $r12;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfigFetchThrottledException $r13;
+        java.util.Map $r2, $r7;
+        int $i0;
+        java.lang.String $r3, $r4, $r9;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException $r11;
+        boolean $z0;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient $r8;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r4 := @parameter1: java.lang.String;
+
+        $r5 := @parameter2: java.util.Date;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient frcBackendApiClient>;
+
+     label01:
+        $r6 = virtualinvoke $r1.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.net.HttpURLConnection createHttpURLConnection()>();
+
+     label02:
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient frcBackendApiClient>;
+
+     label03:
+        $r7 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: java.util.Map getUserProperties()>();
+
+     label04:
+        $r8 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigMetadataClient frcMetadata>;
+
+     label05:
+        $r9 = virtualinvoke $r8.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: java.lang.String getLastFetchETag()>();
+
+     label06:
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: java.util.Map customHttpHeaders>;
+
+     label07:
+        $r10 = virtualinvoke $r1.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse fetch(java.net.HttpURLConnection,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.util.Map,java.util.Date)>($r6, $r3, $r4, $r7, $r9, $r2, $r5);
+
+        $r3 = virtualinvoke $r10.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse: java.lang.String getLastFetchETag()>();
+
+     label08:
+        if $r3 == null goto label10;
+
+        $r8 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigMetadataClient frcMetadata>;
+
+     label09:
+        $r3 = virtualinvoke $r10.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse: java.lang.String getLastFetchETag()>();
+
+        virtualinvoke $r8.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: void setLastFetchETag(java.lang.String)>($r3);
+
+     label10:
+        $r8 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigMetadataClient frcMetadata>;
+
+     label11:
+        virtualinvoke $r8.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: void resetBackoff()>();
+
+     label12:
+        return $r10;
+
+     label13:
+        $r11 := @caughtexception;
+
+        $i0 = virtualinvoke $r11.<com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException: int getHttpStatusCode()>();
+
+        $r12 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata updateAndReturnBackoffMetadata(int,java.util.Date)>($i0, $r5);
+
+        $i0 = virtualinvoke $r11.<com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException: int getHttpStatusCode()>();
+
+        $z0 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: boolean shouldThrottle(com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata,int)>($r12, $i0);
+
+        if $z0 == 0 goto label14;
+
+        $r13 = new com.google.firebase.remoteconfig.FirebaseRemoteConfigFetchThrottledException;
+
+        $r5 = virtualinvoke $r12.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata: java.util.Date getBackoffEndTime()>();
+
+        $l1 = virtualinvoke $r5.<java.util.Date: long getTime()>();
+
+        specialinvoke $r13.<com.google.firebase.remoteconfig.FirebaseRemoteConfigFetchThrottledException: void <init>(long)>($l1);
+
+        throw $r13;
+
+     label14:
+        $r11 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException createExceptionWithGenericMessage(com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException)>($r11);
+
+        throw $r11;
+
+        catch com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException from label01 to label02 with label13;
+        catch com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException from label03 to label04 with label13;
+        catch com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException from label05 to label06 with label13;
+        catch com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException from label07 to label08 with label13;
+        catch com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException from label09 to label10 with label13;
+        catch com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException from label11 to label12 with label13;
+    }
+
+    private com.google.android.gms.tasks.Task fetchFromBackendAndCacheResponse(java.lang.String, java.lang.String, java.util.Date)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        java.util.concurrent.Executor $r8;
+        java.util.Date $r3;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse $r4;
+        com.google.android.gms.tasks.SuccessContinuation $r9;
+        com.google.android.gms.tasks.Task $r5;
+        int $i0;
+        java.lang.String $r1, $r2;
+        com.google.firebase.remoteconfig.internal.ConfigCacheClient $r6;
+        com.google.firebase.remoteconfig.internal.ConfigContainer $r7;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfigException $r10;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: java.util.Date;
+
+     label01:
+        $r4 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse fetchFromBackend(java.lang.String,java.lang.String,java.util.Date)>($r1, $r2, $r3);
+
+        $i0 = virtualinvoke $r4.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse: int getStatus()>();
+
+     label02:
+        if $i0 == 0 goto label05;
+
+     label03:
+        $r5 = staticinvoke <com.google.android.gms.tasks.Tasks: com.google.android.gms.tasks.Task forResult(java.lang.Object)>($r4);
+
+     label04:
+        return $r5;
+
+     label05:
+        $r6 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigCacheClient fetchedConfigsCache>;
+
+     label06:
+        $r7 = virtualinvoke $r4.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse: com.google.firebase.remoteconfig.internal.ConfigContainer getFetchedConfigs()>();
+
+        $r5 = virtualinvoke $r6.<com.google.firebase.remoteconfig.internal.ConfigCacheClient: com.google.android.gms.tasks.Task put(com.google.firebase.remoteconfig.internal.ConfigContainer)>($r7);
+
+     label07:
+        $r8 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: java.util.concurrent.Executor executor>;
+
+     label08:
+        $r9 = staticinvoke <com.google.firebase.remoteconfig.internal.ConfigFetchHandler$$Lambda$4: com.google.android.gms.tasks.SuccessContinuation lambdaFactory$(com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse)>($r4);
+
+        $r5 = virtualinvoke $r5.<com.google.android.gms.tasks.Task: com.google.android.gms.tasks.Task onSuccessTask(java.util.concurrent.Executor,com.google.android.gms.tasks.SuccessContinuation)>($r8, $r9);
+
+     label09:
+        return $r5;
+
+     label10:
+        $r10 := @caughtexception;
+
+        $r5 = staticinvoke <com.google.android.gms.tasks.Tasks: com.google.android.gms.tasks.Task forException(java.lang.Exception)>($r10);
+
+        return $r5;
+
+        catch com.google.firebase.remoteconfig.FirebaseRemoteConfigException from label01 to label02 with label10;
+        catch com.google.firebase.remoteconfig.FirebaseRemoteConfigException from label03 to label04 with label10;
+        catch com.google.firebase.remoteconfig.FirebaseRemoteConfigException from label06 to label07 with label10;
+        catch com.google.firebase.remoteconfig.FirebaseRemoteConfigException from label08 to label09 with label10;
+    }
+
+    private com.google.android.gms.tasks.Task fetchIfCacheExpiredAndNotThrottled(com.google.android.gms.tasks.Task, long)
+    {
+        java.util.Date $r1, $r5;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse $r4;
+        long $l0, $l1;
+        com.google.android.gms.tasks.Task $r2, $r9, $r11;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfigFetchThrottledException $r6;
+        com.google.android.gms.tasks.Continuation $r13;
+        java.lang.String $r7;
+        boolean $z0;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        com.google.android.gms.common.util.Clock $r3;
+        java.util.concurrent.Executor $r12;
+        com.google.firebase.installations.FirebaseInstallationsApi $r8;
+        com.google.android.gms.tasks.Task[] $r10;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $r2 := @parameter0: com.google.android.gms.tasks.Task;
+
+        $l0 := @parameter1: long;
+
+        $r1 = new java.util.Date;
+
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.android.gms.common.util.Clock clock>;
+
+        $l1 = interfaceinvoke $r3.<com.google.android.gms.common.util.Clock: long currentTimeMillis()>();
+
+        specialinvoke $r1.<java.util.Date: void <init>(long)>($l1);
+
+        $z0 = virtualinvoke $r2.<com.google.android.gms.tasks.Task: boolean isSuccessful()>();
+
+        if $z0 == 0 goto label1;
+
+        $z0 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: boolean areCachedFetchConfigsValid(long,java.util.Date)>($l0, $r1);
+
+        if $z0 == 0 goto label1;
+
+        $r4 = staticinvoke <com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse: com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse forLocalStorageUsed(java.util.Date)>($r1);
+
+        $r2 = staticinvoke <com.google.android.gms.tasks.Tasks: com.google.android.gms.tasks.Task forResult(java.lang.Object)>($r4);
+
+        return $r2;
+
+     label1:
+        $r5 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: java.util.Date getBackoffEndTimeInMillis(java.util.Date)>($r1);
+
+        if $r5 == null goto label2;
+
+        $r6 = new com.google.firebase.remoteconfig.FirebaseRemoteConfigFetchThrottledException;
+
+        $l0 = virtualinvoke $r5.<java.util.Date: long getTime()>();
+
+        $l1 = virtualinvoke $r1.<java.util.Date: long getTime()>();
+
+        $l0 = $l0 - $l1;
+
+        $r7 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: java.lang.String createThrottledMessage(long)>($l0);
+
+        $l0 = virtualinvoke $r5.<java.util.Date: long getTime()>();
+
+        specialinvoke $r6.<com.google.firebase.remoteconfig.FirebaseRemoteConfigFetchThrottledException: void <init>(java.lang.String,long)>($r7, $l0);
+
+        $r2 = staticinvoke <com.google.android.gms.tasks.Tasks: com.google.android.gms.tasks.Task forException(java.lang.Exception)>($r6);
+
+        goto label3;
+
+     label2:
+        $r8 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.installations.FirebaseInstallationsApi firebaseInstallations>;
+
+        $r2 = interfaceinvoke $r8.<com.google.firebase.installations.FirebaseInstallationsApi: com.google.android.gms.tasks.Task getId()>();
+
+        $r8 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.installations.FirebaseInstallationsApi firebaseInstallations>;
+
+        $r9 = interfaceinvoke $r8.<com.google.firebase.installations.FirebaseInstallationsApi: com.google.android.gms.tasks.Task getToken(boolean)>(0);
+
+        $r10 = newarray (com.google.android.gms.tasks.Task)[2];
+
+        $r10[0] = $r2;
+
+        $r10[1] = $r9;
+
+        $r11 = staticinvoke <com.google.android.gms.tasks.Tasks: com.google.android.gms.tasks.Task whenAllComplete(com.google.android.gms.tasks.Task[])>($r10);
+
+        $r12 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: java.util.concurrent.Executor executor>;
+
+        $r13 = staticinvoke <com.google.firebase.remoteconfig.internal.ConfigFetchHandler$$Lambda$2: com.google.android.gms.tasks.Continuation lambdaFactory$(com.google.firebase.remoteconfig.internal.ConfigFetchHandler,com.google.android.gms.tasks.Task,com.google.android.gms.tasks.Task,java.util.Date)>(r0, $r2, $r9, $r1);
+
+        $r2 = virtualinvoke $r11.<com.google.android.gms.tasks.Task: com.google.android.gms.tasks.Task continueWithTask(java.util.concurrent.Executor,com.google.android.gms.tasks.Continuation)>($r12, $r13);
+
+     label3:
+        $r12 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: java.util.concurrent.Executor executor>;
+
+        $r13 = staticinvoke <com.google.firebase.remoteconfig.internal.ConfigFetchHandler$$Lambda$3: com.google.android.gms.tasks.Continuation lambdaFactory$(com.google.firebase.remoteconfig.internal.ConfigFetchHandler,java.util.Date)>(r0, $r1);
+
+        $r2 = virtualinvoke $r2.<com.google.android.gms.tasks.Task: com.google.android.gms.tasks.Task continueWithTask(java.util.concurrent.Executor,com.google.android.gms.tasks.Continuation)>($r12, $r13);
+
+        return $r2;
+    }
+
+    private java.util.Date getBackoffEndTimeInMillis(java.util.Date)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient $r2;
+        java.util.Date $r1, $r4;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $r1 := @parameter0: java.util.Date;
+
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigMetadataClient frcMetadata>;
+
+        $r3 = virtualinvoke $r2.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata getBackoffMetadata()>();
+
+        $r4 = virtualinvoke $r3.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata: java.util.Date getBackoffEndTime()>();
+
+        $z0 = virtualinvoke $r1.<java.util.Date: boolean before(java.util.Date)>($r4);
+
+        if $z0 == 0 goto label1;
+
+        return $r4;
+
+     label1:
+        return null;
+    }
+
+    private long getRandomizedBackoffDurationInMillis(int)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        long $l2, $l3;
+        java.util.Random $r3;
+        java.util.concurrent.TimeUnit $r1;
+        int[] $r2;
+        int $i0, $i1;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $i0 := @parameter0: int;
+
+        $r1 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit MINUTES>;
+
+        $r2 = <com.google.firebase.remoteconfig.internal.ConfigFetchHandler: int[] BACKOFF_TIME_DURATIONS_IN_MINUTES>;
+
+        $i1 = lengthof $r2;
+
+        $i0 = staticinvoke <java.lang.Math: int min(int,int)>($i0, $i1);
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        $i0 = $r2[$i0];
+
+        $l2 = (long) $i0;
+
+        $l3 = virtualinvoke $r1.<java.util.concurrent.TimeUnit: long toMillis(long)>($l2);
+
+        $l2 = $l3 / 2L;
+
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: java.util.Random randomGenerator>;
+
+        $i0 = (int) $l3;
+
+        $i0 = virtualinvoke $r3.<java.util.Random: int nextInt(int)>($i0);
+
+        $l3 = (long) $i0;
+
+        $l2 = $l2 + $l3;
+
+        return $l2;
+    }
+
+    private java.util.Map getUserProperties()
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        java.util.Map$Entry $r7;
+        java.util.Iterator $r5;
+        java.util.Set $r4;
+        java.util.HashMap $r1;
+        java.util.Map $r3;
+        com.google.firebase.analytics.connector.AnalyticsConnector $r2;
+        java.lang.Object $r6;
+        java.lang.String $r8, $r9;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $r1 = new java.util.HashMap;
+
+        specialinvoke $r1.<java.util.HashMap: void <init>()>();
+
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.analytics.connector.AnalyticsConnector analyticsConnector>;
+
+        if $r2 != null goto label1;
+
+        return $r1;
+
+     label1:
+        $r3 = interfaceinvoke $r2.<com.google.firebase.analytics.connector.AnalyticsConnector: java.util.Map getUserProperties(boolean)>(0);
+
+        $r4 = interfaceinvoke $r3.<java.util.Map: java.util.Set entrySet()>();
+
+        $r5 = interfaceinvoke $r4.<java.util.Set: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r5.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r6 = interfaceinvoke $r5.<java.util.Iterator: java.lang.Object next()>();
+
+        $r7 = (java.util.Map$Entry) $r6;
+
+        $r6 = interfaceinvoke $r7.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r8 = (java.lang.String) $r6;
+
+        $r6 = interfaceinvoke $r7.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r9 = virtualinvoke $r6.<java.lang.Object: java.lang.String toString()>();
+
+        interfaceinvoke $r1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r8, $r9);
+
+        goto label2;
+
+     label3:
+        return $r1;
+    }
+
+    private boolean isThrottleableServerError(int)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        int $i0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $i0 := @parameter0: int;
+
+        if $i0 == 429 goto label2;
+
+        if $i0 == 502 goto label2;
+
+        if $i0 == 503 goto label2;
+
+        if $i0 != 504 goto label1;
+
+        goto label2;
+
+     label1:
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    public static com.google.android.gms.tasks.Task lambda$fetch$0(com.google.firebase.remoteconfig.internal.ConfigFetchHandler, long, com.google.android.gms.tasks.Task)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler $r1;
+        long $l0;
+        com.google.android.gms.tasks.Task $r0;
+
+        $r1 := @parameter0: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $l0 := @parameter1: long;
+
+        $r0 := @parameter2: com.google.android.gms.tasks.Task;
+
+        $r0 = specialinvoke $r1.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.android.gms.tasks.Task fetchIfCacheExpiredAndNotThrottled(com.google.android.gms.tasks.Task,long)>($r0, $l0);
+
+        return $r0;
+    }
+
+    public static com.google.android.gms.tasks.Task lambda$fetchFromBackendAndCacheResponse$3(com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse, com.google.firebase.remoteconfig.internal.ConfigContainer)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse $r2;
+        com.google.firebase.remoteconfig.internal.ConfigContainer $r0;
+        com.google.android.gms.tasks.Task $r1;
+
+        $r2 := @parameter0: com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse;
+
+        $r0 := @parameter1: com.google.firebase.remoteconfig.internal.ConfigContainer;
+
+        $r1 = staticinvoke <com.google.android.gms.tasks.Tasks: com.google.android.gms.tasks.Task forResult(java.lang.Object)>($r2);
+
+        return $r1;
+    }
+
+    public static com.google.android.gms.tasks.Task lambda$fetchIfCacheExpiredAndNotThrottled$1(com.google.firebase.remoteconfig.internal.ConfigFetchHandler, com.google.android.gms.tasks.Task, com.google.android.gms.tasks.Task, java.util.Date, com.google.android.gms.tasks.Task)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler $r1;
+        java.util.Date $r0;
+        com.google.android.gms.tasks.Task $r2, $r3, $r4;
+        java.lang.Exception $r6;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException $r5;
+        java.lang.Object $r7;
+        java.lang.String $r8, $r10;
+        com.google.firebase.installations.InstallationTokenResult $r9;
+        boolean $z0;
+
+        $r1 := @parameter0: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $r2 := @parameter1: com.google.android.gms.tasks.Task;
+
+        $r3 := @parameter2: com.google.android.gms.tasks.Task;
+
+        $r0 := @parameter3: java.util.Date;
+
+        $r4 := @parameter4: com.google.android.gms.tasks.Task;
+
+        $z0 = virtualinvoke $r2.<com.google.android.gms.tasks.Task: boolean isSuccessful()>();
+
+        if $z0 != 0 goto label1;
+
+        $r5 = new com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException;
+
+        $r6 = virtualinvoke $r2.<com.google.android.gms.tasks.Task: java.lang.Exception getException()>();
+
+        specialinvoke $r5.<com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException: void <init>(java.lang.String,java.lang.Throwable)>("Firebase Installations failed to get installation ID for fetch.", $r6);
+
+        $r2 = staticinvoke <com.google.android.gms.tasks.Tasks: com.google.android.gms.tasks.Task forException(java.lang.Exception)>($r5);
+
+        return $r2;
+
+     label1:
+        $z0 = virtualinvoke $r3.<com.google.android.gms.tasks.Task: boolean isSuccessful()>();
+
+        if $z0 != 0 goto label2;
+
+        $r5 = new com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException;
+
+        $r6 = virtualinvoke $r3.<com.google.android.gms.tasks.Task: java.lang.Exception getException()>();
+
+        specialinvoke $r5.<com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException: void <init>(java.lang.String,java.lang.Throwable)>("Firebase Installations failed to get installation auth token for fetch.", $r6);
+
+        $r2 = staticinvoke <com.google.android.gms.tasks.Tasks: com.google.android.gms.tasks.Task forException(java.lang.Exception)>($r5);
+
+        return $r2;
+
+     label2:
+        $r7 = virtualinvoke $r2.<com.google.android.gms.tasks.Task: java.lang.Object getResult()>();
+
+        $r8 = (java.lang.String) $r7;
+
+        $r7 = virtualinvoke $r3.<com.google.android.gms.tasks.Task: java.lang.Object getResult()>();
+
+        $r9 = (com.google.firebase.installations.InstallationTokenResult) $r7;
+
+        $r10 = virtualinvoke $r9.<com.google.firebase.installations.InstallationTokenResult: java.lang.String getToken()>();
+
+        $r2 = specialinvoke $r1.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.android.gms.tasks.Task fetchFromBackendAndCacheResponse(java.lang.String,java.lang.String,java.util.Date)>($r8, $r10, $r0);
+
+        return $r2;
+    }
+
+    public static com.google.android.gms.tasks.Task lambda$fetchIfCacheExpiredAndNotThrottled$2(com.google.firebase.remoteconfig.internal.ConfigFetchHandler, java.util.Date, com.google.android.gms.tasks.Task)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler $r0;
+        java.util.Date $r1;
+        com.google.android.gms.tasks.Task $r2;
+
+        $r0 := @parameter0: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $r1 := @parameter1: java.util.Date;
+
+        $r2 := @parameter2: com.google.android.gms.tasks.Task;
+
+        specialinvoke $r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: void updateLastFetchStatusAndTime(com.google.android.gms.tasks.Task,java.util.Date)>($r2, $r1);
+
+        return $r2;
+    }
+
+    private boolean shouldThrottle(com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata, int)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        int $i0, $i1;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata $r1;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $r1 := @parameter0: com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata;
+
+        $i0 := @parameter1: int;
+
+        $i1 = virtualinvoke $r1.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata: int getNumFailedFetches()>();
+
+        if $i1 > 1 goto label2;
+
+        if $i0 != 429 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    private com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata updateAndReturnBackoffMetadata(int, java.util.Date)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient $r2;
+        java.util.Date $r1;
+        int $i0;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.util.Date;
+
+        $z0 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: boolean isThrottleableServerError(int)>($i0);
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: void updateBackoffMetadataWithLastFailedFetchTime(java.util.Date)>($r1);
+
+     label1:
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigMetadataClient frcMetadata>;
+
+        $r3 = virtualinvoke $r2.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata getBackoffMetadata()>();
+
+        return $r3;
+    }
+
+    private void updateBackoffMetadataWithLastFailedFetchTime(java.util.Date)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        java.util.Date $r1, $r2;
+        long $l1, $l2;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata $r4;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient $r3;
+        int $i0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $r2 := @parameter0: java.util.Date;
+
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigMetadataClient frcMetadata>;
+
+        $r4 = virtualinvoke $r3.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata getBackoffMetadata()>();
+
+        $i0 = virtualinvoke $r4.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient$BackoffMetadata: int getNumFailedFetches()>();
+
+        $i0 = $i0 + 1;
+
+        $l1 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: long getRandomizedBackoffDurationInMillis(int)>($i0);
+
+        $r1 = new java.util.Date;
+
+        $l2 = virtualinvoke $r2.<java.util.Date: long getTime()>();
+
+        $l1 = $l2 + $l1;
+
+        specialinvoke $r1.<java.util.Date: void <init>(long)>($l1);
+
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigMetadataClient frcMetadata>;
+
+        virtualinvoke $r3.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: void setBackoffMetadata(int,java.util.Date)>($i0, $r1);
+
+        return;
+    }
+
+    private void updateLastFetchStatusAndTime(com.google.android.gms.tasks.Task, java.util.Date)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient $r3;
+        java.util.Date $r1;
+        com.google.android.gms.tasks.Task $r2;
+        java.lang.Exception $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $r2 := @parameter0: com.google.android.gms.tasks.Task;
+
+        $r1 := @parameter1: java.util.Date;
+
+        $z0 = virtualinvoke $r2.<com.google.android.gms.tasks.Task: boolean isSuccessful()>();
+
+        if $z0 == 0 goto label1;
+
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigMetadataClient frcMetadata>;
+
+        virtualinvoke $r3.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: void updateLastFetchAsSuccessfulAt(java.util.Date)>($r1);
+
+        return;
+
+     label1:
+        $r4 = virtualinvoke $r2.<com.google.android.gms.tasks.Task: java.lang.Exception getException()>();
+
+        if $r4 != null goto label2;
+
+        return;
+
+     label2:
+        $z0 = $r4 instanceof com.google.firebase.remoteconfig.FirebaseRemoteConfigFetchThrottledException;
+
+        if $z0 == 0 goto label3;
+
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigMetadataClient frcMetadata>;
+
+        virtualinvoke $r3.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: void updateLastFetchAsThrottled()>();
+
+        return;
+
+     label3:
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigMetadataClient frcMetadata>;
+
+        virtualinvoke $r3.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: void updateLastFetchAsFailed()>();
+
+        return;
+    }
+
+    public com.google.android.gms.tasks.Task fetch()
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient $r1;
+        long $l0;
+        com.google.android.gms.tasks.Task $r2;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigMetadataClient frcMetadata>;
+
+        $l0 = virtualinvoke $r1.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: long getMinimumFetchIntervalInSeconds()>();
+
+        $r2 = virtualinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.android.gms.tasks.Task fetch(long)>($l0);
+
+        return $r2;
+    }
+
+    public com.google.android.gms.tasks.Task fetch(long)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        java.util.concurrent.Executor $r1;
+        long $l0;
+        com.google.android.gms.tasks.Task $r4;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient $r2;
+        com.google.android.gms.tasks.Continuation $r5;
+        com.google.firebase.remoteconfig.internal.ConfigCacheClient $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $l0 := @parameter0: long;
+
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigMetadataClient frcMetadata>;
+
+        $z0 = virtualinvoke $r2.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: boolean isDeveloperModeEnabled()>();
+
+        if $z0 == 0 goto label1;
+
+        $l0 = 0L;
+
+     label1:
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.remoteconfig.internal.ConfigCacheClient fetchedConfigsCache>;
+
+        $r4 = virtualinvoke $r3.<com.google.firebase.remoteconfig.internal.ConfigCacheClient: com.google.android.gms.tasks.Task get()>();
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: java.util.concurrent.Executor executor>;
+
+        $r5 = staticinvoke <com.google.firebase.remoteconfig.internal.ConfigFetchHandler$$Lambda$1: com.google.android.gms.tasks.Continuation lambdaFactory$(com.google.firebase.remoteconfig.internal.ConfigFetchHandler,long)>(r0, $l0);
+
+        $r4 = virtualinvoke $r4.<com.google.android.gms.tasks.Task: com.google.android.gms.tasks.Task continueWithTask(java.util.concurrent.Executor,com.google.android.gms.tasks.Continuation)>($r1, $r5);
+
+        return $r4;
+    }
+
+    public com.google.firebase.analytics.connector.AnalyticsConnector getAnalyticsConnector()
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler r0;
+        com.google.firebase.analytics.connector.AnalyticsConnector r1;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: com.google.firebase.analytics.connector.AnalyticsConnector analyticsConnector>;
+
+        return r1;
+    }
+}

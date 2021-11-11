@@ -1,0 +1,256 @@
+public final class com.google.zxing.datamatrix.decoder.Decoder extends java.lang.Object
+{
+    public final com.google.zxing.common.reedsolomon.ReedSolomonDecoder rsDecoder;
+
+    public void <init>()
+    {
+        com.google.zxing.common.reedsolomon.ReedSolomonDecoder $r1;
+        com.google.zxing.common.reedsolomon.GenericGF $r2;
+        com.google.zxing.datamatrix.decoder.Decoder r0;
+
+        r0 := @this: com.google.zxing.datamatrix.decoder.Decoder;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r1 = new com.google.zxing.common.reedsolomon.ReedSolomonDecoder;
+
+        $r2 = <com.google.zxing.common.reedsolomon.GenericGF: com.google.zxing.common.reedsolomon.GenericGF DATA_MATRIX_FIELD_256>;
+
+        specialinvoke $r1.<com.google.zxing.common.reedsolomon.ReedSolomonDecoder: void <init>(com.google.zxing.common.reedsolomon.GenericGF)>($r2);
+
+        r0.<com.google.zxing.datamatrix.decoder.Decoder: com.google.zxing.common.reedsolomon.ReedSolomonDecoder rsDecoder> = $r1;
+
+        return;
+    }
+
+    private void correctErrors(byte[], int)
+    {
+        byte[] $r4;
+        com.google.zxing.ChecksumException $r2;
+        short $s5;
+        byte $b4;
+        int[] $r1;
+        com.google.zxing.common.reedsolomon.ReedSolomonDecoder $r5;
+        com.google.zxing.datamatrix.decoder.Decoder r0;
+        int $i0, $i1, $i2, $i3, $i6;
+        com.google.zxing.common.reedsolomon.ReedSolomonException $r3;
+
+        r0 := @this: com.google.zxing.datamatrix.decoder.Decoder;
+
+        $r4 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 = lengthof $r4;
+
+        $r1 = newarray (int)[$i1];
+
+        $i2 = 0;
+
+        $i3 = 0;
+
+     label1:
+        if $i3 >= $i1 goto label2;
+
+        $b4 = $r4[$i3];
+
+        $s5 = (short) $b4;
+
+        $s5 = $s5 & 255;
+
+        $i6 = (int) $s5;
+
+        $r1[$i3] = $i6;
+
+        $i3 = $i3 + 1;
+
+        goto label1;
+
+     label2:
+        $i1 = lengthof $r4;
+
+        $i1 = $i1 - $i0;
+
+        $r5 = r0.<com.google.zxing.datamatrix.decoder.Decoder: com.google.zxing.common.reedsolomon.ReedSolomonDecoder rsDecoder>;
+
+     label3:
+        virtualinvoke $r5.<com.google.zxing.common.reedsolomon.ReedSolomonDecoder: void decode(int[],int)>($r1, $i1);
+
+     label4:
+        if $i2 >= $i0 goto label5;
+
+        $i1 = $r1[$i2];
+
+        $b4 = (byte) $i1;
+
+        $r4[$i2] = $b4;
+
+        $i2 = $i2 + 1;
+
+        goto label4;
+
+     label5:
+        return;
+
+     label6:
+        $r2 = staticinvoke <com.google.zxing.ChecksumException: com.google.zxing.ChecksumException getChecksumInstance()>();
+
+        goto label7;
+
+     label7:
+        throw $r2;
+
+     label8:
+        $r3 := @caughtexception;
+
+        goto label6;
+
+        catch com.google.zxing.common.reedsolomon.ReedSolomonException from label3 to label4 with label8;
+    }
+
+    public com.google.zxing.common.DecoderResult decode(com.google.zxing.common.BitMatrix)
+    {
+        byte[] $r4, $r7;
+        com.google.zxing.datamatrix.decoder.DataBlock[] $r5;
+        com.google.zxing.datamatrix.decoder.BitMatrixParser $r2;
+        com.google.zxing.common.DecoderResult $r8;
+        byte $b0;
+        com.google.zxing.datamatrix.decoder.Decoder r0;
+        int $i1, $i2, $i3, $i4, $i5;
+        com.google.zxing.datamatrix.decoder.Version $r3;
+        com.google.zxing.common.BitMatrix $r1;
+        com.google.zxing.datamatrix.decoder.DataBlock $r6;
+
+        r0 := @this: com.google.zxing.datamatrix.decoder.Decoder;
+
+        $r1 := @parameter0: com.google.zxing.common.BitMatrix;
+
+        $r2 = new com.google.zxing.datamatrix.decoder.BitMatrixParser;
+
+        specialinvoke $r2.<com.google.zxing.datamatrix.decoder.BitMatrixParser: void <init>(com.google.zxing.common.BitMatrix)>($r1);
+
+        $r3 = virtualinvoke $r2.<com.google.zxing.datamatrix.decoder.BitMatrixParser: com.google.zxing.datamatrix.decoder.Version getVersion()>();
+
+        $r4 = virtualinvoke $r2.<com.google.zxing.datamatrix.decoder.BitMatrixParser: byte[] readCodewords()>();
+
+        $r5 = staticinvoke <com.google.zxing.datamatrix.decoder.DataBlock: com.google.zxing.datamatrix.decoder.DataBlock[] getDataBlocks(byte[],com.google.zxing.datamatrix.decoder.Version)>($r4, $r3);
+
+        $i1 = lengthof $r5;
+
+        $i2 = lengthof $r5;
+
+        $i3 = 0;
+
+        $i4 = 0;
+
+     label1:
+        if $i3 >= $i2 goto label2;
+
+        $r6 = $r5[$i3];
+
+        $i5 = virtualinvoke $r6.<com.google.zxing.datamatrix.decoder.DataBlock: int getNumDataCodewords()>();
+
+        $i4 = $i4 + $i5;
+
+        $i3 = $i3 + 1;
+
+        goto label1;
+
+     label2:
+        $r4 = newarray (byte)[$i4];
+
+        $i2 = 0;
+
+     label3:
+        if $i2 >= $i1 goto label6;
+
+        $r6 = $r5[$i2];
+
+        $r7 = virtualinvoke $r6.<com.google.zxing.datamatrix.decoder.DataBlock: byte[] getCodewords()>();
+
+        $i3 = virtualinvoke $r6.<com.google.zxing.datamatrix.decoder.DataBlock: int getNumDataCodewords()>();
+
+        specialinvoke r0.<com.google.zxing.datamatrix.decoder.Decoder: void correctErrors(byte[],int)>($r7, $i3);
+
+        $i4 = 0;
+
+     label4:
+        if $i4 >= $i3 goto label5;
+
+        $i5 = $i4 * $i1;
+
+        $i5 = $i5 + $i2;
+
+        $b0 = $r7[$i4];
+
+        $r4[$i5] = $b0;
+
+        $i4 = $i4 + 1;
+
+        goto label4;
+
+     label5:
+        $i2 = $i2 + 1;
+
+        goto label3;
+
+     label6:
+        $r8 = staticinvoke <com.google.zxing.datamatrix.decoder.DecodedBitStreamParser: com.google.zxing.common.DecoderResult decode(byte[])>($r4);
+
+        return $r8;
+    }
+
+    public com.google.zxing.common.DecoderResult decode(boolean[][])
+    {
+        boolean[] $r4;
+        com.google.zxing.common.DecoderResult $r2;
+        com.google.zxing.datamatrix.decoder.Decoder r0;
+        int $i0, $i1, $i2;
+        com.google.zxing.common.BitMatrix $r1;
+        boolean[][] $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.datamatrix.decoder.Decoder;
+
+        $r3 := @parameter0: boolean[][];
+
+        $i0 = lengthof $r3;
+
+        $r1 = new com.google.zxing.common.BitMatrix;
+
+        specialinvoke $r1.<com.google.zxing.common.BitMatrix: void <init>(int)>($i0);
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label5;
+
+        $i2 = 0;
+
+     label2:
+        if $i2 >= $i0 goto label4;
+
+        $r4 = $r3[$i1];
+
+        $z0 = $r4[$i2];
+
+        if $z0 == 0 goto label3;
+
+        virtualinvoke $r1.<com.google.zxing.common.BitMatrix: void set(int,int)>($i2, $i1);
+
+     label3:
+        $i2 = $i2 + 1;
+
+        goto label2;
+
+     label4:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label5:
+        $r2 = virtualinvoke r0.<com.google.zxing.datamatrix.decoder.Decoder: com.google.zxing.common.DecoderResult decode(com.google.zxing.common.BitMatrix)>($r1);
+
+        return $r2;
+    }
+}

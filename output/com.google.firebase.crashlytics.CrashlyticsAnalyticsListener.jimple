@@ -1,0 +1,177 @@
+public class com.google.firebase.crashlytics.CrashlyticsAnalyticsListener extends java.lang.Object implements com.google.firebase.analytics.connector.AnalyticsConnector$AnalyticsConnectorListener
+{
+    public static final java.lang.String CRASHLYTICS_ORIGIN;
+    public static final java.lang.String EVENT_NAME_KEY;
+    public static final java.lang.String EVENT_ORIGIN_KEY;
+    public static final java.lang.String EVENT_PARAMS_KEY;
+    public com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver breadcrumbEventReceiver;
+    public com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver crashlyticsOriginEventReceiver;
+
+    public void <init>()
+    {
+        com.google.firebase.crashlytics.CrashlyticsAnalyticsListener r0;
+
+        r0 := @this: com.google.firebase.crashlytics.CrashlyticsAnalyticsListener;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void notifyEventReceiver(com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver, java.lang.String, android.os.Bundle)
+    {
+        com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver $r0;
+        java.lang.String $r1;
+        android.os.Bundle $r2;
+
+        $r0 := @parameter0: com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 := @parameter2: android.os.Bundle;
+
+        if $r0 != null goto label1;
+
+        return;
+
+     label1:
+        interfaceinvoke $r0.<com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver: void onEvent(java.lang.String,android.os.Bundle)>($r1, $r2);
+
+        return;
+    }
+
+    private void notifyEventReceivers(java.lang.String, android.os.Bundle)
+    {
+        com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver $r5;
+        android.os.Bundle $r2;
+        com.google.firebase.crashlytics.CrashlyticsAnalyticsListener r0;
+        java.lang.String $r1, $r3, $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.CrashlyticsAnalyticsListener;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: android.os.Bundle;
+
+        $r4 = virtualinvoke $r2.<android.os.Bundle: java.lang.String getString(java.lang.String)>("_o");
+
+        $r3 = "clx";
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r4);
+
+        if $z0 == 0 goto label1;
+
+        $r5 = r0.<com.google.firebase.crashlytics.CrashlyticsAnalyticsListener: com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver crashlyticsOriginEventReceiver>;
+
+        goto label2;
+
+     label1:
+        $r5 = r0.<com.google.firebase.crashlytics.CrashlyticsAnalyticsListener: com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver breadcrumbEventReceiver>;
+
+     label2:
+        staticinvoke <com.google.firebase.crashlytics.CrashlyticsAnalyticsListener: void notifyEventReceiver(com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver,java.lang.String,android.os.Bundle)>($r5, $r1, $r2);
+
+        return;
+    }
+
+    public void onMessageTriggered(int, android.os.Bundle)
+    {
+        com.google.firebase.crashlytics.internal.Logger $r3;
+        android.os.Bundle $r2, $r5;
+        int $i0;
+        com.google.firebase.crashlytics.CrashlyticsAnalyticsListener r0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r4;
+
+        r0 := @this: com.google.firebase.crashlytics.CrashlyticsAnalyticsListener;
+
+        $i0 := @parameter0: int;
+
+        $r2 := @parameter1: android.os.Bundle;
+
+        $r3 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Received Analytics message: ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        $r4 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r3.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>($r4);
+
+        if $r2 != null goto label1;
+
+        return;
+
+     label1:
+        $r4 = virtualinvoke $r2.<android.os.Bundle: java.lang.String getString(java.lang.String)>("name");
+
+        if $r4 == null goto label3;
+
+        $r2 = virtualinvoke $r2.<android.os.Bundle: android.os.Bundle getBundle(java.lang.String)>("params");
+
+        $r5 = $r2;
+
+        if $r2 != null goto label2;
+
+        $r5 = new android.os.Bundle;
+
+        specialinvoke $r5.<android.os.Bundle: void <init>()>();
+
+     label2:
+        specialinvoke r0.<com.google.firebase.crashlytics.CrashlyticsAnalyticsListener: void notifyEventReceivers(java.lang.String,android.os.Bundle)>($r4, $r5);
+
+     label3:
+        return;
+    }
+
+    public void setBreadcrumbEventReceiver(com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver)
+    {
+        com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver $r1;
+        com.google.firebase.crashlytics.CrashlyticsAnalyticsListener r0;
+
+        r0 := @this: com.google.firebase.crashlytics.CrashlyticsAnalyticsListener;
+
+        $r1 := @parameter0: com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver;
+
+        r0.<com.google.firebase.crashlytics.CrashlyticsAnalyticsListener: com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver breadcrumbEventReceiver> = $r1;
+
+        return;
+    }
+
+    public void setCrashlyticsOriginEventReceiver(com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver)
+    {
+        com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver $r1;
+        com.google.firebase.crashlytics.CrashlyticsAnalyticsListener r0;
+
+        r0 := @this: com.google.firebase.crashlytics.CrashlyticsAnalyticsListener;
+
+        $r1 := @parameter0: com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver;
+
+        r0.<com.google.firebase.crashlytics.CrashlyticsAnalyticsListener: com.google.firebase.crashlytics.internal.analytics.AnalyticsEventReceiver crashlyticsOriginEventReceiver> = $r1;
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.firebase.crashlytics.CrashlyticsAnalyticsListener: java.lang.String EVENT_PARAMS_KEY> = "params";
+
+        <com.google.firebase.crashlytics.CrashlyticsAnalyticsListener: java.lang.String EVENT_ORIGIN_KEY> = "_o";
+
+        <com.google.firebase.crashlytics.CrashlyticsAnalyticsListener: java.lang.String EVENT_NAME_KEY> = "name";
+
+        <com.google.firebase.crashlytics.CrashlyticsAnalyticsListener: java.lang.String CRASHLYTICS_ORIGIN> = "clx";
+
+        return;
+    }
+}

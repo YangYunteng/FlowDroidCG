@@ -1,0 +1,97 @@
+public final class org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage extends java.lang.Object implements org.apache.james.mime4j.storage.Storage
+{
+    public byte[] head;
+    public final int headLen;
+    public org.apache.james.mime4j.storage.Storage tail;
+
+    public void <init>(byte[], int, org.apache.james.mime4j.storage.Storage)
+    {
+        byte[] $r1;
+        org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage r0;
+        org.apache.james.mime4j.storage.Storage $r2;
+        int $i0;
+
+        r0 := @this: org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: org.apache.james.mime4j.storage.Storage;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage: byte[] head> = $r1;
+
+        r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage: int headLen> = $i0;
+
+        r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage: org.apache.james.mime4j.storage.Storage tail> = $r2;
+
+        return;
+    }
+
+    public void delete()
+    {
+        byte[] $r2;
+        org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage r0;
+        org.apache.james.mime4j.storage.Storage $r1;
+
+        r0 := @this: org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage;
+
+        $r2 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage: byte[] head>;
+
+        if $r2 == null goto label1;
+
+        r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage: byte[] head> = null;
+
+        $r1 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage: org.apache.james.mime4j.storage.Storage tail>;
+
+        interfaceinvoke $r1.<org.apache.james.mime4j.storage.Storage: void delete()>();
+
+        r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage: org.apache.james.mime4j.storage.Storage tail> = null;
+
+     label1:
+        return;
+    }
+
+    public java.io.InputStream getInputStream()
+    {
+        byte[] $r2;
+        java.lang.IllegalStateException $r6;
+        org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage r0;
+        java.io.SequenceInputStream $r5;
+        java.io.ByteArrayInputStream $r3;
+        org.apache.james.mime4j.storage.Storage $r4;
+        int $i0;
+        java.io.InputStream $r1;
+
+        r0 := @this: org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage;
+
+        $r2 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage: byte[] head>;
+
+        if $r2 == null goto label1;
+
+        $r3 = new java.io.ByteArrayInputStream;
+
+        $i0 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage: int headLen>;
+
+        specialinvoke $r3.<java.io.ByteArrayInputStream: void <init>(byte[],int,int)>($r2, 0, $i0);
+
+        $r4 = r0.<org.apache.james.mime4j.storage.ThresholdStorageProvider$ThresholdStorage: org.apache.james.mime4j.storage.Storage tail>;
+
+        $r1 = interfaceinvoke $r4.<org.apache.james.mime4j.storage.Storage: java.io.InputStream getInputStream()>();
+
+        $r5 = new java.io.SequenceInputStream;
+
+        specialinvoke $r5.<java.io.SequenceInputStream: void <init>(java.io.InputStream,java.io.InputStream)>($r3, $r1);
+
+        return $r5;
+
+     label1:
+        $r6 = new java.lang.IllegalStateException;
+
+        specialinvoke $r6.<java.lang.IllegalStateException: void <init>(java.lang.String)>("storage has been deleted");
+
+        throw $r6;
+    }
+}

@@ -1,0 +1,212 @@
+public final class com.google.zxing.client.result.URIParsedResult extends com.google.zxing.client.result.ParsedResult
+{
+    public static final java.util.regex.Pattern USER_IN_HOST;
+    public final java.lang.String title;
+    public final java.lang.String uri;
+
+    static void <clinit>()
+    {
+        java.util.regex.Pattern $r0;
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>(":/*([^/@]+)@[^/]+");
+
+        <com.google.zxing.client.result.URIParsedResult: java.util.regex.Pattern USER_IN_HOST> = $r0;
+
+        return;
+    }
+
+    public void <init>(java.lang.String, java.lang.String)
+    {
+        com.google.zxing.client.result.URIParsedResult r0;
+        java.lang.String $r1, $r3;
+        com.google.zxing.client.result.ParsedResultType $r2;
+
+        r0 := @this: com.google.zxing.client.result.URIParsedResult;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = <com.google.zxing.client.result.ParsedResultType: com.google.zxing.client.result.ParsedResultType URI>;
+
+        specialinvoke r0.<com.google.zxing.client.result.ParsedResult: void <init>(com.google.zxing.client.result.ParsedResultType)>($r2);
+
+        $r3 = staticinvoke <com.google.zxing.client.result.URIParsedResult: java.lang.String massageURI(java.lang.String)>($r3);
+
+        r0.<com.google.zxing.client.result.URIParsedResult: java.lang.String uri> = $r3;
+
+        r0.<com.google.zxing.client.result.URIParsedResult: java.lang.String title> = $r1;
+
+        return;
+    }
+
+    public static boolean isColonFollowedByPortNumber(java.lang.String, int)
+    {
+        int $i0, $i1, $i2;
+        char $c3;
+        java.lang.String $r0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        $i0 = $i0 + 1;
+
+        $i1 = virtualinvoke $r0.<java.lang.String: int indexOf(int,int)>(47, $i0);
+
+        $i2 = $i1;
+
+        if $i1 >= 0 goto label1;
+
+        $i2 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+     label1:
+        if $i2 > $i0 goto label2;
+
+        return 0;
+
+     label2:
+        if $i0 >= $i2 goto label5;
+
+        $c3 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i0);
+
+        $i1 = (int) $c3;
+
+        if $i1 < 48 goto label4;
+
+        $c3 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i0);
+
+        $i1 = (int) $c3;
+
+        if $i1 <= 57 goto label3;
+
+        return 0;
+
+     label3:
+        $i0 = $i0 + 1;
+
+        goto label2;
+
+     label4:
+        return 0;
+
+     label5:
+        return 1;
+    }
+
+    public static java.lang.String massageURI(java.lang.String)
+    {
+        int $i0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String trim()>();
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int indexOf(int)>(58);
+
+        if $i0 >= 0 goto label1;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("http://");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r0);
+
+        $r0 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r0;
+
+     label1:
+        $z0 = staticinvoke <com.google.zxing.client.result.URIParsedResult: boolean isColonFollowedByPortNumber(java.lang.String,int)>($r0, $i0);
+
+        if $z0 == 0 goto label2;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("http://");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r0);
+
+        $r0 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label2:
+        return $r0;
+    }
+
+    public java.lang.String getDisplayResult()
+    {
+        com.google.zxing.client.result.URIParsedResult r0;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.zxing.client.result.URIParsedResult;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(int)>(30);
+
+        $r1 = r0.<com.google.zxing.client.result.URIParsedResult: java.lang.String title>;
+
+        staticinvoke <com.google.zxing.client.result.ParsedResult: void maybeAppend(java.lang.String,java.lang.StringBuilder)>($r1, $r2);
+
+        $r1 = r0.<com.google.zxing.client.result.URIParsedResult: java.lang.String uri>;
+
+        staticinvoke <com.google.zxing.client.result.ParsedResult: void maybeAppend(java.lang.String,java.lang.StringBuilder)>($r1, $r2);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+
+    public java.lang.String getTitle()
+    {
+        com.google.zxing.client.result.URIParsedResult r0;
+        java.lang.String r1;
+
+        r0 := @this: com.google.zxing.client.result.URIParsedResult;
+
+        r1 = r0.<com.google.zxing.client.result.URIParsedResult: java.lang.String title>;
+
+        return r1;
+    }
+
+    public java.lang.String getURI()
+    {
+        com.google.zxing.client.result.URIParsedResult r0;
+        java.lang.String r1;
+
+        r0 := @this: com.google.zxing.client.result.URIParsedResult;
+
+        r1 = r0.<com.google.zxing.client.result.URIParsedResult: java.lang.String uri>;
+
+        return r1;
+    }
+
+    public boolean isPossiblyMaliciousURI()
+    {
+        java.util.regex.Matcher $r3;
+        com.google.zxing.client.result.URIParsedResult r0;
+        java.lang.String $r1;
+        java.util.regex.Pattern $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.client.result.URIParsedResult;
+
+        $r2 = <com.google.zxing.client.result.URIParsedResult: java.util.regex.Pattern USER_IN_HOST>;
+
+        $r1 = r0.<com.google.zxing.client.result.URIParsedResult: java.lang.String uri>;
+
+        $r3 = virtualinvoke $r2.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r1);
+
+        $z0 = virtualinvoke $r3.<java.util.regex.Matcher: boolean find()>();
+
+        return $z0;
+    }
+}

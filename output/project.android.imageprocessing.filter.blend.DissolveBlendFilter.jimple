@@ -1,0 +1,75 @@
+public class project.android.imageprocessing.filter.blend.DissolveBlendFilter extends project.android.imageprocessing.filter.MultiInputFilter
+{
+    public static final java.lang.String UNIFORM_MIX_PERCENT;
+    public float mixPercent;
+    public int mixPercentHandle;
+
+    public void <init>(float)
+    {
+        float $f0;
+        project.android.imageprocessing.filter.blend.DissolveBlendFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.blend.DissolveBlendFilter;
+
+        $f0 := @parameter0: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void <init>(int)>(2);
+
+        r0.<project.android.imageprocessing.filter.blend.DissolveBlendFilter: float mixPercent> = $f0;
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.blend.DissolveBlendFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.blend.DissolveBlendFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nuniform sampler2D u_Texture1;\nvarying vec2 v_TexCoord;\nuniform float u_MixPercent;\nvoid main(){\n   vec4 color1 = texture2D(u_Texture0,v_TexCoord);\n   vec4 color2 = texture2D(u_Texture1,v_TexCoord);\n   gl_FragColor = mix(color1, color2, u_MixPercent);\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.blend.DissolveBlendFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.blend.DissolveBlendFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_MixPercent");
+
+        r0.<project.android.imageprocessing.filter.blend.DissolveBlendFilter: int mixPercentHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        int $i0;
+        float $f0;
+        project.android.imageprocessing.filter.blend.DissolveBlendFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.blend.DissolveBlendFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.blend.DissolveBlendFilter: int mixPercentHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.blend.DissolveBlendFilter: float mixPercent>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.blend.DissolveBlendFilter: java.lang.String UNIFORM_MIX_PERCENT> = "u_MixPercent";
+
+        return;
+    }
+}

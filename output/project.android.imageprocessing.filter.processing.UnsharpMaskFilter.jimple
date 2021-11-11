@@ -1,0 +1,143 @@
+public class project.android.imageprocessing.filter.processing.UnsharpMaskFilter extends project.android.imageprocessing.filter.CompositeFilter
+{
+    public static final java.lang.String UNIFORM_INTENSITY;
+    public project.android.imageprocessing.filter.processing.GaussianBlurFilter blur;
+    public float intensity;
+    public int intensityHandle;
+
+    public void <init>(float, float)
+    {
+        project.android.imageprocessing.filter.processing.GaussianBlurFilter $r1;
+        project.android.imageprocessing.filter.processing.UnsharpMaskFilter r0;
+        float $f0, $f1;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.UnsharpMaskFilter;
+
+        $f0 := @parameter0: float;
+
+        $f1 := @parameter1: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.CompositeFilter: void <init>(int)>(2);
+
+        r0.<project.android.imageprocessing.filter.processing.UnsharpMaskFilter: float intensity> = $f1;
+
+        $r1 = new project.android.imageprocessing.filter.processing.GaussianBlurFilter;
+
+        specialinvoke $r1.<project.android.imageprocessing.filter.processing.GaussianBlurFilter: void <init>(float)>($f0);
+
+        r0.<project.android.imageprocessing.filter.processing.UnsharpMaskFilter: project.android.imageprocessing.filter.processing.GaussianBlurFilter blur> = $r1;
+
+        $r1 = r0.<project.android.imageprocessing.filter.processing.UnsharpMaskFilter: project.android.imageprocessing.filter.processing.GaussianBlurFilter blur>;
+
+        virtualinvoke $r1.<project.android.imageprocessing.input.GLTextureOutputRenderer: void addTarget(project.android.imageprocessing.output.GLTextureInputRenderer)>(r0);
+
+        $r1 = r0.<project.android.imageprocessing.filter.processing.UnsharpMaskFilter: project.android.imageprocessing.filter.processing.GaussianBlurFilter blur>;
+
+        virtualinvoke r0.<project.android.imageprocessing.filter.CompositeFilter: void registerInitialFilter(project.android.imageprocessing.filter.BasicFilter)>($r1);
+
+        $r1 = r0.<project.android.imageprocessing.filter.processing.UnsharpMaskFilter: project.android.imageprocessing.filter.processing.GaussianBlurFilter blur>;
+
+        virtualinvoke r0.<project.android.imageprocessing.filter.CompositeFilter: void registerTerminalFilter(project.android.imageprocessing.input.GLTextureOutputRenderer)>($r1);
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.processing.UnsharpMaskFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.UnsharpMaskFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nuniform sampler2D u_Texture1;\nvarying vec2 v_TexCoord;\nuniform float u_Intensity;\nvoid main(){\n   vec4 sharpImageColor = texture2D(u_Texture0, v_TexCoord);\n   vec4 blurredImageColor = texture2D(u_Texture1, v_TexCoord);\n   gl_FragColor = vec4(mix(sharpImageColor.rgb, blurredImageColor.rgb, u_Intensity), sharpImageColor.a);\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        project.android.imageprocessing.filter.processing.UnsharpMaskFilter r0;
+        int $i0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.UnsharpMaskFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_Intensity");
+
+        r0.<project.android.imageprocessing.filter.processing.UnsharpMaskFilter: int intensityHandle> = $i0;
+
+        return;
+    }
+
+    public void newTextureReady(int, project.android.imageprocessing.input.GLTextureOutputRenderer, boolean)
+    {
+        project.android.imageprocessing.input.GLTextureOutputRenderer $r1;
+        java.util.List $r2;
+        project.android.imageprocessing.filter.processing.GaussianBlurFilter $r3;
+        project.android.imageprocessing.filter.processing.UnsharpMaskFilter r0;
+        int $i0, $i1;
+        boolean $z0, $z1;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.UnsharpMaskFilter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: project.android.imageprocessing.input.GLTextureOutputRenderer;
+
+        $z0 := @parameter2: boolean;
+
+        $r2 = r0.<project.android.imageprocessing.filter.MultiInputFilter: java.util.List filterLocations>;
+
+        $i1 = interfaceinvoke $r2.<java.util.List: int size()>();
+
+        if $i1 < 2 goto label1;
+
+        $r2 = r0.<project.android.imageprocessing.filter.MultiInputFilter: java.util.List filterLocations>;
+
+        $z1 = interfaceinvoke $r2.<java.util.List: boolean contains(java.lang.Object)>($r1);
+
+        if $z1 != 0 goto label2;
+
+     label1:
+        virtualinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void clearRegisteredFilterLocations()>();
+
+        virtualinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void registerFilterLocation(project.android.imageprocessing.input.GLTextureOutputRenderer,int)>($r1, 0);
+
+        $r3 = r0.<project.android.imageprocessing.filter.processing.UnsharpMaskFilter: project.android.imageprocessing.filter.processing.GaussianBlurFilter blur>;
+
+        virtualinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void registerFilterLocation(project.android.imageprocessing.input.GLTextureOutputRenderer,int)>($r3, 1);
+
+        virtualinvoke r0.<project.android.imageprocessing.filter.CompositeFilter: void registerInputOutputFilter(project.android.imageprocessing.input.GLTextureOutputRenderer)>($r1);
+
+     label2:
+        specialinvoke r0.<project.android.imageprocessing.filter.CompositeFilter: void newTextureReady(int,project.android.imageprocessing.input.GLTextureOutputRenderer,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        project.android.imageprocessing.filter.processing.UnsharpMaskFilter r0;
+        int $i0;
+        float $f0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.UnsharpMaskFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.processing.UnsharpMaskFilter: int intensityHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.processing.UnsharpMaskFilter: float intensity>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.processing.UnsharpMaskFilter: java.lang.String UNIFORM_INTENSITY> = "u_Intensity";
+
+        return;
+    }
+}

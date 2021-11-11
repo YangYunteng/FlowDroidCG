@@ -1,0 +1,846 @@
+public class com.caremark.caremark.util.HTML_LinkMovementMethod extends android.text.method.LinkMovementMethod
+{
+    public static final int LINKIFY_NONE;
+    public static com.caremark.caremark.util.HTML_LinkMovementMethod singleInstance;
+    public int activeTextViewHashcode;
+    public android.text.style.ClickableSpan clickableSpanUnderTouchOnActionDown;
+    public boolean isUrlHighlighted;
+    public com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkClickListener onLinkClickListener;
+    public com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkLongClickListener onLinkLongClickListener;
+    public com.caremark.caremark.util.HTML_LinkMovementMethod$LongPressTimer ongoingLongPressTimer;
+    public final android.graphics.RectF touchedLineBounds;
+    public boolean wasLongPressRegistered;
+
+    public void <init>()
+    {
+        android.graphics.RectF $r1;
+        com.caremark.caremark.util.HTML_LinkMovementMethod r0;
+
+        r0 := @this: com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        specialinvoke r0.<android.text.method.LinkMovementMethod: void <init>()>();
+
+        $r1 = new android.graphics.RectF;
+
+        specialinvoke $r1.<android.graphics.RectF: void <init>()>();
+
+        r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: android.graphics.RectF touchedLineBounds> = $r1;
+
+        return;
+    }
+
+    public static boolean access$002(com.caremark.caremark.util.HTML_LinkMovementMethod, boolean)
+    {
+        com.caremark.caremark.util.HTML_LinkMovementMethod $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        $z0 := @parameter1: boolean;
+
+        $r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: boolean wasLongPressRegistered> = $z0;
+
+        return $z0;
+    }
+
+    public static void addLinks(int, com.caremark.caremark.util.HTML_LinkMovementMethod, android.widget.TextView)
+    {
+        android.widget.TextView $r0;
+        int $i0, $i1;
+        com.caremark.caremark.util.HTML_LinkMovementMethod $r1;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        $r0 := @parameter2: android.widget.TextView;
+
+        virtualinvoke $r0.<android.widget.TextView: void setMovementMethod(android.text.method.MovementMethod)>($r1);
+
+        $i1 = -2;
+
+        if $i0 == $i1 goto label1;
+
+        staticinvoke <android.text.util.Linkify: boolean addLinks(android.widget.TextView,int)>($r0, $i0);
+
+     label1:
+        return;
+    }
+
+    private void cleanupOnTouchUp(android.widget.TextView)
+    {
+        android.widget.TextView $r1;
+        com.caremark.caremark.util.HTML_LinkMovementMethod r0;
+
+        r0 := @this: com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        $r1 := @parameter0: android.widget.TextView;
+
+        r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: boolean wasLongPressRegistered> = 0;
+
+        r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: android.text.style.ClickableSpan clickableSpanUnderTouchOnActionDown> = null;
+
+        virtualinvoke r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: void removeUrlHighlightColor(android.widget.TextView)>($r1);
+
+        virtualinvoke r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: void removeLongPressCallback(android.widget.TextView)>($r1);
+
+        return;
+    }
+
+    public static com.caremark.caremark.util.HTML_LinkMovementMethod getInstance()
+    {
+        com.caremark.caremark.util.HTML_LinkMovementMethod $r0;
+
+        $r0 = <com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod singleInstance>;
+
+        if $r0 != null goto label1;
+
+        $r0 = new com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        specialinvoke $r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: void <init>()>();
+
+        <com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod singleInstance> = $r0;
+
+     label1:
+        $r0 = <com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod singleInstance>;
+
+        return $r0;
+    }
+
+    public static com.caremark.caremark.util.HTML_LinkMovementMethod linkify(int, android.app.Activity)
+    {
+        int $i0;
+        android.view.View $r1;
+        com.caremark.caremark.util.HTML_LinkMovementMethod $r3;
+        android.app.Activity $r0;
+        android.view.ViewGroup $r2;
+
+        $i0 := @parameter0: int;
+
+        $r0 := @parameter1: android.app.Activity;
+
+        $r1 = virtualinvoke $r0.<android.app.Activity: android.view.View findViewById(int)>(16908290);
+
+        $r2 = (android.view.ViewGroup) $r1;
+
+        $r1 = virtualinvoke $r2.<android.view.ViewGroup: android.view.View getChildAt(int)>(0);
+
+        $r2 = (android.view.ViewGroup) $r1;
+
+        $r3 = staticinvoke <com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod newInstance()>();
+
+        staticinvoke <com.caremark.caremark.util.HTML_LinkMovementMethod: void rAddLinks(int,android.view.ViewGroup,com.caremark.caremark.util.HTML_LinkMovementMethod)>($i0, $r2, $r3);
+
+        return $r3;
+    }
+
+    public static com.caremark.caremark.util.HTML_LinkMovementMethod linkify(int, android.view.ViewGroup)
+    {
+        int $i0;
+        com.caremark.caremark.util.HTML_LinkMovementMethod $r1;
+        android.view.ViewGroup $r0;
+
+        $i0 := @parameter0: int;
+
+        $r0 := @parameter1: android.view.ViewGroup;
+
+        $r1 = staticinvoke <com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod newInstance()>();
+
+        staticinvoke <com.caremark.caremark.util.HTML_LinkMovementMethod: void rAddLinks(int,android.view.ViewGroup,com.caremark.caremark.util.HTML_LinkMovementMethod)>($i0, $r0, $r1);
+
+        return $r1;
+    }
+
+    public static transient com.caremark.caremark.util.HTML_LinkMovementMethod linkify(int, android.widget.TextView[])
+    {
+        android.widget.TextView[] $r0;
+        android.widget.TextView $r1;
+        int $i0, $i1, $i2;
+        com.caremark.caremark.util.HTML_LinkMovementMethod $r2;
+
+        $i0 := @parameter0: int;
+
+        $r0 := @parameter1: android.widget.TextView[];
+
+        $r2 = staticinvoke <com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod newInstance()>();
+
+        $i1 = lengthof $r0;
+
+        $i2 = 0;
+
+     label1:
+        if $i2 >= $i1 goto label2;
+
+        $r1 = $r0[$i2];
+
+        staticinvoke <com.caremark.caremark.util.HTML_LinkMovementMethod: void addLinks(int,com.caremark.caremark.util.HTML_LinkMovementMethod,android.widget.TextView)>($i0, $r2, $r1);
+
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label2:
+        return $r2;
+    }
+
+    public static com.caremark.caremark.util.HTML_LinkMovementMethod linkifyHtml(android.app.Activity)
+    {
+        int $i0;
+        com.caremark.caremark.util.HTML_LinkMovementMethod $r0;
+        android.app.Activity $r1;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        $i0 = -2;
+
+        $r0 = staticinvoke <com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod linkify(int,android.app.Activity)>($i0, $r1);
+
+        return $r0;
+    }
+
+    public static com.caremark.caremark.util.HTML_LinkMovementMethod linkifyHtml(android.view.ViewGroup)
+    {
+        int $i0;
+        com.caremark.caremark.util.HTML_LinkMovementMethod $r0;
+        android.view.ViewGroup $r1;
+
+        $r1 := @parameter0: android.view.ViewGroup;
+
+        $i0 = -2;
+
+        $r0 = staticinvoke <com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod linkify(int,android.view.ViewGroup)>($i0, $r1);
+
+        return $r0;
+    }
+
+    public static transient com.caremark.caremark.util.HTML_LinkMovementMethod linkifyHtml(android.widget.TextView[])
+    {
+        int $i0;
+        android.widget.TextView[] $r1;
+        com.caremark.caremark.util.HTML_LinkMovementMethod $r0;
+
+        $r1 := @parameter0: android.widget.TextView[];
+
+        $i0 = -2;
+
+        $r0 = staticinvoke <com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod linkify(int,android.widget.TextView[])>($i0, $r1);
+
+        return $r0;
+    }
+
+    public static com.caremark.caremark.util.HTML_LinkMovementMethod newInstance()
+    {
+        com.caremark.caremark.util.HTML_LinkMovementMethod $r0;
+
+        $r0 = new com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        specialinvoke $r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: void <init>()>();
+
+        return $r0;
+    }
+
+    public static void rAddLinks(int, android.view.ViewGroup, com.caremark.caremark.util.HTML_LinkMovementMethod)
+    {
+        android.view.ViewGroup $r0, $r3;
+        android.widget.TextView $r4;
+        int $i0, $i1, $i2;
+        android.view.View $r2;
+        com.caremark.caremark.util.HTML_LinkMovementMethod $r1;
+        boolean $z0;
+
+        $i0 := @parameter0: int;
+
+        $r0 := @parameter1: android.view.ViewGroup;
+
+        $r1 := @parameter2: com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        $i1 = 0;
+
+     label1:
+        $i2 = virtualinvoke $r0.<android.view.ViewGroup: int getChildCount()>();
+
+        if $i1 >= $i2 goto label4;
+
+        $r2 = virtualinvoke $r0.<android.view.ViewGroup: android.view.View getChildAt(int)>($i1);
+
+        $z0 = $r2 instanceof android.view.ViewGroup;
+
+        if $z0 == 0 goto label2;
+
+        $r3 = (android.view.ViewGroup) $r2;
+
+        staticinvoke <com.caremark.caremark.util.HTML_LinkMovementMethod: void rAddLinks(int,android.view.ViewGroup,com.caremark.caremark.util.HTML_LinkMovementMethod)>($i0, $r3, $r1);
+
+        goto label3;
+
+     label2:
+        $z0 = $r2 instanceof android.widget.TextView;
+
+        if $z0 == 0 goto label3;
+
+        $r4 = (android.widget.TextView) $r2;
+
+        staticinvoke <com.caremark.caremark.util.HTML_LinkMovementMethod: void addLinks(int,com.caremark.caremark.util.HTML_LinkMovementMethod,android.widget.TextView)>($i0, $r1, $r4);
+
+     label3:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label4:
+        return;
+    }
+
+    public void dispatchUrlClick(android.widget.TextView, android.text.style.ClickableSpan)
+    {
+        android.widget.TextView $r2;
+        com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkClickListener $r1;
+        com.caremark.caremark.util.HTML_LinkMovementMethod$ClickableSpanWithText $r4;
+        android.text.style.ClickableSpan $r3;
+        java.lang.String $r5;
+        com.caremark.caremark.util.HTML_LinkMovementMethod r0;
+
+        r0 := @this: com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        $r2 := @parameter0: android.widget.TextView;
+
+        $r3 := @parameter1: android.text.style.ClickableSpan;
+
+        $r4 = staticinvoke <com.caremark.caremark.util.HTML_LinkMovementMethod$ClickableSpanWithText: com.caremark.caremark.util.HTML_LinkMovementMethod$ClickableSpanWithText ofSpan(android.widget.TextView,android.text.style.ClickableSpan)>($r2, $r3);
+
+        $r1 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkClickListener onLinkClickListener>;
+
+        if $r1 == null goto label1;
+
+        $r5 = virtualinvoke $r4.<com.caremark.caremark.util.HTML_LinkMovementMethod$ClickableSpanWithText: java.lang.String text()>();
+
+        interfaceinvoke $r1.<com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkClickListener: boolean onClick(android.widget.TextView,java.lang.String)>($r2, $r5);
+
+     label1:
+        return;
+    }
+
+    public void dispatchUrlLongClick(android.widget.TextView, android.text.style.ClickableSpan)
+    {
+        android.widget.TextView $r1;
+        com.caremark.caremark.util.HTML_LinkMovementMethod$ClickableSpanWithText $r3;
+        com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkLongClickListener $r4;
+        android.text.style.ClickableSpan $r2;
+        java.lang.String $r5;
+        com.caremark.caremark.util.HTML_LinkMovementMethod r0;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        $r1 := @parameter0: android.widget.TextView;
+
+        $r2 := @parameter1: android.text.style.ClickableSpan;
+
+        $r3 = staticinvoke <com.caremark.caremark.util.HTML_LinkMovementMethod$ClickableSpanWithText: com.caremark.caremark.util.HTML_LinkMovementMethod$ClickableSpanWithText ofSpan(android.widget.TextView,android.text.style.ClickableSpan)>($r1, $r2);
+
+        $r4 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkLongClickListener onLinkLongClickListener>;
+
+        if $r4 == null goto label1;
+
+        $r5 = virtualinvoke $r3.<com.caremark.caremark.util.HTML_LinkMovementMethod$ClickableSpanWithText: java.lang.String text()>();
+
+        $z0 = interfaceinvoke $r4.<com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkLongClickListener: boolean onLongClick(android.widget.TextView,java.lang.String)>($r1, $r5);
+
+        if $z0 == 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        if $z0 != 0 goto label3;
+
+        $r2 = virtualinvoke $r3.<com.caremark.caremark.util.HTML_LinkMovementMethod$ClickableSpanWithText: android.text.style.ClickableSpan span()>();
+
+        virtualinvoke $r2.<android.text.style.ClickableSpan: void onClick(android.view.View)>($r1);
+
+     label3:
+        return;
+    }
+
+    public android.text.style.ClickableSpan findClickableSpanUnderTouch(android.widget.TextView, android.text.Spannable, android.view.MotionEvent)
+    {
+        java.lang.Object[] $r7;
+        android.text.Spannable $r3;
+        android.text.style.ClickableSpan $r9;
+        android.view.MotionEvent $r4;
+        int $i0, $i1, $i2, $i3;
+        com.caremark.caremark.util.HTML_LinkMovementMethod r0;
+        boolean $z0;
+        android.graphics.RectF $r1, $r6;
+        android.widget.TextView $r2;
+        android.text.Layout $r5;
+        float $f0, $f1, $f2;
+        java.lang.Object $r8;
+
+        r0 := @this: com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        $r2 := @parameter0: android.widget.TextView;
+
+        $r3 := @parameter1: android.text.Spannable;
+
+        $r4 := @parameter2: android.view.MotionEvent;
+
+        $f1 = virtualinvoke $r4.<android.view.MotionEvent: float getX()>();
+
+        $i0 = (int) $f1;
+
+        $f1 = virtualinvoke $r4.<android.view.MotionEvent: float getY()>();
+
+        $i1 = (int) $f1;
+
+        $i2 = virtualinvoke $r2.<android.widget.TextView: int getTotalPaddingLeft()>();
+
+        $i0 = $i0 - $i2;
+
+        $i2 = virtualinvoke $r2.<android.widget.TextView: int getTotalPaddingTop()>();
+
+        $i1 = $i1 - $i2;
+
+        $i2 = virtualinvoke $r2.<android.widget.TextView: int getScrollX()>();
+
+        $i0 = $i0 + $i2;
+
+        $i2 = virtualinvoke $r2.<android.widget.TextView: int getScrollY()>();
+
+        $i1 = $i1 + $i2;
+
+        $r5 = virtualinvoke $r2.<android.widget.TextView: android.text.Layout getLayout()>();
+
+        $i2 = virtualinvoke $r5.<android.text.Layout: int getLineForVertical(int)>($i1);
+
+        $f1 = (float) $i0;
+
+        $i0 = virtualinvoke $r5.<android.text.Layout: int getOffsetForHorizontal(int,float)>($i2, $f1);
+
+        $r1 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: android.graphics.RectF touchedLineBounds>;
+
+        $f0 = virtualinvoke $r5.<android.text.Layout: float getLineLeft(int)>($i2);
+
+        $r1.<android.graphics.RectF: float left> = $f0;
+
+        $r1 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: android.graphics.RectF touchedLineBounds>;
+
+        $i3 = virtualinvoke $r5.<android.text.Layout: int getLineTop(int)>($i2);
+
+        $f0 = (float) $i3;
+
+        $r1.<android.graphics.RectF: float top> = $f0;
+
+        $r6 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: android.graphics.RectF touchedLineBounds>;
+
+        $f2 = virtualinvoke $r5.<android.text.Layout: float getLineWidth(int)>($i2);
+
+        $r1 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: android.graphics.RectF touchedLineBounds>;
+
+        $f0 = $r1.<android.graphics.RectF: float left>;
+
+        $f0 = $f2 + $f0;
+
+        $r6.<android.graphics.RectF: float right> = $f0;
+
+        $i2 = virtualinvoke $r5.<android.text.Layout: int getLineBottom(int)>($i2);
+
+        $f0 = (float) $i2;
+
+        $r1.<android.graphics.RectF: float bottom> = $f0;
+
+        $r1 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: android.graphics.RectF touchedLineBounds>;
+
+        $f0 = (float) $i1;
+
+        $z0 = virtualinvoke $r1.<android.graphics.RectF: boolean contains(float,float)>($f1, $f0);
+
+        if $z0 == 0 goto label3;
+
+        $r7 = interfaceinvoke $r3.<android.text.Spannable: java.lang.Object[] getSpans(int,int,java.lang.Class)>($i0, $i0, class "Landroid/text/style/ClickableSpan;");
+
+        $i1 = lengthof $r7;
+
+        $i0 = 0;
+
+     label1:
+        if $i0 >= $i1 goto label3;
+
+        $r8 = $r7[$i0];
+
+        $z0 = $r8 instanceof android.text.style.ClickableSpan;
+
+        if $z0 == 0 goto label2;
+
+        $r9 = (android.text.style.ClickableSpan) $r8;
+
+        return $r9;
+
+     label2:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label3:
+        return null;
+    }
+
+    public void highlightUrl(android.widget.TextView, android.text.style.ClickableSpan, android.text.Spannable)
+    {
+        android.text.Spannable $r2;
+        android.text.style.ClickableSpan $r3;
+        android.text.style.BackgroundColorSpan $r4;
+        android.widget.TextView $r1;
+        int $i0, $i1, $i2;
+        com.caremark.caremark.util.HTML_LinkMovementMethod r0;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        $r1 := @parameter0: android.widget.TextView;
+
+        $r3 := @parameter1: android.text.style.ClickableSpan;
+
+        $r2 := @parameter2: android.text.Spannable;
+
+        $z0 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: boolean isUrlHighlighted>;
+
+        if $z0 == 0 goto label1;
+
+        return;
+
+     label1:
+        r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: boolean isUrlHighlighted> = 1;
+
+        $i0 = interfaceinvoke $r2.<android.text.Spannable: int getSpanStart(java.lang.Object)>($r3);
+
+        $i1 = interfaceinvoke $r2.<android.text.Spannable: int getSpanEnd(java.lang.Object)>($r3);
+
+        $r4 = null;
+
+        $i2 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i2 < 16 goto label2;
+
+        $r4 = new android.text.style.BackgroundColorSpan;
+
+        $i2 = virtualinvoke $r1.<android.widget.TextView: int getHighlightColor()>();
+
+        specialinvoke $r4.<android.text.style.BackgroundColorSpan: void <init>(int)>($i2);
+
+     label2:
+        interfaceinvoke $r2.<android.text.Spannable: void setSpan(java.lang.Object,int,int,int)>($r4, $i0, $i1, 18);
+
+        $i2 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i2 < 4 goto label3;
+
+        virtualinvoke $r1.<android.widget.TextView: void setTag(int,java.lang.Object)>(2131297213, $r4);
+
+     label3:
+        staticinvoke <android.text.Selection: void setSelection(android.text.Spannable,int,int)>($r2, $i0, $i1);
+
+        return;
+    }
+
+    public boolean onTouchEvent(android.widget.TextView, android.text.Spannable, android.view.MotionEvent)
+    {
+        com.caremark.caremark.util.HTML_LinkMovementMethod$1 $r7;
+        android.text.Spannable $r2;
+        com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkLongClickListener $r6;
+        android.text.style.ClickableSpan $r4, $r5;
+        android.widget.TextView $r1;
+        android.view.MotionEvent $r3;
+        int $i0, $i1;
+        com.caremark.caremark.util.HTML_LinkMovementMethod r0;
+        boolean $z0, $z1;
+
+        r0 := @this: com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        $r1 := @parameter0: android.widget.TextView;
+
+        $r2 := @parameter1: android.text.Spannable;
+
+        $r3 := @parameter2: android.view.MotionEvent;
+
+        $i0 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: int activeTextViewHashcode>;
+
+        $i1 = virtualinvoke $r1.<java.lang.Object: int hashCode()>();
+
+        if $i0 == $i1 goto label01;
+
+        $i0 = virtualinvoke $r1.<java.lang.Object: int hashCode()>();
+
+        r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: int activeTextViewHashcode> = $i0;
+
+        virtualinvoke $r1.<android.widget.TextView: void setAutoLinkMask(int)>(0);
+
+     label01:
+        $r4 = virtualinvoke r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: android.text.style.ClickableSpan findClickableSpanUnderTouch(android.widget.TextView,android.text.Spannable,android.view.MotionEvent)>($r1, $r2, $r3);
+
+        $i0 = virtualinvoke $r3.<android.view.MotionEvent: int getAction()>();
+
+        if $i0 != 0 goto label02;
+
+        r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: android.text.style.ClickableSpan clickableSpanUnderTouchOnActionDown> = $r4;
+
+     label02:
+        $r5 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: android.text.style.ClickableSpan clickableSpanUnderTouchOnActionDown>;
+
+        if $r5 == null goto label03;
+
+        $z0 = 1;
+
+        goto label04;
+
+     label03:
+        $z0 = 0;
+
+     label04:
+        $i0 = virtualinvoke $r3.<android.view.MotionEvent: int getAction()>();
+
+        if $i0 == 0 goto label11;
+
+        if $i0 == 1 goto label09;
+
+        if $i0 == 2 goto label06;
+
+        if $i0 == 3 goto label05;
+
+        return 0;
+
+     label05:
+        specialinvoke r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: void cleanupOnTouchUp(android.widget.TextView)>($r1);
+
+        return 0;
+
+     label06:
+        $r5 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: android.text.style.ClickableSpan clickableSpanUnderTouchOnActionDown>;
+
+        if $r4 == $r5 goto label07;
+
+        virtualinvoke r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: void removeLongPressCallback(android.widget.TextView)>($r1);
+
+     label07:
+        $z1 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: boolean wasLongPressRegistered>;
+
+        if $z1 != 0 goto label13;
+
+        if $r4 == null goto label08;
+
+        virtualinvoke r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: void highlightUrl(android.widget.TextView,android.text.style.ClickableSpan,android.text.Spannable)>($r1, $r4, $r2);
+
+        return $z0;
+
+     label08:
+        virtualinvoke r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: void removeUrlHighlightColor(android.widget.TextView)>($r1);
+
+        return $z0;
+
+     label09:
+        $z1 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: boolean wasLongPressRegistered>;
+
+        if $z1 != 0 goto label10;
+
+        if $z0 == 0 goto label10;
+
+        $r5 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: android.text.style.ClickableSpan clickableSpanUnderTouchOnActionDown>;
+
+        if $r4 != $r5 goto label10;
+
+        virtualinvoke r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: void dispatchUrlClick(android.widget.TextView,android.text.style.ClickableSpan)>($r1, $r4);
+
+     label10:
+        specialinvoke r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: void cleanupOnTouchUp(android.widget.TextView)>($r1);
+
+        return $z0;
+
+     label11:
+        if $r4 == null goto label12;
+
+        virtualinvoke r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: void highlightUrl(android.widget.TextView,android.text.style.ClickableSpan,android.text.Spannable)>($r1, $r4, $r2);
+
+     label12:
+        if $z0 == 0 goto label13;
+
+        $r6 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkLongClickListener onLinkLongClickListener>;
+
+        if $r6 == null goto label13;
+
+        $r7 = new com.caremark.caremark.util.HTML_LinkMovementMethod$1;
+
+        specialinvoke $r7.<com.caremark.caremark.util.HTML_LinkMovementMethod$1: void <init>(com.caremark.caremark.util.HTML_LinkMovementMethod,android.widget.TextView,android.text.style.ClickableSpan)>(r0, $r1, $r4);
+
+        virtualinvoke r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: void startTimerForRegisteringLongClick(android.widget.TextView,com.caremark.caremark.util.HTML_LinkMovementMethod$LongPressTimer$OnTimerReachedListener)>($r1, $r7);
+
+     label13:
+        return $z0;
+    }
+
+    public void removeLongPressCallback(android.widget.TextView)
+    {
+        android.widget.TextView $r2;
+        com.caremark.caremark.util.HTML_LinkMovementMethod r0;
+        com.caremark.caremark.util.HTML_LinkMovementMethod$LongPressTimer $r1;
+
+        r0 := @this: com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        $r2 := @parameter0: android.widget.TextView;
+
+        $r1 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod$LongPressTimer ongoingLongPressTimer>;
+
+        if $r1 == null goto label1;
+
+        virtualinvoke $r2.<android.widget.TextView: boolean removeCallbacks(java.lang.Runnable)>($r1);
+
+        r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod$LongPressTimer ongoingLongPressTimer> = null;
+
+     label1:
+        return;
+    }
+
+    public void removeUrlHighlightColor(android.widget.TextView)
+    {
+        java.lang.CharSequence $r2;
+        android.text.Spannable $r3;
+        android.text.style.BackgroundColorSpan $r4;
+        android.widget.TextView $r1;
+        int $i0;
+        java.lang.Object $r5;
+        com.caremark.caremark.util.HTML_LinkMovementMethod r0;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        $r1 := @parameter0: android.widget.TextView;
+
+        $z0 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: boolean isUrlHighlighted>;
+
+        if $z0 != 0 goto label1;
+
+        return;
+
+     label1:
+        r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: boolean isUrlHighlighted> = 0;
+
+        $r2 = virtualinvoke $r1.<android.widget.TextView: java.lang.CharSequence getText()>();
+
+        $r3 = (android.text.Spannable) $r2;
+
+        $r4 = null;
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 < 4 goto label2;
+
+        $r5 = virtualinvoke $r1.<android.widget.TextView: java.lang.Object getTag(int)>(2131297213);
+
+        $r4 = (android.text.style.BackgroundColorSpan) $r5;
+
+     label2:
+        interfaceinvoke $r3.<android.text.Spannable: void removeSpan(java.lang.Object)>($r4);
+
+        staticinvoke <android.text.Selection: void removeSelection(android.text.Spannable)>($r3);
+
+        return;
+    }
+
+    public com.caremark.caremark.util.HTML_LinkMovementMethod setOnLinkClickListener(com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkClickListener)
+    {
+        java.lang.UnsupportedOperationException $r3;
+        com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkClickListener $r1;
+        com.caremark.caremark.util.HTML_LinkMovementMethod r0, $r2;
+
+        r0 := @this: com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        $r1 := @parameter0: com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkClickListener;
+
+        $r2 = <com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod singleInstance>;
+
+        if r0 == $r2 goto label1;
+
+        r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkClickListener onLinkClickListener> = $r1;
+
+        return r0;
+
+     label1:
+        $r3 = new java.lang.UnsupportedOperationException;
+
+        specialinvoke $r3.<java.lang.UnsupportedOperationException: void <init>(java.lang.String)>("Setting a click listener on the instance returned by getInstance() is not supported to avoid memory leaks. Please use newInstance() or any of the linkify() methods instead.");
+
+        throw $r3;
+    }
+
+    public com.caremark.caremark.util.HTML_LinkMovementMethod setOnLinkLongClickListener(com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkLongClickListener)
+    {
+        java.lang.UnsupportedOperationException $r3;
+        com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkLongClickListener $r1;
+        com.caremark.caremark.util.HTML_LinkMovementMethod r0, $r2;
+
+        r0 := @this: com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        $r1 := @parameter0: com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkLongClickListener;
+
+        $r2 = <com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod singleInstance>;
+
+        if r0 == $r2 goto label1;
+
+        r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod$OnLinkLongClickListener onLinkLongClickListener> = $r1;
+
+        return r0;
+
+     label1:
+        $r3 = new java.lang.UnsupportedOperationException;
+
+        specialinvoke $r3.<java.lang.UnsupportedOperationException: void <init>(java.lang.String)>("Setting a long-click listener on the instance returned by getInstance() is not supported to avoid memory leaks. Please use newInstance() or any of the linkify() methods instead.");
+
+        throw $r3;
+    }
+
+    public void startTimerForRegisteringLongClick(android.widget.TextView, com.caremark.caremark.util.HTML_LinkMovementMethod$LongPressTimer$OnTimerReachedListener)
+    {
+        android.widget.TextView $r1;
+        com.caremark.caremark.util.HTML_LinkMovementMethod$LongPressTimer $r3;
+        int $i0;
+        long $l1;
+        com.caremark.caremark.util.HTML_LinkMovementMethod$LongPressTimer$OnTimerReachedListener $r2;
+        com.caremark.caremark.util.HTML_LinkMovementMethod r0;
+
+        r0 := @this: com.caremark.caremark.util.HTML_LinkMovementMethod;
+
+        $r1 := @parameter0: android.widget.TextView;
+
+        $r2 := @parameter1: com.caremark.caremark.util.HTML_LinkMovementMethod$LongPressTimer$OnTimerReachedListener;
+
+        $r3 = new com.caremark.caremark.util.HTML_LinkMovementMethod$LongPressTimer;
+
+        specialinvoke $r3.<com.caremark.caremark.util.HTML_LinkMovementMethod$LongPressTimer: void <init>()>();
+
+        r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod$LongPressTimer ongoingLongPressTimer> = $r3;
+
+        $r3 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod$LongPressTimer ongoingLongPressTimer>;
+
+        virtualinvoke $r3.<com.caremark.caremark.util.HTML_LinkMovementMethod$LongPressTimer: void setOnTimerReachedListener(com.caremark.caremark.util.HTML_LinkMovementMethod$LongPressTimer$OnTimerReachedListener)>($r2);
+
+        $r3 = r0.<com.caremark.caremark.util.HTML_LinkMovementMethod: com.caremark.caremark.util.HTML_LinkMovementMethod$LongPressTimer ongoingLongPressTimer>;
+
+        $i0 = staticinvoke <android.view.ViewConfiguration: int getLongPressTimeout()>();
+
+        $l1 = (long) $i0;
+
+        virtualinvoke $r1.<android.widget.TextView: boolean postDelayed(java.lang.Runnable,long)>($r3, $l1);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.caremark.caremark.util.HTML_LinkMovementMethod: int LINKIFY_NONE> = -2;
+
+        return;
+    }
+}

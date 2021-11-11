@@ -1,0 +1,2293 @@
+public class com.caremark.caremark.synclib.helper.VersionCheckTask extends java.lang.Object
+{
+    public static final java.lang.String JSON;
+    public static final java.lang.String TAG;
+    public android.app.Activity activity;
+    public com.caremark.caremark.synclib.dao.ResponseData appRespData;
+    public java.lang.StringBuffer components;
+    public java.util.ArrayList componentsToBeDownloaded;
+    public com.caremark.caremark.synclib.helper.VersionCheckListener listner;
+    public boolean parseError;
+    public android.app.ProgressDialog progress;
+    public boolean showLoader;
+
+    public void <init>(android.app.Activity, boolean)
+    {
+        com.caremark.caremark.synclib.dao.ResponseData $r2;
+        com.caremark.caremark.synclib.helper.VersionCheckTask r0;
+        android.app.Activity $r1;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        $z0 := @parameter1: boolean;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: boolean showLoader> = 0;
+
+        $r2 = new com.caremark.caremark.synclib.dao.ResponseData;
+
+        specialinvoke $r2.<com.caremark.caremark.synclib.dao.ResponseData: void <init>()>();
+
+        r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData> = $r2;
+
+        r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: boolean parseError> = 0;
+
+        r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity> = $r1;
+
+        r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: boolean showLoader> = $z0;
+
+        return;
+    }
+
+    public static void access$000(com.caremark.caremark.synclib.helper.VersionCheckTask, java.lang.String)
+    {
+        com.caremark.caremark.synclib.helper.VersionCheckTask $r0;
+        java.lang.String $r1;
+
+        $r0 := @parameter0: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        $r1 := @parameter1: java.lang.String;
+
+        specialinvoke $r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: void parseResponse(java.lang.String)>($r1);
+
+        return;
+    }
+
+    public static void access$100(com.caremark.caremark.synclib.helper.VersionCheckTask, java.lang.String)
+    {
+        com.caremark.caremark.synclib.helper.VersionCheckTask $r0;
+        java.lang.String $r1;
+
+        $r0 := @parameter0: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        $r1 := @parameter1: java.lang.String;
+
+        specialinvoke $r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: void postExecute(java.lang.String)>($r1);
+
+        return;
+    }
+
+    public static void access$200(com.caremark.caremark.synclib.helper.VersionCheckTask, java.util.ArrayList)
+    {
+        com.caremark.caremark.synclib.helper.VersionCheckTask $r0;
+        java.util.ArrayList $r1;
+
+        $r0 := @parameter0: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        $r1 := @parameter1: java.util.ArrayList;
+
+        specialinvoke $r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: void dismissProgress(java.util.ArrayList)>($r1);
+
+        return;
+    }
+
+    public static void access$300(com.caremark.caremark.synclib.helper.VersionCheckTask)
+    {
+        com.caremark.caremark.synclib.helper.VersionCheckTask $r0;
+
+        $r0 := @parameter0: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        specialinvoke $r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: void checkComponentUpgrade()>();
+
+        return;
+    }
+
+    public static android.app.Activity access$400(com.caremark.caremark.synclib.helper.VersionCheckTask)
+    {
+        com.caremark.caremark.synclib.helper.VersionCheckTask $r0;
+        android.app.Activity r1;
+
+        $r0 := @parameter0: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        r1 = $r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+        return r1;
+    }
+
+    private void checkAndDeleteComponent(java.util.ArrayList)
+    {
+        java.lang.String[] $r6, $r7;
+        java.util.ArrayList $r1;
+        java.lang.StringBuffer $r13;
+        int $i0, $i1;
+        java.lang.String $r3, $r5, $r11;
+        com.caremark.caremark.synclib.dao.ComponentDetails $r10;
+        boolean $z0, $z1;
+        java.util.Iterator $r8;
+        java.io.File $r12;
+        java.lang.Exception $r14;
+        com.caremark.caremark.synclib.helper.VersionCheckTask r0;
+        java.lang.StringBuilder $r4;
+        java.lang.Object $r9;
+        android.app.Activity $r2;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        $r1 := @parameter0: java.util.ArrayList;
+
+     label01:
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+        $r3 = staticinvoke <com.caremark.caremark.synclib.util.SharedPreferencesManager: java.lang.String getStringInfo(android.content.Context,java.lang.String,java.lang.String)>($r2, "downloadedComponents", "");
+
+     label02:
+        $r4 = new java.lang.StringBuilder;
+
+     label03:
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Previous Components ==> ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("VersionCheckTask", $r5);
+
+        $r6 = virtualinvoke $r3.<java.lang.String: java.lang.String[] split(java.lang.String)>(";;");
+
+        $i0 = lengthof $r6;
+
+     label04:
+        $r4 = new java.lang.StringBuilder;
+
+     label05:
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Length of previous components -> ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("VersionCheckTask", $r5);
+
+     label06:
+        $r4 = new java.lang.StringBuilder;
+
+     label07:
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Length of current components -> ");
+
+        $i1 = virtualinvoke $r1.<java.util.ArrayList: int size()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("VersionCheckTask", $r5);
+
+        $r3 = virtualinvoke $r3.<java.lang.String: java.lang.String trim()>();
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r3);
+
+     label08:
+        if $z0 != 0 goto label31;
+
+        $i1 = 0;
+
+     label09:
+        if $i1 >= $i0 goto label31;
+
+     label10:
+        $r3 = $r6[$i1];
+
+        $r7 = virtualinvoke $r3.<java.lang.String: java.lang.String[] split(java.lang.String)>(",,");
+
+        $r5 = $r7[0];
+
+        $r3 = $r6[$i1];
+
+        $r7 = virtualinvoke $r3.<java.lang.String: java.lang.String[] split(java.lang.String)>(",,");
+
+     label11:
+        $z0 = 1;
+
+     label12:
+        $r3 = $r7[1];
+
+        $r8 = virtualinvoke $r1.<java.util.ArrayList: java.util.Iterator iterator()>();
+
+     label13:
+        $z1 = interfaceinvoke $r8.<java.util.Iterator: boolean hasNext()>();
+
+     label14:
+        if $z1 == 0 goto label19;
+
+     label15:
+        $r9 = interfaceinvoke $r8.<java.util.Iterator: java.lang.Object next()>();
+
+        $r10 = (com.caremark.caremark.synclib.dao.ComponentDetails) $r9;
+
+     label16:
+        $r4 = new java.lang.StringBuilder;
+
+     label17:
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Component: ");
+
+        $r11 = virtualinvoke $r10.<com.caremark.caremark.synclib.dao.ComponentDetails: java.lang.String getName()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r11);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" -- Folder: ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r11 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("VersionCheckTask", $r11);
+
+        $r11 = virtualinvoke $r10.<com.caremark.caremark.synclib.dao.ComponentDetails: java.lang.String getName()>();
+
+        $z1 = virtualinvoke $r5.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r11);
+
+     label18:
+        if $z1 == 0 goto label13;
+
+        goto label20;
+
+     label19:
+        $z0 = 0;
+
+     label20:
+        if $z0 != 0 goto label30;
+
+        $r4 = new java.lang.StringBuilder;
+
+     label21:
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Deleting... folder: ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r11 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("VersionCheckTask", $r11);
+
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+        staticinvoke <com.caremark.caremark.synclib.util.SharedPreferencesManager: void setStringInfo(android.content.Context,java.lang.String,java.lang.String,java.lang.String,boolean)>($r2, $r5, "0", "0", 0);
+
+     label22:
+        $r12 = new java.io.File;
+
+        $r4 = new java.lang.StringBuilder;
+
+     label23:
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+        $r11 = staticinvoke <com.caremark.caremark.synclib.util.Util: java.lang.String getStoragePath(android.content.Context)>($r2);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r11);
+
+     label24:
+        $r11 = <java.io.File: java.lang.String separator>;
+
+     label25:
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r11);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r12.<java.io.File: void <init>(java.lang.String)>($r5);
+
+        specialinvoke r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: void deleteComponent(java.io.File)>($r12);
+
+     label26:
+        $r12 = new java.io.File;
+
+        $r4 = new java.lang.StringBuilder;
+
+     label27:
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+        $r5 = staticinvoke <com.caremark.caremark.synclib.util.Util: java.lang.String getStoragePath(android.content.Context)>($r2);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+     label28:
+        $r5 = <java.io.File: java.lang.String separator>;
+
+     label29:
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r12.<java.io.File: void <init>(java.lang.String)>($r3);
+
+        specialinvoke r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: void deleteZip(java.io.File)>($r12);
+
+     label30:
+        $i1 = $i1 + 1;
+
+        goto label09;
+
+     label31:
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+        $r13 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: java.lang.StringBuffer components>;
+
+        $r3 = virtualinvoke $r13.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        staticinvoke <com.caremark.caremark.synclib.util.SharedPreferencesManager: void setStringInfo(android.content.Context,java.lang.String,java.lang.String)>($r2, "downloadedComponents", $r3);
+
+     label32:
+        return;
+
+     label33:
+        $r14 := @caughtexception;
+
+        virtualinvoke $r14.<java.lang.Exception: void printStackTrace()>();
+
+        return;
+
+        catch java.lang.Exception from label01 to label02 with label33;
+        catch java.lang.Exception from label03 to label04 with label33;
+        catch java.lang.Exception from label05 to label06 with label33;
+        catch java.lang.Exception from label07 to label08 with label33;
+        catch java.lang.Exception from label10 to label11 with label33;
+        catch java.lang.Exception from label12 to label14 with label33;
+        catch java.lang.Exception from label15 to label16 with label33;
+        catch java.lang.Exception from label17 to label18 with label33;
+        catch java.lang.Exception from label21 to label22 with label33;
+        catch java.lang.Exception from label23 to label24 with label33;
+        catch java.lang.Exception from label25 to label26 with label33;
+        catch java.lang.Exception from label27 to label28 with label33;
+        catch java.lang.Exception from label29 to label30 with label33;
+        catch java.lang.Exception from label31 to label32 with label33;
+    }
+
+    private void checkComponentUpgrade()
+    {
+        com.caremark.caremark.synclib.dao.ResponseData $r1;
+        java.util.Iterator $r4;
+        java.lang.String[] $r11;
+        java.util.ArrayList $r2, $r12;
+        java.lang.StringBuffer $r3;
+        com.caremark.caremark.synclib.helper.VersionCheckTask r0;
+        java.lang.Object $r5;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r8, $r9;
+        com.caremark.caremark.synclib.dao.ComponentDetails $r6;
+        android.app.Activity $r10;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("SyncLib", "No new version... check for components");
+
+        $r1 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+        $r2 = virtualinvoke $r1.<com.caremark.caremark.synclib.dao.ResponseData: java.util.ArrayList getComponentList()>();
+
+        $r3 = new java.lang.StringBuffer;
+
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>()>();
+
+        r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: java.lang.StringBuffer components> = $r3;
+
+        $r4 = virtualinvoke $r2.<java.util.ArrayList: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (com.caremark.caremark.synclib.dao.ComponentDetails) $r5;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r6.<com.caremark.caremark.synclib.dao.ComponentDetails: java.lang.String getVersion()>();
+
+        $r8 = staticinvoke <com.caremark.caremark.synclib.util.Util: java.lang.String formatVersion(java.lang.String)>($r8);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("_");
+
+        $r8 = virtualinvoke $r6.<com.caremark.caremark.synclib.dao.ComponentDetails: java.lang.String getName()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".zip");
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: java.lang.StringBuffer components>;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r6.<com.caremark.caremark.synclib.dao.ComponentDetails: java.lang.String getName()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r9);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(",,");
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(";;");
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r8);
+
+        $r10 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+        $r8 = virtualinvoke $r6.<com.caremark.caremark.synclib.dao.ComponentDetails: java.lang.String getName()>();
+
+        $r8 = staticinvoke <com.caremark.caremark.synclib.util.SharedPreferencesManager: java.lang.String getStringInfo(android.content.Context,java.lang.String,java.lang.String)>($r10, $r8, "0.0.0");
+
+        $r11 = virtualinvoke $r8.<java.lang.String: java.lang.String[] split(java.lang.String)>(";;");
+
+        $r8 = $r11[0];
+
+        $r9 = virtualinvoke $r6.<com.caremark.caremark.synclib.dao.ComponentDetails: java.lang.String getVersion()>();
+
+        $z0 = staticinvoke <com.caremark.caremark.synclib.util.Util: boolean compareVersion(java.lang.String,java.lang.String,java.lang.String,int)>($r9, $r8, ".", 4);
+
+        if $z0 == 0 goto label1;
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("SyncLib", "new component");
+
+        $r8 = virtualinvoke $r6.<com.caremark.caremark.synclib.dao.ComponentDetails: java.lang.String getLocation()>();
+
+        if $r8 == null goto label1;
+
+        $r12 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: java.util.ArrayList componentsToBeDownloaded>;
+
+        virtualinvoke $r12.<java.util.ArrayList: boolean add(java.lang.Object)>($r6);
+
+        goto label1;
+
+     label2:
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Components Received ==> ");
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: java.lang.StringBuffer components>;
+
+        $r8 = virtualinvoke $r3.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("VersionCheckTask", $r8);
+
+        specialinvoke r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: void checkAndDeleteComponent(java.util.ArrayList)>($r2);
+
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: java.util.ArrayList componentsToBeDownloaded>;
+
+        specialinvoke r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: void dismissProgress(java.util.ArrayList)>($r2);
+
+        return;
+    }
+
+    private void deleteComponent(java.io.File)
+    {
+        java.io.File $r1, $r2;
+        java.lang.Exception $r4;
+        int $i0, $i1;
+        com.caremark.caremark.synclib.helper.VersionCheckTask r0;
+        java.io.File[] $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        $r2 := @parameter0: java.io.File;
+
+     label01:
+        $z0 = virtualinvoke $r2.<java.io.File: boolean isDirectory()>();
+
+     label02:
+        if $z0 == 0 goto label08;
+
+     label03:
+        $r3 = virtualinvoke $r2.<java.io.File: java.io.File[] listFiles()>();
+
+        $i0 = lengthof $r3;
+
+     label04:
+        $i1 = 0;
+
+     label05:
+        if $i1 >= $i0 goto label08;
+
+     label06:
+        $r1 = $r3[$i1];
+
+        specialinvoke r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: void deleteComponent(java.io.File)>($r1);
+
+     label07:
+        $i1 = $i1 + 1;
+
+        goto label05;
+
+     label08:
+        virtualinvoke $r2.<java.io.File: boolean delete()>();
+
+     label09:
+        return;
+
+     label10:
+        $r4 := @caughtexception;
+
+        virtualinvoke $r4.<java.lang.Exception: void printStackTrace()>();
+
+        return;
+
+        catch java.lang.Exception from label01 to label02 with label10;
+        catch java.lang.Exception from label03 to label04 with label10;
+        catch java.lang.Exception from label06 to label07 with label10;
+        catch java.lang.Exception from label08 to label09 with label10;
+    }
+
+    private void deleteZip(java.io.File)
+    {
+        com.caremark.caremark.synclib.helper.VersionCheckTask r0;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r3;
+        java.io.File $r1;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        $r1 := @parameter0: java.io.File;
+
+        $z0 = virtualinvoke $r1.<java.io.File: boolean exists()>();
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke $r1.<java.io.File: boolean delete()>();
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r1);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" deleted...");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("VersionCheckTask", $r3);
+
+     label1:
+        return;
+    }
+
+    private void dismissProgress(java.util.ArrayList)
+    {
+        java.lang.Throwable $r6;
+        com.caremark.caremark.synclib.helper.VersionCheckListener $r5;
+        android.app.ProgressDialog $r4;
+        java.lang.Exception $r7;
+        java.util.ArrayList $r1;
+        int $i0;
+        com.caremark.caremark.synclib.helper.VersionCheckTask r0;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        $r1 := @parameter0: java.util.ArrayList;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("dismissProgress..");
+
+        $i0 = virtualinvoke $r1.<java.util.ArrayList: int size()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("SyncLib", $r3);
+
+     label01:
+        $z0 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: boolean showLoader>;
+
+     label02:
+        if $z0 == 0 goto label06;
+
+     label03:
+        $r4 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.ProgressDialog progress>;
+
+        $z0 = virtualinvoke $r4.<android.app.ProgressDialog: boolean isShowing()>();
+
+     label04:
+        if $z0 == 0 goto label06;
+
+     label05:
+        $r4 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.ProgressDialog progress>;
+
+        virtualinvoke $r4.<android.app.ProgressDialog: void dismiss()>();
+
+     label06:
+        $r5 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.helper.VersionCheckListener listner>;
+
+        interfaceinvoke $r5.<com.caremark.caremark.synclib.helper.VersionCheckListener: void onTaskComplete(java.util.ArrayList)>($r1);
+
+        return;
+
+     label07:
+        $r6 := @caughtexception;
+
+        goto label11;
+
+     label08:
+        $r7 := @caughtexception;
+
+     label09:
+        virtualinvoke $r7.<java.lang.Exception: void printStackTrace()>();
+
+     label10:
+        goto label06;
+
+     label11:
+        $r5 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.helper.VersionCheckListener listner>;
+
+        interfaceinvoke $r5.<com.caremark.caremark.synclib.helper.VersionCheckListener: void onTaskComplete(java.util.ArrayList)>($r1);
+
+        goto label12;
+
+     label12:
+        throw $r6;
+
+        catch java.lang.Exception from label01 to label02 with label08;
+        catch java.lang.Exception from label03 to label04 with label08;
+        catch java.lang.Exception from label05 to label06 with label08;
+        catch java.lang.Throwable from label01 to label02 with label07;
+        catch java.lang.Throwable from label03 to label04 with label07;
+        catch java.lang.Throwable from label05 to label06 with label07;
+        catch java.lang.Throwable from label09 to label10 with label07;
+    }
+
+    private void doDownload(java.lang.String, java.lang.String, boolean)
+    {
+        android.app.AlertDialog $r9;
+        android.app.AlertDialog$Builder $r5;
+        com.caremark.caremark.synclib.helper.VersionCheckTask$4 $r7;
+        com.caremark.caremark.synclib.helper.VersionCheckTask$5 $r8;
+        com.caremark.caremark.synclib.helper.VersionCheckTask r0;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r1, $r2, $r4;
+        android.app.Activity $r6;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $z0 := @parameter2: boolean;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("doDownload...");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>($z0);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("SyncLib", $r4);
+
+        $r5 = new android.app.AlertDialog$Builder;
+
+        $r6 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+        specialinvoke $r5.<android.app.AlertDialog$Builder: void <init>(android.content.Context)>($r6);
+
+        virtualinvoke $r5.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setTitle(java.lang.CharSequence)>($r1);
+
+        virtualinvoke $r5.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setMessage(java.lang.CharSequence)>($r2);
+
+        virtualinvoke $r5.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setCancelable(boolean)>(0);
+
+        if $z0 != 0 goto label1;
+
+        $r7 = new com.caremark.caremark.synclib.helper.VersionCheckTask$4;
+
+        specialinvoke $r7.<com.caremark.caremark.synclib.helper.VersionCheckTask$4: void <init>(com.caremark.caremark.synclib.helper.VersionCheckTask)>(r0);
+
+        virtualinvoke $r5.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setNegativeButton(int,android.content.DialogInterface$OnClickListener)>(17039360, $r7);
+
+     label1:
+        $r8 = new com.caremark.caremark.synclib.helper.VersionCheckTask$5;
+
+        specialinvoke $r8.<com.caremark.caremark.synclib.helper.VersionCheckTask$5: void <init>(com.caremark.caremark.synclib.helper.VersionCheckTask)>(r0);
+
+        virtualinvoke $r5.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setPositiveButton(int,android.content.DialogInterface$OnClickListener)>(17039370, $r8);
+
+        $r9 = virtualinvoke $r5.<android.app.AlertDialog$Builder: android.app.AlertDialog create()>();
+
+        virtualinvoke $r9.<android.app.AlertDialog: void show()>();
+
+        return;
+    }
+
+    private void parse(java.lang.String)
+    {
+        com.caremark.caremark.synclib.dao.ResponseData $r3;
+        java.util.ArrayList $r6;
+        org.json.JSONException $r8;
+        org.json.JSONObject $r2, $r4;
+        int $i0, $i1;
+        com.caremark.caremark.synclib.helper.VersionCheckTask r0;
+        java.lang.String $r1;
+        com.caremark.caremark.synclib.dao.ComponentDetails $r7;
+        org.json.JSONArray $r5;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        $r1 := @parameter0: java.lang.String;
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("SyncLib", "parse");
+
+        $r2 = new org.json.JSONObject;
+
+     label01:
+        specialinvoke $r2.<org.json.JSONObject: void <init>(java.lang.String)>($r1);
+
+        $r2 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("ResponseData");
+
+     label02:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label03:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("profile");
+
+        $r1 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("currentProdVersion");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setCurrentProdVersion(java.lang.String)>($r1);
+
+     label04:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label05:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("profile");
+
+        $r1 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("appName");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setAppName(java.lang.String)>($r1);
+
+     label06:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label07:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("detail");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("appUpgradeInfo");
+
+        $r1 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("type");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setAppUpgradeType(java.lang.String)>($r1);
+
+     label08:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label09:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("detail");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("appUpgradeInfo");
+
+        $r1 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("location");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setAppUpgradeLocation(java.lang.String)>($r1);
+
+        $r2 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("detail");
+
+        $r5 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONArray getJSONArray(java.lang.String)>("componentList");
+
+        $i0 = virtualinvoke $r5.<org.json.JSONArray: int length()>();
+
+     label10:
+        $r6 = new java.util.ArrayList;
+
+     label11:
+        specialinvoke $r6.<java.util.ArrayList: void <init>()>();
+
+     label12:
+        $i1 = 0;
+
+     label13:
+        if $i1 >= $i0 goto label21;
+
+        $r7 = new com.caremark.caremark.synclib.dao.ComponentDetails;
+
+     label14:
+        specialinvoke $r7.<com.caremark.caremark.synclib.dao.ComponentDetails: void <init>()>();
+
+        $r2 = virtualinvoke $r5.<org.json.JSONArray: org.json.JSONObject getJSONObject(int)>($i1);
+
+        $r1 = virtualinvoke $r2.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("name");
+
+        virtualinvoke $r7.<com.caremark.caremark.synclib.dao.ComponentDetails: void setName(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r2.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("version");
+
+        virtualinvoke $r7.<com.caremark.caremark.synclib.dao.ComponentDetails: void setVersion(java.lang.String)>($r1);
+
+        $z0 = virtualinvoke $r2.<org.json.JSONObject: boolean has(java.lang.String)>("location");
+
+     label15:
+        if $z0 == 0 goto label18;
+
+     label16:
+        $r1 = virtualinvoke $r2.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("location");
+
+        virtualinvoke $r7.<com.caremark.caremark.synclib.dao.ComponentDetails: void setLocation(java.lang.String)>($r1);
+
+     label17:
+        goto label19;
+
+     label18:
+        virtualinvoke $r7.<com.caremark.caremark.synclib.dao.ComponentDetails: void setLocation(java.lang.String)>(null);
+
+     label19:
+        $z0 = virtualinvoke $r2.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("showFast");
+
+        virtualinvoke $r7.<com.caremark.caremark.synclib.dao.ComponentDetails: void setShowFast(boolean)>($z0);
+
+        $r1 = virtualinvoke $r2.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("ref");
+
+        virtualinvoke $r7.<com.caremark.caremark.synclib.dao.ComponentDetails: void setRefURL(java.lang.String)>($r1);
+
+        virtualinvoke $r6.<java.util.ArrayList: boolean add(java.lang.Object)>($r7);
+
+     label20:
+        $i1 = $i1 + 1;
+
+        goto label13;
+
+     label21:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label22:
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setComponentList(java.util.ArrayList)>($r6);
+
+     label23:
+        return;
+
+     label24:
+        $r8 := @caughtexception;
+
+        virtualinvoke $r8.<org.json.JSONException: void printStackTrace()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("VersionCheckTask", "Error Occurred... parsing");
+
+        return;
+
+        catch org.json.JSONException from label01 to label02 with label24;
+        catch org.json.JSONException from label03 to label04 with label24;
+        catch org.json.JSONException from label05 to label06 with label24;
+        catch org.json.JSONException from label07 to label08 with label24;
+        catch org.json.JSONException from label09 to label10 with label24;
+        catch org.json.JSONException from label11 to label12 with label24;
+        catch org.json.JSONException from label14 to label15 with label24;
+        catch org.json.JSONException from label16 to label17 with label24;
+        catch org.json.JSONException from label18 to label20 with label24;
+        catch org.json.JSONException from label22 to label23 with label24;
+    }
+
+    private void parseResponse(java.lang.String)
+    {
+        com.caremark.caremark.synclib.dao.UserAlertMessage $r11;
+        java.util.ArrayList $r7;
+        org.json.JSONException $r15;
+        org.json.JSONObject $r2, $r4;
+        int $i0, $i1, $i2;
+        java.lang.String $r1, $r5, $r12, $r13, $r14;
+        com.caremark.caremark.synclib.dao.ComponentDetails $r9;
+        boolean $z0;
+        com.caremark.caremark.synclib.dao.ResponseData $r3;
+        com.caremark.caremark.synclib.helper.VersionCheckTask r0;
+        java.lang.Object $r8;
+        android.app.Activity $r10;
+        org.json.JSONArray $r6;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        $r1 := @parameter0: java.lang.String;
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("SyncLib", "parseResponse");
+
+        $r2 = new org.json.JSONObject;
+
+     label001:
+        specialinvoke $r2.<org.json.JSONObject: void <init>(java.lang.String)>($r1);
+
+        $r2 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("response");
+
+     label002:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label003:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("header");
+
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("refId");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setRefId(java.lang.String)>($r5);
+
+     label004:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label005:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("header");
+
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("statusCode");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setStatusCode(java.lang.String)>($r5);
+
+     label006:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label007:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("header");
+
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("statusDesc");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setStatusDesc(java.lang.String)>($r5);
+
+     label008:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label009:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("appVersion");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setAppVersion(java.lang.String)>($r5);
+
+     label010:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label011:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("appName");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setAppName(java.lang.String)>($r5);
+
+     label012:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label013:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("type");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setAppUpgradeType(java.lang.String)>($r5);
+
+     label014:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label015:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("messageTitle");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setMessageTitle(java.lang.String)>($r5);
+
+     label016:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label017:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("messageContent");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setMessageContent(java.lang.String)>($r5);
+
+     label018:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label019:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("location");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setAppUpgradeLocation(java.lang.String)>($r5);
+
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("enablePrefetchRxSummary");
+
+     label020:
+        if $z0 == 0 goto label022;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label021:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("enablePrefetchRxSummary");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setIcePrefetch(boolean)>($z0);
+
+     label022:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("hideRememberMeBanner");
+
+     label023:
+        if $z0 == 0 goto label025;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label024:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("hideRememberMeBanner");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setHideRememberMeBanner(boolean)>($z0);
+
+     label025:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("disableOnsiteCookie");
+
+     label026:
+        if $z0 == 0 goto label028;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label027:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("disableOnsiteCookie");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setDisableOnsiteCookie(boolean)>($z0);
+
+     label028:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("iceSessionManager");
+
+     label029:
+        if $z0 == 0 goto label031;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label030:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("iceSessionManager");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setIceSessionManager(boolean)>($z0);
+
+     label031:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("useICEDisabled");
+
+     label032:
+        if $z0 == 0 goto label034;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label033:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("useICEDisabled");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setUseICEDisabled(boolean)>($z0);
+
+     label034:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("iceVersion");
+
+     label035:
+        if $z0 == 0 goto label037;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label036:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("iceVersion");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setIceVersion(java.lang.String)>($r5);
+
+     label037:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("prefetchVersion");
+
+     label038:
+        if $z0 == 0 goto label040;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label039:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("prefetchVersion");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setPrefetchVersion(java.lang.String)>($r5);
+
+     label040:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("enablePZN");
+
+     label041:
+        if $z0 == 0 goto label043;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label042:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("enablePZN");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setPznEnable(boolean)>($z0);
+
+     label043:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("enableDMR");
+
+     label044:
+        if $z0 == 0 goto label046;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label045:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("enableDMR");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setDmrEnable(boolean)>($z0);
+
+     label046:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("enableDistilSecurity");
+
+     label047:
+        if $z0 == 0 goto label049;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label048:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("enableDistilSecurity");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setDistilSecurityEnable(boolean)>($z0);
+
+     label049:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("enableCamera2Api");
+
+     label050:
+        if $z0 == 0 goto label052;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label051:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("enableCamera2Api");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setCamera2Enable(boolean)>($z0);
+
+     label052:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("enableNativeEasyRefill");
+
+     label053:
+        if $z0 == 0 goto label055;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label054:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("enableNativeEasyRefill");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setNativeEasyRefillEnable(boolean)>($z0);
+
+     label055:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("enableTermedUser");
+
+     label056:
+        if $z0 == 0 goto label058;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label057:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("enableTermedUser");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setTermedUserEnable(boolean)>($z0);
+
+     label058:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("enableHelpCenter");
+
+     label059:
+        if $z0 == 0 goto label061;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label060:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("enableHelpCenter");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setHelpCenterEnable(boolean)>($z0);
+
+     label061:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("enableDevices");
+
+     label062:
+        if $z0 == 0 goto label064;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label063:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("enableDevices");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setDeviceEnable(boolean)>($z0);
+
+     label064:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("enableContactUsInstructionsPage");
+
+     label065:
+        if $z0 == 0 goto label067;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label066:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("enableContactUsInstructionsPage");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setContactUsInstructionPageEnable(boolean)>($z0);
+
+     label067:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("featureEnabledDevices");
+
+     label068:
+        $i0 = 0;
+
+        if $z0 == 0 goto label079;
+
+     label069:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $r6 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONArray getJSONArray(java.lang.String)>("featureEnabledDevices");
+
+     label070:
+        $r7 = new java.util.ArrayList;
+
+     label071:
+        specialinvoke $r7.<java.util.ArrayList: void <init>()>();
+
+     label072:
+        $i1 = 0;
+
+     label073:
+        $i2 = virtualinvoke $r6.<org.json.JSONArray: int length()>();
+
+     label074:
+        if $i1 >= $i2 goto label077;
+
+     label075:
+        $r8 = virtualinvoke $r6.<org.json.JSONArray: java.lang.Object get(int)>($i1);
+
+        $r5 = virtualinvoke $r8.<java.lang.Object: java.lang.String toString()>();
+
+        virtualinvoke $r7.<java.util.ArrayList: boolean add(java.lang.Object)>($r5);
+
+     label076:
+        $i1 = $i1 + 1;
+
+        goto label073;
+
+     label077:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label078:
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setFeatureEnabledDevices(java.util.ArrayList)>($r7);
+
+     label079:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("enableMemberEvent");
+
+     label080:
+        if $z0 == 0 goto label082;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label081:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("enableMemberEvent");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setMemberEventEnable(boolean)>($z0);
+
+     label082:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("enableSensitiveCipherData");
+
+     label083:
+        if $z0 == 0 goto label085;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label084:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("enableSensitiveCipherData");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setSensitiveDataEnabled(boolean)>($z0);
+
+     label085:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label086:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("scheduleInfo");
+
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("message");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setScheduleMessage(java.lang.String)>($r5);
+
+     label087:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label088:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("scheduleInfo");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("enable");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setScheduleMsgEnable(boolean)>($z0);
+
+     label089:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label090:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("logging");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setLogging(boolean)>($z0);
+
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("switchAlltoUnet");
+
+     label091:
+        if $z0 == 0 goto label093;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label092:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("switchAlltoUnet");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setSwitchAlltoUnet(boolean)>($z0);
+
+     label093:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("touchId");
+
+     label094:
+        if $z0 == 0 goto label096;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label095:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("touchId");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setFingerprintEnable(boolean)>($z0);
+
+     label096:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("switchToICE");
+
+     label097:
+        if $z0 == 0 goto label099;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label098:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("switchToICE");
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setSwitchToICE(boolean)>($z0);
+
+     label099:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("ICEEnabledClientIDs");
+
+     label100:
+        if $z0 == 0 goto label111;
+
+     label101:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $r6 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONArray getJSONArray(java.lang.String)>("ICEEnabledClientIDs");
+
+     label102:
+        $r7 = new java.util.ArrayList;
+
+     label103:
+        specialinvoke $r7.<java.util.ArrayList: void <init>()>();
+
+     label104:
+        $i1 = 0;
+
+     label105:
+        $i2 = virtualinvoke $r6.<org.json.JSONArray: int length()>();
+
+     label106:
+        if $i1 >= $i2 goto label109;
+
+     label107:
+        $r8 = virtualinvoke $r6.<org.json.JSONArray: java.lang.Object get(int)>($i1);
+
+        $r5 = virtualinvoke $r8.<java.lang.Object: java.lang.String toString()>();
+
+        virtualinvoke $r7.<java.util.ArrayList: boolean add(java.lang.Object)>($r5);
+
+     label108:
+        $i1 = $i1 + 1;
+
+        goto label105;
+
+     label109:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label110:
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setClientIds(java.util.ArrayList)>($r7);
+
+     label111:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $r6 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONArray getJSONArray(java.lang.String)>("clientExceptionList");
+
+     label112:
+        $r7 = new java.util.ArrayList;
+
+     label113:
+        specialinvoke $r7.<java.util.ArrayList: void <init>()>();
+
+     label114:
+        $i1 = 0;
+
+     label115:
+        $i2 = virtualinvoke $r6.<org.json.JSONArray: int length()>();
+
+     label116:
+        if $i1 >= $i2 goto label119;
+
+     label117:
+        $r8 = virtualinvoke $r6.<org.json.JSONArray: java.lang.Object get(int)>($i1);
+
+        $r5 = virtualinvoke $r8.<java.lang.Object: java.lang.String toString()>();
+
+        virtualinvoke $r7.<java.util.ArrayList: boolean add(java.lang.Object)>($r5);
+
+     label118:
+        $i1 = $i1 + 1;
+
+        goto label115;
+
+     label119:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label120:
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setClientsBlocked(java.util.ArrayList)>($r7);
+
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("ICEDisabledClientIDs");
+
+     label121:
+        if $z0 == 0 goto label132;
+
+     label122:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r4 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("additionalAttribute");
+
+        $r6 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONArray getJSONArray(java.lang.String)>("ICEDisabledClientIDs");
+
+     label123:
+        $r7 = new java.util.ArrayList;
+
+     label124:
+        specialinvoke $r7.<java.util.ArrayList: void <init>()>();
+
+     label125:
+        $i1 = 0;
+
+     label126:
+        $i2 = virtualinvoke $r6.<org.json.JSONArray: int length()>();
+
+     label127:
+        if $i1 >= $i2 goto label130;
+
+     label128:
+        $r8 = virtualinvoke $r6.<org.json.JSONArray: java.lang.Object get(int)>($i1);
+
+        $r5 = virtualinvoke $r8.<java.lang.Object: java.lang.String toString()>();
+
+        virtualinvoke $r7.<java.util.ArrayList: boolean add(java.lang.Object)>($r5);
+
+     label129:
+        $i1 = $i1 + 1;
+
+        goto label126;
+
+     label130:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label131:
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setIceDisabledIds(java.util.ArrayList)>($r7);
+
+     label132:
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r6 = virtualinvoke $r4.<org.json.JSONObject: org.json.JSONArray getJSONArray(java.lang.String)>("featureUpgradeInfo");
+
+        $i1 = virtualinvoke $r6.<org.json.JSONArray: int length()>();
+
+     label133:
+        $r7 = new java.util.ArrayList;
+
+     label134:
+        specialinvoke $r7.<java.util.ArrayList: void <init>()>();
+
+     label135:
+        if $i0 >= $i1 goto label145;
+
+        $r9 = new com.caremark.caremark.synclib.dao.ComponentDetails;
+
+     label136:
+        specialinvoke $r9.<com.caremark.caremark.synclib.dao.ComponentDetails: void <init>()>();
+
+        $z0 = virtualinvoke $r6.<org.json.JSONArray: boolean isNull(int)>($i0);
+
+     label137:
+        if $z0 != 0 goto label144;
+
+     label138:
+        $r4 = virtualinvoke $r6.<org.json.JSONArray: org.json.JSONObject getJSONObject(int)>($i0);
+
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("name");
+
+        virtualinvoke $r9.<com.caremark.caremark.synclib.dao.ComponentDetails: void setName(java.lang.String)>($r5);
+
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("version");
+
+        virtualinvoke $r9.<com.caremark.caremark.synclib.dao.ComponentDetails: void setVersion(java.lang.String)>($r5);
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("location");
+
+     label139:
+        if $z0 == 0 goto label142;
+
+     label140:
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("location");
+
+        virtualinvoke $r9.<com.caremark.caremark.synclib.dao.ComponentDetails: void setLocation(java.lang.String)>($r5);
+
+     label141:
+        goto label143;
+
+     label142:
+        virtualinvoke $r9.<com.caremark.caremark.synclib.dao.ComponentDetails: void setLocation(java.lang.String)>(null);
+
+     label143:
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("showFast");
+
+        virtualinvoke $r9.<com.caremark.caremark.synclib.dao.ComponentDetails: void setShowFast(boolean)>($z0);
+
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("ref");
+
+        virtualinvoke $r9.<com.caremark.caremark.synclib.dao.ComponentDetails: void setRefURL(java.lang.String)>($r5);
+
+        $r5 = virtualinvoke $r4.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("method");
+
+        $i2 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r5);
+
+        virtualinvoke $r9.<com.caremark.caremark.synclib.dao.ComponentDetails: void setMethod(int)>($i2);
+
+        virtualinvoke $r7.<java.util.ArrayList: boolean add(java.lang.Object)>($r9);
+
+     label144:
+        $i0 = $i0 + 1;
+
+        goto label135;
+
+     label145:
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+     label146:
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setComponentList(java.util.ArrayList)>($r7);
+
+     label147:
+        $r10 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+     label148:
+        staticinvoke <com.caremark.caremark.synclib.util.SharedPreferencesManager: void setStringInfo(android.content.Context,java.lang.String,java.lang.String)>($r10, "jsonData", $r1);
+
+        $r4 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $z0 = virtualinvoke $r4.<org.json.JSONObject: boolean has(java.lang.String)>("userAlert");
+
+     label149:
+        if $z0 == 0 goto label158;
+
+     label150:
+        $r2 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("details");
+
+        $r2 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("userAlert");
+
+        $z0 = virtualinvoke $r2.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("enable");
+
+     label151:
+        if $z0 == 0 goto label158;
+
+        $r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+        $r11 = new com.caremark.caremark.synclib.dao.UserAlertMessage;
+
+     label152:
+        $r5 = virtualinvoke $r2.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("messageTitle");
+
+        $r12 = virtualinvoke $r2.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("messageContent");
+
+        $r13 = virtualinvoke $r2.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("hyperlinkText");
+
+        $r14 = virtualinvoke $r2.<org.json.JSONObject: java.lang.String getString(java.lang.String)>("hyperlinkAddress");
+
+        $z0 = virtualinvoke $r2.<org.json.JSONObject: boolean getBoolean(java.lang.String)>("enable");
+
+        specialinvoke $r11.<com.caremark.caremark.synclib.dao.UserAlertMessage: void <init>(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean)>($r5, $r12, $r13, $r14, $z0);
+
+        virtualinvoke $r3.<com.caremark.caremark.synclib.dao.ResponseData: void setUserAlertMessage(com.caremark.caremark.synclib.dao.UserAlertMessage)>($r11);
+
+     label153:
+        return;
+
+     label154:
+        $r15 := @caughtexception;
+
+        goto label157;
+
+     label155:
+        $r15 := @caughtexception;
+
+        goto label157;
+
+     label156:
+        $r15 := @caughtexception;
+
+     label157:
+        virtualinvoke $r15.<org.json.JSONException: void printStackTrace()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("VersionCheckTask", "Error Occurred... parsing.. using previously stored json");
+
+        $z0 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: boolean parseError>;
+
+        if $z0 != 0 goto label158;
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String trim()>();
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r1);
+
+        if $z0 != 0 goto label158;
+
+        $r10 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+        $r1 = staticinvoke <com.caremark.caremark.synclib.util.SharedPreferencesManager: java.lang.String getStringInfo(android.content.Context,java.lang.String,java.lang.String)>($r10, "jsonData", "");
+
+        specialinvoke r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: void parseResponse(java.lang.String)>($r1);
+
+        r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: boolean parseError> = 1;
+
+     label158:
+        return;
+
+        catch org.json.JSONException from label001 to label002 with label156;
+        catch org.json.JSONException from label003 to label004 with label155;
+        catch org.json.JSONException from label005 to label006 with label155;
+        catch org.json.JSONException from label007 to label008 with label155;
+        catch org.json.JSONException from label009 to label010 with label155;
+        catch org.json.JSONException from label011 to label012 with label155;
+        catch org.json.JSONException from label013 to label014 with label155;
+        catch org.json.JSONException from label015 to label016 with label155;
+        catch org.json.JSONException from label017 to label018 with label155;
+        catch org.json.JSONException from label019 to label020 with label155;
+        catch org.json.JSONException from label021 to label023 with label155;
+        catch org.json.JSONException from label024 to label026 with label155;
+        catch org.json.JSONException from label027 to label029 with label155;
+        catch org.json.JSONException from label030 to label032 with label155;
+        catch org.json.JSONException from label033 to label035 with label155;
+        catch org.json.JSONException from label036 to label038 with label155;
+        catch org.json.JSONException from label039 to label041 with label155;
+        catch org.json.JSONException from label042 to label044 with label155;
+        catch org.json.JSONException from label045 to label047 with label155;
+        catch org.json.JSONException from label048 to label050 with label155;
+        catch org.json.JSONException from label051 to label053 with label155;
+        catch org.json.JSONException from label054 to label056 with label155;
+        catch org.json.JSONException from label057 to label059 with label155;
+        catch org.json.JSONException from label060 to label062 with label155;
+        catch org.json.JSONException from label063 to label065 with label155;
+        catch org.json.JSONException from label066 to label068 with label155;
+        catch org.json.JSONException from label069 to label070 with label155;
+        catch org.json.JSONException from label071 to label072 with label155;
+        catch org.json.JSONException from label073 to label074 with label155;
+        catch org.json.JSONException from label075 to label076 with label155;
+        catch org.json.JSONException from label078 to label080 with label155;
+        catch org.json.JSONException from label081 to label083 with label155;
+        catch org.json.JSONException from label084 to label085 with label155;
+        catch org.json.JSONException from label086 to label087 with label155;
+        catch org.json.JSONException from label088 to label089 with label155;
+        catch org.json.JSONException from label090 to label091 with label155;
+        catch org.json.JSONException from label092 to label094 with label155;
+        catch org.json.JSONException from label095 to label097 with label155;
+        catch org.json.JSONException from label098 to label100 with label155;
+        catch org.json.JSONException from label101 to label102 with label155;
+        catch org.json.JSONException from label103 to label104 with label155;
+        catch org.json.JSONException from label105 to label106 with label155;
+        catch org.json.JSONException from label107 to label108 with label155;
+        catch org.json.JSONException from label110 to label112 with label155;
+        catch org.json.JSONException from label113 to label114 with label155;
+        catch org.json.JSONException from label115 to label116 with label155;
+        catch org.json.JSONException from label117 to label118 with label155;
+        catch org.json.JSONException from label120 to label121 with label155;
+        catch org.json.JSONException from label122 to label123 with label155;
+        catch org.json.JSONException from label124 to label125 with label155;
+        catch org.json.JSONException from label126 to label127 with label155;
+        catch org.json.JSONException from label128 to label129 with label155;
+        catch org.json.JSONException from label131 to label133 with label155;
+        catch org.json.JSONException from label134 to label135 with label155;
+        catch org.json.JSONException from label136 to label137 with label155;
+        catch org.json.JSONException from label138 to label139 with label155;
+        catch org.json.JSONException from label140 to label141 with label155;
+        catch org.json.JSONException from label142 to label144 with label155;
+        catch org.json.JSONException from label146 to label147 with label155;
+        catch org.json.JSONException from label148 to label149 with label154;
+        catch org.json.JSONException from label150 to label151 with label154;
+        catch org.json.JSONException from label152 to label153 with label154;
+    }
+
+    private void postExecute(java.lang.String)
+    {
+        com.caremark.caremark.synclib.dao.ResponseData $r2;
+        android.app.ProgressDialog $r6;
+        java.lang.Exception $r7;
+        java.util.ArrayList $r3;
+        com.caremark.caremark.synclib.helper.VersionCheckTask r0;
+        java.lang.String $r1, $r5;
+        android.app.Activity $r4;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        $r1 := @parameter0: java.lang.String;
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("SyncLib", "onPost");
+
+     label01:
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+        $r1 = virtualinvoke $r2.<com.caremark.caremark.synclib.dao.ResponseData: java.lang.String getAppName()>();
+
+     label02:
+        if $r1 == null goto label27;
+
+     label03:
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+        $r1 = virtualinvoke $r2.<com.caremark.caremark.synclib.dao.ResponseData: java.lang.String getAppVersion()>();
+
+     label04:
+        if $r1 == null goto label27;
+
+     label05:
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+        $z0 = virtualinvoke $r2.<com.caremark.caremark.synclib.dao.ResponseData: boolean isScheduleMsgEnable()>();
+
+     label06:
+        if $z0 == 0 goto label09;
+
+     label07:
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+        $r1 = virtualinvoke $r2.<com.caremark.caremark.synclib.dao.ResponseData: java.lang.String getScheduleMessage()>();
+
+        specialinvoke r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: void showScheduleMessage(java.lang.String)>($r1);
+
+     label08:
+        return;
+
+     label09:
+        $r3 = new java.util.ArrayList;
+
+     label10:
+        specialinvoke $r3.<java.util.ArrayList: void <init>()>();
+
+        r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: java.util.ArrayList componentsToBeDownloaded> = $r3;
+
+        $r4 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+        $r1 = staticinvoke <com.caremark.caremark.synclib.util.Util: java.lang.String getCurrentApplicationVersion(android.content.Context)>($r4);
+
+     label11:
+        if $r1 == null goto label31;
+
+     label12:
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+        $r5 = virtualinvoke $r2.<com.caremark.caremark.synclib.dao.ResponseData: java.lang.String getAppVersion()>();
+
+        $z0 = staticinvoke <com.caremark.caremark.synclib.util.Util: boolean compareVersion(java.lang.String,java.lang.String,java.lang.String,int)>($r5, $r1, ".", 4);
+
+     label13:
+        if $z0 == 0 goto label25;
+
+     label14:
+        $z0 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: boolean showLoader>;
+
+     label15:
+        if $z0 == 0 goto label17;
+
+     label16:
+        $r6 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.ProgressDialog progress>;
+
+        virtualinvoke $r6.<android.app.ProgressDialog: void dismiss()>();
+
+     label17:
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("SyncLib", "new version available");
+
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+        $r1 = virtualinvoke $r2.<com.caremark.caremark.synclib.dao.ResponseData: java.lang.String getAppUpgradeType()>();
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>("MANDATORY");
+
+     label18:
+        if $z0 == 0 goto label21;
+
+     label19:
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("SyncLib", "Mandatory");
+
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+        $r1 = virtualinvoke $r2.<com.caremark.caremark.synclib.dao.ResponseData: java.lang.String getMessageTitle()>();
+
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+        $r5 = virtualinvoke $r2.<com.caremark.caremark.synclib.dao.ResponseData: java.lang.String getMessageContent()>();
+
+        specialinvoke r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: void doDownload(java.lang.String,java.lang.String,boolean)>($r1, $r5, 1);
+
+     label20:
+        return;
+
+     label21:
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+        $r1 = virtualinvoke $r2.<com.caremark.caremark.synclib.dao.ResponseData: java.lang.String getAppUpgradeType()>();
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>("OPTIONAL");
+
+     label22:
+        if $z0 == 0 goto label31;
+
+     label23:
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("SyncLib", "Optional");
+
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+        $r1 = virtualinvoke $r2.<com.caremark.caremark.synclib.dao.ResponseData: java.lang.String getMessageTitle()>();
+
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+        $r5 = virtualinvoke $r2.<com.caremark.caremark.synclib.dao.ResponseData: java.lang.String getMessageContent()>();
+
+        specialinvoke r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: void doDownload(java.lang.String,java.lang.String,boolean)>($r1, $r5, 0);
+
+     label24:
+        return;
+
+     label25:
+        specialinvoke r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: void checkComponentUpgrade()>();
+
+     label26:
+        return;
+
+     label27:
+        $r3 = new java.util.ArrayList;
+
+     label28:
+        specialinvoke $r3.<java.util.ArrayList: void <init>()>();
+
+        specialinvoke r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: void dismissProgress(java.util.ArrayList)>($r3);
+
+     label29:
+        return;
+
+     label30:
+        $r7 := @caughtexception;
+
+        virtualinvoke $r7.<java.lang.Exception: void printStackTrace()>();
+
+     label31:
+        return;
+
+        catch java.lang.Exception from label01 to label02 with label30;
+        catch java.lang.Exception from label03 to label04 with label30;
+        catch java.lang.Exception from label05 to label06 with label30;
+        catch java.lang.Exception from label07 to label08 with label30;
+        catch java.lang.Exception from label10 to label11 with label30;
+        catch java.lang.Exception from label12 to label13 with label30;
+        catch java.lang.Exception from label14 to label15 with label30;
+        catch java.lang.Exception from label16 to label18 with label30;
+        catch java.lang.Exception from label19 to label20 with label30;
+        catch java.lang.Exception from label21 to label22 with label30;
+        catch java.lang.Exception from label23 to label24 with label30;
+        catch java.lang.Exception from label25 to label26 with label30;
+        catch java.lang.Exception from label28 to label29 with label30;
+    }
+
+    private void showScheduleMessage(java.lang.String)
+    {
+        android.app.AlertDialog $r1;
+        com.caremark.caremark.synclib.helper.VersionCheckTask$6 $r5;
+        android.app.AlertDialog$Builder $r3;
+        com.caremark.caremark.synclib.helper.VersionCheckTask r0;
+        java.lang.String $r2;
+        android.app.Activity $r4;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        $r2 := @parameter0: java.lang.String;
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("SyncLib", "showScheduleMessage...");
+
+        $r3 = new android.app.AlertDialog$Builder;
+
+        $r4 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+        specialinvoke $r3.<android.app.AlertDialog$Builder: void <init>(android.content.Context)>($r4);
+
+        virtualinvoke $r3.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setMessage(java.lang.CharSequence)>($r2);
+
+        virtualinvoke $r3.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setCancelable(boolean)>(0);
+
+        $r5 = new com.caremark.caremark.synclib.helper.VersionCheckTask$6;
+
+        specialinvoke $r5.<com.caremark.caremark.synclib.helper.VersionCheckTask$6: void <init>(com.caremark.caremark.synclib.helper.VersionCheckTask)>(r0);
+
+        virtualinvoke $r3.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setPositiveButton(int,android.content.DialogInterface$OnClickListener)>(17039370, $r5);
+
+        $r1 = virtualinvoke $r3.<android.app.AlertDialog$Builder: android.app.AlertDialog create()>();
+
+        virtualinvoke $r1.<android.app.AlertDialog: void show()>();
+
+        return;
+    }
+
+    public void execute(java.lang.String)
+    {
+        android.content.Context $r7;
+        android.app.ProgressDialog $r4;
+        com.caremark.caremark.synclib.helper.VersionCheckTask$2 $r2;
+        com.caremark.caremark.synclib.helper.VersionCheckTask$3 $r6;
+        com.caremark.caremark.synclib.helper.VersionCheckTask$1 $r1;
+        android.widget.Toast $r9;
+        com.caremark.caremark.synclib.helper.VersionCheckTask r0;
+        com.caremark.caremark.synclib.util.CVSSyncNetwork $r8;
+        java.lang.String $r3;
+        android.app.Activity $r5;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $z0 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: boolean showLoader>;
+
+        if $z0 == 0 goto label1;
+
+        $r4 = new android.app.ProgressDialog;
+
+        $r5 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+        specialinvoke $r4.<android.app.ProgressDialog: void <init>(android.content.Context)>($r5);
+
+        r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.ProgressDialog progress> = $r4;
+
+        $r4 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.ProgressDialog progress>;
+
+        virtualinvoke $r4.<android.app.ProgressDialog: void setCancelable(boolean)>(0);
+
+        $r4 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.ProgressDialog progress>;
+
+        virtualinvoke $r4.<android.app.ProgressDialog: void setMessage(java.lang.CharSequence)>("Checking for new version...");
+
+        $r4 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.ProgressDialog progress>;
+
+        virtualinvoke $r4.<android.app.ProgressDialog: void show()>();
+
+     label1:
+        $r5 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+        $z0 = staticinvoke <com.caremark.caremark.synclib.util.Util: boolean isNetworkAvailable(android.content.Context)>($r5);
+
+        if $z0 == 0 goto label2;
+
+        $r6 = new com.caremark.caremark.synclib.helper.VersionCheckTask$3;
+
+        $r3 = virtualinvoke $r3.<java.lang.String: java.lang.String toString()>();
+
+        $r1 = new com.caremark.caremark.synclib.helper.VersionCheckTask$1;
+
+        specialinvoke $r1.<com.caremark.caremark.synclib.helper.VersionCheckTask$1: void <init>(com.caremark.caremark.synclib.helper.VersionCheckTask)>(r0);
+
+        $r2 = new com.caremark.caremark.synclib.helper.VersionCheckTask$2;
+
+        specialinvoke $r2.<com.caremark.caremark.synclib.helper.VersionCheckTask$2: void <init>(com.caremark.caremark.synclib.helper.VersionCheckTask)>(r0);
+
+        specialinvoke $r6.<com.caremark.caremark.synclib.helper.VersionCheckTask$3: void <init>(com.caremark.caremark.synclib.helper.VersionCheckTask,int,java.lang.String,c.b.a.m$b,c.b.a.m$a)>(r0, 1, $r3, $r1, $r2);
+
+        $r5 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+        $r7 = virtualinvoke $r5.<android.app.Activity: android.content.Context getApplicationContext()>();
+
+        $r8 = staticinvoke <com.caremark.caremark.synclib.util.CVSSyncNetwork: com.caremark.caremark.synclib.util.CVSSyncNetwork getInstance(android.content.Context)>($r7);
+
+        virtualinvoke $r8.<com.caremark.caremark.synclib.util.CVSSyncNetwork: void addToRequestQueue(c.b.a.j,java.lang.String)>($r6, "appinfo");
+
+        return;
+
+     label2:
+        $r5 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+        $r9 = staticinvoke <android.widget.Toast: android.widget.Toast makeText(android.content.Context,java.lang.CharSequence,int)>($r5, "No network available", 0);
+
+        virtualinvoke $r9.<android.widget.Toast: void show()>();
+
+        return;
+    }
+
+    public com.caremark.caremark.synclib.dao.ResponseData getPreviousSavedResponse()
+    {
+        com.caremark.caremark.synclib.dao.ResponseData r3;
+        com.caremark.caremark.synclib.helper.VersionCheckTask r0;
+        java.lang.String $r1;
+        android.app.Activity $r2;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        $r2 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: android.app.Activity activity>;
+
+        $r1 = staticinvoke <com.caremark.caremark.synclib.util.SharedPreferencesManager: java.lang.String getStringInfo(android.content.Context,java.lang.String,java.lang.String)>($r2, "jsonData", "");
+
+        specialinvoke r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: void parseResponse(java.lang.String)>($r1);
+
+        r3 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+        return r3;
+    }
+
+    public com.caremark.caremark.synclib.dao.ResponseData getResponseData()
+    {
+        com.caremark.caremark.synclib.helper.VersionCheckTask r0;
+        com.caremark.caremark.synclib.dao.ResponseData r1;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        r1 = r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.dao.ResponseData appRespData>;
+
+        return r1;
+    }
+
+    public void setVersionCheckListener(com.caremark.caremark.synclib.helper.VersionCheckListener)
+    {
+        com.caremark.caremark.synclib.helper.VersionCheckTask r0;
+        com.caremark.caremark.synclib.helper.VersionCheckListener $r1;
+
+        r0 := @this: com.caremark.caremark.synclib.helper.VersionCheckTask;
+
+        $r1 := @parameter0: com.caremark.caremark.synclib.helper.VersionCheckListener;
+
+        r0.<com.caremark.caremark.synclib.helper.VersionCheckTask: com.caremark.caremark.synclib.helper.VersionCheckListener listner> = $r1;
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.caremark.caremark.synclib.helper.VersionCheckTask: java.lang.String TAG> = "VersionCheckTask";
+
+        <com.caremark.caremark.synclib.helper.VersionCheckTask: java.lang.String JSON> = "jsonData";
+
+        return;
+    }
+}

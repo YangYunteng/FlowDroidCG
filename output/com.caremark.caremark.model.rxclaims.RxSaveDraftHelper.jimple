@@ -1,0 +1,3778 @@
+public class com.caremark.caremark.model.rxclaims.RxSaveDraftHelper extends java.lang.Object
+{
+    public boolean fromSubmitClaim;
+    public boolean isFromRxListPage;
+    public boolean removeRx;
+
+    public void <init>()
+    {
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean isFromRxListPage> = 0;
+
+        r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean fromSubmitClaim> = 0;
+
+        r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean removeRx> = 0;
+
+        return;
+    }
+
+    public void <init>(boolean, boolean, boolean)
+    {
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        boolean $z0, $z1, $z2;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $z0 := @parameter0: boolean;
+
+        $z1 := @parameter1: boolean;
+
+        $z2 := @parameter2: boolean;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean isFromRxListPage> = 0;
+
+        r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean fromSubmitClaim> = 0;
+
+        r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean removeRx> = 0;
+
+        r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean isFromRxListPage> = $z0;
+
+        r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean fromSubmitClaim> = $z1;
+
+        r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean removeRx> = $z2;
+
+        return;
+    }
+
+    private java.lang.String changeDateFormat(java.lang.String)
+    {
+        java.util.Date $r3;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.text.SimpleDateFormat $r2;
+        java.lang.String $r1, $r4;
+        java.text.ParseException $r5;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = new java.text.SimpleDateFormat;
+
+     label1:
+        specialinvoke $r2.<java.text.SimpleDateFormat: void <init>(java.lang.String)>("MM/dd/yyyy");
+
+        $r3 = virtualinvoke $r2.<java.text.SimpleDateFormat: java.util.Date parse(java.lang.String)>($r1);
+
+     label2:
+        $r2 = new java.text.SimpleDateFormat;
+
+     label3:
+        specialinvoke $r2.<java.text.SimpleDateFormat: void <init>(java.lang.String)>("yyyy-MM-dd");
+
+        $r4 = virtualinvoke $r2.<java.text.SimpleDateFormat: java.lang.String format(java.util.Date)>($r3);
+
+     label4:
+        return $r4;
+
+     label5:
+        $r5 := @caughtexception;
+
+        virtualinvoke $r5.<java.text.ParseException: void printStackTrace()>();
+
+        return $r1;
+
+        catch java.text.ParseException from label1 to label2 with label5;
+        catch java.text.ParseException from label3 to label4 with label5;
+    }
+
+    private org.json.JSONObject getAORUploadObj()
+    {
+        org.json.JSONObject $r1;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: java.lang.String d()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("documentCacheKey", $r3);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: java.lang.String e()>();
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r3);
+
+        if $z0 != 0 goto label1;
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: java.lang.String e()>();
+
+        goto label2;
+
+     label1:
+        $r3 = "";
+
+     label2:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("name", $r3);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("type", "PDF");
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getAllergenDrugInfo(android.content.Context)
+    {
+        android.content.Context $r2;
+        c.c.a.c.b$c $r6;
+        org.json.JSONObject $r1;
+        c.c.a.c.b $r4;
+        com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy $r8;
+        com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails $r10;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.Object $r9;
+        java.lang.String $r5, $r7;
+        org.json.JSONArray $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r3 = new org.json.JSONArray;
+
+        specialinvoke $r3.<org.json.JSONArray: void <init>()>();
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r5 = $r4.<c.c.a.c.b: java.lang.String U>;
+
+        $r6 = <c.c.a.c.b$c: c.c.a.c.b$c b>;
+
+        $r7 = virtualinvoke $r6.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r7);
+
+        if $z0 == 0 goto label8;
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = virtualinvoke $r4.<c.c.a.c.b: boolean N()>();
+
+        $r5 = "";
+
+        if $z0 == 0 goto label5;
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = virtualinvoke $r4.<c.c.a.c.b: boolean N()>();
+
+        if $z0 == 0 goto label1;
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r8 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy x()>();
+
+        $r9 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getClinicalDrugInfo(com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy)>($r8);
+
+        goto label2;
+
+     label1:
+        $r9 = "";
+
+     label2:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("clinicOrDoctorInfo", $r9);
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = virtualinvoke $r4.<c.c.a.c.b: boolean N()>();
+
+        if $z0 == 0 goto label3;
+
+        $r7 = "C";
+
+        goto label4;
+
+     label3:
+        $r7 = "P";
+
+     label4:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("facilityType", $r7);
+
+     label5:
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean isDrugAvailableForSP()>();
+
+        if $z0 == 0 goto label8;
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("drugName", "Allergen Serum");
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r10 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r7 = virtualinvoke $r10.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getAllergenCostPerVial()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("costPerVial", $r7);
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r10 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r7 = virtualinvoke $r10.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getReceiptFillDate()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("dateOfFill", $r7);
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r10 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r7 = virtualinvoke $r10.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getQuantityDispensed()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("quantity", $r7);
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r10 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r7 = virtualinvoke $r10.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getSupplyDate()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("daysSupply", $r7);
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r10 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r7 = virtualinvoke $r10.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getAmtCharged()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("amountCharged", $r7);
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r10 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r7 = virtualinvoke $r10.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getCompoundPreFees()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("prepFee", $r7);
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r10 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r7 = virtualinvoke $r10.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getTaxCharged()>();
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r7);
+
+        if $z0 == 0 goto label6;
+
+        goto label7;
+
+     label6:
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r10 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r5 = virtualinvoke $r10.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getTaxCharged()>();
+
+     label7:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("taxCharged", $r5);
+
+        $r3 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONArray getIngredientObj(android.content.Context,java.lang.String)>($r2, "A");
+
+     label8:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("ingredients", $r3);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getAllergenPharmacyObj()
+    {
+        c.c.a.c.b$a $r6, $r7;
+        org.json.JSONObject $r1, $r2;
+        byte $b0;
+        c.c.a.c.b $r3;
+        com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy $r4;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r8;
+        org.json.JSONArray $r5;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r2 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getSearchedPharmacyInfo()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("searched", $r2);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy x()>();
+
+        $r2 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getSelectedPharmacyInfo(com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy)>($r4);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("selected", $r2);
+
+        $r5 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONArray getPharmacyResult()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("results", $r5);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r6 = virtualinvoke $r3.<c.c.a.c.b: c.c.a.c.b$a A()>();
+
+        $r7 = <c.c.a.c.b$a: c.c.a.c.b$a a>;
+
+        $z0 = virtualinvoke $r6.<java.lang.Enum: boolean equals(java.lang.Object)>($r7);
+
+        if $z0 == 0 goto label1;
+
+        $b0 = 1;
+
+        goto label3;
+
+     label1:
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r6 = virtualinvoke $r3.<c.c.a.c.b: c.c.a.c.b$a A()>();
+
+        $r7 = <c.c.a.c.b$a: c.c.a.c.b$a c>;
+
+        $z0 = virtualinvoke $r6.<java.lang.Enum: boolean equals(java.lang.Object)>($r7);
+
+        if $z0 == 0 goto label2;
+
+        $b0 = 2;
+
+        goto label3;
+
+     label2:
+        $b0 = 3;
+
+     label3:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,int)>("mode", $b0);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r3.<c.c.a.c.b: boolean N>;
+
+        if $z0 == 0 goto label4;
+
+        $r8 = "Y";
+
+        goto label5;
+
+     label4:
+        $r8 = "N";
+
+     label5:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("isPharmacyLookupFail", $r8);
+
+        $r5 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONArray getPharmacyHistory()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("history", $r5);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getCandAUploads()
+    {
+        org.json.JSONObject $r1;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r3;
+        org.json.JSONArray $r4;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: java.lang.String j()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("documentCacheKey", $r3);
+
+        $r4 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONArray getUploadArray()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("uploads", $r4);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getCardHolderInfo()
+    {
+        com.caremark.caremark.model.rxclaims.MemberInfo $r3;
+        org.json.JSONObject $r1;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r4;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo g()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getAccountID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("accountID", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo g()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getCarrierID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("carrierID", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo g()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getDateOfBirth()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("dateOfBirth", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo g()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getExternalID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("externalID", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo g()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getFirstName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("firstName", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo g()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getGender()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("gender", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo g()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getGroupID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("groupID", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo g()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getInternalID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("internalID", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo g()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getLastName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("lastName", $r4);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getClaimDetails()
+    {
+        org.json.JSONObject $r1;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r3, $r4;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = $r2.<c.c.a.c.b: java.lang.String g>;
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("insuranceType", $r3);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = $r2.<c.c.a.c.b: java.lang.String f>;
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("emergencyDesc", $r3);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r2.<c.c.a.c.b: boolean e>;
+
+        $r3 = "Y";
+
+        if $z0 == 0 goto label01;
+
+        $r4 = "Y";
+
+        goto label02;
+
+     label01:
+        $r4 = "N";
+
+     label02:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("isAnEmergency", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r2.<c.c.a.c.b: boolean b>;
+
+        if $z0 == 0 goto label03;
+
+        $r4 = "Y";
+
+        goto label04;
+
+     label03:
+        $r4 = "N";
+
+     label04:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("isGroupInsurance", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r2.<c.c.a.c.b: boolean h>;
+
+        if $z0 == 0 goto label05;
+
+        $r4 = "Y";
+
+        goto label06;
+
+     label05:
+        $r4 = "N";
+
+     label06:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("isJobInquery", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r2.<c.c.a.c.b: boolean d>;
+
+        if $z0 == 0 goto label07;
+
+        $r4 = "Y";
+
+        goto label08;
+
+     label07:
+        $r4 = "N";
+
+     label08:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("isPurchasedOutsideCountry", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = $r2.<c.c.a.c.b: java.lang.String m>;
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("insuranceCompanyId", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r2.<c.c.a.c.b: boolean M>;
+
+        if $z0 == 0 goto label09;
+
+        $r4 = "Y";
+
+        goto label10;
+
+     label09:
+        $r4 = "N";
+
+     label10:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("isPriorAuthorization", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r2.<c.c.a.c.b: boolean L>;
+
+        if $z0 == 0 goto label11;
+
+        $r4 = "Y";
+
+        goto label12;
+
+     label11:
+        $r4 = "N";
+
+     label12:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("isTieringException", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r2.<c.c.a.c.b: boolean i>;
+
+        if $z0 == 0 goto label13;
+
+        goto label14;
+
+     label13:
+        $r3 = "N";
+
+     label14:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("isOtherCoverage", $r3);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = $r2.<c.c.a.c.b: java.lang.String l>;
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("insuranceCompanyName", $r3);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getClaimMemberInfo()
+    {
+        com.caremark.caremark.model.rxclaims.MemberInfo $r4;
+        c.c.a.j.a.f$a $r5;
+        org.json.JSONObject $r1, $r2;
+        java.lang.Long $r7;
+        c.c.a.c.b $r3;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r6;
+        boolean $z0, $z1;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r2 = new org.json.JSONObject;
+
+        specialinvoke $r2.<org.json.JSONObject: void <init>()>();
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r5 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: c.c.a.j.a.f$a getAddress()>();
+
+        $r6 = virtualinvoke $r5.<c.c.a.j.a.f$a: java.lang.String b()>();
+
+        virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("addressLine1", $r6);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r5 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: c.c.a.j.a.f$a getAddress()>();
+
+        $r6 = virtualinvoke $r5.<c.c.a.j.a.f$a: java.lang.String c()>();
+
+        virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("addressLine2", $r6);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r5 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: c.c.a.j.a.f$a getAddress()>();
+
+        $r6 = virtualinvoke $r5.<c.c.a.j.a.f$a: java.lang.String a()>();
+
+        virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("city", $r6);
+
+        virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("country", "USA");
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r5 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: c.c.a.j.a.f$a getAddress()>();
+
+        $r6 = virtualinvoke $r5.<c.c.a.j.a.f$a: java.lang.String d()>();
+
+        virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("state", $r6);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r5 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: c.c.a.j.a.f$a getAddress()>();
+
+        $r6 = virtualinvoke $r5.<c.c.a.j.a.f$a: java.lang.String f()>();
+
+        virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("zip", $r6);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getAccountID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("accountID", $r6);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("address", $r2);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getCardholderInternalID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("cardHolderInfoierID", $r6);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getDateOfBirth()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("dateOfBirth", $r6);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r7 = virtualinvoke $r3.<c.c.a.c.b: java.lang.Long q()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("endDate", $r7);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getExternalID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("externalID", $r6);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getFirstName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("firstName", $r6);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getLastName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("lastName", $r6);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getGender()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("gender", $r6);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getGroupID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("groupID", $r6);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getInternalID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("internalID", $r6);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getCarrierID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("carrierID", $r6);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getMedBEligible()>();
+
+        $z0 = 0;
+
+        if $r6 == null goto label1;
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getMedBEligible()>();
+
+        $z1 = virtualinvoke $r6.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>("true");
+
+        if $z1 == 0 goto label1;
+
+        $z0 = 1;
+
+     label1:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("isMEDDMember", $z0);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r6 = virtualinvoke $r3.<c.c.a.c.b: java.lang.String D()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("planID", $r6);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getPersonCode()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("personCode", $r6);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getRelationShipCode()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("relationShipCode", $r6);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r7 = virtualinvoke $r3.<c.c.a.c.b: java.lang.Long r()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("startDate", $r7);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getClaims()
+    {
+        org.json.JSONObject $r1;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.SClaimDetails $r3;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r4;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.SClaimDetails M()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.SClaimDetails: java.lang.String getChildFormID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("childFormID", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.SClaimDetails M()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.SClaimDetails: java.lang.String getParentFormID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("parentFormID", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.SClaimDetails M()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.SClaimDetails: java.lang.String getParentID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("parentID", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.SClaimDetails M()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.SClaimDetails: java.lang.String getResponseType()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("responseType", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.SClaimDetails M()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.SClaimDetails: java.lang.String getStaticValueNo()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("staticValueNo", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.SClaimDetails M()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.SClaimDetails: java.lang.String getWfriID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("wfriID", $r4);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getClinicalDrugInfo(com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy)
+    {
+        org.json.JSONObject $r1;
+        com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy $r2;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r3;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r2 := @parameter0: com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyAddress1()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyAddress1", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyAddress2()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyAddress2", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyCity()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyCity", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyName", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyState()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyState", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyZip()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyZip", $r3);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getCommentsData()
+    {
+        org.json.JSONObject $r1;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r3;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: java.lang.String b()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("comment", $r3);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getCompoundDrugInfo(android.content.Context)
+    {
+        android.content.Context $r2;
+        c.c.a.c.b$c $r6;
+        org.json.JSONObject $r1;
+        c.c.a.c.b $r4;
+        com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails $r8;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r5, $r7;
+        org.json.JSONArray $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r3 = new org.json.JSONArray;
+
+        specialinvoke $r3.<org.json.JSONArray: void <init>()>();
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r5 = $r4.<c.c.a.c.b: java.lang.String U>;
+
+        $r6 = <c.c.a.c.b$c: c.c.a.c.b$c a>;
+
+        $r7 = virtualinvoke $r6.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r7);
+
+        if $z0 == 0 goto label3;
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean isDrugAvailableForSP()>();
+
+        if $z0 == 0 goto label3;
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r8 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r5 = virtualinvoke $r8.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("drugName", $r5);
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r8 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r5 = virtualinvoke $r8.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getRxNumber()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("rxNumber", $r5);
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r8 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r5 = virtualinvoke $r8.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getUsrPSC()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("daw", $r5);
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r8 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r5 = virtualinvoke $r8.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getUsrRefillCD()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("refillCd", $r5);
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r8 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r5 = virtualinvoke $r8.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getReceiptFillDate()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("dateOfFill", $r5);
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r8 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r5 = virtualinvoke $r8.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getQuantityDispensed()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("quantity", $r5);
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r8 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r5 = virtualinvoke $r8.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getSupplyDate()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("daysSupply", $r5);
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r8 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r5 = virtualinvoke $r8.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getCompoundTotalCost()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("amountCharged", $r5);
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r8 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r5 = virtualinvoke $r8.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getCompoundPreFees()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("prepFee", $r5);
+
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r8 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r5 = virtualinvoke $r8.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getTaxCharged()>();
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r5);
+
+        if $z0 == 0 goto label1;
+
+        $r5 = "";
+
+        goto label2;
+
+     label1:
+        $r4 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r8 = virtualinvoke $r4.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r5 = virtualinvoke $r8.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getTaxCharged()>();
+
+     label2:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("taxCharged", $r5);
+
+        $r3 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONArray getIngredientObj(android.content.Context,java.lang.String)>($r2, "C");
+
+     label3:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("ingredients", $r3);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getDrugInfo()
+    {
+        org.json.JSONObject $r1;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails $r3;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r4;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean isDrugInfoRegular()>();
+
+        if $z0 == 0 goto label3;
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getAbbreviatedDosageFormName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("dosageForm", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getAbbreviatedProductName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("abbreviatedProductName", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getAbbreviatedStrengthName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("abbreviatedStrengthName", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("name", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getNdcId()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("ndcId", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getRxNumber()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("rxNumber", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getUsrPSC()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("daw", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getUsrRefillCD()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("refillCd", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getReceiptFillDate()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("dateOfFill", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getQuantityDispensed()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("quantity", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getSupplyDate()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("daysSupply", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getAmtCharged()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("amountCharged", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getTaxCharged()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("taxCharged", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r2.<c.c.a.c.b: boolean O>;
+
+        if $z0 == 0 goto label1;
+
+        $r4 = "Y";
+
+        goto label2;
+
+     label1:
+        $r4 = "N";
+
+     label2:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("isDrugLookupFail", $r4);
+
+        return $r1;
+
+     label3:
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getDrugObj(android.content.Context)
+    {
+        android.content.Context $r2;
+        c.c.a.c.b$c $r5;
+        c.c.a.c.b$b $r8, $r9;
+        org.json.JSONObject $r1, $r7;
+        byte $b0;
+        c.c.a.c.b $r3;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r4, $r6;
+        boolean $z0, $z1;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = $r3.<c.c.a.c.b: java.lang.String U>;
+
+        $r5 = <c.c.a.c.b$c: c.c.a.c.b$c b>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r6);
+
+        if $z0 == 0 goto label01;
+
+        $r4 = "A";
+
+        goto label04;
+
+     label01:
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = $r3.<c.c.a.c.b: java.lang.String U>;
+
+        $r5 = <c.c.a.c.b$c: c.c.a.c.b$c a>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r6);
+
+        if $z0 == 0 goto label02;
+
+        $r4 = "C";
+
+        goto label04;
+
+     label02:
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = $r3.<c.c.a.c.b: java.lang.String U>;
+
+        $r5 = <c.c.a.c.b$c: c.c.a.c.b$c c>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r6);
+
+        if $z0 == 0 goto label03;
+
+        $r4 = "R";
+
+        goto label04;
+
+     label03:
+        $r4 = "";
+
+     label04:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("drugType", $r4);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r3.<c.c.a.c.b: boolean d>;
+
+        if $z0 == 0 goto label05;
+
+        $r7 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getForeignDrugInfo()>();
+
+        goto label06;
+
+     label05:
+        $r7 = new org.json.JSONObject;
+
+        specialinvoke $r7.<org.json.JSONObject: void <init>()>();
+
+     label06:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("foreignDrugInfo", $r7);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r3.<c.c.a.c.b: boolean d>;
+
+        if $z0 == 0 goto label07;
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("drugType", "");
+
+     label07:
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r3.<c.c.a.c.b: boolean d>;
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("isForeignDrugInfo", $z0);
+
+        $r7 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getCompoundDrugInfo(android.content.Context)>($r2);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("compoundDrugInfo", $r7);
+
+        $r7 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getAllergenDrugInfo(android.content.Context)>($r2);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("allergenDrugInfo", $r7);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = $r3.<c.c.a.c.b: java.lang.String U>;
+
+        $r5 = <c.c.a.c.b$c: c.c.a.c.b$c c>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r6);
+
+        if $z0 == 0 goto label08;
+
+        $r7 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getDrugInfo()>();
+
+        goto label09;
+
+     label08:
+        $r7 = new org.json.JSONObject;
+
+        specialinvoke $r7.<org.json.JSONObject: void <init>()>();
+
+     label09:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("drugInfo", $r7);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: java.lang.String p()>();
+
+        $b0 = 1;
+
+        $z0 = 0;
+
+        if $r4 == null goto label10;
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: java.lang.String p()>();
+
+        $z1 = virtualinvoke $r4.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>("Y");
+
+        if $z1 == 0 goto label10;
+
+        $z0 = 1;
+
+     label10:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("isManualEntry", $z0);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r8 = virtualinvoke $r3.<c.c.a.c.b: c.c.a.c.b$b E()>();
+
+        $r9 = <c.c.a.c.b$b: c.c.a.c.b$b a>;
+
+        $z0 = virtualinvoke $r8.<java.lang.Enum: boolean equals(java.lang.Object)>($r9);
+
+        if $z0 == 0 goto label11;
+
+        goto label13;
+
+     label11:
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r8 = virtualinvoke $r3.<c.c.a.c.b: c.c.a.c.b$b E()>();
+
+        $r9 = <c.c.a.c.b$b: c.c.a.c.b$b c>;
+
+        $z0 = virtualinvoke $r8.<java.lang.Enum: boolean equals(java.lang.Object)>($r9);
+
+        if $z0 == 0 goto label12;
+
+        $b0 = 2;
+
+        goto label13;
+
+     label12:
+        $b0 = 3;
+
+     label13:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,int)>("mode", $b0);
+
+        $r7 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getSearchedDrugInfo()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("searched", $r7);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r3.<c.c.a.c.b: boolean O>;
+
+        $r4 = staticinvoke <java.lang.String: java.lang.String valueOf(boolean)>($z0);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("isDrugLookupFail", $r4);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getForeignDrugInfo()
+    {
+        org.json.JSONObject $r1;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails $r3;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r4;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean getSP4Data()>();
+
+        if $z0 != 0 goto label1;
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean getSP3Data()>();
+
+        if $z0 == 0 goto label2;
+
+     label1:
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r2.<c.c.a.c.b: boolean d>;
+
+        if $z0 == 0 goto label2;
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("drugName", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getAbbreviatedStrengthName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("drugStrength", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getQuantityDispensed()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("quantity", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getReceiptFillDate()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("date", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getSupplyDate()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("days", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getCountry()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("country", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails o()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.drugdetails.DrugDetails: java.lang.String getAmtCharged()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("amount", $r4);
+
+        return $r1;
+
+     label2:
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        return $r1;
+    }
+
+    private org.json.JSONArray getIngredientObj(android.content.Context, java.lang.String)
+    {
+        android.content.Context $r4;
+        java.util.List $r5;
+        org.json.JSONObject $r6;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        int $i0, $i1;
+        java.lang.Object $r7;
+        java.lang.String $r1, $r9;
+        org.json.JSONArray $r2;
+        c.c.a.o.e.a.a $r8;
+        com.caremark.caremark.ui.rxclaims.database.CompoundIngredientDb $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r4 := @parameter0: android.content.Context;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = new org.json.JSONArray;
+
+        specialinvoke $r2.<org.json.JSONArray: void <init>()>();
+
+        $r3 = new com.caremark.caremark.ui.rxclaims.database.CompoundIngredientDb;
+
+        specialinvoke $r3.<com.caremark.caremark.ui.rxclaims.database.CompoundIngredientDb: void <init>(android.content.Context)>($r4);
+
+        virtualinvoke $r3.<com.caremark.caremark.ui.rxclaims.database.CompoundIngredientDb: void f()>();
+
+        $r5 = virtualinvoke $r3.<com.caremark.caremark.ui.rxclaims.database.CompoundIngredientDb: java.util.List d()>();
+
+        if $r5 == null goto label6;
+
+        $r5 = virtualinvoke $r3.<com.caremark.caremark.ui.rxclaims.database.CompoundIngredientDb: java.util.List d()>();
+
+        $i0 = interfaceinvoke $r5.<java.util.List: int size()>();
+
+        if $i0 <= 0 goto label6;
+
+        $i0 = 0;
+
+     label1:
+        $r5 = virtualinvoke $r3.<com.caremark.caremark.ui.rxclaims.database.CompoundIngredientDb: java.util.List d()>();
+
+        $i1 = interfaceinvoke $r5.<java.util.List: int size()>();
+
+        if $i0 >= $i1 goto label5;
+
+        $r6 = new org.json.JSONObject;
+
+        specialinvoke $r6.<org.json.JSONObject: void <init>()>();
+
+        $r5 = virtualinvoke $r3.<com.caremark.caremark.ui.rxclaims.database.CompoundIngredientDb: java.util.List d()>();
+
+        $r7 = interfaceinvoke $r5.<java.util.List: java.lang.Object get(int)>($i0);
+
+        $r8 = (c.c.a.o.e.a.a) $r7;
+
+        $r9 = virtualinvoke $r8.<c.c.a.o.e.a.a: java.lang.String c()>();
+
+        if $r9 == null goto label2;
+
+        $r5 = virtualinvoke $r3.<com.caremark.caremark.ui.rxclaims.database.CompoundIngredientDb: java.util.List d()>();
+
+        $r7 = interfaceinvoke $r5.<java.util.List: java.lang.Object get(int)>($i0);
+
+        $r8 = (c.c.a.o.e.a.a) $r7;
+
+        $r9 = virtualinvoke $r8.<c.c.a.o.e.a.a: java.lang.String c()>();
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r9);
+
+        if $z0 != 0 goto label2;
+
+        $r5 = virtualinvoke $r3.<com.caremark.caremark.ui.rxclaims.database.CompoundIngredientDb: java.util.List d()>();
+
+        $r7 = interfaceinvoke $r5.<java.util.List: java.lang.Object get(int)>($i0);
+
+        $r8 = (c.c.a.o.e.a.a) $r7;
+
+        $r9 = virtualinvoke $r8.<c.c.a.o.e.a.a: java.lang.String c()>();
+
+        virtualinvoke $r6.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("name", $r9);
+
+        goto label3;
+
+     label2:
+        $r5 = virtualinvoke $r3.<com.caremark.caremark.ui.rxclaims.database.CompoundIngredientDb: java.util.List d()>();
+
+        $r7 = interfaceinvoke $r5.<java.util.List: java.lang.Object get(int)>($i0);
+
+        $r8 = (c.c.a.o.e.a.a) $r7;
+
+        $r9 = virtualinvoke $r8.<c.c.a.o.e.a.a: java.lang.String b()>();
+
+        virtualinvoke $r6.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("name", $r9);
+
+     label3:
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>("c");
+
+        if $z0 == 0 goto label4;
+
+        $r5 = virtualinvoke $r3.<com.caremark.caremark.ui.rxclaims.database.CompoundIngredientDb: java.util.List d()>();
+
+        $r7 = interfaceinvoke $r5.<java.util.List: java.lang.Object get(int)>($i0);
+
+        $r8 = (c.c.a.o.e.a.a) $r7;
+
+        $r9 = virtualinvoke $r8.<c.c.a.o.e.a.a: java.lang.String d()>();
+
+        virtualinvoke $r6.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("quantity", $r9);
+
+        $r5 = virtualinvoke $r3.<com.caremark.caremark.ui.rxclaims.database.CompoundIngredientDb: java.util.List d()>();
+
+        $r7 = interfaceinvoke $r5.<java.util.List: java.lang.Object get(int)>($i0);
+
+        $r8 = (c.c.a.o.e.a.a) $r7;
+
+        $r9 = virtualinvoke $r8.<c.c.a.o.e.a.a: java.lang.String a()>();
+
+        virtualinvoke $r6.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("cost", $r9);
+
+        $r5 = virtualinvoke $r3.<com.caremark.caremark.ui.rxclaims.database.CompoundIngredientDb: java.util.List d()>();
+
+        $r7 = interfaceinvoke $r5.<java.util.List: java.lang.Object get(int)>($i0);
+
+        $r8 = (c.c.a.o.e.a.a) $r7;
+
+        $r9 = virtualinvoke $r8.<c.c.a.o.e.a.a: java.lang.String b()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("-", "");
+
+        virtualinvoke $r6.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("ndcId", $r9);
+
+     label4:
+        virtualinvoke $r2.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($r6);
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label5:
+        virtualinvoke $r3.<com.caremark.caremark.ui.rxclaims.database.CompoundIngredientDb: void a()>();
+
+        return $r2;
+
+     label6:
+        $r2 = new org.json.JSONArray;
+
+        specialinvoke $r2.<org.json.JSONArray: void <init>()>();
+
+        return $r2;
+    }
+
+    private org.json.JSONArray getMemberInfo()
+    {
+        com.caremark.caremark.model.rxclaims.MemberInfo $r3;
+        com.caremark.caremark.model.rxclaims.Family $r5;
+        org.json.JSONObject $r4;
+        com.caremark.caremark.model.rxclaims.DependentList $r6;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        int $i0, $i1;
+        com.caremark.caremark.model.rxclaims.MemberInfo[] $r7;
+        org.json.JSONArray $r1;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONArray;
+
+        specialinvoke $r1.<org.json.JSONArray: void <init>()>();
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo c()>();
+
+        $r4 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getMemberObject(com.caremark.caremark.model.rxclaims.MemberInfo)>($r3);
+
+        virtualinvoke $r1.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo c()>();
+
+        $r5 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.MemberInfo: com.caremark.caremark.model.rxclaims.Family getFamily()>();
+
+        $r6 = virtualinvoke $r5.<com.caremark.caremark.model.rxclaims.Family: com.caremark.caremark.model.rxclaims.DependentList getDependentList()>();
+
+        if $r6 == null goto label2;
+
+        $i0 = 0;
+
+     label1:
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo c()>();
+
+        $r5 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.MemberInfo: com.caremark.caremark.model.rxclaims.Family getFamily()>();
+
+        $r6 = virtualinvoke $r5.<com.caremark.caremark.model.rxclaims.Family: com.caremark.caremark.model.rxclaims.DependentList getDependentList()>();
+
+        $r7 = virtualinvoke $r6.<com.caremark.caremark.model.rxclaims.DependentList: com.caremark.caremark.model.rxclaims.MemberInfo[] getMemberInfo()>();
+
+        $i1 = lengthof $r7;
+
+        if $i0 >= $i1 goto label2;
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo c()>();
+
+        $r5 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.MemberInfo: com.caremark.caremark.model.rxclaims.Family getFamily()>();
+
+        $r6 = virtualinvoke $r5.<com.caremark.caremark.model.rxclaims.Family: com.caremark.caremark.model.rxclaims.DependentList getDependentList()>();
+
+        $r7 = virtualinvoke $r6.<com.caremark.caremark.model.rxclaims.DependentList: com.caremark.caremark.model.rxclaims.MemberInfo[] getMemberInfo()>();
+
+        $r3 = $r7[$i0];
+
+        $r4 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getMemberObject(com.caremark.caremark.model.rxclaims.MemberInfo)>($r3);
+
+        virtualinvoke $r1.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($r4);
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label2:
+        return $r1;
+    }
+
+    private org.json.JSONObject getMemberObject(com.caremark.caremark.model.rxclaims.MemberInfo)
+    {
+        com.caremark.caremark.model.rxclaims.MemberInfo $r2;
+        org.json.JSONObject $r1;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r3;
+        boolean $z0, $z1;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r2 := @parameter0: com.caremark.caremark.model.rxclaims.MemberInfo;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getAccountID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("accountID", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getCarrierID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("carrierID", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getDateOfBirth()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("dateOfBirth", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getExternalID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("externalID", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getFirstName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("firstName", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getGender()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("gender", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getGroupID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("groupID", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getInternalID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("internalID", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getMedBEligible()>();
+
+        $z0 = 0;
+
+        if $r3 == null goto label1;
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getMedBEligible()>();
+
+        $z1 = virtualinvoke $r3.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>("true");
+
+        if $z1 == 0 goto label1;
+
+        $z0 = 1;
+
+     label1:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("isMEDDMember", $z0);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getLastName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("lastName", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getRelationShipCode()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("relationShipCode", $r3);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getMembersInfo()
+    {
+        com.caremark.caremark.model.rxclaims.MemberInfo $r3;
+        com.caremark.caremark.model.rxclaims.Family $r5;
+        c.c.a.o.e.Jc $r10;
+        com.caremark.caremark.model.rxclaims.draftclaim.SaveDraftResponse $r11;
+        org.json.JSONObject $r1, $r9;
+        com.caremark.caremark.model.rxclaims.DependentList $r6;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        int $i0;
+        java.lang.String $r4;
+        com.caremark.caremark.model.rxclaims.MemberInfo[] $r7;
+        org.json.JSONArray $r8;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getRelationShipCode()>();
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r4);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,int)>("relationship", $i0);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("phoneOnFile", 1);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo u()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.MemberInfo: java.lang.String getPrimaryPhone()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("phoneNumber", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo c()>();
+
+        $r5 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.MemberInfo: com.caremark.caremark.model.rxclaims.Family getFamily()>();
+
+        $r6 = virtualinvoke $r5.<com.caremark.caremark.model.rxclaims.Family: com.caremark.caremark.model.rxclaims.DependentList getDependentList()>();
+
+        $z0 = 0;
+
+        if $r6 == null goto label1;
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.MemberInfo c()>();
+
+        $r5 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.MemberInfo: com.caremark.caremark.model.rxclaims.Family getFamily()>();
+
+        $r6 = virtualinvoke $r5.<com.caremark.caremark.model.rxclaims.Family: com.caremark.caremark.model.rxclaims.DependentList getDependentList()>();
+
+        $r7 = virtualinvoke $r6.<com.caremark.caremark.model.rxclaims.DependentList: com.caremark.caremark.model.rxclaims.MemberInfo[] getMemberInfo()>();
+
+        $i0 = lengthof $r7;
+
+        if $i0 <= 0 goto label1;
+
+        $z0 = 1;
+
+     label1:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("hasDependent", $z0);
+
+        $r8 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONArray getMemberInfo()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("members", $r8);
+
+        $r9 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getClaimMemberInfo()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("claimMember", $r9);
+
+        $r9 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getClaimDetails()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("claimDetails", $r9);
+
+        $r9 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getCardHolderInfo()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("cardHolderInfo", $r9);
+
+        $r10 = staticinvoke <c.c.a.o.e.Jc: c.c.a.o.e.Jc c()>();
+
+        $r4 = virtualinvoke $r10.<c.c.a.o.e.Jc: java.lang.String a()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("lastUpdatedDate", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = virtualinvoke $r2.<c.c.a.c.b: boolean O()>();
+
+        if $z0 == 0 goto label2;
+
+        $r4 = "clone_claim";
+
+        goto label4;
+
+     label2:
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r11 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.draftclaim.SaveDraftResponse I()>();
+
+        if $r11 == null goto label3;
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r11 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.draftclaim.SaveDraftResponse I()>();
+
+        $r4 = virtualinvoke $r11.<com.caremark.caremark.model.rxclaims.draftclaim.SaveDraftResponse: java.lang.String getDraftId()>();
+
+        goto label4;
+
+     label3:
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = $r2.<c.c.a.c.b: java.lang.String ba>;
+
+     label4:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("draftID", $r4);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getNavigationMode()
+    {
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        org.json.JSONObject $r1;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("isFromReview", 0);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,int)>("mode", 1);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getNavigationStatus()
+    {
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        org.json.JSONObject $r1;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("status", 1);
+
+        return $r1;
+    }
+
+    private org.json.JSONArray getPharmacyHistory()
+    {
+        java.util.ArrayList $r3;
+        org.json.JSONObject $r6;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy $r5;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        int $i0, $i1;
+        java.lang.Object $r4;
+        org.json.JSONArray $r1;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONArray;
+
+        specialinvoke $r1.<org.json.JSONArray: void <init>()>();
+
+        $i0 = 0;
+
+     label1:
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $i1 = virtualinvoke $r3.<java.util.ArrayList: int size()>();
+
+        if $i0 >= $i1 goto label2;
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r4 = virtualinvoke $r3.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r5 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r4;
+
+        $r6 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getSelectedPharmacyInfo(com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy)>($r5);
+
+        virtualinvoke $r1.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($r6);
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label2:
+        return $r1;
+    }
+
+    private org.json.JSONObject getPharmacyObj()
+    {
+        c.c.a.c.b$a $r9, $r10;
+        c.c.a.c.b$c $r3;
+        org.json.JSONObject $r5, $r6;
+        byte $b0;
+        c.c.a.c.b $r1;
+        com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy $r7;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r2, $r4;
+        org.json.JSONArray $r8;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r2 = $r1.<c.c.a.c.b: java.lang.String U>;
+
+        $r3 = <c.c.a.c.b$c: c.c.a.c.b$c b>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r4);
+
+        if $z0 == 0 goto label1;
+
+        $r5 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getAllergenPharmacyObj()>();
+
+        return $r5;
+
+     label1:
+        $r5 = new org.json.JSONObject;
+
+        specialinvoke $r5.<org.json.JSONObject: void <init>()>();
+
+        $r6 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getSearchedPharmacyInfo()>();
+
+        virtualinvoke $r5.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("searched", $r6);
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r7 = virtualinvoke $r1.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy x()>();
+
+        $r6 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getSelectedPharmacyInfo(com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy)>($r7);
+
+        virtualinvoke $r5.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("selected", $r6);
+
+        $r8 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONArray getPharmacyResult()>();
+
+        virtualinvoke $r5.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("results", $r8);
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r9 = virtualinvoke $r1.<c.c.a.c.b: c.c.a.c.b$a A()>();
+
+        $r10 = <c.c.a.c.b$a: c.c.a.c.b$a a>;
+
+        $z0 = virtualinvoke $r9.<java.lang.Enum: boolean equals(java.lang.Object)>($r10);
+
+        if $z0 == 0 goto label2;
+
+        $b0 = 1;
+
+        goto label4;
+
+     label2:
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r9 = virtualinvoke $r1.<c.c.a.c.b: c.c.a.c.b$a A()>();
+
+        $r10 = <c.c.a.c.b$a: c.c.a.c.b$a c>;
+
+        $z0 = virtualinvoke $r9.<java.lang.Enum: boolean equals(java.lang.Object)>($r10);
+
+        if $z0 == 0 goto label3;
+
+        $b0 = 2;
+
+        goto label4;
+
+     label3:
+        $b0 = 3;
+
+     label4:
+        virtualinvoke $r5.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,int)>("mode", $b0);
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r1.<c.c.a.c.b: boolean N>;
+
+        if $z0 == 0 goto label5;
+
+        $r2 = "Y";
+
+        goto label6;
+
+     label5:
+        $r2 = "N";
+
+     label6:
+        virtualinvoke $r5.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("isPharmacyLookupFail", $r2);
+
+        $r8 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONArray getPharmacyHistory()>();
+
+        virtualinvoke $r5.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("history", $r8);
+
+        return $r5;
+    }
+
+    private org.json.JSONArray getPharmacyResult()
+    {
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        org.json.JSONArray $r1;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONArray;
+
+        specialinvoke $r1.<org.json.JSONArray: void <init>()>();
+
+        return $r1;
+    }
+
+    private org.json.JSONArray getPrescriberHistory()
+    {
+        com.caremark.caremark.model.rxclaims.prescribersearch.Physician $r5;
+        java.util.ArrayList $r3;
+        org.json.JSONObject $r6;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        int $i0, $i1;
+        java.lang.Object $r4;
+        org.json.JSONArray $r1;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONArray;
+
+        specialinvoke $r1.<org.json.JSONArray: void <init>()>();
+
+        $i0 = 0;
+
+     label1:
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: java.util.ArrayList C()>();
+
+        $i1 = virtualinvoke $r3.<java.util.ArrayList: int size()>();
+
+        if $i0 >= $i1 goto label2;
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: java.util.ArrayList C()>();
+
+        $r4 = virtualinvoke $r3.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r5 = (com.caremark.caremark.model.rxclaims.prescribersearch.Physician) $r4;
+
+        $r6 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getSelectedPrescriberInfo(com.caremark.caremark.model.rxclaims.prescribersearch.Physician)>($r5);
+
+        virtualinvoke $r1.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($r6);
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label2:
+        return $r1;
+    }
+
+    private org.json.JSONObject getPrescriberObj()
+    {
+        com.caremark.caremark.model.rxclaims.prescribersearch.Physician $r4;
+        c.c.a.c.b$b $r6, $r7;
+        org.json.JSONObject $r1, $r2;
+        byte $b0;
+        c.c.a.c.b $r3;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        org.json.JSONArray $r5;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r2 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getSearchedPrescriberObj()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("searched", $r2);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.prescribersearch.Physician B()>();
+
+        if $r4 == null goto label1;
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.prescribersearch.Physician B()>();
+
+        $r2 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getSelectedPrescriberInfo(com.caremark.caremark.model.rxclaims.prescribersearch.Physician)>($r4);
+
+        goto label2;
+
+     label1:
+        $r2 = new org.json.JSONObject;
+
+        specialinvoke $r2.<org.json.JSONObject: void <init>()>();
+
+     label2:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("selected", $r2);
+
+        $r5 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONArray getPharmacyResult()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("results", $r5);
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r6 = virtualinvoke $r3.<c.c.a.c.b: c.c.a.c.b$b E()>();
+
+        $r7 = <c.c.a.c.b$b: c.c.a.c.b$b a>;
+
+        $z0 = virtualinvoke $r6.<java.lang.Enum: boolean equals(java.lang.Object)>($r7);
+
+        if $z0 == 0 goto label3;
+
+        $b0 = 1;
+
+        goto label5;
+
+     label3:
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r6 = virtualinvoke $r3.<c.c.a.c.b: c.c.a.c.b$b E()>();
+
+        $r7 = <c.c.a.c.b$b: c.c.a.c.b$b c>;
+
+        $z0 = virtualinvoke $r6.<java.lang.Enum: boolean equals(java.lang.Object)>($r7);
+
+        if $z0 == 0 goto label4;
+
+        $b0 = 2;
+
+        goto label5;
+
+     label4:
+        $b0 = 3;
+
+     label5:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,int)>("mode", $b0);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("isPrescriberLookupFail", "");
+
+        $r5 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONArray getPrescriberHistory()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("history", $r5);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getPrescribtionJSON(android.content.Context)
+    {
+        android.content.Context $r2;
+        org.json.JSONObject $r1, $r3;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r3 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getMembersInfo()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("member", $r3);
+
+        $r3 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getCommentsData()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("comments", $r3);
+
+        $r3 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getPharmacyObj()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacy", $r3);
+
+        $r3 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getPrescriberObj()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("prescriber", $r3);
+
+        $r3 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getDrugObj(android.content.Context)>($r2);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("drug", $r3);
+
+        $r3 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getAORUploadObj()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("aor_upload", $r3);
+
+        $r3 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getReceiptUpload()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("receipt_upload", $r3);
+
+        $r3 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getCandAUploads()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("receipt_uploads", $r3);
+
+        $r3 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getUploads()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("uploads", $r3);
+
+        $r3 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getNavigationStatus()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("navigationStatus", $r3);
+
+        $r3 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getNavigationMode()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("navigationMode", $r3);
+
+        $r3 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getPrescriptionAddlInfo()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("prescriptionAddlInfo", $r3);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getPrescriptionAddlInfo()
+    {
+        org.json.JSONObject $r1;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = $r2.<c.c.a.c.b: java.lang.String ca>;
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("savePointURL", $r3);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r2.<c.c.a.c.b: boolean da>;
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,boolean)>("isPrescriptionComplete", $z0);
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getReceiptUpload()
+    {
+        org.json.JSONObject $r1;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r3;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: java.lang.String l()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("documentCacheKey", $r3);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: java.lang.String L()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("name", $r3);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("type", "PDF");
+
+        return $r1;
+    }
+
+    private boolean getSP1Data()
+    {
+        c.c.a.c.b $r1;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint $r3;
+        java.lang.String $r2, $r4;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r2 = $r1.<c.c.a.c.b: java.lang.String ca>;
+
+        $r3 = <com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint kSavePoint1_Allergen_Clinic_Info>;
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: java.lang.String getScreen()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r4);
+
+        if $z0 != 0 goto label2;
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r2 = $r1.<c.c.a.c.b: java.lang.String ca>;
+
+        $r3 = <com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint kSavePoint1_Pharmacy_History>;
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: java.lang.String getScreen()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r4);
+
+        if $z0 != 0 goto label2;
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r2 = $r1.<c.c.a.c.b: java.lang.String ca>;
+
+        $r3 = <com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint kSavePoint1_Pharmacy_Manual>;
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: java.lang.String getScreen()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r4);
+
+        if $z0 != 0 goto label2;
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r2 = $r1.<c.c.a.c.b: java.lang.String ca>;
+
+        $r3 = <com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint kSavePoint1_Pharmacy_Results>;
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: java.lang.String getScreen()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r4);
+
+        if $z0 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    private boolean getSP2Data()
+    {
+        c.c.a.c.b $r1;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint $r3;
+        java.lang.String $r2, $r4;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r2 = $r1.<c.c.a.c.b: java.lang.String ca>;
+
+        $r3 = <com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint kSavePoint2_Allergen_Ingredients_review>;
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: java.lang.String getScreen()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r4);
+
+        if $z0 != 0 goto label2;
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r2 = $r1.<c.c.a.c.b: java.lang.String ca>;
+
+        $r3 = <com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint kSavePoint2_Compound_Ingredients_review>;
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: java.lang.String getScreen()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r4);
+
+        if $z0 != 0 goto label2;
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r2 = $r1.<c.c.a.c.b: java.lang.String ca>;
+
+        $r3 = <com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint kSavePoint2_Regular_RxInfo>;
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: java.lang.String getScreen()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r4);
+
+        if $z0 != 0 goto label2;
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r2 = $r1.<c.c.a.c.b: java.lang.String ca>;
+
+        $r3 = <com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint kSavePoint2_Compound_RxInfo>;
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: java.lang.String getScreen()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r4);
+
+        if $z0 != 0 goto label2;
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r2 = $r1.<c.c.a.c.b: java.lang.String ca>;
+
+        $r3 = <com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint kSavePoint2_Allergen_RxInfo>;
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: java.lang.String getScreen()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r4);
+
+        if $z0 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    private boolean getSP3Data()
+    {
+        c.c.a.c.b $r1;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint $r3;
+        java.lang.String $r2, $r4;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r2 = $r1.<c.c.a.c.b: java.lang.String ca>;
+
+        $r3 = <com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint kSavePoint3_Foreign_Drug>;
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: java.lang.String getScreen()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r4);
+
+        if $z0 != 0 goto label2;
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r2 = $r1.<c.c.a.c.b: java.lang.String ca>;
+
+        $r3 = <com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint kSavePoint3_Prescription_Summary>;
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: java.lang.String getScreen()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r4);
+
+        if $z0 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    private boolean getSP4Data()
+    {
+        c.c.a.c.b $r1;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint $r3;
+        java.lang.String $r2, $r4;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r2 = $r1.<c.c.a.c.b: java.lang.String ca>;
+
+        $r3 = <com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint kSavePoint4_Review>;
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: java.lang.String getScreen()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r4);
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    private org.json.JSONObject getSearchedDrugInfo()
+    {
+        org.json.JSONObject $r1;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean isDrugAvailableForSP()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: java.lang.String v()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("-", "");
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("ndcId", $r3);
+
+        return $r1;
+
+     label1:
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getSearchedPharmacyInfo()
+    {
+        org.json.JSONObject $r1;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy $r3;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r4;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r2.<c.c.a.c.b: boolean d>;
+
+        if $z0 != 0 goto label2;
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = virtualinvoke $r2.<c.c.a.c.b: boolean N()>();
+
+        if $z0 == 0 goto label1;
+
+        return $r1;
+
+     label1:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("maxRecordstoRtn", "50");
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy x()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyNameSearched()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyName", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy x()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyPhNumberSearched()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyPhoneNumber", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy x()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyZipSearched()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyZipCode", $r4);
+
+     label2:
+        return $r1;
+    }
+
+    private org.json.JSONObject getSearchedPrescriberObj()
+    {
+        org.json.JSONObject $r1;
+        com.caremark.caremark.model.rxclaims.prescribersearch.Physician $r3;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r4;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean isPrescriberAvailableForSP()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.prescribersearch.Physician B()>();
+
+        if $r3 == null goto label2;
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.prescribersearch.Physician B()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.prescribersearch.Physician: java.lang.String getfNameSearched()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("firstName", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.prescribersearch.Physician B()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.prescribersearch.Physician: java.lang.String getlNameSearched()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("lastName", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.prescribersearch.Physician B()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.prescribersearch.Physician: java.lang.String getZipSearched()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("zip", $r4);
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.prescribersearch.Physician B()>();
+
+        $r4 = virtualinvoke $r3.<com.caremark.caremark.model.rxclaims.prescribersearch.Physician: java.lang.String getSearchedNPID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("nPINbr", $r4);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("maxRecordstoRtn", "50");
+
+        return $r1;
+
+     label1:
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+     label2:
+        return $r1;
+    }
+
+    private org.json.JSONObject getSelectedPharmacyInfo(com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy)
+    {
+        org.json.JSONObject $r1;
+        com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy $r2;
+        c.c.a.c.b $r3;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r4;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r2 := @parameter0: com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r3.<c.c.a.c.b: boolean d>;
+
+        if $z0 != 0 goto label2;
+
+        $r3 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = virtualinvoke $r3.<c.c.a.c.b: boolean N()>();
+
+        if $z0 == 0 goto label1;
+
+        return $r1;
+
+     label1:
+        $r4 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyAddress1()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyAddress1", $r4);
+
+        $r4 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyAddress2()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyAddress2", $r4);
+
+        $r4 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyCity()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyCity", $r4);
+
+        $r4 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyName", $r4);
+
+        $r4 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyNCPDPNbr()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyNCPDPNbr", $r4);
+
+        $r4 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyPhoneNumber()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyPhoneNumber", $r4);
+
+        $r4 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyState()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyState", $r4);
+
+        $r4 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyZip()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("pharmacyZip", $r4);
+
+        $r4 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getStatus()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("status", $r4);
+
+        $r4 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getXRFNPIID()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("XRFNPIID", $r4);
+
+     label2:
+        return $r1;
+    }
+
+    private org.json.JSONObject getSelectedPrescriberInfo(com.caremark.caremark.model.rxclaims.prescribersearch.Physician)
+    {
+        org.json.JSONObject $r1;
+        com.caremark.caremark.model.rxclaims.prescribersearch.Physician $r2;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r2 := @parameter0: com.caremark.caremark.model.rxclaims.prescribersearch.Physician;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean isPrescriberAvailableForSP()>();
+
+        if $z0 == 0 goto label1;
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.prescribersearch.Physician: java.lang.String getFirstName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("firstName", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.prescribersearch.Physician: java.lang.String getLastName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("lastName", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.prescribersearch.Physician: java.lang.String getAddress()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("address", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.prescribersearch.Physician: java.lang.String getAddress2()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("address1", $r3);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("address2", "");
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.prescribersearch.Physician: java.lang.String getCity()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("city", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.prescribersearch.Physician: java.lang.String getState()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("state", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.prescribersearch.Physician: java.lang.String getZip()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("zip", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.prescribersearch.Physician: java.lang.String getPhone()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("phone", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.prescribersearch.Physician: java.lang.String getDEAPrefix()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("DEAPrefix", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.prescribersearch.Physician: java.lang.String getDEACode()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("DEACode", $r3);
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.model.rxclaims.prescribersearch.Physician: java.lang.String getNpiNbr()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("npiNbr", $r3);
+
+        return $r1;
+
+     label1:
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        return $r1;
+    }
+
+    private org.json.JSONArray getUploadArray()
+    {
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        org.json.JSONArray $r1;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONArray;
+
+        specialinvoke $r1.<org.json.JSONArray: void <init>()>();
+
+        return $r1;
+    }
+
+    private org.json.JSONObject getUploads()
+    {
+        org.json.JSONObject $r1;
+        c.c.a.c.b $r2;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r3;
+        org.json.JSONArray $r4;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r2.<c.c.a.c.b: boolean i>;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.c.b: java.lang.String k()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("documentCacheKey", $r3);
+
+        $r4 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONArray getUploadArray()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("uploads", $r4);
+
+        return $r1;
+
+     label1:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("documentCacheKey", "");
+
+        $r4 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONArray getUploadArray()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("uploads", $r4);
+
+        return $r1;
+    }
+
+    private boolean isDrugAvailableForSP()
+    {
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean getSP1Data()>();
+
+        if $z0 != 0 goto label2;
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean getSP2Data()>();
+
+        if $z0 != 0 goto label2;
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean getSP3Data()>();
+
+        if $z0 != 0 goto label2;
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean getSP4Data()>();
+
+        if $z0 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    private boolean isDrugInfoRegular()
+    {
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        c.c.a.c.b $r1;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean getSP1Data()>();
+
+        if $z0 != 0 goto label1;
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean getSP3Data()>();
+
+        if $z0 != 0 goto label1;
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean getSP2Data()>();
+
+        if $z0 != 0 goto label1;
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean getSP4Data()>();
+
+        if $z0 == 0 goto label2;
+
+     label1:
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r1.<c.c.a.c.b: boolean d>;
+
+        if $z0 != 0 goto label2;
+
+        return 1;
+
+     label2:
+        return 0;
+    }
+
+    private boolean isPrescriberAvailableForSP()
+    {
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        c.c.a.c.b $r1;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean getSP1Data()>();
+
+        if $z0 != 0 goto label2;
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean getSP2Data()>();
+
+        if $z0 != 0 goto label2;
+
+        $z0 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean getSP3Data()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $z0 = $r1.<c.c.a.c.b: boolean d>;
+
+        if $z0 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        return 1;
+
+     label2:
+        return 0;
+    }
+
+    private void updateDrugDate(org.json.JSONObject, java.lang.String)
+    {
+        org.json.JSONObject $r1;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r2, $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 := @parameter0: org.json.JSONObject;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $z0 = virtualinvoke $r1.<org.json.JSONObject: boolean has(java.lang.String)>($r2);
+
+        if $z0 == 0 goto label1;
+
+        $r3 = virtualinvoke $r1.<org.json.JSONObject: java.lang.String getString(java.lang.String)>($r2);
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r3);
+
+        if $z0 != 0 goto label1;
+
+        $r3 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: java.lang.String changeDateFormat(java.lang.String)>($r3);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>($r2, $r3);
+
+     label1:
+        return;
+    }
+
+    private void updateDrugName(org.json.JSONObject, java.lang.String, int)
+    {
+        org.json.JSONObject $r1;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        int $i0;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r2, $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 := @parameter0: org.json.JSONObject;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $i0 := @parameter2: int;
+
+        $z0 = virtualinvoke $r1.<org.json.JSONObject: boolean has(java.lang.String)>($r2);
+
+        if $z0 == 0 goto label1;
+
+        $r3 = virtualinvoke $r1.<org.json.JSONObject: java.lang.String getString(java.lang.String)>($r2);
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r3);
+
+        if $z0 != 0 goto label1;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Allergen ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r3 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>($r2, $r3);
+
+     label1:
+        return;
+    }
+
+    private org.json.JSONArray updateFillDate(org.json.JSONArray)
+    {
+        org.json.JSONObject $r2, $r3;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        int $i0, $i1, $i2;
+        org.json.JSONArray $r1;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 := @parameter0: org.json.JSONArray;
+
+        if $r1 == null goto label6;
+
+        $i0 = 0;
+
+        $i1 = 1;
+
+     label1:
+        $i2 = virtualinvoke $r1.<org.json.JSONArray: int length()>();
+
+        if $i0 >= $i2 goto label6;
+
+        $r2 = virtualinvoke $r1.<org.json.JSONArray: org.json.JSONObject getJSONObject(int)>($i0);
+
+        $z0 = virtualinvoke $r2.<org.json.JSONObject: boolean has(java.lang.String)>("drug");
+
+        if $z0 == 0 goto label5;
+
+        $r2 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("drug");
+
+        $z0 = virtualinvoke $r2.<org.json.JSONObject: boolean has(java.lang.String)>("foreignDrugInfo");
+
+        if $z0 == 0 goto label2;
+
+        $r3 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("foreignDrugInfo");
+
+        specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: void updateDrugDate(org.json.JSONObject,java.lang.String)>($r3, "date");
+
+     label2:
+        $z0 = virtualinvoke $r2.<org.json.JSONObject: boolean has(java.lang.String)>("compoundDrugInfo");
+
+        if $z0 == 0 goto label3;
+
+        $r3 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("compoundDrugInfo");
+
+        specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: void updateDrugDate(org.json.JSONObject,java.lang.String)>($r3, "dateOfFill");
+
+     label3:
+        $z0 = virtualinvoke $r2.<org.json.JSONObject: boolean has(java.lang.String)>("allergenDrugInfo");
+
+        if $z0 == 0 goto label4;
+
+        $r3 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("allergenDrugInfo");
+
+        specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: void updateDrugName(org.json.JSONObject,java.lang.String,int)>($r3, "drugName", $i1);
+
+        $i1 = $i1 + 1;
+
+        specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: void updateDrugDate(org.json.JSONObject,java.lang.String)>($r3, "dateOfFill");
+
+     label4:
+        $z0 = virtualinvoke $r2.<org.json.JSONObject: boolean has(java.lang.String)>("drugInfo");
+
+        if $z0 == 0 goto label5;
+
+        $r2 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("drugInfo");
+
+        specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: void updateDrugDate(org.json.JSONObject,java.lang.String)>($r2, "dateOfFill");
+
+     label5:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label6:
+        return $r1;
+    }
+
+    public java.lang.String getIPAddress()
+    {
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r1 = staticinvoke <c.c.a.n.c: java.lang.String a(boolean)>(1);
+
+        return $r1;
+    }
+
+    public org.json.JSONObject getSaveDraftJson(android.content.Context)
+    {
+        android.content.Context $r2;
+        c.c.a.n.b.e $r14;
+        java.util.ArrayList $r4;
+        org.json.JSONObject $r1, $r8;
+        com.caremark.caremark.model.rxclaims.draftclaim.RxDraftUserDetails $r7;
+        c.c.a.d.d $r9;
+        c.c.a.c.b $r6, $r16;
+        int $i0, $i1, $i2;
+        java.lang.String $r10, $r13;
+        boolean $z0;
+        com.caremark.caremark.util.RXClaimConstants $r11;
+        c.c.a.o.e.gc $r15;
+        java.lang.Exception $r17;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper r0;
+        java.lang.Object $r5;
+        org.json.JSONArray $r3;
+        android.content.res.Resources $r12;
+
+        r0 := @this: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r3 = new org.json.JSONArray;
+
+     label01:
+        specialinvoke $r3.<org.json.JSONArray: void <init>()>();
+
+        $z0 = r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean isFromRxListPage>;
+
+     label02:
+        $i0 = 0;
+
+        if $z0 == 0 goto label16;
+
+        $r4 = <com.caremark.caremark.ui.rxclaims.RxClaimDraftDetailsActivity: java.util.ArrayList rxDraftUserDetails>;
+
+        if $r4 == null goto label39;
+
+     label03:
+        $r4 = <com.caremark.caremark.ui.rxclaims.RxClaimDraftDetailsActivity: java.util.ArrayList rxDraftUserDetails>;
+
+     label04:
+        $i1 = virtualinvoke $r4.<java.util.ArrayList: int size()>();
+
+     label05:
+        if $i0 >= $i1 goto label39;
+
+        $r4 = <com.caremark.caremark.ui.rxclaims.RxClaimDraftDetailsActivity: java.util.ArrayList rxDraftUserDetails>;
+
+     label06:
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+     label07:
+        if $r5 == null goto label15;
+
+     label08:
+        $r6 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $i1 = $r6.<c.c.a.c.b: int y>;
+
+     label09:
+        $r4 = <com.caremark.caremark.ui.rxclaims.RxClaimDraftDetailsActivity: java.util.ArrayList rxDraftUserDetails>;
+
+     label10:
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r7 = (com.caremark.caremark.model.rxclaims.draftclaim.RxDraftUserDetails) $r5;
+
+        $i2 = virtualinvoke $r7.<com.caremark.caremark.model.rxclaims.draftclaim.RxDraftUserDetails: int getRxIndex()>();
+
+     label11:
+        if $i1 == $i2 goto label15;
+
+        $r4 = <com.caremark.caremark.ui.rxclaims.RxClaimDraftDetailsActivity: java.util.ArrayList rxDraftUserDetails>;
+
+     label12:
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r7 = (com.caremark.caremark.model.rxclaims.draftclaim.RxDraftUserDetails) $r5;
+
+        $i1 = virtualinvoke $r7.<com.caremark.caremark.model.rxclaims.draftclaim.RxDraftUserDetails: int getRxIndex()>();
+
+     label13:
+        $r4 = <com.caremark.caremark.ui.rxclaims.RxClaimDraftDetailsActivity: java.util.ArrayList rxDraftUserDetails>;
+
+     label14:
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r7 = (com.caremark.caremark.model.rxclaims.draftclaim.RxDraftUserDetails) $r5;
+
+        $r8 = virtualinvoke $r7.<com.caremark.caremark.model.rxclaims.draftclaim.RxDraftUserDetails: org.json.JSONObject getPrescribtionObj()>();
+
+        virtualinvoke $r3.<org.json.JSONArray: org.json.JSONArray put(int,java.lang.Object)>($i1, $r8);
+
+     label15:
+        $i0 = $i0 + 1;
+
+        goto label03;
+
+     label16:
+        $r6 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r8 = virtualinvoke $r6.<c.c.a.c.b: org.json.JSONObject H()>();
+
+     label17:
+        if $r8 == null goto label22;
+
+     label18:
+        $z0 = virtualinvoke $r8.<org.json.JSONObject: boolean has(java.lang.String)>("prescriptionList");
+
+     label19:
+        if $z0 == 0 goto label22;
+
+     label20:
+        $r3 = virtualinvoke $r8.<org.json.JSONObject: org.json.JSONArray getJSONArray(java.lang.String)>("prescriptionList");
+
+     label21:
+        goto label36;
+
+     label22:
+        $r4 = <com.caremark.caremark.ui.rxclaims.RxClaimDraftDetailsActivity: java.util.ArrayList rxDraftUserDetails>;
+
+        if $r4 == null goto label36;
+
+     label23:
+        $r4 = <com.caremark.caremark.ui.rxclaims.RxClaimDraftDetailsActivity: java.util.ArrayList rxDraftUserDetails>;
+
+     label24:
+        $i1 = virtualinvoke $r4.<java.util.ArrayList: int size()>();
+
+     label25:
+        if $i0 >= $i1 goto label36;
+
+        $r4 = <com.caremark.caremark.ui.rxclaims.RxClaimDraftDetailsActivity: java.util.ArrayList rxDraftUserDetails>;
+
+     label26:
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+     label27:
+        if $r5 == null goto label35;
+
+     label28:
+        $r6 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $i1 = $r6.<c.c.a.c.b: int y>;
+
+     label29:
+        $r4 = <com.caremark.caremark.ui.rxclaims.RxClaimDraftDetailsActivity: java.util.ArrayList rxDraftUserDetails>;
+
+     label30:
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r7 = (com.caremark.caremark.model.rxclaims.draftclaim.RxDraftUserDetails) $r5;
+
+        $i2 = virtualinvoke $r7.<com.caremark.caremark.model.rxclaims.draftclaim.RxDraftUserDetails: int getRxIndex()>();
+
+     label31:
+        if $i1 == $i2 goto label35;
+
+        $r4 = <com.caremark.caremark.ui.rxclaims.RxClaimDraftDetailsActivity: java.util.ArrayList rxDraftUserDetails>;
+
+     label32:
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r7 = (com.caremark.caremark.model.rxclaims.draftclaim.RxDraftUserDetails) $r5;
+
+        $i1 = virtualinvoke $r7.<com.caremark.caremark.model.rxclaims.draftclaim.RxDraftUserDetails: int getRxIndex()>();
+
+     label33:
+        $r4 = <com.caremark.caremark.ui.rxclaims.RxClaimDraftDetailsActivity: java.util.ArrayList rxDraftUserDetails>;
+
+     label34:
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r7 = (com.caremark.caremark.model.rxclaims.draftclaim.RxDraftUserDetails) $r5;
+
+        $r8 = virtualinvoke $r7.<com.caremark.caremark.model.rxclaims.draftclaim.RxDraftUserDetails: org.json.JSONObject getPrescribtionObj()>();
+
+        virtualinvoke $r3.<org.json.JSONArray: org.json.JSONArray put(int,java.lang.Object)>($i1, $r8);
+
+     label35:
+        $i0 = $i0 + 1;
+
+        goto label23;
+
+     label36:
+        $z0 = r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean removeRx>;
+
+     label37:
+        if $z0 != 0 goto label39;
+
+     label38:
+        $r6 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $i0 = $r6.<c.c.a.c.b: int y>;
+
+        $r8 = specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONObject getPrescribtionJSON(android.content.Context)>($r2);
+
+        virtualinvoke $r3.<org.json.JSONArray: org.json.JSONArray put(int,java.lang.Object)>($i0, $r8);
+
+     label39:
+        $z0 = r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: boolean fromSubmitClaim>;
+
+     label40:
+        if $z0 == 0 goto label42;
+
+     label41:
+        specialinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: org.json.JSONArray updateFillDate(org.json.JSONArray)>($r3);
+
+     label42:
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("prescriptionList", $r3);
+
+        $r9 = staticinvoke <c.c.a.d.d: c.c.a.d.d w()>();
+
+        $r10 = virtualinvoke $r9.<c.c.a.d.d: java.lang.String f()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("tokenId", $r10);
+
+        $r10 = virtualinvoke $r2.<android.content.Context: java.lang.String getString(int)>(2131822512);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("systemID", $r10);
+
+     label43:
+        $r11 = <com.caremark.caremark.util.RXClaimConstants: com.caremark.caremark.util.RXClaimConstants CHANNELTYPE>;
+
+     label44:
+        $r10 = virtualinvoke $r11.<com.caremark.caremark.util.RXClaimConstants: java.lang.String getName()>();
+
+        $r12 = virtualinvoke $r2.<android.content.Context: android.content.res.Resources getResources()>();
+
+        $r13 = virtualinvoke $r12.<android.content.res.Resources: java.lang.String getString(int)>(2131820877);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>($r10, $r13);
+
+     label45:
+        $r11 = <com.caremark.caremark.util.RXClaimConstants: com.caremark.caremark.util.RXClaimConstants SYSTEMID>;
+
+     label46:
+        $r10 = virtualinvoke $r11.<com.caremark.caremark.util.RXClaimConstants: java.lang.String getName()>();
+
+        $r12 = virtualinvoke $r2.<android.content.Context: android.content.res.Resources getResources()>();
+
+        $r13 = virtualinvoke $r12.<android.content.res.Resources: java.lang.String getString(int)>(2131822512);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>($r10, $r13);
+
+     label47:
+        $r11 = <com.caremark.caremark.util.RXClaimConstants: com.caremark.caremark.util.RXClaimConstants DEVICE_TYPE>;
+
+     label48:
+        $r10 = virtualinvoke $r11.<com.caremark.caremark.util.RXClaimConstants: java.lang.String getName()>();
+
+     label49:
+        $r11 = <com.caremark.caremark.util.RXClaimConstants: com.caremark.caremark.util.RXClaimConstants DEVICE_TYPE_VALUE>;
+
+     label50:
+        $r13 = virtualinvoke $r11.<com.caremark.caremark.util.RXClaimConstants: java.lang.String getName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>($r10, $r13);
+
+     label51:
+        $r11 = <com.caremark.caremark.util.RXClaimConstants: com.caremark.caremark.util.RXClaimConstants CHENNAL_NAME>;
+
+     label52:
+        $r10 = virtualinvoke $r11.<com.caremark.caremark.util.RXClaimConstants: java.lang.String getName()>();
+
+     label53:
+        $r11 = <com.caremark.caremark.util.RXClaimConstants: com.caremark.caremark.util.RXClaimConstants CHENNAL_NAME_VALUE>;
+
+     label54:
+        $r13 = virtualinvoke $r11.<com.caremark.caremark.util.RXClaimConstants: java.lang.String getName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>($r10, $r13);
+
+     label55:
+        $r11 = <com.caremark.caremark.util.RXClaimConstants: com.caremark.caremark.util.RXClaimConstants APP_NAME>;
+
+     label56:
+        $r10 = virtualinvoke $r11.<com.caremark.caremark.util.RXClaimConstants: java.lang.String getName()>();
+
+     label57:
+        $r11 = <com.caremark.caremark.util.RXClaimConstants: com.caremark.caremark.util.RXClaimConstants APP_NAME_VALUE>;
+
+     label58:
+        $r13 = virtualinvoke $r11.<com.caremark.caremark.util.RXClaimConstants: java.lang.String getName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>($r10, $r13);
+
+        $r10 = virtualinvoke r0.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper: java.lang.String getIPAddress()>();
+
+     label59:
+        if $r10 == null goto label63;
+
+     label60:
+        $i0 = virtualinvoke $r10.<java.lang.String: int length()>();
+
+     label61:
+        if $i0 <= 0 goto label63;
+
+        $r11 = <com.caremark.caremark.util.RXClaimConstants: com.caremark.caremark.util.RXClaimConstants CLIENTCHANNELID>;
+
+     label62:
+        $r13 = virtualinvoke $r11.<com.caremark.caremark.util.RXClaimConstants: java.lang.String getName()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>($r13, $r10);
+
+     label63:
+        $r11 = <com.caremark.caremark.util.RXClaimConstants: com.caremark.caremark.util.RXClaimConstants CORPORATE_CID>;
+
+     label64:
+        $r10 = virtualinvoke $r11.<com.caremark.caremark.util.RXClaimConstants: java.lang.String getName()>();
+
+     label65:
+        $r14 = <c.c.a.n.b.e: c.c.a.n.b.e e>;
+
+     label66:
+        $r13 = virtualinvoke $r14.<c.c.a.n.b.e: java.lang.String a()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>($r10, $r13);
+
+        $r6 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        virtualinvoke $r6.<c.c.a.c.b: void a(org.json.JSONObject)>($r1);
+
+        $r6 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r15 = staticinvoke <c.c.a.o.e.gc: c.c.a.o.e.gc a()>();
+
+        $r16 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r8 = virtualinvoke $r16.<c.c.a.c.b: org.json.JSONObject H()>();
+
+        $r4 = virtualinvoke $r15.<c.c.a.o.e.gc: java.util.ArrayList m(org.json.JSONObject)>($r8);
+
+        $r6.<c.c.a.c.b: java.util.ArrayList ga> = $r4;
+
+        $r6 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r16 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        $r4 = $r16.<c.c.a.c.b: java.util.ArrayList ga>;
+
+        $i0 = virtualinvoke $r4.<java.util.ArrayList: int size()>();
+
+        $r6.<c.c.a.c.b: int x> = $i0;
+
+     label67:
+        return $r1;
+
+     label68:
+        $r17 := @caughtexception;
+
+        virtualinvoke $r17.<java.lang.Exception: void printStackTrace()>();
+
+        return $r1;
+
+        catch java.lang.Exception from label01 to label02 with label68;
+        catch java.lang.Exception from label04 to label05 with label68;
+        catch java.lang.Exception from label06 to label07 with label68;
+        catch java.lang.Exception from label08 to label09 with label68;
+        catch java.lang.Exception from label10 to label11 with label68;
+        catch java.lang.Exception from label12 to label13 with label68;
+        catch java.lang.Exception from label14 to label15 with label68;
+        catch java.lang.Exception from label16 to label17 with label68;
+        catch java.lang.Exception from label18 to label19 with label68;
+        catch java.lang.Exception from label20 to label21 with label68;
+        catch java.lang.Exception from label24 to label25 with label68;
+        catch java.lang.Exception from label26 to label27 with label68;
+        catch java.lang.Exception from label28 to label29 with label68;
+        catch java.lang.Exception from label30 to label31 with label68;
+        catch java.lang.Exception from label32 to label33 with label68;
+        catch java.lang.Exception from label34 to label35 with label68;
+        catch java.lang.Exception from label36 to label37 with label68;
+        catch java.lang.Exception from label38 to label40 with label68;
+        catch java.lang.Exception from label41 to label43 with label68;
+        catch java.lang.Exception from label44 to label45 with label68;
+        catch java.lang.Exception from label46 to label47 with label68;
+        catch java.lang.Exception from label48 to label49 with label68;
+        catch java.lang.Exception from label50 to label51 with label68;
+        catch java.lang.Exception from label52 to label53 with label68;
+        catch java.lang.Exception from label54 to label55 with label68;
+        catch java.lang.Exception from label56 to label57 with label68;
+        catch java.lang.Exception from label58 to label59 with label68;
+        catch java.lang.Exception from label60 to label61 with label68;
+        catch java.lang.Exception from label62 to label63 with label68;
+        catch java.lang.Exception from label64 to label65 with label68;
+        catch java.lang.Exception from label66 to label67 with label68;
+    }
+}

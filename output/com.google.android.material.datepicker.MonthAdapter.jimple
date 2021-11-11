@@ -1,0 +1,558 @@
+public class com.google.android.material.datepicker.MonthAdapter extends android.widget.BaseAdapter
+{
+    public static final int MAXIMUM_WEEKS;
+    public final com.google.android.material.datepicker.CalendarConstraints calendarConstraints;
+    public com.google.android.material.datepicker.CalendarStyle calendarStyle;
+    public final com.google.android.material.datepicker.DateSelector dateSelector;
+    public final com.google.android.material.datepicker.Month month;
+
+    static void <clinit>()
+    {
+        int $i0;
+        java.util.Calendar $r0;
+
+        $r0 = staticinvoke <com.google.android.material.datepicker.UtcDates: java.util.Calendar getUtcCalendar()>();
+
+        $i0 = virtualinvoke $r0.<java.util.Calendar: int getMaximum(int)>(4);
+
+        <com.google.android.material.datepicker.MonthAdapter: int MAXIMUM_WEEKS> = $i0;
+
+        return;
+    }
+
+    public void <init>(com.google.android.material.datepicker.Month, com.google.android.material.datepicker.DateSelector, com.google.android.material.datepicker.CalendarConstraints)
+    {
+        com.google.android.material.datepicker.DateSelector $r2;
+        com.google.android.material.datepicker.Month $r1;
+        com.google.android.material.datepicker.CalendarConstraints $r3;
+        com.google.android.material.datepicker.MonthAdapter r0;
+
+        r0 := @this: com.google.android.material.datepicker.MonthAdapter;
+
+        $r1 := @parameter0: com.google.android.material.datepicker.Month;
+
+        $r2 := @parameter1: com.google.android.material.datepicker.DateSelector;
+
+        $r3 := @parameter2: com.google.android.material.datepicker.CalendarConstraints;
+
+        specialinvoke r0.<android.widget.BaseAdapter: void <init>()>();
+
+        r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.Month month> = $r1;
+
+        r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.DateSelector dateSelector> = $r2;
+
+        r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.CalendarConstraints calendarConstraints> = $r3;
+
+        return;
+    }
+
+    private void initializeStyles(android.content.Context)
+    {
+        com.google.android.material.datepicker.MonthAdapter r0;
+        android.content.Context $r1;
+        com.google.android.material.datepicker.CalendarStyle $r2;
+
+        r0 := @this: com.google.android.material.datepicker.MonthAdapter;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.CalendarStyle calendarStyle>;
+
+        if $r2 != null goto label1;
+
+        $r2 = new com.google.android.material.datepicker.CalendarStyle;
+
+        specialinvoke $r2.<com.google.android.material.datepicker.CalendarStyle: void <init>(android.content.Context)>($r1);
+
+        r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.CalendarStyle calendarStyle> = $r2;
+
+     label1:
+        return;
+    }
+
+    public int dayToPosition(int)
+    {
+        int $i0, $i1;
+        com.google.android.material.datepicker.MonthAdapter r0;
+
+        r0 := @this: com.google.android.material.datepicker.MonthAdapter;
+
+        $i0 := @parameter0: int;
+
+        $i1 = -1;
+
+        $i1 = $i0 + $i1;
+
+        $i0 = virtualinvoke r0.<com.google.android.material.datepicker.MonthAdapter: int firstPositionInMonth()>();
+
+        $i0 = $i0 + $i1;
+
+        return $i0;
+    }
+
+    public int firstPositionInMonth()
+    {
+        int $i0;
+        com.google.android.material.datepicker.MonthAdapter r0;
+        com.google.android.material.datepicker.Month $r1;
+
+        r0 := @this: com.google.android.material.datepicker.MonthAdapter;
+
+        $r1 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.Month month>;
+
+        $i0 = virtualinvoke $r1.<com.google.android.material.datepicker.Month: int daysFromStartOfWeekToFirstOfMonth()>();
+
+        return $i0;
+    }
+
+    public int getCount()
+    {
+        com.google.android.material.datepicker.Month $r1;
+        int $i0, $i1;
+        com.google.android.material.datepicker.MonthAdapter r0;
+
+        r0 := @this: com.google.android.material.datepicker.MonthAdapter;
+
+        $r1 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.Month month>;
+
+        $i1 = $r1.<com.google.android.material.datepicker.Month: int daysInMonth>;
+
+        $i0 = virtualinvoke r0.<com.google.android.material.datepicker.MonthAdapter: int firstPositionInMonth()>();
+
+        $i0 = $i1 + $i0;
+
+        return $i0;
+    }
+
+    public java.lang.Long getItem(int)
+    {
+        java.lang.Long $r2;
+        com.google.android.material.datepicker.Month $r1;
+        int $i0, $i1;
+        com.google.android.material.datepicker.MonthAdapter r0;
+        long $l2;
+
+        r0 := @this: com.google.android.material.datepicker.MonthAdapter;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.Month month>;
+
+        $i1 = virtualinvoke $r1.<com.google.android.material.datepicker.Month: int daysFromStartOfWeekToFirstOfMonth()>();
+
+        if $i0 < $i1 goto label2;
+
+        $i1 = virtualinvoke r0.<com.google.android.material.datepicker.MonthAdapter: int lastPositionInMonth()>();
+
+        if $i0 <= $i1 goto label1;
+
+        goto label2;
+
+     label1:
+        $r1 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.Month month>;
+
+        $i0 = virtualinvoke r0.<com.google.android.material.datepicker.MonthAdapter: int positionToDay(int)>($i0);
+
+        $l2 = virtualinvoke $r1.<com.google.android.material.datepicker.Month: long getDay(int)>($i0);
+
+        $r2 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l2);
+
+        return $r2;
+
+     label2:
+        return null;
+    }
+
+    public volatile java.lang.Object getItem(int)
+    {
+        int $i0;
+        com.google.android.material.datepicker.MonthAdapter r0;
+        java.lang.Long $r1;
+
+        r0 := @this: com.google.android.material.datepicker.MonthAdapter;
+
+        $i0 := @parameter0: int;
+
+        $r1 = virtualinvoke r0.<com.google.android.material.datepicker.MonthAdapter: java.lang.Long getItem(int)>($i0);
+
+        return $r1;
+    }
+
+    public long getItemId(int)
+    {
+        com.google.android.material.datepicker.Month $r1;
+        int $i0, $i1;
+        com.google.android.material.datepicker.MonthAdapter r0;
+        long $l2;
+
+        r0 := @this: com.google.android.material.datepicker.MonthAdapter;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.Month month>;
+
+        $i1 = $r1.<com.google.android.material.datepicker.Month: int daysInWeek>;
+
+        $i0 = $i0 / $i1;
+
+        $l2 = (long) $i0;
+
+        return $l2;
+    }
+
+    public volatile android.view.View getView(int, android.view.View, android.view.ViewGroup)
+    {
+        android.widget.TextView $r3;
+        int $i0;
+        com.google.android.material.datepicker.MonthAdapter r0;
+        android.view.View $r1;
+        android.view.ViewGroup $r2;
+
+        r0 := @this: com.google.android.material.datepicker.MonthAdapter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: android.view.View;
+
+        $r2 := @parameter2: android.view.ViewGroup;
+
+        $r3 = virtualinvoke r0.<com.google.android.material.datepicker.MonthAdapter: android.widget.TextView getView(int,android.view.View,android.view.ViewGroup)>($i0, $r1, $r2);
+
+        return $r3;
+    }
+
+    public android.widget.TextView getView(int, android.view.View, android.view.ViewGroup)
+    {
+        android.content.Context $r3;
+        com.google.android.material.datepicker.Month $r6;
+        com.google.android.material.datepicker.CalendarConstraints $r9;
+        long $l3, $l4;
+        com.google.android.material.datepicker.CalendarItemStyle $r17;
+        com.google.android.material.datepicker.CalendarConstraints$DateValidator $r10;
+        com.google.android.material.datepicker.DateSelector $r11;
+        java.util.Calendar $r18;
+        byte $b5;
+        java.lang.Long $r8, $r15;
+        int $i0, $i1, $i2;
+        android.view.View $r1;
+        java.lang.String $r7;
+        boolean $z0;
+        java.util.Iterator $r13;
+        android.view.LayoutInflater $r5;
+        java.util.Collection $r12;
+        android.view.ViewGroup $r2;
+        android.widget.TextView $r4;
+        com.google.android.material.datepicker.MonthAdapter r0;
+        java.lang.Object $r14;
+        com.google.android.material.datepicker.CalendarStyle $r16;
+
+        r0 := @this: com.google.android.material.datepicker.MonthAdapter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: android.view.View;
+
+        $r2 := @parameter2: android.view.ViewGroup;
+
+        $r3 = virtualinvoke $r2.<android.view.ViewGroup: android.content.Context getContext()>();
+
+        specialinvoke r0.<com.google.android.material.datepicker.MonthAdapter: void initializeStyles(android.content.Context)>($r3);
+
+        $r4 = (android.widget.TextView) $r1;
+
+        if $r1 != null goto label01;
+
+        $r3 = virtualinvoke $r2.<android.view.ViewGroup: android.content.Context getContext()>();
+
+        $r5 = staticinvoke <android.view.LayoutInflater: android.view.LayoutInflater 'from'(android.content.Context)>($r3);
+
+        $i1 = <com.google.android.material.R$layout: int mtrl_calendar_day>;
+
+        $r1 = virtualinvoke $r5.<android.view.LayoutInflater: android.view.View inflate(int,android.view.ViewGroup,boolean)>($i1, $r2, 0);
+
+        $r4 = (android.widget.TextView) $r1;
+
+     label01:
+        $i1 = virtualinvoke r0.<com.google.android.material.datepicker.MonthAdapter: int firstPositionInMonth()>();
+
+        $i1 = $i0 - $i1;
+
+        if $i1 < 0 goto label05;
+
+        $r6 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.Month month>;
+
+        $i2 = $r6.<com.google.android.material.datepicker.Month: int daysInMonth>;
+
+        if $i1 < $i2 goto label02;
+
+        goto label05;
+
+     label02:
+        $i1 = $i1 + 1;
+
+        virtualinvoke $r4.<android.widget.TextView: void setTag(java.lang.Object)>($r6);
+
+        $r7 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i1);
+
+        virtualinvoke $r4.<android.widget.TextView: void setText(java.lang.CharSequence)>($r7);
+
+        $r6 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.Month month>;
+
+        $l3 = virtualinvoke $r6.<com.google.android.material.datepicker.Month: long getDay(int)>($i1);
+
+        $r6 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.Month month>;
+
+        $i1 = $r6.<com.google.android.material.datepicker.Month: int year>;
+
+        $r6 = staticinvoke <com.google.android.material.datepicker.Month: com.google.android.material.datepicker.Month current()>();
+
+        $i2 = $r6.<com.google.android.material.datepicker.Month: int year>;
+
+        if $i1 != $i2 goto label03;
+
+        $r7 = staticinvoke <com.google.android.material.datepicker.DateStrings: java.lang.String getMonthDayOfWeekDay(long)>($l3);
+
+        virtualinvoke $r4.<android.widget.TextView: void setContentDescription(java.lang.CharSequence)>($r7);
+
+        goto label04;
+
+     label03:
+        $r7 = staticinvoke <com.google.android.material.datepicker.DateStrings: java.lang.String getYearMonthDayOfWeekDay(long)>($l3);
+
+        virtualinvoke $r4.<android.widget.TextView: void setContentDescription(java.lang.CharSequence)>($r7);
+
+     label04:
+        virtualinvoke $r4.<android.widget.TextView: void setVisibility(int)>(0);
+
+        virtualinvoke $r4.<android.widget.TextView: void setEnabled(boolean)>(1);
+
+        goto label06;
+
+     label05:
+        virtualinvoke $r4.<android.widget.TextView: void setVisibility(int)>(8);
+
+        virtualinvoke $r4.<android.widget.TextView: void setEnabled(boolean)>(0);
+
+     label06:
+        $r8 = virtualinvoke r0.<com.google.android.material.datepicker.MonthAdapter: java.lang.Long getItem(int)>($i0);
+
+        if $r8 != null goto label07;
+
+        return $r4;
+
+     label07:
+        $r9 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.CalendarConstraints calendarConstraints>;
+
+        $r10 = virtualinvoke $r9.<com.google.android.material.datepicker.CalendarConstraints: com.google.android.material.datepicker.CalendarConstraints$DateValidator getDateValidator()>();
+
+        $l3 = virtualinvoke $r8.<java.lang.Long: long longValue()>();
+
+        $z0 = interfaceinvoke $r10.<com.google.android.material.datepicker.CalendarConstraints$DateValidator: boolean isValid(long)>($l3);
+
+        if $z0 == 0 goto label11;
+
+        virtualinvoke $r4.<android.widget.TextView: void setEnabled(boolean)>(1);
+
+        $r11 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.DateSelector dateSelector>;
+
+        $r12 = interfaceinvoke $r11.<com.google.android.material.datepicker.DateSelector: java.util.Collection getSelectedDays()>();
+
+        $r13 = interfaceinvoke $r12.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label08:
+        $z0 = interfaceinvoke $r13.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label09;
+
+        $r14 = interfaceinvoke $r13.<java.util.Iterator: java.lang.Object next()>();
+
+        $r15 = (java.lang.Long) $r14;
+
+        $l3 = virtualinvoke $r15.<java.lang.Long: long longValue()>();
+
+        $l4 = virtualinvoke $r8.<java.lang.Long: long longValue()>();
+
+        $l4 = staticinvoke <com.google.android.material.datepicker.UtcDates: long canonicalYearMonthDay(long)>($l4);
+
+        $l3 = staticinvoke <com.google.android.material.datepicker.UtcDates: long canonicalYearMonthDay(long)>($l3);
+
+        $b5 = $l4 cmp $l3;
+
+        if $b5 != 0 goto label08;
+
+        $r16 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.CalendarStyle calendarStyle>;
+
+        $r17 = $r16.<com.google.android.material.datepicker.CalendarStyle: com.google.android.material.datepicker.CalendarItemStyle selectedDay>;
+
+        virtualinvoke $r17.<com.google.android.material.datepicker.CalendarItemStyle: void styleItem(android.widget.TextView)>($r4);
+
+        return $r4;
+
+     label09:
+        $r18 = staticinvoke <com.google.android.material.datepicker.UtcDates: java.util.Calendar getTodayCalendar()>();
+
+        $l3 = virtualinvoke $r18.<java.util.Calendar: long getTimeInMillis()>();
+
+        $l4 = virtualinvoke $r8.<java.lang.Long: long longValue()>();
+
+        $b5 = $l3 cmp $l4;
+
+        if $b5 != 0 goto label10;
+
+        $r16 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.CalendarStyle calendarStyle>;
+
+        $r17 = $r16.<com.google.android.material.datepicker.CalendarStyle: com.google.android.material.datepicker.CalendarItemStyle todayDay>;
+
+        virtualinvoke $r17.<com.google.android.material.datepicker.CalendarItemStyle: void styleItem(android.widget.TextView)>($r4);
+
+        return $r4;
+
+     label10:
+        $r16 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.CalendarStyle calendarStyle>;
+
+        $r17 = $r16.<com.google.android.material.datepicker.CalendarStyle: com.google.android.material.datepicker.CalendarItemStyle day>;
+
+        virtualinvoke $r17.<com.google.android.material.datepicker.CalendarItemStyle: void styleItem(android.widget.TextView)>($r4);
+
+        return $r4;
+
+     label11:
+        virtualinvoke $r4.<android.widget.TextView: void setEnabled(boolean)>(0);
+
+        $r16 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.CalendarStyle calendarStyle>;
+
+        $r17 = $r16.<com.google.android.material.datepicker.CalendarStyle: com.google.android.material.datepicker.CalendarItemStyle invalidDay>;
+
+        virtualinvoke $r17.<com.google.android.material.datepicker.CalendarItemStyle: void styleItem(android.widget.TextView)>($r4);
+
+        return $r4;
+    }
+
+    public boolean hasStableIds()
+    {
+        com.google.android.material.datepicker.MonthAdapter r0;
+
+        r0 := @this: com.google.android.material.datepicker.MonthAdapter;
+
+        return 1;
+    }
+
+    public boolean isFirstInRow(int)
+    {
+        com.google.android.material.datepicker.Month $r1;
+        int $i0, $i1;
+        com.google.android.material.datepicker.MonthAdapter r0;
+
+        r0 := @this: com.google.android.material.datepicker.MonthAdapter;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.Month month>;
+
+        $i1 = $r1.<com.google.android.material.datepicker.Month: int daysInWeek>;
+
+        $i0 = $i0 % $i1;
+
+        if $i0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean isLastInRow(int)
+    {
+        com.google.android.material.datepicker.Month $r1;
+        int $i0, $i1;
+        com.google.android.material.datepicker.MonthAdapter r0;
+
+        r0 := @this: com.google.android.material.datepicker.MonthAdapter;
+
+        $i0 := @parameter0: int;
+
+        $i0 = $i0 + 1;
+
+        $r1 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.Month month>;
+
+        $i1 = $r1.<com.google.android.material.datepicker.Month: int daysInWeek>;
+
+        $i0 = $i0 % $i1;
+
+        if $i0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public int lastPositionInMonth()
+    {
+        com.google.android.material.datepicker.Month $r1;
+        int $i0, $i1;
+        com.google.android.material.datepicker.MonthAdapter r0;
+
+        r0 := @this: com.google.android.material.datepicker.MonthAdapter;
+
+        $r1 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.Month month>;
+
+        $i0 = virtualinvoke $r1.<com.google.android.material.datepicker.Month: int daysFromStartOfWeekToFirstOfMonth()>();
+
+        $r1 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.Month month>;
+
+        $i1 = $r1.<com.google.android.material.datepicker.Month: int daysInMonth>;
+
+        $i0 = $i0 + $i1;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        return $i0;
+    }
+
+    public int positionToDay(int)
+    {
+        com.google.android.material.datepicker.Month $r1;
+        int $i0, $i1;
+        com.google.android.material.datepicker.MonthAdapter r0;
+
+        r0 := @this: com.google.android.material.datepicker.MonthAdapter;
+
+        $i1 := @parameter0: int;
+
+        $r1 = r0.<com.google.android.material.datepicker.MonthAdapter: com.google.android.material.datepicker.Month month>;
+
+        $i0 = virtualinvoke $r1.<com.google.android.material.datepicker.Month: int daysFromStartOfWeekToFirstOfMonth()>();
+
+        $i1 = $i1 - $i0;
+
+        $i1 = $i1 + 1;
+
+        return $i1;
+    }
+
+    public boolean withinMonth(int)
+    {
+        int $i0, $i1;
+        com.google.android.material.datepicker.MonthAdapter r0;
+
+        r0 := @this: com.google.android.material.datepicker.MonthAdapter;
+
+        $i0 := @parameter0: int;
+
+        $i1 = virtualinvoke r0.<com.google.android.material.datepicker.MonthAdapter: int firstPositionInMonth()>();
+
+        if $i0 < $i1 goto label1;
+
+        $i1 = virtualinvoke r0.<com.google.android.material.datepicker.MonthAdapter: int lastPositionInMonth()>();
+
+        if $i0 > $i1 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+}

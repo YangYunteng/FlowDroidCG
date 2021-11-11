@@ -1,0 +1,182 @@
+public final class com.google.android.gms.common.images.ImageManager$zac extends java.lang.Object implements java.lang.Runnable
+{
+    public final android.net.Uri zamt;
+    public final com.google.android.gms.common.images.ImageManager zamv;
+    public final android.os.ParcelFileDescriptor zamx;
+
+    public void <init>(com.google.android.gms.common.images.ImageManager, android.net.Uri, android.os.ParcelFileDescriptor)
+    {
+        android.os.ParcelFileDescriptor $r3;
+        android.net.Uri $r2;
+        com.google.android.gms.common.images.ImageManager$zac r0;
+        com.google.android.gms.common.images.ImageManager $r1;
+
+        r0 := @this: com.google.android.gms.common.images.ImageManager$zac;
+
+        $r1 := @parameter0: com.google.android.gms.common.images.ImageManager;
+
+        $r2 := @parameter1: android.net.Uri;
+
+        $r3 := @parameter2: android.os.ParcelFileDescriptor;
+
+        r0.<com.google.android.gms.common.images.ImageManager$zac: com.google.android.gms.common.images.ImageManager zamv> = $r1;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.android.gms.common.images.ImageManager$zac: android.net.Uri zamt> = $r2;
+
+        r0.<com.google.android.gms.common.images.ImageManager$zac: android.os.ParcelFileDescriptor zamx> = $r3;
+
+        return;
+    }
+
+    public final void run()
+    {
+        android.os.ParcelFileDescriptor $r4;
+        android.net.Uri $r2;
+        android.os.Handler $r14;
+        int $i0;
+        java.lang.String $r9, $r10;
+        boolean $z0;
+        com.google.android.gms.common.images.ImageManager$zad $r15;
+        com.google.android.gms.common.images.ImageManager$zac r0;
+        java.io.IOException $r12;
+        com.google.android.gms.common.images.ImageManager $r1;
+        java.util.concurrent.CountDownLatch $r13;
+        java.lang.InterruptedException $r3;
+        android.graphics.Bitmap $r5, $r7;
+        java.io.FileDescriptor $r6;
+        java.lang.StringBuilder $r11;
+        java.lang.OutOfMemoryError $r8;
+
+        r0 := @this: com.google.android.gms.common.images.ImageManager$zac;
+
+        staticinvoke <com.google.android.gms.common.internal.Asserts: void checkNotMainThread(java.lang.String)>("LoadBitmapFromDiskRunnable can\'t be executed in the main thread");
+
+        $r4 = r0.<com.google.android.gms.common.images.ImageManager$zac: android.os.ParcelFileDescriptor zamx>;
+
+        $z0 = 0;
+
+        $r5 = null;
+
+        if $r4 == null goto label09;
+
+     label01:
+        $r6 = virtualinvoke $r4.<android.os.ParcelFileDescriptor: java.io.FileDescriptor getFileDescriptor()>();
+
+        $r7 = staticinvoke <android.graphics.BitmapFactory: android.graphics.Bitmap decodeFileDescriptor(java.io.FileDescriptor)>($r6);
+
+     label02:
+        $r5 = $r7;
+
+        goto label04;
+
+     label03:
+        $r8 := @caughtexception;
+
+        $r2 = r0.<com.google.android.gms.common.images.ImageManager$zac: android.net.Uri zamt>;
+
+        $r9 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r2);
+
+        $r10 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r9);
+
+        $i0 = virtualinvoke $r10.<java.lang.String: int length()>();
+
+        $i0 = $i0 + 34;
+
+        $r11 = new java.lang.StringBuilder;
+
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>(int)>($i0);
+
+        virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("OOM while loading bitmap for uri: ");
+
+        virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r9);
+
+        $r9 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("ImageManager", $r9, $r8);
+
+        $z0 = 1;
+
+     label04:
+        $r4 = r0.<com.google.android.gms.common.images.ImageManager$zac: android.os.ParcelFileDescriptor zamx>;
+
+     label05:
+        virtualinvoke $r4.<android.os.ParcelFileDescriptor: void close()>();
+
+     label06:
+        goto label08;
+
+     label07:
+        $r12 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("ImageManager", "closed failed", $r12);
+
+     label08:
+        goto label10;
+
+     label09:
+        $r5 = null;
+
+        $z0 = 0;
+
+     label10:
+        $r13 = new java.util.concurrent.CountDownLatch;
+
+        specialinvoke $r13.<java.util.concurrent.CountDownLatch: void <init>(int)>(1);
+
+        $r1 = r0.<com.google.android.gms.common.images.ImageManager$zac: com.google.android.gms.common.images.ImageManager zamv>;
+
+        $r14 = staticinvoke <com.google.android.gms.common.images.ImageManager: android.os.Handler zag(com.google.android.gms.common.images.ImageManager)>($r1);
+
+        $r15 = new com.google.android.gms.common.images.ImageManager$zad;
+
+        $r1 = r0.<com.google.android.gms.common.images.ImageManager$zac: com.google.android.gms.common.images.ImageManager zamv>;
+
+        $r2 = r0.<com.google.android.gms.common.images.ImageManager$zac: android.net.Uri zamt>;
+
+        specialinvoke $r15.<com.google.android.gms.common.images.ImageManager$zad: void <init>(com.google.android.gms.common.images.ImageManager,android.net.Uri,android.graphics.Bitmap,boolean,java.util.concurrent.CountDownLatch)>($r1, $r2, $r5, $z0, $r13);
+
+        virtualinvoke $r14.<android.os.Handler: boolean post(java.lang.Runnable)>($r15);
+
+     label11:
+        virtualinvoke $r13.<java.util.concurrent.CountDownLatch: void await()>();
+
+     label12:
+        return;
+
+     label13:
+        $r2 = r0.<com.google.android.gms.common.images.ImageManager$zac: android.net.Uri zamt>;
+
+        $r9 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r2);
+
+        $r10 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r9);
+
+        $i0 = virtualinvoke $r10.<java.lang.String: int length()>();
+
+        $i0 = $i0 + 32;
+
+        $r11 = new java.lang.StringBuilder;
+
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>(int)>($i0);
+
+        virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Latch interrupted while posting ");
+
+        virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r9);
+
+        $r9 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ImageManager", $r9);
+
+        return;
+
+     label14:
+        $r3 := @caughtexception;
+
+        goto label13;
+
+        catch java.lang.OutOfMemoryError from label01 to label02 with label03;
+        catch java.io.IOException from label05 to label06 with label07;
+        catch java.lang.InterruptedException from label11 to label12 with label14;
+    }
+}

@@ -1,0 +1,161 @@
+public final enum class com.google.common.hash.BloomFilterStrategies$1 extends com.google.common.hash.BloomFilterStrategies
+{
+
+    public void <init>(java.lang.String, int)
+    {
+        int $i0;
+        com.google.common.hash.BloomFilterStrategies$1 r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.common.hash.BloomFilterStrategies$1;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        specialinvoke r0.<com.google.common.hash.BloomFilterStrategies: void <init>(java.lang.String,int,com.google.common.hash.BloomFilterStrategies$1)>($r1, $i0, null);
+
+        return;
+    }
+
+    public boolean mightContain(java.lang.Object, com.google.common.hash.Funnel, int, com.google.common.hash.BloomFilterStrategies$LockFreeBitArray)
+    {
+        com.google.common.hash.HashCode $r5;
+        long $l1, $l2;
+        com.google.common.hash.Funnel $r3;
+        com.google.common.hash.BloomFilterStrategies$1 r0;
+        int $i0, $i3, $i4, $i5, $i6, $i7;
+        java.lang.Object $r2;
+        com.google.common.hash.BloomFilterStrategies$LockFreeBitArray $r1;
+        com.google.common.hash.HashFunction $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.common.hash.BloomFilterStrategies$1;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r3 := @parameter1: com.google.common.hash.Funnel;
+
+        $i0 := @parameter2: int;
+
+        $r1 := @parameter3: com.google.common.hash.BloomFilterStrategies$LockFreeBitArray;
+
+        $l1 = virtualinvoke $r1.<com.google.common.hash.BloomFilterStrategies$LockFreeBitArray: long bitSize()>();
+
+        $r4 = staticinvoke <com.google.common.hash.Hashing: com.google.common.hash.HashFunction murmur3_128()>();
+
+        $r5 = interfaceinvoke $r4.<com.google.common.hash.HashFunction: com.google.common.hash.HashCode hashObject(java.lang.Object,com.google.common.hash.Funnel)>($r2, $r3);
+
+        $l2 = virtualinvoke $r5.<com.google.common.hash.HashCode: long asLong()>();
+
+        $i3 = (int) $l2;
+
+        $l2 = $l2 >>> 32;
+
+        $i4 = (int) $l2;
+
+        $i5 = 1;
+
+     label1:
+        if $i5 > $i0 goto label4;
+
+        $i6 = $i5 * $i4;
+
+        $i6 = $i6 + $i3;
+
+        if $i6 >= 0 goto label2;
+
+        $i7 = -1;
+
+        $i6 = $i6 ^ $i7;
+
+     label2:
+        $l2 = (long) $i6;
+
+        $l2 = $l2 % $l1;
+
+        $z0 = virtualinvoke $r1.<com.google.common.hash.BloomFilterStrategies$LockFreeBitArray: boolean get(long)>($l2);
+
+        if $z0 != 0 goto label3;
+
+        return 0;
+
+     label3:
+        $i5 = $i5 + 1;
+
+        goto label1;
+
+     label4:
+        return 1;
+    }
+
+    public boolean put(java.lang.Object, com.google.common.hash.Funnel, int, com.google.common.hash.BloomFilterStrategies$LockFreeBitArray)
+    {
+        long $l1, $l2;
+        com.google.common.hash.BloomFilterStrategies$1 r0;
+        int $i0, $i3, $i4, $i5, $i6, $i7;
+        com.google.common.hash.BloomFilterStrategies$LockFreeBitArray $r1;
+        boolean $z0, $z1;
+        com.google.common.hash.HashCode $r5;
+        com.google.common.hash.Funnel $r3;
+        java.lang.Object $r2;
+        com.google.common.hash.HashFunction $r4;
+
+        r0 := @this: com.google.common.hash.BloomFilterStrategies$1;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r3 := @parameter1: com.google.common.hash.Funnel;
+
+        $i0 := @parameter2: int;
+
+        $r1 := @parameter3: com.google.common.hash.BloomFilterStrategies$LockFreeBitArray;
+
+        $l1 = virtualinvoke $r1.<com.google.common.hash.BloomFilterStrategies$LockFreeBitArray: long bitSize()>();
+
+        $r4 = staticinvoke <com.google.common.hash.Hashing: com.google.common.hash.HashFunction murmur3_128()>();
+
+        $r5 = interfaceinvoke $r4.<com.google.common.hash.HashFunction: com.google.common.hash.HashCode hashObject(java.lang.Object,com.google.common.hash.Funnel)>($r2, $r3);
+
+        $l2 = virtualinvoke $r5.<com.google.common.hash.HashCode: long asLong()>();
+
+        $i3 = (int) $l2;
+
+        $l2 = $l2 >>> 32;
+
+        $i4 = (int) $l2;
+
+        $i5 = 1;
+
+        $z0 = 0;
+
+     label1:
+        if $i5 > $i0 goto label3;
+
+        $i6 = $i5 * $i4;
+
+        $i6 = $i6 + $i3;
+
+        if $i6 >= 0 goto label2;
+
+        $i7 = -1;
+
+        $i6 = $i6 ^ $i7;
+
+     label2:
+        $l2 = (long) $i6;
+
+        $l2 = $l2 % $l1;
+
+        $z1 = virtualinvoke $r1.<com.google.common.hash.BloomFilterStrategies$LockFreeBitArray: boolean set(long)>($l2);
+
+        $z0 = $z0 | $z1;
+
+        $i5 = $i5 + 1;
+
+        goto label1;
+
+     label3:
+        return $z0;
+    }
+}

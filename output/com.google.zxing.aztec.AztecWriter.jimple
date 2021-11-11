@@ -1,0 +1,301 @@
+public final class com.google.zxing.aztec.AztecWriter extends java.lang.Object implements com.google.zxing.Writer
+{
+    public static final java.nio.charset.Charset DEFAULT_CHARSET;
+
+    static void <clinit>()
+    {
+        java.nio.charset.Charset $r0;
+
+        $r0 = staticinvoke <java.nio.charset.Charset: java.nio.charset.Charset forName(java.lang.String)>("ISO-8859-1");
+
+        <com.google.zxing.aztec.AztecWriter: java.nio.charset.Charset DEFAULT_CHARSET> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.zxing.aztec.AztecWriter r0;
+
+        r0 := @this: com.google.zxing.aztec.AztecWriter;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static com.google.zxing.common.BitMatrix encode(java.lang.String, com.google.zxing.BarcodeFormat, int, int, java.nio.charset.Charset, int, int)
+    {
+        byte[] $r4;
+        com.google.zxing.aztec.encoder.AztecCode $r5;
+        java.lang.IllegalArgumentException $r7;
+        java.nio.charset.Charset $r0;
+        int $i0, $i1, $i2, $i3;
+        com.google.zxing.common.BitMatrix $r6;
+        java.lang.StringBuilder $r8;
+        java.lang.String $r2;
+        com.google.zxing.BarcodeFormat $r1, $r3;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r3 := @parameter1: com.google.zxing.BarcodeFormat;
+
+        $i2 := @parameter2: int;
+
+        $i3 := @parameter3: int;
+
+        $r0 := @parameter4: java.nio.charset.Charset;
+
+        $i0 := @parameter5: int;
+
+        $i1 := @parameter6: int;
+
+        $r1 = <com.google.zxing.BarcodeFormat: com.google.zxing.BarcodeFormat AZTEC>;
+
+        if $r3 != $r1 goto label1;
+
+        $r4 = virtualinvoke $r2.<java.lang.String: byte[] getBytes(java.nio.charset.Charset)>($r0);
+
+        $r5 = staticinvoke <com.google.zxing.aztec.encoder.Encoder: com.google.zxing.aztec.encoder.AztecCode encode(byte[],int,int)>($r4, $i0, $i1);
+
+        $r6 = staticinvoke <com.google.zxing.aztec.AztecWriter: com.google.zxing.common.BitMatrix renderResult(com.google.zxing.aztec.encoder.AztecCode,int,int)>($r5, $i2, $i3);
+
+        return $r6;
+
+     label1:
+        $r7 = new java.lang.IllegalArgumentException;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Can only encode AZTEC, but got ");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        $r2 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r7.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r2);
+
+        throw $r7;
+    }
+
+    public static com.google.zxing.common.BitMatrix renderResult(com.google.zxing.aztec.encoder.AztecCode, int, int)
+    {
+        java.lang.IllegalStateException $r3;
+        com.google.zxing.aztec.encoder.AztecCode $r1;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7;
+        com.google.zxing.common.BitMatrix $r0, $r2;
+        boolean $z0;
+
+        $r1 := @parameter0: com.google.zxing.aztec.encoder.AztecCode;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 = virtualinvoke $r1.<com.google.zxing.aztec.encoder.AztecCode: com.google.zxing.common.BitMatrix getMatrix()>();
+
+        if $r2 == null goto label6;
+
+        $i2 = virtualinvoke $r2.<com.google.zxing.common.BitMatrix: int getWidth()>();
+
+        $i3 = virtualinvoke $r2.<com.google.zxing.common.BitMatrix: int getHeight()>();
+
+        $i0 = staticinvoke <java.lang.Math: int max(int,int)>($i0, $i2);
+
+        $i4 = staticinvoke <java.lang.Math: int max(int,int)>($i1, $i3);
+
+        $i1 = $i0 / $i2;
+
+        $i5 = $i4 / $i3;
+
+        $i1 = staticinvoke <java.lang.Math: int min(int,int)>($i1, $i5);
+
+        $i5 = $i2 * $i1;
+
+        $i5 = $i0 - $i5;
+
+        $i5 = $i5 / 2;
+
+        $i6 = $i3 * $i1;
+
+        $i6 = $i4 - $i6;
+
+        $i6 = $i6 / 2;
+
+        $r0 = new com.google.zxing.common.BitMatrix;
+
+        specialinvoke $r0.<com.google.zxing.common.BitMatrix: void <init>(int,int)>($i0, $i4);
+
+        $i0 = 0;
+
+     label1:
+        if $i0 >= $i3 goto label5;
+
+        $i4 = $i5;
+
+        $i7 = 0;
+
+     label2:
+        if $i7 >= $i2 goto label4;
+
+        $z0 = virtualinvoke $r2.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i7, $i0);
+
+        if $z0 == 0 goto label3;
+
+        virtualinvoke $r0.<com.google.zxing.common.BitMatrix: void setRegion(int,int,int,int)>($i4, $i6, $i1, $i1);
+
+     label3:
+        $i7 = $i7 + 1;
+
+        $i4 = $i4 + $i1;
+
+        goto label2;
+
+     label4:
+        $i0 = $i0 + 1;
+
+        $i6 = $i6 + $i1;
+
+        goto label1;
+
+     label5:
+        return $r0;
+
+     label6:
+        $r3 = new java.lang.IllegalStateException;
+
+        specialinvoke $r3.<java.lang.IllegalStateException: void <init>()>();
+
+        goto label7;
+
+     label7:
+        throw $r3;
+    }
+
+    public com.google.zxing.common.BitMatrix encode(java.lang.String, com.google.zxing.BarcodeFormat, int, int)
+    {
+        com.google.zxing.aztec.AztecWriter r0;
+        int $i0, $i1;
+        com.google.zxing.common.BitMatrix $r2;
+        java.lang.String $r3;
+        com.google.zxing.BarcodeFormat $r1;
+
+        r0 := @this: com.google.zxing.aztec.AztecWriter;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: com.google.zxing.BarcodeFormat;
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        $r2 = virtualinvoke r0.<com.google.zxing.aztec.AztecWriter: com.google.zxing.common.BitMatrix encode(java.lang.String,com.google.zxing.BarcodeFormat,int,int,java.util.Map)>($r3, $r1, $i0, $i1, null);
+
+        return $r2;
+    }
+
+    public com.google.zxing.common.BitMatrix encode(java.lang.String, com.google.zxing.BarcodeFormat, int, int, java.util.Map)
+    {
+        com.google.zxing.aztec.AztecWriter r0;
+        java.nio.charset.Charset $r2;
+        com.google.zxing.EncodeHintType $r7;
+        java.util.Map $r4;
+        int $i0, $i1, $i2, $i3;
+        java.lang.Object $r8;
+        com.google.zxing.common.BitMatrix $r10;
+        java.lang.String $r3, $r6;
+        java.lang.Number $r5, $r9;
+        com.google.zxing.BarcodeFormat $r1;
+
+        r0 := @this: com.google.zxing.aztec.AztecWriter;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: com.google.zxing.BarcodeFormat;
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        $r4 := @parameter4: java.util.Map;
+
+        $r5 = null;
+
+        if $r4 != null goto label01;
+
+        $r6 = null;
+
+        goto label02;
+
+     label01:
+        $r7 = <com.google.zxing.EncodeHintType: com.google.zxing.EncodeHintType CHARACTER_SET>;
+
+        $r8 = interfaceinvoke $r4.<java.util.Map: java.lang.Object get(java.lang.Object)>($r7);
+
+        $r6 = (java.lang.String) $r8;
+
+     label02:
+        if $r4 != null goto label03;
+
+        $r9 = null;
+
+        goto label04;
+
+     label03:
+        $r7 = <com.google.zxing.EncodeHintType: com.google.zxing.EncodeHintType ERROR_CORRECTION>;
+
+        $r8 = interfaceinvoke $r4.<java.util.Map: java.lang.Object get(java.lang.Object)>($r7);
+
+        $r9 = (java.lang.Number) $r8;
+
+     label04:
+        if $r4 != null goto label05;
+
+        goto label06;
+
+     label05:
+        $r7 = <com.google.zxing.EncodeHintType: com.google.zxing.EncodeHintType AZTEC_LAYERS>;
+
+        $r8 = interfaceinvoke $r4.<java.util.Map: java.lang.Object get(java.lang.Object)>($r7);
+
+        $r5 = (java.lang.Number) $r8;
+
+     label06:
+        if $r6 != null goto label07;
+
+        $r2 = <com.google.zxing.aztec.AztecWriter: java.nio.charset.Charset DEFAULT_CHARSET>;
+
+        goto label08;
+
+     label07:
+        $r2 = staticinvoke <java.nio.charset.Charset: java.nio.charset.Charset forName(java.lang.String)>($r6);
+
+     label08:
+        if $r9 != null goto label09;
+
+        $i2 = 33;
+
+        goto label10;
+
+     label09:
+        $i2 = virtualinvoke $r9.<java.lang.Number: int intValue()>();
+
+     label10:
+        if $r5 != null goto label11;
+
+        $i3 = 0;
+
+        goto label12;
+
+     label11:
+        $i3 = virtualinvoke $r5.<java.lang.Number: int intValue()>();
+
+     label12:
+        $r10 = staticinvoke <com.google.zxing.aztec.AztecWriter: com.google.zxing.common.BitMatrix encode(java.lang.String,com.google.zxing.BarcodeFormat,int,int,java.nio.charset.Charset,int,int)>($r3, $r1, $i0, $i1, $r2, $i2, $i3);
+
+        return $r10;
+    }
+}

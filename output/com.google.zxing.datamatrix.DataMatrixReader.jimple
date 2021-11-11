@@ -1,0 +1,312 @@
+public final class com.google.zxing.datamatrix.DataMatrixReader extends java.lang.Object implements com.google.zxing.Reader
+{
+    public static final com.google.zxing.ResultPoint[] NO_POINTS;
+    public final com.google.zxing.datamatrix.decoder.Decoder decoder;
+
+    static void <clinit>()
+    {
+        com.google.zxing.ResultPoint[] $r0;
+
+        $r0 = newarray (com.google.zxing.ResultPoint)[0];
+
+        <com.google.zxing.datamatrix.DataMatrixReader: com.google.zxing.ResultPoint[] NO_POINTS> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.zxing.datamatrix.DataMatrixReader r0;
+        com.google.zxing.datamatrix.decoder.Decoder $r1;
+
+        r0 := @this: com.google.zxing.datamatrix.DataMatrixReader;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r1 = new com.google.zxing.datamatrix.decoder.Decoder;
+
+        specialinvoke $r1.<com.google.zxing.datamatrix.decoder.Decoder: void <init>()>();
+
+        r0.<com.google.zxing.datamatrix.DataMatrixReader: com.google.zxing.datamatrix.decoder.Decoder decoder> = $r1;
+
+        return;
+    }
+
+    public static com.google.zxing.common.BitMatrix extractPureBits(com.google.zxing.common.BitMatrix)
+    {
+        int[] $r1, $r2;
+        com.google.zxing.NotFoundException $r4;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8;
+        com.google.zxing.common.BitMatrix $r0, $r3;
+        boolean $z0;
+
+        $r0 := @parameter0: com.google.zxing.common.BitMatrix;
+
+        $r1 = virtualinvoke $r0.<com.google.zxing.common.BitMatrix: int[] getTopLeftOnBit()>();
+
+        $r2 = virtualinvoke $r0.<com.google.zxing.common.BitMatrix: int[] getBottomRightOnBit()>();
+
+        if $r1 == null goto label7;
+
+        if $r2 == null goto label7;
+
+        $i0 = staticinvoke <com.google.zxing.datamatrix.DataMatrixReader: int moduleSize(int[],com.google.zxing.common.BitMatrix)>($r1, $r0);
+
+        $i1 = $r1[1];
+
+        $i2 = $r2[1];
+
+        $i3 = $r1[0];
+
+        $i4 = $r2[0];
+
+        $i4 = $i4 - $i3;
+
+        $i4 = $i4 + 1;
+
+        $i4 = $i4 / $i0;
+
+        $i2 = $i2 - $i1;
+
+        $i2 = $i2 + 1;
+
+        $i2 = $i2 / $i0;
+
+        if $i4 <= 0 goto label6;
+
+        if $i2 <= 0 goto label6;
+
+        $i5 = $i0 >> 1;
+
+        $i1 = $i1 + $i5;
+
+        $i3 = $i3 + $i5;
+
+        $r3 = new com.google.zxing.common.BitMatrix;
+
+        specialinvoke $r3.<com.google.zxing.common.BitMatrix: void <init>(int,int)>($i4, $i2);
+
+        $i5 = 0;
+
+     label1:
+        if $i5 >= $i2 goto label5;
+
+        $i6 = $i5 * $i0;
+
+        $i6 = $i6 + $i1;
+
+        $i7 = 0;
+
+     label2:
+        if $i7 >= $i4 goto label4;
+
+        $i8 = $i7 * $i0;
+
+        $i8 = $i8 + $i3;
+
+        $z0 = virtualinvoke $r0.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i8, $i6);
+
+        if $z0 == 0 goto label3;
+
+        virtualinvoke $r3.<com.google.zxing.common.BitMatrix: void set(int,int)>($i7, $i5);
+
+     label3:
+        $i7 = $i7 + 1;
+
+        goto label2;
+
+     label4:
+        $i5 = $i5 + 1;
+
+        goto label1;
+
+     label5:
+        return $r3;
+
+     label6:
+        $r4 = staticinvoke <com.google.zxing.NotFoundException: com.google.zxing.NotFoundException getNotFoundInstance()>();
+
+        throw $r4;
+
+     label7:
+        $r4 = staticinvoke <com.google.zxing.NotFoundException: com.google.zxing.NotFoundException getNotFoundInstance()>();
+
+        goto label8;
+
+     label8:
+        throw $r4;
+    }
+
+    public static int moduleSize(int[], com.google.zxing.common.BitMatrix)
+    {
+        int[] $r1;
+        com.google.zxing.NotFoundException $r2;
+        int $i0, $i1, $i2;
+        com.google.zxing.common.BitMatrix $r0;
+        boolean $z0;
+
+        $r1 := @parameter0: int[];
+
+        $r0 := @parameter1: com.google.zxing.common.BitMatrix;
+
+        $i0 = virtualinvoke $r0.<com.google.zxing.common.BitMatrix: int getWidth()>();
+
+        $i1 = $r1[0];
+
+        $i2 = $r1[1];
+
+     label1:
+        if $i1 >= $i0 goto label2;
+
+        $z0 = virtualinvoke $r0.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i1, $i2);
+
+        if $z0 == 0 goto label2;
+
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label2:
+        if $i1 == $i0 goto label4;
+
+        $i0 = $r1[0];
+
+        $i1 = $i1 - $i0;
+
+        if $i1 == 0 goto label3;
+
+        return $i1;
+
+     label3:
+        $r2 = staticinvoke <com.google.zxing.NotFoundException: com.google.zxing.NotFoundException getNotFoundInstance()>();
+
+        throw $r2;
+
+     label4:
+        $r2 = staticinvoke <com.google.zxing.NotFoundException: com.google.zxing.NotFoundException getNotFoundInstance()>();
+
+        goto label5;
+
+     label5:
+        throw $r2;
+    }
+
+    public com.google.zxing.Result decode(com.google.zxing.BinaryBitmap)
+    {
+        com.google.zxing.Result $r1;
+        com.google.zxing.datamatrix.DataMatrixReader r0;
+        com.google.zxing.BinaryBitmap $r2;
+
+        r0 := @this: com.google.zxing.datamatrix.DataMatrixReader;
+
+        $r2 := @parameter0: com.google.zxing.BinaryBitmap;
+
+        $r1 = virtualinvoke r0.<com.google.zxing.datamatrix.DataMatrixReader: com.google.zxing.Result decode(com.google.zxing.BinaryBitmap,java.util.Map)>($r2, null);
+
+        return $r1;
+    }
+
+    public com.google.zxing.Result decode(com.google.zxing.BinaryBitmap, java.util.Map)
+    {
+        com.google.zxing.Result $r11;
+        byte[] $r13;
+        com.google.zxing.datamatrix.DataMatrixReader r0;
+        com.google.zxing.datamatrix.detector.Detector $r9;
+        com.google.zxing.ResultMetadataType $r15;
+        java.util.Map $r3;
+        java.lang.String $r12;
+        boolean $z0;
+        com.google.zxing.common.DetectorResult $r10;
+        com.google.zxing.DecodeHintType $r4;
+        com.google.zxing.common.DecoderResult $r7;
+        java.util.List $r14;
+        com.google.zxing.ResultPoint[] $r8;
+        com.google.zxing.datamatrix.decoder.Decoder $r6;
+        com.google.zxing.BinaryBitmap $r2;
+        com.google.zxing.common.BitMatrix $r5;
+        com.google.zxing.BarcodeFormat $r1;
+
+        r0 := @this: com.google.zxing.datamatrix.DataMatrixReader;
+
+        $r2 := @parameter0: com.google.zxing.BinaryBitmap;
+
+        $r3 := @parameter1: java.util.Map;
+
+        if $r3 == null goto label1;
+
+        $r4 = <com.google.zxing.DecodeHintType: com.google.zxing.DecodeHintType PURE_BARCODE>;
+
+        $z0 = interfaceinvoke $r3.<java.util.Map: boolean containsKey(java.lang.Object)>($r4);
+
+        if $z0 == 0 goto label1;
+
+        $r5 = virtualinvoke $r2.<com.google.zxing.BinaryBitmap: com.google.zxing.common.BitMatrix getBlackMatrix()>();
+
+        $r5 = staticinvoke <com.google.zxing.datamatrix.DataMatrixReader: com.google.zxing.common.BitMatrix extractPureBits(com.google.zxing.common.BitMatrix)>($r5);
+
+        $r6 = r0.<com.google.zxing.datamatrix.DataMatrixReader: com.google.zxing.datamatrix.decoder.Decoder decoder>;
+
+        $r7 = virtualinvoke $r6.<com.google.zxing.datamatrix.decoder.Decoder: com.google.zxing.common.DecoderResult decode(com.google.zxing.common.BitMatrix)>($r5);
+
+        $r8 = <com.google.zxing.datamatrix.DataMatrixReader: com.google.zxing.ResultPoint[] NO_POINTS>;
+
+        goto label2;
+
+     label1:
+        $r9 = new com.google.zxing.datamatrix.detector.Detector;
+
+        $r5 = virtualinvoke $r2.<com.google.zxing.BinaryBitmap: com.google.zxing.common.BitMatrix getBlackMatrix()>();
+
+        specialinvoke $r9.<com.google.zxing.datamatrix.detector.Detector: void <init>(com.google.zxing.common.BitMatrix)>($r5);
+
+        $r10 = virtualinvoke $r9.<com.google.zxing.datamatrix.detector.Detector: com.google.zxing.common.DetectorResult detect()>();
+
+        $r6 = r0.<com.google.zxing.datamatrix.DataMatrixReader: com.google.zxing.datamatrix.decoder.Decoder decoder>;
+
+        $r5 = virtualinvoke $r10.<com.google.zxing.common.DetectorResult: com.google.zxing.common.BitMatrix getBits()>();
+
+        $r7 = virtualinvoke $r6.<com.google.zxing.datamatrix.decoder.Decoder: com.google.zxing.common.DecoderResult decode(com.google.zxing.common.BitMatrix)>($r5);
+
+        $r8 = virtualinvoke $r10.<com.google.zxing.common.DetectorResult: com.google.zxing.ResultPoint[] getPoints()>();
+
+     label2:
+        $r11 = new com.google.zxing.Result;
+
+        $r12 = virtualinvoke $r7.<com.google.zxing.common.DecoderResult: java.lang.String getText()>();
+
+        $r13 = virtualinvoke $r7.<com.google.zxing.common.DecoderResult: byte[] getRawBytes()>();
+
+        $r1 = <com.google.zxing.BarcodeFormat: com.google.zxing.BarcodeFormat DATA_MATRIX>;
+
+        specialinvoke $r11.<com.google.zxing.Result: void <init>(java.lang.String,byte[],com.google.zxing.ResultPoint[],com.google.zxing.BarcodeFormat)>($r12, $r13, $r8, $r1);
+
+        $r14 = virtualinvoke $r7.<com.google.zxing.common.DecoderResult: java.util.List getByteSegments()>();
+
+        if $r14 == null goto label3;
+
+        $r15 = <com.google.zxing.ResultMetadataType: com.google.zxing.ResultMetadataType BYTE_SEGMENTS>;
+
+        virtualinvoke $r11.<com.google.zxing.Result: void putMetadata(com.google.zxing.ResultMetadataType,java.lang.Object)>($r15, $r14);
+
+     label3:
+        $r12 = virtualinvoke $r7.<com.google.zxing.common.DecoderResult: java.lang.String getECLevel()>();
+
+        if $r12 == null goto label4;
+
+        $r15 = <com.google.zxing.ResultMetadataType: com.google.zxing.ResultMetadataType ERROR_CORRECTION_LEVEL>;
+
+        virtualinvoke $r11.<com.google.zxing.Result: void putMetadata(com.google.zxing.ResultMetadataType,java.lang.Object)>($r15, $r12);
+
+     label4:
+        return $r11;
+    }
+
+    public void reset()
+    {
+        com.google.zxing.datamatrix.DataMatrixReader r0;
+
+        r0 := @this: com.google.zxing.datamatrix.DataMatrixReader;
+
+        return;
+    }
+}

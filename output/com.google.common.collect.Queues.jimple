@@ -1,0 +1,519 @@
+public final class com.google.common.collect.Queues extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        com.google.common.collect.Queues r0;
+
+        r0 := @this: com.google.common.collect.Queues;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static int drain(java.util.concurrent.BlockingQueue, java.util.Collection, int, long, java.util.concurrent.TimeUnit)
+    {
+        java.util.Collection $r1;
+        java.util.concurrent.BlockingQueue $r0;
+        long $l1, $l2;
+        java.util.concurrent.TimeUnit $r2;
+        int $i0, $i3, $i4;
+        java.lang.Object $r3;
+
+        $r0 := @parameter0: java.util.concurrent.BlockingQueue;
+
+        $r1 := @parameter1: java.util.Collection;
+
+        $i0 := @parameter2: int;
+
+        $l1 := @parameter3: long;
+
+        $r2 := @parameter4: java.util.concurrent.TimeUnit;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $l2 = staticinvoke <java.lang.System: long nanoTime()>();
+
+        $l1 = virtualinvoke $r2.<java.util.concurrent.TimeUnit: long toNanos(long)>($l1);
+
+        $l1 = $l2 + $l1;
+
+        $i3 = 0;
+
+     label1:
+        if $i3 >= $i0 goto label3;
+
+        $i4 = $i0 - $i3;
+
+        $i4 = interfaceinvoke $r0.<java.util.concurrent.BlockingQueue: int drainTo(java.util.Collection,int)>($r1, $i4);
+
+        $i3 = $i3 + $i4;
+
+        if $i3 >= $i0 goto label1;
+
+        $l2 = staticinvoke <java.lang.System: long nanoTime()>();
+
+        $l2 = $l1 - $l2;
+
+        $r2 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit NANOSECONDS>;
+
+        $r3 = interfaceinvoke $r0.<java.util.concurrent.BlockingQueue: java.lang.Object poll(long,java.util.concurrent.TimeUnit)>($l2, $r2);
+
+        if $r3 != null goto label2;
+
+        return $i3;
+
+     label2:
+        interfaceinvoke $r1.<java.util.Collection: boolean add(java.lang.Object)>($r3);
+
+        $i3 = $i3 + 1;
+
+        goto label1;
+
+     label3:
+        return $i3;
+    }
+
+    public static int drainUninterruptibly(java.util.concurrent.BlockingQueue, java.util.Collection, int, long, java.util.concurrent.TimeUnit)
+    {
+        java.lang.Throwable $r5;
+        java.util.Collection $r2;
+        java.util.concurrent.BlockingQueue $r1;
+        long $l1, $l2;
+        java.util.concurrent.TimeUnit $r3;
+        java.lang.InterruptedException $r0;
+        java.lang.Thread $r6;
+        int $i0, $i3, $i4;
+        java.lang.Object $r4;
+        boolean $z0;
+
+        $r1 := @parameter0: java.util.concurrent.BlockingQueue;
+
+        $r2 := @parameter1: java.util.Collection;
+
+        $i0 := @parameter2: int;
+
+        $l1 := @parameter3: long;
+
+        $r3 := @parameter4: java.util.concurrent.TimeUnit;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        $l2 = staticinvoke <java.lang.System: long nanoTime()>();
+
+        $l1 = virtualinvoke $r3.<java.util.concurrent.TimeUnit: long toNanos(long)>($l1);
+
+        $l1 = $l2 + $l1;
+
+        $i3 = 0;
+
+        $z0 = 0;
+
+     label01:
+        if $i3 >= $i0 goto label14;
+
+        $i4 = $i0 - $i3;
+
+     label02:
+        $i4 = interfaceinvoke $r1.<java.util.concurrent.BlockingQueue: int drainTo(java.util.Collection,int)>($r2, $i4);
+
+     label03:
+        $i3 = $i3 + $i4;
+
+        if $i3 >= $i0 goto label01;
+
+     label04:
+        $l2 = staticinvoke <java.lang.System: long nanoTime()>();
+
+     label05:
+        $l2 = $l1 - $l2;
+
+     label06:
+        $r3 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit NANOSECONDS>;
+
+     label07:
+        $r4 = interfaceinvoke $r1.<java.util.concurrent.BlockingQueue: java.lang.Object poll(long,java.util.concurrent.TimeUnit)>($l2, $r3);
+
+     label08:
+        if $r4 != null goto label09;
+
+        goto label14;
+
+     label09:
+        interfaceinvoke $r2.<java.util.Collection: boolean add(java.lang.Object)>($r4);
+
+     label10:
+        $i3 = $i3 + 1;
+
+        goto label01;
+
+     label11:
+        $z0 = 1;
+
+        goto label04;
+
+     label12:
+        $r5 := @caughtexception;
+
+        if $z0 == 0 goto label13;
+
+        $r6 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $r6.<java.lang.Thread: void interrupt()>();
+
+     label13:
+        throw $r5;
+
+     label14:
+        if $z0 == 0 goto label16;
+
+        $r6 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $r6.<java.lang.Thread: void interrupt()>();
+
+        return $i3;
+
+     label15:
+        $r0 := @caughtexception;
+
+        goto label11;
+
+     label16:
+        return $i3;
+
+        catch java.lang.Throwable from label02 to label03 with label12;
+        catch java.lang.InterruptedException from label04 to label05 with label15;
+        catch java.lang.InterruptedException from label07 to label08 with label15;
+        catch java.lang.Throwable from label04 to label05 with label12;
+        catch java.lang.Throwable from label06 to label08 with label12;
+        catch java.lang.Throwable from label09 to label10 with label12;
+    }
+
+    public static java.util.concurrent.ArrayBlockingQueue newArrayBlockingQueue(int)
+    {
+        int $i0;
+        java.util.concurrent.ArrayBlockingQueue $r0;
+
+        $i0 := @parameter0: int;
+
+        $r0 = new java.util.concurrent.ArrayBlockingQueue;
+
+        specialinvoke $r0.<java.util.concurrent.ArrayBlockingQueue: void <init>(int)>($i0);
+
+        return $r0;
+    }
+
+    public static java.util.ArrayDeque newArrayDeque()
+    {
+        java.util.ArrayDeque $r0;
+
+        $r0 = new java.util.ArrayDeque;
+
+        specialinvoke $r0.<java.util.ArrayDeque: void <init>()>();
+
+        return $r0;
+    }
+
+    public static java.util.ArrayDeque newArrayDeque(java.lang.Iterable)
+    {
+        java.util.Collection $r0;
+        java.util.ArrayDeque $r2;
+        java.lang.Iterable $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.Iterable;
+
+        $z0 = $r1 instanceof java.util.Collection;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = new java.util.ArrayDeque;
+
+        $r0 = staticinvoke <com.google.common.collect.Collections2: java.util.Collection cast(java.lang.Iterable)>($r1);
+
+        specialinvoke $r2.<java.util.ArrayDeque: void <init>(java.util.Collection)>($r0);
+
+        return $r2;
+
+     label1:
+        $r2 = new java.util.ArrayDeque;
+
+        specialinvoke $r2.<java.util.ArrayDeque: void <init>()>();
+
+        staticinvoke <com.google.common.collect.Iterables: boolean addAll(java.util.Collection,java.lang.Iterable)>($r2, $r1);
+
+        return $r2;
+    }
+
+    public static java.util.concurrent.ConcurrentLinkedQueue newConcurrentLinkedQueue()
+    {
+        java.util.concurrent.ConcurrentLinkedQueue $r0;
+
+        $r0 = new java.util.concurrent.ConcurrentLinkedQueue;
+
+        specialinvoke $r0.<java.util.concurrent.ConcurrentLinkedQueue: void <init>()>();
+
+        return $r0;
+    }
+
+    public static java.util.concurrent.ConcurrentLinkedQueue newConcurrentLinkedQueue(java.lang.Iterable)
+    {
+        java.util.Collection $r0;
+        java.lang.Iterable $r1;
+        boolean $z0;
+        java.util.concurrent.ConcurrentLinkedQueue $r2;
+
+        $r1 := @parameter0: java.lang.Iterable;
+
+        $z0 = $r1 instanceof java.util.Collection;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = new java.util.concurrent.ConcurrentLinkedQueue;
+
+        $r0 = staticinvoke <com.google.common.collect.Collections2: java.util.Collection cast(java.lang.Iterable)>($r1);
+
+        specialinvoke $r2.<java.util.concurrent.ConcurrentLinkedQueue: void <init>(java.util.Collection)>($r0);
+
+        return $r2;
+
+     label1:
+        $r2 = new java.util.concurrent.ConcurrentLinkedQueue;
+
+        specialinvoke $r2.<java.util.concurrent.ConcurrentLinkedQueue: void <init>()>();
+
+        staticinvoke <com.google.common.collect.Iterables: boolean addAll(java.util.Collection,java.lang.Iterable)>($r2, $r1);
+
+        return $r2;
+    }
+
+    public static java.util.concurrent.LinkedBlockingDeque newLinkedBlockingDeque()
+    {
+        java.util.concurrent.LinkedBlockingDeque $r0;
+
+        $r0 = new java.util.concurrent.LinkedBlockingDeque;
+
+        specialinvoke $r0.<java.util.concurrent.LinkedBlockingDeque: void <init>()>();
+
+        return $r0;
+    }
+
+    public static java.util.concurrent.LinkedBlockingDeque newLinkedBlockingDeque(int)
+    {
+        int $i0;
+        java.util.concurrent.LinkedBlockingDeque $r0;
+
+        $i0 := @parameter0: int;
+
+        $r0 = new java.util.concurrent.LinkedBlockingDeque;
+
+        specialinvoke $r0.<java.util.concurrent.LinkedBlockingDeque: void <init>(int)>($i0);
+
+        return $r0;
+    }
+
+    public static java.util.concurrent.LinkedBlockingDeque newLinkedBlockingDeque(java.lang.Iterable)
+    {
+        java.util.Collection $r0;
+        java.util.concurrent.LinkedBlockingDeque $r2;
+        java.lang.Iterable $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.Iterable;
+
+        $z0 = $r1 instanceof java.util.Collection;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = new java.util.concurrent.LinkedBlockingDeque;
+
+        $r0 = staticinvoke <com.google.common.collect.Collections2: java.util.Collection cast(java.lang.Iterable)>($r1);
+
+        specialinvoke $r2.<java.util.concurrent.LinkedBlockingDeque: void <init>(java.util.Collection)>($r0);
+
+        return $r2;
+
+     label1:
+        $r2 = new java.util.concurrent.LinkedBlockingDeque;
+
+        specialinvoke $r2.<java.util.concurrent.LinkedBlockingDeque: void <init>()>();
+
+        staticinvoke <com.google.common.collect.Iterables: boolean addAll(java.util.Collection,java.lang.Iterable)>($r2, $r1);
+
+        return $r2;
+    }
+
+    public static java.util.concurrent.LinkedBlockingQueue newLinkedBlockingQueue()
+    {
+        java.util.concurrent.LinkedBlockingQueue $r0;
+
+        $r0 = new java.util.concurrent.LinkedBlockingQueue;
+
+        specialinvoke $r0.<java.util.concurrent.LinkedBlockingQueue: void <init>()>();
+
+        return $r0;
+    }
+
+    public static java.util.concurrent.LinkedBlockingQueue newLinkedBlockingQueue(int)
+    {
+        int $i0;
+        java.util.concurrent.LinkedBlockingQueue $r0;
+
+        $i0 := @parameter0: int;
+
+        $r0 = new java.util.concurrent.LinkedBlockingQueue;
+
+        specialinvoke $r0.<java.util.concurrent.LinkedBlockingQueue: void <init>(int)>($i0);
+
+        return $r0;
+    }
+
+    public static java.util.concurrent.LinkedBlockingQueue newLinkedBlockingQueue(java.lang.Iterable)
+    {
+        java.util.Collection $r0;
+        java.util.concurrent.LinkedBlockingQueue $r2;
+        java.lang.Iterable $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.Iterable;
+
+        $z0 = $r1 instanceof java.util.Collection;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = new java.util.concurrent.LinkedBlockingQueue;
+
+        $r0 = staticinvoke <com.google.common.collect.Collections2: java.util.Collection cast(java.lang.Iterable)>($r1);
+
+        specialinvoke $r2.<java.util.concurrent.LinkedBlockingQueue: void <init>(java.util.Collection)>($r0);
+
+        return $r2;
+
+     label1:
+        $r2 = new java.util.concurrent.LinkedBlockingQueue;
+
+        specialinvoke $r2.<java.util.concurrent.LinkedBlockingQueue: void <init>()>();
+
+        staticinvoke <com.google.common.collect.Iterables: boolean addAll(java.util.Collection,java.lang.Iterable)>($r2, $r1);
+
+        return $r2;
+    }
+
+    public static java.util.concurrent.PriorityBlockingQueue newPriorityBlockingQueue()
+    {
+        java.util.concurrent.PriorityBlockingQueue $r0;
+
+        $r0 = new java.util.concurrent.PriorityBlockingQueue;
+
+        specialinvoke $r0.<java.util.concurrent.PriorityBlockingQueue: void <init>()>();
+
+        return $r0;
+    }
+
+    public static java.util.concurrent.PriorityBlockingQueue newPriorityBlockingQueue(java.lang.Iterable)
+    {
+        java.util.Collection $r0;
+        java.lang.Iterable $r1;
+        boolean $z0;
+        java.util.concurrent.PriorityBlockingQueue $r2;
+
+        $r1 := @parameter0: java.lang.Iterable;
+
+        $z0 = $r1 instanceof java.util.Collection;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = new java.util.concurrent.PriorityBlockingQueue;
+
+        $r0 = staticinvoke <com.google.common.collect.Collections2: java.util.Collection cast(java.lang.Iterable)>($r1);
+
+        specialinvoke $r2.<java.util.concurrent.PriorityBlockingQueue: void <init>(java.util.Collection)>($r0);
+
+        return $r2;
+
+     label1:
+        $r2 = new java.util.concurrent.PriorityBlockingQueue;
+
+        specialinvoke $r2.<java.util.concurrent.PriorityBlockingQueue: void <init>()>();
+
+        staticinvoke <com.google.common.collect.Iterables: boolean addAll(java.util.Collection,java.lang.Iterable)>($r2, $r1);
+
+        return $r2;
+    }
+
+    public static java.util.PriorityQueue newPriorityQueue()
+    {
+        java.util.PriorityQueue $r0;
+
+        $r0 = new java.util.PriorityQueue;
+
+        specialinvoke $r0.<java.util.PriorityQueue: void <init>()>();
+
+        return $r0;
+    }
+
+    public static java.util.PriorityQueue newPriorityQueue(java.lang.Iterable)
+    {
+        java.util.PriorityQueue $r2;
+        java.util.Collection $r0;
+        java.lang.Iterable $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.Iterable;
+
+        $z0 = $r1 instanceof java.util.Collection;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = new java.util.PriorityQueue;
+
+        $r0 = staticinvoke <com.google.common.collect.Collections2: java.util.Collection cast(java.lang.Iterable)>($r1);
+
+        specialinvoke $r2.<java.util.PriorityQueue: void <init>(java.util.Collection)>($r0);
+
+        return $r2;
+
+     label1:
+        $r2 = new java.util.PriorityQueue;
+
+        specialinvoke $r2.<java.util.PriorityQueue: void <init>()>();
+
+        staticinvoke <com.google.common.collect.Iterables: boolean addAll(java.util.Collection,java.lang.Iterable)>($r2, $r1);
+
+        return $r2;
+    }
+
+    public static java.util.concurrent.SynchronousQueue newSynchronousQueue()
+    {
+        java.util.concurrent.SynchronousQueue $r0;
+
+        $r0 = new java.util.concurrent.SynchronousQueue;
+
+        specialinvoke $r0.<java.util.concurrent.SynchronousQueue: void <init>()>();
+
+        return $r0;
+    }
+
+    public static java.util.Deque synchronizedDeque(java.util.Deque)
+    {
+        java.util.Deque $r0;
+
+        $r0 := @parameter0: java.util.Deque;
+
+        $r0 = staticinvoke <com.google.common.collect.Synchronized: java.util.Deque deque(java.util.Deque,java.lang.Object)>($r0, null);
+
+        return $r0;
+    }
+
+    public static java.util.Queue synchronizedQueue(java.util.Queue)
+    {
+        java.util.Queue $r0;
+
+        $r0 := @parameter0: java.util.Queue;
+
+        $r0 = staticinvoke <com.google.common.collect.Synchronized: java.util.Queue queue(java.util.Queue,java.lang.Object)>($r0, null);
+
+        return $r0;
+    }
+}

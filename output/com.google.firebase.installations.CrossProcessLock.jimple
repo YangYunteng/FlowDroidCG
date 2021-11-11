@@ -1,0 +1,196 @@
+public class com.google.firebase.installations.CrossProcessLock extends java.lang.Object
+{
+    public static final java.lang.String TAG;
+    public final java.nio.channels.FileChannel channel;
+    public final java.nio.channels.FileLock lock;
+
+    public void <init>(java.nio.channels.FileChannel, java.nio.channels.FileLock)
+    {
+        com.google.firebase.installations.CrossProcessLock r0;
+        java.nio.channels.FileChannel $r1;
+        java.nio.channels.FileLock $r2;
+
+        r0 := @this: com.google.firebase.installations.CrossProcessLock;
+
+        $r1 := @parameter0: java.nio.channels.FileChannel;
+
+        $r2 := @parameter1: java.nio.channels.FileLock;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.installations.CrossProcessLock: java.nio.channels.FileChannel channel> = $r1;
+
+        r0.<com.google.firebase.installations.CrossProcessLock: java.nio.channels.FileLock lock> = $r2;
+
+        return;
+    }
+
+    public static com.google.firebase.installations.CrossProcessLock acquire(android.content.Context, java.lang.String)
+    {
+        java.lang.Throwable $r12;
+        android.content.Context $r2;
+        java.io.RandomAccessFile $r6;
+        com.google.firebase.installations.CrossProcessLock $r11;
+        java.io.IOException $r0, $r1;
+        java.io.File $r4, $r5;
+        java.nio.channels.FileLock $r9, $r10;
+        java.lang.String $r3;
+        java.nio.channels.FileChannel $r7, $r8;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r3 := @parameter1: java.lang.String;
+
+     label01:
+        $r4 = new java.io.File;
+
+     label02:
+        $r5 = virtualinvoke $r2.<android.content.Context: java.io.File getFilesDir()>();
+
+        specialinvoke $r4.<java.io.File: void <init>(java.io.File,java.lang.String)>($r5, $r3);
+
+     label03:
+        $r6 = new java.io.RandomAccessFile;
+
+     label04:
+        specialinvoke $r6.<java.io.RandomAccessFile: void <init>(java.io.File,java.lang.String)>($r4, "rw");
+
+        $r7 = virtualinvoke $r6.<java.io.RandomAccessFile: java.nio.channels.FileChannel getChannel()>();
+
+     label05:
+        $r8 = $r7;
+
+     label06:
+        $r9 = virtualinvoke $r7.<java.nio.channels.FileChannel: java.nio.channels.FileLock lock()>();
+
+     label07:
+        $r10 = $r9;
+
+     label08:
+        $r11 = new com.google.firebase.installations.CrossProcessLock;
+
+     label09:
+        specialinvoke $r11.<com.google.firebase.installations.CrossProcessLock: void <init>(java.nio.channels.FileChannel,java.nio.channels.FileLock)>($r7, $r9);
+
+     label10:
+        return $r11;
+
+     label11:
+        $r12 := @caughtexception;
+
+        goto label19;
+
+     label12:
+        $r12 := @caughtexception;
+
+        goto label19;
+
+     label13:
+        $r12 := @caughtexception;
+
+        goto label15;
+
+     label14:
+        $r12 := @caughtexception;
+
+     label15:
+        $r10 = null;
+
+        goto label19;
+
+     label16:
+        $r12 := @caughtexception;
+
+        goto label18;
+
+     label17:
+        $r12 := @caughtexception;
+
+     label18:
+        $r8 = null;
+
+        $r10 = null;
+
+     label19:
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CrossProcessLock", "encountered error while creating and acquiring the lock, ignoring", $r12);
+
+        if $r10 == null goto label22;
+
+     label20:
+        virtualinvoke $r10.<java.nio.channels.FileLock: void release()>();
+
+     label21:
+        goto label22;
+
+     label22:
+        if $r8 == null goto label27;
+
+     label23:
+        virtualinvoke $r8.<java.nio.channels.FileChannel: void close()>();
+
+     label24:
+        return null;
+
+     label25:
+        $r0 := @caughtexception;
+
+        goto label22;
+
+     label26:
+        $r1 := @caughtexception;
+
+     label27:
+        return null;
+
+        catch java.io.IOException from label02 to label03 with label17;
+        catch java.io.IOException from label04 to label05 with label17;
+        catch java.lang.Error from label01 to label05 with label16;
+        catch java.io.IOException from label06 to label07 with label14;
+        catch java.lang.Error from label06 to label07 with label13;
+        catch java.io.IOException from label09 to label10 with label12;
+        catch java.lang.Error from label08 to label10 with label11;
+        catch java.io.IOException from label20 to label21 with label25;
+        catch java.io.IOException from label23 to label24 with label26;
+    }
+
+    public void releaseAndClose()
+    {
+        com.google.firebase.installations.CrossProcessLock r0;
+        java.io.IOException $r3;
+        java.nio.channels.FileChannel $r2;
+        java.nio.channels.FileLock $r1;
+
+        r0 := @this: com.google.firebase.installations.CrossProcessLock;
+
+        $r1 = r0.<com.google.firebase.installations.CrossProcessLock: java.nio.channels.FileLock lock>;
+
+     label1:
+        virtualinvoke $r1.<java.nio.channels.FileLock: void release()>();
+
+     label2:
+        $r2 = r0.<com.google.firebase.installations.CrossProcessLock: java.nio.channels.FileChannel channel>;
+
+     label3:
+        virtualinvoke $r2.<java.nio.channels.FileChannel: void close()>();
+
+     label4:
+        return;
+
+     label5:
+        $r3 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CrossProcessLock", "encountered error while releasing, ignoring", $r3);
+
+        return;
+
+        catch java.io.IOException from label1 to label2 with label5;
+        catch java.io.IOException from label3 to label4 with label5;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.firebase.installations.CrossProcessLock: java.lang.String TAG> = "CrossProcessLock";
+
+        return;
+    }
+}

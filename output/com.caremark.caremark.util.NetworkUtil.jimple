@@ -1,0 +1,231 @@
+public class com.caremark.caremark.util.NetworkUtil extends java.lang.Object
+{
+    public static final java.lang.String APP_NAME;
+    public static final java.lang.String CHANNEL_NAME;
+    public static final java.lang.String CHANNEL_NAME_VALUE;
+    public static final java.lang.String CRMK_APP;
+    public static final java.lang.String DEVICE_ID;
+    public static final java.lang.String DEVICE_TOKEN;
+    public static final java.lang.String DEVICE_TYPE;
+    public static final java.lang.String DEVICE_TYPE_MOBILE;
+    public static final java.lang.String DEVICE_TYPE_TABLET;
+    public static final java.lang.String LINE_OF_BUSINESS;
+    public static final java.lang.String LINE_OF_BUSINESS_VALUE;
+
+    public void <init>()
+    {
+        com.caremark.caremark.util.NetworkUtil r0;
+
+        r0 := @this: com.caremark.caremark.util.NetworkUtil;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.apache.http.Header[] createHeaderArray(java.lang.String, java.lang.String)
+    {
+        org.apache.http.Header[] $r7;
+        java.lang.Object[] $r3;
+        org.apache.http.message.BasicHeader $r4, $r6;
+        java.lang.String $r0, $r1, $r5;
+        c.c.a.d.i $r2;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $r2 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $z0 = virtualinvoke $r2.<c.c.a.d.i: boolean na()>();
+
+        $r3 = newarray (org.apache.http.Header)[6];
+
+        $r6 = new org.apache.http.message.BasicHeader;
+
+        specialinvoke $r6.<org.apache.http.message.BasicHeader: void <init>(java.lang.String,java.lang.String)>("appName", "CMK_APP");
+
+        $r3[0] = $r6;
+
+        $r6 = new org.apache.http.message.BasicHeader;
+
+        specialinvoke $r6.<org.apache.http.message.BasicHeader: void <init>(java.lang.String,java.lang.String)>("lineOfBusiness", "PBM");
+
+        $r3[1] = $r6;
+
+        $r6 = new org.apache.http.message.BasicHeader;
+
+        specialinvoke $r6.<org.apache.http.message.BasicHeader: void <init>(java.lang.String,java.lang.String)>("channelName", "MOBILE");
+
+        $r3[2] = $r6;
+
+        $r6 = new org.apache.http.message.BasicHeader;
+
+        $r4 = $r6;
+
+        if $z0 == 0 goto label1;
+
+        $r5 = "AND_MOBILE";
+
+        goto label2;
+
+     label1:
+        $r5 = "AND_TABLET";
+
+     label2:
+        specialinvoke $r6.<org.apache.http.message.BasicHeader: void <init>(java.lang.String,java.lang.String)>("deviceType", $r5);
+
+        $r3[3] = $r4;
+
+        $r6 = new org.apache.http.message.BasicHeader;
+
+        specialinvoke $r6.<org.apache.http.message.BasicHeader: void <init>(java.lang.String,java.lang.String)>("deviceID", $r1);
+
+        $r3[4] = $r6;
+
+        $r6 = new org.apache.http.message.BasicHeader;
+
+        specialinvoke $r6.<org.apache.http.message.BasicHeader: void <init>(java.lang.String,java.lang.String)>("deviceToken", $r0);
+
+        $r3[5] = $r6;
+
+        $r7 = (org.apache.http.Header[]) $r3;
+
+        return $r7;
+    }
+
+    public static com.caremark.caremark.util.NetworkUtil$NetworkType getNetworkType()
+    {
+        android.net.ConnectivityManager $r2;
+        android.content.Context $r0;
+        com.caremark.caremark.util.NetworkUtil$NetworkType r4;
+        int $i0;
+        android.net.NetworkInfo $r3;
+        java.lang.Object $r1;
+
+        $r0 = staticinvoke <com.caremark.caremark.core.CaremarkApp: android.content.Context getAppContext()>();
+
+        $r1 = virtualinvoke $r0.<android.content.Context: java.lang.Object getSystemService(java.lang.String)>("connectivity");
+
+        $r2 = (android.net.ConnectivityManager) $r1;
+
+        $r3 = virtualinvoke $r2.<android.net.ConnectivityManager: android.net.NetworkInfo getActiveNetworkInfo()>();
+
+        if $r3 == null goto label1;
+
+        $i0 = virtualinvoke $r3.<android.net.NetworkInfo: int getType()>();
+
+        if $i0 != 0 goto label1;
+
+        r4 = <com.caremark.caremark.util.NetworkUtil$NetworkType: com.caremark.caremark.util.NetworkUtil$NetworkType PHONE>;
+
+        return r4;
+
+     label1:
+        if $r3 == null goto label2;
+
+        $i0 = virtualinvoke $r3.<android.net.NetworkInfo: int getType()>();
+
+        if $i0 != 1 goto label2;
+
+        r4 = <com.caremark.caremark.util.NetworkUtil$NetworkType: com.caremark.caremark.util.NetworkUtil$NetworkType WIFI>;
+
+        return r4;
+
+     label2:
+        r4 = <com.caremark.caremark.util.NetworkUtil$NetworkType: com.caremark.caremark.util.NetworkUtil$NetworkType NO_NETWORK>;
+
+        return r4;
+    }
+
+    public static boolean isNetworkOnline()
+    {
+        android.net.ConnectivityManager $r3;
+        android.content.Context $r1;
+        android.net.NetworkInfo $r4;
+        java.lang.Object $r2;
+        android.net.NetworkInfo$State $r0, $r5;
+        java.lang.Exception $r6;
+
+     label01:
+        $r1 = staticinvoke <com.caremark.caremark.core.CaremarkApp: android.content.Context getAppContext()>();
+
+        $r2 = virtualinvoke $r1.<android.content.Context: java.lang.Object getSystemService(java.lang.String)>("connectivity");
+
+        $r3 = (android.net.ConnectivityManager) $r2;
+
+        $r4 = virtualinvoke $r3.<android.net.ConnectivityManager: android.net.NetworkInfo getNetworkInfo(int)>(0);
+
+     label02:
+        if $r4 == null goto label05;
+
+     label03:
+        $r5 = virtualinvoke $r4.<android.net.NetworkInfo: android.net.NetworkInfo$State getState()>();
+
+     label04:
+        $r0 = <android.net.NetworkInfo$State: android.net.NetworkInfo$State CONNECTED>;
+
+        if $r5 != $r0 goto label05;
+
+        return 1;
+
+     label05:
+        $r4 = virtualinvoke $r3.<android.net.ConnectivityManager: android.net.NetworkInfo getNetworkInfo(int)>(1);
+
+     label06:
+        if $r4 == null goto label09;
+
+     label07:
+        $r0 = virtualinvoke $r4.<android.net.NetworkInfo: android.net.NetworkInfo$State getState()>();
+
+     label08:
+        $r5 = <android.net.NetworkInfo$State: android.net.NetworkInfo$State CONNECTED>;
+
+        if $r0 != $r5 goto label09;
+
+        return 1;
+
+     label09:
+        return 0;
+
+     label10:
+        $r6 := @caughtexception;
+
+        virtualinvoke $r6.<java.lang.Exception: void printStackTrace()>();
+
+        return 0;
+
+        catch java.lang.Exception from label01 to label02 with label10;
+        catch java.lang.Exception from label03 to label04 with label10;
+        catch java.lang.Exception from label05 to label06 with label10;
+        catch java.lang.Exception from label07 to label08 with label10;
+    }
+
+    public static void <clinit>()
+    {
+        <com.caremark.caremark.util.NetworkUtil: java.lang.String LINE_OF_BUSINESS_VALUE> = "PBM";
+
+        <com.caremark.caremark.util.NetworkUtil: java.lang.String LINE_OF_BUSINESS> = "lineOfBusiness";
+
+        <com.caremark.caremark.util.NetworkUtil: java.lang.String DEVICE_TYPE_TABLET> = "AND_TABLET";
+
+        <com.caremark.caremark.util.NetworkUtil: java.lang.String DEVICE_TYPE_MOBILE> = "AND_MOBILE";
+
+        <com.caremark.caremark.util.NetworkUtil: java.lang.String DEVICE_TYPE> = "deviceType";
+
+        <com.caremark.caremark.util.NetworkUtil: java.lang.String DEVICE_TOKEN> = "deviceToken";
+
+        <com.caremark.caremark.util.NetworkUtil: java.lang.String DEVICE_ID> = "deviceID";
+
+        <com.caremark.caremark.util.NetworkUtil: java.lang.String CRMK_APP> = "CMK_APP";
+
+        <com.caremark.caremark.util.NetworkUtil: java.lang.String CHANNEL_NAME_VALUE> = "MOBILE";
+
+        <com.caremark.caremark.util.NetworkUtil: java.lang.String CHANNEL_NAME> = "channelName";
+
+        <com.caremark.caremark.util.NetworkUtil: java.lang.String APP_NAME> = "appName";
+
+        return;
+    }
+}

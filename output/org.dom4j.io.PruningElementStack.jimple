@@ -1,0 +1,227 @@
+public class org.dom4j.io.PruningElementStack extends org.dom4j.io.ElementStack
+{
+    public org.dom4j.ElementHandler elementHandler;
+    public int matchingElementIndex;
+    public java.lang.String[] path;
+
+    public void <init>(java.lang.String[], org.dom4j.ElementHandler)
+    {
+        java.lang.String[] $r1;
+        org.dom4j.io.PruningElementStack r0;
+        org.dom4j.ElementHandler $r2;
+
+        r0 := @this: org.dom4j.io.PruningElementStack;
+
+        $r1 := @parameter0: java.lang.String[];
+
+        $r2 := @parameter1: org.dom4j.ElementHandler;
+
+        specialinvoke r0.<org.dom4j.io.ElementStack: void <init>()>();
+
+        r0.<org.dom4j.io.PruningElementStack: java.lang.String[] path> = $r1;
+
+        r0.<org.dom4j.io.PruningElementStack: org.dom4j.ElementHandler elementHandler> = $r2;
+
+        specialinvoke r0.<org.dom4j.io.PruningElementStack: void checkPath()>();
+
+        return;
+    }
+
+    public void <init>(java.lang.String[], org.dom4j.ElementHandler, int)
+    {
+        org.dom4j.io.PruningElementStack r0;
+        org.dom4j.ElementHandler $r2;
+        int $i0;
+        java.lang.String[] $r1;
+
+        r0 := @this: org.dom4j.io.PruningElementStack;
+
+        $r1 := @parameter0: java.lang.String[];
+
+        $r2 := @parameter1: org.dom4j.ElementHandler;
+
+        $i0 := @parameter2: int;
+
+        specialinvoke r0.<org.dom4j.io.ElementStack: void <init>(int)>($i0);
+
+        r0.<org.dom4j.io.PruningElementStack: java.lang.String[] path> = $r1;
+
+        r0.<org.dom4j.io.PruningElementStack: org.dom4j.ElementHandler elementHandler> = $r2;
+
+        specialinvoke r0.<org.dom4j.io.PruningElementStack: void checkPath()>();
+
+        return;
+    }
+
+    private void checkPath()
+    {
+        org.dom4j.io.PruningElementStack r0;
+        int $i0;
+        java.lang.String[] $r2;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r1;
+        java.lang.RuntimeException $r3;
+
+        r0 := @this: org.dom4j.io.PruningElementStack;
+
+        $r2 = r0.<org.dom4j.io.PruningElementStack: java.lang.String[] path>;
+
+        $i0 = lengthof $r2;
+
+        if $i0 < 2 goto label1;
+
+        $i0 = lengthof $r2;
+
+        $i0 = $i0 - 2;
+
+        r0.<org.dom4j.io.PruningElementStack: int matchingElementIndex> = $i0;
+
+        return;
+
+     label1:
+        $r3 = new java.lang.RuntimeException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>(java.lang.String)>("Invalid path of length: ");
+
+        $r2 = r0.<org.dom4j.io.PruningElementStack: java.lang.String[] path>;
+
+        $i0 = lengthof $r2;
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" it must be greater than 2");
+
+        $r1 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.lang.RuntimeException: void <init>(java.lang.String)>($r1);
+
+        throw $r3;
+    }
+
+    public void pathMatches(org.dom4j.Element, org.dom4j.Element)
+    {
+        org.dom4j.io.PruningElementStack r0;
+        org.dom4j.ElementHandler $r3;
+        org.dom4j.Element $r1, $r2;
+
+        r0 := @this: org.dom4j.io.PruningElementStack;
+
+        $r1 := @parameter0: org.dom4j.Element;
+
+        $r2 := @parameter1: org.dom4j.Element;
+
+        $r3 = r0.<org.dom4j.io.PruningElementStack: org.dom4j.ElementHandler elementHandler>;
+
+        interfaceinvoke $r3.<org.dom4j.ElementHandler: void onEnd(org.dom4j.ElementPath)>(r0);
+
+        interfaceinvoke $r1.<org.dom4j.Branch: boolean remove(org.dom4j.Element)>($r2);
+
+        return;
+    }
+
+    public org.dom4j.Element popElement()
+    {
+        org.dom4j.Element[] $r4;
+        org.dom4j.io.PruningElementStack r0;
+        int $i0, $i1;
+        org.dom4j.Element $r1, $r2, $r3;
+        boolean $z0;
+
+        r0 := @this: org.dom4j.io.PruningElementStack;
+
+        $r1 = specialinvoke r0.<org.dom4j.io.ElementStack: org.dom4j.Element popElement()>();
+
+        $i0 = r0.<org.dom4j.io.ElementStack: int lastElementIndex>;
+
+        $i1 = r0.<org.dom4j.io.PruningElementStack: int matchingElementIndex>;
+
+        if $i0 != $i1 goto label5;
+
+        if $i0 < 0 goto label5;
+
+        $i0 = $i0 + 1;
+
+        $z0 = virtualinvoke r0.<org.dom4j.io.PruningElementStack: boolean validElement(org.dom4j.Element,int)>($r1, $i0);
+
+        if $z0 == 0 goto label5;
+
+        $i0 = 0;
+
+        $r2 = null;
+
+        $r3 = null;
+
+     label1:
+        $i1 = r0.<org.dom4j.io.ElementStack: int lastElementIndex>;
+
+        if $i0 <= $i1 goto label2;
+
+        $r2 = $r3;
+
+        goto label3;
+
+     label2:
+        $r4 = r0.<org.dom4j.io.ElementStack: org.dom4j.Element[] stack>;
+
+        $r3 = $r4[$i0];
+
+        $z0 = virtualinvoke r0.<org.dom4j.io.PruningElementStack: boolean validElement(org.dom4j.Element,int)>($r3, $i0);
+
+        if $z0 != 0 goto label4;
+
+     label3:
+        if $r2 == null goto label5;
+
+        virtualinvoke r0.<org.dom4j.io.PruningElementStack: void pathMatches(org.dom4j.Element,org.dom4j.Element)>($r2, $r1);
+
+        return $r1;
+
+     label4:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label5:
+        return $r1;
+    }
+
+    public boolean validElement(org.dom4j.Element, int)
+    {
+        org.dom4j.io.PruningElementStack r0;
+        int $i0;
+        java.lang.String[] $r1;
+        org.dom4j.Element $r2;
+        java.lang.String $r3, $r4;
+        boolean $z0;
+
+        r0 := @this: org.dom4j.io.PruningElementStack;
+
+        $r2 := @parameter0: org.dom4j.Element;
+
+        $i0 := @parameter1: int;
+
+        $r1 = r0.<org.dom4j.io.PruningElementStack: java.lang.String[] path>;
+
+        $r3 = $r1[$i0];
+
+        $r4 = interfaceinvoke $r2.<org.dom4j.Node: java.lang.String getName()>();
+
+        if $r3 != $r4 goto label1;
+
+        return 1;
+
+     label1:
+        if $r3 == null goto label2;
+
+        if $r4 == null goto label2;
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r4);
+
+        return $z0;
+
+     label2:
+        return 0;
+    }
+}

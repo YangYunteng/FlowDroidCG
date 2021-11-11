@@ -1,0 +1,1314 @@
+public final class com.google.common.io.Files extends java.lang.Object
+{
+    public static final com.google.common.graph.SuccessorsFunction FILE_TREE;
+    public static final com.google.common.collect.TreeTraverser FILE_TREE_TRAVERSER;
+    public static final int TEMP_DIR_ATTEMPTS;
+
+    static void <clinit>()
+    {
+        com.google.common.io.Files$2 $r0;
+        com.google.common.io.Files$3 $r1;
+
+        <com.google.common.io.Files: int TEMP_DIR_ATTEMPTS> = 10000;
+
+        $r0 = new com.google.common.io.Files$2;
+
+        specialinvoke $r0.<com.google.common.io.Files$2: void <init>()>();
+
+        <com.google.common.io.Files: com.google.common.collect.TreeTraverser FILE_TREE_TRAVERSER> = $r0;
+
+        $r1 = new com.google.common.io.Files$3;
+
+        specialinvoke $r1.<com.google.common.io.Files$3: void <init>()>();
+
+        <com.google.common.io.Files: com.google.common.graph.SuccessorsFunction FILE_TREE> = $r1;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.common.io.Files r0;
+
+        r0 := @this: com.google.common.io.Files;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.lang.Iterable access$200(java.io.File)
+    {
+        java.lang.Iterable $r0;
+        java.io.File $r1;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 = staticinvoke <com.google.common.io.Files: java.lang.Iterable fileTreeChildren(java.io.File)>($r1);
+
+        return $r0;
+    }
+
+    public static void append(java.lang.CharSequence, java.io.File, java.nio.charset.Charset)
+    {
+        java.lang.CharSequence $r0;
+        java.nio.charset.Charset $r1;
+        com.google.common.io.FileWriteMode[] $r5;
+        com.google.common.io.FileWriteMode $r2;
+        com.google.common.io.CharSink $r3;
+        java.io.File $r4;
+
+        $r0 := @parameter0: java.lang.CharSequence;
+
+        $r4 := @parameter1: java.io.File;
+
+        $r1 := @parameter2: java.nio.charset.Charset;
+
+        $r5 = newarray (com.google.common.io.FileWriteMode)[1];
+
+        $r2 = <com.google.common.io.FileWriteMode: com.google.common.io.FileWriteMode APPEND>;
+
+        $r5[0] = $r2;
+
+        $r3 = staticinvoke <com.google.common.io.Files: com.google.common.io.CharSink asCharSink(java.io.File,java.nio.charset.Charset,com.google.common.io.FileWriteMode[])>($r4, $r1, $r5);
+
+        virtualinvoke $r3.<com.google.common.io.CharSink: void write(java.lang.CharSequence)>($r0);
+
+        return;
+    }
+
+    public static transient com.google.common.io.ByteSink asByteSink(java.io.File, com.google.common.io.FileWriteMode[])
+    {
+        com.google.common.io.FileWriteMode[] $r1;
+        java.io.File $r0;
+        com.google.common.io.Files$FileByteSink $r2;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r1 := @parameter1: com.google.common.io.FileWriteMode[];
+
+        $r2 = new com.google.common.io.Files$FileByteSink;
+
+        specialinvoke $r2.<com.google.common.io.Files$FileByteSink: void <init>(java.io.File,com.google.common.io.FileWriteMode[],com.google.common.io.Files$1)>($r0, $r1, null);
+
+        return $r2;
+    }
+
+    public static com.google.common.io.ByteSource asByteSource(java.io.File)
+    {
+        com.google.common.io.Files$FileByteSource $r1;
+        java.io.File $r0;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r1 = new com.google.common.io.Files$FileByteSource;
+
+        specialinvoke $r1.<com.google.common.io.Files$FileByteSource: void <init>(java.io.File,com.google.common.io.Files$1)>($r0, null);
+
+        return $r1;
+    }
+
+    public static transient com.google.common.io.CharSink asCharSink(java.io.File, java.nio.charset.Charset, com.google.common.io.FileWriteMode[])
+    {
+        com.google.common.io.ByteSink $r3;
+        java.nio.charset.Charset $r0;
+        com.google.common.io.FileWriteMode[] $r1;
+        com.google.common.io.CharSink $r4;
+        java.io.File $r2;
+
+        $r2 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.nio.charset.Charset;
+
+        $r1 := @parameter2: com.google.common.io.FileWriteMode[];
+
+        $r3 = staticinvoke <com.google.common.io.Files: com.google.common.io.ByteSink asByteSink(java.io.File,com.google.common.io.FileWriteMode[])>($r2, $r1);
+
+        $r4 = virtualinvoke $r3.<com.google.common.io.ByteSink: com.google.common.io.CharSink asCharSink(java.nio.charset.Charset)>($r0);
+
+        return $r4;
+    }
+
+    public static com.google.common.io.CharSource asCharSource(java.io.File, java.nio.charset.Charset)
+    {
+        java.nio.charset.Charset $r0;
+        com.google.common.io.CharSource $r3;
+        com.google.common.io.ByteSource $r2;
+        java.io.File $r1;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.nio.charset.Charset;
+
+        $r2 = staticinvoke <com.google.common.io.Files: com.google.common.io.ByteSource asByteSource(java.io.File)>($r1);
+
+        $r3 = virtualinvoke $r2.<com.google.common.io.ByteSource: com.google.common.io.CharSource asCharSource(java.nio.charset.Charset)>($r0);
+
+        return $r3;
+    }
+
+    public static void copy(java.io.File, java.io.File)
+    {
+        com.google.common.io.ByteSink $r4;
+        com.google.common.io.FileWriteMode[] $r3;
+        com.google.common.io.ByteSource $r2;
+        java.io.File $r0, $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r1 := @parameter1: java.io.File;
+
+        $z0 = virtualinvoke $r0.<java.io.File: boolean equals(java.lang.Object)>($r1);
+
+        $z0 = $z0 ^ 1;
+
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.String,java.lang.Object,java.lang.Object)>($z0, "Source %s and destination %s must be different", $r0, $r1);
+
+        $r2 = staticinvoke <com.google.common.io.Files: com.google.common.io.ByteSource asByteSource(java.io.File)>($r0);
+
+        $r3 = newarray (com.google.common.io.FileWriteMode)[0];
+
+        $r4 = staticinvoke <com.google.common.io.Files: com.google.common.io.ByteSink asByteSink(java.io.File,com.google.common.io.FileWriteMode[])>($r1, $r3);
+
+        virtualinvoke $r2.<com.google.common.io.ByteSource: long copyTo(com.google.common.io.ByteSink)>($r4);
+
+        return;
+    }
+
+    public static void copy(java.io.File, java.io.OutputStream)
+    {
+        java.io.OutputStream $r0;
+        com.google.common.io.ByteSource $r1;
+        java.io.File $r2;
+
+        $r2 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.io.OutputStream;
+
+        $r1 = staticinvoke <com.google.common.io.Files: com.google.common.io.ByteSource asByteSource(java.io.File)>($r2);
+
+        virtualinvoke $r1.<com.google.common.io.ByteSource: long copyTo(java.io.OutputStream)>($r0);
+
+        return;
+    }
+
+    public static void copy(java.io.File, java.nio.charset.Charset, java.lang.Appendable)
+    {
+        java.nio.charset.Charset $r0;
+        java.lang.Appendable $r1;
+        com.google.common.io.CharSource $r2;
+        java.io.File $r3;
+
+        $r3 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.nio.charset.Charset;
+
+        $r1 := @parameter2: java.lang.Appendable;
+
+        $r2 = staticinvoke <com.google.common.io.Files: com.google.common.io.CharSource asCharSource(java.io.File,java.nio.charset.Charset)>($r3, $r0);
+
+        virtualinvoke $r2.<com.google.common.io.CharSource: long copyTo(java.lang.Appendable)>($r1);
+
+        return;
+    }
+
+    public static void createParentDirs(java.io.File)
+    {
+        java.lang.StringBuilder $r0;
+        java.io.IOException $r3;
+        java.lang.String $r4;
+        java.io.File $r1, $r2;
+        boolean $z0;
+
+        $r1 := @parameter0: java.io.File;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = virtualinvoke $r1.<java.io.File: java.io.File getCanonicalFile()>();
+
+        $r2 = virtualinvoke $r2.<java.io.File: java.io.File getParentFile()>();
+
+        if $r2 != null goto label1;
+
+        return;
+
+     label1:
+        virtualinvoke $r2.<java.io.File: boolean mkdirs()>();
+
+        $z0 = virtualinvoke $r2.<java.io.File: boolean isDirectory()>();
+
+        if $z0 == 0 goto label2;
+
+        return;
+
+     label2:
+        $r3 = new java.io.IOException;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to create parent directories of ");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r1);
+
+        $r4 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+    }
+
+    public static java.io.File createTempDir()
+    {
+        java.lang.IllegalStateException $r5;
+        long $l0;
+        java.io.File $r0, $r3;
+        int $i1;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r1, $r4;
+        boolean $z0;
+
+        $r0 = new java.io.File;
+
+        $r1 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("java.io.tmpdir");
+
+        specialinvoke $r0.<java.io.File: void <init>(java.lang.String)>($r1);
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $l0 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("-");
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= 10000 goto label3;
+
+        $r3 = new java.io.File;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.File: void <init>(java.io.File,java.lang.String)>($r0, $r4);
+
+        $z0 = virtualinvoke $r3.<java.io.File: boolean mkdir()>();
+
+        if $z0 == 0 goto label2;
+
+        return $r3;
+
+     label2:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label3:
+        $r5 = new java.lang.IllegalStateException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to create directory within 10000 attempts (tried ");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("0 to ");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(9999);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(41);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r1);
+
+        goto label4;
+
+     label4:
+        throw $r5;
+    }
+
+    public static boolean equal(java.io.File, java.io.File)
+    {
+        long $l0, $l1;
+        java.io.File $r0, $r1;
+        byte $b2;
+        com.google.common.io.ByteSource $r2, $r3;
+        boolean $z0;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r1 := @parameter1: java.io.File;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        if $r0 == $r1 goto label3;
+
+        $z0 = virtualinvoke $r0.<java.io.File: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        goto label3;
+
+     label1:
+        $l0 = virtualinvoke $r0.<java.io.File: long length()>();
+
+        $l1 = virtualinvoke $r1.<java.io.File: long length()>();
+
+        $b2 = $l0 cmp 0L;
+
+        if $b2 == 0 goto label2;
+
+        $b2 = $l1 cmp 0L;
+
+        if $b2 == 0 goto label2;
+
+        $b2 = $l0 cmp $l1;
+
+        if $b2 == 0 goto label2;
+
+        return 0;
+
+     label2:
+        $r2 = staticinvoke <com.google.common.io.Files: com.google.common.io.ByteSource asByteSource(java.io.File)>($r0);
+
+        $r3 = staticinvoke <com.google.common.io.Files: com.google.common.io.ByteSource asByteSource(java.io.File)>($r1);
+
+        $z0 = virtualinvoke $r2.<com.google.common.io.ByteSource: boolean contentEquals(com.google.common.io.ByteSource)>($r3);
+
+        return $z0;
+
+     label3:
+        return 1;
+    }
+
+    public static com.google.common.graph.Traverser fileTraverser()
+    {
+        com.google.common.graph.SuccessorsFunction $r1;
+        com.google.common.graph.Traverser $r0;
+
+        $r1 = <com.google.common.io.Files: com.google.common.graph.SuccessorsFunction FILE_TREE>;
+
+        $r0 = staticinvoke <com.google.common.graph.Traverser: com.google.common.graph.Traverser forTree(com.google.common.graph.SuccessorsFunction)>($r1);
+
+        return $r0;
+    }
+
+    public static java.lang.Iterable fileTreeChildren(java.io.File)
+    {
+        java.util.List $r2;
+        java.io.File[] $r1;
+        java.io.File $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.io.File;
+
+        $z0 = virtualinvoke $r0.<java.io.File: boolean isDirectory()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = virtualinvoke $r0.<java.io.File: java.io.File[] listFiles()>();
+
+        if $r1 == null goto label1;
+
+        $r2 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($r1);
+
+        $r2 = staticinvoke <java.util.Collections: java.util.List unmodifiableList(java.util.List)>($r2);
+
+        return $r2;
+
+     label1:
+        $r2 = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        return $r2;
+    }
+
+    public static com.google.common.collect.TreeTraverser fileTreeTraverser()
+    {
+        com.google.common.collect.TreeTraverser r0;
+
+        r0 = <com.google.common.io.Files: com.google.common.collect.TreeTraverser FILE_TREE_TRAVERSER>;
+
+        return r0;
+    }
+
+    public static java.lang.String getFileExtension(java.lang.String)
+    {
+        int $i0, $i1;
+        java.lang.String $r0;
+        java.io.File $r1;
+
+        $r0 := @parameter0: java.lang.String;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        $r1 = new java.io.File;
+
+        specialinvoke $r1.<java.io.File: void <init>(java.lang.String)>($r0);
+
+        $r0 = virtualinvoke $r1.<java.io.File: java.lang.String getName()>();
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int lastIndexOf(int)>(46);
+
+        $i1 = -1;
+
+        if $i0 != $i1 goto label1;
+
+        return "";
+
+     label1:
+        $i0 = $i0 + 1;
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String substring(int)>($i0);
+
+        return $r0;
+    }
+
+    public static java.lang.String getNameWithoutExtension(java.lang.String)
+    {
+        int $i0, $i1;
+        java.lang.String $r0;
+        java.io.File $r1;
+
+        $r0 := @parameter0: java.lang.String;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        $r1 = new java.io.File;
+
+        specialinvoke $r1.<java.io.File: void <init>(java.lang.String)>($r0);
+
+        $r0 = virtualinvoke $r1.<java.io.File: java.lang.String getName()>();
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int lastIndexOf(int)>(46);
+
+        $i1 = -1;
+
+        if $i0 != $i1 goto label1;
+
+        return $r0;
+
+     label1:
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String substring(int,int)>(0, $i0);
+
+        return $r0;
+    }
+
+    public static com.google.common.hash.HashCode hash(java.io.File, com.google.common.hash.HashFunction)
+    {
+        com.google.common.hash.HashCode $r3;
+        com.google.common.hash.HashFunction $r0;
+        com.google.common.io.ByteSource $r2;
+        java.io.File $r1;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: com.google.common.hash.HashFunction;
+
+        $r2 = staticinvoke <com.google.common.io.Files: com.google.common.io.ByteSource asByteSource(java.io.File)>($r1);
+
+        $r3 = virtualinvoke $r2.<com.google.common.io.ByteSource: com.google.common.hash.HashCode hash(com.google.common.hash.HashFunction)>($r0);
+
+        return $r3;
+    }
+
+    public static com.google.common.base.Predicate isDirectory()
+    {
+        com.google.common.io.Files$FilePredicate r0;
+
+        r0 = <com.google.common.io.Files$FilePredicate: com.google.common.io.Files$FilePredicate IS_DIRECTORY>;
+
+        return r0;
+    }
+
+    public static com.google.common.base.Predicate isFile()
+    {
+        com.google.common.io.Files$FilePredicate r0;
+
+        r0 = <com.google.common.io.Files$FilePredicate: com.google.common.io.Files$FilePredicate IS_FILE>;
+
+        return r0;
+    }
+
+    public static java.nio.MappedByteBuffer map(java.io.File)
+    {
+        java.nio.channels.FileChannel$MapMode $r0;
+        java.io.File $r2;
+        java.nio.MappedByteBuffer $r1;
+
+        $r2 := @parameter0: java.io.File;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        $r0 = <java.nio.channels.FileChannel$MapMode: java.nio.channels.FileChannel$MapMode READ_ONLY>;
+
+        $r1 = staticinvoke <com.google.common.io.Files: java.nio.MappedByteBuffer map(java.io.File,java.nio.channels.FileChannel$MapMode)>($r2, $r0);
+
+        return $r1;
+    }
+
+    public static java.nio.MappedByteBuffer map(java.io.File, java.nio.channels.FileChannel$MapMode)
+    {
+        long $l0;
+        java.lang.String $r4;
+        java.nio.channels.FileChannel$MapMode $r1;
+        java.io.File $r0;
+        java.io.FileNotFoundException $r3;
+        boolean $z0;
+        java.nio.MappedByteBuffer $r2;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r1 := @parameter1: java.nio.channels.FileChannel$MapMode;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $z0 = virtualinvoke $r0.<java.io.File: boolean exists()>();
+
+        if $z0 == 0 goto label1;
+
+        $l0 = virtualinvoke $r0.<java.io.File: long length()>();
+
+        $r2 = staticinvoke <com.google.common.io.Files: java.nio.MappedByteBuffer map(java.io.File,java.nio.channels.FileChannel$MapMode,long)>($r0, $r1, $l0);
+
+        return $r2;
+
+     label1:
+        $r3 = new java.io.FileNotFoundException;
+
+        $r4 = virtualinvoke $r0.<java.io.File: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.FileNotFoundException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+    }
+
+    public static java.nio.MappedByteBuffer map(java.io.File, java.nio.channels.FileChannel$MapMode, long)
+    {
+        java.lang.Throwable $r8, $r9;
+        java.io.RandomAccessFile $r1;
+        long $l0;
+        java.lang.RuntimeException $r10;
+        java.nio.channels.FileChannel$MapMode $r0, $r4;
+        java.io.File $r2;
+        com.google.common.io.Closer $r3;
+        java.io.Closeable $r6;
+        java.lang.String $r5;
+        java.nio.MappedByteBuffer $r7;
+
+        $r2 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.nio.channels.FileChannel$MapMode;
+
+        $l0 := @parameter2: long;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        $r3 = staticinvoke <com.google.common.io.Closer: com.google.common.io.Closer create()>();
+
+     label1:
+        $r1 = new java.io.RandomAccessFile;
+
+        $r4 = <java.nio.channels.FileChannel$MapMode: java.nio.channels.FileChannel$MapMode READ_ONLY>;
+
+     label2:
+        if $r0 != $r4 goto label3;
+
+        $r5 = "r";
+
+        goto label4;
+
+     label3:
+        $r5 = "rw";
+
+     label4:
+        specialinvoke $r1.<java.io.RandomAccessFile: void <init>(java.io.File,java.lang.String)>($r2, $r5);
+
+        $r6 = virtualinvoke $r3.<com.google.common.io.Closer: java.io.Closeable register(java.io.Closeable)>($r1);
+
+        $r1 = (java.io.RandomAccessFile) $r6;
+
+        $r7 = staticinvoke <com.google.common.io.Files: java.nio.MappedByteBuffer map(java.io.RandomAccessFile,java.nio.channels.FileChannel$MapMode,long)>($r1, $r0, $l0);
+
+     label5:
+        virtualinvoke $r3.<com.google.common.io.Closer: void close()>();
+
+        return $r7;
+
+     label6:
+        $r8 := @caughtexception;
+
+        goto label9;
+
+     label7:
+        $r9 := @caughtexception;
+
+     label8:
+        $r10 = virtualinvoke $r3.<com.google.common.io.Closer: java.lang.RuntimeException rethrow(java.lang.Throwable)>($r9);
+
+        throw $r10;
+
+     label9:
+        virtualinvoke $r3.<com.google.common.io.Closer: void close()>();
+
+        throw $r8;
+
+        catch java.lang.Throwable from label1 to label2 with label7;
+        catch java.lang.Throwable from label4 to label5 with label7;
+        catch java.lang.Throwable from label8 to label9 with label6;
+    }
+
+    public static java.nio.MappedByteBuffer map(java.io.RandomAccessFile, java.nio.channels.FileChannel$MapMode, long)
+    {
+        java.lang.Throwable $r6, $r7;
+        java.io.RandomAccessFile $r1;
+        long $l0;
+        java.lang.RuntimeException $r8;
+        java.nio.channels.FileChannel$MapMode $r0;
+        com.google.common.io.Closer $r2;
+        java.io.Closeable $r4;
+        java.nio.channels.FileChannel $r3;
+        java.nio.MappedByteBuffer $r5;
+
+        $r1 := @parameter0: java.io.RandomAccessFile;
+
+        $r0 := @parameter1: java.nio.channels.FileChannel$MapMode;
+
+        $l0 := @parameter2: long;
+
+        $r2 = staticinvoke <com.google.common.io.Closer: com.google.common.io.Closer create()>();
+
+     label1:
+        $r3 = virtualinvoke $r1.<java.io.RandomAccessFile: java.nio.channels.FileChannel getChannel()>();
+
+        $r4 = virtualinvoke $r2.<com.google.common.io.Closer: java.io.Closeable register(java.io.Closeable)>($r3);
+
+        $r3 = (java.nio.channels.FileChannel) $r4;
+
+        $r5 = virtualinvoke $r3.<java.nio.channels.FileChannel: java.nio.MappedByteBuffer map(java.nio.channels.FileChannel$MapMode,long,long)>($r0, 0L, $l0);
+
+     label2:
+        virtualinvoke $r2.<com.google.common.io.Closer: void close()>();
+
+        return $r5;
+
+     label3:
+        $r6 := @caughtexception;
+
+        goto label6;
+
+     label4:
+        $r7 := @caughtexception;
+
+     label5:
+        $r8 = virtualinvoke $r2.<com.google.common.io.Closer: java.lang.RuntimeException rethrow(java.lang.Throwable)>($r7);
+
+        throw $r8;
+
+     label6:
+        virtualinvoke $r2.<com.google.common.io.Closer: void close()>();
+
+        throw $r6;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label5 to label6 with label3;
+    }
+
+    public static void move(java.io.File, java.io.File)
+    {
+        java.io.IOException $r2;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r4;
+        java.io.File $r0, $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r1 := @parameter1: java.io.File;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $z0 = virtualinvoke $r0.<java.io.File: boolean equals(java.lang.Object)>($r1);
+
+        $z0 = $z0 ^ 1;
+
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.String,java.lang.Object,java.lang.Object)>($z0, "Source %s and destination %s must be different", $r0, $r1);
+
+        $z0 = virtualinvoke $r0.<java.io.File: boolean renameTo(java.io.File)>($r1);
+
+        if $z0 != 0 goto label2;
+
+        staticinvoke <com.google.common.io.Files: void copy(java.io.File,java.io.File)>($r0, $r1);
+
+        $z0 = virtualinvoke $r0.<java.io.File: boolean delete()>();
+
+        if $z0 != 0 goto label2;
+
+        $z0 = virtualinvoke $r1.<java.io.File: boolean delete()>();
+
+        if $z0 != 0 goto label1;
+
+        $r2 = new java.io.IOException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to delete ");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r1);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r2;
+
+     label1:
+        $r2 = new java.io.IOException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to delete ");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r0);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r2;
+
+     label2:
+        return;
+    }
+
+    public static java.io.BufferedReader newReader(java.io.File, java.nio.charset.Charset)
+    {
+        java.nio.charset.Charset $r1;
+        java.io.BufferedReader $r2;
+        java.io.FileInputStream $r4;
+        java.io.InputStreamReader $r3;
+        java.io.File $r0;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r1 := @parameter1: java.nio.charset.Charset;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = new java.io.BufferedReader;
+
+        $r3 = new java.io.InputStreamReader;
+
+        $r4 = new java.io.FileInputStream;
+
+        specialinvoke $r4.<java.io.FileInputStream: void <init>(java.io.File)>($r0);
+
+        specialinvoke $r3.<java.io.InputStreamReader: void <init>(java.io.InputStream,java.nio.charset.Charset)>($r4, $r1);
+
+        specialinvoke $r2.<java.io.BufferedReader: void <init>(java.io.Reader)>($r3);
+
+        return $r2;
+    }
+
+    public static java.io.BufferedWriter newWriter(java.io.File, java.nio.charset.Charset)
+    {
+        java.nio.charset.Charset $r1;
+        java.io.BufferedWriter $r2;
+        java.io.OutputStreamWriter $r3;
+        java.io.FileOutputStream $r4;
+        java.io.File $r0;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r1 := @parameter1: java.nio.charset.Charset;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = new java.io.BufferedWriter;
+
+        $r3 = new java.io.OutputStreamWriter;
+
+        $r4 = new java.io.FileOutputStream;
+
+        specialinvoke $r4.<java.io.FileOutputStream: void <init>(java.io.File)>($r0);
+
+        specialinvoke $r3.<java.io.OutputStreamWriter: void <init>(java.io.OutputStream,java.nio.charset.Charset)>($r4, $r1);
+
+        specialinvoke $r2.<java.io.BufferedWriter: void <init>(java.io.Writer)>($r3);
+
+        return $r2;
+    }
+
+    public static java.lang.Object readBytes(java.io.File, com.google.common.io.ByteProcessor)
+    {
+        com.google.common.io.ByteProcessor $r0;
+        java.lang.Object $r3;
+        com.google.common.io.ByteSource $r2;
+        java.io.File $r1;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: com.google.common.io.ByteProcessor;
+
+        $r2 = staticinvoke <com.google.common.io.Files: com.google.common.io.ByteSource asByteSource(java.io.File)>($r1);
+
+        $r3 = virtualinvoke $r2.<com.google.common.io.ByteSource: java.lang.Object read(com.google.common.io.ByteProcessor)>($r0);
+
+        return $r3;
+    }
+
+    public static byte[] readFile(java.io.InputStream, long)
+    {
+        byte[] $r1;
+        long $l0;
+        byte $b1;
+        int $i2;
+        java.lang.StringBuilder $r2, $r4;
+        java.lang.String $r3;
+        java.lang.OutOfMemoryError $r5;
+        java.io.InputStream $r0;
+
+        $r0 := @parameter0: java.io.InputStream;
+
+        $l0 := @parameter1: long;
+
+        $b1 = $l0 cmp 2147483647L;
+
+        $i2 = (int) $b1;
+
+        if $i2 > 0 goto label3;
+
+        $b1 = $l0 cmp 0L;
+
+        if $b1 != 0 goto label1;
+
+        $i2 = 4096;
+
+        goto label2;
+
+     label1:
+        $i2 = (int) $l0;
+
+     label2:
+        $r1 = staticinvoke <com.google.common.io.ByteStreams: byte[] toByteArray(java.io.InputStream,int)>($r0, $i2);
+
+        return $r1;
+
+     label3:
+        $r5 = new java.lang.OutOfMemoryError;
+
+        $r4 = new java.lang.StringBuilder;
+
+        $r2 = $r4;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("file is too large to fit in a byte array: ");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" bytes");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.lang.OutOfMemoryError: void <init>(java.lang.String)>($r3);
+
+        throw $r5;
+    }
+
+    public static java.lang.String readFirstLine(java.io.File, java.nio.charset.Charset)
+    {
+        java.nio.charset.Charset $r0;
+        com.google.common.io.CharSource $r2;
+        java.lang.String $r3;
+        java.io.File $r1;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.nio.charset.Charset;
+
+        $r2 = staticinvoke <com.google.common.io.Files: com.google.common.io.CharSource asCharSource(java.io.File,java.nio.charset.Charset)>($r1, $r0);
+
+        $r3 = virtualinvoke $r2.<com.google.common.io.CharSource: java.lang.String readFirstLine()>();
+
+        return $r3;
+    }
+
+    public static java.lang.Object readLines(java.io.File, java.nio.charset.Charset, com.google.common.io.LineProcessor)
+    {
+        com.google.common.io.LineProcessor $r1;
+        java.nio.charset.Charset $r0;
+        java.lang.Object $r4;
+        com.google.common.io.CharSource $r3;
+        java.io.File $r2;
+
+        $r2 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.nio.charset.Charset;
+
+        $r1 := @parameter2: com.google.common.io.LineProcessor;
+
+        $r3 = staticinvoke <com.google.common.io.Files: com.google.common.io.CharSource asCharSource(java.io.File,java.nio.charset.Charset)>($r2, $r0);
+
+        $r4 = virtualinvoke $r3.<com.google.common.io.CharSource: java.lang.Object readLines(com.google.common.io.LineProcessor)>($r1);
+
+        return $r4;
+    }
+
+    public static java.util.List readLines(java.io.File, java.nio.charset.Charset)
+    {
+        java.util.List $r5;
+        java.nio.charset.Charset $r1;
+        java.lang.Object $r4;
+        com.google.common.io.CharSource $r2;
+        com.google.common.io.Files$1 $r3;
+        java.io.File $r0;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r1 := @parameter1: java.nio.charset.Charset;
+
+        $r2 = staticinvoke <com.google.common.io.Files: com.google.common.io.CharSource asCharSource(java.io.File,java.nio.charset.Charset)>($r0, $r1);
+
+        $r3 = new com.google.common.io.Files$1;
+
+        specialinvoke $r3.<com.google.common.io.Files$1: void <init>()>();
+
+        $r4 = virtualinvoke $r2.<com.google.common.io.CharSource: java.lang.Object readLines(com.google.common.io.LineProcessor)>($r3);
+
+        $r5 = (java.util.List) $r4;
+
+        return $r5;
+    }
+
+    public static java.lang.String simplifyPath(java.lang.String)
+    {
+        java.util.Iterator $r4;
+        char $c2;
+        java.lang.Iterable $r2;
+        java.util.ArrayList $r3, $r9;
+        byte $b1;
+        int $i0;
+        java.lang.Object $r5;
+        java.lang.StringBuilder $r8, $r10;
+        java.lang.String $r0, $r6;
+        com.google.common.base.Splitter $r1;
+        boolean $z0;
+        com.google.common.base.Joiner $r7;
+
+        $r0 := @parameter0: java.lang.String;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if $i0 != 0 goto label01;
+
+        return ".";
+
+     label01:
+        $r1 = staticinvoke <com.google.common.base.Splitter: com.google.common.base.Splitter on(char)>(47);
+
+        $r1 = virtualinvoke $r1.<com.google.common.base.Splitter: com.google.common.base.Splitter omitEmptyStrings()>();
+
+        $r2 = virtualinvoke $r1.<com.google.common.base.Splitter: java.lang.Iterable split(java.lang.CharSequence)>($r0);
+
+        $r9 = new java.util.ArrayList;
+
+        $r3 = $r9;
+
+        specialinvoke $r9.<java.util.ArrayList: void <init>()>();
+
+        $r4 = interfaceinvoke $r2.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label02:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        $b1 = 0;
+
+        if $z0 == 0 goto label09;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (java.lang.String) $r5;
+
+        $i0 = virtualinvoke $r6.<java.lang.String: int hashCode()>();
+
+        if $i0 == 46 goto label04;
+
+        if $i0 == 1472 goto label03;
+
+        goto label05;
+
+     label03:
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>("..");
+
+        if $z0 == 0 goto label05;
+
+        $b1 = 1;
+
+        goto label06;
+
+     label04:
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>(".");
+
+        if $z0 == 0 goto label05;
+
+        goto label06;
+
+     label05:
+        $b1 = -1;
+
+     label06:
+        if $b1 == 0 goto label02;
+
+        if $b1 == 1 goto label07;
+
+        interfaceinvoke $r3.<java.util.List: boolean add(java.lang.Object)>($r6);
+
+        goto label02;
+
+     label07:
+        $i0 = interfaceinvoke $r3.<java.util.List: int size()>();
+
+        if $i0 <= 0 goto label08;
+
+        $i0 = interfaceinvoke $r3.<java.util.List: int size()>();
+
+        $i0 = $i0 - 1;
+
+        $r5 = interfaceinvoke $r3.<java.util.List: java.lang.Object get(int)>($i0);
+
+        $r6 = (java.lang.String) $r5;
+
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>("..");
+
+        if $z0 != 0 goto label08;
+
+        $i0 = interfaceinvoke $r3.<java.util.List: int size()>();
+
+        $i0 = $i0 - 1;
+
+        interfaceinvoke $r3.<java.util.List: java.lang.Object remove(int)>($i0);
+
+        goto label02;
+
+     label08:
+        interfaceinvoke $r3.<java.util.List: boolean add(java.lang.Object)>("..");
+
+        goto label02;
+
+     label09:
+        $r7 = staticinvoke <com.google.common.base.Joiner: com.google.common.base.Joiner on(char)>(47);
+
+        $r6 = virtualinvoke $r7.<com.google.common.base.Joiner: java.lang.String join(java.lang.Iterable)>($r3);
+
+        $c2 = virtualinvoke $r0.<java.lang.String: char charAt(int)>(0);
+
+        $i0 = (int) $c2;
+
+        if $i0 != 47 goto label10;
+
+        $r10 = new java.lang.StringBuilder;
+
+        $r8 = $r10;
+
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r0 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label11;
+
+     label10:
+        $r0 = $r6;
+
+     label11:
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean startsWith(java.lang.String)>("/../");
+
+        if $z0 == 0 goto label12;
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String substring(int)>(3);
+
+        goto label11;
+
+     label12:
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equals(java.lang.Object)>("/..");
+
+        if $z0 == 0 goto label13;
+
+        return "/";
+
+     label13:
+        $r6 = "";
+
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>($r0);
+
+        if $z0 == 0 goto label14;
+
+        return ".";
+
+     label14:
+        return $r0;
+    }
+
+    public static byte[] toByteArray(java.io.File)
+    {
+        byte[] $r2;
+        com.google.common.io.ByteSource $r1;
+        java.io.File $r0;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r1 = staticinvoke <com.google.common.io.Files: com.google.common.io.ByteSource asByteSource(java.io.File)>($r0);
+
+        $r2 = virtualinvoke $r1.<com.google.common.io.ByteSource: byte[] read()>();
+
+        return $r2;
+    }
+
+    public static java.lang.String toString(java.io.File, java.nio.charset.Charset)
+    {
+        java.nio.charset.Charset $r0;
+        com.google.common.io.CharSource $r2;
+        java.lang.String $r3;
+        java.io.File $r1;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.nio.charset.Charset;
+
+        $r2 = staticinvoke <com.google.common.io.Files: com.google.common.io.CharSource asCharSource(java.io.File,java.nio.charset.Charset)>($r1, $r0);
+
+        $r3 = virtualinvoke $r2.<com.google.common.io.CharSource: java.lang.String read()>();
+
+        return $r3;
+    }
+
+    public static void touch(java.io.File)
+    {
+        java.lang.StringBuilder $r0;
+        long $l0;
+        java.io.IOException $r2;
+        java.lang.String $r3;
+        java.io.File $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.io.File;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $z0 = virtualinvoke $r1.<java.io.File: boolean createNewFile()>();
+
+        if $z0 != 0 goto label2;
+
+        $l0 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $z0 = virtualinvoke $r1.<java.io.File: boolean setLastModified(long)>($l0);
+
+        if $z0 == 0 goto label1;
+
+        return;
+
+     label1:
+        $r2 = new java.io.IOException;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unable to update modification time of ");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r1);
+
+        $r3 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r3);
+
+        throw $r2;
+
+     label2:
+        return;
+    }
+
+    public static void write(java.lang.CharSequence, java.io.File, java.nio.charset.Charset)
+    {
+        java.lang.CharSequence $r0;
+        java.nio.charset.Charset $r1;
+        com.google.common.io.FileWriteMode[] $r4;
+        com.google.common.io.CharSink $r2;
+        java.io.File $r3;
+
+        $r0 := @parameter0: java.lang.CharSequence;
+
+        $r3 := @parameter1: java.io.File;
+
+        $r1 := @parameter2: java.nio.charset.Charset;
+
+        $r4 = newarray (com.google.common.io.FileWriteMode)[0];
+
+        $r2 = staticinvoke <com.google.common.io.Files: com.google.common.io.CharSink asCharSink(java.io.File,java.nio.charset.Charset,com.google.common.io.FileWriteMode[])>($r3, $r1, $r4);
+
+        virtualinvoke $r2.<com.google.common.io.CharSink: void write(java.lang.CharSequence)>($r0);
+
+        return;
+    }
+
+    public static void write(byte[], java.io.File)
+    {
+        com.google.common.io.ByteSink $r1;
+        byte[] $r0;
+        com.google.common.io.FileWriteMode[] $r3;
+        java.io.File $r2;
+
+        $r0 := @parameter0: byte[];
+
+        $r2 := @parameter1: java.io.File;
+
+        $r3 = newarray (com.google.common.io.FileWriteMode)[0];
+
+        $r1 = staticinvoke <com.google.common.io.Files: com.google.common.io.ByteSink asByteSink(java.io.File,com.google.common.io.FileWriteMode[])>($r2, $r3);
+
+        virtualinvoke $r1.<com.google.common.io.ByteSink: void write(byte[])>($r0);
+
+        return;
+    }
+}

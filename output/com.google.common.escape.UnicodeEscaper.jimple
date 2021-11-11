@@ -1,0 +1,421 @@
+public abstract class com.google.common.escape.UnicodeEscaper extends com.google.common.escape.Escaper
+{
+    public static final int DEST_PAD;
+
+    public void <init>()
+    {
+        com.google.common.escape.UnicodeEscaper r0;
+
+        r0 := @this: com.google.common.escape.UnicodeEscaper;
+
+        specialinvoke r0.<com.google.common.escape.Escaper: void <init>()>();
+
+        return;
+    }
+
+    public static int codePointAt(java.lang.CharSequence, int, int)
+    {
+        java.lang.IndexOutOfBoundsException $r5;
+        java.lang.CharSequence $r0;
+        char $c3, $c4;
+        java.lang.IllegalArgumentException $r4;
+        int $i0, $i1, $i2, $i5;
+        java.lang.StringBuilder $r1, $r3;
+        java.lang.String $r2;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.CharSequence;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        if $i0 >= $i1 goto label5;
+
+        $i2 = $i0 + 1;
+
+        $c3 = interfaceinvoke $r0.<java.lang.CharSequence: char charAt(int)>($i0);
+
+        $i0 = (int) $c3;
+
+        $i5 = 55296;
+
+        if $i0 < $i5 goto label6;
+
+        $i0 = (int) $c3;
+
+        $i5 = 57343;
+
+        if $i0 <= $i5 goto label1;
+
+        $i0 = (int) $c3;
+
+        return $i0;
+
+     label1:
+        $i0 = (int) $c3;
+
+        $i5 = 56319;
+
+        if $i0 > $i5 goto label4;
+
+        if $i2 != $i1 goto label2;
+
+        $i0 = (int) $c3;
+
+        $i0 = neg $i0;
+
+        return $i0;
+
+     label2:
+        $c4 = interfaceinvoke $r0.<java.lang.CharSequence: char charAt(int)>($i2);
+
+        $z0 = staticinvoke <java.lang.Character: boolean isLowSurrogate(char)>($c4);
+
+        if $z0 == 0 goto label3;
+
+        $i0 = staticinvoke <java.lang.Character: int toCodePoint(char,char)>($c3, $c4);
+
+        return $i0;
+
+     label3:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        $r1 = $r3;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected low surrogate but got char \'");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c4);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' with value ");
+
+        $i0 = (int) $c4;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" at index ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" in \'");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r2);
+
+        throw $r4;
+
+     label4:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        $r1 = $r3;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected low surrogate character \'");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c3);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' with value ");
+
+        $i0 = (int) $c3;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" at index ");
+
+        $i0 = -1;
+
+        $i0 = $i2 + $i0;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" in \'");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r2);
+
+        throw $r4;
+
+     label5:
+        $r5 = new java.lang.IndexOutOfBoundsException;
+
+        specialinvoke $r5.<java.lang.IndexOutOfBoundsException: void <init>(java.lang.String)>("Index exceeds specified range");
+
+        throw $r5;
+
+     label6:
+        $i0 = (int) $c3;
+
+        return $i0;
+    }
+
+    public static char[] growBuffer(char[], int, int)
+    {
+        int $i0, $i1;
+        char[] $r0, $r1;
+        java.lang.AssertionError $r2;
+
+        $r0 := @parameter0: char[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        if $i1 < 0 goto label1;
+
+        $r1 = newarray (char)[$i1];
+
+        if $i0 <= 0 goto label2;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r0, 0, $r1, 0, $i0);
+
+        return $r1;
+
+     label1:
+        $r2 = new java.lang.AssertionError;
+
+        specialinvoke $r2.<java.lang.AssertionError: void <init>(java.lang.Object)>("Cannot increase internal buffer any further");
+
+        throw $r2;
+
+     label2:
+        return $r1;
+    }
+
+    public java.lang.String escape(java.lang.String)
+    {
+        com.google.common.escape.UnicodeEscaper r0;
+        int $i0, $i1;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.common.escape.UnicodeEscaper;
+
+        $r1 := @parameter0: java.lang.String;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $i1 = virtualinvoke r0.<com.google.common.escape.UnicodeEscaper: int nextEscapeIndex(java.lang.CharSequence,int,int)>($r1, 0, $i0);
+
+        if $i1 != $i0 goto label1;
+
+        return $r1;
+
+     label1:
+        $r1 = virtualinvoke r0.<com.google.common.escape.UnicodeEscaper: java.lang.String escapeSlow(java.lang.String,int)>($r1, $i1);
+
+        return $r1;
+    }
+
+    public abstract char[] escape(int);
+
+    public final java.lang.String escapeSlow(java.lang.String, int)
+    {
+        byte $b7;
+        com.google.common.escape.UnicodeEscaper r0;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i8, $i9;
+        java.lang.String $r1;
+        boolean $z0;
+        java.lang.IllegalArgumentException $r4;
+        char[] $r2, $r3;
+
+        r0 := @this: com.google.common.escape.UnicodeEscaper;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i2 := @parameter1: int;
+
+        $i3 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $r3 = staticinvoke <com.google.common.escape.Platform: char[] charBufferFromThreadLocal()>();
+
+        $i4 = 0;
+
+        $i5 = 0;
+
+     label01:
+        if $i2 >= $i3 goto label09;
+
+        $i6 = staticinvoke <com.google.common.escape.UnicodeEscaper: int codePointAt(java.lang.CharSequence,int,int)>($r1, $i2, $i3);
+
+        if $i6 < 0 goto label08;
+
+        $r2 = virtualinvoke r0.<com.google.common.escape.UnicodeEscaper: char[] escape(int)>($i6);
+
+        $z0 = staticinvoke <java.lang.Character: boolean isSupplementaryCodePoint(int)>($i6);
+
+        if $z0 == 0 goto label02;
+
+        $b7 = 2;
+
+        goto label03;
+
+     label02:
+        $b7 = 1;
+
+     label03:
+        $i6 = $b7 + $i2;
+
+        if $r2 == null goto label07;
+
+        $i0 = $i2 - $i4;
+
+        $i1 = $i5 + $i0;
+
+        $i8 = lengthof $r2;
+
+        $i8 = $i8 + $i1;
+
+        $i9 = lengthof $r3;
+
+        if $i9 >= $i8 goto label04;
+
+        $i9 = $i3 - $i2;
+
+        $i8 = $i8 + $i9;
+
+        $i8 = $i8 + 32;
+
+        $r3 = staticinvoke <com.google.common.escape.UnicodeEscaper: char[] growBuffer(char[],int,int)>($r3, $i5, $i8);
+
+     label04:
+        if $i0 <= 0 goto label05;
+
+        virtualinvoke $r1.<java.lang.String: void getChars(int,int,char[],int)>($i4, $i2, $r3, $i5);
+
+        $i5 = $i1;
+
+     label05:
+        $i2 = lengthof $r2;
+
+        if $i2 <= 0 goto label06;
+
+        $i2 = lengthof $r2;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, 0, $r3, $i5, $i2);
+
+        $i2 = lengthof $r2;
+
+        $i5 = $i5 + $i2;
+
+     label06:
+        $i4 = $i6;
+
+     label07:
+        $i2 = virtualinvoke r0.<com.google.common.escape.UnicodeEscaper: int nextEscapeIndex(java.lang.CharSequence,int,int)>($r1, $i6, $i3);
+
+        goto label01;
+
+     label08:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Trailing high surrogate at end of input");
+
+        throw $r4;
+
+     label09:
+        $i2 = $i3 - $i4;
+
+        if $i2 <= 0 goto label11;
+
+        $i2 = $i2 + $i5;
+
+        $i6 = lengthof $r3;
+
+        if $i6 >= $i2 goto label10;
+
+        $r3 = staticinvoke <com.google.common.escape.UnicodeEscaper: char[] growBuffer(char[],int,int)>($r3, $i5, $i2);
+
+     label10:
+        virtualinvoke $r1.<java.lang.String: void getChars(int,int,char[],int)>($i4, $i3, $r3, $i5);
+
+        goto label12;
+
+     label11:
+        $i2 = $i5;
+
+     label12:
+        $r1 = new java.lang.String;
+
+        specialinvoke $r1.<java.lang.String: void <init>(char[],int,int)>($r3, 0, $i2);
+
+        return $r1;
+    }
+
+    public int nextEscapeIndex(java.lang.CharSequence, int, int)
+    {
+        java.lang.CharSequence $r1;
+        byte $b3;
+        com.google.common.escape.UnicodeEscaper r0;
+        int $i0, $i1, $i2;
+        char[] $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.common.escape.UnicodeEscaper;
+
+        $r1 := @parameter0: java.lang.CharSequence;
+
+        $i1 := @parameter1: int;
+
+        $i0 := @parameter2: int;
+
+     label1:
+        if $i1 >= $i0 goto label5;
+
+        $i2 = staticinvoke <com.google.common.escape.UnicodeEscaper: int codePointAt(java.lang.CharSequence,int,int)>($r1, $i1, $i0);
+
+        if $i2 < 0 goto label5;
+
+        $r2 = virtualinvoke r0.<com.google.common.escape.UnicodeEscaper: char[] escape(int)>($i2);
+
+        if $r2 == null goto label2;
+
+        return $i1;
+
+     label2:
+        $z0 = staticinvoke <java.lang.Character: boolean isSupplementaryCodePoint(int)>($i2);
+
+        if $z0 == 0 goto label3;
+
+        $b3 = 2;
+
+        goto label4;
+
+     label3:
+        $b3 = 1;
+
+     label4:
+        $i1 = $i1 + $b3;
+
+        goto label1;
+
+     label5:
+        return $i1;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.common.escape.UnicodeEscaper: int DEST_PAD> = 32;
+
+        return;
+    }
+}

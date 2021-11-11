@@ -1,0 +1,828 @@
+public abstract class org.codehaus.jackson.JsonParser extends java.lang.Object implements java.io.Closeable, org.codehaus.jackson.Versioned
+{
+    public static final int MAX_BYTE_I;
+    public static final int MAX_SHORT_I;
+    public static final int MIN_BYTE_I;
+    public static final int MIN_SHORT_I;
+    public org.codehaus.jackson.JsonToken _currToken;
+    public int _features;
+    public org.codehaus.jackson.JsonToken _lastClearedToken;
+
+    public void <init>()
+    {
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void <init>(int)
+    {
+        int $i0;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $i0 := @parameter0: int;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<org.codehaus.jackson.JsonParser: int _features> = $i0;
+
+        return;
+    }
+
+    public org.codehaus.jackson.JsonParseException _constructError(java.lang.String)
+    {
+        org.codehaus.jackson.JsonParseException $r2;
+        java.lang.String $r1;
+        org.codehaus.jackson.JsonLocation $r3;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = new org.codehaus.jackson.JsonParseException;
+
+        $r3 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonLocation getCurrentLocation()>();
+
+        specialinvoke $r2.<org.codehaus.jackson.JsonParseException: void <init>(java.lang.String,org.codehaus.jackson.JsonLocation)>($r1, $r3);
+
+        return $r2;
+    }
+
+    public boolean canUseSchema(org.codehaus.jackson.FormatSchema)
+    {
+        org.codehaus.jackson.FormatSchema $r1;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter0: org.codehaus.jackson.FormatSchema;
+
+        return 0;
+    }
+
+    public void clearCurrentToken()
+    {
+        org.codehaus.jackson.JsonToken $r1;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        if $r1 == null goto label1;
+
+        r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _lastClearedToken> = $r1;
+
+        r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken> = null;
+
+     label1:
+        return;
+    }
+
+    public abstract void close();
+
+    public org.codehaus.jackson.JsonParser configure(org.codehaus.jackson.JsonParser$Feature, boolean)
+    {
+        org.codehaus.jackson.JsonParser$Feature $r1;
+        org.codehaus.jackson.JsonParser r0;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter0: org.codehaus.jackson.JsonParser$Feature;
+
+        $z0 := @parameter1: boolean;
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.JsonParser: void enableFeature(org.codehaus.jackson.JsonParser$Feature)>($r1);
+
+        return r0;
+
+     label1:
+        virtualinvoke r0.<org.codehaus.jackson.JsonParser: void disableFeature(org.codehaus.jackson.JsonParser$Feature)>($r1);
+
+        return r0;
+    }
+
+    public org.codehaus.jackson.JsonParser disable(org.codehaus.jackson.JsonParser$Feature)
+    {
+        int $i0, $i1, $i2;
+        org.codehaus.jackson.JsonParser$Feature $r1;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter0: org.codehaus.jackson.JsonParser$Feature;
+
+        $i0 = r0.<org.codehaus.jackson.JsonParser: int _features>;
+
+        $i1 = virtualinvoke $r1.<org.codehaus.jackson.JsonParser$Feature: int getMask()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 ^ $i2;
+
+        $i0 = $i1 & $i0;
+
+        r0.<org.codehaus.jackson.JsonParser: int _features> = $i0;
+
+        return r0;
+    }
+
+    public void disableFeature(org.codehaus.jackson.JsonParser$Feature)
+    {
+        org.codehaus.jackson.JsonParser$Feature $r1;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter0: org.codehaus.jackson.JsonParser$Feature;
+
+        virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonParser disable(org.codehaus.jackson.JsonParser$Feature)>($r1);
+
+        return;
+    }
+
+    public org.codehaus.jackson.JsonParser enable(org.codehaus.jackson.JsonParser$Feature)
+    {
+        int $i0, $i1;
+        org.codehaus.jackson.JsonParser$Feature $r1;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter0: org.codehaus.jackson.JsonParser$Feature;
+
+        $i0 = r0.<org.codehaus.jackson.JsonParser: int _features>;
+
+        $i1 = virtualinvoke $r1.<org.codehaus.jackson.JsonParser$Feature: int getMask()>();
+
+        $i0 = $i1 | $i0;
+
+        r0.<org.codehaus.jackson.JsonParser: int _features> = $i0;
+
+        return r0;
+    }
+
+    public void enableFeature(org.codehaus.jackson.JsonParser$Feature)
+    {
+        org.codehaus.jackson.JsonParser$Feature $r1;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter0: org.codehaus.jackson.JsonParser$Feature;
+
+        virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonParser enable(org.codehaus.jackson.JsonParser$Feature)>($r1);
+
+        return;
+    }
+
+    public abstract java.math.BigInteger getBigIntegerValue();
+
+    public byte[] getBinaryValue()
+    {
+        org.codehaus.jackson.Base64Variant $r1;
+        byte[] $r2;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 = staticinvoke <org.codehaus.jackson.Base64Variants: org.codehaus.jackson.Base64Variant getDefaultVariant()>();
+
+        $r2 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: byte[] getBinaryValue(org.codehaus.jackson.Base64Variant)>($r1);
+
+        return $r2;
+    }
+
+    public abstract byte[] getBinaryValue(org.codehaus.jackson.Base64Variant);
+
+    public boolean getBooleanValue()
+    {
+        org.codehaus.jackson.JsonToken $r1, $r2;
+        org.codehaus.jackson.JsonParseException $r3;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r5;
+        org.codehaus.jackson.JsonLocation $r6;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        $r2 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_TRUE>;
+
+        if $r1 != $r2 goto label1;
+
+        return 1;
+
+     label1:
+        $r2 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_FALSE>;
+
+        if $r1 != $r2 goto label2;
+
+        return 0;
+
+     label2:
+        $r3 = new org.codehaus.jackson.JsonParseException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Current token (");
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r1);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") not of boolean type");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r6 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonLocation getCurrentLocation()>();
+
+        specialinvoke $r3.<org.codehaus.jackson.JsonParseException: void <init>(java.lang.String,org.codehaus.jackson.JsonLocation)>($r5, $r6);
+
+        throw $r3;
+    }
+
+    public byte getByteValue()
+    {
+        byte $b1;
+        org.codehaus.jackson.JsonParseException $r3;
+        int $i0, $i2;
+        java.lang.StringBuilder $r1, $r4;
+        java.lang.String $r2;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $i0 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: int getIntValue()>();
+
+        $i2 = -128;
+
+        if $i0 < $i2 goto label1;
+
+        if $i0 > 127 goto label1;
+
+        $b1 = (byte) $i0;
+
+        return $b1;
+
+     label1:
+        $r4 = new java.lang.StringBuilder;
+
+        $r1 = $r4;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Numeric value (");
+
+        $r2 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: java.lang.String getText()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") out of range of Java byte");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonParseException _constructError(java.lang.String)>($r2);
+
+        throw $r3;
+    }
+
+    public abstract org.codehaus.jackson.ObjectCodec getCodec();
+
+    public abstract org.codehaus.jackson.JsonLocation getCurrentLocation();
+
+    public abstract java.lang.String getCurrentName();
+
+    public org.codehaus.jackson.JsonToken getCurrentToken()
+    {
+        org.codehaus.jackson.JsonToken r1;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        return r1;
+    }
+
+    public abstract java.math.BigDecimal getDecimalValue();
+
+    public abstract double getDoubleValue();
+
+    public java.lang.Object getEmbeddedObject()
+    {
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        return null;
+    }
+
+    public abstract float getFloatValue();
+
+    public java.lang.Object getInputSource()
+    {
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        return null;
+    }
+
+    public abstract int getIntValue();
+
+    public org.codehaus.jackson.JsonToken getLastClearedToken()
+    {
+        org.codehaus.jackson.JsonToken r1;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _lastClearedToken>;
+
+        return r1;
+    }
+
+    public abstract long getLongValue();
+
+    public abstract org.codehaus.jackson.JsonParser$NumberType getNumberType();
+
+    public abstract java.lang.Number getNumberValue();
+
+    public abstract org.codehaus.jackson.JsonStreamContext getParsingContext();
+
+    public short getShortValue()
+    {
+        short $s1;
+        org.codehaus.jackson.JsonParseException $r3;
+        int $i0, $i2;
+        java.lang.StringBuilder $r1, $r4;
+        java.lang.String $r2;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $i0 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: int getIntValue()>();
+
+        $i2 = -32768;
+
+        if $i0 < $i2 goto label1;
+
+        if $i0 > 32767 goto label1;
+
+        $s1 = (short) $i0;
+
+        return $s1;
+
+     label1:
+        $r4 = new java.lang.StringBuilder;
+
+        $r1 = $r4;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Numeric value (");
+
+        $r2 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: java.lang.String getText()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") out of range of Java short");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonParseException _constructError(java.lang.String)>($r2);
+
+        throw $r3;
+    }
+
+    public abstract java.lang.String getText();
+
+    public abstract char[] getTextCharacters();
+
+    public abstract int getTextLength();
+
+    public abstract int getTextOffset();
+
+    public abstract org.codehaus.jackson.JsonLocation getTokenLocation();
+
+    public boolean getValueAsBoolean()
+    {
+        org.codehaus.jackson.JsonParser r0;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: boolean getValueAsBoolean(boolean)>(0);
+
+        return $z0;
+    }
+
+    public boolean getValueAsBoolean(boolean)
+    {
+        org.codehaus.jackson.JsonParser r0;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $z0 := @parameter0: boolean;
+
+        return $z0;
+    }
+
+    public double getValueAsDouble()
+    {
+        org.codehaus.jackson.JsonParser r0;
+        double $d0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $d0 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: double getValueAsDouble(double)>(0.0);
+
+        return $d0;
+    }
+
+    public double getValueAsDouble(double)
+    {
+        org.codehaus.jackson.JsonParser r0;
+        double $d0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $d0 := @parameter0: double;
+
+        return $d0;
+    }
+
+    public int getValueAsInt()
+    {
+        int $i0;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $i0 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: int getValueAsInt(int)>(0);
+
+        return $i0;
+    }
+
+    public int getValueAsInt(int)
+    {
+        int $i0;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $i0 := @parameter0: int;
+
+        return $i0;
+    }
+
+    public long getValueAsLong()
+    {
+        int $i0;
+        long $l1;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $i0 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: int getValueAsInt(int)>(0);
+
+        $l1 = (long) $i0;
+
+        return $l1;
+    }
+
+    public long getValueAsLong(long)
+    {
+        long $l0;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $l0 := @parameter0: long;
+
+        return $l0;
+    }
+
+    public boolean hasCurrentToken()
+    {
+        org.codehaus.jackson.JsonToken $r1;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        if $r1 == null goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean hasTextCharacters()
+    {
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        return 0;
+    }
+
+    public abstract boolean isClosed();
+
+    public boolean isEnabled(org.codehaus.jackson.JsonParser$Feature)
+    {
+        int $i0, $i1;
+        org.codehaus.jackson.JsonParser$Feature $r1;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter0: org.codehaus.jackson.JsonParser$Feature;
+
+        $i0 = r0.<org.codehaus.jackson.JsonParser: int _features>;
+
+        $i1 = virtualinvoke $r1.<org.codehaus.jackson.JsonParser$Feature: int getMask()>();
+
+        $i0 = $i1 & $i0;
+
+        if $i0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean isExpectedStartArrayToken()
+    {
+        org.codehaus.jackson.JsonToken $r1, $r2;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r2 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken getCurrentToken()>();
+
+        $r1 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken START_ARRAY>;
+
+        if $r2 != $r1 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public final boolean isFeatureEnabled(org.codehaus.jackson.JsonParser$Feature)
+    {
+        org.codehaus.jackson.JsonParser$Feature $r1;
+        org.codehaus.jackson.JsonParser r0;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter0: org.codehaus.jackson.JsonParser$Feature;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: boolean isEnabled(org.codehaus.jackson.JsonParser$Feature)>($r1);
+
+        return $z0;
+    }
+
+    public abstract org.codehaus.jackson.JsonToken nextToken();
+
+    public org.codehaus.jackson.JsonToken nextValue()
+    {
+        org.codehaus.jackson.JsonToken $r1, $r2;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r2 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken nextToken()>();
+
+        $r1 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken FIELD_NAME>;
+
+        if $r2 != $r1 goto label1;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken nextToken()>();
+
+        return $r1;
+
+     label1:
+        return $r2;
+    }
+
+    public java.lang.Object readValueAs(java.lang.Class)
+    {
+        java.lang.IllegalStateException $r4;
+        org.codehaus.jackson.ObjectCodec $r2;
+        java.lang.Class $r1;
+        java.lang.Object $r3;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter0: java.lang.Class;
+
+        $r2 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.ObjectCodec getCodec()>();
+
+        if $r2 == null goto label1;
+
+        $r3 = virtualinvoke $r2.<org.codehaus.jackson.ObjectCodec: java.lang.Object readValue(org.codehaus.jackson.JsonParser,java.lang.Class)>(r0, $r1);
+
+        return $r3;
+
+     label1:
+        $r4 = new java.lang.IllegalStateException;
+
+        specialinvoke $r4.<java.lang.IllegalStateException: void <init>(java.lang.String)>("No ObjectCodec defined for the parser, can not deserialize JSON into Java objects");
+
+        throw $r4;
+    }
+
+    public java.lang.Object readValueAs(org.codehaus.jackson.type.TypeReference)
+    {
+        java.lang.IllegalStateException $r4;
+        org.codehaus.jackson.ObjectCodec $r2;
+        org.codehaus.jackson.type.TypeReference $r1;
+        java.lang.Object $r3;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter0: org.codehaus.jackson.type.TypeReference;
+
+        $r2 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.ObjectCodec getCodec()>();
+
+        if $r2 == null goto label1;
+
+        $r3 = virtualinvoke $r2.<org.codehaus.jackson.ObjectCodec: java.lang.Object readValue(org.codehaus.jackson.JsonParser,org.codehaus.jackson.type.TypeReference)>(r0, $r1);
+
+        return $r3;
+
+     label1:
+        $r4 = new java.lang.IllegalStateException;
+
+        specialinvoke $r4.<java.lang.IllegalStateException: void <init>(java.lang.String)>("No ObjectCodec defined for the parser, can not deserialize JSON into Java objects");
+
+        throw $r4;
+    }
+
+    public org.codehaus.jackson.JsonNode readValueAsTree()
+    {
+        java.lang.IllegalStateException $r3;
+        org.codehaus.jackson.ObjectCodec $r1;
+        org.codehaus.jackson.JsonNode $r2;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.ObjectCodec getCodec()>();
+
+        if $r1 == null goto label1;
+
+        $r2 = virtualinvoke $r1.<org.codehaus.jackson.ObjectCodec: org.codehaus.jackson.JsonNode readTree(org.codehaus.jackson.JsonParser)>(r0);
+
+        return $r2;
+
+     label1:
+        $r3 = new java.lang.IllegalStateException;
+
+        specialinvoke $r3.<java.lang.IllegalStateException: void <init>(java.lang.String)>("No ObjectCodec defined for the parser, can not deserialize JSON into JsonNode tree");
+
+        throw $r3;
+    }
+
+    public int releaseBuffered(java.io.OutputStream)
+    {
+        java.io.OutputStream $r1;
+        int $i0;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter0: java.io.OutputStream;
+
+        $i0 = -1;
+
+        return $i0;
+    }
+
+    public int releaseBuffered(java.io.Writer)
+    {
+        java.io.Writer $r1;
+        int $i0;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter0: java.io.Writer;
+
+        $i0 = -1;
+
+        return $i0;
+    }
+
+    public abstract void setCodec(org.codehaus.jackson.ObjectCodec);
+
+    public void setFeature(org.codehaus.jackson.JsonParser$Feature, boolean)
+    {
+        org.codehaus.jackson.JsonParser$Feature $r1;
+        org.codehaus.jackson.JsonParser r0;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter0: org.codehaus.jackson.JsonParser$Feature;
+
+        $z0 := @parameter1: boolean;
+
+        virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonParser configure(org.codehaus.jackson.JsonParser$Feature,boolean)>($r1, $z0);
+
+        return;
+    }
+
+    public void setSchema(org.codehaus.jackson.FormatSchema)
+    {
+        org.codehaus.jackson.FormatSchema $r3;
+        java.lang.UnsupportedOperationException $r1;
+        java.lang.StringBuilder $r2;
+        java.lang.Class $r4;
+        java.lang.String $r5;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r3 := @parameter0: org.codehaus.jackson.FormatSchema;
+
+        $r1 = new java.lang.UnsupportedOperationException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parser of type ");
+
+        $r4 = virtualinvoke r0.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r5 = virtualinvoke $r4.<java.lang.Class: java.lang.String getName()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" does not support schema of type \'");
+
+        $r5 = interfaceinvoke $r3.<org.codehaus.jackson.FormatSchema: java.lang.String getSchemaType()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $r5 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r1.<java.lang.UnsupportedOperationException: void <init>(java.lang.String)>($r5);
+
+        throw $r1;
+    }
+
+    public abstract org.codehaus.jackson.JsonParser skipChildren();
+
+    public org.codehaus.jackson.Version version()
+    {
+        org.codehaus.jackson.Version $r1;
+        org.codehaus.jackson.JsonParser r0;
+
+        r0 := @this: org.codehaus.jackson.JsonParser;
+
+        $r1 = staticinvoke <org.codehaus.jackson.Version: org.codehaus.jackson.Version unknownVersion()>();
+
+        return $r1;
+    }
+
+    public static void <clinit>()
+    {
+        <org.codehaus.jackson.JsonParser: int MIN_SHORT_I> = -32768;
+
+        <org.codehaus.jackson.JsonParser: int MIN_BYTE_I> = -128;
+
+        <org.codehaus.jackson.JsonParser: int MAX_SHORT_I> = 32767;
+
+        <org.codehaus.jackson.JsonParser: int MAX_BYTE_I> = 127;
+
+        return;
+    }
+}

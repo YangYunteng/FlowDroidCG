@@ -1,0 +1,1401 @@
+public class org.apache.james.mime4j.codec.EncoderUtil extends java.lang.Object
+{
+    public static final java.util.BitSet ATEXT_CHARS;
+    public static final char BASE64_PAD;
+    public static final byte[] BASE64_TABLE;
+    public static final int ENCODED_WORD_MAX_LENGTH;
+    public static final java.lang.String ENC_WORD_PREFIX;
+    public static final java.lang.String ENC_WORD_SUFFIX;
+    public static final int MAX_USED_CHARACTERS;
+    public static final java.util.BitSet Q_REGULAR_CHARS;
+    public static final java.util.BitSet Q_RESTRICTED_CHARS;
+    public static final java.util.BitSet TOKEN_CHARS;
+
+    static void <clinit>()
+    {
+        byte[] $r0;
+        java.util.BitSet $r1;
+
+        <org.apache.james.mime4j.codec.EncoderUtil: int MAX_USED_CHARACTERS> = 50;
+
+        <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String ENC_WORD_SUFFIX> = "?=";
+
+        <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String ENC_WORD_PREFIX> = "=?";
+
+        <org.apache.james.mime4j.codec.EncoderUtil: int ENCODED_WORD_MAX_LENGTH> = 75;
+
+        <org.apache.james.mime4j.codec.EncoderUtil: char BASE64_PAD> = 61;
+
+        $r0 = <org.apache.james.mime4j.codec.Base64OutputStream: byte[] BASE64_TABLE>;
+
+        <org.apache.james.mime4j.codec.EncoderUtil: byte[] BASE64_TABLE> = $r0;
+
+        $r1 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet initChars(java.lang.String)>("=_?");
+
+        <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet Q_REGULAR_CHARS> = $r1;
+
+        $r1 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet initChars(java.lang.String)>("=_?\"#$%&\'(),.:;<>@[\\]^`{|}~");
+
+        <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet Q_RESTRICTED_CHARS> = $r1;
+
+        $r1 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet initChars(java.lang.String)>("()<>@,;:\\\"/[]?=");
+
+        <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet TOKEN_CHARS> = $r1;
+
+        $r1 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet initChars(java.lang.String)>("()<>@.,;:\\\"[]");
+
+        <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet ATEXT_CHARS> = $r1;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.apache.james.mime4j.codec.EncoderUtil r0;
+
+        r0 := @this: org.apache.james.mime4j.codec.EncoderUtil;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static int bEncodedLength(byte[])
+    {
+        int $i0;
+        byte[] $r0;
+
+        $r0 := @parameter0: byte[];
+
+        $i0 = lengthof $r0;
+
+        $i0 = $i0 + 2;
+
+        $i0 = $i0 / 3;
+
+        $i0 = $i0 * 4;
+
+        return $i0;
+    }
+
+    public static java.nio.charset.Charset determineCharset(java.lang.String)
+    {
+        java.nio.charset.Charset r1;
+        int $i0, $i1, $i3;
+        char $c2;
+        java.lang.String $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        $i1 = 0;
+
+        $z0 = 1;
+
+     label1:
+        if $i1 >= $i0 goto label4;
+
+        $c2 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i1);
+
+        $i3 = (int) $c2;
+
+        if $i3 <= 255 goto label2;
+
+        r1 = <org.apache.james.mime4j.util.CharsetUtil: java.nio.charset.Charset UTF_8>;
+
+        return r1;
+
+     label2:
+        $i3 = (int) $c2;
+
+        if $i3 <= 127 goto label3;
+
+        $z0 = 0;
+
+     label3:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label4:
+        if $z0 == 0 goto label5;
+
+        r1 = <org.apache.james.mime4j.util.CharsetUtil: java.nio.charset.Charset US_ASCII>;
+
+        return r1;
+
+     label5:
+        r1 = <org.apache.james.mime4j.util.CharsetUtil: java.nio.charset.Charset ISO_8859_1>;
+
+        return r1;
+    }
+
+    public static org.apache.james.mime4j.codec.EncoderUtil$Encoding determineEncoding(byte[], org.apache.james.mime4j.codec.EncoderUtil$Usage)
+    {
+        byte[] $r0;
+        short $s4;
+        byte $b3;
+        org.apache.james.mime4j.codec.EncoderUtil$Encoding r4;
+        int $i0, $i1, $i2;
+        org.apache.james.mime4j.codec.EncoderUtil$Usage $r1, $r2;
+        java.util.BitSet $r3;
+        boolean $z0;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 := @parameter1: org.apache.james.mime4j.codec.EncoderUtil$Usage;
+
+        $i0 = lengthof $r0;
+
+        if $i0 != 0 goto label1;
+
+        r4 = <org.apache.james.mime4j.codec.EncoderUtil$Encoding: org.apache.james.mime4j.codec.EncoderUtil$Encoding Q>;
+
+        return r4;
+
+     label1:
+        $r2 = <org.apache.james.mime4j.codec.EncoderUtil$Usage: org.apache.james.mime4j.codec.EncoderUtil$Usage TEXT_TOKEN>;
+
+        if $r1 != $r2 goto label2;
+
+        $r3 = <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet Q_REGULAR_CHARS>;
+
+        goto label3;
+
+     label2:
+        $r3 = <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet Q_RESTRICTED_CHARS>;
+
+     label3:
+        $i0 = 0;
+
+        $i1 = 0;
+
+     label4:
+        $i2 = lengthof $r0;
+
+        if $i0 >= $i2 goto label6;
+
+        $b3 = $r0[$i0];
+
+        $s4 = (short) $b3;
+
+        $s4 = $s4 & 255;
+
+        $i2 = (int) $s4;
+
+        if $i2 == 32 goto label5;
+
+        $i2 = (int) $s4;
+
+        $z0 = virtualinvoke $r3.<java.util.BitSet: boolean get(int)>($i2);
+
+        if $z0 != 0 goto label5;
+
+        $i1 = $i1 + 1;
+
+     label5:
+        $i0 = $i0 + 1;
+
+        goto label4;
+
+     label6:
+        $i0 = $i1 * 100;
+
+        $i1 = lengthof $r0;
+
+        $i0 = $i0 / $i1;
+
+        if $i0 <= 30 goto label7;
+
+        r4 = <org.apache.james.mime4j.codec.EncoderUtil$Encoding: org.apache.james.mime4j.codec.EncoderUtil$Encoding B>;
+
+        return r4;
+
+     label7:
+        r4 = <org.apache.james.mime4j.codec.EncoderUtil$Encoding: org.apache.james.mime4j.codec.EncoderUtil$Encoding Q>;
+
+        return r4;
+    }
+
+    public static byte[] encode(java.lang.String, java.nio.charset.Charset)
+    {
+        byte[] $r3;
+        java.nio.charset.Charset $r1;
+        int $i0;
+        java.lang.String $r0;
+        java.nio.ByteBuffer $r2;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: java.nio.charset.Charset;
+
+        $r2 = virtualinvoke $r1.<java.nio.charset.Charset: java.nio.ByteBuffer encode(java.lang.String)>($r0);
+
+        $i0 = virtualinvoke $r2.<java.nio.ByteBuffer: int limit()>();
+
+        $r3 = newarray (byte)[$i0];
+
+        virtualinvoke $r2.<java.nio.ByteBuffer: java.nio.ByteBuffer get(byte[])>($r3);
+
+        return $r3;
+    }
+
+    public static java.lang.String encodeAddressDisplayName(java.lang.String)
+    {
+        java.lang.String $r0;
+        org.apache.james.mime4j.codec.EncoderUtil$Usage $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $z0 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: boolean isAtomPhrase(java.lang.String)>($r0);
+
+        if $z0 == 0 goto label1;
+
+        return $r0;
+
+     label1:
+        $z0 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: boolean hasToBeEncoded(java.lang.String,int)>($r0, 0);
+
+        if $z0 == 0 goto label2;
+
+        $r1 = <org.apache.james.mime4j.codec.EncoderUtil$Usage: org.apache.james.mime4j.codec.EncoderUtil$Usage WORD_ENTITY>;
+
+        $r0 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String encodeEncodedWord(java.lang.String,org.apache.james.mime4j.codec.EncoderUtil$Usage)>($r0, $r1);
+
+        return $r0;
+
+     label2:
+        $r0 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String quote(java.lang.String)>($r0);
+
+        return $r0;
+    }
+
+    public static java.lang.String encodeAddressLocalPart(java.lang.String)
+    {
+        java.lang.String $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $z0 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: boolean isDotAtomText(java.lang.String)>($r0);
+
+        if $z0 == 0 goto label1;
+
+        return $r0;
+
+     label1:
+        $r0 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String quote(java.lang.String)>($r0);
+
+        return $r0;
+    }
+
+    public static java.lang.String encodeB(java.lang.String, java.lang.String, int, java.nio.charset.Charset, byte[])
+    {
+        byte[] $r3;
+        java.nio.charset.Charset $r0;
+        int $i0, $i1, $i2;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r1, $r2, $r5;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $i0 := @parameter2: int;
+
+        $r0 := @parameter3: java.nio.charset.Charset;
+
+        $r3 := @parameter4: byte[];
+
+        $i1 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: int bEncodedLength(byte[])>($r3);
+
+        $i2 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $i1 = $i2 + $i1;
+
+        $i1 = $i1 + 2;
+
+        $i2 = 75 - $i0;
+
+        if $i1 > $i2 goto label1;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String encodeB(byte[])>($r3);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("?=");
+
+        $r1 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+
+     label1:
+        $i1 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        $i1 = $i1 / 2;
+
+        $r5 = virtualinvoke $r2.<java.lang.String: java.lang.String substring(int,int)>(0, $i1);
+
+        $r3 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: byte[] encode(java.lang.String,java.nio.charset.Charset)>($r5, $r0);
+
+        $r5 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String encodeB(java.lang.String,java.lang.String,int,java.nio.charset.Charset,byte[])>($r1, $r5, $i0, $r0, $r3);
+
+        $i0 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        $i0 = $i0 / 2;
+
+        $r2 = virtualinvoke $r2.<java.lang.String: java.lang.String substring(int)>($i0);
+
+        $r3 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: byte[] encode(java.lang.String,java.nio.charset.Charset)>($r2, $r0);
+
+        $r1 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String encodeB(java.lang.String,java.lang.String,int,java.nio.charset.Charset,byte[])>($r1, $r2, 0, $r0, $r3);
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+
+    public static java.lang.String encodeB(byte[])
+    {
+        byte[] $r2, $r3;
+        char $c6;
+        short $s4;
+        byte $b3;
+        int $i0, $i1, $i2, $i5;
+        java.lang.StringBuilder $r0, $r4;
+        java.lang.String $r1;
+
+        $r2 := @parameter0: byte[];
+
+        $r4 = new java.lang.StringBuilder;
+
+        $r0 = $r4;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $i0 = lengthof $r2;
+
+        $i1 = 0;
+
+     label1:
+        $i2 = -2;
+
+        $i2 = $i0 + $i2;
+
+        if $i1 >= $i2 goto label2;
+
+        $b3 = $r2[$i1];
+
+        $s4 = (short) $b3;
+
+        $s4 = $s4 & 255;
+
+        $i2 = (int) $s4;
+
+        $i2 = $i2 << 16;
+
+        $i5 = $i1 + 1;
+
+        $b3 = $r2[$i5];
+
+        $s4 = (short) $b3;
+
+        $s4 = $s4 & 255;
+
+        $i5 = (int) $s4;
+
+        $i5 = $i5 << 8;
+
+        $i2 = $i2 | $i5;
+
+        $i5 = $i1 + 2;
+
+        $b3 = $r2[$i5];
+
+        $s4 = (short) $b3;
+
+        $s4 = $s4 & 255;
+
+        $i5 = (int) $s4;
+
+        $i2 = $i2 | $i5;
+
+        $r3 = <org.apache.james.mime4j.codec.EncoderUtil: byte[] BASE64_TABLE>;
+
+        $i5 = $i2 >> 18;
+
+        $i5 = $i5 & 63;
+
+        $b3 = $r3[$i5];
+
+        $c6 = (char) $b3;
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c6);
+
+        $r3 = <org.apache.james.mime4j.codec.EncoderUtil: byte[] BASE64_TABLE>;
+
+        $i5 = $i2 >> 12;
+
+        $i5 = $i5 & 63;
+
+        $b3 = $r3[$i5];
+
+        $c6 = (char) $b3;
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c6);
+
+        $r3 = <org.apache.james.mime4j.codec.EncoderUtil: byte[] BASE64_TABLE>;
+
+        $i5 = $i2 >> 6;
+
+        $i5 = $i5 & 63;
+
+        $b3 = $r3[$i5];
+
+        $c6 = (char) $b3;
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c6);
+
+        $r3 = <org.apache.james.mime4j.codec.EncoderUtil: byte[] BASE64_TABLE>;
+
+        $i2 = $i2 & 63;
+
+        $b3 = $r3[$i2];
+
+        $c6 = (char) $b3;
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c6);
+
+        $i1 = $i1 + 3;
+
+        goto label1;
+
+     label2:
+        if $i1 != $i2 goto label3;
+
+        $b3 = $r2[$i1];
+
+        $s4 = (short) $b3;
+
+        $s4 = $s4 & 255;
+
+        $i0 = (int) $s4;
+
+        $i0 = $i0 << 16;
+
+        $i1 = $i1 + 1;
+
+        $b3 = $r2[$i1];
+
+        $s4 = (short) $b3;
+
+        $s4 = $s4 & 255;
+
+        $i1 = (int) $s4;
+
+        $i1 = $i1 << 8;
+
+        $i1 = $i1 | $i0;
+
+        $r2 = <org.apache.james.mime4j.codec.EncoderUtil: byte[] BASE64_TABLE>;
+
+        $i0 = $i1 >> 18;
+
+        $i0 = $i0 & 63;
+
+        $b3 = $r2[$i0];
+
+        $c6 = (char) $b3;
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c6);
+
+        $r2 = <org.apache.james.mime4j.codec.EncoderUtil: byte[] BASE64_TABLE>;
+
+        $i0 = $i1 >> 12;
+
+        $i0 = $i0 & 63;
+
+        $b3 = $r2[$i0];
+
+        $c6 = (char) $b3;
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c6);
+
+        $r2 = <org.apache.james.mime4j.codec.EncoderUtil: byte[] BASE64_TABLE>;
+
+        $i1 = $i1 >> 6;
+
+        $i1 = $i1 & 63;
+
+        $b3 = $r2[$i1];
+
+        $c6 = (char) $b3;
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c6);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(61);
+
+        goto label4;
+
+     label3:
+        $i2 = -1;
+
+        $i0 = $i0 + $i2;
+
+        if $i1 != $i0 goto label4;
+
+        $b3 = $r2[$i1];
+
+        $s4 = (short) $b3;
+
+        $s4 = $s4 & 255;
+
+        $i1 = (int) $s4;
+
+        $i1 = $i1 << 16;
+
+        $r2 = <org.apache.james.mime4j.codec.EncoderUtil: byte[] BASE64_TABLE>;
+
+        $i0 = $i1 >> 18;
+
+        $i0 = $i0 & 63;
+
+        $b3 = $r2[$i0];
+
+        $c6 = (char) $b3;
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c6);
+
+        $r2 = <org.apache.james.mime4j.codec.EncoderUtil: byte[] BASE64_TABLE>;
+
+        $i1 = $i1 >> 12;
+
+        $i1 = $i1 & 63;
+
+        $b3 = $r2[$i1];
+
+        $c6 = (char) $b3;
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c6);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(61);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(61);
+
+     label4:
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+
+    public static java.lang.String encodeEncodedWord(java.lang.String, org.apache.james.mime4j.codec.EncoderUtil$Usage)
+    {
+        org.apache.james.mime4j.codec.EncoderUtil$Usage $r0;
+        java.lang.String $r1;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0 := @parameter1: org.apache.james.mime4j.codec.EncoderUtil$Usage;
+
+        $r1 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String encodeEncodedWord(java.lang.String,org.apache.james.mime4j.codec.EncoderUtil$Usage,int,java.nio.charset.Charset,org.apache.james.mime4j.codec.EncoderUtil$Encoding)>($r1, $r0, 0, null, null);
+
+        return $r1;
+    }
+
+    public static java.lang.String encodeEncodedWord(java.lang.String, org.apache.james.mime4j.codec.EncoderUtil$Usage, int)
+    {
+        int $i0;
+        org.apache.james.mime4j.codec.EncoderUtil$Usage $r0;
+        java.lang.String $r1;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0 := @parameter1: org.apache.james.mime4j.codec.EncoderUtil$Usage;
+
+        $i0 := @parameter2: int;
+
+        $r1 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String encodeEncodedWord(java.lang.String,org.apache.james.mime4j.codec.EncoderUtil$Usage,int,java.nio.charset.Charset,org.apache.james.mime4j.codec.EncoderUtil$Encoding)>($r1, $r0, $i0, null, null);
+
+        return $r1;
+    }
+
+    public static java.lang.String encodeEncodedWord(java.lang.String, org.apache.james.mime4j.codec.EncoderUtil$Usage, int, java.nio.charset.Charset, org.apache.james.mime4j.codec.EncoderUtil$Encoding)
+    {
+        byte[] $r6;
+        java.lang.IllegalArgumentException $r9;
+        java.nio.charset.Charset $r0, $r3;
+        org.apache.james.mime4j.codec.EncoderUtil$Encoding $r4, $r7;
+        int $i0;
+        java.lang.StringBuilder $r8;
+        java.lang.String $r1, $r5;
+        org.apache.james.mime4j.codec.EncoderUtil$Usage $r2;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: org.apache.james.mime4j.codec.EncoderUtil$Usage;
+
+        $i0 := @parameter2: int;
+
+        $r3 := @parameter3: java.nio.charset.Charset;
+
+        $r4 := @parameter4: org.apache.james.mime4j.codec.EncoderUtil$Encoding;
+
+        if $r1 == null goto label6;
+
+        if $i0 < 0 goto label5;
+
+        if $i0 > 50 goto label5;
+
+        if $r3 != null goto label1;
+
+        $r3 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.nio.charset.Charset determineCharset(java.lang.String)>($r1);
+
+     label1:
+        $r0 = $r3;
+
+        $r5 = virtualinvoke $r3.<java.nio.charset.Charset: java.lang.String name()>();
+
+        $r5 = staticinvoke <org.apache.james.mime4j.util.CharsetUtil: java.lang.String toMimeCharset(java.lang.String)>($r5);
+
+        if $r5 == null goto label4;
+
+        $r6 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: byte[] encode(java.lang.String,java.nio.charset.Charset)>($r1, $r3);
+
+        if $r4 != null goto label2;
+
+        $r4 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: org.apache.james.mime4j.codec.EncoderUtil$Encoding determineEncoding(byte[],org.apache.james.mime4j.codec.EncoderUtil$Usage)>($r6, $r2);
+
+     label2:
+        $r7 = <org.apache.james.mime4j.codec.EncoderUtil$Encoding: org.apache.james.mime4j.codec.EncoderUtil$Encoding B>;
+
+        if $r4 != $r7 goto label3;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("=?");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("?B?");
+
+        $r5 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r1 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String encodeB(java.lang.String,java.lang.String,int,java.nio.charset.Charset,byte[])>($r5, $r1, $i0, $r0, $r6);
+
+        return $r1;
+
+     label3:
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("=?");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("?Q?");
+
+        $r5 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r1 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String encodeQ(java.lang.String,java.lang.String,org.apache.james.mime4j.codec.EncoderUtil$Usage,int,java.nio.charset.Charset,byte[])>($r5, $r1, $r2, $i0, $r0, $r6);
+
+        return $r1;
+
+     label4:
+        $r9 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r9.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Unsupported charset");
+
+        throw $r9;
+
+     label5:
+        $r9 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r9.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r9;
+
+     label6:
+        $r9 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r9.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r9;
+    }
+
+    public static java.lang.String encodeHeaderParameter(java.lang.String, java.lang.String)
+    {
+        java.util.Locale $r2;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r0, $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $r2 = <java.util.Locale: java.util.Locale US>;
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String toLowerCase(java.util.Locale)>($r2);
+
+        $z0 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: boolean isToken(java.lang.String)>($r0);
+
+        if $z0 == 0 goto label1;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("=");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r0);
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+
+     label1:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("=");
+
+        $r1 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String quote(java.lang.String)>($r0);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+
+    public static java.lang.String encodeIfNecessary(java.lang.String, org.apache.james.mime4j.codec.EncoderUtil$Usage, int)
+    {
+        int $i0;
+        org.apache.james.mime4j.codec.EncoderUtil$Usage $r0;
+        java.lang.String $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0 := @parameter1: org.apache.james.mime4j.codec.EncoderUtil$Usage;
+
+        $i0 := @parameter2: int;
+
+        $z0 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: boolean hasToBeEncoded(java.lang.String,int)>($r1, $i0);
+
+        if $z0 == 0 goto label1;
+
+        $r1 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String encodeEncodedWord(java.lang.String,org.apache.james.mime4j.codec.EncoderUtil$Usage,int)>($r1, $r0, $i0);
+
+     label1:
+        return $r1;
+    }
+
+    public static java.lang.String encodeQ(java.lang.String, java.lang.String, org.apache.james.mime4j.codec.EncoderUtil$Usage, int, java.nio.charset.Charset, byte[])
+    {
+        byte[] $r4;
+        java.nio.charset.Charset $r0;
+        int $i0, $i1, $i2;
+        java.lang.StringBuilder $r5;
+        java.lang.String $r1, $r2, $r6;
+        org.apache.james.mime4j.codec.EncoderUtil$Usage $r3;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: org.apache.james.mime4j.codec.EncoderUtil$Usage;
+
+        $i0 := @parameter3: int;
+
+        $r0 := @parameter4: java.nio.charset.Charset;
+
+        $r4 := @parameter5: byte[];
+
+        $i1 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: int qEncodedLength(byte[],org.apache.james.mime4j.codec.EncoderUtil$Usage)>($r4, $r3);
+
+        $i2 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $i1 = $i2 + $i1;
+
+        $i1 = $i1 + 2;
+
+        $i2 = 75 - $i0;
+
+        if $i1 > $i2 goto label1;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String encodeQ(byte[],org.apache.james.mime4j.codec.EncoderUtil$Usage)>($r4, $r3);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("?=");
+
+        $r1 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+
+     label1:
+        $i1 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        $i1 = $i1 / 2;
+
+        $r6 = virtualinvoke $r2.<java.lang.String: java.lang.String substring(int,int)>(0, $i1);
+
+        $r4 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: byte[] encode(java.lang.String,java.nio.charset.Charset)>($r6, $r0);
+
+        $r6 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String encodeQ(java.lang.String,java.lang.String,org.apache.james.mime4j.codec.EncoderUtil$Usage,int,java.nio.charset.Charset,byte[])>($r1, $r6, $r3, $i0, $r0, $r4);
+
+        $i0 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        $i0 = $i0 / 2;
+
+        $r2 = virtualinvoke $r2.<java.lang.String: java.lang.String substring(int)>($i0);
+
+        $r4 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: byte[] encode(java.lang.String,java.nio.charset.Charset)>($r2, $r0);
+
+        $r1 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: java.lang.String encodeQ(java.lang.String,java.lang.String,org.apache.james.mime4j.codec.EncoderUtil$Usage,int,java.nio.charset.Charset,byte[])>($r1, $r2, $r3, 0, $r0, $r4);
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+
+    public static java.lang.String encodeQ(byte[], org.apache.james.mime4j.codec.EncoderUtil$Usage)
+    {
+        byte[] $r0;
+        char $c5;
+        short $s3;
+        byte $b2;
+        int $i0, $i1, $i4;
+        java.lang.StringBuilder $r4, $r6;
+        org.apache.james.mime4j.codec.EncoderUtil$Usage $r1, $r2;
+        java.util.BitSet $r3;
+        java.lang.String $r5;
+        boolean $z0;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 := @parameter1: org.apache.james.mime4j.codec.EncoderUtil$Usage;
+
+        $r2 = <org.apache.james.mime4j.codec.EncoderUtil$Usage: org.apache.james.mime4j.codec.EncoderUtil$Usage TEXT_TOKEN>;
+
+        if $r1 != $r2 goto label1;
+
+        $r3 = <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet Q_REGULAR_CHARS>;
+
+        goto label2;
+
+     label1:
+        $r3 = <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet Q_RESTRICTED_CHARS>;
+
+     label2:
+        $r6 = new java.lang.StringBuilder;
+
+        $r4 = $r6;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $i0 = lengthof $r0;
+
+        $i1 = 0;
+
+     label3:
+        if $i1 >= $i0 goto label7;
+
+        $b2 = $r0[$i1];
+
+        $s3 = (short) $b2;
+
+        $s3 = $s3 & 255;
+
+        $i4 = (int) $s3;
+
+        if $i4 != 32 goto label4;
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(95);
+
+        goto label6;
+
+     label4:
+        $i4 = (int) $s3;
+
+        $z0 = virtualinvoke $r3.<java.util.BitSet: boolean get(int)>($i4);
+
+        if $z0 != 0 goto label5;
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(61);
+
+        $i4 = (int) $s3;
+
+        $i4 = $i4 >>> 4;
+
+        $c5 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: char hexDigit(int)>($i4);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c5);
+
+        $s3 = $s3 & 15;
+
+        $i4 = (int) $s3;
+
+        $c5 = staticinvoke <org.apache.james.mime4j.codec.EncoderUtil: char hexDigit(int)>($i4);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c5);
+
+        goto label6;
+
+     label5:
+        $c5 = (char) $s3;
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c5);
+
+     label6:
+        $i1 = $i1 + 1;
+
+        goto label3;
+
+     label7:
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r5;
+    }
+
+    public static boolean hasToBeEncoded(java.lang.String, int)
+    {
+        int $i0, $i1, $i2;
+        char $c3;
+        java.lang.String $r0;
+        java.lang.IllegalArgumentException $r1;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        if $r0 == null goto label08;
+
+        if $i0 < 0 goto label07;
+
+        if $i0 > 50 goto label07;
+
+        $i1 = 0;
+
+     label01:
+        $i2 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if $i1 >= $i2 goto label06;
+
+        $c3 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i1);
+
+        $i2 = (int) $c3;
+
+        if $i2 == 9 goto label04;
+
+        $i2 = (int) $c3;
+
+        if $i2 != 32 goto label02;
+
+        goto label04;
+
+     label02:
+        $i0 = $i0 + 1;
+
+        if $i0 <= 77 goto label03;
+
+        return 1;
+
+     label03:
+        $i2 = (int) $c3;
+
+        if $i2 < 32 goto label10;
+
+        $i2 = (int) $c3;
+
+        if $i2 < 127 goto label05;
+
+        return 1;
+
+     label04:
+        $i0 = 0;
+
+     label05:
+        $i1 = $i1 + 1;
+
+        goto label01;
+
+     label06:
+        return 0;
+
+     label07:
+        $r1 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r1.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r1;
+
+     label08:
+        $r1 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r1.<java.lang.IllegalArgumentException: void <init>()>();
+
+        goto label09;
+
+     label09:
+        throw $r1;
+
+     label10:
+        return 1;
+    }
+
+    public static char hexDigit(int)
+    {
+        int $i0;
+        char $c1;
+
+        $i0 := @parameter0: int;
+
+        if $i0 >= 10 goto label1;
+
+        $i0 = $i0 + 48;
+
+        goto label2;
+
+     label1:
+        $i0 = $i0 - 10;
+
+        $i0 = $i0 + 65;
+
+     label2:
+        $c1 = (char) $i0;
+
+        return $c1;
+    }
+
+    public static java.util.BitSet initChars(java.lang.String)
+    {
+        int $i0, $i1, $i2;
+        java.lang.String $r0;
+        java.util.BitSet $r1, $r2;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r2 = new java.util.BitSet;
+
+        $r1 = $r2;
+
+        specialinvoke $r2.<java.util.BitSet: void <init>(int)>(128);
+
+        $i1 = 33;
+
+     label1:
+        if $i1 >= 127 goto label3;
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int indexOf(int)>($i1);
+
+        $i2 = -1;
+
+        if $i0 != $i2 goto label2;
+
+        virtualinvoke $r1.<java.util.BitSet: void set(int)>($i1);
+
+     label2:
+        $i0 = $i1 + 1;
+
+        $i1 = (char) $i0;
+
+        goto label1;
+
+     label3:
+        return $r1;
+    }
+
+    public static boolean isAtomPhrase(java.lang.String)
+    {
+        char $c2;
+        int $i0, $i1, $i3;
+        java.lang.String $r0;
+        java.util.BitSet $r1;
+        boolean $z0, $z1;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        $i1 = 0;
+
+        $z0 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label4;
+
+        $c2 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i1);
+
+        $r1 = <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet ATEXT_CHARS>;
+
+        $i3 = (int) $c2;
+
+        $z1 = virtualinvoke $r1.<java.util.BitSet: boolean get(int)>($i3);
+
+        if $z1 == 0 goto label2;
+
+        $z0 = 1;
+
+        goto label3;
+
+     label2:
+        $z1 = staticinvoke <org.apache.james.mime4j.util.CharsetUtil: boolean isWhitespace(char)>($c2);
+
+        if $z1 != 0 goto label3;
+
+        return 0;
+
+     label3:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label4:
+        return $z0;
+    }
+
+    public static boolean isDotAtomText(java.lang.String)
+    {
+        char $c3;
+        int $i0, $i1, $i2, $i4;
+        java.lang.String $r0;
+        java.util.BitSet $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if $i0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $i1 = 0;
+
+        $i2 = 46;
+
+     label2:
+        if $i1 >= $i0 goto label5;
+
+        $c3 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i1);
+
+        $i4 = (int) $c3;
+
+        if $i4 != 46 goto label3;
+
+        if $i2 == 46 goto label6;
+
+        $i2 = -1;
+
+        $i2 = $i0 + $i2;
+
+        if $i1 != $i2 goto label4;
+
+        return 0;
+
+     label3:
+        $r1 = <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet ATEXT_CHARS>;
+
+        $i2 = (int) $c3;
+
+        $z0 = virtualinvoke $r1.<java.util.BitSet: boolean get(int)>($i2);
+
+        if $z0 != 0 goto label4;
+
+        return 0;
+
+     label4:
+        $i1 = $i1 + 1;
+
+        $i2 = $c3;
+
+        goto label2;
+
+     label5:
+        return 1;
+
+     label6:
+        return 0;
+    }
+
+    public static boolean isToken(java.lang.String)
+    {
+        int $i0, $i1, $i3;
+        char $c2;
+        java.util.BitSet $r0;
+        java.lang.String $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $i1 = 0;
+
+     label2:
+        if $i1 >= $i0 goto label4;
+
+        $c2 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i1);
+
+        $r0 = <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet TOKEN_CHARS>;
+
+        $i3 = (int) $c2;
+
+        $z0 = virtualinvoke $r0.<java.util.BitSet: boolean get(int)>($i3);
+
+        if $z0 != 0 goto label3;
+
+        return 0;
+
+     label3:
+        $i1 = $i1 + 1;
+
+        goto label2;
+
+     label4:
+        return 1;
+    }
+
+    public static int qEncodedLength(byte[], org.apache.james.mime4j.codec.EncoderUtil$Usage)
+    {
+        byte[] $r0;
+        short $s4;
+        byte $b3;
+        int $i0, $i1, $i2;
+        org.apache.james.mime4j.codec.EncoderUtil$Usage $r1, $r2;
+        java.util.BitSet $r3;
+        boolean $z0;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 := @parameter1: org.apache.james.mime4j.codec.EncoderUtil$Usage;
+
+        $r2 = <org.apache.james.mime4j.codec.EncoderUtil$Usage: org.apache.james.mime4j.codec.EncoderUtil$Usage TEXT_TOKEN>;
+
+        if $r1 != $r2 goto label1;
+
+        $r3 = <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet Q_REGULAR_CHARS>;
+
+        goto label2;
+
+     label1:
+        $r3 = <org.apache.james.mime4j.codec.EncoderUtil: java.util.BitSet Q_RESTRICTED_CHARS>;
+
+     label2:
+        $i0 = 0;
+
+        $i1 = 0;
+
+     label3:
+        $i2 = lengthof $r0;
+
+        if $i0 >= $i2 goto label7;
+
+        $b3 = $r0[$i0];
+
+        $s4 = (short) $b3;
+
+        $s4 = $s4 & 255;
+
+        $i2 = (int) $s4;
+
+        if $i2 != 32 goto label5;
+
+     label4:
+        $i1 = $i1 + 1;
+
+        goto label6;
+
+     label5:
+        $i2 = (int) $s4;
+
+        $z0 = virtualinvoke $r3.<java.util.BitSet: boolean get(int)>($i2);
+
+        if $z0 != 0 goto label4;
+
+        $i1 = $i1 + 3;
+
+     label6:
+        $i0 = $i0 + 1;
+
+        goto label3;
+
+     label7:
+        return $i1;
+    }
+
+    public static java.lang.String quote(java.lang.String)
+    {
+        java.lang.StringBuilder $r1;
+        java.lang.String $r0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String replaceAll(java.lang.String,java.lang.String)>("[\\\\\"]", "\\\\$0");
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\"");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\"");
+
+        $r0 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r0;
+    }
+}

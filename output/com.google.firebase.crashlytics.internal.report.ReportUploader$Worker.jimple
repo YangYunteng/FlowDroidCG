@@ -1,0 +1,307 @@
+public class com.google.firebase.crashlytics.internal.report.ReportUploader$Worker extends com.google.firebase.crashlytics.internal.common.BackgroundPriorityRunnable
+{
+    public final boolean dataCollectionToken;
+    public final float delay;
+    public final java.util.List reports;
+    public final com.google.firebase.crashlytics.internal.report.ReportUploader this$0;
+
+    public void <init>(com.google.firebase.crashlytics.internal.report.ReportUploader, java.util.List, boolean, float)
+    {
+        java.util.List $r2;
+        float $f0;
+        com.google.firebase.crashlytics.internal.report.ReportUploader$Worker r0;
+        com.google.firebase.crashlytics.internal.report.ReportUploader $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.report.ReportUploader$Worker;
+
+        $r1 := @parameter0: com.google.firebase.crashlytics.internal.report.ReportUploader;
+
+        $r2 := @parameter1: java.util.List;
+
+        $z0 := @parameter2: boolean;
+
+        $f0 := @parameter3: float;
+
+        r0.<com.google.firebase.crashlytics.internal.report.ReportUploader$Worker: com.google.firebase.crashlytics.internal.report.ReportUploader this$0> = $r1;
+
+        specialinvoke r0.<com.google.firebase.crashlytics.internal.common.BackgroundPriorityRunnable: void <init>()>();
+
+        r0.<com.google.firebase.crashlytics.internal.report.ReportUploader$Worker: java.util.List reports> = $r2;
+
+        r0.<com.google.firebase.crashlytics.internal.report.ReportUploader$Worker: boolean dataCollectionToken> = $z0;
+
+        r0.<com.google.firebase.crashlytics.internal.report.ReportUploader$Worker: float delay> = $f0;
+
+        return;
+    }
+
+    private void attemptUploadWithRetry(java.util.List, boolean)
+    {
+        long $l1;
+        java.util.ArrayList $r10, $r17;
+        short $s5;
+        com.google.firebase.crashlytics.internal.report.model.Report $r13;
+        byte $b0;
+        java.lang.Thread $r7;
+        int $i2, $i3, $i4, $i6;
+        java.lang.String $r6;
+        boolean $z0, $z1;
+        com.google.firebase.crashlytics.internal.report.ReportUploader $r8;
+        com.google.firebase.crashlytics.internal.report.ReportUploader$HandlingExceptionCheck $r9;
+        java.util.Iterator $r11;
+        com.google.firebase.crashlytics.internal.Logger $r4;
+        java.util.List $r3;
+        java.lang.InterruptedException $r1, $r2;
+        float $f0;
+        java.lang.StringBuilder $r5, $r16;
+        java.lang.Object $r12;
+        short[] $r14, $r15;
+        com.google.firebase.crashlytics.internal.report.ReportUploader$Worker r0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.report.ReportUploader$Worker;
+
+        $r3 := @parameter0: java.util.List;
+
+        $z0 := @parameter1: boolean;
+
+        $r4 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r16 = new java.lang.StringBuilder;
+
+        $r5 = $r16;
+
+        specialinvoke $r16.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Starting report processing in ");
+
+        $f0 = r0.<com.google.firebase.crashlytics.internal.report.ReportUploader$Worker: float delay>;
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(float)>($f0);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" second(s)...");
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r4.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>($r6);
+
+        $f0 = r0.<com.google.firebase.crashlytics.internal.report.ReportUploader$Worker: float delay>;
+
+        $b0 = $f0 cmpl 0.0F;
+
+        $i2 = (int) $b0;
+
+        if $i2 <= 0 goto label04;
+
+        $f0 = $f0 * 1000.0F;
+
+        $l1 = (long) $f0;
+
+     label01:
+        staticinvoke <java.lang.Thread: void sleep(long)>($l1);
+
+     label02:
+        goto label04;
+
+     label03:
+        $r7 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $r7.<java.lang.Thread: void interrupt()>();
+
+        return;
+
+     label04:
+        $r8 = r0.<com.google.firebase.crashlytics.internal.report.ReportUploader$Worker: com.google.firebase.crashlytics.internal.report.ReportUploader this$0>;
+
+        $r9 = staticinvoke <com.google.firebase.crashlytics.internal.report.ReportUploader: com.google.firebase.crashlytics.internal.report.ReportUploader$HandlingExceptionCheck access$100(com.google.firebase.crashlytics.internal.report.ReportUploader)>($r8);
+
+        $z1 = interfaceinvoke $r9.<com.google.firebase.crashlytics.internal.report.ReportUploader$HandlingExceptionCheck: boolean isHandlingException()>();
+
+        if $z1 == 0 goto label05;
+
+        return;
+
+     label05:
+        $i2 = 0;
+
+     label06:
+        $i3 = interfaceinvoke $r3.<java.util.List: int size()>();
+
+        if $i3 <= 0 goto label14;
+
+        $r8 = r0.<com.google.firebase.crashlytics.internal.report.ReportUploader$Worker: com.google.firebase.crashlytics.internal.report.ReportUploader this$0>;
+
+        $r9 = staticinvoke <com.google.firebase.crashlytics.internal.report.ReportUploader: com.google.firebase.crashlytics.internal.report.ReportUploader$HandlingExceptionCheck access$100(com.google.firebase.crashlytics.internal.report.ReportUploader)>($r8);
+
+        $z1 = interfaceinvoke $r9.<com.google.firebase.crashlytics.internal.report.ReportUploader$HandlingExceptionCheck: boolean isHandlingException()>();
+
+        if $z1 == 0 goto label07;
+
+        return;
+
+     label07:
+        $r4 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r16 = new java.lang.StringBuilder;
+
+        $r5 = $r16;
+
+        specialinvoke $r16.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Attempting to send ");
+
+        $i3 = interfaceinvoke $r3.<java.util.List: int size()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" report(s)");
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r4.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>($r6);
+
+        $r17 = new java.util.ArrayList;
+
+        $r10 = $r17;
+
+        specialinvoke $r17.<java.util.ArrayList: void <init>()>();
+
+        $r11 = interfaceinvoke $r3.<java.util.List: java.util.Iterator iterator()>();
+
+     label08:
+        $z1 = interfaceinvoke $r11.<java.util.Iterator: boolean hasNext()>();
+
+        if $z1 == 0 goto label09;
+
+        $r12 = interfaceinvoke $r11.<java.util.Iterator: java.lang.Object next()>();
+
+        $r13 = (com.google.firebase.crashlytics.internal.report.model.Report) $r12;
+
+        $r8 = r0.<com.google.firebase.crashlytics.internal.report.ReportUploader$Worker: com.google.firebase.crashlytics.internal.report.ReportUploader this$0>;
+
+        $z1 = virtualinvoke $r8.<com.google.firebase.crashlytics.internal.report.ReportUploader: boolean uploadReport(com.google.firebase.crashlytics.internal.report.model.Report,boolean)>($r13, $z0);
+
+        if $z1 != 0 goto label08;
+
+        virtualinvoke $r10.<java.util.ArrayList: boolean add(java.lang.Object)>($r13);
+
+        goto label08;
+
+     label09:
+        $i3 = interfaceinvoke $r10.<java.util.List: int size()>();
+
+        if $i3 <= 0 goto label13;
+
+        $r14 = staticinvoke <com.google.firebase.crashlytics.internal.report.ReportUploader: short[] access$200()>();
+
+        $i3 = $i2 + 1;
+
+        $r15 = staticinvoke <com.google.firebase.crashlytics.internal.report.ReportUploader: short[] access$200()>();
+
+        $i4 = lengthof $r15;
+
+        $i6 = -1;
+
+        $i4 = $i4 + $i6;
+
+        $i2 = staticinvoke <java.lang.Math: int min(int,int)>($i2, $i4);
+
+        $s5 = $r14[$i2];
+
+        $l1 = (long) $s5;
+
+        $r4 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r16 = new java.lang.StringBuilder;
+
+        $r5 = $r16;
+
+        specialinvoke $r16.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Report submission: scheduling delayed retry in ");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l1);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" seconds");
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r4.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>($r6);
+
+        $l1 = $l1 * 1000L;
+
+     label10:
+        staticinvoke <java.lang.Thread: void sleep(long)>($l1);
+
+     label11:
+        $i2 = $i3;
+
+        goto label13;
+
+     label12:
+        $r7 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $r7.<java.lang.Thread: void interrupt()>();
+
+        return;
+
+     label13:
+        $r3 = $r10;
+
+        goto label06;
+
+     label14:
+        return;
+
+     label15:
+        $r1 := @caughtexception;
+
+        goto label03;
+
+     label16:
+        $r2 := @caughtexception;
+
+        goto label12;
+
+        catch java.lang.InterruptedException from label01 to label02 with label15;
+        catch java.lang.InterruptedException from label10 to label11 with label16;
+    }
+
+    public void onRun()
+    {
+        com.google.firebase.crashlytics.internal.Logger $r1;
+        java.util.List $r2;
+        com.google.firebase.crashlytics.internal.report.ReportUploader$Worker r0;
+        java.lang.Exception $r3;
+        boolean $z0;
+        com.google.firebase.crashlytics.internal.report.ReportUploader $r4;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.report.ReportUploader$Worker;
+
+     label1:
+        $r2 = r0.<com.google.firebase.crashlytics.internal.report.ReportUploader$Worker: java.util.List reports>;
+
+        $z0 = r0.<com.google.firebase.crashlytics.internal.report.ReportUploader$Worker: boolean dataCollectionToken>;
+
+        specialinvoke r0.<com.google.firebase.crashlytics.internal.report.ReportUploader$Worker: void attemptUploadWithRetry(java.util.List,boolean)>($r2, $z0);
+
+     label2:
+        goto label4;
+
+     label3:
+        $r3 := @caughtexception;
+
+        $r1 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        virtualinvoke $r1.<com.google.firebase.crashlytics.internal.Logger: void e(java.lang.String,java.lang.Throwable)>("An unexpected error occurred while attempting to upload crash reports.", $r3);
+
+     label4:
+        $r4 = r0.<com.google.firebase.crashlytics.internal.report.ReportUploader$Worker: com.google.firebase.crashlytics.internal.report.ReportUploader this$0>;
+
+        staticinvoke <com.google.firebase.crashlytics.internal.report.ReportUploader: java.lang.Thread access$002(com.google.firebase.crashlytics.internal.report.ReportUploader,java.lang.Thread)>($r4, null);
+
+        return;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+}

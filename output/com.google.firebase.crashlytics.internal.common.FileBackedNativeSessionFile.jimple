@@ -1,0 +1,285 @@
+public class com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile extends java.lang.Object implements com.google.firebase.crashlytics.internal.common.NativeSessionFile
+{
+    public final java.lang.String dataTransportFilename;
+    public final java.io.File file;
+    public final java.lang.String reportsEndpointFilename;
+
+    public void <init>(java.lang.String, java.lang.String, java.io.File)
+    {
+        com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile r0;
+        java.lang.String $r1, $r2;
+        java.io.File $r3;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: java.io.File;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile: java.lang.String dataTransportFilename> = $r1;
+
+        r0.<com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile: java.lang.String reportsEndpointFilename> = $r2;
+
+        r0.<com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile: java.io.File file> = $r3;
+
+        return;
+    }
+
+    private byte[] asGzippedBytes()
+    {
+        java.lang.Throwable $r6, $r7, $r8, $r12, $r13, $r14;
+        byte[] $r10;
+        java.io.ByteArrayOutputStream $r1;
+        int $i0;
+        java.io.IOException $r3, $r4, $r5, $r9;
+        com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile r0;
+        java.util.zip.GZIPOutputStream $r2;
+        java.io.InputStream $r11;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile;
+
+        $r10 = newarray (byte)[8192];
+
+     label01:
+        $r11 = virtualinvoke r0.<com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile: java.io.InputStream getStream()>();
+
+     label02:
+        $r1 = new java.io.ByteArrayOutputStream;
+
+        specialinvoke $r1.<java.io.ByteArrayOutputStream: void <init>()>();
+
+     label03:
+        $r2 = new java.util.zip.GZIPOutputStream;
+
+        specialinvoke $r2.<java.util.zip.GZIPOutputStream: void <init>(java.io.OutputStream)>($r1);
+
+     label04:
+        if $r11 != null goto label10;
+
+     label05:
+        virtualinvoke $r2.<java.util.zip.GZIPOutputStream: void close()>();
+
+     label06:
+        virtualinvoke $r1.<java.io.ByteArrayOutputStream: void close()>();
+
+     label07:
+        if $r11 == null goto label36;
+
+     label08:
+        virtualinvoke $r11.<java.io.InputStream: void close()>();
+
+     label09:
+        return null;
+
+     label10:
+        $i0 = virtualinvoke $r11.<java.io.InputStream: int read(byte[])>($r10);
+
+     label11:
+        if $i0 <= 0 goto label14;
+
+     label12:
+        virtualinvoke $r2.<java.util.zip.GZIPOutputStream: void write(byte[],int,int)>($r10, 0, $i0);
+
+     label13:
+        goto label10;
+
+     label14:
+        virtualinvoke $r2.<java.util.zip.GZIPOutputStream: void finish()>();
+
+        $r10 = virtualinvoke $r1.<java.io.ByteArrayOutputStream: byte[] toByteArray()>();
+
+     label15:
+        virtualinvoke $r2.<java.util.zip.GZIPOutputStream: void close()>();
+
+     label16:
+        virtualinvoke $r1.<java.io.ByteArrayOutputStream: void close()>();
+
+     label17:
+        if $r11 == null goto label37;
+
+     label18:
+        virtualinvoke $r11.<java.io.InputStream: void close()>();
+
+     label19:
+        return $r10;
+
+     label20:
+        $r12 := @caughtexception;
+
+     label21:
+        virtualinvoke $r2.<java.util.zip.GZIPOutputStream: void close()>();
+
+     label22:
+        throw $r12;
+
+     label23:
+        $r13 := @caughtexception;
+
+     label24:
+        virtualinvoke $r1.<java.io.ByteArrayOutputStream: void close()>();
+
+     label25:
+        throw $r13;
+
+     label26:
+        $r14 := @caughtexception;
+
+        if $r11 == null goto label28;
+
+     label27:
+        virtualinvoke $r11.<java.io.InputStream: void close()>();
+
+     label28:
+        throw $r14;
+
+     label29:
+        $r3 := @caughtexception;
+
+        return null;
+
+     label30:
+        $r4 := @caughtexception;
+
+        return null;
+
+     label31:
+        $r5 := @caughtexception;
+
+        return null;
+
+     label32:
+        $r6 := @caughtexception;
+
+        goto label22;
+
+     label33:
+        $r7 := @caughtexception;
+
+        goto label25;
+
+     label34:
+        $r8 := @caughtexception;
+
+        goto label28;
+
+     label35:
+        $r9 := @caughtexception;
+
+     label36:
+        return null;
+
+     label37:
+        return $r10;
+
+        catch java.io.IOException from label01 to label02 with label29;
+        catch java.lang.Throwable from label02 to label03 with label26;
+        catch java.lang.Throwable from label03 to label04 with label23;
+        catch java.lang.Throwable from label05 to label06 with label23;
+        catch java.lang.Throwable from label06 to label07 with label26;
+        catch java.io.IOException from label08 to label09 with label30;
+        catch java.lang.Throwable from label10 to label11 with label20;
+        catch java.lang.Throwable from label12 to label13 with label20;
+        catch java.lang.Throwable from label14 to label15 with label20;
+        catch java.lang.Throwable from label15 to label16 with label23;
+        catch java.lang.Throwable from label16 to label17 with label26;
+        catch java.io.IOException from label18 to label19 with label31;
+        catch java.lang.Throwable from label21 to label22 with label32;
+        catch java.lang.Throwable from label22 to label23 with label23;
+        catch java.lang.Throwable from label24 to label25 with label33;
+        catch java.lang.Throwable from label25 to label26 with label26;
+        catch java.lang.Throwable from label27 to label28 with label34;
+        catch java.io.IOException from label28 to label29 with label35;
+    }
+
+    public com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload$File asFilePayload()
+    {
+        byte[] $r1;
+        com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload$File $r4;
+        com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile r0;
+        com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload$File$Builder $r2;
+        java.lang.String $r3;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile;
+
+        $r1 = specialinvoke r0.<com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile: byte[] asGzippedBytes()>();
+
+        if $r1 == null goto label1;
+
+        $r2 = staticinvoke <com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload$File: com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload$File$Builder builder()>();
+
+        $r2 = virtualinvoke $r2.<com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload$File$Builder: com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload$File$Builder setContents(byte[])>($r1);
+
+        $r3 = r0.<com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile: java.lang.String dataTransportFilename>;
+
+        $r2 = virtualinvoke $r2.<com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload$File$Builder: com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload$File$Builder setFilename(java.lang.String)>($r3);
+
+        $r4 = virtualinvoke $r2.<com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload$File$Builder: com.google.firebase.crashlytics.internal.model.CrashlyticsReport$FilesPayload$File build()>();
+
+        return $r4;
+
+     label1:
+        return null;
+    }
+
+    public java.lang.String getReportsEndpointFilename()
+    {
+        com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile r0;
+        java.lang.String r1;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile;
+
+        r1 = r0.<com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile: java.lang.String reportsEndpointFilename>;
+
+        return r1;
+    }
+
+    public java.io.InputStream getStream()
+    {
+        com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile r0;
+        java.io.FileInputStream $r3;
+        java.io.File $r1;
+        java.io.FileNotFoundException $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile;
+
+        $r1 = r0.<com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile: java.io.File file>;
+
+        $z0 = virtualinvoke $r1.<java.io.File: boolean exists()>();
+
+        if $z0 == 0 goto label4;
+
+        $r1 = r0.<com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile: java.io.File file>;
+
+        $z0 = virtualinvoke $r1.<java.io.File: boolean isFile()>();
+
+        if $z0 != 0 goto label1;
+
+        return null;
+
+     label1:
+        $r3 = new java.io.FileInputStream;
+
+        $r1 = r0.<com.google.firebase.crashlytics.internal.common.FileBackedNativeSessionFile: java.io.File file>;
+
+     label2:
+        specialinvoke $r3.<java.io.FileInputStream: void <init>(java.io.File)>($r1);
+
+     label3:
+        return $r3;
+
+     label4:
+        return null;
+
+     label5:
+        $r2 := @caughtexception;
+
+        return null;
+
+        catch java.io.FileNotFoundException from label2 to label3 with label5;
+    }
+}

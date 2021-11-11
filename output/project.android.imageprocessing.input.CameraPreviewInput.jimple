@@ -1,0 +1,464 @@
+public class project.android.imageprocessing.input.CameraPreviewInput extends project.android.imageprocessing.input.GLTextureOutputRenderer implements android.graphics.SurfaceTexture$OnFrameAvailableListener
+{
+    public static final java.lang.String UNIFORM_CAM_MATRIX;
+    public android.graphics.SurfaceTexture camTex;
+    public android.hardware.Camera camera;
+    public float[] matrix;
+    public int matrixHandle;
+    public android.opengl.GLSurfaceView view;
+
+    public void <init>(android.opengl.GLSurfaceView)
+    {
+        android.opengl.GLSurfaceView $r1;
+        float[] $r3;
+        project.android.imageprocessing.input.CameraPreviewInput r0;
+        android.hardware.Camera $r2;
+
+        r0 := @this: project.android.imageprocessing.input.CameraPreviewInput;
+
+        $r1 := @parameter0: android.opengl.GLSurfaceView;
+
+        specialinvoke r0.<project.android.imageprocessing.input.GLTextureOutputRenderer: void <init>()>();
+
+        $r3 = newarray (float)[16];
+
+        r0.<project.android.imageprocessing.input.CameraPreviewInput: float[] matrix> = $r3;
+
+        $r2 = virtualinvoke r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera createCamera()>();
+
+        r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera> = $r2;
+
+        r0.<project.android.imageprocessing.input.CameraPreviewInput: android.opengl.GLSurfaceView view> = $r1;
+
+        return;
+    }
+
+    private void bindTexture()
+    {
+        int $i0, $i1;
+        project.android.imageprocessing.input.CameraPreviewInput r0;
+
+        r0 := @this: project.android.imageprocessing.input.CameraPreviewInput;
+
+        $i0 = 33984;
+
+        staticinvoke <android.opengl.GLES20: void glActiveTexture(int)>($i0);
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int texture_in>;
+
+        $i1 = 36197;
+
+        staticinvoke <android.opengl.GLES20: void glBindTexture(int,int)>($i1, $i0);
+
+        return;
+    }
+
+    private void setRenderSizeToCameraSize()
+    {
+        android.hardware.Camera$Parameters $r2;
+        int $i0, $i1;
+        project.android.imageprocessing.input.CameraPreviewInput r0;
+        android.hardware.Camera$Size $r3;
+        android.hardware.Camera $r1;
+
+        r0 := @this: project.android.imageprocessing.input.CameraPreviewInput;
+
+        $r1 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera>;
+
+        $r2 = virtualinvoke $r1.<android.hardware.Camera: android.hardware.Camera$Parameters getParameters()>();
+
+        $r3 = virtualinvoke $r2.<android.hardware.Camera$Parameters: android.hardware.Camera$Size getPreviewSize()>();
+
+        $i0 = $r3.<android.hardware.Camera$Size: int width>;
+
+        $i1 = $r3.<android.hardware.Camera$Size: int height>;
+
+        virtualinvoke r0.<project.android.imageprocessing.GLRenderer: void setRenderSize(int,int)>($i0, $i1);
+
+        return;
+    }
+
+    public android.hardware.Camera createCamera()
+    {
+        project.android.imageprocessing.input.CameraPreviewInput r0;
+        android.hardware.Camera $r1;
+
+        r0 := @this: project.android.imageprocessing.input.CameraPreviewInput;
+
+        $r1 = staticinvoke <android.hardware.Camera: android.hardware.Camera open()>();
+
+        return $r1;
+    }
+
+    public void destroy()
+    {
+        android.graphics.SurfaceTexture $r3;
+        int[] $r1;
+        int $i0;
+        project.android.imageprocessing.input.CameraPreviewInput r0;
+        android.hardware.Camera $r2;
+
+        r0 := @this: project.android.imageprocessing.input.CameraPreviewInput;
+
+        specialinvoke r0.<project.android.imageprocessing.input.GLTextureOutputRenderer: void destroy()>();
+
+        $r2 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera>;
+
+        if $r2 == null goto label1;
+
+        virtualinvoke $r2.<android.hardware.Camera: void stopPreview()>();
+
+        $r2 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera>;
+
+        virtualinvoke $r2.<android.hardware.Camera: void release()>();
+
+        r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera> = null;
+
+     label1:
+        $r3 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.graphics.SurfaceTexture camTex>;
+
+        if $r3 == null goto label2;
+
+        virtualinvoke $r3.<android.graphics.SurfaceTexture: void release()>();
+
+        r0.<project.android.imageprocessing.input.CameraPreviewInput: android.graphics.SurfaceTexture camTex> = null;
+
+     label2:
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int texture_in>;
+
+        if $i0 == 0 goto label3;
+
+        $r1 = newarray (int)[1];
+
+        $r1[0] = $i0;
+
+        staticinvoke <android.opengl.GLES20: void glDeleteTextures(int,int[],int)>(1, $r1, 0);
+
+        r0.<project.android.imageprocessing.GLRenderer: int texture_in> = 0;
+
+     label3:
+        return;
+    }
+
+    public void drawFrame()
+    {
+        android.graphics.SurfaceTexture $r1;
+        project.android.imageprocessing.input.CameraPreviewInput r0;
+
+        r0 := @this: project.android.imageprocessing.input.CameraPreviewInput;
+
+        $r1 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.graphics.SurfaceTexture camTex>;
+
+        virtualinvoke $r1.<android.graphics.SurfaceTexture: void updateTexImage()>();
+
+        specialinvoke r0.<project.android.imageprocessing.input.GLTextureOutputRenderer: void drawFrame()>();
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.input.CameraPreviewInput r0;
+
+        r0 := @this: project.android.imageprocessing.input.CameraPreviewInput;
+
+        return "#extension GL_OES_EGL_image_external : require\nprecision mediump float;\nuniform samplerExternalOES u_Texture0;\nvarying vec2 v_TexCoord;\nvoid main() {\n   gl_FragColor = texture2D(u_Texture0, v_TexCoord);\n}\n";
+    }
+
+    public java.lang.String getVertexShader()
+    {
+        project.android.imageprocessing.input.CameraPreviewInput r0;
+
+        r0 := @this: project.android.imageprocessing.input.CameraPreviewInput;
+
+        return "uniform mat4 u_Matrix;\nattribute vec4 a_Position;\nattribute vec2 a_TexCoord;\nvarying vec2 v_TexCoord;\nvoid main() {\n   vec4 texPos = u_Matrix * vec4(a_TexCoord, 1, 1);\n   v_TexCoord = texPos.xy;\n   gl_Position = a_Position;\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        int $i0;
+        project.android.imageprocessing.input.CameraPreviewInput r0;
+
+        r0 := @this: project.android.imageprocessing.input.CameraPreviewInput;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_Matrix");
+
+        r0.<project.android.imageprocessing.input.CameraPreviewInput: int matrixHandle> = $i0;
+
+        return;
+    }
+
+    public void initWithGLContext()
+    {
+        java.io.PrintWriter $r9;
+        android.graphics.SurfaceTexture $r2, $r7;
+        java.io.StringWriter $r5, $r8;
+        java.lang.Exception $r4;
+        int[] $r1;
+        int $i0, $i1;
+        project.android.imageprocessing.input.CameraPreviewInput r0;
+        java.lang.String $r6;
+        boolean $z0;
+        android.hardware.Camera $r3;
+
+        r0 := @this: project.android.imageprocessing.input.CameraPreviewInput;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void initWithGLContext()>();
+
+        $z0 = 1;
+
+        $r1 = newarray (int)[1];
+
+        staticinvoke <android.opengl.GLES20: void glGenTextures(int,int[],int)>(1, $r1, 0);
+
+        $i0 = $r1[0];
+
+        $i1 = 36197;
+
+        staticinvoke <android.opengl.GLES20: void glBindTexture(int,int)>($i1, $i0);
+
+        $i0 = 36197;
+
+        staticinvoke <android.opengl.GLES20: void glTexParameterf(int,int,float)>($i0, 10241, 9729.0F);
+
+        $i0 = 36197;
+
+        staticinvoke <android.opengl.GLES20: void glTexParameterf(int,int,float)>($i0, 10240, 9729.0F);
+
+        $i0 = 36197;
+
+        $i1 = 33071;
+
+        staticinvoke <android.opengl.GLES20: void glTexParameteri(int,int,int)>($i0, 10242, $i1);
+
+        $i0 = 36197;
+
+        $i1 = 33071;
+
+        staticinvoke <android.opengl.GLES20: void glTexParameteri(int,int,int)>($i0, 10243, $i1);
+
+        $i0 = $r1[0];
+
+        r0.<project.android.imageprocessing.GLRenderer: int texture_in> = $i0;
+
+        $r7 = new android.graphics.SurfaceTexture;
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int texture_in>;
+
+        specialinvoke $r7.<android.graphics.SurfaceTexture: void <init>(int)>($i0);
+
+        r0.<project.android.imageprocessing.input.CameraPreviewInput: android.graphics.SurfaceTexture camTex> = $r7;
+
+        $r2 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.graphics.SurfaceTexture camTex>;
+
+        virtualinvoke $r2.<android.graphics.SurfaceTexture: void setOnFrameAvailableListener(android.graphics.SurfaceTexture$OnFrameAvailableListener)>(r0);
+
+     label1:
+        if $z0 != 0 goto label2;
+
+        return;
+
+     label2:
+        $r3 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera>;
+
+     label3:
+        if $r3 == null goto label5;
+
+     label4:
+        $r3 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera>;
+
+        virtualinvoke $r3.<android.hardware.Camera: void stopPreview()>();
+
+        $r3 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera>;
+
+        virtualinvoke $r3.<android.hardware.Camera: void release()>();
+
+        r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera> = null;
+
+     label5:
+        $r3 = virtualinvoke r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera createCamera()>();
+
+        r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera> = $r3;
+
+        $r3 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera>;
+
+        $r2 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.graphics.SurfaceTexture camTex>;
+
+        virtualinvoke $r3.<android.hardware.Camera: void setPreviewTexture(android.graphics.SurfaceTexture)>($r2);
+
+        $r3 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera>;
+
+        virtualinvoke $r3.<android.hardware.Camera: void startPreview()>();
+
+        specialinvoke r0.<project.android.imageprocessing.input.CameraPreviewInput: void setRenderSizeToCameraSize()>();
+
+     label6:
+        $z0 = 0;
+
+        goto label1;
+
+     label7:
+        $r4 := @caughtexception;
+
+        $r8 = new java.io.StringWriter;
+
+        $r5 = $r8;
+
+        specialinvoke $r8.<java.io.StringWriter: void <init>()>();
+
+        $r9 = new java.io.PrintWriter;
+
+        specialinvoke $r9.<java.io.PrintWriter: void <init>(java.io.Writer)>($r5);
+
+        virtualinvoke $r4.<java.lang.Exception: void printStackTrace(java.io.PrintWriter)>($r9);
+
+        $r6 = virtualinvoke $r5.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("CameraInput", $r6);
+
+        $r3 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera>;
+
+        if $r3 == null goto label1;
+
+        virtualinvoke $r3.<android.hardware.Camera: void release()>();
+
+        r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera> = null;
+
+        goto label1;
+
+        catch java.lang.Exception from label2 to label3 with label7;
+        catch java.lang.Exception from label4 to label6 with label7;
+    }
+
+    public void onFrameAvailable(android.graphics.SurfaceTexture)
+    {
+        android.graphics.SurfaceTexture $r1;
+        project.android.imageprocessing.input.CameraPreviewInput r0;
+        android.opengl.GLSurfaceView $r2;
+
+        r0 := @this: project.android.imageprocessing.input.CameraPreviewInput;
+
+        $r1 := @parameter0: android.graphics.SurfaceTexture;
+
+        virtualinvoke r0.<project.android.imageprocessing.input.GLTextureOutputRenderer: void markAsDirty()>();
+
+        $r2 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.opengl.GLSurfaceView view>;
+
+        virtualinvoke $r2.<android.opengl.GLSurfaceView: void requestRender()>();
+
+        return;
+    }
+
+    public void onPause()
+    {
+        project.android.imageprocessing.input.CameraPreviewInput r0;
+        android.hardware.Camera $r1;
+
+        r0 := @this: project.android.imageprocessing.input.CameraPreviewInput;
+
+        $r1 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera>;
+
+        if $r1 == null goto label1;
+
+        virtualinvoke $r1.<android.hardware.Camera: void stopPreview()>();
+
+        $r1 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera>;
+
+        virtualinvoke $r1.<android.hardware.Camera: void release()>();
+
+        r0.<project.android.imageprocessing.input.CameraPreviewInput: android.hardware.Camera camera> = null;
+
+     label1:
+        return;
+    }
+
+    public void onResume()
+    {
+        project.android.imageprocessing.input.CameraPreviewInput r0;
+
+        r0 := @this: project.android.imageprocessing.input.CameraPreviewInput;
+
+        virtualinvoke r0.<project.android.imageprocessing.GLRenderer: void reInitialize()>();
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        android.graphics.SurfaceTexture $r3;
+        java.nio.FloatBuffer $r1;
+        java.nio.FloatBuffer[] $r2;
+        int $i0, $i1;
+        float[] $r4;
+        project.android.imageprocessing.input.CameraPreviewInput r0;
+
+        r0 := @this: project.android.imageprocessing.input.CameraPreviewInput;
+
+        $r1 = r0.<project.android.imageprocessing.GLRenderer: java.nio.FloatBuffer renderVertices>;
+
+        virtualinvoke $r1.<java.nio.FloatBuffer: java.nio.Buffer position(int)>(0);
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int positionHandle>;
+
+        $r1 = r0.<project.android.imageprocessing.GLRenderer: java.nio.FloatBuffer renderVertices>;
+
+        staticinvoke <android.opengl.GLES20: void glVertexAttribPointer(int,int,int,boolean,int,java.nio.Buffer)>($i0, 2, 5126, 0, 8, $r1);
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int positionHandle>;
+
+        staticinvoke <android.opengl.GLES20: void glEnableVertexAttribArray(int)>($i0);
+
+        $r2 = r0.<project.android.imageprocessing.GLRenderer: java.nio.FloatBuffer[] textureVertices>;
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int curRotation>;
+
+        $r1 = $r2[$i0];
+
+        virtualinvoke $r1.<java.nio.FloatBuffer: java.nio.Buffer position(int)>(0);
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int texCoordHandle>;
+
+        $r2 = r0.<project.android.imageprocessing.GLRenderer: java.nio.FloatBuffer[] textureVertices>;
+
+        $i1 = r0.<project.android.imageprocessing.GLRenderer: int curRotation>;
+
+        $r1 = $r2[$i1];
+
+        staticinvoke <android.opengl.GLES20: void glVertexAttribPointer(int,int,int,boolean,int,java.nio.Buffer)>($i0, 2, 5126, 0, 8, $r1);
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int texCoordHandle>;
+
+        staticinvoke <android.opengl.GLES20: void glEnableVertexAttribArray(int)>($i0);
+
+        specialinvoke r0.<project.android.imageprocessing.input.CameraPreviewInput: void bindTexture()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int textureHandle>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1i(int,int)>($i0, 0);
+
+        $r3 = r0.<project.android.imageprocessing.input.CameraPreviewInput: android.graphics.SurfaceTexture camTex>;
+
+        $r4 = r0.<project.android.imageprocessing.input.CameraPreviewInput: float[] matrix>;
+
+        virtualinvoke $r3.<android.graphics.SurfaceTexture: void getTransformMatrix(float[])>($r4);
+
+        $i0 = r0.<project.android.imageprocessing.input.CameraPreviewInput: int matrixHandle>;
+
+        $r4 = r0.<project.android.imageprocessing.input.CameraPreviewInput: float[] matrix>;
+
+        staticinvoke <android.opengl.GLES20: void glUniformMatrix4fv(int,int,boolean,float[],int)>($i0, 1, 0, $r4, 0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.input.CameraPreviewInput: java.lang.String UNIFORM_CAM_MATRIX> = "u_Matrix";
+
+        return;
+    }
+}

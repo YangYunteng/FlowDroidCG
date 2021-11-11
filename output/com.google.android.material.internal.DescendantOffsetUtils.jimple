@@ -1,0 +1,217 @@
+public class com.google.android.material.internal.DescendantOffsetUtils extends java.lang.Object
+{
+    public static final java.lang.ThreadLocal matrix;
+    public static final java.lang.ThreadLocal rectF;
+
+    static void <clinit>()
+    {
+        java.lang.ThreadLocal $r0;
+
+        $r0 = new java.lang.ThreadLocal;
+
+        specialinvoke $r0.<java.lang.ThreadLocal: void <init>()>();
+
+        <com.google.android.material.internal.DescendantOffsetUtils: java.lang.ThreadLocal matrix> = $r0;
+
+        $r0 = new java.lang.ThreadLocal;
+
+        specialinvoke $r0.<java.lang.ThreadLocal: void <init>()>();
+
+        <com.google.android.material.internal.DescendantOffsetUtils: java.lang.ThreadLocal rectF> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.android.material.internal.DescendantOffsetUtils r0;
+
+        r0 := @this: com.google.android.material.internal.DescendantOffsetUtils;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void getDescendantRect(android.view.ViewGroup, android.view.View, android.graphics.Rect)
+    {
+        android.graphics.Rect $r2;
+        int $i0, $i1;
+        android.view.View $r1;
+        android.view.ViewGroup $r0;
+
+        $r0 := @parameter0: android.view.ViewGroup;
+
+        $r1 := @parameter1: android.view.View;
+
+        $r2 := @parameter2: android.graphics.Rect;
+
+        $i0 = virtualinvoke $r1.<android.view.View: int getWidth()>();
+
+        $i1 = virtualinvoke $r1.<android.view.View: int getHeight()>();
+
+        virtualinvoke $r2.<android.graphics.Rect: void set(int,int,int,int)>(0, 0, $i0, $i1);
+
+        staticinvoke <com.google.android.material.internal.DescendantOffsetUtils: void offsetDescendantRect(android.view.ViewGroup,android.view.View,android.graphics.Rect)>($r0, $r1, $r2);
+
+        return;
+    }
+
+    public static void offsetDescendantMatrix(android.view.ViewParent, android.view.View, android.graphics.Matrix)
+    {
+        android.view.ViewParent $r2, $r3;
+        int $i0;
+        android.view.View $r0, $r4;
+        float $f0, $f1;
+        android.graphics.Matrix $r1, $r5;
+        boolean $z0;
+
+        $r2 := @parameter0: android.view.ViewParent;
+
+        $r0 := @parameter1: android.view.View;
+
+        $r1 := @parameter2: android.graphics.Matrix;
+
+        $r3 = virtualinvoke $r0.<android.view.View: android.view.ViewParent getParent()>();
+
+        $z0 = $r3 instanceof android.view.View;
+
+        if $z0 == 0 goto label1;
+
+        if $r3 == $r2 goto label1;
+
+        $r4 = (android.view.View) $r3;
+
+        staticinvoke <com.google.android.material.internal.DescendantOffsetUtils: void offsetDescendantMatrix(android.view.ViewParent,android.view.View,android.graphics.Matrix)>($r2, $r4, $r1);
+
+        $i0 = virtualinvoke $r4.<android.view.View: int getScrollX()>();
+
+        $i0 = neg $i0;
+
+        $f0 = (float) $i0;
+
+        $i0 = virtualinvoke $r4.<android.view.View: int getScrollY()>();
+
+        $i0 = neg $i0;
+
+        $f1 = (float) $i0;
+
+        virtualinvoke $r1.<android.graphics.Matrix: boolean preTranslate(float,float)>($f0, $f1);
+
+     label1:
+        $i0 = virtualinvoke $r0.<android.view.View: int getLeft()>();
+
+        $f0 = (float) $i0;
+
+        $i0 = virtualinvoke $r0.<android.view.View: int getTop()>();
+
+        $f1 = (float) $i0;
+
+        virtualinvoke $r1.<android.graphics.Matrix: boolean preTranslate(float,float)>($f0, $f1);
+
+        $r5 = virtualinvoke $r0.<android.view.View: android.graphics.Matrix getMatrix()>();
+
+        $z0 = virtualinvoke $r5.<android.graphics.Matrix: boolean isIdentity()>();
+
+        if $z0 != 0 goto label2;
+
+        $r5 = virtualinvoke $r0.<android.view.View: android.graphics.Matrix getMatrix()>();
+
+        virtualinvoke $r1.<android.graphics.Matrix: boolean preConcat(android.graphics.Matrix)>($r5);
+
+     label2:
+        return;
+    }
+
+    public static void offsetDescendantRect(android.view.ViewGroup, android.view.View, android.graphics.Rect)
+    {
+        android.graphics.RectF $r6;
+        android.graphics.Rect $r0;
+        java.lang.ThreadLocal $r3;
+        android.view.ViewGroup $r1;
+        int $i0, $i1, $i2, $i3;
+        android.view.View $r2;
+        float $f0;
+        java.lang.Object $r4;
+        android.graphics.Matrix $r5;
+
+        $r1 := @parameter0: android.view.ViewGroup;
+
+        $r2 := @parameter1: android.view.View;
+
+        $r0 := @parameter2: android.graphics.Rect;
+
+        $r3 = <com.google.android.material.internal.DescendantOffsetUtils: java.lang.ThreadLocal matrix>;
+
+        $r4 = virtualinvoke $r3.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        $r5 = (android.graphics.Matrix) $r4;
+
+        if $r5 != null goto label1;
+
+        $r5 = new android.graphics.Matrix;
+
+        specialinvoke $r5.<android.graphics.Matrix: void <init>()>();
+
+        $r3 = <com.google.android.material.internal.DescendantOffsetUtils: java.lang.ThreadLocal matrix>;
+
+        virtualinvoke $r3.<java.lang.ThreadLocal: void set(java.lang.Object)>($r5);
+
+        goto label2;
+
+     label1:
+        virtualinvoke $r5.<android.graphics.Matrix: void reset()>();
+
+     label2:
+        staticinvoke <com.google.android.material.internal.DescendantOffsetUtils: void offsetDescendantMatrix(android.view.ViewParent,android.view.View,android.graphics.Matrix)>($r1, $r2, $r5);
+
+        $r3 = <com.google.android.material.internal.DescendantOffsetUtils: java.lang.ThreadLocal rectF>;
+
+        $r4 = virtualinvoke $r3.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        $r6 = (android.graphics.RectF) $r4;
+
+        if $r6 != null goto label3;
+
+        $r6 = new android.graphics.RectF;
+
+        specialinvoke $r6.<android.graphics.RectF: void <init>()>();
+
+        $r3 = <com.google.android.material.internal.DescendantOffsetUtils: java.lang.ThreadLocal rectF>;
+
+        virtualinvoke $r3.<java.lang.ThreadLocal: void set(java.lang.Object)>($r6);
+
+     label3:
+        virtualinvoke $r6.<android.graphics.RectF: void set(android.graphics.Rect)>($r0);
+
+        virtualinvoke $r5.<android.graphics.Matrix: boolean mapRect(android.graphics.RectF)>($r6);
+
+        $f0 = $r6.<android.graphics.RectF: float left>;
+
+        $f0 = $f0 + 0.5F;
+
+        $i0 = (int) $f0;
+
+        $f0 = $r6.<android.graphics.RectF: float top>;
+
+        $f0 = $f0 + 0.5F;
+
+        $i1 = (int) $f0;
+
+        $f0 = $r6.<android.graphics.RectF: float right>;
+
+        $f0 = $f0 + 0.5F;
+
+        $i2 = (int) $f0;
+
+        $f0 = $r6.<android.graphics.RectF: float bottom>;
+
+        $f0 = $f0 + 0.5F;
+
+        $i3 = (int) $f0;
+
+        virtualinvoke $r0.<android.graphics.Rect: void set(int,int,int,int)>($i0, $i1, $i2, $i3);
+
+        return;
+    }
+}

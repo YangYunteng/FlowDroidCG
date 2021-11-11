@@ -1,0 +1,348 @@
+public class project.android.imageprocessing.filter.processing.TransformFilter extends project.android.imageprocessing.filter.BasicFilter
+{
+    public static final java.lang.String UNIFORM_ORTHO_MATRIX;
+    public static final java.lang.String UNIFORM_TRANSFORM_MATRIX;
+    public boolean anchorTopLeft;
+    public boolean ignoreAspect;
+    public float[] orthoMatrix;
+    public int orthoMatrixHandle;
+    public float[] transformMatrix;
+    public int transformMatrixHandle;
+
+    public void <init>(float[], boolean, boolean)
+    {
+        project.android.imageprocessing.filter.processing.TransformFilter r0;
+        float[] $r1;
+        boolean $z0, $z1;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.TransformFilter;
+
+        $r1 := @parameter0: float[];
+
+        $z0 := @parameter1: boolean;
+
+        $z1 := @parameter2: boolean;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.BasicFilter: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.processing.TransformFilter: float[] transformMatrix> = $r1;
+
+        r0.<project.android.imageprocessing.filter.processing.TransformFilter: boolean ignoreAspect> = $z0;
+
+        r0.<project.android.imageprocessing.filter.processing.TransformFilter: boolean anchorTopLeft> = $z1;
+
+        return;
+    }
+
+    private void loadOrthoMatrix(float, float, float, float, float, float)
+    {
+        float[] $r1;
+        project.android.imageprocessing.filter.processing.TransformFilter r0;
+        float $f0, $f1, $f2, $f3, $f4, $f5, $f6, $f7, $f8;
+        boolean $z0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.TransformFilter;
+
+        $f2 := @parameter0: float;
+
+        $f3 := @parameter1: float;
+
+        $f4 := @parameter2: float;
+
+        $f5 := @parameter3: float;
+
+        $f6 := @parameter4: float;
+
+        $f7 := @parameter5: float;
+
+        $f8 = $f3 - $f2;
+
+        $f0 = $f5 - $f4;
+
+        $f1 = $f7 - $f6;
+
+        $f2 = $f3 + $f2;
+
+        $f2 = neg $f2;
+
+        $f3 = $f5 + $f4;
+
+        $f3 = neg $f3;
+
+        $f3 = $f3 / $f0;
+
+        $f4 = $f7 + $f6;
+
+        $f4 = neg $f4;
+
+        $f4 = $f4 / $f1;
+
+        $z0 = r0.<project.android.imageprocessing.filter.processing.TransformFilter: boolean anchorTopLeft>;
+
+        $f5 = -1.0F;
+
+        if $z0 == 0 goto label1;
+
+        $f2 = 4.0F;
+
+        $f3 = -1.0F;
+
+        goto label2;
+
+     label1:
+        $f5 = $f2 / $f8;
+
+        $f2 = 2.0F;
+
+     label2:
+        $r1 = newarray (float)[16];
+
+        $f6 = $f2 / $f8;
+
+        $r1[0] = $f6;
+
+        $f6 = 0.0F;
+
+        $r1[1] = $f6;
+
+        $r1[2] = 0.0F;
+
+        $r1[3] = $f5;
+
+        $r1[4] = 0.0F;
+
+        $f5 = $f2 / $f0;
+
+        $r1[5] = $f5;
+
+        $r1[6] = 0.0F;
+
+        $r1[7] = $f3;
+
+        $r1[8] = 0.0F;
+
+        $r1[9] = 0.0F;
+
+        $f2 = $f2 / $f1;
+
+        $r1[10] = $f2;
+
+        $r1[11] = $f4;
+
+        $r1[12] = 0.0F;
+
+        $r1[13] = 0.0F;
+
+        $r1[14] = 0.0F;
+
+        $f2 = 1.06535322E9F;
+
+        $r1[15] = $f2;
+
+        r0.<project.android.imageprocessing.filter.processing.TransformFilter: float[] orthoMatrix> = $r1;
+
+        return;
+    }
+
+    public java.lang.String getVertexShader()
+    {
+        project.android.imageprocessing.filter.processing.TransformFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.TransformFilter;
+
+        return "attribute vec4 a_Position;\nattribute vec2 a_TexCoord;\nuniform mat4 u_OrthoMatrix;\nuniform mat4 u_TransformMatrix;\nvarying vec2 v_TexCoord;\nvoid main() {\n  v_TexCoord = a_TexCoord;\n   gl_Position = u_TransformMatrix * vec4(a_Position.xyz, 1.0) * u_OrthoMatrix;\n}\n";
+    }
+
+    public void handleSizeChange()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.processing.TransformFilter r0;
+        float $f0, $f1, $f2;
+        float[] $r1;
+        boolean $z0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.TransformFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.input.GLTextureOutputRenderer: void handleSizeChange()>();
+
+        $z0 = r0.<project.android.imageprocessing.filter.processing.TransformFilter: boolean ignoreAspect>;
+
+        if $z0 == 0 goto label2;
+
+        $z0 = r0.<project.android.imageprocessing.filter.processing.TransformFilter: boolean anchorTopLeft>;
+
+        if $z0 == 0 goto label1;
+
+        $r1 = newarray (float)[8];
+
+        $r1[0] = 0.0F;
+
+        $r1[1] = 0.0F;
+
+        $r1[2] = 1.0F;
+
+        $r1[3] = 0.0F;
+
+        $r1[4] = 0.0F;
+
+        $r1[5] = 1.0F;
+
+        $r1[6] = 1.0F;
+
+        $r1[7] = 1.0F;
+
+        virtualinvoke r0.<project.android.imageprocessing.GLRenderer: void setRenderVertices(float[])>($r1);
+
+     label1:
+        specialinvoke r0.<project.android.imageprocessing.filter.processing.TransformFilter: void loadOrthoMatrix(float,float,float,float,float,float)>(-1.0F, 1.0F, -1.0F, 1.0F, -1.0F, 1.0F);
+
+        return;
+
+     label2:
+        $i0 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getHeight()>();
+
+        $f0 = (float) $i0;
+
+        $i0 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getWidth()>();
+
+        $f1 = (float) $i0;
+
+        $f0 = $f0 / $f1;
+
+        $z0 = r0.<project.android.imageprocessing.filter.processing.TransformFilter: boolean anchorTopLeft>;
+
+        if $z0 == 0 goto label3;
+
+        $r1 = newarray (float)[8];
+
+        $r1[0] = 0.0F;
+
+        $r1[1] = 0.0F;
+
+        $r1[2] = 1.0F;
+
+        $r1[3] = 0.0F;
+
+        $r1[4] = 0.0F;
+
+        $r1[5] = $f0;
+
+        $r1[6] = 1.0F;
+
+        $r1[7] = $f0;
+
+        virtualinvoke r0.<project.android.imageprocessing.GLRenderer: void setRenderVertices(float[])>($r1);
+
+        goto label4;
+
+     label3:
+        $r1 = newarray (float)[8];
+
+        $r1[0] = -1.0F;
+
+        $f1 = neg $f0;
+
+        $r1[1] = $f1;
+
+        $r1[2] = 1.0F;
+
+        $r1[3] = $f1;
+
+        $r1[4] = -1.0F;
+
+        $r1[5] = $f0;
+
+        $r1[6] = 1.0F;
+
+        $r1[7] = $f0;
+
+        virtualinvoke r0.<project.android.imageprocessing.GLRenderer: void setRenderVertices(float[])>($r1);
+
+     label4:
+        $i0 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getHeight()>();
+
+        $f0 = (float) $i0;
+
+        $f0 = $f0 * -1.0F;
+
+        $i0 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getWidth()>();
+
+        $f1 = (float) $i0;
+
+        $f0 = $f0 / $f1;
+
+        $i0 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getHeight()>();
+
+        $f1 = (float) $i0;
+
+        $f1 = $f1 * 1.0F;
+
+        $i0 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getWidth()>();
+
+        $f2 = (float) $i0;
+
+        $f1 = $f1 / $f2;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.processing.TransformFilter: void loadOrthoMatrix(float,float,float,float,float,float)>(-1.0F, 1.0F, $f0, $f1, -1.0F, 1.0F);
+
+        return;
+    }
+
+    public void initShaderHandles()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.processing.TransformFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.TransformFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_TransformMatrix");
+
+        r0.<project.android.imageprocessing.filter.processing.TransformFilter: int transformMatrixHandle> = $i0;
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_OrthoMatrix");
+
+        r0.<project.android.imageprocessing.filter.processing.TransformFilter: int orthoMatrixHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.processing.TransformFilter r0;
+        float[] $r1;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.TransformFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.processing.TransformFilter: int transformMatrixHandle>;
+
+        $r1 = r0.<project.android.imageprocessing.filter.processing.TransformFilter: float[] transformMatrix>;
+
+        staticinvoke <android.opengl.GLES20: void glUniformMatrix4fv(int,int,boolean,float[],int)>($i0, 1, 0, $r1, 0);
+
+        $i0 = r0.<project.android.imageprocessing.filter.processing.TransformFilter: int orthoMatrixHandle>;
+
+        $r1 = r0.<project.android.imageprocessing.filter.processing.TransformFilter: float[] orthoMatrix>;
+
+        staticinvoke <android.opengl.GLES20: void glUniformMatrix4fv(int,int,boolean,float[],int)>($i0, 1, 0, $r1, 0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.processing.TransformFilter: java.lang.String UNIFORM_TRANSFORM_MATRIX> = "u_TransformMatrix";
+
+        <project.android.imageprocessing.filter.processing.TransformFilter: java.lang.String UNIFORM_ORTHO_MATRIX> = "u_OrthoMatrix";
+
+        return;
+    }
+}

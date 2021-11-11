@@ -1,0 +1,75 @@
+public class project.android.imageprocessing.filter.colour.OpacityFilter extends project.android.imageprocessing.filter.BasicFilter
+{
+    public static final java.lang.String UNIFORM_OPACITY;
+    public float opacity;
+    public int opacityHandle;
+
+    public void <init>(float)
+    {
+        float $f0;
+        project.android.imageprocessing.filter.colour.OpacityFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.OpacityFilter;
+
+        $f0 := @parameter0: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.BasicFilter: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.colour.OpacityFilter: float opacity> = $f0;
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.colour.OpacityFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.OpacityFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform float u_Opacity;\nvoid main(){\n   vec4 color = texture2D(u_Texture0,v_TexCoord);\n   gl_FragColor = vec4(color.rgb, color.a * u_Opacity);\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.colour.OpacityFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.OpacityFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_Opacity");
+
+        r0.<project.android.imageprocessing.filter.colour.OpacityFilter: int opacityHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        int $i0;
+        float $f0;
+        project.android.imageprocessing.filter.colour.OpacityFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.OpacityFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.OpacityFilter: int opacityHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.colour.OpacityFilter: float opacity>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.colour.OpacityFilter: java.lang.String UNIFORM_OPACITY> = "u_Opacity";
+
+        return;
+    }
+}

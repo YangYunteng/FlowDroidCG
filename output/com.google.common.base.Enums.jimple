@@ -1,0 +1,186 @@
+public final class com.google.common.base.Enums extends java.lang.Object
+{
+    public static final java.util.Map enumConstantCache;
+
+    static void <clinit>()
+    {
+        java.util.WeakHashMap $r0;
+
+        $r0 = new java.util.WeakHashMap;
+
+        specialinvoke $r0.<java.util.WeakHashMap: void <init>()>();
+
+        <com.google.common.base.Enums: java.util.Map enumConstantCache> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.common.base.Enums r0;
+
+        r0 := @this: com.google.common.base.Enums;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.util.Map getEnumConstants(java.lang.Class)
+    {
+        java.lang.Throwable $r4;
+        java.util.Map $r0, $r2;
+        java.lang.Class $r1;
+        java.lang.Object $r3;
+
+        $r1 := @parameter0: java.lang.Class;
+
+        $r0 = <com.google.common.base.Enums: java.util.Map enumConstantCache>;
+
+        entermonitor $r0;
+
+     label1:
+        $r2 = <com.google.common.base.Enums: java.util.Map enumConstantCache>;
+
+        $r3 = interfaceinvoke $r2.<java.util.Map: java.lang.Object get(java.lang.Object)>($r1);
+
+        $r2 = (java.util.Map) $r3;
+
+        if $r2 != null goto label2;
+
+        $r2 = staticinvoke <com.google.common.base.Enums: java.util.Map populateCache(java.lang.Class)>($r1);
+
+     label2:
+        exitmonitor $r0;
+
+     label3:
+        return $r2;
+
+     label4:
+        $r4 := @caughtexception;
+
+        exitmonitor $r0;
+
+     label5:
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public static java.lang.reflect.Field getField(java.lang.Enum)
+    {
+        java.lang.Enum $r0;
+        java.lang.NoSuchFieldException $r4;
+        java.lang.Class $r1;
+        java.lang.String $r2;
+        java.lang.AssertionError $r5;
+        java.lang.reflect.Field $r3;
+
+        $r0 := @parameter0: java.lang.Enum;
+
+        $r1 = virtualinvoke $r0.<java.lang.Enum: java.lang.Class getDeclaringClass()>();
+
+     label1:
+        $r2 = virtualinvoke $r0.<java.lang.Enum: java.lang.String name()>();
+
+        $r3 = virtualinvoke $r1.<java.lang.Class: java.lang.reflect.Field getDeclaredField(java.lang.String)>($r2);
+
+     label2:
+        return $r3;
+
+     label3:
+        $r4 := @caughtexception;
+
+        $r5 = new java.lang.AssertionError;
+
+        specialinvoke $r5.<java.lang.AssertionError: void <init>(java.lang.Object)>($r4);
+
+        throw $r5;
+
+        catch java.lang.NoSuchFieldException from label1 to label2 with label3;
+    }
+
+    public static com.google.common.base.Optional getIfPresent(java.lang.Class, java.lang.String)
+    {
+        java.lang.Class $r2;
+        java.lang.String $r0;
+        com.google.common.base.Optional $r1;
+
+        $r2 := @parameter0: java.lang.Class;
+
+        $r0 := @parameter1: java.lang.String;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        $r1 = staticinvoke <com.google.common.base.Platform: com.google.common.base.Optional getEnumIfPresent(java.lang.Class,java.lang.String)>($r2, $r0);
+
+        return $r1;
+    }
+
+    public static java.util.Map populateCache(java.lang.Class)
+    {
+        java.util.Iterator $r4;
+        java.util.HashMap $r1;
+        java.lang.Enum $r6;
+        java.util.Map $r8;
+        java.lang.Class $r0;
+        java.lang.Object $r5;
+        java.lang.String $r7;
+        java.lang.ref.WeakReference $r2;
+        java.util.EnumSet $r3;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.Class;
+
+        $r1 = new java.util.HashMap;
+
+        specialinvoke $r1.<java.util.HashMap: void <init>()>();
+
+        $r3 = staticinvoke <java.util.EnumSet: java.util.EnumSet allOf(java.lang.Class)>($r0);
+
+        $r4 = virtualinvoke $r3.<java.util.EnumSet: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (java.lang.Enum) $r5;
+
+        $r7 = virtualinvoke $r6.<java.lang.Enum: java.lang.String name()>();
+
+        $r2 = new java.lang.ref.WeakReference;
+
+        specialinvoke $r2.<java.lang.ref.WeakReference: void <init>(java.lang.Object)>($r6);
+
+        interfaceinvoke $r1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r7, $r2);
+
+        goto label1;
+
+     label2:
+        $r8 = <com.google.common.base.Enums: java.util.Map enumConstantCache>;
+
+        interfaceinvoke $r8.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r0, $r1);
+
+        return $r1;
+    }
+
+    public static com.google.common.base.Converter stringConverter(java.lang.Class)
+    {
+        java.lang.Class $r0;
+        com.google.common.base.Enums$StringConverter $r1;
+
+        $r0 := @parameter0: java.lang.Class;
+
+        $r1 = new com.google.common.base.Enums$StringConverter;
+
+        specialinvoke $r1.<com.google.common.base.Enums$StringConverter: void <init>(java.lang.Class)>($r0);
+
+        return $r1;
+    }
+}

@@ -1,0 +1,529 @@
+public class com.google.firebase.crashlytics.internal.common.IdManager extends java.lang.Object implements com.google.firebase.crashlytics.internal.common.InstallIdProvider
+{
+    public static final java.lang.String DEFAULT_VERSION_NAME;
+    public static final java.lang.String FORWARD_SLASH_REGEX;
+    public static final java.util.regex.Pattern ID_PATTERN;
+    public static final java.lang.String PREFKEY_ADVERTISING_ID;
+    public static final java.lang.String PREFKEY_FIREBASE_IID;
+    public static final java.lang.String PREFKEY_INSTALLATION_UUID;
+    public static final java.lang.String PREFKEY_LEGACY_INSTALLATION_UUID;
+    public final android.content.Context appContext;
+    public final java.lang.String appIdentifier;
+    public java.lang.String crashlyticsInstallId;
+    public final com.google.firebase.installations.FirebaseInstallationsApi firebaseInstallationsApi;
+    public final com.google.firebase.crashlytics.internal.common.InstallerPackageNameProvider installerPackageNameProvider;
+
+    static void <clinit>()
+    {
+        java.util.regex.Pattern $r0;
+        java.lang.String $r1;
+
+        <com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String PREFKEY_LEGACY_INSTALLATION_UUID> = "crashlytics.installation.id";
+
+        <com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String PREFKEY_INSTALLATION_UUID> = "crashlytics.installation.id";
+
+        <com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String PREFKEY_FIREBASE_IID> = "firebase.installation.id";
+
+        <com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String PREFKEY_ADVERTISING_ID> = "crashlytics.advertising.id";
+
+        <com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String DEFAULT_VERSION_NAME> = "0.0";
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>("[^\\p{Alnum}]");
+
+        <com.google.firebase.crashlytics.internal.common.IdManager: java.util.regex.Pattern ID_PATTERN> = $r0;
+
+        $r1 = staticinvoke <java.util.regex.Pattern: java.lang.String quote(java.lang.String)>("/");
+
+        <com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String FORWARD_SLASH_REGEX> = $r1;
+
+        return;
+    }
+
+    public void <init>(android.content.Context, java.lang.String, com.google.firebase.installations.FirebaseInstallationsApi)
+    {
+        android.content.Context $r2;
+        com.google.firebase.installations.FirebaseInstallationsApi $r1;
+        com.google.firebase.crashlytics.internal.common.IdManager r0;
+        java.lang.String $r3;
+        com.google.firebase.crashlytics.internal.common.InstallerPackageNameProvider $r4;
+        java.lang.IllegalArgumentException $r5;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.IdManager;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r3 := @parameter1: java.lang.String;
+
+        $r1 := @parameter2: com.google.firebase.installations.FirebaseInstallationsApi;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        if $r2 == null goto label2;
+
+        if $r3 == null goto label1;
+
+        r0.<com.google.firebase.crashlytics.internal.common.IdManager: android.content.Context appContext> = $r2;
+
+        r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String appIdentifier> = $r3;
+
+        r0.<com.google.firebase.crashlytics.internal.common.IdManager: com.google.firebase.installations.FirebaseInstallationsApi firebaseInstallationsApi> = $r1;
+
+        $r4 = new com.google.firebase.crashlytics.internal.common.InstallerPackageNameProvider;
+
+        specialinvoke $r4.<com.google.firebase.crashlytics.internal.common.InstallerPackageNameProvider: void <init>()>();
+
+        r0.<com.google.firebase.crashlytics.internal.common.IdManager: com.google.firebase.crashlytics.internal.common.InstallerPackageNameProvider installerPackageNameProvider> = $r4;
+
+        return;
+
+     label1:
+        $r5 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r5.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("appIdentifier must not be null");
+
+        throw $r5;
+
+     label2:
+        $r5 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r5.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("appContext must not be null");
+
+        throw $r5;
+    }
+
+    private java.lang.String createAndStoreIid(java.lang.String, android.content.SharedPreferences)
+    {
+        android.content.SharedPreferences$Editor $r8;
+        java.lang.Throwable $r9;
+        java.util.UUID $r3;
+        com.google.firebase.crashlytics.internal.Logger $r5;
+        com.google.firebase.crashlytics.internal.common.IdManager r0;
+        android.content.SharedPreferences $r2;
+        java.lang.StringBuilder $r6;
+        java.lang.String $r1, $r4, $r7;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.IdManager;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: android.content.SharedPreferences;
+
+        entermonitor r0;
+
+     label1:
+        $r3 = staticinvoke <java.util.UUID: java.util.UUID randomUUID()>();
+
+        $r4 = virtualinvoke $r3.<java.util.UUID: java.lang.String toString()>();
+
+        $r4 = staticinvoke <com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String formatId(java.lang.String)>($r4);
+
+        $r5 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Created new Crashlytics IID: ");
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r5.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>($r7);
+
+        $r8 = interfaceinvoke $r2.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $r8 = interfaceinvoke $r8.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putString(java.lang.String,java.lang.String)>("crashlytics.installation.id", $r4);
+
+        $r8 = interfaceinvoke $r8.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putString(java.lang.String,java.lang.String)>("firebase.installation.id", $r1);
+
+        interfaceinvoke $r8.<android.content.SharedPreferences$Editor: void apply()>();
+
+     label2:
+        exitmonitor r0;
+
+        return $r4;
+
+     label3:
+        $r9 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r9;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public static java.lang.String formatId(java.lang.String)
+    {
+        java.util.regex.Matcher $r2;
+        java.util.Locale $r3;
+        java.lang.String $r0;
+        java.util.regex.Pattern $r1;
+
+        $r0 := @parameter0: java.lang.String;
+
+        if $r0 != null goto label1;
+
+        return null;
+
+     label1:
+        $r1 = <com.google.firebase.crashlytics.internal.common.IdManager: java.util.regex.Pattern ID_PATTERN>;
+
+        $r2 = virtualinvoke $r1.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r0);
+
+        $r0 = virtualinvoke $r2.<java.util.regex.Matcher: java.lang.String replaceAll(java.lang.String)>("");
+
+        $r3 = <java.util.Locale: java.util.Locale US>;
+
+        $r0 = virtualinvoke $r0.<java.lang.String: java.lang.String toLowerCase(java.util.Locale)>($r3);
+
+        return $r0;
+    }
+
+    private void migrateLegacyId(java.lang.String, java.lang.String, android.content.SharedPreferences, android.content.SharedPreferences)
+    {
+        android.content.SharedPreferences$Editor $r8;
+        java.lang.Throwable $r9;
+        com.google.firebase.crashlytics.internal.Logger $r5;
+        com.google.firebase.crashlytics.internal.common.IdManager r0;
+        android.content.SharedPreferences $r1, $r4;
+        java.lang.StringBuilder $r6;
+        java.lang.String $r2, $r3, $r7;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.IdManager;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r3 := @parameter1: java.lang.String;
+
+        $r4 := @parameter2: android.content.SharedPreferences;
+
+        $r1 := @parameter3: android.content.SharedPreferences;
+
+        entermonitor r0;
+
+     label1:
+        $r5 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Migrating legacy Crashlytics IID: ");
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r5.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>($r7);
+
+        $r8 = interfaceinvoke $r4.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $r8 = interfaceinvoke $r8.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putString(java.lang.String,java.lang.String)>("crashlytics.installation.id", $r2);
+
+        $r8 = interfaceinvoke $r8.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putString(java.lang.String,java.lang.String)>("firebase.installation.id", $r3);
+
+        interfaceinvoke $r8.<android.content.SharedPreferences$Editor: void apply()>();
+
+        $r8 = interfaceinvoke $r1.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $r8 = interfaceinvoke $r8.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor remove(java.lang.String)>("crashlytics.installation.id");
+
+        $r8 = interfaceinvoke $r8.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor remove(java.lang.String)>("crashlytics.advertising.id");
+
+        interfaceinvoke $r8.<android.content.SharedPreferences$Editor: void apply()>();
+
+     label2:
+        exitmonitor r0;
+
+        return;
+
+     label3:
+        $r9 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r9;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    private java.lang.String removeForwardSlashesIn(java.lang.String)
+    {
+        com.google.firebase.crashlytics.internal.common.IdManager r0;
+        java.lang.String $r1, $r2;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.IdManager;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r1 = <com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String FORWARD_SLASH_REGEX>;
+
+        $r2 = virtualinvoke $r2.<java.lang.String: java.lang.String replaceAll(java.lang.String,java.lang.String)>($r1, "");
+
+        return $r2;
+    }
+
+    public java.lang.String getAppIdentifier()
+    {
+        com.google.firebase.crashlytics.internal.common.IdManager r0;
+        java.lang.String r1;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.IdManager;
+
+        r1 = r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String appIdentifier>;
+
+        return r1;
+    }
+
+    public java.lang.String getCrashlyticsInstallId()
+    {
+        java.lang.Throwable $r13;
+        android.content.Context $r2;
+        com.google.android.gms.tasks.Task $r5;
+        java.lang.Exception $r8;
+        com.google.firebase.crashlytics.internal.Logger $r9;
+        com.google.firebase.installations.FirebaseInstallationsApi $r4;
+        com.google.firebase.crashlytics.internal.common.IdManager r0;
+        android.content.SharedPreferences $r3, $r10;
+        java.lang.Object $r7;
+        java.lang.StringBuilder $r11;
+        java.lang.String $r1, $r6, $r12;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.IdManager;
+
+        entermonitor r0;
+
+     label01:
+        $r1 = r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String crashlyticsInstallId>;
+
+        if $r1 == null goto label03;
+
+        $r1 = r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String crashlyticsInstallId>;
+
+     label02:
+        exitmonitor r0;
+
+        return $r1;
+
+     label03:
+        $r2 = r0.<com.google.firebase.crashlytics.internal.common.IdManager: android.content.Context appContext>;
+
+        $r3 = staticinvoke <com.google.firebase.crashlytics.internal.common.CommonUtils: android.content.SharedPreferences getSharedPrefs(android.content.Context)>($r2);
+
+        $r4 = r0.<com.google.firebase.crashlytics.internal.common.IdManager: com.google.firebase.installations.FirebaseInstallationsApi firebaseInstallationsApi>;
+
+        $r5 = interfaceinvoke $r4.<com.google.firebase.installations.FirebaseInstallationsApi: com.google.android.gms.tasks.Task getId()>();
+
+        $r6 = interfaceinvoke $r3.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>("firebase.installation.id", null);
+
+     label04:
+        $r7 = staticinvoke <com.google.firebase.crashlytics.internal.common.Utils: java.lang.Object awaitEvenIfOnMainThread(com.google.android.gms.tasks.Task)>($r5);
+
+        $r1 = (java.lang.String) $r7;
+
+     label05:
+        goto label09;
+
+     label06:
+        $r8 := @caughtexception;
+
+     label07:
+        $r9 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        virtualinvoke $r9.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String,java.lang.Throwable)>("Failed to retrieve installation id", $r8);
+
+        if $r6 == null goto label08;
+
+        $r1 = $r6;
+
+        goto label09;
+
+     label08:
+        $r1 = null;
+
+     label09:
+        if $r6 != null goto label13;
+
+        $r2 = r0.<com.google.firebase.crashlytics.internal.common.IdManager: android.content.Context appContext>;
+
+        $r10 = staticinvoke <com.google.firebase.crashlytics.internal.common.CommonUtils: android.content.SharedPreferences getLegacySharedPrefs(android.content.Context)>($r2);
+
+        $r6 = interfaceinvoke $r10.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>("crashlytics.installation.id", null);
+
+        $r9 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r11 = new java.lang.StringBuilder;
+
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("No cached FID; legacy id is ");
+
+        virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r9.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>($r12);
+
+        if $r6 != null goto label10;
+
+        $r1 = specialinvoke r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String createAndStoreIid(java.lang.String,android.content.SharedPreferences)>($r1, $r3);
+
+        r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String crashlyticsInstallId> = $r1;
+
+        goto label11;
+
+     label10:
+        r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String crashlyticsInstallId> = $r6;
+
+        specialinvoke r0.<com.google.firebase.crashlytics.internal.common.IdManager: void migrateLegacyId(java.lang.String,java.lang.String,android.content.SharedPreferences,android.content.SharedPreferences)>($r6, $r1, $r3, $r10);
+
+     label11:
+        $r1 = r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String crashlyticsInstallId>;
+
+     label12:
+        exitmonitor r0;
+
+        return $r1;
+
+     label13:
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label14;
+
+        $r6 = interfaceinvoke $r3.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>("crashlytics.installation.id", null);
+
+        r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String crashlyticsInstallId> = $r6;
+
+        $r9 = staticinvoke <com.google.firebase.crashlytics.internal.Logger: com.google.firebase.crashlytics.internal.Logger getLogger()>();
+
+        $r11 = new java.lang.StringBuilder;
+
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Found matching FID, using Crashlytics IID: ");
+
+        $r6 = r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String crashlyticsInstallId>;
+
+        virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r6 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r9.<com.google.firebase.crashlytics.internal.Logger: void d(java.lang.String)>($r6);
+
+        $r6 = r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String crashlyticsInstallId>;
+
+        if $r6 != null goto label15;
+
+        $r1 = specialinvoke r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String createAndStoreIid(java.lang.String,android.content.SharedPreferences)>($r1, $r3);
+
+        r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String crashlyticsInstallId> = $r1;
+
+        goto label15;
+
+     label14:
+        $r1 = specialinvoke r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String createAndStoreIid(java.lang.String,android.content.SharedPreferences)>($r1, $r3);
+
+        r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String crashlyticsInstallId> = $r1;
+
+     label15:
+        $r1 = r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String crashlyticsInstallId>;
+
+     label16:
+        exitmonitor r0;
+
+        return $r1;
+
+     label17:
+        $r13 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r13;
+
+        catch java.lang.Throwable from label01 to label02 with label17;
+        catch java.lang.Throwable from label03 to label04 with label17;
+        catch java.lang.Exception from label04 to label05 with label06;
+        catch java.lang.Throwable from label04 to label05 with label17;
+        catch java.lang.Throwable from label07 to label12 with label17;
+        catch java.lang.Throwable from label13 to label16 with label17;
+    }
+
+    public java.lang.String getInstallerPackageName()
+    {
+        android.content.Context $r1;
+        com.google.firebase.crashlytics.internal.common.IdManager r0;
+        java.lang.String $r2;
+        com.google.firebase.crashlytics.internal.common.InstallerPackageNameProvider $r3;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.IdManager;
+
+        $r3 = r0.<com.google.firebase.crashlytics.internal.common.IdManager: com.google.firebase.crashlytics.internal.common.InstallerPackageNameProvider installerPackageNameProvider>;
+
+        $r1 = r0.<com.google.firebase.crashlytics.internal.common.IdManager: android.content.Context appContext>;
+
+        $r2 = virtualinvoke $r3.<com.google.firebase.crashlytics.internal.common.InstallerPackageNameProvider: java.lang.String getInstallerPackageName(android.content.Context)>($r1);
+
+        return $r2;
+    }
+
+    public java.lang.String getModelName()
+    {
+        com.google.firebase.crashlytics.internal.common.IdManager r0;
+        java.lang.Object[] $r2;
+        java.util.Locale $r1;
+        java.lang.String $r3;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.IdManager;
+
+        $r1 = <java.util.Locale: java.util.Locale US>;
+
+        $r2 = newarray (java.lang.Object)[2];
+
+        $r3 = <android.os.Build: java.lang.String MANUFACTURER>;
+
+        $r3 = specialinvoke r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String removeForwardSlashesIn(java.lang.String)>($r3);
+
+        $r2[0] = $r3;
+
+        $r3 = <android.os.Build: java.lang.String MODEL>;
+
+        $r3 = specialinvoke r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String removeForwardSlashesIn(java.lang.String)>($r3);
+
+        $r2[1] = $r3;
+
+        $r3 = staticinvoke <java.lang.String: java.lang.String format(java.util.Locale,java.lang.String,java.lang.Object[])>($r1, "%s/%s", $r2);
+
+        return $r3;
+    }
+
+    public java.lang.String getOsBuildVersionString()
+    {
+        com.google.firebase.crashlytics.internal.common.IdManager r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.IdManager;
+
+        $r1 = <android.os.Build$VERSION: java.lang.String INCREMENTAL>;
+
+        $r1 = specialinvoke r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String removeForwardSlashesIn(java.lang.String)>($r1);
+
+        return $r1;
+    }
+
+    public java.lang.String getOsDisplayVersionString()
+    {
+        com.google.firebase.crashlytics.internal.common.IdManager r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.IdManager;
+
+        $r1 = <android.os.Build$VERSION: java.lang.String RELEASE>;
+
+        $r1 = specialinvoke r0.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String removeForwardSlashesIn(java.lang.String)>($r1);
+
+        return $r1;
+    }
+}

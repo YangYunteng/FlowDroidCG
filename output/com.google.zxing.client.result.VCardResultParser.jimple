@@ -1,0 +1,1155 @@
+public final class com.google.zxing.client.result.VCardResultParser extends com.google.zxing.client.result.ResultParser
+{
+    public static final java.util.regex.Pattern BEGIN_VCARD;
+    public static final java.util.regex.Pattern COMMA;
+    public static final java.util.regex.Pattern CR_LF_SPACE_TAB;
+    public static final java.util.regex.Pattern EQUALS;
+    public static final java.util.regex.Pattern NEWLINE_ESCAPE;
+    public static final java.util.regex.Pattern SEMICOLON;
+    public static final java.util.regex.Pattern SEMICOLON_OR_COMMA;
+    public static final java.util.regex.Pattern UNESCAPED_SEMICOLONS;
+    public static final java.util.regex.Pattern VCARD_ESCAPES;
+    public static final java.util.regex.Pattern VCARD_LIKE_DATE;
+
+    static void <clinit>()
+    {
+        java.util.regex.Pattern $r0;
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String,int)>("BEGIN:VCARD", 2);
+
+        <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern BEGIN_VCARD> = $r0;
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>("\\d{4}-?\\d{2}-?\\d{2}");
+
+        <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern VCARD_LIKE_DATE> = $r0;
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>("\r\n[ \t]");
+
+        <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern CR_LF_SPACE_TAB> = $r0;
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>("\\\\[nN]");
+
+        <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern NEWLINE_ESCAPE> = $r0;
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>("\\\\([,;\\\\])");
+
+        <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern VCARD_ESCAPES> = $r0;
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>("=");
+
+        <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern EQUALS> = $r0;
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>(";");
+
+        <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern SEMICOLON> = $r0;
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>("(?<!\\\\);+");
+
+        <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern UNESCAPED_SEMICOLONS> = $r0;
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>(",");
+
+        <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern COMMA> = $r0;
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>("[;,]");
+
+        <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern SEMICOLON_OR_COMMA> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.zxing.client.result.VCardResultParser r0;
+
+        r0 := @this: com.google.zxing.client.result.VCardResultParser;
+
+        specialinvoke r0.<com.google.zxing.client.result.ResultParser: void <init>()>();
+
+        return;
+    }
+
+    public static java.lang.String decodeQuotedPrintable(java.lang.CharSequence, java.lang.String)
+    {
+        java.io.ByteArrayOutputStream $r2, $r5;
+        java.lang.CharSequence $r3;
+        char $c2, $c4;
+        int $i0, $i1, $i3, $i5;
+        java.lang.StringBuilder $r1, $r4;
+        java.lang.String $r0;
+
+        $r3 := @parameter0: java.lang.CharSequence;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $i0 = interfaceinvoke $r3.<java.lang.CharSequence: int length()>();
+
+        $r4 = new java.lang.StringBuilder;
+
+        $r1 = $r4;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>(int)>($i0);
+
+        $r5 = new java.io.ByteArrayOutputStream;
+
+        $r2 = $r5;
+
+        specialinvoke $r5.<java.io.ByteArrayOutputStream: void <init>()>();
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label4;
+
+        $c2 = interfaceinvoke $r3.<java.lang.CharSequence: char charAt(int)>($i1);
+
+        $i3 = (int) $c2;
+
+        if $i3 == 10 goto label3;
+
+        $i3 = (int) $c2;
+
+        if $i3 == 13 goto label3;
+
+        $i3 = (int) $c2;
+
+        if $i3 == 61 goto label2;
+
+        staticinvoke <com.google.zxing.client.result.VCardResultParser: void maybeAppendFragment(java.io.ByteArrayOutputStream,java.lang.String,java.lang.StringBuilder)>($r2, $r0, $r1);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c2);
+
+        goto label3;
+
+     label2:
+        $i3 = -2;
+
+        $i3 = $i0 + $i3;
+
+        if $i1 >= $i3 goto label3;
+
+        $i3 = $i1 + 1;
+
+        $c2 = interfaceinvoke $r3.<java.lang.CharSequence: char charAt(int)>($i3);
+
+        $i3 = (int) $c2;
+
+        if $i3 == 13 goto label3;
+
+        $i3 = (int) $c2;
+
+        if $i3 == 10 goto label3;
+
+        $i1 = $i1 + 2;
+
+        $c4 = interfaceinvoke $r3.<java.lang.CharSequence: char charAt(int)>($i1);
+
+        $i5 = staticinvoke <com.google.zxing.client.result.ResultParser: int parseHexDigit(char)>($c2);
+
+        $i3 = staticinvoke <com.google.zxing.client.result.ResultParser: int parseHexDigit(char)>($c4);
+
+        if $i5 < 0 goto label3;
+
+        if $i3 < 0 goto label3;
+
+        $i5 = $i5 << 4;
+
+        $i3 = $i5 + $i3;
+
+        virtualinvoke $r2.<java.io.ByteArrayOutputStream: void write(int)>($i3);
+
+     label3:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label4:
+        staticinvoke <com.google.zxing.client.result.VCardResultParser: void maybeAppendFragment(java.io.ByteArrayOutputStream,java.lang.String,java.lang.StringBuilder)>($r2, $r0, $r1);
+
+        $r0 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r0;
+    }
+
+    public static void formatNames(java.lang.Iterable)
+    {
+        java.util.Iterator $r1;
+        java.lang.String[] $r5;
+        java.lang.Iterable $r0;
+        java.util.List $r3;
+        int $i0, $i1, $i2;
+        java.lang.Object $r2;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r4, $r6;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.Iterable;
+
+        if $r0 == null goto label4;
+
+        $r1 = interfaceinvoke $r0.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r1.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label4;
+
+        $r2 = interfaceinvoke $r1.<java.util.Iterator: java.lang.Object next()>();
+
+        $r3 = (java.util.List) $r2;
+
+        $r2 = interfaceinvoke $r3.<java.util.List: java.lang.Object get(int)>(0);
+
+        $r4 = (java.lang.String) $r2;
+
+        $r5 = newarray (java.lang.String)[5];
+
+        $i0 = 0;
+
+        $i1 = 0;
+
+     label2:
+        $i2 = lengthof $r5;
+
+        $i2 = $i2 - 1;
+
+        if $i0 >= $i2 goto label3;
+
+        $i2 = virtualinvoke $r4.<java.lang.String: int indexOf(int,int)>(59, $i1);
+
+        if $i2 < 0 goto label3;
+
+        $r6 = virtualinvoke $r4.<java.lang.String: java.lang.String substring(int,int)>($i1, $i2);
+
+        $r5[$i0] = $r6;
+
+        $i0 = $i0 + 1;
+
+        $i1 = $i2 + 1;
+
+        goto label2;
+
+     label3:
+        $r4 = virtualinvoke $r4.<java.lang.String: java.lang.String substring(int)>($i1);
+
+        $r5[$i0] = $r4;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>(int)>(100);
+
+        staticinvoke <com.google.zxing.client.result.VCardResultParser: void maybeAppendComponent(java.lang.String[],int,java.lang.StringBuilder)>($r5, 3, $r7);
+
+        staticinvoke <com.google.zxing.client.result.VCardResultParser: void maybeAppendComponent(java.lang.String[],int,java.lang.StringBuilder)>($r5, 1, $r7);
+
+        staticinvoke <com.google.zxing.client.result.VCardResultParser: void maybeAppendComponent(java.lang.String[],int,java.lang.StringBuilder)>($r5, 2, $r7);
+
+        staticinvoke <com.google.zxing.client.result.VCardResultParser: void maybeAppendComponent(java.lang.String[],int,java.lang.StringBuilder)>($r5, 0, $r7);
+
+        staticinvoke <com.google.zxing.client.result.VCardResultParser: void maybeAppendComponent(java.lang.String[],int,java.lang.StringBuilder)>($r5, 4, $r7);
+
+        $r4 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.String: java.lang.String trim()>();
+
+        interfaceinvoke $r3.<java.util.List: java.lang.Object set(int,java.lang.Object)>(0, $r4);
+
+        goto label1;
+
+     label4:
+        return;
+    }
+
+    public static boolean isLikeVCardDate(java.lang.CharSequence)
+    {
+        java.util.regex.Matcher $r2;
+        java.lang.CharSequence $r1;
+        java.util.regex.Pattern $r0;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.CharSequence;
+
+        if $r1 == null goto label2;
+
+        $r0 = <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern VCARD_LIKE_DATE>;
+
+        $r2 = virtualinvoke $r0.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r1);
+
+        $z0 = virtualinvoke $r2.<java.util.regex.Matcher: boolean matches()>();
+
+        if $z0 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    public static java.util.List matchSingleVCardPrefixedField(java.lang.CharSequence, java.lang.String, boolean, boolean)
+    {
+        java.util.List $r2;
+        java.lang.CharSequence $r0;
+        java.lang.Object $r3;
+        java.lang.String $r1;
+        boolean $z0, $z1;
+
+        $r0 := @parameter0: java.lang.CharSequence;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 := @parameter3: boolean;
+
+        $r2 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.util.List matchVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean,boolean)>($r0, $r1, $z0, $z1);
+
+        if $r2 == null goto label2;
+
+        $z0 = interfaceinvoke $r2.<java.util.List: boolean isEmpty()>();
+
+        if $z0 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        $r3 = interfaceinvoke $r2.<java.util.List: java.lang.Object get(int)>(0);
+
+        $r2 = (java.util.List) $r3;
+
+        return $r2;
+
+     label2:
+        return null;
+    }
+
+    public static java.util.List matchVCardPrefixedField(java.lang.CharSequence, java.lang.String, boolean, boolean)
+    {
+        java.lang.String[] $r7, $r10;
+        java.util.ArrayList $r2, $r8, $r14;
+        java.util.regex.Matcher $r6;
+        int $i0, $i1, $i2, $i3, $i4, $i6;
+        java.lang.String $r1, $r4, $r9, $r11, $r12;
+        boolean $z0, $z1, $z2, $z3;
+        java.lang.CharSequence $r0;
+        char $c5;
+        java.lang.StringBuilder $r3, $r13;
+        java.util.regex.Pattern $r5;
+
+        $r0 := @parameter0: java.lang.CharSequence;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 := @parameter3: boolean;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $i1 = 0;
+
+        $r2 = null;
+
+     label01:
+        if $i1 >= $i0 goto label26;
+
+        $r13 = new java.lang.StringBuilder;
+
+        $r3 = $r13;
+
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:^|\n)");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r0);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:;([^:]*))?:");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r5 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String,int)>($r4, 2);
+
+        $r6 = virtualinvoke $r5.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r1);
+
+        if $i1 <= 0 goto label02;
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label02:
+        $z2 = virtualinvoke $r6.<java.util.regex.Matcher: boolean find(int)>($i1);
+
+        if $z2 != 0 goto label03;
+
+        return $r2;
+
+     label03:
+        $i1 = virtualinvoke $r6.<java.util.regex.Matcher: int end(int)>(0);
+
+        $r4 = virtualinvoke $r6.<java.util.regex.Matcher: java.lang.String group(int)>(1);
+
+        if $r4 == null goto label08;
+
+        $r5 = <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern SEMICOLON>;
+
+        $r7 = virtualinvoke $r5.<java.util.regex.Pattern: java.lang.String[] split(java.lang.CharSequence)>($r4);
+
+        $i2 = lengthof $r7;
+
+        $i3 = 0;
+
+        $r8 = null;
+
+        $z2 = 0;
+
+        $r4 = null;
+
+     label04:
+        if $i3 >= $i2 goto label09;
+
+        $r9 = $r7[$i3];
+
+        if $r8 != null goto label05;
+
+        $r14 = new java.util.ArrayList;
+
+        $r8 = $r14;
+
+        specialinvoke $r14.<java.util.ArrayList: void <init>(int)>(1);
+
+     label05:
+        interfaceinvoke $r8.<java.util.List: boolean add(java.lang.Object)>($r9);
+
+        $r5 = <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern EQUALS>;
+
+        $r10 = virtualinvoke $r5.<java.util.regex.Pattern: java.lang.String[] split(java.lang.CharSequence,int)>($r9, 2);
+
+        $i4 = lengthof $r10;
+
+        if $i4 <= 1 goto label07;
+
+        $r9 = $r10[0];
+
+        $r11 = $r10[1];
+
+        $r12 = "ENCODING";
+
+        $z3 = virtualinvoke $r12.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r9);
+
+        if $z3 == 0 goto label06;
+
+        $r12 = "QUOTED-PRINTABLE";
+
+        $z3 = virtualinvoke $r12.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r11);
+
+        if $z3 == 0 goto label06;
+
+        $z2 = 1;
+
+        goto label07;
+
+     label06:
+        $r12 = "CHARSET";
+
+        $z3 = virtualinvoke $r12.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r9);
+
+        if $z3 == 0 goto label07;
+
+        $r4 = $r11;
+
+     label07:
+        $i3 = $i3 + 1;
+
+        goto label04;
+
+     label08:
+        $r8 = null;
+
+        $z2 = 0;
+
+        $r4 = null;
+
+     label09:
+        $i2 = $i1;
+
+     label10:
+        $i2 = virtualinvoke $r1.<java.lang.String: int indexOf(int,int)>(10, $i2);
+
+        $i3 = $i2;
+
+        if $i2 < 0 goto label15;
+
+        $i4 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $i4 = $i4 - 1;
+
+        if $i2 >= $i4 goto label12;
+
+        $i4 = $i2 + 1;
+
+        $c5 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i4);
+
+        $i6 = (int) $c5;
+
+        if $i6 == 32 goto label11;
+
+        $c5 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i4);
+
+        $i4 = (int) $c5;
+
+        if $i4 != 9 goto label12;
+
+     label11:
+        $i2 = $i2 + 2;
+
+        goto label10;
+
+     label12:
+        if $z2 == 0 goto label15;
+
+        if $i2 < 1 goto label13;
+
+        $i4 = -1;
+
+        $i4 = $i2 + $i4;
+
+        $c5 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i4);
+
+        $i4 = (int) $c5;
+
+        if $i4 == 61 goto label14;
+
+     label13:
+        if $i2 < 2 goto label15;
+
+        $i4 = -2;
+
+        $i4 = $i2 + $i4;
+
+        $c5 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i4);
+
+        $i4 = (int) $c5;
+
+        if $i4 != 61 goto label15;
+
+     label14:
+        $i2 = $i2 + 1;
+
+        goto label10;
+
+     label15:
+        if $i2 >= 0 goto label16;
+
+        $i1 = $i0;
+
+        goto label25;
+
+     label16:
+        if $i2 <= $i1 goto label24;
+
+        if $r2 != null goto label17;
+
+        $r14 = new java.util.ArrayList;
+
+        $r2 = $r14;
+
+        specialinvoke $r14.<java.util.ArrayList: void <init>(int)>(1);
+
+     label17:
+        if $i2 < 1 goto label18;
+
+        $i4 = -1;
+
+        $i4 = $i2 + $i4;
+
+        $c5 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i4);
+
+        $i4 = (int) $c5;
+
+        if $i4 != 13 goto label18;
+
+        $i3 = -1;
+
+        $i3 = $i2 + $i3;
+
+     label18:
+        $r9 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int,int)>($i1, $i3);
+
+        $r11 = $r9;
+
+        if $z0 == 0 goto label19;
+
+        $r11 = virtualinvoke $r9.<java.lang.String: java.lang.String trim()>();
+
+     label19:
+        if $z2 == 0 goto label20;
+
+        $r4 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.lang.String decodeQuotedPrintable(java.lang.CharSequence,java.lang.String)>($r11, $r4);
+
+        $r9 = $r4;
+
+        if $z1 == 0 goto label22;
+
+        $r5 = <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern UNESCAPED_SEMICOLONS>;
+
+        $r6 = virtualinvoke $r5.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r4);
+
+        $r4 = virtualinvoke $r6.<java.util.regex.Matcher: java.lang.String replaceAll(java.lang.String)>("\n");
+
+        $r9 = virtualinvoke $r4.<java.lang.String: java.lang.String trim()>();
+
+        goto label22;
+
+     label20:
+        if $z1 == 0 goto label21;
+
+        $r5 = <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern UNESCAPED_SEMICOLONS>;
+
+        $r6 = virtualinvoke $r5.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r11);
+
+        $r4 = virtualinvoke $r6.<java.util.regex.Matcher: java.lang.String replaceAll(java.lang.String)>("\n");
+
+        $r11 = virtualinvoke $r4.<java.lang.String: java.lang.String trim()>();
+
+     label21:
+        $r5 = <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern CR_LF_SPACE_TAB>;
+
+        $r6 = virtualinvoke $r5.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r11);
+
+        $r4 = virtualinvoke $r6.<java.util.regex.Matcher: java.lang.String replaceAll(java.lang.String)>("");
+
+        $r5 = <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern NEWLINE_ESCAPE>;
+
+        $r6 = virtualinvoke $r5.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r4);
+
+        $r4 = virtualinvoke $r6.<java.util.regex.Matcher: java.lang.String replaceAll(java.lang.String)>("\n");
+
+        $r5 = <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern VCARD_ESCAPES>;
+
+        $r6 = virtualinvoke $r5.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r4);
+
+        $r9 = virtualinvoke $r6.<java.util.regex.Matcher: java.lang.String replaceAll(java.lang.String)>("$1");
+
+     label22:
+        if $r8 != null goto label23;
+
+        $r14 = new java.util.ArrayList;
+
+        $r8 = $r14;
+
+        specialinvoke $r14.<java.util.ArrayList: void <init>(int)>(1);
+
+        interfaceinvoke $r8.<java.util.List: boolean add(java.lang.Object)>($r9);
+
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r8);
+
+        goto label24;
+
+     label23:
+        interfaceinvoke $r8.<java.util.List: void add(int,java.lang.Object)>(0, $r9);
+
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r8);
+
+        goto label24;
+
+     label24:
+        $i1 = $i3 + 1;
+
+     label25:
+        goto label01;
+
+     label26:
+        return $r2;
+    }
+
+    public static void maybeAppendComponent(java.lang.String[], int, java.lang.StringBuilder)
+    {
+        int $i0, $i1;
+        java.lang.StringBuilder $r0;
+        java.lang.String[] $r1;
+        java.lang.String $r2;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.String[];
+
+        $i0 := @parameter1: int;
+
+        $r0 := @parameter2: java.lang.StringBuilder;
+
+        $r2 = $r1[$i0];
+
+        if $r2 == null goto label2;
+
+        $r2 = $r1[$i0];
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean isEmpty()>();
+
+        if $z0 != 0 goto label2;
+
+        $i1 = virtualinvoke $r0.<java.lang.StringBuilder: int length()>();
+
+        if $i1 <= 0 goto label1;
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(32);
+
+     label1:
+        $r2 = $r1[$i0];
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+     label2:
+        return;
+    }
+
+    public static void maybeAppendFragment(java.io.ByteArrayOutputStream, java.lang.String, java.lang.StringBuilder)
+    {
+        byte[] $r5;
+        java.io.ByteArrayOutputStream $r0;
+        java.nio.charset.Charset $r6;
+        int $i0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2, $r4;
+        java.io.UnsupportedEncodingException $r3;
+
+        $r0 := @parameter0: java.io.ByteArrayOutputStream;
+
+        $r4 := @parameter1: java.lang.String;
+
+        $r1 := @parameter2: java.lang.StringBuilder;
+
+        $i0 = virtualinvoke $r0.<java.io.ByteArrayOutputStream: int size()>();
+
+        if $i0 <= 0 goto label7;
+
+        $r5 = virtualinvoke $r0.<java.io.ByteArrayOutputStream: byte[] toByteArray()>();
+
+        if $r4 != null goto label1;
+
+        $r4 = new java.lang.String;
+
+        $r6 = staticinvoke <java.nio.charset.Charset: java.nio.charset.Charset forName(java.lang.String)>("UTF-8");
+
+        specialinvoke $r4.<java.lang.String: void <init>(byte[],java.nio.charset.Charset)>($r5, $r6);
+
+        goto label5;
+
+     label1:
+        $r2 = new java.lang.String;
+
+     label2:
+        specialinvoke $r2.<java.lang.String: void <init>(byte[],java.lang.String)>($r5, $r4);
+
+     label3:
+        $r4 = $r2;
+
+        goto label5;
+
+     label4:
+        $r4 = new java.lang.String;
+
+        $r6 = staticinvoke <java.nio.charset.Charset: java.nio.charset.Charset forName(java.lang.String)>("UTF-8");
+
+        specialinvoke $r4.<java.lang.String: void <init>(byte[],java.nio.charset.Charset)>($r5, $r6);
+
+     label5:
+        virtualinvoke $r0.<java.io.ByteArrayOutputStream: void reset()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        return;
+
+     label6:
+        $r3 := @caughtexception;
+
+        goto label4;
+
+     label7:
+        return;
+
+        catch java.io.UnsupportedEncodingException from label2 to label3 with label6;
+    }
+
+    public static java.lang.String toPrimaryValue(java.util.List)
+    {
+        java.util.List $r0;
+        java.lang.Object $r1;
+        java.lang.String $r2;
+        boolean $z0;
+
+        $r0 := @parameter0: java.util.List;
+
+        if $r0 == null goto label2;
+
+        $z0 = interfaceinvoke $r0.<java.util.List: boolean isEmpty()>();
+
+        if $z0 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        $r1 = interfaceinvoke $r0.<java.util.List: java.lang.Object get(int)>(0);
+
+        $r2 = (java.lang.String) $r1;
+
+        return $r2;
+
+     label2:
+        return null;
+    }
+
+    public static java.lang.String[] toPrimaryValues(java.util.Collection)
+    {
+        java.lang.Object[] $r7;
+        java.util.Iterator $r2;
+        java.util.Collection $r0;
+        java.lang.String[] $r6;
+        java.util.ArrayList $r1;
+        java.util.List $r4;
+        int $i0;
+        java.lang.Object $r3;
+        java.lang.String $r5;
+        boolean $z0;
+
+        $r0 := @parameter0: java.util.Collection;
+
+        if $r0 == null goto label4;
+
+        $z0 = interfaceinvoke $r0.<java.util.Collection: boolean isEmpty()>();
+
+        if $z0 == 0 goto label1;
+
+        goto label4;
+
+     label1:
+        $r1 = new java.util.ArrayList;
+
+        $i0 = interfaceinvoke $r0.<java.util.Collection: int size()>();
+
+        specialinvoke $r1.<java.util.ArrayList: void <init>(int)>($i0);
+
+        $r2 = interfaceinvoke $r0.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r3 = interfaceinvoke $r2.<java.util.Iterator: java.lang.Object next()>();
+
+        $r4 = (java.util.List) $r3;
+
+        $r3 = interfaceinvoke $r4.<java.util.List: java.lang.Object get(int)>(0);
+
+        $r5 = (java.lang.String) $r3;
+
+        if $r5 == null goto label2;
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean isEmpty()>();
+
+        if $z0 != 0 goto label2;
+
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>($r5);
+
+        goto label2;
+
+     label3:
+        $i0 = interfaceinvoke $r0.<java.util.Collection: int size()>();
+
+        $r6 = newarray (java.lang.String)[$i0];
+
+        $r7 = interfaceinvoke $r1.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($r6);
+
+        $r6 = (java.lang.String[]) $r7;
+
+        return $r6;
+
+     label4:
+        return null;
+    }
+
+    public static java.lang.String[] toTypes(java.util.Collection)
+    {
+        java.lang.Object[] $r9;
+        java.util.Iterator $r3;
+        java.util.Collection $r1;
+        java.lang.String[] $r8;
+        java.util.ArrayList $r2;
+        java.util.List $r5;
+        int $i0, $i1;
+        java.lang.Object $r4;
+        java.lang.String $r0, $r6, $r7;
+        boolean $z0;
+
+        $r1 := @parameter0: java.util.Collection;
+
+        if $r1 == null goto label9;
+
+        $z0 = interfaceinvoke $r1.<java.util.Collection: boolean isEmpty()>();
+
+        if $z0 == 0 goto label1;
+
+        return null;
+
+     label1:
+        $r2 = new java.util.ArrayList;
+
+        $i0 = interfaceinvoke $r1.<java.util.Collection: int size()>();
+
+        specialinvoke $r2.<java.util.ArrayList: void <init>(int)>($i0);
+
+        $r3 = interfaceinvoke $r1.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label8;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (java.util.List) $r4;
+
+        $i0 = 1;
+
+     label3:
+        $i1 = interfaceinvoke $r5.<java.util.List: int size()>();
+
+        if $i0 >= $i1 goto label6;
+
+        $r4 = interfaceinvoke $r5.<java.util.List: java.lang.Object get(int)>($i0);
+
+        $r6 = (java.lang.String) $r4;
+
+        $i1 = virtualinvoke $r6.<java.lang.String: int indexOf(int)>(61);
+
+        if $i1 >= 0 goto label4;
+
+        $r0 = $r6;
+
+        goto label7;
+
+     label4:
+        $r7 = virtualinvoke $r6.<java.lang.String: java.lang.String substring(int,int)>(0, $i1);
+
+        $r0 = "TYPE";
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r7);
+
+        if $z0 == 0 goto label5;
+
+        $i0 = $i1 + 1;
+
+        $r0 = virtualinvoke $r6.<java.lang.String: java.lang.String substring(int)>($i0);
+
+        goto label7;
+
+     label5:
+        $i0 = $i0 + 1;
+
+        goto label3;
+
+     label6:
+        $r0 = null;
+
+     label7:
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r0);
+
+        goto label2;
+
+     label8:
+        $i0 = interfaceinvoke $r1.<java.util.Collection: int size()>();
+
+        $r8 = newarray (java.lang.String)[$i0];
+
+        $r9 = interfaceinvoke $r2.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($r8);
+
+        $r8 = (java.lang.String[]) $r9;
+
+        return $r8;
+
+     label9:
+        return null;
+    }
+
+    public com.google.zxing.client.result.AddressBookParsedResult parse(com.google.zxing.Result)
+    {
+        com.google.zxing.Result $r1;
+        java.util.regex.Matcher $r4;
+        com.google.zxing.client.result.AddressBookParsedResult $r20;
+        boolean $z0;
+        java.lang.CharSequence $r9;
+        java.util.List $r5, $r6, $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17, $r18;
+        java.util.regex.Pattern $r3;
+        java.lang.String[] $r7, $r19, $r21, $r22, $r23, $r24, $r25, $r27, $r28, $r32;
+        com.google.zxing.client.result.VCardResultParser r0;
+        int $i0;
+        java.lang.String $r2, $r26, $r29, $r30, $r31;
+        java.lang.Object $r8;
+
+        r0 := @this: com.google.zxing.client.result.VCardResultParser;
+
+        $r1 := @parameter0: com.google.zxing.Result;
+
+        $r2 = staticinvoke <com.google.zxing.client.result.ResultParser: java.lang.String getMassagedText(com.google.zxing.Result)>($r1);
+
+        $r3 = <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern BEGIN_VCARD>;
+
+        $r4 = virtualinvoke $r3.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r2);
+
+        $z0 = virtualinvoke $r4.<java.util.regex.Matcher: boolean find()>();
+
+        if $z0 == 0 goto label9;
+
+        $i0 = virtualinvoke $r4.<java.util.regex.Matcher: int start()>();
+
+        if $i0 == 0 goto label1;
+
+        return null;
+
+     label1:
+        $r5 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.util.List matchVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean,boolean)>("FN", $r2, 1, 0);
+
+        $r6 = $r5;
+
+        if $r5 != null goto label2;
+
+        $r5 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.util.List matchVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean,boolean)>("N", $r2, 1, 0);
+
+        $r6 = $r5;
+
+        staticinvoke <com.google.zxing.client.result.VCardResultParser: void formatNames(java.lang.Iterable)>($r5);
+
+     label2:
+        $r5 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.util.List matchSingleVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean,boolean)>("NICKNAME", $r2, 1, 0);
+
+        if $r5 != null goto label3;
+
+        $r7 = null;
+
+        goto label4;
+
+     label3:
+        $r3 = <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern COMMA>;
+
+        $r8 = interfaceinvoke $r5.<java.util.List: java.lang.Object get(int)>(0);
+
+        $r9 = (java.lang.CharSequence) $r8;
+
+        $r7 = virtualinvoke $r3.<java.util.regex.Pattern: java.lang.String[] split(java.lang.CharSequence)>($r9);
+
+     label4:
+        $r5 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.util.List matchVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean,boolean)>("TEL", $r2, 1, 0);
+
+        $r10 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.util.List matchVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean,boolean)>("EMAIL", $r2, 1, 0);
+
+        $r11 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.util.List matchSingleVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean,boolean)>("NOTE", $r2, 0, 0);
+
+        $r12 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.util.List matchVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean,boolean)>("ADR", $r2, 1, 1);
+
+        $r13 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.util.List matchSingleVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean,boolean)>("ORG", $r2, 1, 1);
+
+        $r14 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.util.List matchSingleVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean,boolean)>("BDAY", $r2, 1, 0);
+
+        if $r14 == null goto label5;
+
+        $r8 = interfaceinvoke $r14.<java.util.List: java.lang.Object get(int)>(0);
+
+        $r9 = (java.lang.CharSequence) $r8;
+
+        $z0 = staticinvoke <com.google.zxing.client.result.VCardResultParser: boolean isLikeVCardDate(java.lang.CharSequence)>($r9);
+
+        if $z0 != 0 goto label5;
+
+        $r14 = null;
+
+        goto label5;
+
+     label5:
+        $r15 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.util.List matchSingleVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean,boolean)>("TITLE", $r2, 1, 0);
+
+        $r16 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.util.List matchVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean,boolean)>("URL", $r2, 1, 0);
+
+        $r17 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.util.List matchSingleVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean,boolean)>("IMPP", $r2, 1, 0);
+
+        $r18 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.util.List matchSingleVCardPrefixedField(java.lang.CharSequence,java.lang.String,boolean,boolean)>("GEO", $r2, 1, 0);
+
+        if $r18 != null goto label6;
+
+        $r19 = null;
+
+        goto label7;
+
+     label6:
+        $r3 = <com.google.zxing.client.result.VCardResultParser: java.util.regex.Pattern SEMICOLON_OR_COMMA>;
+
+        $r8 = interfaceinvoke $r18.<java.util.List: java.lang.Object get(int)>(0);
+
+        $r9 = (java.lang.CharSequence) $r8;
+
+        $r19 = virtualinvoke $r3.<java.util.regex.Pattern: java.lang.String[] split(java.lang.CharSequence)>($r9);
+
+     label7:
+        if $r19 == null goto label8;
+
+        $i0 = lengthof $r19;
+
+        if $i0 == 2 goto label8;
+
+        $r19 = null;
+
+        goto label8;
+
+     label8:
+        $r20 = new com.google.zxing.client.result.AddressBookParsedResult;
+
+        $r21 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.lang.String[] toPrimaryValues(java.util.Collection)>($r6);
+
+        $r22 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.lang.String[] toPrimaryValues(java.util.Collection)>($r5);
+
+        $r23 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.lang.String[] toTypes(java.util.Collection)>($r5);
+
+        $r24 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.lang.String[] toPrimaryValues(java.util.Collection)>($r10);
+
+        $r25 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.lang.String[] toTypes(java.util.Collection)>($r10);
+
+        $r2 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.lang.String toPrimaryValue(java.util.List)>($r17);
+
+        $r26 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.lang.String toPrimaryValue(java.util.List)>($r11);
+
+        $r27 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.lang.String[] toPrimaryValues(java.util.Collection)>($r12);
+
+        $r28 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.lang.String[] toTypes(java.util.Collection)>($r12);
+
+        $r29 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.lang.String toPrimaryValue(java.util.List)>($r13);
+
+        $r30 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.lang.String toPrimaryValue(java.util.List)>($r14);
+
+        $r31 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.lang.String toPrimaryValue(java.util.List)>($r15);
+
+        $r32 = staticinvoke <com.google.zxing.client.result.VCardResultParser: java.lang.String[] toPrimaryValues(java.util.Collection)>($r16);
+
+        specialinvoke $r20.<com.google.zxing.client.result.AddressBookParsedResult: void <init>(java.lang.String[],java.lang.String[],java.lang.String,java.lang.String[],java.lang.String[],java.lang.String[],java.lang.String[],java.lang.String,java.lang.String,java.lang.String[],java.lang.String[],java.lang.String,java.lang.String,java.lang.String,java.lang.String[],java.lang.String[])>($r21, $r7, null, $r22, $r23, $r24, $r25, $r2, $r26, $r27, $r28, $r29, $r30, $r31, $r32, $r19);
+
+        return $r20;
+
+     label9:
+        return null;
+    }
+
+    public volatile com.google.zxing.client.result.ParsedResult parse(com.google.zxing.Result)
+    {
+        com.google.zxing.Result $r2;
+        com.google.zxing.client.result.AddressBookParsedResult $r1;
+        com.google.zxing.client.result.VCardResultParser r0;
+
+        r0 := @this: com.google.zxing.client.result.VCardResultParser;
+
+        $r2 := @parameter0: com.google.zxing.Result;
+
+        $r1 = virtualinvoke r0.<com.google.zxing.client.result.VCardResultParser: com.google.zxing.client.result.AddressBookParsedResult parse(com.google.zxing.Result)>($r2);
+
+        return $r1;
+    }
+}

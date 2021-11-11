@@ -1,0 +1,586 @@
+public abstract class com.google.common.util.concurrent.RateLimiter extends java.lang.Object
+{
+    public volatile java.lang.Object mutexDoNotUseDirectly;
+    public final com.google.common.util.concurrent.RateLimiter$SleepingStopwatch stopwatch;
+
+    public void <init>(com.google.common.util.concurrent.RateLimiter$SleepingStopwatch)
+    {
+        com.google.common.util.concurrent.RateLimiter$SleepingStopwatch $r1;
+        com.google.common.util.concurrent.RateLimiter r0;
+
+        r0 := @this: com.google.common.util.concurrent.RateLimiter;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.RateLimiter$SleepingStopwatch;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        r0.<com.google.common.util.concurrent.RateLimiter: com.google.common.util.concurrent.RateLimiter$SleepingStopwatch stopwatch> = $r1;
+
+        return;
+    }
+
+    private boolean canAcquire(long, long)
+    {
+        byte $b3;
+        int $i4;
+        long $l0, $l1, $l2;
+        com.google.common.util.concurrent.RateLimiter r0;
+
+        r0 := @this: com.google.common.util.concurrent.RateLimiter;
+
+        $l1 := @parameter0: long;
+
+        $l2 := @parameter1: long;
+
+        $l0 = virtualinvoke r0.<com.google.common.util.concurrent.RateLimiter: long queryEarliestAvailable(long)>($l1);
+
+        $l2 = $l0 - $l2;
+
+        $b3 = $l2 cmp $l1;
+
+        $i4 = (int) $b3;
+
+        if $i4 > 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static void checkPermits(int)
+    {
+        int $i0;
+        boolean $z0;
+
+        $i0 := @parameter0: int;
+
+        if $i0 <= 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.String,int)>($z0, "Requested permits (%s) must be positive", $i0);
+
+        return;
+    }
+
+    public static com.google.common.util.concurrent.RateLimiter create(double)
+    {
+        com.google.common.util.concurrent.RateLimiter$SleepingStopwatch $r0;
+        com.google.common.util.concurrent.RateLimiter $r1;
+        double $d0;
+
+        $d0 := @parameter0: double;
+
+        $r0 = staticinvoke <com.google.common.util.concurrent.RateLimiter$SleepingStopwatch: com.google.common.util.concurrent.RateLimiter$SleepingStopwatch createFromSystemTimer()>();
+
+        $r1 = staticinvoke <com.google.common.util.concurrent.RateLimiter: com.google.common.util.concurrent.RateLimiter create(double,com.google.common.util.concurrent.RateLimiter$SleepingStopwatch)>($d0, $r0);
+
+        return $r1;
+    }
+
+    public static com.google.common.util.concurrent.RateLimiter create(double, long, java.util.concurrent.TimeUnit)
+    {
+        long $l0;
+        com.google.common.util.concurrent.RateLimiter $r2;
+        java.util.concurrent.TimeUnit $r0;
+        byte $b1;
+        com.google.common.util.concurrent.RateLimiter$SleepingStopwatch $r1;
+        int $i2;
+        double $d0;
+        boolean $z0;
+
+        $d0 := @parameter0: double;
+
+        $l0 := @parameter1: long;
+
+        $r0 := @parameter2: java.util.concurrent.TimeUnit;
+
+        $b1 = $l0 cmp 0L;
+
+        $i2 = (int) $b1;
+
+        if $i2 < 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.String,long)>($z0, "warmupPeriod must not be negative: %s", $l0);
+
+        $r1 = staticinvoke <com.google.common.util.concurrent.RateLimiter$SleepingStopwatch: com.google.common.util.concurrent.RateLimiter$SleepingStopwatch createFromSystemTimer()>();
+
+        $r2 = staticinvoke <com.google.common.util.concurrent.RateLimiter: com.google.common.util.concurrent.RateLimiter create(double,long,java.util.concurrent.TimeUnit,double,com.google.common.util.concurrent.RateLimiter$SleepingStopwatch)>($d0, $l0, $r0, 3.0, $r1);
+
+        return $r2;
+    }
+
+    public static com.google.common.util.concurrent.RateLimiter create(double, long, java.util.concurrent.TimeUnit, double, com.google.common.util.concurrent.RateLimiter$SleepingStopwatch)
+    {
+        java.util.concurrent.TimeUnit $r0;
+        com.google.common.util.concurrent.RateLimiter$SleepingStopwatch $r1;
+        long $l0;
+        com.google.common.util.concurrent.SmoothRateLimiter$SmoothWarmingUp $r2;
+        double $d0, $d1;
+
+        $d0 := @parameter0: double;
+
+        $l0 := @parameter1: long;
+
+        $r0 := @parameter2: java.util.concurrent.TimeUnit;
+
+        $d1 := @parameter3: double;
+
+        $r1 := @parameter4: com.google.common.util.concurrent.RateLimiter$SleepingStopwatch;
+
+        $r2 = new com.google.common.util.concurrent.SmoothRateLimiter$SmoothWarmingUp;
+
+        specialinvoke $r2.<com.google.common.util.concurrent.SmoothRateLimiter$SmoothWarmingUp: void <init>(com.google.common.util.concurrent.RateLimiter$SleepingStopwatch,long,java.util.concurrent.TimeUnit,double)>($r1, $l0, $r0, $d1);
+
+        virtualinvoke $r2.<com.google.common.util.concurrent.RateLimiter: void setRate(double)>($d0);
+
+        return $r2;
+    }
+
+    public static com.google.common.util.concurrent.RateLimiter create(double, com.google.common.util.concurrent.RateLimiter$SleepingStopwatch)
+    {
+        com.google.common.util.concurrent.RateLimiter$SleepingStopwatch $r0;
+        com.google.common.util.concurrent.SmoothRateLimiter$SmoothBursty $r1;
+        double $d0;
+
+        $d0 := @parameter0: double;
+
+        $r0 := @parameter1: com.google.common.util.concurrent.RateLimiter$SleepingStopwatch;
+
+        $r1 = new com.google.common.util.concurrent.SmoothRateLimiter$SmoothBursty;
+
+        specialinvoke $r1.<com.google.common.util.concurrent.SmoothRateLimiter$SmoothBursty: void <init>(com.google.common.util.concurrent.RateLimiter$SleepingStopwatch,double)>($r0, 1.0);
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.RateLimiter: void setRate(double)>($d0);
+
+        return $r1;
+    }
+
+    private java.lang.Object mutex()
+    {
+        java.lang.Throwable $r2;
+        java.lang.Object $r1;
+        com.google.common.util.concurrent.RateLimiter r0;
+
+        r0 := @this: com.google.common.util.concurrent.RateLimiter;
+
+        $r1 = r0.<com.google.common.util.concurrent.RateLimiter: java.lang.Object mutexDoNotUseDirectly>;
+
+        if $r1 != null goto label6;
+
+        entermonitor r0;
+
+     label1:
+        $r1 = r0.<com.google.common.util.concurrent.RateLimiter: java.lang.Object mutexDoNotUseDirectly>;
+
+        if $r1 != null goto label2;
+
+        $r1 = new java.lang.Object;
+
+        specialinvoke $r1.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.common.util.concurrent.RateLimiter: java.lang.Object mutexDoNotUseDirectly> = $r1;
+
+     label2:
+        exitmonitor r0;
+
+     label3:
+        return $r1;
+
+     label4:
+        $r2 := @caughtexception;
+
+        exitmonitor r0;
+
+     label5:
+        throw $r2;
+
+     label6:
+        return $r1;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public double acquire()
+    {
+        com.google.common.util.concurrent.RateLimiter r0;
+        double $d0;
+
+        r0 := @this: com.google.common.util.concurrent.RateLimiter;
+
+        $d0 = virtualinvoke r0.<com.google.common.util.concurrent.RateLimiter: double acquire(int)>(1);
+
+        return $d0;
+    }
+
+    public double acquire(int)
+    {
+        java.util.concurrent.TimeUnit $r2;
+        int $i0;
+        com.google.common.util.concurrent.RateLimiter$SleepingStopwatch $r1;
+        long $l1;
+        com.google.common.util.concurrent.RateLimiter r0;
+        double $d0, $d1;
+
+        r0 := @this: com.google.common.util.concurrent.RateLimiter;
+
+        $i0 := @parameter0: int;
+
+        $l1 = virtualinvoke r0.<com.google.common.util.concurrent.RateLimiter: long reserve(int)>($i0);
+
+        $r1 = r0.<com.google.common.util.concurrent.RateLimiter: com.google.common.util.concurrent.RateLimiter$SleepingStopwatch stopwatch>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.RateLimiter$SleepingStopwatch: void sleepMicrosUninterruptibly(long)>($l1);
+
+        $d0 = (double) $l1;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        $d0 = $d0 * 1.0;
+
+        $r2 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit SECONDS>;
+
+        $l1 = virtualinvoke $r2.<java.util.concurrent.TimeUnit: long toMicros(long)>(1L);
+
+        $d1 = (double) $l1;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d1);
+
+        $d0 = $d0 / $d1;
+
+        return $d0;
+    }
+
+    public abstract double doGetRate();
+
+    public abstract void doSetRate(double, long);
+
+    public final double getRate()
+    {
+        java.lang.Throwable $r2;
+        java.lang.Object $r1;
+        com.google.common.util.concurrent.RateLimiter r0;
+        double $d0;
+
+        r0 := @this: com.google.common.util.concurrent.RateLimiter;
+
+        $r1 = specialinvoke r0.<com.google.common.util.concurrent.RateLimiter: java.lang.Object mutex()>();
+
+        entermonitor $r1;
+
+     label1:
+        $d0 = virtualinvoke r0.<com.google.common.util.concurrent.RateLimiter: double doGetRate()>();
+
+        exitmonitor $r1;
+
+     label2:
+        return $d0;
+
+     label3:
+        $r2 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public abstract long queryEarliestAvailable(long);
+
+    public final long reserve(int)
+    {
+        java.lang.Throwable $r3;
+        int $i0;
+        com.google.common.util.concurrent.RateLimiter$SleepingStopwatch $r2;
+        java.lang.Object $r1;
+        long $l1;
+        com.google.common.util.concurrent.RateLimiter r0;
+
+        r0 := @this: com.google.common.util.concurrent.RateLimiter;
+
+        $i0 := @parameter0: int;
+
+        staticinvoke <com.google.common.util.concurrent.RateLimiter: void checkPermits(int)>($i0);
+
+        $r1 = specialinvoke r0.<com.google.common.util.concurrent.RateLimiter: java.lang.Object mutex()>();
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = r0.<com.google.common.util.concurrent.RateLimiter: com.google.common.util.concurrent.RateLimiter$SleepingStopwatch stopwatch>;
+
+        $l1 = virtualinvoke $r2.<com.google.common.util.concurrent.RateLimiter$SleepingStopwatch: long readMicros()>();
+
+        $l1 = virtualinvoke r0.<com.google.common.util.concurrent.RateLimiter: long reserveAndGetWaitLength(int,long)>($i0, $l1);
+
+        exitmonitor $r1;
+
+     label2:
+        return $l1;
+
+     label3:
+        $r3 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r3;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public final long reserveAndGetWaitLength(int, long)
+    {
+        int $i1;
+        long $l0, $l2;
+        com.google.common.util.concurrent.RateLimiter r0;
+
+        r0 := @this: com.google.common.util.concurrent.RateLimiter;
+
+        $i1 := @parameter0: int;
+
+        $l0 := @parameter1: long;
+
+        $l2 = virtualinvoke r0.<com.google.common.util.concurrent.RateLimiter: long reserveEarliestAvailable(int,long)>($i1, $l0);
+
+        $l0 = $l2 - $l0;
+
+        $l0 = staticinvoke <java.lang.Math: long max(long,long)>($l0, 0L);
+
+        return $l0;
+    }
+
+    public abstract long reserveEarliestAvailable(int, long);
+
+    public final void setRate(double)
+    {
+        java.lang.Throwable $r3;
+        long $l1;
+        com.google.common.util.concurrent.RateLimiter r0;
+        byte $b0;
+        com.google.common.util.concurrent.RateLimiter$SleepingStopwatch $r2;
+        int $i2;
+        java.lang.Object $r1;
+        double $d0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.RateLimiter;
+
+        $d0 := @parameter0: double;
+
+        $b0 = $d0 cmpl 0.0;
+
+        $i2 = (int) $b0;
+
+        if $i2 <= 0 goto label1;
+
+        $z0 = staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        if $z0 != 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.Object)>($z0, "rate must be positive");
+
+        $r1 = specialinvoke r0.<com.google.common.util.concurrent.RateLimiter: java.lang.Object mutex()>();
+
+        entermonitor $r1;
+
+     label3:
+        $r2 = r0.<com.google.common.util.concurrent.RateLimiter: com.google.common.util.concurrent.RateLimiter$SleepingStopwatch stopwatch>;
+
+        $l1 = virtualinvoke $r2.<com.google.common.util.concurrent.RateLimiter$SleepingStopwatch: long readMicros()>();
+
+        virtualinvoke r0.<com.google.common.util.concurrent.RateLimiter: void doSetRate(double,long)>($d0, $l1);
+
+        exitmonitor $r1;
+
+     label4:
+        return;
+
+     label5:
+        $r3 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label6:
+        throw $r3;
+
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public java.lang.String toString()
+    {
+        java.lang.Object[] $r2;
+        java.lang.Double $r3;
+        java.util.Locale $r1;
+        java.lang.String $r4;
+        com.google.common.util.concurrent.RateLimiter r0;
+        double $d0;
+
+        r0 := @this: com.google.common.util.concurrent.RateLimiter;
+
+        $r1 = <java.util.Locale: java.util.Locale ROOT>;
+
+        $r2 = newarray (java.lang.Object)[1];
+
+        $d0 = virtualinvoke r0.<com.google.common.util.concurrent.RateLimiter: double getRate()>();
+
+        $r3 = staticinvoke <java.lang.Double: java.lang.Double valueOf(double)>($d0);
+
+        $r2[0] = $r3;
+
+        $r4 = staticinvoke <java.lang.String: java.lang.String format(java.util.Locale,java.lang.String,java.lang.Object[])>($r1, "RateLimiter[stableRate=%3.1fqps]", $r2);
+
+        return $r4;
+    }
+
+    public boolean tryAcquire()
+    {
+        java.util.concurrent.TimeUnit $r1;
+        com.google.common.util.concurrent.RateLimiter r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.RateLimiter;
+
+        $r1 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit MICROSECONDS>;
+
+        $z0 = virtualinvoke r0.<com.google.common.util.concurrent.RateLimiter: boolean tryAcquire(int,long,java.util.concurrent.TimeUnit)>(1, 0L, $r1);
+
+        return $z0;
+    }
+
+    public boolean tryAcquire(int)
+    {
+        java.util.concurrent.TimeUnit $r1;
+        int $i0;
+        com.google.common.util.concurrent.RateLimiter r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.RateLimiter;
+
+        $i0 := @parameter0: int;
+
+        $r1 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit MICROSECONDS>;
+
+        $z0 = virtualinvoke r0.<com.google.common.util.concurrent.RateLimiter: boolean tryAcquire(int,long,java.util.concurrent.TimeUnit)>($i0, 0L, $r1);
+
+        return $z0;
+    }
+
+    public boolean tryAcquire(int, long, java.util.concurrent.TimeUnit)
+    {
+        java.lang.Throwable $r4;
+        long $l1, $l2;
+        com.google.common.util.concurrent.RateLimiter r0;
+        java.util.concurrent.TimeUnit $r2;
+        com.google.common.util.concurrent.RateLimiter$SleepingStopwatch $r1;
+        int $i0;
+        java.lang.Object $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.RateLimiter;
+
+        $i0 := @parameter0: int;
+
+        $l1 := @parameter1: long;
+
+        $r2 := @parameter2: java.util.concurrent.TimeUnit;
+
+        $l1 = virtualinvoke $r2.<java.util.concurrent.TimeUnit: long toMicros(long)>($l1);
+
+        $l1 = staticinvoke <java.lang.Math: long max(long,long)>($l1, 0L);
+
+        staticinvoke <com.google.common.util.concurrent.RateLimiter: void checkPermits(int)>($i0);
+
+        $r3 = specialinvoke r0.<com.google.common.util.concurrent.RateLimiter: java.lang.Object mutex()>();
+
+        entermonitor $r3;
+
+     label1:
+        $r1 = r0.<com.google.common.util.concurrent.RateLimiter: com.google.common.util.concurrent.RateLimiter$SleepingStopwatch stopwatch>;
+
+        $l2 = virtualinvoke $r1.<com.google.common.util.concurrent.RateLimiter$SleepingStopwatch: long readMicros()>();
+
+        $z0 = specialinvoke r0.<com.google.common.util.concurrent.RateLimiter: boolean canAcquire(long,long)>($l2, $l1);
+
+        if $z0 != 0 goto label3;
+
+        exitmonitor $r3;
+
+     label2:
+        return 0;
+
+     label3:
+        $l1 = virtualinvoke r0.<com.google.common.util.concurrent.RateLimiter: long reserveAndGetWaitLength(int,long)>($i0, $l2);
+
+        exitmonitor $r3;
+
+     label4:
+        $r1 = r0.<com.google.common.util.concurrent.RateLimiter: com.google.common.util.concurrent.RateLimiter$SleepingStopwatch stopwatch>;
+
+        virtualinvoke $r1.<com.google.common.util.concurrent.RateLimiter$SleepingStopwatch: void sleepMicrosUninterruptibly(long)>($l1);
+
+        return 1;
+
+     label5:
+        $r4 := @caughtexception;
+
+     label6:
+        exitmonitor $r3;
+
+     label7:
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label6 to label7 with label5;
+    }
+
+    public boolean tryAcquire(long, java.util.concurrent.TimeUnit)
+    {
+        java.util.concurrent.TimeUnit $r1;
+        long $l0;
+        com.google.common.util.concurrent.RateLimiter r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.RateLimiter;
+
+        $l0 := @parameter0: long;
+
+        $r1 := @parameter1: java.util.concurrent.TimeUnit;
+
+        $z0 = virtualinvoke r0.<com.google.common.util.concurrent.RateLimiter: boolean tryAcquire(int,long,java.util.concurrent.TimeUnit)>(1, $l0, $r1);
+
+        return $z0;
+    }
+}

@@ -1,0 +1,218 @@
+public class com.google.android.datatransport.runtime.scheduling.DefaultScheduler extends java.lang.Object implements com.google.android.datatransport.runtime.scheduling.Scheduler
+{
+    public static final java.util.logging.Logger LOGGER;
+    public final com.google.android.datatransport.runtime.backends.BackendRegistry backendRegistry;
+    public final com.google.android.datatransport.runtime.scheduling.persistence.EventStore eventStore;
+    public final java.util.concurrent.Executor executor;
+    public final com.google.android.datatransport.runtime.synchronization.SynchronizationGuard guard;
+    public final com.google.android.datatransport.runtime.scheduling.jobscheduling.WorkScheduler workScheduler;
+
+    static void <clinit>()
+    {
+        java.lang.Class $r0;
+        java.lang.String $r1;
+        java.util.logging.Logger $r2;
+
+        $r0 = class "Lcom/google/android/datatransport/runtime/TransportRuntime;";
+
+        $r1 = virtualinvoke $r0.<java.lang.Class: java.lang.String getName()>();
+
+        $r2 = staticinvoke <java.util.logging.Logger: java.util.logging.Logger getLogger(java.lang.String)>($r1);
+
+        <com.google.android.datatransport.runtime.scheduling.DefaultScheduler: java.util.logging.Logger LOGGER> = $r2;
+
+        return;
+    }
+
+    public void <init>(java.util.concurrent.Executor, com.google.android.datatransport.runtime.backends.BackendRegistry, com.google.android.datatransport.runtime.scheduling.jobscheduling.WorkScheduler, com.google.android.datatransport.runtime.scheduling.persistence.EventStore, com.google.android.datatransport.runtime.synchronization.SynchronizationGuard)
+    {
+        com.google.android.datatransport.runtime.backends.BackendRegistry $r2;
+        com.google.android.datatransport.runtime.scheduling.DefaultScheduler r0;
+        com.google.android.datatransport.runtime.scheduling.jobscheduling.WorkScheduler $r3;
+        com.google.android.datatransport.runtime.synchronization.SynchronizationGuard $r5;
+        java.util.concurrent.Executor $r1;
+        com.google.android.datatransport.runtime.scheduling.persistence.EventStore $r4;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.DefaultScheduler;
+
+        $r1 := @parameter0: java.util.concurrent.Executor;
+
+        $r2 := @parameter1: com.google.android.datatransport.runtime.backends.BackendRegistry;
+
+        $r3 := @parameter2: com.google.android.datatransport.runtime.scheduling.jobscheduling.WorkScheduler;
+
+        $r4 := @parameter3: com.google.android.datatransport.runtime.scheduling.persistence.EventStore;
+
+        $r5 := @parameter4: com.google.android.datatransport.runtime.synchronization.SynchronizationGuard;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.android.datatransport.runtime.scheduling.DefaultScheduler: java.util.concurrent.Executor executor> = $r1;
+
+        r0.<com.google.android.datatransport.runtime.scheduling.DefaultScheduler: com.google.android.datatransport.runtime.backends.BackendRegistry backendRegistry> = $r2;
+
+        r0.<com.google.android.datatransport.runtime.scheduling.DefaultScheduler: com.google.android.datatransport.runtime.scheduling.jobscheduling.WorkScheduler workScheduler> = $r3;
+
+        r0.<com.google.android.datatransport.runtime.scheduling.DefaultScheduler: com.google.android.datatransport.runtime.scheduling.persistence.EventStore eventStore> = $r4;
+
+        r0.<com.google.android.datatransport.runtime.scheduling.DefaultScheduler: com.google.android.datatransport.runtime.synchronization.SynchronizationGuard guard> = $r5;
+
+        return;
+    }
+
+    public static java.lang.Object lambda$schedule$0(com.google.android.datatransport.runtime.scheduling.DefaultScheduler, com.google.android.datatransport.runtime.TransportContext, com.google.android.datatransport.runtime.EventInternal)
+    {
+        com.google.android.datatransport.runtime.TransportContext $r0;
+        com.google.android.datatransport.runtime.scheduling.DefaultScheduler $r2;
+        com.google.android.datatransport.runtime.EventInternal $r3;
+        com.google.android.datatransport.runtime.scheduling.jobscheduling.WorkScheduler $r4;
+        com.google.android.datatransport.runtime.scheduling.persistence.EventStore $r1;
+
+        $r2 := @parameter0: com.google.android.datatransport.runtime.scheduling.DefaultScheduler;
+
+        $r0 := @parameter1: com.google.android.datatransport.runtime.TransportContext;
+
+        $r3 := @parameter2: com.google.android.datatransport.runtime.EventInternal;
+
+        $r1 = $r2.<com.google.android.datatransport.runtime.scheduling.DefaultScheduler: com.google.android.datatransport.runtime.scheduling.persistence.EventStore eventStore>;
+
+        interfaceinvoke $r1.<com.google.android.datatransport.runtime.scheduling.persistence.EventStore: com.google.android.datatransport.runtime.scheduling.persistence.PersistedEvent persist(com.google.android.datatransport.runtime.TransportContext,com.google.android.datatransport.runtime.EventInternal)>($r0, $r3);
+
+        $r4 = $r2.<com.google.android.datatransport.runtime.scheduling.DefaultScheduler: com.google.android.datatransport.runtime.scheduling.jobscheduling.WorkScheduler workScheduler>;
+
+        interfaceinvoke $r4.<com.google.android.datatransport.runtime.scheduling.jobscheduling.WorkScheduler: void schedule(com.google.android.datatransport.runtime.TransportContext,int)>($r0, 1);
+
+        return null;
+    }
+
+    public static void lambda$schedule$1(com.google.android.datatransport.runtime.scheduling.DefaultScheduler, com.google.android.datatransport.runtime.TransportContext, com.google.android.datatransport.TransportScheduleCallback, com.google.android.datatransport.runtime.EventInternal)
+    {
+        com.google.android.datatransport.runtime.backends.TransportBackend $r6;
+        java.lang.Object[] $r7;
+        com.google.android.datatransport.runtime.synchronization.SynchronizationGuard $r10;
+        com.google.android.datatransport.runtime.synchronization.SynchronizationGuard$CriticalSection $r11;
+        java.util.logging.Logger $r8;
+        java.lang.IllegalArgumentException $r9;
+        java.lang.Exception $r12;
+        com.google.android.datatransport.runtime.TransportContext $r2;
+        com.google.android.datatransport.runtime.backends.BackendRegistry $r4;
+        com.google.android.datatransport.runtime.scheduling.DefaultScheduler $r1;
+        com.google.android.datatransport.runtime.EventInternal $r3;
+        java.lang.StringBuilder $r13;
+        java.lang.String $r5;
+        com.google.android.datatransport.TransportScheduleCallback $r0;
+
+        $r1 := @parameter0: com.google.android.datatransport.runtime.scheduling.DefaultScheduler;
+
+        $r2 := @parameter1: com.google.android.datatransport.runtime.TransportContext;
+
+        $r0 := @parameter2: com.google.android.datatransport.TransportScheduleCallback;
+
+        $r3 := @parameter3: com.google.android.datatransport.runtime.EventInternal;
+
+     label01:
+        $r4 = $r1.<com.google.android.datatransport.runtime.scheduling.DefaultScheduler: com.google.android.datatransport.runtime.backends.BackendRegistry backendRegistry>;
+
+        $r5 = virtualinvoke $r2.<com.google.android.datatransport.runtime.TransportContext: java.lang.String getBackendName()>();
+
+        $r6 = interfaceinvoke $r4.<com.google.android.datatransport.runtime.backends.BackendRegistry: com.google.android.datatransport.runtime.backends.TransportBackend get(java.lang.String)>($r5);
+
+     label02:
+        if $r6 != null goto label09;
+
+        $r7 = newarray (java.lang.Object)[1];
+
+     label03:
+        $r5 = virtualinvoke $r2.<com.google.android.datatransport.runtime.TransportContext: java.lang.String getBackendName()>();
+
+        $r7[0] = $r5;
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Transport backend \'%s\' is not registered", $r7);
+
+     label04:
+        $r8 = <com.google.android.datatransport.runtime.scheduling.DefaultScheduler: java.util.logging.Logger LOGGER>;
+
+     label05:
+        virtualinvoke $r8.<java.util.logging.Logger: void warning(java.lang.String)>($r5);
+
+     label06:
+        $r9 = new java.lang.IllegalArgumentException;
+
+     label07:
+        specialinvoke $r9.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r5);
+
+        interfaceinvoke $r0.<com.google.android.datatransport.TransportScheduleCallback: void onSchedule(java.lang.Exception)>($r9);
+
+     label08:
+        return;
+
+     label09:
+        $r3 = interfaceinvoke $r6.<com.google.android.datatransport.runtime.backends.TransportBackend: com.google.android.datatransport.runtime.EventInternal decorate(com.google.android.datatransport.runtime.EventInternal)>($r3);
+
+        $r10 = $r1.<com.google.android.datatransport.runtime.scheduling.DefaultScheduler: com.google.android.datatransport.runtime.synchronization.SynchronizationGuard guard>;
+
+        $r11 = staticinvoke <com.google.android.datatransport.runtime.scheduling.DefaultScheduler$$Lambda$2: com.google.android.datatransport.runtime.synchronization.SynchronizationGuard$CriticalSection lambdaFactory$(com.google.android.datatransport.runtime.scheduling.DefaultScheduler,com.google.android.datatransport.runtime.TransportContext,com.google.android.datatransport.runtime.EventInternal)>($r1, $r2, $r3);
+
+        interfaceinvoke $r10.<com.google.android.datatransport.runtime.synchronization.SynchronizationGuard: java.lang.Object runCriticalSection(com.google.android.datatransport.runtime.synchronization.SynchronizationGuard$CriticalSection)>($r11);
+
+        interfaceinvoke $r0.<com.google.android.datatransport.TransportScheduleCallback: void onSchedule(java.lang.Exception)>(null);
+
+     label10:
+        return;
+
+     label11:
+        $r12 := @caughtexception;
+
+        $r8 = <com.google.android.datatransport.runtime.scheduling.DefaultScheduler: java.util.logging.Logger LOGGER>;
+
+        $r13 = new java.lang.StringBuilder;
+
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error scheduling event ");
+
+        $r5 = virtualinvoke $r12.<java.lang.Exception: java.lang.String getMessage()>();
+
+        virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r5 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r8.<java.util.logging.Logger: void warning(java.lang.String)>($r5);
+
+        interfaceinvoke $r0.<com.google.android.datatransport.TransportScheduleCallback: void onSchedule(java.lang.Exception)>($r12);
+
+        return;
+
+        catch java.lang.Exception from label01 to label02 with label11;
+        catch java.lang.Exception from label03 to label04 with label11;
+        catch java.lang.Exception from label05 to label06 with label11;
+        catch java.lang.Exception from label07 to label08 with label11;
+        catch java.lang.Exception from label09 to label10 with label11;
+    }
+
+    public void schedule(com.google.android.datatransport.runtime.TransportContext, com.google.android.datatransport.runtime.EventInternal, com.google.android.datatransport.TransportScheduleCallback)
+    {
+        com.google.android.datatransport.runtime.TransportContext $r5;
+        com.google.android.datatransport.runtime.scheduling.DefaultScheduler r0;
+        com.google.android.datatransport.runtime.EventInternal $r1;
+        java.util.concurrent.Executor $r3;
+        com.google.android.datatransport.TransportScheduleCallback $r2;
+        java.lang.Runnable $r4;
+
+        r0 := @this: com.google.android.datatransport.runtime.scheduling.DefaultScheduler;
+
+        $r5 := @parameter0: com.google.android.datatransport.runtime.TransportContext;
+
+        $r1 := @parameter1: com.google.android.datatransport.runtime.EventInternal;
+
+        $r2 := @parameter2: com.google.android.datatransport.TransportScheduleCallback;
+
+        $r3 = r0.<com.google.android.datatransport.runtime.scheduling.DefaultScheduler: java.util.concurrent.Executor executor>;
+
+        $r4 = staticinvoke <com.google.android.datatransport.runtime.scheduling.DefaultScheduler$$Lambda$1: java.lang.Runnable lambdaFactory$(com.google.android.datatransport.runtime.scheduling.DefaultScheduler,com.google.android.datatransport.runtime.TransportContext,com.google.android.datatransport.TransportScheduleCallback,com.google.android.datatransport.runtime.EventInternal)>(r0, $r5, $r2, $r1);
+
+        interfaceinvoke $r3.<java.util.concurrent.Executor: void execute(java.lang.Runnable)>($r4);
+
+        return;
+    }
+}

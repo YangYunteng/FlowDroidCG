@@ -1,0 +1,265 @@
+public class com.google.firebase.crashlytics.internal.common.CLSUUID extends java.lang.Object
+{
+    public static java.lang.String _clsId;
+    public static final java.util.concurrent.atomic.AtomicLong _sequenceNumber;
+
+    static void <clinit>()
+    {
+        java.util.concurrent.atomic.AtomicLong $r0;
+
+        $r0 = new java.util.concurrent.atomic.AtomicLong;
+
+        specialinvoke $r0.<java.util.concurrent.atomic.AtomicLong: void <init>(long)>(0L);
+
+        <com.google.firebase.crashlytics.internal.common.CLSUUID: java.util.concurrent.atomic.AtomicLong _sequenceNumber> = $r0;
+
+        return;
+    }
+
+    public void <init>(com.google.firebase.crashlytics.internal.common.IdManager)
+    {
+        byte[] $r3;
+        java.lang.Object[] $r6;
+        java.lang.CharSequence $r8;
+        com.google.firebase.crashlytics.internal.common.CLSUUID r0;
+        com.google.firebase.crashlytics.internal.common.IdManager $r2;
+        java.util.Locale $r1;
+        java.lang.String $r4, $r5, $r7;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.CLSUUID;
+
+        $r2 := @parameter0: com.google.firebase.crashlytics.internal.common.IdManager;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r3 = newarray (byte)[10];
+
+        specialinvoke r0.<com.google.firebase.crashlytics.internal.common.CLSUUID: void populateTime(byte[])>($r3);
+
+        specialinvoke r0.<com.google.firebase.crashlytics.internal.common.CLSUUID: void populateSequenceNumber(byte[])>($r3);
+
+        specialinvoke r0.<com.google.firebase.crashlytics.internal.common.CLSUUID: void populatePID(byte[])>($r3);
+
+        $r4 = virtualinvoke $r2.<com.google.firebase.crashlytics.internal.common.IdManager: java.lang.String getCrashlyticsInstallId()>();
+
+        $r4 = staticinvoke <com.google.firebase.crashlytics.internal.common.CommonUtils: java.lang.String sha1(java.lang.String)>($r4);
+
+        $r5 = staticinvoke <com.google.firebase.crashlytics.internal.common.CommonUtils: java.lang.String hexify(byte[])>($r3);
+
+        $r1 = <java.util.Locale: java.util.Locale US>;
+
+        $r6 = newarray (java.lang.Object)[4];
+
+        $r7 = virtualinvoke $r5.<java.lang.String: java.lang.String substring(int,int)>(0, 12);
+
+        $r6[0] = $r7;
+
+        $r7 = virtualinvoke $r5.<java.lang.String: java.lang.String substring(int,int)>(12, 16);
+
+        $r6[1] = $r7;
+
+        $r8 = virtualinvoke $r5.<java.lang.String: java.lang.CharSequence subSequence(int,int)>(16, 20);
+
+        $r6[2] = $r8;
+
+        $r4 = virtualinvoke $r4.<java.lang.String: java.lang.String substring(int,int)>(0, 12);
+
+        $r6[3] = $r4;
+
+        $r4 = staticinvoke <java.lang.String: java.lang.String format(java.util.Locale,java.lang.String,java.lang.Object[])>($r1, "%s-%s-%s-%s", $r6);
+
+        $r1 = <java.util.Locale: java.util.Locale US>;
+
+        $r4 = virtualinvoke $r4.<java.lang.String: java.lang.String toUpperCase(java.util.Locale)>($r1);
+
+        <com.google.firebase.crashlytics.internal.common.CLSUUID: java.lang.String _clsId> = $r4;
+
+        return;
+    }
+
+    public static byte[] convertLongToFourByteBuffer(long)
+    {
+        java.nio.ByteOrder $r1;
+        byte[] $r2;
+        int $i0;
+        long $l1;
+        java.nio.ByteBuffer $r0;
+
+        $l1 := @parameter0: long;
+
+        $r0 = staticinvoke <java.nio.ByteBuffer: java.nio.ByteBuffer allocate(int)>(4);
+
+        $i0 = (int) $l1;
+
+        virtualinvoke $r0.<java.nio.ByteBuffer: java.nio.ByteBuffer putInt(int)>($i0);
+
+        $r1 = <java.nio.ByteOrder: java.nio.ByteOrder BIG_ENDIAN>;
+
+        virtualinvoke $r0.<java.nio.ByteBuffer: java.nio.ByteBuffer order(java.nio.ByteOrder)>($r1);
+
+        virtualinvoke $r0.<java.nio.ByteBuffer: java.nio.Buffer position(int)>(0);
+
+        $r2 = virtualinvoke $r0.<java.nio.ByteBuffer: byte[] array()>();
+
+        return $r2;
+    }
+
+    public static byte[] convertLongToTwoByteBuffer(long)
+    {
+        java.nio.ByteOrder $r1;
+        byte[] $r2;
+        short $s2;
+        int $i0;
+        long $l1;
+        java.nio.ByteBuffer $r0;
+
+        $l1 := @parameter0: long;
+
+        $r0 = staticinvoke <java.nio.ByteBuffer: java.nio.ByteBuffer allocate(int)>(2);
+
+        $i0 = (int) $l1;
+
+        $s2 = (short) $i0;
+
+        virtualinvoke $r0.<java.nio.ByteBuffer: java.nio.ByteBuffer putShort(short)>($s2);
+
+        $r1 = <java.nio.ByteOrder: java.nio.ByteOrder BIG_ENDIAN>;
+
+        virtualinvoke $r0.<java.nio.ByteBuffer: java.nio.ByteBuffer order(java.nio.ByteOrder)>($r1);
+
+        virtualinvoke $r0.<java.nio.ByteBuffer: java.nio.Buffer position(int)>(0);
+
+        $r2 = virtualinvoke $r0.<java.nio.ByteBuffer: byte[] array()>();
+
+        return $r2;
+    }
+
+    private void populatePID(byte[])
+    {
+        byte[] $r1, $r3;
+        long $l2;
+        java.lang.Integer $r2;
+        com.google.firebase.crashlytics.internal.common.CLSUUID r0;
+        short $s1;
+        byte $b3;
+        int $i0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.CLSUUID;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 = staticinvoke <android.os.Process: int myPid()>();
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $s1 = virtualinvoke $r2.<java.lang.Integer: short shortValue()>();
+
+        $l2 = (long) $s1;
+
+        $r3 = staticinvoke <com.google.firebase.crashlytics.internal.common.CLSUUID: byte[] convertLongToTwoByteBuffer(long)>($l2);
+
+        $b3 = $r3[0];
+
+        $r1[8] = $b3;
+
+        $b3 = $r3[1];
+
+        $r1[9] = $b3;
+
+        return;
+    }
+
+    private void populateSequenceNumber(byte[])
+    {
+        byte[] $r1, $r3;
+        java.util.concurrent.atomic.AtomicLong $r2;
+        com.google.firebase.crashlytics.internal.common.CLSUUID r0;
+        byte $b1;
+        long $l0;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.CLSUUID;
+
+        $r1 := @parameter0: byte[];
+
+        $r2 = <com.google.firebase.crashlytics.internal.common.CLSUUID: java.util.concurrent.atomic.AtomicLong _sequenceNumber>;
+
+        $l0 = virtualinvoke $r2.<java.util.concurrent.atomic.AtomicLong: long incrementAndGet()>();
+
+        $r3 = staticinvoke <com.google.firebase.crashlytics.internal.common.CLSUUID: byte[] convertLongToTwoByteBuffer(long)>($l0);
+
+        $b1 = $r3[0];
+
+        $r1[6] = $b1;
+
+        $b1 = $r3[1];
+
+        $r1[7] = $b1;
+
+        return;
+    }
+
+    private void populateTime(byte[])
+    {
+        byte[] $r1, $r3;
+        com.google.firebase.crashlytics.internal.common.CLSUUID r0;
+        byte $b0;
+        java.util.Date $r2;
+        long $l1, $l2;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.CLSUUID;
+
+        $r1 := @parameter0: byte[];
+
+        $r2 = new java.util.Date;
+
+        specialinvoke $r2.<java.util.Date: void <init>()>();
+
+        $l1 = virtualinvoke $r2.<java.util.Date: long getTime()>();
+
+        $l2 = $l1 / 1000L;
+
+        $l1 = $l1 % 1000L;
+
+        $r3 = staticinvoke <com.google.firebase.crashlytics.internal.common.CLSUUID: byte[] convertLongToFourByteBuffer(long)>($l2);
+
+        $b0 = $r3[0];
+
+        $r1[0] = $b0;
+
+        $b0 = $r3[1];
+
+        $r1[1] = $b0;
+
+        $b0 = $r3[2];
+
+        $r1[2] = $b0;
+
+        $b0 = $r3[3];
+
+        $r1[3] = $b0;
+
+        $r3 = staticinvoke <com.google.firebase.crashlytics.internal.common.CLSUUID: byte[] convertLongToTwoByteBuffer(long)>($l1);
+
+        $b0 = $r3[0];
+
+        $r1[4] = $b0;
+
+        $b0 = $r3[1];
+
+        $r1[5] = $b0;
+
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        com.google.firebase.crashlytics.internal.common.CLSUUID r0;
+        java.lang.String r1;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.common.CLSUUID;
+
+        r1 = <com.google.firebase.crashlytics.internal.common.CLSUUID: java.lang.String _clsId>;
+
+        return r1;
+    }
+}

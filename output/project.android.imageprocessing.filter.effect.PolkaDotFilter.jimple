@@ -1,0 +1,79 @@
+public class project.android.imageprocessing.filter.effect.PolkaDotFilter extends project.android.imageprocessing.filter.effect.PixellateFilter
+{
+    public static final java.lang.String UNIFORM_DOT_SCALING;
+    public float dotScaling;
+    public int dotScalingHandle;
+
+    public void <init>(float, float, float)
+    {
+        float $f0, $f1, $f2;
+        project.android.imageprocessing.filter.effect.PolkaDotFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.PolkaDotFilter;
+
+        $f0 := @parameter0: float;
+
+        $f1 := @parameter1: float;
+
+        $f2 := @parameter2: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.effect.PixellateFilter: void <init>(float,float)>($f1, $f2);
+
+        r0.<project.android.imageprocessing.filter.effect.PolkaDotFilter: float dotScaling> = $f0;
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.effect.PolkaDotFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.PolkaDotFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform float u_FractionalWidth;\nuniform float u_AspectRatio;\nuniform highp float u_DotScaling;\nvoid main(){\n   highp vec2 sampleDivisor = vec2(u_FractionalWidth, u_FractionalWidth /  u_AspectRatio);\n   highp vec2 samplePos = v_TexCoord - mod(v_TexCoord, sampleDivisor) + 0.5 * sampleDivisor;\n   highp vec2 textureCoordinateToUse = vec2(v_TexCoord.x, (v_TexCoord.y * u_AspectRatio + 0.5 - 0.5 * u_AspectRatio));\n   highp vec2 adjustedSamplePos = vec2(samplePos.x, (samplePos.y * u_AspectRatio + 0.5 - 0.5 * u_AspectRatio));\n   highp float distanceFromSamplePoint = distance(adjustedSamplePos, textureCoordinateToUse);\n   lowp float checkForPresenceWithinDot = step(distanceFromSamplePoint, (u_FractionalWidth * 0.5) * u_DotScaling);\n   gl_FragColor = vec4(texture2D(u_Texture0, samplePos ).rgb * checkForPresenceWithinDot, 1.0);\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.effect.PolkaDotFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.PolkaDotFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.effect.PixellateFilter: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_DotScaling");
+
+        r0.<project.android.imageprocessing.filter.effect.PolkaDotFilter: int dotScalingHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        int $i0;
+        float $f0;
+        project.android.imageprocessing.filter.effect.PolkaDotFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.PolkaDotFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.effect.PixellateFilter: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.effect.PolkaDotFilter: int dotScalingHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.effect.PolkaDotFilter: float dotScaling>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.effect.PolkaDotFilter: java.lang.String UNIFORM_DOT_SCALING> = "u_DotScaling";
+
+        return;
+    }
+}

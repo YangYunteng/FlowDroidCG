@@ -1,0 +1,611 @@
+public final class com.google.zxing.qrcode.decoder.BitMatrixParser extends java.lang.Object
+{
+    public final com.google.zxing.common.BitMatrix bitMatrix;
+    public boolean mirror;
+    public com.google.zxing.qrcode.decoder.FormatInformation parsedFormatInfo;
+    public com.google.zxing.qrcode.decoder.Version parsedVersion;
+
+    public void <init>(com.google.zxing.common.BitMatrix)
+    {
+        com.google.zxing.qrcode.decoder.BitMatrixParser r0;
+        int $i0;
+        com.google.zxing.common.BitMatrix $r1;
+        com.google.zxing.FormatException $r2;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.BitMatrixParser;
+
+        $r1 := @parameter0: com.google.zxing.common.BitMatrix;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.common.BitMatrix: int getHeight()>();
+
+        if $i0 < 21 goto label1;
+
+        $i0 = $i0 & 3;
+
+        if $i0 != 1 goto label1;
+
+        r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix bitMatrix> = $r1;
+
+        return;
+
+     label1:
+        $r2 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        throw $r2;
+    }
+
+    private int copyBit(int, int, int)
+    {
+        com.google.zxing.qrcode.decoder.BitMatrixParser r0;
+        int $i0, $i1, $i2;
+        com.google.zxing.common.BitMatrix $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.BitMatrixParser;
+
+        $i2 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $z0 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: boolean mirror>;
+
+        if $z0 == 0 goto label1;
+
+        $r1 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix bitMatrix>;
+
+        $z0 = virtualinvoke $r1.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i0, $i2);
+
+        goto label2;
+
+     label1:
+        $r1 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix bitMatrix>;
+
+        $z0 = virtualinvoke $r1.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i2, $i0);
+
+     label2:
+        if $z0 == 0 goto label3;
+
+        $i2 = $i1 << 1;
+
+        $i2 = $i2 | 1;
+
+        return $i2;
+
+     label3:
+        $i2 = $i1 << 1;
+
+        return $i2;
+    }
+
+    public void mirror()
+    {
+        com.google.zxing.qrcode.decoder.BitMatrixParser r0;
+        int $i0, $i1, $i2, $i3;
+        com.google.zxing.common.BitMatrix $r1;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.BitMatrixParser;
+
+        $i0 = 0;
+
+     label1:
+        $r1 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix bitMatrix>;
+
+        $i1 = virtualinvoke $r1.<com.google.zxing.common.BitMatrix: int getWidth()>();
+
+        if $i0 >= $i1 goto label5;
+
+        $i1 = $i0 + 1;
+
+        $i2 = $i1;
+
+     label2:
+        $r1 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix bitMatrix>;
+
+        $i3 = virtualinvoke $r1.<com.google.zxing.common.BitMatrix: int getHeight()>();
+
+        if $i2 >= $i3 goto label4;
+
+        $r1 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix bitMatrix>;
+
+        $z0 = virtualinvoke $r1.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i0, $i2);
+
+        $r1 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix bitMatrix>;
+
+        $z1 = virtualinvoke $r1.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i2, $i0);
+
+        if $z0 == $z1 goto label3;
+
+        $r1 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix bitMatrix>;
+
+        virtualinvoke $r1.<com.google.zxing.common.BitMatrix: void flip(int,int)>($i2, $i0);
+
+        $r1 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix bitMatrix>;
+
+        virtualinvoke $r1.<com.google.zxing.common.BitMatrix: void flip(int,int)>($i0, $i2);
+
+     label3:
+        $i2 = $i2 + 1;
+
+        goto label2;
+
+     label4:
+        $i0 = $i1;
+
+        goto label1;
+
+     label5:
+        return;
+    }
+
+    public byte[] readCodewords()
+    {
+        byte[] $r5;
+        byte $b1;
+        com.google.zxing.qrcode.decoder.FormatInformation $r1;
+        int $i0, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10;
+        com.google.zxing.FormatException $r7;
+        boolean $z0, $z1;
+        com.google.zxing.qrcode.decoder.BitMatrixParser r0;
+        com.google.zxing.qrcode.decoder.Version $r2;
+        com.google.zxing.common.BitMatrix $r4, $r6;
+        com.google.zxing.qrcode.decoder.DataMask $r3;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.BitMatrixParser;
+
+        $r1 = virtualinvoke r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.qrcode.decoder.FormatInformation readFormatInformation()>();
+
+        $r2 = virtualinvoke r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.qrcode.decoder.Version readVersion()>();
+
+        $b1 = virtualinvoke $r1.<com.google.zxing.qrcode.decoder.FormatInformation: byte getDataMask()>();
+
+        $i2 = (int) $b1;
+
+        $r3 = staticinvoke <com.google.zxing.qrcode.decoder.DataMask: com.google.zxing.qrcode.decoder.DataMask forReference(int)>($i2);
+
+        $r4 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix bitMatrix>;
+
+        $i2 = virtualinvoke $r4.<com.google.zxing.common.BitMatrix: int getHeight()>();
+
+        $r4 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix bitMatrix>;
+
+        virtualinvoke $r3.<com.google.zxing.qrcode.decoder.DataMask: void unmaskBitMatrix(com.google.zxing.common.BitMatrix,int)>($r4, $i2);
+
+        $r4 = virtualinvoke $r2.<com.google.zxing.qrcode.decoder.Version: com.google.zxing.common.BitMatrix buildFunctionPattern()>();
+
+        $i0 = virtualinvoke $r2.<com.google.zxing.qrcode.decoder.Version: int getTotalCodewords()>();
+
+        $r5 = newarray (byte)[$i0];
+
+        $i0 = -1;
+
+        $i0 = $i2 + $i0;
+
+        $i3 = $i0;
+
+        $i4 = 0;
+
+        $z0 = 1;
+
+        $i5 = 0;
+
+        $i6 = 0;
+
+     label01:
+        if $i3 <= 0 goto label11;
+
+        if $i3 != 6 goto label02;
+
+        $i7 = -1;
+
+        $i3 = $i3 + $i7;
+
+     label02:
+        $i7 = $i5;
+
+        $i8 = $i4;
+
+        $i4 = 0;
+
+     label03:
+        if $i4 >= $i2 goto label10;
+
+        if $z0 == 0 goto label04;
+
+        $i5 = $i0 - $i4;
+
+        goto label05;
+
+     label04:
+        $i5 = $i4;
+
+     label05:
+        $i9 = $i6;
+
+        $i6 = $i7;
+
+        $i7 = $i8;
+
+        $i8 = 0;
+
+     label06:
+        if $i8 >= 2 goto label09;
+
+        $i10 = $i3 - $i8;
+
+        $z1 = virtualinvoke $r4.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i10, $i5);
+
+        if $z1 != 0 goto label08;
+
+        $i6 = $i6 + 1;
+
+        $i9 = $i9 << 1;
+
+        $r6 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix bitMatrix>;
+
+        $z1 = virtualinvoke $r6.<com.google.zxing.common.BitMatrix: boolean get(int,int)>($i10, $i5);
+
+        if $z1 == 0 goto label07;
+
+        $i9 = $i9 | 1;
+
+        goto label07;
+
+     label07:
+        if $i6 != 8 goto label08;
+
+        $b1 = (byte) $i9;
+
+        $r5[$i7] = $b1;
+
+        $i7 = $i7 + 1;
+
+        $i6 = 0;
+
+        $i9 = 0;
+
+        goto label08;
+
+     label08:
+        $i8 = $i8 + 1;
+
+        goto label06;
+
+     label09:
+        $i4 = $i4 + 1;
+
+        $i8 = $i7;
+
+        $i7 = $i6;
+
+        $i6 = $i9;
+
+        goto label03;
+
+     label10:
+        $z0 = $z0 ^ 1;
+
+        $i4 = -2;
+
+        $i3 = $i3 + $i4;
+
+        $i4 = $i8;
+
+        $i5 = $i7;
+
+        goto label01;
+
+     label11:
+        $i2 = virtualinvoke $r2.<com.google.zxing.qrcode.decoder.Version: int getTotalCodewords()>();
+
+        if $i4 != $i2 goto label12;
+
+        return $r5;
+
+     label12:
+        $r7 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        goto label13;
+
+     label13:
+        throw $r7;
+    }
+
+    public com.google.zxing.qrcode.decoder.FormatInformation readFormatInformation()
+    {
+        com.google.zxing.qrcode.decoder.BitMatrixParser r0;
+        com.google.zxing.qrcode.decoder.FormatInformation $r1;
+        int $i0, $i1, $i2, $i3, $i4, $i5;
+        com.google.zxing.common.BitMatrix $r2;
+        com.google.zxing.FormatException $r3;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.BitMatrixParser;
+
+        $r1 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.qrcode.decoder.FormatInformation parsedFormatInfo>;
+
+        if $r1 == null goto label01;
+
+        return $r1;
+
+     label01:
+        $i0 = 0;
+
+        $i1 = 0;
+
+        $i2 = 0;
+
+     label02:
+        if $i1 >= 6 goto label03;
+
+        $i2 = specialinvoke r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: int copyBit(int,int,int)>($i1, 8, $i2);
+
+        $i1 = $i1 + 1;
+
+        goto label02;
+
+     label03:
+        $i1 = specialinvoke r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: int copyBit(int,int,int)>(7, 8, $i2);
+
+        $i1 = specialinvoke r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: int copyBit(int,int,int)>(8, 8, $i1);
+
+        $i1 = specialinvoke r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: int copyBit(int,int,int)>(8, 7, $i1);
+
+        $i2 = 5;
+
+     label04:
+        if $i2 < 0 goto label05;
+
+        $i1 = specialinvoke r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: int copyBit(int,int,int)>(8, $i2, $i1);
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        goto label04;
+
+     label05:
+        $r2 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix bitMatrix>;
+
+        $i2 = virtualinvoke $r2.<com.google.zxing.common.BitMatrix: int getHeight()>();
+
+        $i3 = -7;
+
+        $i3 = $i2 + $i3;
+
+        $i4 = -1;
+
+        $i4 = $i2 + $i4;
+
+     label06:
+        if $i4 < $i3 goto label07;
+
+        $i0 = specialinvoke r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: int copyBit(int,int,int)>(8, $i4, $i0);
+
+        $i5 = -1;
+
+        $i4 = $i4 + $i5;
+
+        goto label06;
+
+     label07:
+        $i3 = -8;
+
+        $i3 = $i2 + $i3;
+
+     label08:
+        if $i3 >= $i2 goto label09;
+
+        $i0 = specialinvoke r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: int copyBit(int,int,int)>($i3, 8, $i0);
+
+        $i3 = $i3 + 1;
+
+        goto label08;
+
+     label09:
+        $r1 = staticinvoke <com.google.zxing.qrcode.decoder.FormatInformation: com.google.zxing.qrcode.decoder.FormatInformation decodeFormatInformation(int,int)>($i1, $i0);
+
+        r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.qrcode.decoder.FormatInformation parsedFormatInfo> = $r1;
+
+        $r1 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.qrcode.decoder.FormatInformation parsedFormatInfo>;
+
+        if $r1 == null goto label10;
+
+        return $r1;
+
+     label10:
+        $r3 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        goto label11;
+
+     label11:
+        throw $r3;
+    }
+
+    public com.google.zxing.qrcode.decoder.Version readVersion()
+    {
+        com.google.zxing.qrcode.decoder.BitMatrixParser r0;
+        com.google.zxing.qrcode.decoder.Version $r1;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7;
+        com.google.zxing.common.BitMatrix $r2;
+        com.google.zxing.FormatException $r3;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.BitMatrixParser;
+
+        $r1 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.qrcode.decoder.Version parsedVersion>;
+
+        if $r1 == null goto label01;
+
+        return $r1;
+
+     label01:
+        $r2 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix bitMatrix>;
+
+        $i0 = virtualinvoke $r2.<com.google.zxing.common.BitMatrix: int getHeight()>();
+
+        $i1 = -17;
+
+        $i1 = $i0 + $i1;
+
+        $i1 = $i1 >> 2;
+
+        if $i1 > 6 goto label02;
+
+        $r1 = staticinvoke <com.google.zxing.qrcode.decoder.Version: com.google.zxing.qrcode.decoder.Version getVersionForNumber(int)>($i1);
+
+        return $r1;
+
+     label02:
+        $i1 = -11;
+
+        $i1 = $i0 + $i1;
+
+        $i2 = 5;
+
+        $i3 = 0;
+
+        $i4 = 5;
+
+        $i5 = 0;
+
+     label03:
+        if $i4 < 0 goto label06;
+
+        $i6 = -9;
+
+        $i6 = $i0 + $i6;
+
+     label04:
+        if $i6 < $i1 goto label05;
+
+        $i5 = specialinvoke r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: int copyBit(int,int,int)>($i6, $i4, $i5);
+
+        $i7 = -1;
+
+        $i6 = $i6 + $i7;
+
+        goto label04;
+
+     label05:
+        $i6 = -1;
+
+        $i4 = $i4 + $i6;
+
+        goto label03;
+
+     label06:
+        $r1 = staticinvoke <com.google.zxing.qrcode.decoder.Version: com.google.zxing.qrcode.decoder.Version decodeVersionInformation(int)>($i5);
+
+        if $r1 == null goto label07;
+
+        $i4 = virtualinvoke $r1.<com.google.zxing.qrcode.decoder.Version: int getDimensionForVersion()>();
+
+        if $i4 != $i0 goto label07;
+
+        r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.qrcode.decoder.Version parsedVersion> = $r1;
+
+        return $r1;
+
+     label07:
+        if $i2 < 0 goto label10;
+
+        $i4 = -9;
+
+        $i4 = $i0 + $i4;
+
+     label08:
+        if $i4 < $i1 goto label09;
+
+        $i3 = specialinvoke r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: int copyBit(int,int,int)>($i2, $i4, $i3);
+
+        $i5 = -1;
+
+        $i4 = $i4 + $i5;
+
+        goto label08;
+
+     label09:
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+        goto label07;
+
+     label10:
+        $r1 = staticinvoke <com.google.zxing.qrcode.decoder.Version: com.google.zxing.qrcode.decoder.Version decodeVersionInformation(int)>($i3);
+
+        if $r1 == null goto label11;
+
+        $i1 = virtualinvoke $r1.<com.google.zxing.qrcode.decoder.Version: int getDimensionForVersion()>();
+
+        if $i1 != $i0 goto label11;
+
+        r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.qrcode.decoder.Version parsedVersion> = $r1;
+
+        return $r1;
+
+     label11:
+        $r3 = staticinvoke <com.google.zxing.FormatException: com.google.zxing.FormatException getFormatInstance()>();
+
+        goto label12;
+
+     label12:
+        throw $r3;
+    }
+
+    public void remask()
+    {
+        com.google.zxing.qrcode.decoder.BitMatrixParser r0;
+        byte $b0;
+        com.google.zxing.qrcode.decoder.FormatInformation $r2;
+        int $i1;
+        com.google.zxing.common.BitMatrix $r1;
+        com.google.zxing.qrcode.decoder.DataMask $r3;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.BitMatrixParser;
+
+        $r2 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.qrcode.decoder.FormatInformation parsedFormatInfo>;
+
+        if $r2 != null goto label1;
+
+        return;
+
+     label1:
+        $b0 = virtualinvoke $r2.<com.google.zxing.qrcode.decoder.FormatInformation: byte getDataMask()>();
+
+        $i1 = (int) $b0;
+
+        $r3 = staticinvoke <com.google.zxing.qrcode.decoder.DataMask: com.google.zxing.qrcode.decoder.DataMask forReference(int)>($i1);
+
+        $r1 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix bitMatrix>;
+
+        $i1 = virtualinvoke $r1.<com.google.zxing.common.BitMatrix: int getHeight()>();
+
+        $r1 = r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.common.BitMatrix bitMatrix>;
+
+        virtualinvoke $r3.<com.google.zxing.qrcode.decoder.DataMask: void unmaskBitMatrix(com.google.zxing.common.BitMatrix,int)>($r1, $i1);
+
+        return;
+    }
+
+    public void setMirror(boolean)
+    {
+        com.google.zxing.qrcode.decoder.BitMatrixParser r0;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.BitMatrixParser;
+
+        $z0 := @parameter0: boolean;
+
+        r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.qrcode.decoder.Version parsedVersion> = null;
+
+        r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.qrcode.decoder.FormatInformation parsedFormatInfo> = null;
+
+        r0.<com.google.zxing.qrcode.decoder.BitMatrixParser: boolean mirror> = $z0;
+
+        return;
+    }
+}

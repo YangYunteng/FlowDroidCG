@@ -1,0 +1,904 @@
+public class com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient extends java.lang.Object
+{
+    public static final java.lang.String API_KEY_HEADER;
+    public static final java.lang.String ETAG_HEADER;
+    public static final java.util.regex.Pattern GMP_APP_ID_PATTERN;
+    public static final java.lang.String IF_NONE_MATCH_HEADER;
+    public static final java.lang.String INSTALLATIONS_AUTH_TOKEN_HEADER;
+    public static final java.lang.String X_ANDROID_CERT_HEADER;
+    public static final java.lang.String X_ANDROID_PACKAGE_HEADER;
+    public static final java.lang.String X_GOOGLE_GFE_CAN_RETRY;
+    public final java.lang.String apiKey;
+    public final java.lang.String appId;
+    public final long connectTimeoutInSeconds;
+    public final android.content.Context context;
+    public final java.lang.String namespace;
+    public final java.lang.String projectNumber;
+    public final long readTimeoutInSeconds;
+
+    static void <clinit>()
+    {
+        java.util.regex.Pattern $r0;
+
+        <com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String X_GOOGLE_GFE_CAN_RETRY> = "X-Google-GFE-Can-Retry";
+
+        <com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String X_ANDROID_PACKAGE_HEADER> = "X-Android-Package";
+
+        <com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String X_ANDROID_CERT_HEADER> = "X-Android-Cert";
+
+        <com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String INSTALLATIONS_AUTH_TOKEN_HEADER> = "X-Goog-Firebase-Installations-Auth";
+
+        <com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String IF_NONE_MATCH_HEADER> = "If-None-Match";
+
+        <com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String ETAG_HEADER> = "ETag";
+
+        <com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String API_KEY_HEADER> = "X-Goog-Api-Key";
+
+        $r0 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>("^[^:]+:([0-9]+):(android|ios|web):([0-9a-f]+)");
+
+        <com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.util.regex.Pattern GMP_APP_ID_PATTERN> = $r0;
+
+        return;
+    }
+
+    public void <init>(android.content.Context, java.lang.String, java.lang.String, java.lang.String, long, long)
+    {
+        android.content.Context $r4;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient r0;
+        long $l0, $l1;
+        java.lang.String $r1, $r2, $r3;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient;
+
+        $r4 := @parameter0: android.content.Context;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 := @parameter2: java.lang.String;
+
+        $r3 := @parameter3: java.lang.String;
+
+        $l0 := @parameter4: long;
+
+        $l1 := @parameter5: long;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: android.content.Context context> = $r4;
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String appId> = $r1;
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String apiKey> = $r2;
+
+        $r1 = staticinvoke <com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String extractProjectNumberFromAppId(java.lang.String)>($r1);
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String projectNumber> = $r1;
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String namespace> = $r3;
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: long connectTimeoutInSeconds> = $l0;
+
+        r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: long readTimeoutInSeconds> = $l1;
+
+        return;
+    }
+
+    private boolean backendHasUpdates(org.json.JSONObject)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient r0;
+        org.json.JSONException $r1;
+        org.json.JSONObject $r2;
+        java.lang.Object $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient;
+
+        $r2 := @parameter0: org.json.JSONObject;
+
+     label1:
+        $r3 = virtualinvoke $r2.<org.json.JSONObject: java.lang.Object get(java.lang.String)>("state");
+
+        $z0 = virtualinvoke $r3.<java.lang.Object: boolean equals(java.lang.Object)>("NO_CHANGE");
+
+     label2:
+        $z0 = $z0 ^ 1;
+
+        return $z0;
+
+     label3:
+        $r1 := @caughtexception;
+
+        return 1;
+
+        catch org.json.JSONException from label1 to label2 with label3;
+    }
+
+    private org.json.JSONObject createFetchRequestBody(java.lang.String, java.lang.String, java.util.Map)
+    {
+        android.content.Context $r6;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient r0;
+        android.content.pm.PackageManager $r11;
+        android.content.pm.PackageManager$NameNotFoundException $r3;
+        java.util.HashMap $r2;
+        android.content.pm.PackageInfo $r12;
+        org.json.JSONObject $r13;
+        java.util.Locale $r9;
+        java.util.Map $r1;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException $r14;
+        int $i0;
+        java.lang.String $r4, $r5;
+        java.util.TimeZone $r10;
+        android.content.res.Configuration $r8;
+        android.content.res.Resources $r7;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient;
+
+        $r4 := @parameter0: java.lang.String;
+
+        $r5 := @parameter1: java.lang.String;
+
+        $r1 := @parameter2: java.util.Map;
+
+        $r2 = new java.util.HashMap;
+
+        specialinvoke $r2.<java.util.HashMap: void <init>()>();
+
+        if $r4 == null goto label09;
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("appInstanceId", $r4);
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("appInstanceIdToken", $r5);
+
+        $r4 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String appId>;
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("appId", $r4);
+
+        $r6 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: android.content.Context context>;
+
+        $r7 = virtualinvoke $r6.<android.content.Context: android.content.res.Resources getResources()>();
+
+        $r8 = virtualinvoke $r7.<android.content.res.Resources: android.content.res.Configuration getConfiguration()>();
+
+        $r9 = $r8.<android.content.res.Configuration: java.util.Locale locale>;
+
+        $r4 = virtualinvoke $r9.<java.util.Locale: java.lang.String getCountry()>();
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("countryCode", $r4);
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 < 21 goto label01;
+
+        $r4 = virtualinvoke $r9.<java.util.Locale: java.lang.String toLanguageTag()>();
+
+        goto label02;
+
+     label01:
+        $r4 = virtualinvoke $r9.<java.util.Locale: java.lang.String toString()>();
+
+     label02:
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("languageCode", $r4);
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.String toString(int)>($i0);
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("platformVersion", $r4);
+
+        $r10 = staticinvoke <java.util.TimeZone: java.util.TimeZone getDefault()>();
+
+        $r4 = virtualinvoke $r10.<java.util.TimeZone: java.lang.String getID()>();
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("timeZone", $r4);
+
+        $r6 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: android.content.Context context>;
+
+     label03:
+        $r11 = virtualinvoke $r6.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+     label04:
+        $r6 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: android.content.Context context>;
+
+     label05:
+        $r4 = virtualinvoke $r6.<android.content.Context: java.lang.String getPackageName()>();
+
+        $r12 = virtualinvoke $r11.<android.content.pm.PackageManager: android.content.pm.PackageInfo getPackageInfo(java.lang.String,int)>($r4, 0);
+
+     label06:
+        if $r12 == null goto label08;
+
+        $r4 = $r12.<android.content.pm.PackageInfo: java.lang.String versionName>;
+
+     label07:
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("appVersion", $r4);
+
+     label08:
+        $r6 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: android.content.Context context>;
+
+        $r4 = virtualinvoke $r6.<android.content.Context: java.lang.String getPackageName()>();
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("packageName", $r4);
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("sdkVersion", "19.2.0");
+
+        $r13 = new org.json.JSONObject;
+
+        specialinvoke $r13.<org.json.JSONObject: void <init>(java.util.Map)>($r1);
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("analyticsUserProperties", $r13);
+
+        $r13 = new org.json.JSONObject;
+
+        specialinvoke $r13.<org.json.JSONObject: void <init>(java.util.Map)>($r2);
+
+        return $r13;
+
+     label09:
+        $r14 = new com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException;
+
+        specialinvoke $r14.<com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException: void <init>(java.lang.String)>("Fetch failed: Firebase installation id is null.");
+
+        throw $r14;
+
+     label10:
+        $r3 := @caughtexception;
+
+        goto label08;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label03 to label04 with label10;
+        catch android.content.pm.PackageManager$NameNotFoundException from label05 to label06 with label10;
+        catch android.content.pm.PackageManager$NameNotFoundException from label07 to label08 with label10;
+    }
+
+    public static com.google.firebase.remoteconfig.internal.ConfigContainer extractConfigs(org.json.JSONObject, java.util.Date)
+    {
+        java.util.Date $r3;
+        org.json.JSONException $r0, $r1, $r9;
+        org.json.JSONObject $r2, $r6;
+        com.google.firebase.remoteconfig.internal.ConfigContainer$Builder $r4;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException $r10;
+        org.json.JSONArray $r5, $r7;
+        com.google.firebase.remoteconfig.internal.ConfigContainer $r8;
+
+        $r2 := @parameter0: org.json.JSONObject;
+
+        $r3 := @parameter1: java.util.Date;
+
+     label01:
+        $r4 = staticinvoke <com.google.firebase.remoteconfig.internal.ConfigContainer: com.google.firebase.remoteconfig.internal.ConfigContainer$Builder newBuilder()>();
+
+        $r4 = virtualinvoke $r4.<com.google.firebase.remoteconfig.internal.ConfigContainer$Builder: com.google.firebase.remoteconfig.internal.ConfigContainer$Builder withFetchTime(java.util.Date)>($r3);
+
+     label02:
+        $r5 = null;
+
+     label03:
+        $r6 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("entries");
+
+     label04:
+        goto label06;
+
+     label05:
+        $r6 = null;
+
+     label06:
+        if $r6 == null goto label08;
+
+     label07:
+        virtualinvoke $r4.<com.google.firebase.remoteconfig.internal.ConfigContainer$Builder: com.google.firebase.remoteconfig.internal.ConfigContainer$Builder replaceConfigsWith(org.json.JSONObject)>($r6);
+
+     label08:
+        $r7 = virtualinvoke $r2.<org.json.JSONObject: org.json.JSONArray getJSONArray(java.lang.String)>("experimentDescriptions");
+
+     label09:
+        $r5 = $r7;
+
+     label10:
+        if $r5 == null goto label12;
+
+     label11:
+        virtualinvoke $r4.<com.google.firebase.remoteconfig.internal.ConfigContainer$Builder: com.google.firebase.remoteconfig.internal.ConfigContainer$Builder withAbtExperiments(org.json.JSONArray)>($r5);
+
+     label12:
+        $r8 = virtualinvoke $r4.<com.google.firebase.remoteconfig.internal.ConfigContainer$Builder: com.google.firebase.remoteconfig.internal.ConfigContainer build()>();
+
+     label13:
+        return $r8;
+
+     label14:
+        $r9 := @caughtexception;
+
+        $r10 = new com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException;
+
+        specialinvoke $r10.<com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException: void <init>(java.lang.String,java.lang.Throwable)>("Fetch failed: fetch response could not be parsed.", $r9);
+
+        throw $r10;
+
+     label15:
+        $r0 := @caughtexception;
+
+        goto label05;
+
+     label16:
+        $r1 := @caughtexception;
+
+        goto label10;
+
+        catch org.json.JSONException from label01 to label02 with label14;
+        catch org.json.JSONException from label03 to label04 with label15;
+        catch org.json.JSONException from label07 to label08 with label14;
+        catch org.json.JSONException from label08 to label09 with label16;
+        catch org.json.JSONException from label11 to label13 with label14;
+    }
+
+    public static java.lang.String extractProjectNumberFromAppId(java.lang.String)
+    {
+        java.util.regex.Matcher $r2;
+        java.lang.String $r0;
+        java.util.regex.Pattern $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 = <com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.util.regex.Pattern GMP_APP_ID_PATTERN>;
+
+        $r2 = virtualinvoke $r1.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r0);
+
+        $z0 = virtualinvoke $r2.<java.util.regex.Matcher: boolean matches()>();
+
+        if $z0 == 0 goto label1;
+
+        $r0 = virtualinvoke $r2.<java.util.regex.Matcher: java.lang.String group(int)>(1);
+
+        return $r0;
+
+     label1:
+        return null;
+    }
+
+    private org.json.JSONObject getFetchResponseBody(java.net.URLConnection)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient r0;
+        char $c1;
+        java.io.InputStreamReader $r6;
+        org.json.JSONObject $r9;
+        java.net.URLConnection $r1;
+        int $i0, $i2;
+        java.lang.StringBuilder $r4, $r8;
+        java.io.BufferedReader $r2, $r7;
+        java.lang.String $r5;
+        java.io.InputStream $r3;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient;
+
+        $r1 := @parameter0: java.net.URLConnection;
+
+        $r7 = new java.io.BufferedReader;
+
+        $r2 = $r7;
+
+        $r6 = new java.io.InputStreamReader;
+
+        $r3 = virtualinvoke $r1.<java.net.URLConnection: java.io.InputStream getInputStream()>();
+
+        specialinvoke $r6.<java.io.InputStreamReader: void <init>(java.io.InputStream,java.lang.String)>($r3, "utf-8");
+
+        specialinvoke $r7.<java.io.BufferedReader: void <init>(java.io.Reader)>($r6);
+
+        $r8 = new java.lang.StringBuilder;
+
+        $r4 = $r8;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+     label1:
+        $i0 = virtualinvoke $r2.<java.io.BufferedReader: int read()>();
+
+        $i2 = -1;
+
+        if $i0 == $i2 goto label2;
+
+        $c1 = (char) $i0;
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c1);
+
+        goto label1;
+
+     label2:
+        $r9 = new org.json.JSONObject;
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r9.<org.json.JSONObject: void <init>(java.lang.String)>($r5);
+
+        return $r9;
+    }
+
+    private java.lang.String getFetchUrl(java.lang.String, java.lang.String)
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient r0;
+        java.lang.Object[] $r3;
+        java.lang.String $r1, $r2;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r3 = newarray (java.lang.Object)[2];
+
+        $r3[0] = $r2;
+
+        $r3[1] = $r1;
+
+        $r2 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("https://firebaseremoteconfig.googleapis.com/v1/projects/%s/namespaces/%s:fetch", $r3);
+
+        return $r2;
+    }
+
+    private java.lang.String getFingerprintHashForPackage()
+    {
+        android.content.Context $r1, $r2;
+        byte[] $r4;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient r0;
+        android.content.pm.PackageManager$NameNotFoundException $r6;
+        java.lang.StringBuilder $r5;
+        java.lang.String $r3;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: android.content.Context context>;
+
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: android.content.Context context>;
+
+     label1:
+        $r3 = virtualinvoke $r2.<android.content.Context: java.lang.String getPackageName()>();
+
+        $r4 = staticinvoke <com.google.android.gms.common.util.AndroidUtilsLight: byte[] getPackageCertificateHashBytes(android.content.Context,java.lang.String)>($r1, $r3);
+
+     label2:
+        if $r4 != null goto label7;
+
+        $r5 = new java.lang.StringBuilder;
+
+     label3:
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not get fingerprint hash for package: ");
+
+     label4:
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: android.content.Context context>;
+
+     label5:
+        $r3 = virtualinvoke $r1.<android.content.Context: java.lang.String getPackageName()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("FirebaseRemoteConfig", $r3);
+
+     label6:
+        return null;
+
+     label7:
+        $r3 = staticinvoke <com.google.android.gms.common.util.Hex: java.lang.String bytesToStringUppercase(byte[],boolean)>($r4, 0);
+
+     label8:
+        return $r3;
+
+     label9:
+        $r6 := @caughtexception;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("No such package: ");
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: android.content.Context context>;
+
+        $r3 = virtualinvoke $r1.<android.content.Context: java.lang.String getPackageName()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("FirebaseRemoteConfig", $r3, $r6);
+
+        return null;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label1 to label2 with label9;
+        catch android.content.pm.PackageManager$NameNotFoundException from label3 to label4 with label9;
+        catch android.content.pm.PackageManager$NameNotFoundException from label5 to label6 with label9;
+        catch android.content.pm.PackageManager$NameNotFoundException from label7 to label8 with label9;
+    }
+
+    private void setCommonRequestHeaders(java.net.HttpURLConnection, java.lang.String)
+    {
+        java.net.HttpURLConnection $r1;
+        android.content.Context $r4;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient r0;
+        java.lang.String $r2, $r3;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient;
+
+        $r1 := @parameter0: java.net.HttpURLConnection;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String apiKey>;
+
+        virtualinvoke $r1.<java.net.HttpURLConnection: void setRequestProperty(java.lang.String,java.lang.String)>("X-Goog-Api-Key", $r3);
+
+        $r4 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: android.content.Context context>;
+
+        $r3 = virtualinvoke $r4.<android.content.Context: java.lang.String getPackageName()>();
+
+        virtualinvoke $r1.<java.net.HttpURLConnection: void setRequestProperty(java.lang.String,java.lang.String)>("X-Android-Package", $r3);
+
+        $r3 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String getFingerprintHashForPackage()>();
+
+        virtualinvoke $r1.<java.net.HttpURLConnection: void setRequestProperty(java.lang.String,java.lang.String)>("X-Android-Cert", $r3);
+
+        virtualinvoke $r1.<java.net.HttpURLConnection: void setRequestProperty(java.lang.String,java.lang.String)>("X-Google-GFE-Can-Retry", "yes");
+
+        virtualinvoke $r1.<java.net.HttpURLConnection: void setRequestProperty(java.lang.String,java.lang.String)>("X-Goog-Firebase-Installations-Auth", $r2);
+
+        virtualinvoke $r1.<java.net.HttpURLConnection: void setRequestProperty(java.lang.String,java.lang.String)>("Content-Type", "application/json");
+
+        virtualinvoke $r1.<java.net.HttpURLConnection: void setRequestProperty(java.lang.String,java.lang.String)>("Accept", "application/json");
+
+        return;
+    }
+
+    private void setCustomRequestHeaders(java.net.HttpURLConnection, java.util.Map)
+    {
+        java.net.HttpURLConnection $r1;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient r0;
+        java.util.Map$Entry $r6;
+        java.util.Iterator $r4;
+        java.util.Set $r3;
+        java.util.Map $r2;
+        java.lang.Object $r5;
+        java.lang.String $r7, $r8;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient;
+
+        $r1 := @parameter0: java.net.HttpURLConnection;
+
+        $r2 := @parameter1: java.util.Map;
+
+        $r3 = interfaceinvoke $r2.<java.util.Map: java.util.Set entrySet()>();
+
+        $r4 = interfaceinvoke $r3.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (java.util.Map$Entry) $r5;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r7 = (java.lang.String) $r5;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r8 = (java.lang.String) $r5;
+
+        virtualinvoke $r1.<java.net.HttpURLConnection: void setRequestProperty(java.lang.String,java.lang.String)>($r7, $r8);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    private void setFetchRequestBody(java.net.HttpURLConnection, byte[])
+    {
+        java.io.OutputStream $r2;
+        java.net.HttpURLConnection $r3;
+        byte[] $r1;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient r0;
+        int $i0;
+        java.io.BufferedOutputStream $r4;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient;
+
+        $r3 := @parameter0: java.net.HttpURLConnection;
+
+        $r1 := @parameter1: byte[];
+
+        $i0 = lengthof $r1;
+
+        virtualinvoke $r3.<java.net.HttpURLConnection: void setFixedLengthStreamingMode(int)>($i0);
+
+        $r4 = new java.io.BufferedOutputStream;
+
+        $r2 = virtualinvoke $r3.<java.net.HttpURLConnection: java.io.OutputStream getOutputStream()>();
+
+        specialinvoke $r4.<java.io.BufferedOutputStream: void <init>(java.io.OutputStream)>($r2);
+
+        virtualinvoke $r4.<java.io.FilterOutputStream: void write(byte[])>($r1);
+
+        virtualinvoke $r4.<java.io.BufferedOutputStream: void flush()>();
+
+        virtualinvoke $r4.<java.io.FilterOutputStream: void close()>();
+
+        return;
+    }
+
+    private void setUpUrlConnection(java.net.HttpURLConnection, java.lang.String, java.lang.String, java.util.Map)
+    {
+        java.net.HttpURLConnection $r1;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient r0;
+        long $l0;
+        java.util.concurrent.TimeUnit $r5;
+        java.util.Map $r4;
+        int $i1;
+        java.lang.String $r2, $r3;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient;
+
+        $r1 := @parameter0: java.net.HttpURLConnection;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: java.lang.String;
+
+        $r4 := @parameter3: java.util.Map;
+
+        virtualinvoke $r1.<java.net.HttpURLConnection: void setDoOutput(boolean)>(1);
+
+        $r5 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit SECONDS>;
+
+        $l0 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: long connectTimeoutInSeconds>;
+
+        $l0 = virtualinvoke $r5.<java.util.concurrent.TimeUnit: long toMillis(long)>($l0);
+
+        $i1 = (int) $l0;
+
+        virtualinvoke $r1.<java.net.HttpURLConnection: void setConnectTimeout(int)>($i1);
+
+        $r5 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit SECONDS>;
+
+        $l0 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: long readTimeoutInSeconds>;
+
+        $l0 = virtualinvoke $r5.<java.util.concurrent.TimeUnit: long toMillis(long)>($l0);
+
+        $i1 = (int) $l0;
+
+        virtualinvoke $r1.<java.net.HttpURLConnection: void setReadTimeout(int)>($i1);
+
+        virtualinvoke $r1.<java.net.HttpURLConnection: void setRequestProperty(java.lang.String,java.lang.String)>("If-None-Match", $r2);
+
+        specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: void setCommonRequestHeaders(java.net.HttpURLConnection,java.lang.String)>($r1, $r3);
+
+        specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: void setCustomRequestHeaders(java.net.HttpURLConnection,java.util.Map)>($r1, $r4);
+
+        return;
+    }
+
+    public java.net.HttpURLConnection createHttpURLConnection()
+    {
+        java.net.HttpURLConnection $r5;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient r0;
+        java.net.URL $r2;
+        java.io.IOException $r6;
+        java.net.URLConnection $r4;
+        java.lang.String $r1, $r3;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfigException $r7;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient;
+
+        $r2 = new java.net.URL;
+
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String projectNumber>;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String namespace>;
+
+     label1:
+        $r1 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: java.lang.String getFetchUrl(java.lang.String,java.lang.String)>($r3, $r1);
+
+        specialinvoke $r2.<java.net.URL: void <init>(java.lang.String)>($r1);
+
+        $r4 = virtualinvoke $r2.<java.net.URL: java.net.URLConnection openConnection()>();
+
+     label2:
+        $r5 = (java.net.HttpURLConnection) $r4;
+
+        return $r5;
+
+     label3:
+        $r6 := @caughtexception;
+
+        $r7 = new com.google.firebase.remoteconfig.FirebaseRemoteConfigException;
+
+        $r1 = virtualinvoke $r6.<java.io.IOException: java.lang.String getMessage()>();
+
+        specialinvoke $r7.<com.google.firebase.remoteconfig.FirebaseRemoteConfigException: void <init>(java.lang.String)>($r1);
+
+        throw $r7;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    public com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse fetch(java.net.HttpURLConnection, java.lang.String, java.lang.String, java.util.Map, java.lang.String, java.util.Map, java.util.Date)
+    {
+        java.net.HttpURLConnection $r6;
+        java.lang.Throwable $r16;
+        byte[] $r11;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient r0;
+        java.util.Date $r3;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse $r13;
+        org.json.JSONObject $r10;
+        java.util.Map $r2, $r9;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException $r18;
+        int $i0;
+        java.lang.String $r1, $r7, $r8;
+        com.google.firebase.remoteconfig.internal.ConfigContainer $r14;
+        boolean $z0;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException $r15;
+        java.io.IOException $r4, $r5;
+        java.lang.Exception $r17;
+        java.io.InputStream $r12;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient;
+
+        $r6 := @parameter0: java.net.HttpURLConnection;
+
+        $r7 := @parameter1: java.lang.String;
+
+        $r8 := @parameter2: java.lang.String;
+
+        $r9 := @parameter3: java.util.Map;
+
+        $r1 := @parameter4: java.lang.String;
+
+        $r2 := @parameter5: java.util.Map;
+
+        $r3 := @parameter6: java.util.Date;
+
+        specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: void setUpUrlConnection(java.net.HttpURLConnection,java.lang.String,java.lang.String,java.util.Map)>($r6, $r1, $r8, $r2);
+
+     label01:
+        $r10 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: org.json.JSONObject createFetchRequestBody(java.lang.String,java.lang.String,java.util.Map)>($r7, $r8, $r9);
+
+        $r7 = virtualinvoke $r10.<org.json.JSONObject: java.lang.String toString()>();
+
+        $r11 = virtualinvoke $r7.<java.lang.String: byte[] getBytes(java.lang.String)>("utf-8");
+
+        specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: void setFetchRequestBody(java.net.HttpURLConnection,byte[])>($r6, $r11);
+
+        virtualinvoke $r6.<java.net.HttpURLConnection: void connect()>();
+
+        $i0 = virtualinvoke $r6.<java.net.HttpURLConnection: int getResponseCode()>();
+
+     label02:
+        if $i0 != 200 goto label08;
+
+     label03:
+        $r7 = virtualinvoke $r6.<java.net.HttpURLConnection: java.lang.String getHeaderField(java.lang.String)>("ETag");
+
+        $r10 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: org.json.JSONObject getFetchResponseBody(java.net.URLConnection)>($r6);
+
+     label04:
+        virtualinvoke $r6.<java.net.HttpURLConnection: void disconnect()>();
+
+     label05:
+        $r12 = virtualinvoke $r6.<java.net.HttpURLConnection: java.io.InputStream getInputStream()>();
+
+        virtualinvoke $r12.<java.io.InputStream: void close()>();
+
+     label06:
+        $z0 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: boolean backendHasUpdates(org.json.JSONObject)>($r10);
+
+        if $z0 != 0 goto label07;
+
+        $r13 = staticinvoke <com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse: com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse forBackendHasNoUpdates(java.util.Date)>($r3);
+
+        return $r13;
+
+     label07:
+        $r14 = staticinvoke <com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: com.google.firebase.remoteconfig.internal.ConfigContainer extractConfigs(org.json.JSONObject,java.util.Date)>($r10, $r3);
+
+        $r13 = staticinvoke <com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse: com.google.firebase.remoteconfig.internal.ConfigFetchHandler$FetchResponse forBackendUpdatesFetched(com.google.firebase.remoteconfig.internal.ConfigContainer,java.lang.String)>($r14, $r7);
+
+        return $r13;
+
+     label08:
+        $r15 = new com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException;
+
+     label09:
+        $r7 = virtualinvoke $r6.<java.net.HttpURLConnection: java.lang.String getResponseMessage()>();
+
+        specialinvoke $r15.<com.google.firebase.remoteconfig.FirebaseRemoteConfigServerException: void <init>(int,java.lang.String)>($i0, $r7);
+
+     label10:
+        throw $r15;
+
+     label11:
+        $r16 := @caughtexception;
+
+        goto label15;
+
+     label12:
+        $r17 := @caughtexception;
+
+        goto label14;
+
+     label13:
+        $r17 := @caughtexception;
+
+     label14:
+        $r18 = new com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException;
+
+        specialinvoke $r18.<com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException: void <init>(java.lang.String,java.lang.Throwable)>("The client had an error while calling the backend!", $r17);
+
+        throw $r18;
+
+     label15:
+        virtualinvoke $r6.<java.net.HttpURLConnection: void disconnect()>();
+
+     label16:
+        $r12 = virtualinvoke $r6.<java.net.HttpURLConnection: java.io.InputStream getInputStream()>();
+
+        virtualinvoke $r12.<java.io.InputStream: void close()>();
+
+     label17:
+        throw $r16;
+
+     label18:
+        $r4 := @caughtexception;
+
+        goto label06;
+
+     label19:
+        $r5 := @caughtexception;
+
+        goto label17;
+
+        catch java.io.IOException from label01 to label02 with label13;
+        catch java.io.IOException from label03 to label04 with label13;
+        catch org.json.JSONException from label01 to label02 with label12;
+        catch org.json.JSONException from label03 to label04 with label12;
+        catch java.lang.Throwable from label01 to label02 with label11;
+        catch java.lang.Throwable from label03 to label04 with label11;
+        catch java.io.IOException from label05 to label06 with label18;
+        catch java.io.IOException from label09 to label10 with label13;
+        catch org.json.JSONException from label09 to label10 with label12;
+        catch java.lang.Throwable from label08 to label11 with label11;
+        catch java.lang.Throwable from label14 to label15 with label11;
+        catch java.io.IOException from label16 to label17 with label19;
+    }
+
+    public long getConnectTimeoutInSeconds()
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient r0;
+        long l0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient;
+
+        l0 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: long connectTimeoutInSeconds>;
+
+        return l0;
+    }
+
+    public long getReadTimeoutInSeconds()
+    {
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient r0;
+        long l0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient;
+
+        l0 = r0.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: long readTimeoutInSeconds>;
+
+        return l0;
+    }
+}

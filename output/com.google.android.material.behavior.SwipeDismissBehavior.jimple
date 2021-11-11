@@ -1,0 +1,455 @@
+public class com.google.android.material.behavior.SwipeDismissBehavior extends androidx.coordinatorlayout.widget.CoordinatorLayout$b
+{
+    public static final float DEFAULT_ALPHA_END_DISTANCE;
+    public static final float DEFAULT_ALPHA_START_DISTANCE;
+    public static final float DEFAULT_DRAG_DISMISS_THRESHOLD;
+    public static final int STATE_DRAGGING;
+    public static final int STATE_IDLE;
+    public static final int STATE_SETTLING;
+    public static final int SWIPE_DIRECTION_ANY;
+    public static final int SWIPE_DIRECTION_END_TO_START;
+    public static final int SWIPE_DIRECTION_START_TO_END;
+    public float alphaEndSwipeDistance;
+    public float alphaStartSwipeDistance;
+    public final b.k.b.g$a dragCallback;
+    public float dragDismissThreshold;
+    public boolean interceptingEvents;
+    public com.google.android.material.behavior.SwipeDismissBehavior$OnDismissListener listener;
+    public float sensitivity;
+    public boolean sensitivitySet;
+    public int swipeDirection;
+    public b.k.b.g viewDragHelper;
+
+    public void <init>()
+    {
+        com.google.android.material.behavior.SwipeDismissBehavior r0;
+        com.google.android.material.behavior.SwipeDismissBehavior$1 $r1;
+
+        r0 := @this: com.google.android.material.behavior.SwipeDismissBehavior;
+
+        specialinvoke r0.<androidx.coordinatorlayout.widget.CoordinatorLayout$b: void <init>()>();
+
+        r0.<com.google.android.material.behavior.SwipeDismissBehavior: float sensitivity> = 0.0F;
+
+        r0.<com.google.android.material.behavior.SwipeDismissBehavior: int swipeDirection> = 2;
+
+        r0.<com.google.android.material.behavior.SwipeDismissBehavior: float dragDismissThreshold> = 0.5F;
+
+        r0.<com.google.android.material.behavior.SwipeDismissBehavior: float alphaStartSwipeDistance> = 0.0F;
+
+        r0.<com.google.android.material.behavior.SwipeDismissBehavior: float alphaEndSwipeDistance> = 0.5F;
+
+        $r1 = new com.google.android.material.behavior.SwipeDismissBehavior$1;
+
+        specialinvoke $r1.<com.google.android.material.behavior.SwipeDismissBehavior$1: void <init>(com.google.android.material.behavior.SwipeDismissBehavior)>(r0);
+
+        r0.<com.google.android.material.behavior.SwipeDismissBehavior: b.k.b.g$a dragCallback> = $r1;
+
+        return;
+    }
+
+    public static float clamp(float, float, float)
+    {
+        float $f0, $f1, $f2;
+
+        $f2 := @parameter0: float;
+
+        $f0 := @parameter1: float;
+
+        $f1 := @parameter2: float;
+
+        $f2 = staticinvoke <java.lang.Math: float max(float,float)>($f2, $f0);
+
+        $f2 = staticinvoke <java.lang.Math: float min(float,float)>($f2, $f1);
+
+        return $f2;
+    }
+
+    public static int clamp(int, int, int)
+    {
+        int $i0, $i1, $i2;
+
+        $i2 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 = staticinvoke <java.lang.Math: int max(int,int)>($i2, $i0);
+
+        $i2 = staticinvoke <java.lang.Math: int min(int,int)>($i2, $i1);
+
+        return $i2;
+    }
+
+    private void ensureViewDragHelper(android.view.ViewGroup)
+    {
+        com.google.android.material.behavior.SwipeDismissBehavior r0;
+        b.k.b.g$a $r1;
+        b.k.b.g $r3;
+        float $f0;
+        android.view.ViewGroup $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.behavior.SwipeDismissBehavior;
+
+        $r2 := @parameter0: android.view.ViewGroup;
+
+        $r3 = r0.<com.google.android.material.behavior.SwipeDismissBehavior: b.k.b.g viewDragHelper>;
+
+        if $r3 != null goto label3;
+
+        $z0 = r0.<com.google.android.material.behavior.SwipeDismissBehavior: boolean sensitivitySet>;
+
+        if $z0 == 0 goto label1;
+
+        $f0 = r0.<com.google.android.material.behavior.SwipeDismissBehavior: float sensitivity>;
+
+        $r1 = r0.<com.google.android.material.behavior.SwipeDismissBehavior: b.k.b.g$a dragCallback>;
+
+        $r3 = staticinvoke <b.k.b.g: b.k.b.g a(android.view.ViewGroup,float,b.k.b.g$a)>($r2, $f0, $r1);
+
+        goto label2;
+
+     label1:
+        $r1 = r0.<com.google.android.material.behavior.SwipeDismissBehavior: b.k.b.g$a dragCallback>;
+
+        $r3 = staticinvoke <b.k.b.g: b.k.b.g a(android.view.ViewGroup,b.k.b.g$a)>($r2, $r1);
+
+     label2:
+        r0.<com.google.android.material.behavior.SwipeDismissBehavior: b.k.b.g viewDragHelper> = $r3;
+
+     label3:
+        return;
+    }
+
+    public static float fraction(float, float, float)
+    {
+        float $f0, $f1, $f2;
+
+        $f0 := @parameter0: float;
+
+        $f1 := @parameter1: float;
+
+        $f2 := @parameter2: float;
+
+        $f2 = $f2 - $f0;
+
+        $f0 = $f1 - $f0;
+
+        $f0 = $f2 / $f0;
+
+        return $f0;
+    }
+
+    private void updateAccessibilityActions(android.view.View)
+    {
+        com.google.android.material.behavior.SwipeDismissBehavior r0;
+        com.google.android.material.behavior.SwipeDismissBehavior$2 $r2;
+        android.view.View $r1;
+        b.i.i.a.b$a $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.behavior.SwipeDismissBehavior;
+
+        $r1 := @parameter0: android.view.View;
+
+        staticinvoke <b.i.i.y: void f(android.view.View,int)>($r1, 1048576);
+
+        $z0 = virtualinvoke r0.<com.google.android.material.behavior.SwipeDismissBehavior: boolean canSwipeDismissView(android.view.View)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        $r3 = <b.i.i.a.b$a: b.i.i.a.b$a u>;
+
+        $r2 = new com.google.android.material.behavior.SwipeDismissBehavior$2;
+
+        specialinvoke $r2.<com.google.android.material.behavior.SwipeDismissBehavior$2: void <init>(com.google.android.material.behavior.SwipeDismissBehavior)>(r0);
+
+        staticinvoke <b.i.i.y: void a(android.view.View,b.i.i.a.b$a,java.lang.CharSequence,b.i.i.a.e)>($r1, $r3, null, $r2);
+
+     label1:
+        return;
+    }
+
+    public boolean canSwipeDismissView(android.view.View)
+    {
+        android.view.View $r1;
+        com.google.android.material.behavior.SwipeDismissBehavior r0;
+
+        r0 := @this: com.google.android.material.behavior.SwipeDismissBehavior;
+
+        $r1 := @parameter0: android.view.View;
+
+        return 1;
+    }
+
+    public int getDragState()
+    {
+        int $i0;
+        com.google.android.material.behavior.SwipeDismissBehavior r0;
+        b.k.b.g $r1;
+
+        r0 := @this: com.google.android.material.behavior.SwipeDismissBehavior;
+
+        $r1 = r0.<com.google.android.material.behavior.SwipeDismissBehavior: b.k.b.g viewDragHelper>;
+
+        if $r1 == null goto label1;
+
+        $i0 = virtualinvoke $r1.<b.k.b.g: int g()>();
+
+        return $i0;
+
+     label1:
+        return 0;
+    }
+
+    public com.google.android.material.behavior.SwipeDismissBehavior$OnDismissListener getListener()
+    {
+        com.google.android.material.behavior.SwipeDismissBehavior r0;
+        com.google.android.material.behavior.SwipeDismissBehavior$OnDismissListener r1;
+
+        r0 := @this: com.google.android.material.behavior.SwipeDismissBehavior;
+
+        r1 = r0.<com.google.android.material.behavior.SwipeDismissBehavior: com.google.android.material.behavior.SwipeDismissBehavior$OnDismissListener listener>;
+
+        return r1;
+    }
+
+    public boolean onInterceptTouchEvent(androidx.coordinatorlayout.widget.CoordinatorLayout, android.view.View, android.view.MotionEvent)
+    {
+        androidx.coordinatorlayout.widget.CoordinatorLayout $r2;
+        com.google.android.material.behavior.SwipeDismissBehavior r0;
+        android.view.MotionEvent $r1;
+        b.k.b.g $r4;
+        int $i0, $i1;
+        android.view.View $r3;
+        float $f0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.behavior.SwipeDismissBehavior;
+
+        $r2 := @parameter0: androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+        $r3 := @parameter1: android.view.View;
+
+        $r1 := @parameter2: android.view.MotionEvent;
+
+        $z0 = r0.<com.google.android.material.behavior.SwipeDismissBehavior: boolean interceptingEvents>;
+
+        $i0 = virtualinvoke $r1.<android.view.MotionEvent: int getActionMasked()>();
+
+        if $i0 == 0 goto label2;
+
+        if $i0 == 1 goto label1;
+
+        if $i0 == 3 goto label1;
+
+        goto label3;
+
+     label1:
+        r0.<com.google.android.material.behavior.SwipeDismissBehavior: boolean interceptingEvents> = 0;
+
+        goto label3;
+
+     label2:
+        $f0 = virtualinvoke $r1.<android.view.MotionEvent: float getX()>();
+
+        $i0 = (int) $f0;
+
+        $f0 = virtualinvoke $r1.<android.view.MotionEvent: float getY()>();
+
+        $i1 = (int) $f0;
+
+        $z0 = virtualinvoke $r2.<androidx.coordinatorlayout.widget.CoordinatorLayout: boolean isPointInChildBounds(android.view.View,int,int)>($r3, $i0, $i1);
+
+        r0.<com.google.android.material.behavior.SwipeDismissBehavior: boolean interceptingEvents> = $z0;
+
+        $z0 = r0.<com.google.android.material.behavior.SwipeDismissBehavior: boolean interceptingEvents>;
+
+     label3:
+        if $z0 == 0 goto label4;
+
+        specialinvoke r0.<com.google.android.material.behavior.SwipeDismissBehavior: void ensureViewDragHelper(android.view.ViewGroup)>($r2);
+
+        $r4 = r0.<com.google.android.material.behavior.SwipeDismissBehavior: b.k.b.g viewDragHelper>;
+
+        $z0 = virtualinvoke $r4.<b.k.b.g: boolean c(android.view.MotionEvent)>($r1);
+
+        return $z0;
+
+     label4:
+        return 0;
+    }
+
+    public boolean onLayoutChild(androidx.coordinatorlayout.widget.CoordinatorLayout, android.view.View, int)
+    {
+        com.google.android.material.behavior.SwipeDismissBehavior r0;
+        androidx.coordinatorlayout.widget.CoordinatorLayout $r2;
+        int $i0;
+        android.view.View $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.behavior.SwipeDismissBehavior;
+
+        $r2 := @parameter0: androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+        $r1 := @parameter1: android.view.View;
+
+        $i0 := @parameter2: int;
+
+        $z0 = specialinvoke r0.<androidx.coordinatorlayout.widget.CoordinatorLayout$b: boolean onLayoutChild(androidx.coordinatorlayout.widget.CoordinatorLayout,android.view.View,int)>($r2, $r1, $i0);
+
+        $i0 = staticinvoke <b.i.i.y: int n(android.view.View)>($r1);
+
+        if $i0 != 0 goto label1;
+
+        staticinvoke <b.i.i.y: void h(android.view.View,int)>($r1, 1);
+
+        specialinvoke r0.<com.google.android.material.behavior.SwipeDismissBehavior: void updateAccessibilityActions(android.view.View)>($r1);
+
+     label1:
+        return $z0;
+    }
+
+    public boolean onTouchEvent(androidx.coordinatorlayout.widget.CoordinatorLayout, android.view.View, android.view.MotionEvent)
+    {
+        com.google.android.material.behavior.SwipeDismissBehavior r0;
+        androidx.coordinatorlayout.widget.CoordinatorLayout $r3;
+        android.view.MotionEvent $r2;
+        b.k.b.g $r4;
+        android.view.View $r1;
+
+        r0 := @this: com.google.android.material.behavior.SwipeDismissBehavior;
+
+        $r3 := @parameter0: androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+        $r1 := @parameter1: android.view.View;
+
+        $r2 := @parameter2: android.view.MotionEvent;
+
+        $r4 = r0.<com.google.android.material.behavior.SwipeDismissBehavior: b.k.b.g viewDragHelper>;
+
+        if $r4 == null goto label1;
+
+        virtualinvoke $r4.<b.k.b.g: void a(android.view.MotionEvent)>($r2);
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public void setDragDismissDistance(float)
+    {
+        float $f0;
+        com.google.android.material.behavior.SwipeDismissBehavior r0;
+
+        r0 := @this: com.google.android.material.behavior.SwipeDismissBehavior;
+
+        $f0 := @parameter0: float;
+
+        $f0 = staticinvoke <com.google.android.material.behavior.SwipeDismissBehavior: float clamp(float,float,float)>(0.0F, $f0, 1.0F);
+
+        r0.<com.google.android.material.behavior.SwipeDismissBehavior: float dragDismissThreshold> = $f0;
+
+        return;
+    }
+
+    public void setEndAlphaSwipeDistance(float)
+    {
+        float $f0;
+        com.google.android.material.behavior.SwipeDismissBehavior r0;
+
+        r0 := @this: com.google.android.material.behavior.SwipeDismissBehavior;
+
+        $f0 := @parameter0: float;
+
+        $f0 = staticinvoke <com.google.android.material.behavior.SwipeDismissBehavior: float clamp(float,float,float)>(0.0F, $f0, 1.0F);
+
+        r0.<com.google.android.material.behavior.SwipeDismissBehavior: float alphaEndSwipeDistance> = $f0;
+
+        return;
+    }
+
+    public void setListener(com.google.android.material.behavior.SwipeDismissBehavior$OnDismissListener)
+    {
+        com.google.android.material.behavior.SwipeDismissBehavior r0;
+        com.google.android.material.behavior.SwipeDismissBehavior$OnDismissListener $r1;
+
+        r0 := @this: com.google.android.material.behavior.SwipeDismissBehavior;
+
+        $r1 := @parameter0: com.google.android.material.behavior.SwipeDismissBehavior$OnDismissListener;
+
+        r0.<com.google.android.material.behavior.SwipeDismissBehavior: com.google.android.material.behavior.SwipeDismissBehavior$OnDismissListener listener> = $r1;
+
+        return;
+    }
+
+    public void setSensitivity(float)
+    {
+        float $f0;
+        com.google.android.material.behavior.SwipeDismissBehavior r0;
+
+        r0 := @this: com.google.android.material.behavior.SwipeDismissBehavior;
+
+        $f0 := @parameter0: float;
+
+        r0.<com.google.android.material.behavior.SwipeDismissBehavior: float sensitivity> = $f0;
+
+        r0.<com.google.android.material.behavior.SwipeDismissBehavior: boolean sensitivitySet> = 1;
+
+        return;
+    }
+
+    public void setStartAlphaSwipeDistance(float)
+    {
+        float $f0;
+        com.google.android.material.behavior.SwipeDismissBehavior r0;
+
+        r0 := @this: com.google.android.material.behavior.SwipeDismissBehavior;
+
+        $f0 := @parameter0: float;
+
+        $f0 = staticinvoke <com.google.android.material.behavior.SwipeDismissBehavior: float clamp(float,float,float)>(0.0F, $f0, 1.0F);
+
+        r0.<com.google.android.material.behavior.SwipeDismissBehavior: float alphaStartSwipeDistance> = $f0;
+
+        return;
+    }
+
+    public void setSwipeDirection(int)
+    {
+        int $i0;
+        com.google.android.material.behavior.SwipeDismissBehavior r0;
+
+        r0 := @this: com.google.android.material.behavior.SwipeDismissBehavior;
+
+        $i0 := @parameter0: int;
+
+        r0.<com.google.android.material.behavior.SwipeDismissBehavior: int swipeDirection> = $i0;
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.android.material.behavior.SwipeDismissBehavior: int SWIPE_DIRECTION_END_TO_START> = 1;
+
+        <com.google.android.material.behavior.SwipeDismissBehavior: int SWIPE_DIRECTION_ANY> = 2;
+
+        <com.google.android.material.behavior.SwipeDismissBehavior: int STATE_SETTLING> = 2;
+
+        <com.google.android.material.behavior.SwipeDismissBehavior: int STATE_IDLE> = 0;
+
+        <com.google.android.material.behavior.SwipeDismissBehavior: int STATE_DRAGGING> = 1;
+
+        <com.google.android.material.behavior.SwipeDismissBehavior: float DEFAULT_DRAG_DISMISS_THRESHOLD> = 0.5F;
+
+        <com.google.android.material.behavior.SwipeDismissBehavior: float DEFAULT_ALPHA_START_DISTANCE> = 0.0F;
+
+        <com.google.android.material.behavior.SwipeDismissBehavior: float DEFAULT_ALPHA_END_DISTANCE> = 0.5F;
+
+        return;
+    }
+}

@@ -1,0 +1,1195 @@
+public final class com.google.common.collect.Sets extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        com.google.common.collect.Sets r0;
+
+        r0 := @this: com.google.common.collect.Sets;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.util.Set cartesianProduct(java.util.List)
+    {
+        java.util.Set $r0;
+        java.util.List $r1;
+
+        $r1 := @parameter0: java.util.List;
+
+        $r0 = staticinvoke <com.google.common.collect.Sets$CartesianSet: java.util.Set create(java.util.List)>($r1);
+
+        return $r0;
+    }
+
+    public static transient java.util.Set cartesianProduct(java.util.Set[])
+    {
+        java.util.Set $r2;
+        java.util.Set[] $r0;
+        java.util.List $r1;
+
+        $r0 := @parameter0: java.util.Set[];
+
+        $r1 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($r0);
+
+        $r2 = staticinvoke <com.google.common.collect.Sets: java.util.Set cartesianProduct(java.util.List)>($r1);
+
+        return $r2;
+    }
+
+    public static java.util.Set combinations(java.util.Set, int)
+    {
+        com.google.common.collect.ImmutableSet $r2;
+        com.google.common.collect.Sets$5 $r3;
+        com.google.common.collect.ImmutableMap $r1;
+        int $i0, $i1;
+        java.util.Set $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.util.Set;
+
+        $i0 := @parameter1: int;
+
+        $r1 = staticinvoke <com.google.common.collect.Maps: com.google.common.collect.ImmutableMap indexMap(java.util.Collection)>($r0);
+
+        staticinvoke <com.google.common.collect.CollectPreconditions: int checkNonnegative(int,java.lang.String)>($i0, "size");
+
+        $i1 = interfaceinvoke $r1.<java.util.Map: int size()>();
+
+        if $i0 > $i1 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        $i1 = interfaceinvoke $r1.<java.util.Map: int size()>();
+
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.String,int,int)>($z0, "size (%s) must be <= set.size() (%s)", $i0, $i1);
+
+        if $i0 != 0 goto label3;
+
+        $r2 = staticinvoke <com.google.common.collect.ImmutableSet: com.google.common.collect.ImmutableSet of()>();
+
+        $r2 = staticinvoke <com.google.common.collect.ImmutableSet: com.google.common.collect.ImmutableSet of(java.lang.Object)>($r2);
+
+        return $r2;
+
+     label3:
+        $i1 = interfaceinvoke $r1.<java.util.Map: int size()>();
+
+        if $i0 != $i1 goto label4;
+
+        $r2 = virtualinvoke $r1.<com.google.common.collect.ImmutableMap: com.google.common.collect.ImmutableSet keySet()>();
+
+        $r2 = staticinvoke <com.google.common.collect.ImmutableSet: com.google.common.collect.ImmutableSet of(java.lang.Object)>($r2);
+
+        return $r2;
+
+     label4:
+        $r3 = new com.google.common.collect.Sets$5;
+
+        specialinvoke $r3.<com.google.common.collect.Sets$5: void <init>(int,com.google.common.collect.ImmutableMap)>($i0, $r1);
+
+        return $r3;
+    }
+
+    public static java.util.EnumSet complementOf(java.util.Collection)
+    {
+        java.util.Iterator $r2;
+        java.lang.Enum $r4;
+        java.util.Collection $r0;
+        java.lang.Object $r3;
+        java.lang.Class $r5;
+        java.util.EnumSet $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: java.util.Collection;
+
+        $z0 = $r0 instanceof java.util.EnumSet;
+
+        if $z0 == 0 goto label1;
+
+        $r1 = (java.util.EnumSet) $r0;
+
+        $r1 = staticinvoke <java.util.EnumSet: java.util.EnumSet complementOf(java.util.EnumSet)>($r1);
+
+        return $r1;
+
+     label1:
+        $z0 = interfaceinvoke $r0.<java.util.Collection: boolean isEmpty()>();
+
+        $z0 = $z0 ^ 1;
+
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.Object)>($z0, "collection is empty; use the other version of this method");
+
+        $r2 = interfaceinvoke $r0.<java.util.Collection: java.util.Iterator iterator()>();
+
+        $r3 = interfaceinvoke $r2.<java.util.Iterator: java.lang.Object next()>();
+
+        $r4 = (java.lang.Enum) $r3;
+
+        $r5 = virtualinvoke $r4.<java.lang.Enum: java.lang.Class getDeclaringClass()>();
+
+        $r1 = staticinvoke <com.google.common.collect.Sets: java.util.EnumSet makeComplementByHand(java.util.Collection,java.lang.Class)>($r0, $r5);
+
+        return $r1;
+    }
+
+    public static java.util.EnumSet complementOf(java.util.Collection, java.lang.Class)
+    {
+        java.util.Collection $r1;
+        java.lang.Class $r0;
+        java.util.EnumSet $r2;
+        boolean $z0;
+
+        $r1 := @parameter0: java.util.Collection;
+
+        $r0 := @parameter1: java.lang.Class;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $z0 = $r1 instanceof java.util.EnumSet;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (java.util.EnumSet) $r1;
+
+        $r2 = staticinvoke <java.util.EnumSet: java.util.EnumSet complementOf(java.util.EnumSet)>($r2);
+
+        return $r2;
+
+     label1:
+        $r2 = staticinvoke <com.google.common.collect.Sets: java.util.EnumSet makeComplementByHand(java.util.Collection,java.lang.Class)>($r1, $r0);
+
+        return $r2;
+    }
+
+    public static com.google.common.collect.Sets$SetView difference(java.util.Set, java.util.Set)
+    {
+        java.util.Set $r0, $r1;
+        com.google.common.collect.Sets$3 $r2;
+
+        $r0 := @parameter0: java.util.Set;
+
+        $r1 := @parameter1: java.util.Set;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r0, "set1");
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r1, "set2");
+
+        $r2 = new com.google.common.collect.Sets$3;
+
+        specialinvoke $r2.<com.google.common.collect.Sets$3: void <init>(java.util.Set,java.util.Set)>($r0, $r1);
+
+        return $r2;
+    }
+
+    public static boolean equalsImpl(java.util.Set, java.lang.Object)
+    {
+        java.util.Set $r2, $r4;
+        java.lang.ClassCastException $r1;
+        java.lang.NullPointerException $r0;
+        int $i0, $i1;
+        java.lang.Object $r3;
+        boolean $z0;
+
+        $r2 := @parameter0: java.util.Set;
+
+        $r3 := @parameter1: java.lang.Object;
+
+        if $r2 != $r3 goto label1;
+
+        return 1;
+
+     label1:
+        $z0 = $r3 instanceof java.util.Set;
+
+        if $z0 == 0 goto label7;
+
+        $r4 = (java.util.Set) $r3;
+
+     label2:
+        $i0 = interfaceinvoke $r2.<java.util.Set: int size()>();
+
+        $i1 = interfaceinvoke $r4.<java.util.Set: int size()>();
+
+     label3:
+        if $i0 != $i1 goto label6;
+
+     label4:
+        $z0 = interfaceinvoke $r2.<java.util.Set: boolean containsAll(java.util.Collection)>($r4);
+
+     label5:
+        if $z0 == 0 goto label6;
+
+        return 1;
+
+     label6:
+        return 0;
+
+     label7:
+        return 0;
+
+     label8:
+        $r0 := @caughtexception;
+
+        return 0;
+
+     label9:
+        $r1 := @caughtexception;
+
+        return 0;
+
+        catch java.lang.NullPointerException from label2 to label3 with label8;
+        catch java.lang.NullPointerException from label4 to label5 with label8;
+        catch java.lang.ClassCastException from label2 to label3 with label9;
+        catch java.lang.ClassCastException from label4 to label5 with label9;
+    }
+
+    public static java.util.NavigableSet filter(java.util.NavigableSet, com.google.common.base.Predicate)
+    {
+        com.google.common.base.Predicate $r0, $r3;
+        java.util.Collection $r5;
+        java.util.NavigableSet $r1;
+        com.google.common.collect.Sets$FilteredNavigableSet $r4;
+        com.google.common.collect.Sets$FilteredSet $r2;
+        boolean $z0;
+
+        $r1 := @parameter0: java.util.NavigableSet;
+
+        $r0 := @parameter1: com.google.common.base.Predicate;
+
+        $z0 = $r1 instanceof com.google.common.collect.Sets$FilteredSet;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (com.google.common.collect.Sets$FilteredSet) $r1;
+
+        $r3 = $r2.<com.google.common.collect.Collections2$FilteredCollection: com.google.common.base.Predicate predicate>;
+
+        $r0 = staticinvoke <com.google.common.base.Predicates: com.google.common.base.Predicate and(com.google.common.base.Predicate,com.google.common.base.Predicate)>($r3, $r0);
+
+        $r4 = new com.google.common.collect.Sets$FilteredNavigableSet;
+
+        $r5 = $r2.<com.google.common.collect.Collections2$FilteredCollection: java.util.Collection unfiltered>;
+
+        $r1 = (java.util.NavigableSet) $r5;
+
+        specialinvoke $r4.<com.google.common.collect.Sets$FilteredNavigableSet: void <init>(java.util.NavigableSet,com.google.common.base.Predicate)>($r1, $r0);
+
+        return $r4;
+
+     label1:
+        $r4 = new com.google.common.collect.Sets$FilteredNavigableSet;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        specialinvoke $r4.<com.google.common.collect.Sets$FilteredNavigableSet: void <init>(java.util.NavigableSet,com.google.common.base.Predicate)>($r1, $r0);
+
+        return $r4;
+    }
+
+    public static java.util.Set filter(java.util.Set, com.google.common.base.Predicate)
+    {
+        java.util.SortedSet $r2;
+        java.util.Collection $r6;
+        java.util.Set $r0;
+        com.google.common.collect.Sets$FilteredSet $r3, $r5;
+        com.google.common.base.Predicate $r1, $r4;
+        boolean $z0;
+
+        $r0 := @parameter0: java.util.Set;
+
+        $r1 := @parameter1: com.google.common.base.Predicate;
+
+        $z0 = $r0 instanceof java.util.SortedSet;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (java.util.SortedSet) $r0;
+
+        $r2 = staticinvoke <com.google.common.collect.Sets: java.util.SortedSet filter(java.util.SortedSet,com.google.common.base.Predicate)>($r2, $r1);
+
+        return $r2;
+
+     label1:
+        $z0 = $r0 instanceof com.google.common.collect.Sets$FilteredSet;
+
+        if $z0 == 0 goto label2;
+
+        $r3 = (com.google.common.collect.Sets$FilteredSet) $r0;
+
+        $r4 = $r3.<com.google.common.collect.Collections2$FilteredCollection: com.google.common.base.Predicate predicate>;
+
+        $r1 = staticinvoke <com.google.common.base.Predicates: com.google.common.base.Predicate and(com.google.common.base.Predicate,com.google.common.base.Predicate)>($r4, $r1);
+
+        $r5 = new com.google.common.collect.Sets$FilteredSet;
+
+        $r6 = $r3.<com.google.common.collect.Collections2$FilteredCollection: java.util.Collection unfiltered>;
+
+        $r0 = (java.util.Set) $r6;
+
+        specialinvoke $r5.<com.google.common.collect.Sets$FilteredSet: void <init>(java.util.Set,com.google.common.base.Predicate)>($r0, $r1);
+
+        return $r5;
+
+     label2:
+        $r3 = new com.google.common.collect.Sets$FilteredSet;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        specialinvoke $r3.<com.google.common.collect.Sets$FilteredSet: void <init>(java.util.Set,com.google.common.base.Predicate)>($r0, $r1);
+
+        return $r3;
+    }
+
+    public static java.util.SortedSet filter(java.util.SortedSet, com.google.common.base.Predicate)
+    {
+        com.google.common.collect.Sets$FilteredSortedSet $r4;
+        java.util.SortedSet $r1;
+        com.google.common.base.Predicate $r0, $r3;
+        java.util.Collection $r5;
+        com.google.common.collect.Sets$FilteredSet $r2;
+        boolean $z0;
+
+        $r1 := @parameter0: java.util.SortedSet;
+
+        $r0 := @parameter1: com.google.common.base.Predicate;
+
+        $z0 = $r1 instanceof com.google.common.collect.Sets$FilteredSet;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (com.google.common.collect.Sets$FilteredSet) $r1;
+
+        $r3 = $r2.<com.google.common.collect.Collections2$FilteredCollection: com.google.common.base.Predicate predicate>;
+
+        $r0 = staticinvoke <com.google.common.base.Predicates: com.google.common.base.Predicate and(com.google.common.base.Predicate,com.google.common.base.Predicate)>($r3, $r0);
+
+        $r4 = new com.google.common.collect.Sets$FilteredSortedSet;
+
+        $r5 = $r2.<com.google.common.collect.Collections2$FilteredCollection: java.util.Collection unfiltered>;
+
+        $r1 = (java.util.SortedSet) $r5;
+
+        specialinvoke $r4.<com.google.common.collect.Sets$FilteredSortedSet: void <init>(java.util.SortedSet,com.google.common.base.Predicate)>($r1, $r0);
+
+        return $r4;
+
+     label1:
+        $r4 = new com.google.common.collect.Sets$FilteredSortedSet;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        specialinvoke $r4.<com.google.common.collect.Sets$FilteredSortedSet: void <init>(java.util.SortedSet,com.google.common.base.Predicate)>($r1, $r0);
+
+        return $r4;
+    }
+
+    public static int hashCodeImpl(java.util.Set)
+    {
+        java.util.Iterator $r1;
+        int $i0, $i1;
+        java.util.Set $r0;
+        java.lang.Object $r2;
+        boolean $z0;
+
+        $r0 := @parameter0: java.util.Set;
+
+        $r1 = interfaceinvoke $r0.<java.util.Set: java.util.Iterator iterator()>();
+
+        $i0 = 0;
+
+     label1:
+        $z0 = interfaceinvoke $r1.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label4;
+
+        $r2 = interfaceinvoke $r1.<java.util.Iterator: java.lang.Object next()>();
+
+        if $r2 == null goto label2;
+
+        $i1 = virtualinvoke $r2.<java.lang.Object: int hashCode()>();
+
+        goto label3;
+
+     label2:
+        $i1 = 0;
+
+     label3:
+        $i0 = $i0 + $i1;
+
+        $i1 = -1;
+
+        $i0 = $i0 ^ $i1;
+
+        $i1 = -1;
+
+        $i0 = $i0 ^ $i1;
+
+        goto label1;
+
+     label4:
+        return $i0;
+    }
+
+    public static transient com.google.common.collect.ImmutableSet immutableEnumSet(java.lang.Enum, java.lang.Enum[])
+    {
+        com.google.common.collect.ImmutableSet $r3;
+        java.lang.Enum $r1;
+        java.lang.Enum[] $r0;
+        java.util.EnumSet $r2;
+
+        $r1 := @parameter0: java.lang.Enum;
+
+        $r0 := @parameter1: java.lang.Enum[];
+
+        $r2 = staticinvoke <java.util.EnumSet: java.util.EnumSet of(java.lang.Enum,java.lang.Enum[])>($r1, $r0);
+
+        $r3 = staticinvoke <com.google.common.collect.ImmutableEnumSet: com.google.common.collect.ImmutableSet asImmutable(java.util.EnumSet)>($r2);
+
+        return $r3;
+    }
+
+    public static com.google.common.collect.ImmutableSet immutableEnumSet(java.lang.Iterable)
+    {
+        com.google.common.collect.ImmutableSet $r3;
+        java.util.Iterator $r5;
+        java.util.Collection $r2;
+        java.lang.Iterable $r0;
+        com.google.common.collect.ImmutableEnumSet $r1;
+        java.lang.Enum $r7;
+        java.lang.Object $r6;
+        java.util.EnumSet $r4;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.Iterable;
+
+        $z0 = $r0 instanceof com.google.common.collect.ImmutableEnumSet;
+
+        if $z0 == 0 goto label1;
+
+        $r1 = (com.google.common.collect.ImmutableEnumSet) $r0;
+
+        return $r1;
+
+     label1:
+        $z0 = $r0 instanceof java.util.Collection;
+
+        if $z0 == 0 goto label3;
+
+        $r2 = (java.util.Collection) $r0;
+
+        $z0 = interfaceinvoke $r2.<java.util.Collection: boolean isEmpty()>();
+
+        if $z0 == 0 goto label2;
+
+        $r3 = staticinvoke <com.google.common.collect.ImmutableSet: com.google.common.collect.ImmutableSet of()>();
+
+        return $r3;
+
+     label2:
+        $r4 = staticinvoke <java.util.EnumSet: java.util.EnumSet copyOf(java.util.Collection)>($r2);
+
+        $r3 = staticinvoke <com.google.common.collect.ImmutableEnumSet: com.google.common.collect.ImmutableSet asImmutable(java.util.EnumSet)>($r4);
+
+        return $r3;
+
+     label3:
+        $r5 = interfaceinvoke $r0.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+        $z0 = interfaceinvoke $r5.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label4;
+
+        $r6 = interfaceinvoke $r5.<java.util.Iterator: java.lang.Object next()>();
+
+        $r7 = (java.lang.Enum) $r6;
+
+        $r4 = staticinvoke <java.util.EnumSet: java.util.EnumSet of(java.lang.Enum)>($r7);
+
+        staticinvoke <com.google.common.collect.Iterators: boolean addAll(java.util.Collection,java.util.Iterator)>($r4, $r5);
+
+        $r3 = staticinvoke <com.google.common.collect.ImmutableEnumSet: com.google.common.collect.ImmutableSet asImmutable(java.util.EnumSet)>($r4);
+
+        return $r3;
+
+     label4:
+        $r3 = staticinvoke <com.google.common.collect.ImmutableSet: com.google.common.collect.ImmutableSet of()>();
+
+        return $r3;
+    }
+
+    public static com.google.common.collect.Sets$SetView intersection(java.util.Set, java.util.Set)
+    {
+        java.util.Set $r0, $r1;
+        com.google.common.collect.Sets$2 $r2;
+
+        $r0 := @parameter0: java.util.Set;
+
+        $r1 := @parameter1: java.util.Set;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r0, "set1");
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r1, "set2");
+
+        $r2 = new com.google.common.collect.Sets$2;
+
+        specialinvoke $r2.<com.google.common.collect.Sets$2: void <init>(java.util.Set,java.util.Set)>($r0, $r1);
+
+        return $r2;
+    }
+
+    public static java.util.EnumSet makeComplementByHand(java.util.Collection, java.lang.Class)
+    {
+        java.lang.Class $r2;
+        java.util.EnumSet $r1;
+        java.util.Collection $r0;
+
+        $r0 := @parameter0: java.util.Collection;
+
+        $r2 := @parameter1: java.lang.Class;
+
+        $r1 = staticinvoke <java.util.EnumSet: java.util.EnumSet allOf(java.lang.Class)>($r2);
+
+        virtualinvoke $r1.<java.util.EnumSet: boolean removeAll(java.util.Collection)>($r0);
+
+        return $r1;
+    }
+
+    public static java.util.Set newConcurrentHashSet()
+    {
+        java.util.concurrent.ConcurrentHashMap $r1;
+        java.util.Set $r0;
+
+        $r1 = new java.util.concurrent.ConcurrentHashMap;
+
+        specialinvoke $r1.<java.util.concurrent.ConcurrentHashMap: void <init>()>();
+
+        $r0 = staticinvoke <java.util.Collections: java.util.Set newSetFromMap(java.util.Map)>($r1);
+
+        return $r0;
+    }
+
+    public static java.util.Set newConcurrentHashSet(java.lang.Iterable)
+    {
+        java.util.Set $r1;
+        java.lang.Iterable $r0;
+
+        $r0 := @parameter0: java.lang.Iterable;
+
+        $r1 = staticinvoke <com.google.common.collect.Sets: java.util.Set newConcurrentHashSet()>();
+
+        staticinvoke <com.google.common.collect.Iterables: boolean addAll(java.util.Collection,java.lang.Iterable)>($r1, $r0);
+
+        return $r1;
+    }
+
+    public static java.util.concurrent.CopyOnWriteArraySet newCopyOnWriteArraySet()
+    {
+        java.util.concurrent.CopyOnWriteArraySet $r0;
+
+        $r0 = new java.util.concurrent.CopyOnWriteArraySet;
+
+        specialinvoke $r0.<java.util.concurrent.CopyOnWriteArraySet: void <init>()>();
+
+        return $r0;
+    }
+
+    public static java.util.concurrent.CopyOnWriteArraySet newCopyOnWriteArraySet(java.lang.Iterable)
+    {
+        java.util.Collection $r1;
+        java.util.concurrent.CopyOnWriteArraySet $r2;
+        java.lang.Iterable $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.Iterable;
+
+        $z0 = $r0 instanceof java.util.Collection;
+
+        if $z0 == 0 goto label1;
+
+        $r1 = staticinvoke <com.google.common.collect.Collections2: java.util.Collection cast(java.lang.Iterable)>($r0);
+
+        goto label2;
+
+     label1:
+        $r1 = staticinvoke <com.google.common.collect.Lists: java.util.ArrayList newArrayList(java.lang.Iterable)>($r0);
+
+     label2:
+        $r2 = new java.util.concurrent.CopyOnWriteArraySet;
+
+        specialinvoke $r2.<java.util.concurrent.CopyOnWriteArraySet: void <init>(java.util.Collection)>($r1);
+
+        return $r2;
+    }
+
+    public static java.util.EnumSet newEnumSet(java.lang.Iterable, java.lang.Class)
+    {
+        java.lang.Class $r2;
+        java.lang.Iterable $r0;
+        java.util.EnumSet $r1;
+
+        $r0 := @parameter0: java.lang.Iterable;
+
+        $r2 := @parameter1: java.lang.Class;
+
+        $r1 = staticinvoke <java.util.EnumSet: java.util.EnumSet noneOf(java.lang.Class)>($r2);
+
+        staticinvoke <com.google.common.collect.Iterables: boolean addAll(java.util.Collection,java.lang.Iterable)>($r1, $r0);
+
+        return $r1;
+    }
+
+    public static java.util.HashSet newHashSet()
+    {
+        java.util.HashSet $r0;
+
+        $r0 = new java.util.HashSet;
+
+        specialinvoke $r0.<java.util.HashSet: void <init>()>();
+
+        return $r0;
+    }
+
+    public static java.util.HashSet newHashSet(java.lang.Iterable)
+    {
+        java.util.HashSet $r1;
+        java.util.Iterator $r3;
+        java.util.Collection $r2;
+        java.lang.Iterable $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.Iterable;
+
+        $z0 = $r0 instanceof java.util.Collection;
+
+        if $z0 == 0 goto label1;
+
+        $r1 = new java.util.HashSet;
+
+        $r2 = staticinvoke <com.google.common.collect.Collections2: java.util.Collection cast(java.lang.Iterable)>($r0);
+
+        specialinvoke $r1.<java.util.HashSet: void <init>(java.util.Collection)>($r2);
+
+        return $r1;
+
+     label1:
+        $r3 = interfaceinvoke $r0.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+        $r1 = staticinvoke <com.google.common.collect.Sets: java.util.HashSet newHashSet(java.util.Iterator)>($r3);
+
+        return $r1;
+    }
+
+    public static java.util.HashSet newHashSet(java.util.Iterator)
+    {
+        java.util.HashSet $r1;
+        java.util.Iterator $r0;
+
+        $r0 := @parameter0: java.util.Iterator;
+
+        $r1 = staticinvoke <com.google.common.collect.Sets: java.util.HashSet newHashSet()>();
+
+        staticinvoke <com.google.common.collect.Iterators: boolean addAll(java.util.Collection,java.util.Iterator)>($r1, $r0);
+
+        return $r1;
+    }
+
+    public static transient java.util.HashSet newHashSet(java.lang.Object[])
+    {
+        java.util.HashSet $r1;
+        int $i0;
+        java.lang.Object[] $r0;
+
+        $r0 := @parameter0: java.lang.Object[];
+
+        $i0 = lengthof $r0;
+
+        $r1 = staticinvoke <com.google.common.collect.Sets: java.util.HashSet newHashSetWithExpectedSize(int)>($i0);
+
+        staticinvoke <java.util.Collections: boolean addAll(java.util.Collection,java.lang.Object[])>($r1, $r0);
+
+        return $r1;
+    }
+
+    public static java.util.HashSet newHashSetWithExpectedSize(int)
+    {
+        java.util.HashSet $r0;
+        int $i0;
+
+        $i0 := @parameter0: int;
+
+        $r0 = new java.util.HashSet;
+
+        $i0 = staticinvoke <com.google.common.collect.Maps: int capacity(int)>($i0);
+
+        specialinvoke $r0.<java.util.HashSet: void <init>(int)>($i0);
+
+        return $r0;
+    }
+
+    public static java.util.Set newIdentityHashSet()
+    {
+        java.util.Set $r1;
+        java.util.IdentityHashMap $r0;
+
+        $r0 = staticinvoke <com.google.common.collect.Maps: java.util.IdentityHashMap newIdentityHashMap()>();
+
+        $r1 = staticinvoke <java.util.Collections: java.util.Set newSetFromMap(java.util.Map)>($r0);
+
+        return $r1;
+    }
+
+    public static java.util.LinkedHashSet newLinkedHashSet()
+    {
+        java.util.LinkedHashSet $r0;
+
+        $r0 = new java.util.LinkedHashSet;
+
+        specialinvoke $r0.<java.util.LinkedHashSet: void <init>()>();
+
+        return $r0;
+    }
+
+    public static java.util.LinkedHashSet newLinkedHashSet(java.lang.Iterable)
+    {
+        java.util.Collection $r2;
+        java.lang.Iterable $r0;
+        java.util.LinkedHashSet $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.Iterable;
+
+        $z0 = $r0 instanceof java.util.Collection;
+
+        if $z0 == 0 goto label1;
+
+        $r1 = new java.util.LinkedHashSet;
+
+        $r2 = staticinvoke <com.google.common.collect.Collections2: java.util.Collection cast(java.lang.Iterable)>($r0);
+
+        specialinvoke $r1.<java.util.LinkedHashSet: void <init>(java.util.Collection)>($r2);
+
+        return $r1;
+
+     label1:
+        $r1 = staticinvoke <com.google.common.collect.Sets: java.util.LinkedHashSet newLinkedHashSet()>();
+
+        staticinvoke <com.google.common.collect.Iterables: boolean addAll(java.util.Collection,java.lang.Iterable)>($r1, $r0);
+
+        return $r1;
+    }
+
+    public static java.util.LinkedHashSet newLinkedHashSetWithExpectedSize(int)
+    {
+        int $i0;
+        java.util.LinkedHashSet $r0;
+
+        $i0 := @parameter0: int;
+
+        $r0 = new java.util.LinkedHashSet;
+
+        $i0 = staticinvoke <com.google.common.collect.Maps: int capacity(int)>($i0);
+
+        specialinvoke $r0.<java.util.LinkedHashSet: void <init>(int)>($i0);
+
+        return $r0;
+    }
+
+    public static java.util.Set newSetFromMap(java.util.Map)
+    {
+        java.util.Set $r0;
+        java.util.Map $r1;
+
+        $r1 := @parameter0: java.util.Map;
+
+        $r0 = staticinvoke <java.util.Collections: java.util.Set newSetFromMap(java.util.Map)>($r1);
+
+        return $r0;
+    }
+
+    public static java.util.TreeSet newTreeSet()
+    {
+        java.util.TreeSet $r0;
+
+        $r0 = new java.util.TreeSet;
+
+        specialinvoke $r0.<java.util.TreeSet: void <init>()>();
+
+        return $r0;
+    }
+
+    public static java.util.TreeSet newTreeSet(java.lang.Iterable)
+    {
+        java.lang.Iterable $r0;
+        java.util.TreeSet $r1;
+
+        $r0 := @parameter0: java.lang.Iterable;
+
+        $r1 = staticinvoke <com.google.common.collect.Sets: java.util.TreeSet newTreeSet()>();
+
+        staticinvoke <com.google.common.collect.Iterables: boolean addAll(java.util.Collection,java.lang.Iterable)>($r1, $r0);
+
+        return $r1;
+    }
+
+    public static java.util.TreeSet newTreeSet(java.util.Comparator)
+    {
+        java.util.Comparator $r1;
+        java.util.TreeSet $r0;
+
+        $r1 := @parameter0: java.util.Comparator;
+
+        $r0 = new java.util.TreeSet;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        specialinvoke $r0.<java.util.TreeSet: void <init>(java.util.Comparator)>($r1);
+
+        return $r0;
+    }
+
+    public static java.util.Set powerSet(java.util.Set)
+    {
+        java.util.Set $r0;
+        com.google.common.collect.Sets$PowerSet $r1;
+
+        $r0 := @parameter0: java.util.Set;
+
+        $r1 = new com.google.common.collect.Sets$PowerSet;
+
+        specialinvoke $r1.<com.google.common.collect.Sets$PowerSet: void <init>(java.util.Set)>($r0);
+
+        return $r1;
+    }
+
+    public static boolean removeAllImpl(java.util.Set, java.util.Collection)
+    {
+        java.util.Iterator $r3;
+        com.google.common.collect.Multiset $r2;
+        java.util.Collection $r1;
+        int $i0, $i1;
+        java.util.Set $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.util.Set;
+
+        $r1 := @parameter1: java.util.Collection;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $z0 = $r1 instanceof com.google.common.collect.Multiset;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (com.google.common.collect.Multiset) $r1;
+
+        $r1 = interfaceinvoke $r2.<com.google.common.collect.Multiset: java.util.Set elementSet()>();
+
+     label1:
+        $z0 = $r1 instanceof java.util.Set;
+
+        if $z0 == 0 goto label2;
+
+        $i0 = interfaceinvoke $r1.<java.util.Collection: int size()>();
+
+        $i1 = interfaceinvoke $r0.<java.util.Set: int size()>();
+
+        if $i0 <= $i1 goto label2;
+
+        $r3 = interfaceinvoke $r0.<java.util.Set: java.util.Iterator iterator()>();
+
+        $z0 = staticinvoke <com.google.common.collect.Iterators: boolean removeAll(java.util.Iterator,java.util.Collection)>($r3, $r1);
+
+        return $z0;
+
+     label2:
+        $r3 = interfaceinvoke $r1.<java.util.Collection: java.util.Iterator iterator()>();
+
+        $z0 = staticinvoke <com.google.common.collect.Sets: boolean removeAllImpl(java.util.Set,java.util.Iterator)>($r0, $r3);
+
+        return $z0;
+    }
+
+    public static boolean removeAllImpl(java.util.Set, java.util.Iterator)
+    {
+        java.util.Iterator $r1;
+        java.util.Set $r0;
+        java.lang.Object $r2;
+        boolean $z0, $z1;
+
+        $r0 := @parameter0: java.util.Set;
+
+        $r1 := @parameter1: java.util.Iterator;
+
+        $z0 = 0;
+
+     label1:
+        $z1 = interfaceinvoke $r1.<java.util.Iterator: boolean hasNext()>();
+
+        if $z1 == 0 goto label2;
+
+        $r2 = interfaceinvoke $r1.<java.util.Iterator: java.lang.Object next()>();
+
+        $z1 = interfaceinvoke $r0.<java.util.Set: boolean remove(java.lang.Object)>($r2);
+
+        $z0 = $z0 | $z1;
+
+        goto label1;
+
+     label2:
+        return $z0;
+    }
+
+    public static java.util.NavigableSet subSet(java.util.NavigableSet, com.google.common.collect.Range)
+    {
+        com.google.common.collect.Range $r2;
+        java.util.NavigableSet $r1;
+        com.google.common.collect.Ordering $r4;
+        com.google.common.collect.BoundType $r0, $r7;
+        int $i0;
+        java.lang.Comparable $r5, $r6;
+        java.util.Comparator $r3;
+        boolean $z0, $z1;
+
+        $r1 := @parameter0: java.util.NavigableSet;
+
+        $r2 := @parameter1: com.google.common.collect.Range;
+
+        $r3 = interfaceinvoke $r1.<java.util.NavigableSet: java.util.Comparator comparator()>();
+
+        $z0 = 1;
+
+        if $r3 == null goto label03;
+
+        $r3 = interfaceinvoke $r1.<java.util.NavigableSet: java.util.Comparator comparator()>();
+
+        $r4 = staticinvoke <com.google.common.collect.Ordering: com.google.common.collect.Ordering natural()>();
+
+        if $r3 == $r4 goto label03;
+
+        $z1 = virtualinvoke $r2.<com.google.common.collect.Range: boolean hasLowerBound()>();
+
+        if $z1 == 0 goto label03;
+
+        $z1 = virtualinvoke $r2.<com.google.common.collect.Range: boolean hasUpperBound()>();
+
+        if $z1 == 0 goto label03;
+
+        $r3 = interfaceinvoke $r1.<java.util.NavigableSet: java.util.Comparator comparator()>();
+
+        $r5 = virtualinvoke $r2.<com.google.common.collect.Range: java.lang.Comparable lowerEndpoint()>();
+
+        $r6 = virtualinvoke $r2.<com.google.common.collect.Range: java.lang.Comparable upperEndpoint()>();
+
+        $i0 = interfaceinvoke $r3.<java.util.Comparator: int compare(java.lang.Object,java.lang.Object)>($r5, $r6);
+
+        if $i0 > 0 goto label01;
+
+        $z1 = 1;
+
+        goto label02;
+
+     label01:
+        $z1 = 0;
+
+     label02:
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.Object)>($z1, "set is using a custom comparator which is inconsistent with the natural ordering.");
+
+     label03:
+        $z1 = virtualinvoke $r2.<com.google.common.collect.Range: boolean hasLowerBound()>();
+
+        if $z1 == 0 goto label08;
+
+        $z1 = virtualinvoke $r2.<com.google.common.collect.Range: boolean hasUpperBound()>();
+
+        if $z1 == 0 goto label08;
+
+        $r5 = virtualinvoke $r2.<com.google.common.collect.Range: java.lang.Comparable lowerEndpoint()>();
+
+        $r0 = virtualinvoke $r2.<com.google.common.collect.Range: com.google.common.collect.BoundType lowerBoundType()>();
+
+        $r7 = <com.google.common.collect.BoundType: com.google.common.collect.BoundType CLOSED>;
+
+        if $r0 != $r7 goto label04;
+
+        $z1 = 1;
+
+        goto label05;
+
+     label04:
+        $z1 = 0;
+
+     label05:
+        $r6 = virtualinvoke $r2.<com.google.common.collect.Range: java.lang.Comparable upperEndpoint()>();
+
+        $r7 = virtualinvoke $r2.<com.google.common.collect.Range: com.google.common.collect.BoundType upperBoundType()>();
+
+        $r0 = <com.google.common.collect.BoundType: com.google.common.collect.BoundType CLOSED>;
+
+        if $r7 != $r0 goto label06;
+
+        goto label07;
+
+     label06:
+        $z0 = 0;
+
+     label07:
+        $r1 = interfaceinvoke $r1.<java.util.NavigableSet: java.util.NavigableSet subSet(java.lang.Object,boolean,java.lang.Object,boolean)>($r5, $z1, $r6, $z0);
+
+        return $r1;
+
+     label08:
+        $z1 = virtualinvoke $r2.<com.google.common.collect.Range: boolean hasLowerBound()>();
+
+        if $z1 == 0 goto label11;
+
+        $r5 = virtualinvoke $r2.<com.google.common.collect.Range: java.lang.Comparable lowerEndpoint()>();
+
+        $r0 = virtualinvoke $r2.<com.google.common.collect.Range: com.google.common.collect.BoundType lowerBoundType()>();
+
+        $r7 = <com.google.common.collect.BoundType: com.google.common.collect.BoundType CLOSED>;
+
+        if $r0 != $r7 goto label09;
+
+        goto label10;
+
+     label09:
+        $z0 = 0;
+
+     label10:
+        $r1 = interfaceinvoke $r1.<java.util.NavigableSet: java.util.NavigableSet tailSet(java.lang.Object,boolean)>($r5, $z0);
+
+        return $r1;
+
+     label11:
+        $z1 = virtualinvoke $r2.<com.google.common.collect.Range: boolean hasUpperBound()>();
+
+        if $z1 == 0 goto label14;
+
+        $r5 = virtualinvoke $r2.<com.google.common.collect.Range: java.lang.Comparable upperEndpoint()>();
+
+        $r0 = virtualinvoke $r2.<com.google.common.collect.Range: com.google.common.collect.BoundType upperBoundType()>();
+
+        $r7 = <com.google.common.collect.BoundType: com.google.common.collect.BoundType CLOSED>;
+
+        if $r0 != $r7 goto label12;
+
+        goto label13;
+
+     label12:
+        $z0 = 0;
+
+     label13:
+        $r1 = interfaceinvoke $r1.<java.util.NavigableSet: java.util.NavigableSet headSet(java.lang.Object,boolean)>($r5, $z0);
+
+        return $r1;
+
+     label14:
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        return $r1;
+    }
+
+    public static com.google.common.collect.Sets$SetView symmetricDifference(java.util.Set, java.util.Set)
+    {
+        java.util.Set $r0, $r1;
+        com.google.common.collect.Sets$4 $r2;
+
+        $r0 := @parameter0: java.util.Set;
+
+        $r1 := @parameter1: java.util.Set;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r0, "set1");
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r1, "set2");
+
+        $r2 = new com.google.common.collect.Sets$4;
+
+        specialinvoke $r2.<com.google.common.collect.Sets$4: void <init>(java.util.Set,java.util.Set)>($r0, $r1);
+
+        return $r2;
+    }
+
+    public static java.util.NavigableSet synchronizedNavigableSet(java.util.NavigableSet)
+    {
+        java.util.NavigableSet $r0;
+
+        $r0 := @parameter0: java.util.NavigableSet;
+
+        $r0 = staticinvoke <com.google.common.collect.Synchronized: java.util.NavigableSet navigableSet(java.util.NavigableSet)>($r0);
+
+        return $r0;
+    }
+
+    public static java.util.stream.Collector toImmutableEnumSet()
+    {
+        java.util.stream.Collector r0;
+
+        r0 = <com.google.common.collect.Sets$Accumulator: java.util.stream.Collector TO_IMMUTABLE_ENUM_SET>;
+
+        return r0;
+    }
+
+    public static com.google.common.collect.Sets$SetView union(java.util.Set, java.util.Set)
+    {
+        java.util.Set $r0, $r1;
+        com.google.common.collect.Sets$1 $r2;
+
+        $r0 := @parameter0: java.util.Set;
+
+        $r1 := @parameter1: java.util.Set;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r0, "set1");
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r1, "set2");
+
+        $r2 = new com.google.common.collect.Sets$1;
+
+        specialinvoke $r2.<com.google.common.collect.Sets$1: void <init>(java.util.Set,java.util.Set)>($r0, $r1);
+
+        return $r2;
+    }
+
+    public static java.util.NavigableSet unmodifiableNavigableSet(java.util.NavigableSet)
+    {
+        java.util.NavigableSet $r0;
+        com.google.common.collect.Sets$UnmodifiableNavigableSet $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: java.util.NavigableSet;
+
+        $z0 = $r0 instanceof com.google.common.collect.ImmutableSortedSet;
+
+        if $z0 != 0 goto label2;
+
+        $z0 = $r0 instanceof com.google.common.collect.Sets$UnmodifiableNavigableSet;
+
+        if $z0 == 0 goto label1;
+
+        return $r0;
+
+     label1:
+        $r1 = new com.google.common.collect.Sets$UnmodifiableNavigableSet;
+
+        specialinvoke $r1.<com.google.common.collect.Sets$UnmodifiableNavigableSet: void <init>(java.util.NavigableSet)>($r0);
+
+        return $r1;
+
+     label2:
+        return $r0;
+    }
+}

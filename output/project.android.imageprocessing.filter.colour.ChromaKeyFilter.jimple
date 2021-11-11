@@ -1,0 +1,125 @@
+public class project.android.imageprocessing.filter.colour.ChromaKeyFilter extends project.android.imageprocessing.filter.BasicFilter
+{
+    public static final java.lang.String UNIFORM_COLOUR;
+    public static final java.lang.String UNIFORM_SMOOTHING;
+    public static final java.lang.String UNIFORM_THRESHOLD;
+    public float[] colour;
+    public int colourHandle;
+    public float smoothing;
+    public int smoothingHandle;
+    public float threshold;
+    public int thresholdHandle;
+
+    public void <init>(float[], float, float)
+    {
+        project.android.imageprocessing.filter.colour.ChromaKeyFilter r0;
+        float $f0, $f1;
+        float[] $r1;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.ChromaKeyFilter;
+
+        $r1 := @parameter0: float[];
+
+        $f0 := @parameter1: float;
+
+        $f1 := @parameter2: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.BasicFilter: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.colour.ChromaKeyFilter: float[] colour> = $r1;
+
+        r0.<project.android.imageprocessing.filter.colour.ChromaKeyFilter: float threshold> = $f0;
+
+        r0.<project.android.imageprocessing.filter.colour.ChromaKeyFilter: float smoothing> = $f1;
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.colour.ChromaKeyFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.ChromaKeyFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform vec3 u_Colour;\nuniform float u_Threshold;\nuniform float u_Smoothing;\nvoid main(){\n   vec4 color = texture2D(u_Texture0,v_TexCoord);\n   float maskY = 0.2989 * u_Colour.r + 0.5866 * u_Colour.g + 0.1145 * u_Colour.b;   float maskCr = 0.7132 * (u_Colour.r - maskY);   float maskCb = 0.5647 * (u_Colour.b - maskY);   float Y = 0.2989 * color.r + 0.5866 * color.g + 0.1145 * color.b;   float Cr = 0.7132 * (color.r - Y);   float Cb = 0.5647 * (color.b - Y);   float blendValue = smoothstep(u_Threshold, u_Threshold + u_Smoothing, distance(vec2(Cr, Cb), vec2(maskCr, maskCb)));   gl_FragColor = vec4(color.rgb, color.a * blendValue);\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.colour.ChromaKeyFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.ChromaKeyFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_Colour");
+
+        r0.<project.android.imageprocessing.filter.colour.ChromaKeyFilter: int colourHandle> = $i0;
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_Threshold");
+
+        r0.<project.android.imageprocessing.filter.colour.ChromaKeyFilter: int thresholdHandle> = $i0;
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_Smoothing");
+
+        r0.<project.android.imageprocessing.filter.colour.ChromaKeyFilter: int smoothingHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        project.android.imageprocessing.filter.colour.ChromaKeyFilter r0;
+        int $i0;
+        float $f0, $f1, $f2;
+        float[] $r1;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.ChromaKeyFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.ChromaKeyFilter: int colourHandle>;
+
+        $r1 = r0.<project.android.imageprocessing.filter.colour.ChromaKeyFilter: float[] colour>;
+
+        $f0 = $r1[0];
+
+        $f1 = $r1[1];
+
+        $f2 = $r1[2];
+
+        staticinvoke <android.opengl.GLES20: void glUniform3f(int,float,float,float)>($i0, $f0, $f1, $f2);
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.ChromaKeyFilter: int thresholdHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.colour.ChromaKeyFilter: float threshold>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.ChromaKeyFilter: int smoothingHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.colour.ChromaKeyFilter: float smoothing>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.colour.ChromaKeyFilter: java.lang.String UNIFORM_THRESHOLD> = "u_Threshold";
+
+        <project.android.imageprocessing.filter.colour.ChromaKeyFilter: java.lang.String UNIFORM_SMOOTHING> = "u_Smoothing";
+
+        <project.android.imageprocessing.filter.colour.ChromaKeyFilter: java.lang.String UNIFORM_COLOUR> = "u_Colour";
+
+        return;
+    }
+}

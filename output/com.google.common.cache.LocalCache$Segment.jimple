@@ -1,0 +1,5034 @@
+public class com.google.common.cache.LocalCache$Segment extends java.util.concurrent.locks.ReentrantLock
+{
+    public final java.util.Queue accessQueue;
+    public volatile int count;
+    public final java.lang.ref.ReferenceQueue keyReferenceQueue;
+    public final com.google.common.cache.LocalCache map;
+    public final long maxSegmentWeight;
+    public int modCount;
+    public final java.util.concurrent.atomic.AtomicInteger readCount;
+    public final java.util.Queue recencyQueue;
+    public final com.google.common.cache.AbstractCache$StatsCounter statsCounter;
+    public volatile java.util.concurrent.atomic.AtomicReferenceArray table;
+    public int threshold;
+    public long totalWeight;
+    public final java.lang.ref.ReferenceQueue valueReferenceQueue;
+    public final java.util.Queue writeQueue;
+
+    public void <init>(com.google.common.cache.LocalCache, int, long, com.google.common.cache.AbstractCache$StatsCounter)
+    {
+        com.google.common.cache.AbstractCache$StatsCounter $r2;
+        long $l1;
+        com.google.common.cache.LocalCache$WriteQueue $r10;
+        com.google.common.cache.LocalCache$Segment r0;
+        java.lang.ref.ReferenceQueue $r4, $r5, $r8;
+        java.util.concurrent.atomic.AtomicReferenceArray $r3;
+        com.google.common.cache.LocalCache$AccessQueue $r11;
+        com.google.common.cache.LocalCache $r1;
+        java.util.concurrent.atomic.AtomicInteger $r7;
+        int $i0;
+        java.util.Queue $r6;
+        boolean $z0;
+        java.util.concurrent.ConcurrentLinkedQueue $r9;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: com.google.common.cache.LocalCache;
+
+        $i0 := @parameter1: int;
+
+        $l1 := @parameter2: long;
+
+        $r2 := @parameter3: com.google.common.cache.AbstractCache$StatsCounter;
+
+        specialinvoke r0.<java.util.concurrent.locks.ReentrantLock: void <init>()>();
+
+        $r7 = new java.util.concurrent.atomic.AtomicInteger;
+
+        specialinvoke $r7.<java.util.concurrent.atomic.AtomicInteger: void <init>()>();
+
+        r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicInteger readCount> = $r7;
+
+        r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map> = $r1;
+
+        r0.<com.google.common.cache.LocalCache$Segment: long maxSegmentWeight> = $l1;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.AbstractCache$StatsCounter statsCounter> = $r2;
+
+        $r3 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray newEntryArray(int)>($i0);
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void initTable(java.util.concurrent.atomic.AtomicReferenceArray)>($r3);
+
+        $z0 = virtualinvoke $r1.<com.google.common.cache.LocalCache: boolean usesKeyReferences()>();
+
+        $r4 = null;
+
+        if $z0 == 0 goto label1;
+
+        $r8 = new java.lang.ref.ReferenceQueue;
+
+        $r5 = $r8;
+
+        specialinvoke $r8.<java.lang.ref.ReferenceQueue: void <init>()>();
+
+        goto label2;
+
+     label1:
+        $r5 = null;
+
+     label2:
+        r0.<com.google.common.cache.LocalCache$Segment: java.lang.ref.ReferenceQueue keyReferenceQueue> = $r5;
+
+        $z0 = virtualinvoke $r1.<com.google.common.cache.LocalCache: boolean usesValueReferences()>();
+
+        if $z0 == 0 goto label3;
+
+        $r5 = new java.lang.ref.ReferenceQueue;
+
+        $r4 = $r5;
+
+        specialinvoke $r5.<java.lang.ref.ReferenceQueue: void <init>()>();
+
+     label3:
+        r0.<com.google.common.cache.LocalCache$Segment: java.lang.ref.ReferenceQueue valueReferenceQueue> = $r4;
+
+        $z0 = virtualinvoke $r1.<com.google.common.cache.LocalCache: boolean usesAccessQueue()>();
+
+        if $z0 == 0 goto label4;
+
+        $r9 = new java.util.concurrent.ConcurrentLinkedQueue;
+
+        $r6 = $r9;
+
+        specialinvoke $r9.<java.util.concurrent.ConcurrentLinkedQueue: void <init>()>();
+
+        goto label5;
+
+     label4:
+        $r6 = staticinvoke <com.google.common.cache.LocalCache: java.util.Queue discardingQueue()>();
+
+     label5:
+        r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue recencyQueue> = $r6;
+
+        $z0 = virtualinvoke $r1.<com.google.common.cache.LocalCache: boolean usesWriteQueue()>();
+
+        if $z0 == 0 goto label6;
+
+        $r10 = new com.google.common.cache.LocalCache$WriteQueue;
+
+        $r6 = $r10;
+
+        specialinvoke $r10.<com.google.common.cache.LocalCache$WriteQueue: void <init>()>();
+
+        goto label7;
+
+     label6:
+        $r6 = staticinvoke <com.google.common.cache.LocalCache: java.util.Queue discardingQueue()>();
+
+     label7:
+        r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue writeQueue> = $r6;
+
+        $z0 = virtualinvoke $r1.<com.google.common.cache.LocalCache: boolean usesAccessQueue()>();
+
+        if $z0 == 0 goto label8;
+
+        $r11 = new com.google.common.cache.LocalCache$AccessQueue;
+
+        $r6 = $r11;
+
+        specialinvoke $r11.<com.google.common.cache.LocalCache$AccessQueue: void <init>()>();
+
+        goto label9;
+
+     label8:
+        $r6 = staticinvoke <com.google.common.cache.LocalCache: java.util.Queue discardingQueue()>();
+
+     label9:
+        r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue accessQueue> = $r6;
+
+        return;
+    }
+
+    public void cleanUp()
+    {
+        com.google.common.cache.LocalCache $r1;
+        long $l0;
+        com.google.common.base.Ticker $r2;
+        com.google.common.cache.LocalCache$Segment r0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r2 = $r1.<com.google.common.cache.LocalCache: com.google.common.base.Ticker ticker>;
+
+        $l0 = virtualinvoke $r2.<com.google.common.base.Ticker: long read()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void runLockedCleanup(long)>($l0);
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void runUnlockedCleanup()>();
+
+        return;
+    }
+
+    public void clear()
+    {
+        java.lang.Throwable $r11;
+        long $l1;
+        com.google.common.cache.LocalCache$ValueReference $r6;
+        java.util.concurrent.atomic.AtomicReferenceArray $r3;
+        com.google.common.cache.LocalCache $r1;
+        java.util.concurrent.atomic.AtomicInteger $r10;
+        int $i0, $i2, $i3;
+        boolean $z0;
+        com.google.common.base.Ticker $r2;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r5;
+        com.google.common.cache.RemovalCause $r8;
+        java.lang.Object $r4, $r7;
+        java.util.Queue $r9;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $i0 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+        if $i0 == 0 goto label28;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+     label01:
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r2 = $r1.<com.google.common.cache.LocalCache: com.google.common.base.Ticker ticker>;
+
+        $l1 = virtualinvoke $r2.<com.google.common.base.Ticker: long read()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void preWriteCleanup(long)>($l1);
+
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+     label02:
+        $i0 = 0;
+
+     label03:
+        $i2 = virtualinvoke $r3.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+     label04:
+        if $i0 >= $i2 goto label18;
+
+     label05:
+        $r4 = virtualinvoke $r3.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i0);
+
+        $r5 = (com.google.common.cache.LocalCache$ReferenceEntry) $r4;
+
+     label06:
+        if $r5 == null goto label17;
+
+     label07:
+        $r6 = interfaceinvoke $r5.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $z0 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ValueReference: boolean isActive()>();
+
+     label08:
+        if $z0 == 0 goto label15;
+
+     label09:
+        $r4 = interfaceinvoke $r5.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        $r6 = interfaceinvoke $r5.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r7 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+     label10:
+        if $r4 == null goto label13;
+
+        if $r7 != null goto label11;
+
+        goto label13;
+
+     label11:
+        $r8 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause EXPLICIT>;
+
+     label12:
+        goto label14;
+
+     label13:
+        $r8 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause COLLECTED>;
+
+     label14:
+        $i2 = interfaceinvoke $r5.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+        $r6 = interfaceinvoke $r5.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $i3 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ValueReference: int getWeight()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void enqueueNotification(java.lang.Object,int,java.lang.Object,int,com.google.common.cache.RemovalCause)>($r4, $i2, $r7, $i3, $r8);
+
+     label15:
+        $r5 = interfaceinvoke $r5.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+     label16:
+        goto label06;
+
+     label17:
+        $i0 = $i0 + 1;
+
+        goto label03;
+
+     label18:
+        $i0 = 0;
+
+     label19:
+        $i2 = virtualinvoke $r3.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+     label20:
+        if $i0 >= $i2 goto label23;
+
+     label21:
+        virtualinvoke $r3.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i0, null);
+
+     label22:
+        $i0 = $i0 + 1;
+
+        goto label19;
+
+     label23:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void clearReferenceQueues()>();
+
+        $r9 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue writeQueue>;
+
+        interfaceinvoke $r9.<java.util.Queue: void clear()>();
+
+        $r9 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue accessQueue>;
+
+        interfaceinvoke $r9.<java.util.Queue: void clear()>();
+
+        $r10 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicInteger readCount>;
+
+        virtualinvoke $r10.<java.util.concurrent.atomic.AtomicInteger: void set(int)>(0);
+
+        $i0 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+     label24:
+        $i0 = $i0 + 1;
+
+     label25:
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i0;
+
+        r0.<com.google.common.cache.LocalCache$Segment: int count> = 0;
+
+     label26:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return;
+
+     label27:
+        $r11 := @caughtexception;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        throw $r11;
+
+     label28:
+        return;
+
+        catch java.lang.Throwable from label01 to label02 with label27;
+        catch java.lang.Throwable from label03 to label04 with label27;
+        catch java.lang.Throwable from label05 to label06 with label27;
+        catch java.lang.Throwable from label07 to label08 with label27;
+        catch java.lang.Throwable from label09 to label10 with label27;
+        catch java.lang.Throwable from label11 to label12 with label27;
+        catch java.lang.Throwable from label13 to label16 with label27;
+        catch java.lang.Throwable from label19 to label20 with label27;
+        catch java.lang.Throwable from label21 to label22 with label27;
+        catch java.lang.Throwable from label23 to label24 with label27;
+        catch java.lang.Throwable from label25 to label26 with label27;
+    }
+
+    public void clearKeyReferenceQueue()
+    {
+        java.lang.ref.Reference $r1;
+        com.google.common.cache.LocalCache$Segment r0;
+        java.lang.ref.ReferenceQueue $r2;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+     label1:
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: java.lang.ref.ReferenceQueue keyReferenceQueue>;
+
+        $r1 = virtualinvoke $r2.<java.lang.ref.ReferenceQueue: java.lang.ref.Reference poll()>();
+
+        if $r1 == null goto label2;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public void clearReferenceQueues()
+    {
+        com.google.common.cache.LocalCache $r1;
+        com.google.common.cache.LocalCache$Segment r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z0 = virtualinvoke $r1.<com.google.common.cache.LocalCache: boolean usesKeyReferences()>();
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void clearKeyReferenceQueue()>();
+
+     label1:
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z0 = virtualinvoke $r1.<com.google.common.cache.LocalCache: boolean usesValueReferences()>();
+
+        if $z0 == 0 goto label2;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void clearValueReferenceQueue()>();
+
+     label2:
+        return;
+    }
+
+    public void clearValueReferenceQueue()
+    {
+        java.lang.ref.Reference $r1;
+        com.google.common.cache.LocalCache$Segment r0;
+        java.lang.ref.ReferenceQueue $r2;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+     label1:
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: java.lang.ref.ReferenceQueue valueReferenceQueue>;
+
+        $r1 = virtualinvoke $r2.<java.lang.ref.ReferenceQueue: java.lang.ref.Reference poll()>();
+
+        if $r1 == null goto label2;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public java.lang.Object compute(java.lang.Object, int, java.util.function.BiFunction)
+    {
+        java.lang.Throwable $r19;
+        com.google.common.util.concurrent.ListenableFuture $r17;
+        java.util.function.BiFunction $r2;
+        long $l2;
+        com.google.common.cache.LocalCache$ValueReference $r12, $r13;
+        java.lang.AssertionError $r18;
+        java.util.concurrent.atomic.AtomicReferenceArray $r4;
+        com.google.common.cache.LocalCache $r6;
+        int $i0, $i1, $i3;
+        boolean $z0, $z1;
+        com.google.common.base.Equivalence $r11;
+        com.google.common.cache.LocalCache$LoadingValueReference $r16;
+        com.google.common.base.Ticker $r7;
+        com.google.common.cache.LocalCache$Segment r0;
+        java.util.concurrent.ExecutionException $r5;
+        com.google.common.cache.LocalCache$ReferenceEntry $r9, $r10;
+        com.google.common.cache.RemovalCause $r3;
+        java.lang.Object $r1, $r8, $r14;
+        java.util.Queue $r15;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: java.util.function.BiFunction;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+     label01:
+        $r6 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r7 = $r6.<com.google.common.cache.LocalCache: com.google.common.base.Ticker ticker>;
+
+        $l2 = virtualinvoke $r7.<com.google.common.base.Ticker: long read()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void preWriteCleanup(long)>($l2);
+
+        $r4 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i1 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+     label02:
+        $z0 = 1;
+
+        $i1 = $i1 - 1;
+
+        $i1 = $i0 & $i1;
+
+     label03:
+        $r8 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i1);
+
+        $r9 = (com.google.common.cache.LocalCache$ReferenceEntry) $r8;
+
+     label04:
+        $r10 = $r9;
+
+     label05:
+        if $r10 == null goto label19;
+
+     label06:
+        $r8 = interfaceinvoke $r10.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        $i3 = interfaceinvoke $r10.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+     label07:
+        if $i3 != $i0 goto label17;
+
+        if $r8 == null goto label17;
+
+     label08:
+        $r6 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r11 = $r6.<com.google.common.cache.LocalCache: com.google.common.base.Equivalence keyEquivalence>;
+
+        $z1 = virtualinvoke $r11.<com.google.common.base.Equivalence: boolean equivalent(java.lang.Object,java.lang.Object)>($r1, $r8);
+
+     label09:
+        if $z1 == 0 goto label17;
+
+     label10:
+        $r12 = interfaceinvoke $r10.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+     label11:
+        $r13 = $r12;
+
+     label12:
+        $r6 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z1 = virtualinvoke $r6.<com.google.common.cache.LocalCache: boolean isExpired(com.google.common.cache.LocalCache$ReferenceEntry,long)>($r10, $l2);
+
+     label13:
+        if $z1 == 0 goto label15;
+
+     label14:
+        $r14 = interfaceinvoke $r12.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+        $i3 = interfaceinvoke $r12.<com.google.common.cache.LocalCache$ValueReference: int getWeight()>();
+
+        $r3 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause EXPIRED>;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void enqueueNotification(java.lang.Object,int,java.lang.Object,int,com.google.common.cache.RemovalCause)>($r8, $i0, $r14, $i3, $r3);
+
+     label15:
+        $r15 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue writeQueue>;
+
+        interfaceinvoke $r15.<java.util.Queue: boolean remove(java.lang.Object)>($r10);
+
+        $r15 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue accessQueue>;
+
+        interfaceinvoke $r15.<java.util.Queue: boolean remove(java.lang.Object)>($r10);
+
+     label16:
+        $z1 = 0;
+
+        goto label20;
+
+     label17:
+        $r10 = interfaceinvoke $r10.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+     label18:
+        goto label05;
+
+     label19:
+        $r13 = null;
+
+        $z1 = 1;
+
+     label20:
+        $r16 = new com.google.common.cache.LocalCache$LoadingValueReference;
+
+        specialinvoke $r16.<com.google.common.cache.LocalCache$LoadingValueReference: void <init>(com.google.common.cache.LocalCache$ValueReference)>($r13);
+
+     label21:
+        if $r10 != null goto label26;
+
+     label22:
+        $r9 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry newEntry(java.lang.Object,int,com.google.common.cache.LocalCache$ReferenceEntry)>($r1, $i0, $r9);
+
+     label23:
+        $r10 = $r9;
+
+     label24:
+        interfaceinvoke $r9.<com.google.common.cache.LocalCache$ReferenceEntry: void setValueReference(com.google.common.cache.LocalCache$ValueReference)>($r16);
+
+        virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i1, $r9);
+
+     label25:
+        goto label28;
+
+     label26:
+        interfaceinvoke $r10.<com.google.common.cache.LocalCache$ReferenceEntry: void setValueReference(com.google.common.cache.LocalCache$ValueReference)>($r16);
+
+     label27:
+        $z0 = $z1;
+
+     label28:
+        $r8 = virtualinvoke $r16.<com.google.common.cache.LocalCache$LoadingValueReference: java.lang.Object compute(java.lang.Object,java.util.function.BiFunction)>($r1, $r2);
+
+     label29:
+        if $r8 == null goto label33;
+
+     label30:
+        $r17 = staticinvoke <com.google.common.util.concurrent.Futures: com.google.common.util.concurrent.ListenableFuture immediateFuture(java.lang.Object)>($r8);
+
+        $r1 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: java.lang.Object getAndRecordStats(java.lang.Object,int,com.google.common.cache.LocalCache$LoadingValueReference,com.google.common.util.concurrent.ListenableFuture)>($r1, $i0, $r16, $r17);
+
+     label31:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return $r1;
+
+     label32:
+        $r18 = new java.lang.AssertionError;
+
+        specialinvoke $r18.<java.lang.AssertionError: void <init>(java.lang.Object)>("impossible; Futures.immediateFuture can\'t throw");
+
+        throw $r18;
+
+     label33:
+        if $z0 == 0 goto label36;
+
+     label34:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: boolean removeLoadingValue(java.lang.Object,int,com.google.common.cache.LocalCache$LoadingValueReference)>($r1, $i0, $r16);
+
+     label35:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return null;
+
+     label36:
+        $r3 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause EXPLICIT>;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: boolean removeEntry(com.google.common.cache.LocalCache$ReferenceEntry,int,com.google.common.cache.RemovalCause)>($r10, $i0, $r3);
+
+     label37:
+        goto label35;
+
+     label38:
+        $r19 := @caughtexception;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        goto label39;
+
+     label39:
+        throw $r19;
+
+     label40:
+        $r5 := @caughtexception;
+
+        goto label32;
+
+        catch java.lang.Throwable from label01 to label02 with label38;
+        catch java.lang.Throwable from label03 to label04 with label38;
+        catch java.lang.Throwable from label06 to label07 with label38;
+        catch java.lang.Throwable from label08 to label09 with label38;
+        catch java.lang.Throwable from label10 to label11 with label38;
+        catch java.lang.Throwable from label12 to label13 with label38;
+        catch java.lang.Throwable from label14 to label16 with label38;
+        catch java.lang.Throwable from label17 to label18 with label38;
+        catch java.lang.Throwable from label20 to label21 with label38;
+        catch java.lang.Throwable from label22 to label23 with label38;
+        catch java.lang.Throwable from label24 to label25 with label38;
+        catch java.lang.Throwable from label26 to label27 with label38;
+        catch java.lang.Throwable from label28 to label29 with label38;
+        catch java.util.concurrent.ExecutionException from label30 to label31 with label40;
+        catch java.lang.Throwable from label30 to label31 with label38;
+        catch java.lang.Throwable from label32 to label33 with label38;
+        catch java.lang.Throwable from label34 to label35 with label38;
+        catch java.lang.Throwable from label36 to label37 with label38;
+    }
+
+    public boolean containsKey(java.lang.Object, int)
+    {
+        java.lang.Throwable $r6;
+        long $l2;
+        com.google.common.cache.LocalCache$ValueReference $r5;
+        com.google.common.base.Ticker $r3;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r4;
+        com.google.common.cache.LocalCache $r2;
+        int $i0, $i1;
+        java.lang.Object $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+     label1:
+        $i1 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label2:
+        $z0 = 0;
+
+        if $i1 == 0 goto label8;
+
+     label3:
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r3 = $r2.<com.google.common.cache.LocalCache: com.google.common.base.Ticker ticker>;
+
+        $l2 = virtualinvoke $r3.<com.google.common.base.Ticker: long read()>();
+
+        $r4 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry getLiveEntry(java.lang.Object,int,long)>($r1, $i0, $l2);
+
+     label4:
+        if $r4 != null goto label5;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postReadCleanup()>();
+
+        return 0;
+
+     label5:
+        $r5 = interfaceinvoke $r4.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r1 = interfaceinvoke $r5.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+     label6:
+        if $r1 == null goto label7;
+
+        $z0 = 1;
+
+     label7:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postReadCleanup()>();
+
+        return $z0;
+
+     label8:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postReadCleanup()>();
+
+        return 0;
+
+     label9:
+        $r6 := @caughtexception;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postReadCleanup()>();
+
+        throw $r6;
+
+        catch java.lang.Throwable from label1 to label2 with label9;
+        catch java.lang.Throwable from label3 to label4 with label9;
+        catch java.lang.Throwable from label5 to label6 with label9;
+    }
+
+    public boolean containsValue(java.lang.Object)
+    {
+        java.lang.Throwable $r8;
+        com.google.common.base.Equivalence $r7;
+        long $l1;
+        com.google.common.base.Ticker $r3;
+        com.google.common.cache.LocalCache$Segment r0;
+        java.util.concurrent.atomic.AtomicReferenceArray $r4;
+        com.google.common.cache.LocalCache$ReferenceEntry $r6;
+        com.google.common.cache.LocalCache $r2;
+        int $i0, $i2;
+        java.lang.Object $r1, $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: java.lang.Object;
+
+     label01:
+        $i0 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label02:
+        if $i0 == 0 goto label15;
+
+     label03:
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r3 = $r2.<com.google.common.cache.LocalCache: com.google.common.base.Ticker ticker>;
+
+        $l1 = virtualinvoke $r3.<com.google.common.base.Ticker: long read()>();
+
+        $r4 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i0 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+     label04:
+        $i2 = 0;
+
+     label05:
+        if $i2 >= $i0 goto label15;
+
+     label06:
+        $r5 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i2);
+
+        $r6 = (com.google.common.cache.LocalCache$ReferenceEntry) $r5;
+
+     label07:
+        if $r6 == null goto label14;
+
+     label08:
+        $r5 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: java.lang.Object getLiveValue(com.google.common.cache.LocalCache$ReferenceEntry,long)>($r6, $l1);
+
+     label09:
+        if $r5 != null goto label10;
+
+        goto label12;
+
+     label10:
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r7 = $r2.<com.google.common.cache.LocalCache: com.google.common.base.Equivalence valueEquivalence>;
+
+        $z0 = virtualinvoke $r7.<com.google.common.base.Equivalence: boolean equivalent(java.lang.Object,java.lang.Object)>($r1, $r5);
+
+     label11:
+        if $z0 == 0 goto label12;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postReadCleanup()>();
+
+        return 1;
+
+     label12:
+        $r6 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+     label13:
+        goto label07;
+
+     label14:
+        $i2 = $i2 + 1;
+
+        goto label05;
+
+     label15:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postReadCleanup()>();
+
+        return 0;
+
+     label16:
+        $r8 := @caughtexception;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postReadCleanup()>();
+
+        goto label17;
+
+     label17:
+        throw $r8;
+
+        catch java.lang.Throwable from label01 to label02 with label16;
+        catch java.lang.Throwable from label03 to label04 with label16;
+        catch java.lang.Throwable from label06 to label07 with label16;
+        catch java.lang.Throwable from label08 to label09 with label16;
+        catch java.lang.Throwable from label10 to label11 with label16;
+        catch java.lang.Throwable from label12 to label13 with label16;
+    }
+
+    public com.google.common.cache.LocalCache$ReferenceEntry copyEntry(com.google.common.cache.LocalCache$ReferenceEntry, com.google.common.cache.LocalCache$ReferenceEntry)
+    {
+        com.google.common.cache.LocalCache$ValueReference $r4;
+        com.google.common.cache.LocalCache$Segment r0;
+        java.lang.ref.ReferenceQueue $r7;
+        com.google.common.cache.LocalCache$ReferenceEntry $r1, $r2;
+        com.google.common.cache.LocalCache $r5;
+        java.lang.Object $r3;
+        com.google.common.cache.LocalCache$EntryFactory $r6;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $r2 := @parameter1: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $r3 = interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        if $r3 != null goto label1;
+
+        return null;
+
+     label1:
+        $r4 = interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r3 = interfaceinvoke $r4.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+        if $r3 != null goto label2;
+
+        $z0 = interfaceinvoke $r4.<com.google.common.cache.LocalCache$ValueReference: boolean isActive()>();
+
+        if $z0 == 0 goto label2;
+
+        return null;
+
+     label2:
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r6 = $r5.<com.google.common.cache.LocalCache: com.google.common.cache.LocalCache$EntryFactory entryFactory>;
+
+        $r1 = virtualinvoke $r6.<com.google.common.cache.LocalCache$EntryFactory: com.google.common.cache.LocalCache$ReferenceEntry copyEntry(com.google.common.cache.LocalCache$Segment,com.google.common.cache.LocalCache$ReferenceEntry,com.google.common.cache.LocalCache$ReferenceEntry)>(r0, $r1, $r2);
+
+        $r7 = r0.<com.google.common.cache.LocalCache$Segment: java.lang.ref.ReferenceQueue valueReferenceQueue>;
+
+        $r4 = interfaceinvoke $r4.<com.google.common.cache.LocalCache$ValueReference: com.google.common.cache.LocalCache$ValueReference copyFor(java.lang.ref.ReferenceQueue,java.lang.Object,com.google.common.cache.LocalCache$ReferenceEntry)>($r7, $r3, $r1);
+
+        interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: void setValueReference(com.google.common.cache.LocalCache$ValueReference)>($r4);
+
+        return $r1;
+    }
+
+    public void drainKeyReferenceQueue()
+    {
+        java.lang.ref.Reference $r2;
+        com.google.common.cache.LocalCache$ReferenceEntry $r4;
+        com.google.common.cache.LocalCache $r1;
+        int $i0;
+        com.google.common.cache.LocalCache$Segment r0;
+        java.lang.ref.ReferenceQueue $r3;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $i0 = 0;
+
+     label1:
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: java.lang.ref.ReferenceQueue keyReferenceQueue>;
+
+        $r2 = virtualinvoke $r3.<java.lang.ref.ReferenceQueue: java.lang.ref.Reference poll()>();
+
+        if $r2 == null goto label2;
+
+        $r4 = (com.google.common.cache.LocalCache$ReferenceEntry) $r2;
+
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        virtualinvoke $r1.<com.google.common.cache.LocalCache: void reclaimKey(com.google.common.cache.LocalCache$ReferenceEntry)>($r4);
+
+        $i0 = $i0 + 1;
+
+        if $i0 != 16 goto label1;
+
+     label2:
+        return;
+    }
+
+    public void drainRecencyQueue()
+    {
+        com.google.common.cache.LocalCache$ReferenceEntry $r3;
+        java.lang.Object $r2;
+        java.util.Queue $r1;
+        com.google.common.cache.LocalCache$Segment r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+     label1:
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue recencyQueue>;
+
+        $r2 = interfaceinvoke $r1.<java.util.Queue: java.lang.Object poll()>();
+
+        $r3 = (com.google.common.cache.LocalCache$ReferenceEntry) $r2;
+
+        if $r3 == null goto label2;
+
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue accessQueue>;
+
+        $z0 = interfaceinvoke $r1.<java.util.Queue: boolean contains(java.lang.Object)>($r3);
+
+        if $z0 == 0 goto label1;
+
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue accessQueue>;
+
+        interfaceinvoke $r1.<java.util.Queue: boolean add(java.lang.Object)>($r3);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public void drainReferenceQueues()
+    {
+        com.google.common.cache.LocalCache $r1;
+        com.google.common.cache.LocalCache$Segment r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z0 = virtualinvoke $r1.<com.google.common.cache.LocalCache: boolean usesKeyReferences()>();
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void drainKeyReferenceQueue()>();
+
+     label1:
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z0 = virtualinvoke $r1.<com.google.common.cache.LocalCache: boolean usesValueReferences()>();
+
+        if $z0 == 0 goto label2;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void drainValueReferenceQueue()>();
+
+     label2:
+        return;
+    }
+
+    public void drainValueReferenceQueue()
+    {
+        java.lang.ref.Reference $r2;
+        com.google.common.cache.LocalCache $r1;
+        int $i0;
+        com.google.common.cache.LocalCache$ValueReference $r4;
+        com.google.common.cache.LocalCache$Segment r0;
+        java.lang.ref.ReferenceQueue $r3;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $i0 = 0;
+
+     label1:
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: java.lang.ref.ReferenceQueue valueReferenceQueue>;
+
+        $r2 = virtualinvoke $r3.<java.lang.ref.ReferenceQueue: java.lang.ref.Reference poll()>();
+
+        if $r2 == null goto label2;
+
+        $r4 = (com.google.common.cache.LocalCache$ValueReference) $r2;
+
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        virtualinvoke $r1.<com.google.common.cache.LocalCache: void reclaimValue(com.google.common.cache.LocalCache$ValueReference)>($r4);
+
+        $i0 = $i0 + 1;
+
+        if $i0 != 16 goto label1;
+
+     label2:
+        return;
+    }
+
+    public void enqueueNotification(java.lang.Object, int, java.lang.Object, int, com.google.common.cache.RemovalCause)
+    {
+        com.google.common.cache.RemovalNotification $r8;
+        com.google.common.cache.AbstractCache$StatsCounter $r4;
+        long $l0, $l3;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache $r5;
+        com.google.common.cache.RemovalCause $r2;
+        int $i1, $i2;
+        java.lang.Object $r1, $r3;
+        java.util.Queue $r6, $r7;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r3 := @parameter0: java.lang.Object;
+
+        $i1 := @parameter1: int;
+
+        $r1 := @parameter2: java.lang.Object;
+
+        $i2 := @parameter3: int;
+
+        $r2 := @parameter4: com.google.common.cache.RemovalCause;
+
+        $l3 = r0.<com.google.common.cache.LocalCache$Segment: long totalWeight>;
+
+        $l0 = (long) $i2;
+
+        $l0 = $l3 - $l0;
+
+        r0.<com.google.common.cache.LocalCache$Segment: long totalWeight> = $l0;
+
+        $z0 = virtualinvoke $r2.<com.google.common.cache.RemovalCause: boolean wasEvicted()>();
+
+        if $z0 == 0 goto label1;
+
+        $r4 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.AbstractCache$StatsCounter statsCounter>;
+
+        interfaceinvoke $r4.<com.google.common.cache.AbstractCache$StatsCounter: void recordEviction()>();
+
+     label1:
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r6 = $r5.<com.google.common.cache.LocalCache: java.util.Queue removalNotificationQueue>;
+
+        $r7 = <com.google.common.cache.LocalCache: java.util.Queue DISCARDING_QUEUE>;
+
+        if $r6 == $r7 goto label2;
+
+        $r8 = staticinvoke <com.google.common.cache.RemovalNotification: com.google.common.cache.RemovalNotification create(java.lang.Object,java.lang.Object,com.google.common.cache.RemovalCause)>($r3, $r1, $r2);
+
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r6 = $r5.<com.google.common.cache.LocalCache: java.util.Queue removalNotificationQueue>;
+
+        interfaceinvoke $r6.<java.util.Queue: boolean offer(java.lang.Object)>($r8);
+
+     label2:
+        return;
+    }
+
+    public void evictEntries(com.google.common.cache.LocalCache$ReferenceEntry)
+    {
+        long $l2, $l3;
+        com.google.common.cache.LocalCache$ValueReference $r3;
+        java.lang.AssertionError $r5;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r1;
+        byte $b0;
+        com.google.common.cache.LocalCache $r2;
+        com.google.common.cache.RemovalCause $r4;
+        int $i1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z0 = virtualinvoke $r2.<com.google.common.cache.LocalCache: boolean evictsBySize()>();
+
+        if $z0 != 0 goto label1;
+
+        return;
+
+     label1:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void drainRecencyQueue()>();
+
+        $r3 = interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $i1 = interfaceinvoke $r3.<com.google.common.cache.LocalCache$ValueReference: int getWeight()>();
+
+        $l2 = (long) $i1;
+
+        $l3 = r0.<com.google.common.cache.LocalCache$Segment: long maxSegmentWeight>;
+
+        $b0 = $l2 cmp $l3;
+
+        $i1 = (int) $b0;
+
+        if $i1 <= 0 goto label3;
+
+        $i1 = interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+        $r4 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause SIZE>;
+
+        $z0 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: boolean removeEntry(com.google.common.cache.LocalCache$ReferenceEntry,int,com.google.common.cache.RemovalCause)>($r1, $i1, $r4);
+
+        if $z0 == 0 goto label2;
+
+        goto label3;
+
+     label2:
+        $r5 = new java.lang.AssertionError;
+
+        specialinvoke $r5.<java.lang.AssertionError: void <init>()>();
+
+        throw $r5;
+
+     label3:
+        $l2 = r0.<com.google.common.cache.LocalCache$Segment: long totalWeight>;
+
+        $l3 = r0.<com.google.common.cache.LocalCache$Segment: long maxSegmentWeight>;
+
+        $b0 = $l2 cmp $l3;
+
+        $i1 = (int) $b0;
+
+        if $i1 <= 0 goto label5;
+
+        $r1 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry getNextEvictable()>();
+
+        $i1 = interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+        $r4 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause SIZE>;
+
+        $z0 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: boolean removeEntry(com.google.common.cache.LocalCache$ReferenceEntry,int,com.google.common.cache.RemovalCause)>($r1, $i1, $r4);
+
+        if $z0 == 0 goto label4;
+
+        goto label3;
+
+     label4:
+        $r5 = new java.lang.AssertionError;
+
+        specialinvoke $r5.<java.lang.AssertionError: void <init>()>();
+
+        throw $r5;
+
+     label5:
+        return;
+    }
+
+    public void expand()
+    {
+        com.google.common.cache.LocalCache$Segment r0;
+        java.util.concurrent.atomic.AtomicReferenceArray $r1, $r2;
+        com.google.common.cache.LocalCache$ReferenceEntry $r4, $r5, $r6;
+        int $i0, $i1, $i2, $i3, $i4, $i5;
+        java.lang.Object $r3;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i0 = virtualinvoke $r1.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+        if $i0 < 1073741824 goto label01;
+
+        return;
+
+     label01:
+        $i1 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+        $i2 = $i0 << 1;
+
+        $r2 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray newEntryArray(int)>($i2);
+
+        $i2 = virtualinvoke $r2.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+        $i2 = $i2 * 3;
+
+        $i2 = $i2 / 4;
+
+        r0.<com.google.common.cache.LocalCache$Segment: int threshold> = $i2;
+
+        $i2 = virtualinvoke $r2.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        $i3 = 0;
+
+     label02:
+        if $i3 >= $i0 goto label11;
+
+        $r3 = virtualinvoke $r1.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i3);
+
+        $r4 = (com.google.common.cache.LocalCache$ReferenceEntry) $r3;
+
+        if $r4 == null goto label10;
+
+        $r5 = interfaceinvoke $r4.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+        $r6 = $r5;
+
+        $i4 = interfaceinvoke $r4.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+        $i4 = $i4 & $i2;
+
+        if $r5 != null goto label03;
+
+        virtualinvoke $r2.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i4, $r4);
+
+        goto label10;
+
+     label03:
+        $r5 = $r4;
+
+     label04:
+        if $r6 == null goto label06;
+
+        $i5 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+        $i5 = $i5 & $i2;
+
+        if $i5 == $i4 goto label05;
+
+        $r5 = $r6;
+
+        $i4 = $i5;
+
+     label05:
+        $r6 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+        goto label04;
+
+     label06:
+        virtualinvoke $r2.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i4, $r5);
+
+     label07:
+        if $r4 == $r5 goto label10;
+
+        $i4 = interfaceinvoke $r4.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+        $i4 = $i4 & $i2;
+
+        $r3 = virtualinvoke $r2.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i4);
+
+        $r6 = (com.google.common.cache.LocalCache$ReferenceEntry) $r3;
+
+        $r6 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry copyEntry(com.google.common.cache.LocalCache$ReferenceEntry,com.google.common.cache.LocalCache$ReferenceEntry)>($r4, $r6);
+
+        if $r6 == null goto label08;
+
+        virtualinvoke $r2.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i4, $r6);
+
+        goto label09;
+
+     label08:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void removeCollectedEntry(com.google.common.cache.LocalCache$ReferenceEntry)>($r4);
+
+        $i4 = -1;
+
+        $i1 = $i1 + $i4;
+
+     label09:
+        $r4 = interfaceinvoke $r4.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+        goto label07;
+
+     label10:
+        $i3 = $i3 + 1;
+
+        goto label02;
+
+     label11:
+        r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table> = $r2;
+
+        r0.<com.google.common.cache.LocalCache$Segment: int count> = $i1;
+
+        return;
+    }
+
+    public void expireEntries(long)
+    {
+        long $l0;
+        java.lang.AssertionError $r6;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r3;
+        com.google.common.cache.LocalCache $r4;
+        com.google.common.cache.RemovalCause $r5;
+        int $i1;
+        java.lang.Object $r2;
+        java.util.Queue $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $l0 := @parameter0: long;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void drainRecencyQueue()>();
+
+     label1:
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue writeQueue>;
+
+        $r2 = interfaceinvoke $r1.<java.util.Queue: java.lang.Object peek()>();
+
+        $r3 = (com.google.common.cache.LocalCache$ReferenceEntry) $r2;
+
+        if $r3 == null goto label3;
+
+        $r4 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z0 = virtualinvoke $r4.<com.google.common.cache.LocalCache: boolean isExpired(com.google.common.cache.LocalCache$ReferenceEntry,long)>($r3, $l0);
+
+        if $z0 == 0 goto label3;
+
+        $i1 = interfaceinvoke $r3.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+        $r5 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause EXPIRED>;
+
+        $z0 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: boolean removeEntry(com.google.common.cache.LocalCache$ReferenceEntry,int,com.google.common.cache.RemovalCause)>($r3, $i1, $r5);
+
+        if $z0 == 0 goto label2;
+
+        goto label1;
+
+     label2:
+        $r6 = new java.lang.AssertionError;
+
+        specialinvoke $r6.<java.lang.AssertionError: void <init>()>();
+
+        throw $r6;
+
+     label3:
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue accessQueue>;
+
+        $r2 = interfaceinvoke $r1.<java.util.Queue: java.lang.Object peek()>();
+
+        $r3 = (com.google.common.cache.LocalCache$ReferenceEntry) $r2;
+
+        if $r3 == null goto label5;
+
+        $r4 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z0 = virtualinvoke $r4.<com.google.common.cache.LocalCache: boolean isExpired(com.google.common.cache.LocalCache$ReferenceEntry,long)>($r3, $l0);
+
+        if $z0 == 0 goto label5;
+
+        $i1 = interfaceinvoke $r3.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+        $r5 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause EXPIRED>;
+
+        $z0 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: boolean removeEntry(com.google.common.cache.LocalCache$ReferenceEntry,int,com.google.common.cache.RemovalCause)>($r3, $i1, $r5);
+
+        if $z0 == 0 goto label4;
+
+        goto label3;
+
+     label4:
+        $r6 = new java.lang.AssertionError;
+
+        specialinvoke $r6.<java.lang.AssertionError: void <init>()>();
+
+        throw $r6;
+
+     label5:
+        return;
+    }
+
+    public java.lang.Object get(java.lang.Object, int)
+    {
+        java.lang.Throwable $r8;
+        long $l2;
+        com.google.common.cache.LocalCache$ValueReference $r6;
+        com.google.common.base.Ticker $r4;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.CacheLoader $r1;
+        com.google.common.cache.LocalCache$ReferenceEntry $r5;
+        com.google.common.cache.LocalCache $r3;
+        int $i0, $i1;
+        java.lang.Object $r2, $r7;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+     label01:
+        $i1 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label02:
+        if $i1 == 0 goto label10;
+
+     label03:
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r4 = $r3.<com.google.common.cache.LocalCache: com.google.common.base.Ticker ticker>;
+
+        $l2 = virtualinvoke $r4.<com.google.common.base.Ticker: long read()>();
+
+        $r5 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry getLiveEntry(java.lang.Object,int,long)>($r2, $i0, $l2);
+
+     label04:
+        if $r5 != null goto label05;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postReadCleanup()>();
+
+        return null;
+
+     label05:
+        $r6 = interfaceinvoke $r5.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r2 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+     label06:
+        if $r2 == null goto label09;
+
+     label07:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void recordRead(com.google.common.cache.LocalCache$ReferenceEntry,long)>($r5, $l2);
+
+        $r7 = interfaceinvoke $r5.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r1 = $r3.<com.google.common.cache.LocalCache: com.google.common.cache.CacheLoader defaultLoader>;
+
+        $r2 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: java.lang.Object scheduleRefresh(com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,int,java.lang.Object,long,com.google.common.cache.CacheLoader)>($r5, $r7, $i0, $r2, $l2, $r1);
+
+     label08:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postReadCleanup()>();
+
+        return $r2;
+
+     label09:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void tryDrainReferenceQueues()>();
+
+     label10:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postReadCleanup()>();
+
+        return null;
+
+     label11:
+        $r8 := @caughtexception;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postReadCleanup()>();
+
+        throw $r8;
+
+        catch java.lang.Throwable from label01 to label02 with label11;
+        catch java.lang.Throwable from label03 to label04 with label11;
+        catch java.lang.Throwable from label05 to label06 with label11;
+        catch java.lang.Throwable from label07 to label08 with label11;
+        catch java.lang.Throwable from label09 to label10 with label11;
+    }
+
+    public java.lang.Object get(java.lang.Object, int, com.google.common.cache.CacheLoader)
+    {
+        java.lang.Throwable $r9;
+        com.google.common.cache.AbstractCache$StatsCounter $r7;
+        java.lang.Error $r13;
+        long $l2;
+        com.google.common.util.concurrent.ExecutionError $r12;
+        com.google.common.cache.LocalCache$ValueReference $r8;
+        com.google.common.cache.LocalCache $r4;
+        com.google.common.util.concurrent.UncheckedExecutionException $r11;
+        int $i0, $i1;
+        boolean $z0;
+        com.google.common.base.Ticker $r5;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.CacheLoader $r2;
+        java.util.concurrent.ExecutionException $r10;
+        com.google.common.cache.LocalCache$ReferenceEntry $r3;
+        java.lang.Object $r1, $r6;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: com.google.common.cache.CacheLoader;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+     label01:
+        $i1 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label02:
+        if $i1 == 0 goto label16;
+
+     label03:
+        $r3 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry getEntry(java.lang.Object,int)>($r1, $i0);
+
+     label04:
+        if $r3 == null goto label16;
+
+     label05:
+        $r4 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r5 = $r4.<com.google.common.cache.LocalCache: com.google.common.base.Ticker ticker>;
+
+     label06:
+        $l2 = virtualinvoke $r5.<com.google.common.base.Ticker: long read()>();
+
+        $r6 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: java.lang.Object getLiveValue(com.google.common.cache.LocalCache$ReferenceEntry,long)>($r3, $l2);
+
+     label07:
+        if $r6 == null goto label12;
+
+     label08:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void recordRead(com.google.common.cache.LocalCache$ReferenceEntry,long)>($r3, $l2);
+
+     label09:
+        $r7 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.AbstractCache$StatsCounter statsCounter>;
+
+     label10:
+        interfaceinvoke $r7.<com.google.common.cache.AbstractCache$StatsCounter: void recordHits(int)>(1);
+
+        $r1 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: java.lang.Object scheduleRefresh(com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,int,java.lang.Object,long,com.google.common.cache.CacheLoader)>($r3, $r1, $i0, $r6, $l2, $r2);
+
+     label11:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postReadCleanup()>();
+
+        return $r1;
+
+     label12:
+        $r8 = interfaceinvoke $r3.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $z0 = interfaceinvoke $r8.<com.google.common.cache.LocalCache$ValueReference: boolean isLoading()>();
+
+     label13:
+        if $z0 == 0 goto label16;
+
+     label14:
+        $r1 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: java.lang.Object waitForLoadingValue(com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,com.google.common.cache.LocalCache$ValueReference)>($r3, $r1, $r8);
+
+     label15:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postReadCleanup()>();
+
+        return $r1;
+
+     label16:
+        $r1 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: java.lang.Object lockedGetOrLoad(java.lang.Object,int,com.google.common.cache.CacheLoader)>($r1, $i0, $r2);
+
+     label17:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postReadCleanup()>();
+
+        return $r1;
+
+     label18:
+        $r9 := @caughtexception;
+
+        goto label27;
+
+     label19:
+        $r10 := @caughtexception;
+
+     label20:
+        $r9 = virtualinvoke $r10.<java.util.concurrent.ExecutionException: java.lang.Throwable getCause()>();
+
+        $z0 = $r9 instanceof java.lang.Error;
+
+     label21:
+        if $z0 != 0 goto label26;
+
+     label22:
+        $z0 = $r9 instanceof java.lang.RuntimeException;
+
+     label23:
+        if $z0 == 0 goto label25;
+
+     label24:
+        $r11 = new com.google.common.util.concurrent.UncheckedExecutionException;
+
+        specialinvoke $r11.<com.google.common.util.concurrent.UncheckedExecutionException: void <init>(java.lang.Throwable)>($r9);
+
+        throw $r11;
+
+     label25:
+        throw $r10;
+
+     label26:
+        $r12 = new com.google.common.util.concurrent.ExecutionError;
+
+        $r13 = (java.lang.Error) $r9;
+
+        specialinvoke $r12.<com.google.common.util.concurrent.ExecutionError: void <init>(java.lang.Error)>($r13);
+
+        throw $r12;
+
+     label27:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postReadCleanup()>();
+
+        throw $r9;
+
+        catch java.util.concurrent.ExecutionException from label03 to label04 with label19;
+        catch java.util.concurrent.ExecutionException from label06 to label07 with label19;
+        catch java.util.concurrent.ExecutionException from label08 to label09 with label19;
+        catch java.util.concurrent.ExecutionException from label10 to label11 with label19;
+        catch java.lang.Throwable from label01 to label02 with label18;
+        catch java.lang.Throwable from label03 to label04 with label18;
+        catch java.lang.Throwable from label05 to label07 with label18;
+        catch java.lang.Throwable from label08 to label11 with label18;
+        catch java.util.concurrent.ExecutionException from label12 to label13 with label19;
+        catch java.util.concurrent.ExecutionException from label14 to label15 with label19;
+        catch java.lang.Throwable from label12 to label13 with label18;
+        catch java.lang.Throwable from label14 to label15 with label18;
+        catch java.util.concurrent.ExecutionException from label16 to label17 with label19;
+        catch java.lang.Throwable from label16 to label17 with label18;
+        catch java.lang.Throwable from label20 to label21 with label18;
+        catch java.lang.Throwable from label22 to label23 with label18;
+        catch java.lang.Throwable from label24 to label27 with label18;
+    }
+
+    public java.lang.Object getAndRecordStats(java.lang.Object, int, com.google.common.cache.LocalCache$LoadingValueReference, com.google.common.util.concurrent.ListenableFuture)
+    {
+        java.lang.Throwable $r7;
+        com.google.common.util.concurrent.ListenableFuture $r3;
+        com.google.common.cache.AbstractCache$StatsCounter $r6;
+        com.google.common.cache.LocalCache$LoadingValueReference $r2;
+        long $l1;
+        com.google.common.cache.LocalCache$Segment r0;
+        int $i0;
+        java.lang.Object $r1, $r4, $r5;
+        java.lang.StringBuilder $r9;
+        java.lang.String $r10;
+        com.google.common.cache.CacheLoader$InvalidCacheLoadException $r8;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: com.google.common.cache.LocalCache$LoadingValueReference;
+
+        $r3 := @parameter3: com.google.common.util.concurrent.ListenableFuture;
+
+     label01:
+        $r4 = staticinvoke <com.google.common.util.concurrent.Uninterruptibles: java.lang.Object getUninterruptibly(java.util.concurrent.Future)>($r3);
+
+     label02:
+        $r5 = $r4;
+
+        if $r4 == null goto label06;
+
+     label03:
+        $r6 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.AbstractCache$StatsCounter statsCounter>;
+
+        $l1 = virtualinvoke $r2.<com.google.common.cache.LocalCache$LoadingValueReference: long elapsedNanos()>();
+
+        interfaceinvoke $r6.<com.google.common.cache.AbstractCache$StatsCounter: void recordLoadSuccess(long)>($l1);
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: boolean storeLoadedValue(java.lang.Object,int,com.google.common.cache.LocalCache$LoadingValueReference,java.lang.Object)>($r1, $i0, $r2, $r4);
+
+     label04:
+        if $r4 != null goto label10;
+
+        $r6 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.AbstractCache$StatsCounter statsCounter>;
+
+        $l1 = virtualinvoke $r2.<com.google.common.cache.LocalCache$LoadingValueReference: long elapsedNanos()>();
+
+        interfaceinvoke $r6.<com.google.common.cache.AbstractCache$StatsCounter: void recordLoadException(long)>($l1);
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: boolean removeLoadingValue(java.lang.Object,int,com.google.common.cache.LocalCache$LoadingValueReference)>($r1, $i0, $r2);
+
+        return $r4;
+
+     label05:
+        $r7 := @caughtexception;
+
+        goto label08;
+
+     label06:
+        $r8 = new com.google.common.cache.CacheLoader$InvalidCacheLoadException;
+
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("CacheLoader returned null for key ");
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r1);
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".");
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r8.<com.google.common.cache.CacheLoader$InvalidCacheLoadException: void <init>(java.lang.String)>($r10);
+
+        throw $r8;
+
+     label07:
+        $r7 := @caughtexception;
+
+        $r5 = null;
+
+     label08:
+        if $r5 != null goto label09;
+
+        $r6 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.AbstractCache$StatsCounter statsCounter>;
+
+        $l1 = virtualinvoke $r2.<com.google.common.cache.LocalCache$LoadingValueReference: long elapsedNanos()>();
+
+        interfaceinvoke $r6.<com.google.common.cache.AbstractCache$StatsCounter: void recordLoadException(long)>($l1);
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: boolean removeLoadingValue(java.lang.Object,int,com.google.common.cache.LocalCache$LoadingValueReference)>($r1, $i0, $r2);
+
+     label09:
+        throw $r7;
+
+     label10:
+        return $r4;
+
+        catch java.lang.Throwable from label01 to label02 with label07;
+        catch java.lang.Throwable from label03 to label04 with label05;
+        catch java.lang.Throwable from label06 to label07 with label05;
+    }
+
+    public com.google.common.cache.LocalCache$ReferenceEntry getEntry(java.lang.Object, int)
+    {
+        com.google.common.base.Equivalence $r5;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r2;
+        com.google.common.cache.LocalCache $r4;
+        int $i0, $i1;
+        java.lang.Object $r1, $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r2 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry getFirst(int)>($i0);
+
+     label1:
+        if $r2 == null goto label5;
+
+        $i1 = interfaceinvoke $r2.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+        if $i1 == $i0 goto label2;
+
+        goto label4;
+
+     label2:
+        $r3 = interfaceinvoke $r2.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        if $r3 != null goto label3;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void tryDrainReferenceQueues()>();
+
+        goto label4;
+
+     label3:
+        $r4 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r5 = $r4.<com.google.common.cache.LocalCache: com.google.common.base.Equivalence keyEquivalence>;
+
+        $z0 = virtualinvoke $r5.<com.google.common.base.Equivalence: boolean equivalent(java.lang.Object,java.lang.Object)>($r1, $r3);
+
+        if $z0 == 0 goto label4;
+
+        return $r2;
+
+     label4:
+        $r2 = interfaceinvoke $r2.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+        goto label1;
+
+     label5:
+        return null;
+    }
+
+    public com.google.common.cache.LocalCache$ReferenceEntry getFirst(int)
+    {
+        com.google.common.cache.LocalCache$ReferenceEntry $r3;
+        int $i0, $i1, $i2;
+        java.lang.Object $r2;
+        com.google.common.cache.LocalCache$Segment r0;
+        java.util.concurrent.atomic.AtomicReferenceArray $r1;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i1 = virtualinvoke $r1.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        $i0 = $i0 & $i1;
+
+        $r2 = virtualinvoke $r1.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i0);
+
+        $r3 = (com.google.common.cache.LocalCache$ReferenceEntry) $r2;
+
+        return $r3;
+    }
+
+    public com.google.common.cache.LocalCache$ReferenceEntry getLiveEntry(java.lang.Object, int, long)
+    {
+        com.google.common.cache.LocalCache$ReferenceEntry $r2;
+        com.google.common.cache.LocalCache $r3;
+        int $i1;
+        long $l0;
+        java.lang.Object $r1;
+        com.google.common.cache.LocalCache$Segment r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i1 := @parameter1: int;
+
+        $l0 := @parameter2: long;
+
+        $r2 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry getEntry(java.lang.Object,int)>($r1, $i1);
+
+        if $r2 != null goto label1;
+
+        return null;
+
+     label1:
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z0 = virtualinvoke $r3.<com.google.common.cache.LocalCache: boolean isExpired(com.google.common.cache.LocalCache$ReferenceEntry,long)>($r2, $l0);
+
+        if $z0 == 0 goto label2;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void tryExpireEntries(long)>($l0);
+
+        return null;
+
+     label2:
+        return $r2;
+    }
+
+    public java.lang.Object getLiveValue(com.google.common.cache.LocalCache$ReferenceEntry, long)
+    {
+        com.google.common.cache.LocalCache$ReferenceEntry $r2;
+        com.google.common.cache.LocalCache $r1;
+        long $l0;
+        java.lang.Object $r3;
+        com.google.common.cache.LocalCache$ValueReference $r4;
+        com.google.common.cache.LocalCache$Segment r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r2 := @parameter0: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $l0 := @parameter1: long;
+
+        $r3 = interfaceinvoke $r2.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        if $r3 != null goto label1;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void tryDrainReferenceQueues()>();
+
+        return null;
+
+     label1:
+        $r4 = interfaceinvoke $r2.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r3 = interfaceinvoke $r4.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+        if $r3 != null goto label2;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void tryDrainReferenceQueues()>();
+
+        return null;
+
+     label2:
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z0 = virtualinvoke $r1.<com.google.common.cache.LocalCache: boolean isExpired(com.google.common.cache.LocalCache$ReferenceEntry,long)>($r2, $l0);
+
+        if $z0 == 0 goto label3;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void tryExpireEntries(long)>($l0);
+
+        return null;
+
+     label3:
+        return $r3;
+    }
+
+    public com.google.common.cache.LocalCache$ReferenceEntry getNextEvictable()
+    {
+        java.util.Iterator $r2;
+        com.google.common.cache.LocalCache$ValueReference $r5;
+        java.lang.AssertionError $r6;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r4;
+        int $i0;
+        java.lang.Object $r3;
+        java.util.Queue $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue accessQueue>;
+
+        $r2 = interfaceinvoke $r1.<java.util.Queue: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r3 = interfaceinvoke $r2.<java.util.Iterator: java.lang.Object next()>();
+
+        $r4 = (com.google.common.cache.LocalCache$ReferenceEntry) $r3;
+
+        $r5 = interfaceinvoke $r4.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $i0 = interfaceinvoke $r5.<com.google.common.cache.LocalCache$ValueReference: int getWeight()>();
+
+        if $i0 <= 0 goto label1;
+
+        return $r4;
+
+     label2:
+        $r6 = new java.lang.AssertionError;
+
+        specialinvoke $r6.<java.lang.AssertionError: void <init>()>();
+
+        goto label3;
+
+     label3:
+        throw $r6;
+    }
+
+    public void initTable(java.util.concurrent.atomic.AtomicReferenceArray)
+    {
+        long $l0, $l1;
+        com.google.common.cache.LocalCache$Segment r0;
+        java.util.concurrent.atomic.AtomicReferenceArray $r1;
+        byte $b2;
+        com.google.common.cache.LocalCache $r2;
+        int $i3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: java.util.concurrent.atomic.AtomicReferenceArray;
+
+        $i3 = virtualinvoke $r1.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+        $i3 = $i3 * 3;
+
+        $i3 = $i3 / 4;
+
+        r0.<com.google.common.cache.LocalCache$Segment: int threshold> = $i3;
+
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z0 = virtualinvoke $r2.<com.google.common.cache.LocalCache: boolean customWeigher()>();
+
+        if $z0 != 0 goto label1;
+
+        $i3 = r0.<com.google.common.cache.LocalCache$Segment: int threshold>;
+
+        $l0 = (long) $i3;
+
+        $l1 = r0.<com.google.common.cache.LocalCache$Segment: long maxSegmentWeight>;
+
+        $b2 = $l0 cmp $l1;
+
+        if $b2 != 0 goto label1;
+
+        $i3 = $i3 + 1;
+
+        r0.<com.google.common.cache.LocalCache$Segment: int threshold> = $i3;
+
+     label1:
+        r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table> = $r1;
+
+        return;
+    }
+
+    public com.google.common.cache.LocalCache$LoadingValueReference insertLoadingValueReference(java.lang.Object, int, boolean)
+    {
+        java.lang.Throwable $r11;
+        long $l1, $l4;
+        com.google.common.cache.LocalCache$ValueReference $r9;
+        java.util.concurrent.atomic.AtomicReferenceArray $r4;
+        com.google.common.cache.LocalCache $r2;
+        byte $b5;
+        int $i0, $i2, $i3;
+        boolean $z0, $z1;
+        com.google.common.base.Equivalence $r8;
+        com.google.common.cache.LocalCache$LoadingValueReference $r10, $r12;
+        com.google.common.base.Ticker $r3;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r6, $r7;
+        java.lang.Object $r1, $r5;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $z0 := @parameter2: boolean;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+     label01:
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r3 = $r2.<com.google.common.cache.LocalCache: com.google.common.base.Ticker ticker>;
+
+        $l1 = virtualinvoke $r3.<com.google.common.base.Ticker: long read()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void preWriteCleanup(long)>($l1);
+
+        $r4 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i2 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+     label02:
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        $i2 = $i2 & $i0;
+
+     label03:
+        $r5 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i2);
+
+        $r6 = (com.google.common.cache.LocalCache$ReferenceEntry) $r5;
+
+     label04:
+        $r7 = $r6;
+
+     label05:
+        if $r7 == null goto label25;
+
+     label06:
+        $r5 = interfaceinvoke $r7.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        $i3 = interfaceinvoke $r7.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+     label07:
+        if $i3 != $i0 goto label23;
+
+        if $r5 == null goto label23;
+
+     label08:
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r8 = $r2.<com.google.common.cache.LocalCache: com.google.common.base.Equivalence keyEquivalence>;
+
+        $z1 = virtualinvoke $r8.<com.google.common.base.Equivalence: boolean equivalent(java.lang.Object,java.lang.Object)>($r1, $r5);
+
+     label09:
+        if $z1 == 0 goto label23;
+
+     label10:
+        $r9 = interfaceinvoke $r7.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $z1 = interfaceinvoke $r9.<com.google.common.cache.LocalCache$ValueReference: boolean isLoading()>();
+
+     label11:
+        if $z1 != 0 goto label22;
+
+        if $z0 == 0 goto label16;
+
+     label12:
+        $l4 = interfaceinvoke $r7.<com.google.common.cache.LocalCache$ReferenceEntry: long getWriteTime()>();
+
+     label13:
+        $l1 = $l1 - $l4;
+
+     label14:
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $l4 = $r2.<com.google.common.cache.LocalCache: long refreshNanos>;
+
+     label15:
+        $b5 = $l1 cmp $l4;
+
+        $i0 = (int) $b5;
+
+        if $i0 >= 0 goto label16;
+
+        goto label22;
+
+     label16:
+        $i0 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+     label17:
+        $i0 = $i0 + 1;
+
+     label18:
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i0;
+
+        $r12 = new com.google.common.cache.LocalCache$LoadingValueReference;
+
+     label19:
+        $r10 = $r12;
+
+     label20:
+        specialinvoke $r12.<com.google.common.cache.LocalCache$LoadingValueReference: void <init>(com.google.common.cache.LocalCache$ValueReference)>($r9);
+
+        interfaceinvoke $r7.<com.google.common.cache.LocalCache$ReferenceEntry: void setValueReference(com.google.common.cache.LocalCache$ValueReference)>($r10);
+
+     label21:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return $r10;
+
+     label22:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return null;
+
+     label23:
+        $r7 = interfaceinvoke $r7.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+     label24:
+        goto label05;
+
+     label25:
+        $i3 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+     label26:
+        $i3 = $i3 + 1;
+
+     label27:
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i3;
+
+        $r12 = new com.google.common.cache.LocalCache$LoadingValueReference;
+
+     label28:
+        $r10 = $r12;
+
+     label29:
+        specialinvoke $r12.<com.google.common.cache.LocalCache$LoadingValueReference: void <init>()>();
+
+        $r6 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry newEntry(java.lang.Object,int,com.google.common.cache.LocalCache$ReferenceEntry)>($r1, $i0, $r6);
+
+        interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: void setValueReference(com.google.common.cache.LocalCache$ValueReference)>($r10);
+
+        virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i2, $r6);
+
+     label30:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return $r10;
+
+     label31:
+        $r11 := @caughtexception;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        goto label32;
+
+     label32:
+        throw $r11;
+
+        catch java.lang.Throwable from label01 to label02 with label31;
+        catch java.lang.Throwable from label03 to label04 with label31;
+        catch java.lang.Throwable from label06 to label07 with label31;
+        catch java.lang.Throwable from label08 to label09 with label31;
+        catch java.lang.Throwable from label10 to label11 with label31;
+        catch java.lang.Throwable from label12 to label13 with label31;
+        catch java.lang.Throwable from label14 to label15 with label31;
+        catch java.lang.Throwable from label16 to label17 with label31;
+        catch java.lang.Throwable from label18 to label19 with label31;
+        catch java.lang.Throwable from label20 to label21 with label31;
+        catch java.lang.Throwable from label23 to label24 with label31;
+        catch java.lang.Throwable from label25 to label26 with label31;
+        catch java.lang.Throwable from label27 to label28 with label31;
+        catch java.lang.Throwable from label29 to label30 with label31;
+    }
+
+    public com.google.common.util.concurrent.ListenableFuture loadAsync(java.lang.Object, int, com.google.common.cache.LocalCache$LoadingValueReference, com.google.common.cache.CacheLoader)
+    {
+        com.google.common.util.concurrent.ListenableFuture $r5;
+        java.util.concurrent.Executor $r6;
+        com.google.common.cache.LocalCache$Segment$1 $r2;
+        com.google.common.cache.LocalCache$LoadingValueReference $r1;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.CacheLoader $r4;
+        int $i0;
+        java.lang.Object $r3;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r3 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r1 := @parameter2: com.google.common.cache.LocalCache$LoadingValueReference;
+
+        $r4 := @parameter3: com.google.common.cache.CacheLoader;
+
+        $r5 = virtualinvoke $r1.<com.google.common.cache.LocalCache$LoadingValueReference: com.google.common.util.concurrent.ListenableFuture loadFuture(java.lang.Object,com.google.common.cache.CacheLoader)>($r3, $r4);
+
+        $r2 = new com.google.common.cache.LocalCache$Segment$1;
+
+        specialinvoke $r2.<com.google.common.cache.LocalCache$Segment$1: void <init>(com.google.common.cache.LocalCache$Segment,java.lang.Object,int,com.google.common.cache.LocalCache$LoadingValueReference,com.google.common.util.concurrent.ListenableFuture)>(r0, $r3, $i0, $r1, $r5);
+
+        $r6 = staticinvoke <com.google.common.util.concurrent.MoreExecutors: java.util.concurrent.Executor directExecutor()>();
+
+        interfaceinvoke $r5.<com.google.common.util.concurrent.ListenableFuture: void addListener(java.lang.Runnable,java.util.concurrent.Executor)>($r2, $r6);
+
+        return $r5;
+    }
+
+    public java.lang.Object loadSync(java.lang.Object, int, com.google.common.cache.LocalCache$LoadingValueReference, com.google.common.cache.CacheLoader)
+    {
+        com.google.common.cache.CacheLoader $r3;
+        com.google.common.util.concurrent.ListenableFuture $r4;
+        com.google.common.cache.LocalCache$LoadingValueReference $r1;
+        int $i0;
+        java.lang.Object $r2;
+        com.google.common.cache.LocalCache$Segment r0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r1 := @parameter2: com.google.common.cache.LocalCache$LoadingValueReference;
+
+        $r3 := @parameter3: com.google.common.cache.CacheLoader;
+
+        $r4 = virtualinvoke $r1.<com.google.common.cache.LocalCache$LoadingValueReference: com.google.common.util.concurrent.ListenableFuture loadFuture(java.lang.Object,com.google.common.cache.CacheLoader)>($r2, $r3);
+
+        $r2 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: java.lang.Object getAndRecordStats(java.lang.Object,int,com.google.common.cache.LocalCache$LoadingValueReference,com.google.common.util.concurrent.ListenableFuture)>($r2, $i0, $r1, $r4);
+
+        return $r2;
+    }
+
+    public java.lang.Object lockedGetOrLoad(java.lang.Object, int, com.google.common.cache.CacheLoader)
+    {
+        java.lang.Throwable $r16, $r17, $r18;
+        com.google.common.cache.AbstractCache$StatsCounter $r15;
+        long $l3;
+        com.google.common.cache.LocalCache$ValueReference $r11;
+        java.util.concurrent.atomic.AtomicReferenceArray $r3;
+        com.google.common.cache.LocalCache $r4;
+        int $i0, $i1, $i2, $i4;
+        boolean $z0;
+        com.google.common.base.Equivalence $r10;
+        com.google.common.cache.LocalCache$LoadingValueReference $r9, $r19;
+        com.google.common.base.Ticker $r5;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.CacheLoader $r2;
+        com.google.common.cache.LocalCache$ReferenceEntry $r7, $r8;
+        com.google.common.cache.RemovalCause $r13;
+        java.lang.Object $r1, $r6, $r12;
+        java.util.Queue $r14;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: com.google.common.cache.CacheLoader;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+     label01:
+        $r4 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r5 = $r4.<com.google.common.cache.LocalCache: com.google.common.base.Ticker ticker>;
+
+        $l3 = virtualinvoke $r5.<com.google.common.base.Ticker: long read()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void preWriteCleanup(long)>($l3);
+
+        $i1 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label02:
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+     label03:
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i2 = virtualinvoke $r3.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+     label04:
+        $i2 = $i2 - 1;
+
+        $i2 = $i0 & $i2;
+
+     label05:
+        $r6 = virtualinvoke $r3.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i2);
+
+        $r7 = (com.google.common.cache.LocalCache$ReferenceEntry) $r6;
+
+     label06:
+        $r8 = $r7;
+
+     label07:
+        $r9 = null;
+
+        if $r8 == null goto label27;
+
+     label08:
+        $r6 = interfaceinvoke $r8.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        $i4 = interfaceinvoke $r8.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+     label09:
+        if $i4 != $i0 goto label25;
+
+        if $r6 == null goto label25;
+
+     label10:
+        $r4 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r10 = $r4.<com.google.common.cache.LocalCache: com.google.common.base.Equivalence keyEquivalence>;
+
+        $z0 = virtualinvoke $r10.<com.google.common.base.Equivalence: boolean equivalent(java.lang.Object,java.lang.Object)>($r1, $r6);
+
+     label11:
+        if $z0 == 0 goto label25;
+
+     label12:
+        $r11 = interfaceinvoke $r8.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $z0 = interfaceinvoke $r11.<com.google.common.cache.LocalCache$ValueReference: boolean isLoading()>();
+
+     label13:
+        if $z0 == 0 goto label14;
+
+        $z0 = 0;
+
+        goto label29;
+
+     label14:
+        $r12 = interfaceinvoke $r11.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+     label15:
+        if $r12 != null goto label18;
+
+     label16:
+        $i4 = interfaceinvoke $r11.<com.google.common.cache.LocalCache$ValueReference: int getWeight()>();
+
+        $r13 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause COLLECTED>;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void enqueueNotification(java.lang.Object,int,java.lang.Object,int,com.google.common.cache.RemovalCause)>($r6, $i0, $r12, $i4, $r13);
+
+     label17:
+        goto label21;
+
+     label18:
+        $r4 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z0 = virtualinvoke $r4.<com.google.common.cache.LocalCache: boolean isExpired(com.google.common.cache.LocalCache$ReferenceEntry,long)>($r8, $l3);
+
+     label19:
+        if $z0 == 0 goto label23;
+
+     label20:
+        $i4 = interfaceinvoke $r11.<com.google.common.cache.LocalCache$ValueReference: int getWeight()>();
+
+        $r13 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause EXPIRED>;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void enqueueNotification(java.lang.Object,int,java.lang.Object,int,com.google.common.cache.RemovalCause)>($r6, $i0, $r12, $i4, $r13);
+
+     label21:
+        $r14 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue writeQueue>;
+
+        interfaceinvoke $r14.<java.util.Queue: boolean remove(java.lang.Object)>($r8);
+
+        $r14 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue accessQueue>;
+
+        interfaceinvoke $r14.<java.util.Queue: boolean remove(java.lang.Object)>($r8);
+
+        r0.<com.google.common.cache.LocalCache$Segment: int count> = $i1;
+
+     label22:
+        goto label28;
+
+     label23:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void recordLockedRead(com.google.common.cache.LocalCache$ReferenceEntry,long)>($r8, $l3);
+
+        $r15 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.AbstractCache$StatsCounter statsCounter>;
+
+        interfaceinvoke $r15.<com.google.common.cache.AbstractCache$StatsCounter: void recordHits(int)>(1);
+
+     label24:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return $r12;
+
+     label25:
+        $r8 = interfaceinvoke $r8.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+     label26:
+        goto label07;
+
+     label27:
+        $r11 = null;
+
+     label28:
+        $z0 = 1;
+
+     label29:
+        if $z0 == 0 goto label39;
+
+     label30:
+        $r19 = new com.google.common.cache.LocalCache$LoadingValueReference;
+
+     label31:
+        $r9 = $r19;
+
+     label32:
+        specialinvoke $r19.<com.google.common.cache.LocalCache$LoadingValueReference: void <init>()>();
+
+     label33:
+        if $r8 != null goto label38;
+
+     label34:
+        $r7 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry newEntry(java.lang.Object,int,com.google.common.cache.LocalCache$ReferenceEntry)>($r1, $i0, $r7);
+
+     label35:
+        $r8 = $r7;
+
+     label36:
+        interfaceinvoke $r7.<com.google.common.cache.LocalCache$ReferenceEntry: void setValueReference(com.google.common.cache.LocalCache$ValueReference)>($r9);
+
+        virtualinvoke $r3.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i2, $r7);
+
+     label37:
+        goto label39;
+
+     label38:
+        interfaceinvoke $r8.<com.google.common.cache.LocalCache$ReferenceEntry: void setValueReference(com.google.common.cache.LocalCache$ValueReference)>($r9);
+
+     label39:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        if $z0 == 0 goto label47;
+
+     label40:
+        entermonitor $r8;
+
+     label41:
+        $r1 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: java.lang.Object loadSync(java.lang.Object,int,com.google.common.cache.LocalCache$LoadingValueReference,com.google.common.cache.CacheLoader)>($r1, $i0, $r9, $r2);
+
+        exitmonitor $r8;
+
+     label42:
+        $r15 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.AbstractCache$StatsCounter statsCounter>;
+
+        interfaceinvoke $r15.<com.google.common.cache.AbstractCache$StatsCounter: void recordMisses(int)>(1);
+
+        return $r1;
+
+     label43:
+        $r16 := @caughtexception;
+
+     label44:
+        exitmonitor $r8;
+
+     label45:
+        throw $r16;
+
+     label46:
+        $r17 := @caughtexception;
+
+        $r15 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.AbstractCache$StatsCounter statsCounter>;
+
+        interfaceinvoke $r15.<com.google.common.cache.AbstractCache$StatsCounter: void recordMisses(int)>(1);
+
+        throw $r17;
+
+     label47:
+        $r1 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: java.lang.Object waitForLoadingValue(com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,com.google.common.cache.LocalCache$ValueReference)>($r8, $r1, $r11);
+
+        return $r1;
+
+     label48:
+        $r18 := @caughtexception;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        goto label49;
+
+     label49:
+        throw $r18;
+
+        catch java.lang.Throwable from label01 to label02 with label48;
+        catch java.lang.Throwable from label03 to label04 with label48;
+        catch java.lang.Throwable from label05 to label06 with label48;
+        catch java.lang.Throwable from label08 to label09 with label48;
+        catch java.lang.Throwable from label10 to label11 with label48;
+        catch java.lang.Throwable from label12 to label13 with label48;
+        catch java.lang.Throwable from label14 to label15 with label48;
+        catch java.lang.Throwable from label16 to label17 with label48;
+        catch java.lang.Throwable from label18 to label19 with label48;
+        catch java.lang.Throwable from label20 to label22 with label48;
+        catch java.lang.Throwable from label23 to label24 with label48;
+        catch java.lang.Throwable from label25 to label26 with label48;
+        catch java.lang.Throwable from label30 to label31 with label48;
+        catch java.lang.Throwable from label32 to label33 with label48;
+        catch java.lang.Throwable from label34 to label35 with label48;
+        catch java.lang.Throwable from label36 to label37 with label48;
+        catch java.lang.Throwable from label38 to label39 with label48;
+        catch java.lang.Throwable from label40 to label41 with label46;
+        catch java.lang.Throwable from label41 to label42 with label43;
+        catch java.lang.Throwable from label44 to label45 with label43;
+        catch java.lang.Throwable from label45 to label46 with label46;
+    }
+
+    public com.google.common.cache.LocalCache$ReferenceEntry newEntry(java.lang.Object, int, com.google.common.cache.LocalCache$ReferenceEntry)
+    {
+        com.google.common.cache.LocalCache$ReferenceEntry $r1;
+        com.google.common.cache.LocalCache $r3;
+        int $i0;
+        java.lang.Object $r2;
+        com.google.common.cache.LocalCache$EntryFactory $r4;
+        com.google.common.cache.LocalCache$Segment r0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r1 := @parameter2: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r4 = $r3.<com.google.common.cache.LocalCache: com.google.common.cache.LocalCache$EntryFactory entryFactory>;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        $r1 = virtualinvoke $r4.<com.google.common.cache.LocalCache$EntryFactory: com.google.common.cache.LocalCache$ReferenceEntry newEntry(com.google.common.cache.LocalCache$Segment,java.lang.Object,int,com.google.common.cache.LocalCache$ReferenceEntry)>(r0, $r2, $i0, $r1);
+
+        return $r1;
+    }
+
+    public java.util.concurrent.atomic.AtomicReferenceArray newEntryArray(int)
+    {
+        int $i0;
+        com.google.common.cache.LocalCache$Segment r0;
+        java.util.concurrent.atomic.AtomicReferenceArray $r1;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $i0 := @parameter0: int;
+
+        $r1 = new java.util.concurrent.atomic.AtomicReferenceArray;
+
+        specialinvoke $r1.<java.util.concurrent.atomic.AtomicReferenceArray: void <init>(int)>($i0);
+
+        return $r1;
+    }
+
+    public void postReadCleanup()
+    {
+        int $i0;
+        java.util.concurrent.atomic.AtomicInteger $r1;
+        com.google.common.cache.LocalCache$Segment r0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicInteger readCount>;
+
+        $i0 = virtualinvoke $r1.<java.util.concurrent.atomic.AtomicInteger: int incrementAndGet()>();
+
+        $i0 = $i0 & 63;
+
+        if $i0 != 0 goto label1;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void cleanUp()>();
+
+     label1:
+        return;
+    }
+
+    public void postWriteCleanup()
+    {
+        com.google.common.cache.LocalCache$Segment r0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void runUnlockedCleanup()>();
+
+        return;
+    }
+
+    public void preWriteCleanup(long)
+    {
+        long $l0;
+        com.google.common.cache.LocalCache$Segment r0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $l0 := @parameter0: long;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void runLockedCleanup(long)>($l0);
+
+        return;
+    }
+
+    public java.lang.Object put(java.lang.Object, int, java.lang.Object, boolean)
+    {
+        java.lang.Throwable $r12;
+        long $l2;
+        com.google.common.cache.LocalCache$ValueReference $r10;
+        java.util.concurrent.atomic.AtomicReferenceArray $r5;
+        com.google.common.cache.LocalCache $r3;
+        int $i0, $i1, $i3;
+        boolean $z0, $z1;
+        com.google.common.base.Equivalence $r9;
+        com.google.common.base.Ticker $r4;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r7, $r8;
+        com.google.common.cache.RemovalCause $r11;
+        java.lang.Object $r1, $r2, $r6;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: java.lang.Object;
+
+        $z0 := @parameter3: boolean;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+     label01:
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r4 = $r3.<com.google.common.cache.LocalCache: com.google.common.base.Ticker ticker>;
+
+        $l2 = virtualinvoke $r4.<com.google.common.base.Ticker: long read()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void preWriteCleanup(long)>($l2);
+
+        $i1 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label02:
+        $i1 = $i1 + 1;
+
+     label03:
+        $i3 = r0.<com.google.common.cache.LocalCache$Segment: int threshold>;
+
+     label04:
+        if $i1 <= $i3 goto label06;
+
+     label05:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void expand()>();
+
+     label06:
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i1 = virtualinvoke $r5.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+     label07:
+        $i3 = -1;
+
+        $i1 = $i1 + $i3;
+
+        $i1 = $i0 & $i1;
+
+     label08:
+        $r6 = virtualinvoke $r5.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i1);
+
+        $r7 = (com.google.common.cache.LocalCache$ReferenceEntry) $r6;
+
+     label09:
+        $r8 = $r7;
+
+     label10:
+        if $r8 == null goto label36;
+
+     label11:
+        $r6 = interfaceinvoke $r8.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        $i3 = interfaceinvoke $r8.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+     label12:
+        if $i3 != $i0 goto label34;
+
+        if $r6 == null goto label34;
+
+     label13:
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r9 = $r3.<com.google.common.cache.LocalCache: com.google.common.base.Equivalence keyEquivalence>;
+
+        $z1 = virtualinvoke $r9.<com.google.common.base.Equivalence: boolean equivalent(java.lang.Object,java.lang.Object)>($r1, $r6);
+
+     label14:
+        if $z1 == 0 goto label34;
+
+     label15:
+        $r10 = interfaceinvoke $r8.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r6 = interfaceinvoke $r10.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+     label16:
+        if $r6 != null goto label27;
+
+     label17:
+        $i1 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+     label18:
+        $i1 = $i1 + 1;
+
+     label19:
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i1;
+
+        $z0 = interfaceinvoke $r10.<com.google.common.cache.LocalCache$ValueReference: boolean isActive()>();
+
+     label20:
+        if $z0 == 0 goto label23;
+
+     label21:
+        $i1 = interfaceinvoke $r10.<com.google.common.cache.LocalCache$ValueReference: int getWeight()>();
+
+        $r11 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause COLLECTED>;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void enqueueNotification(java.lang.Object,int,java.lang.Object,int,com.google.common.cache.RemovalCause)>($r1, $i0, $r6, $i1, $r11);
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void setValue(com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,java.lang.Object,long)>($r8, $r1, $r2, $l2);
+
+        $i0 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label22:
+        goto label25;
+
+     label23:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void setValue(com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,java.lang.Object,long)>($r8, $r1, $r2, $l2);
+
+        $i0 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label24:
+        $i0 = $i0 + 1;
+
+     label25:
+        r0.<com.google.common.cache.LocalCache$Segment: int count> = $i0;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void evictEntries(com.google.common.cache.LocalCache$ReferenceEntry)>($r8);
+
+     label26:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return null;
+
+     label27:
+        if $z0 == 0 goto label30;
+
+     label28:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void recordLockedRead(com.google.common.cache.LocalCache$ReferenceEntry,long)>($r8, $l2);
+
+     label29:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return $r6;
+
+     label30:
+        $i1 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+     label31:
+        $i1 = $i1 + 1;
+
+     label32:
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i1;
+
+        $i1 = interfaceinvoke $r10.<com.google.common.cache.LocalCache$ValueReference: int getWeight()>();
+
+        $r11 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause REPLACED>;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void enqueueNotification(java.lang.Object,int,java.lang.Object,int,com.google.common.cache.RemovalCause)>($r1, $i0, $r6, $i1, $r11);
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void setValue(com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,java.lang.Object,long)>($r8, $r1, $r2, $l2);
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void evictEntries(com.google.common.cache.LocalCache$ReferenceEntry)>($r8);
+
+     label33:
+        goto label29;
+
+     label34:
+        $r8 = interfaceinvoke $r8.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+     label35:
+        goto label10;
+
+     label36:
+        $i3 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+     label37:
+        $i3 = $i3 + 1;
+
+     label38:
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i3;
+
+        $r7 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry newEntry(java.lang.Object,int,com.google.common.cache.LocalCache$ReferenceEntry)>($r1, $i0, $r7);
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void setValue(com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,java.lang.Object,long)>($r7, $r1, $r2, $l2);
+
+        virtualinvoke $r5.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i1, $r7);
+
+        $i0 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label39:
+        $i0 = $i0 + 1;
+
+     label40:
+        r0.<com.google.common.cache.LocalCache$Segment: int count> = $i0;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void evictEntries(com.google.common.cache.LocalCache$ReferenceEntry)>($r7);
+
+     label41:
+        goto label26;
+
+     label42:
+        $r12 := @caughtexception;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        goto label43;
+
+     label43:
+        throw $r12;
+
+        catch java.lang.Throwable from label01 to label02 with label42;
+        catch java.lang.Throwable from label03 to label04 with label42;
+        catch java.lang.Throwable from label05 to label07 with label42;
+        catch java.lang.Throwable from label08 to label09 with label42;
+        catch java.lang.Throwable from label11 to label12 with label42;
+        catch java.lang.Throwable from label13 to label14 with label42;
+        catch java.lang.Throwable from label15 to label16 with label42;
+        catch java.lang.Throwable from label17 to label18 with label42;
+        catch java.lang.Throwable from label19 to label20 with label42;
+        catch java.lang.Throwable from label21 to label22 with label42;
+        catch java.lang.Throwable from label23 to label24 with label42;
+        catch java.lang.Throwable from label25 to label26 with label42;
+        catch java.lang.Throwable from label28 to label29 with label42;
+        catch java.lang.Throwable from label30 to label31 with label42;
+        catch java.lang.Throwable from label32 to label33 with label42;
+        catch java.lang.Throwable from label34 to label35 with label42;
+        catch java.lang.Throwable from label36 to label37 with label42;
+        catch java.lang.Throwable from label38 to label39 with label42;
+        catch java.lang.Throwable from label40 to label41 with label42;
+    }
+
+    public boolean reclaimKey(com.google.common.cache.LocalCache$ReferenceEntry, int)
+    {
+        java.lang.Throwable $r9;
+        com.google.common.cache.LocalCache$ValueReference $r7;
+        com.google.common.cache.LocalCache$Segment r0;
+        java.util.concurrent.atomic.AtomicReferenceArray $r3;
+        com.google.common.cache.LocalCache$ReferenceEntry $r2, $r5, $r6;
+        com.google.common.cache.RemovalCause $r1;
+        int $i0, $i1, $i2;
+        java.lang.Object $r4, $r8;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r2 := @parameter0: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $i0 := @parameter1: int;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+     label01:
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i1 = virtualinvoke $r3.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+     label02:
+        $i1 = $i1 - 1;
+
+        $i1 = $i1 & $i0;
+
+     label03:
+        $r4 = virtualinvoke $r3.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i1);
+
+        $r5 = (com.google.common.cache.LocalCache$ReferenceEntry) $r4;
+
+     label04:
+        $r6 = $r5;
+
+     label05:
+        if $r6 == null goto label14;
+
+        if $r6 != $r2 goto label12;
+
+     label06:
+        $i2 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+     label07:
+        $i2 = $i2 + 1;
+
+     label08:
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i2;
+
+        $r4 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        $r7 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r8 = interfaceinvoke $r7.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+        $r7 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r1 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause COLLECTED>;
+
+        $r2 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry removeValueFromChain(com.google.common.cache.LocalCache$ReferenceEntry,com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,int,java.lang.Object,com.google.common.cache.LocalCache$ValueReference,com.google.common.cache.RemovalCause)>($r5, $r6, $r4, $i0, $r8, $r7, $r1);
+
+        $i0 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label09:
+        $i0 = $i0 - 1;
+
+     label10:
+        virtualinvoke $r3.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i1, $r2);
+
+        r0.<com.google.common.cache.LocalCache$Segment: int count> = $i0;
+
+     label11:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return 1;
+
+     label12:
+        $r6 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+     label13:
+        goto label05;
+
+     label14:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return 0;
+
+     label15:
+        $r9 := @caughtexception;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        goto label16;
+
+     label16:
+        throw $r9;
+
+        catch java.lang.Throwable from label01 to label02 with label15;
+        catch java.lang.Throwable from label03 to label04 with label15;
+        catch java.lang.Throwable from label06 to label07 with label15;
+        catch java.lang.Throwable from label08 to label09 with label15;
+        catch java.lang.Throwable from label10 to label11 with label15;
+        catch java.lang.Throwable from label12 to label13 with label15;
+    }
+
+    public boolean reclaimValue(java.lang.Object, int, com.google.common.cache.LocalCache$ValueReference)
+    {
+        java.lang.Throwable $r11;
+        com.google.common.cache.LocalCache$ValueReference $r1, $r10;
+        java.util.concurrent.atomic.AtomicReferenceArray $r4;
+        com.google.common.cache.LocalCache $r8;
+        int $i0, $i1, $i2;
+        boolean $z0;
+        com.google.common.base.Equivalence $r9;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r6, $r7;
+        com.google.common.cache.RemovalCause $r2;
+        java.lang.Object $r3, $r5;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r3 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r1 := @parameter2: com.google.common.cache.LocalCache$ValueReference;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+     label01:
+        $r4 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i1 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+     label02:
+        $i1 = $i1 - 1;
+
+        $i1 = $i1 & $i0;
+
+     label03:
+        $r5 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i1);
+
+        $r6 = (com.google.common.cache.LocalCache$ReferenceEntry) $r5;
+
+     label04:
+        $r7 = $r6;
+
+     label05:
+        if $r7 == null goto label21;
+
+     label06:
+        $r5 = interfaceinvoke $r7.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        $i2 = interfaceinvoke $r7.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+     label07:
+        if $i2 != $i0 goto label19;
+
+        if $r5 == null goto label19;
+
+     label08:
+        $r8 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r9 = $r8.<com.google.common.cache.LocalCache: com.google.common.base.Equivalence keyEquivalence>;
+
+        $z0 = virtualinvoke $r9.<com.google.common.base.Equivalence: boolean equivalent(java.lang.Object,java.lang.Object)>($r3, $r5);
+
+     label09:
+        if $z0 == 0 goto label19;
+
+     label10:
+        $r10 = interfaceinvoke $r7.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+     label11:
+        if $r10 != $r1 goto label18;
+
+     label12:
+        $i2 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+     label13:
+        $i2 = $i2 + 1;
+
+     label14:
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i2;
+
+        $r3 = interfaceinvoke $r1.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+        $r2 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause COLLECTED>;
+
+        $r6 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry removeValueFromChain(com.google.common.cache.LocalCache$ReferenceEntry,com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,int,java.lang.Object,com.google.common.cache.LocalCache$ValueReference,com.google.common.cache.RemovalCause)>($r6, $r7, $r5, $i0, $r3, $r1, $r2);
+
+        $i0 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label15:
+        $i0 = $i0 - 1;
+
+     label16:
+        virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i1, $r6);
+
+        r0.<com.google.common.cache.LocalCache$Segment: int count> = $i0;
+
+     label17:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        $z0 = virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: boolean isHeldByCurrentThread()>();
+
+        if $z0 != 0 goto label25;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return 1;
+
+     label18:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        $z0 = virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: boolean isHeldByCurrentThread()>();
+
+        if $z0 != 0 goto label26;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return 0;
+
+     label19:
+        $r7 = interfaceinvoke $r7.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+     label20:
+        goto label05;
+
+     label21:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        $z0 = virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: boolean isHeldByCurrentThread()>();
+
+        if $z0 != 0 goto label26;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return 0;
+
+     label22:
+        $r11 := @caughtexception;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        $z0 = virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: boolean isHeldByCurrentThread()>();
+
+        if $z0 != 0 goto label23;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+     label23:
+        goto label24;
+
+     label24:
+        throw $r11;
+
+     label25:
+        return 1;
+
+     label26:
+        return 0;
+
+        catch java.lang.Throwable from label01 to label02 with label22;
+        catch java.lang.Throwable from label03 to label04 with label22;
+        catch java.lang.Throwable from label06 to label07 with label22;
+        catch java.lang.Throwable from label08 to label09 with label22;
+        catch java.lang.Throwable from label10 to label11 with label22;
+        catch java.lang.Throwable from label12 to label13 with label22;
+        catch java.lang.Throwable from label14 to label15 with label22;
+        catch java.lang.Throwable from label16 to label17 with label22;
+        catch java.lang.Throwable from label19 to label20 with label22;
+    }
+
+    public void recordLockedRead(com.google.common.cache.LocalCache$ReferenceEntry, long)
+    {
+        com.google.common.cache.LocalCache$ReferenceEntry $r1;
+        com.google.common.cache.LocalCache $r2;
+        long $l0;
+        java.util.Queue $r3;
+        com.google.common.cache.LocalCache$Segment r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $l0 := @parameter1: long;
+
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z0 = virtualinvoke $r2.<com.google.common.cache.LocalCache: boolean recordsAccess()>();
+
+        if $z0 == 0 goto label1;
+
+        interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: void setAccessTime(long)>($l0);
+
+     label1:
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue accessQueue>;
+
+        interfaceinvoke $r3.<java.util.Queue: boolean add(java.lang.Object)>($r1);
+
+        return;
+    }
+
+    public void recordRead(com.google.common.cache.LocalCache$ReferenceEntry, long)
+    {
+        com.google.common.cache.LocalCache$ReferenceEntry $r1;
+        com.google.common.cache.LocalCache $r2;
+        long $l0;
+        java.util.Queue $r3;
+        com.google.common.cache.LocalCache$Segment r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $l0 := @parameter1: long;
+
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z0 = virtualinvoke $r2.<com.google.common.cache.LocalCache: boolean recordsAccess()>();
+
+        if $z0 == 0 goto label1;
+
+        interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: void setAccessTime(long)>($l0);
+
+     label1:
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue recencyQueue>;
+
+        interfaceinvoke $r3.<java.util.Queue: boolean add(java.lang.Object)>($r1);
+
+        return;
+    }
+
+    public void recordWrite(com.google.common.cache.LocalCache$ReferenceEntry, int, long)
+    {
+        long $l0, $l1, $l3;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r1;
+        com.google.common.cache.LocalCache $r2;
+        int $i2;
+        java.util.Queue $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $i2 := @parameter1: int;
+
+        $l0 := @parameter2: long;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void drainRecencyQueue()>();
+
+        $l3 = r0.<com.google.common.cache.LocalCache$Segment: long totalWeight>;
+
+        $l1 = (long) $i2;
+
+        $l1 = $l3 + $l1;
+
+        r0.<com.google.common.cache.LocalCache$Segment: long totalWeight> = $l1;
+
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z0 = virtualinvoke $r2.<com.google.common.cache.LocalCache: boolean recordsAccess()>();
+
+        if $z0 == 0 goto label1;
+
+        interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: void setAccessTime(long)>($l0);
+
+     label1:
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z0 = virtualinvoke $r2.<com.google.common.cache.LocalCache: boolean recordsWrite()>();
+
+        if $z0 == 0 goto label2;
+
+        interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: void setWriteTime(long)>($l0);
+
+     label2:
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue accessQueue>;
+
+        interfaceinvoke $r3.<java.util.Queue: boolean add(java.lang.Object)>($r1);
+
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue writeQueue>;
+
+        interfaceinvoke $r3.<java.util.Queue: boolean add(java.lang.Object)>($r1);
+
+        return;
+    }
+
+    public java.lang.Object refresh(java.lang.Object, int, com.google.common.cache.CacheLoader, boolean)
+    {
+        java.lang.Throwable $r2;
+        com.google.common.util.concurrent.ListenableFuture $r5;
+        com.google.common.cache.LocalCache$LoadingValueReference $r4;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.CacheLoader $r1;
+        int $i0;
+        java.lang.Object $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r3 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r1 := @parameter2: com.google.common.cache.CacheLoader;
+
+        $z0 := @parameter3: boolean;
+
+        $r4 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$LoadingValueReference insertLoadingValueReference(java.lang.Object,int,boolean)>($r3, $i0, $z0);
+
+        if $r4 != null goto label1;
+
+        return null;
+
+     label1:
+        $r5 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.util.concurrent.ListenableFuture loadAsync(java.lang.Object,int,com.google.common.cache.LocalCache$LoadingValueReference,com.google.common.cache.CacheLoader)>($r3, $i0, $r4, $r1);
+
+        $z0 = interfaceinvoke $r5.<java.util.concurrent.Future: boolean isDone()>();
+
+        if $z0 == 0 goto label4;
+
+     label2:
+        $r3 = staticinvoke <com.google.common.util.concurrent.Uninterruptibles: java.lang.Object getUninterruptibly(java.util.concurrent.Future)>($r5);
+
+     label3:
+        return $r3;
+
+     label4:
+        return null;
+
+     label5:
+        $r2 := @caughtexception;
+
+        return null;
+
+        catch java.lang.Throwable from label2 to label3 with label5;
+    }
+
+    public java.lang.Object remove(java.lang.Object, int)
+    {
+        java.lang.Throwable $r11;
+        long $l1;
+        com.google.common.cache.LocalCache$ValueReference $r9;
+        java.util.concurrent.atomic.AtomicReferenceArray $r4;
+        com.google.common.cache.LocalCache $r2;
+        int $i0, $i2, $i3;
+        boolean $z0;
+        com.google.common.base.Equivalence $r8;
+        com.google.common.base.Ticker $r3;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r6, $r7;
+        com.google.common.cache.RemovalCause $r10;
+        java.lang.Object $r1, $r5;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+     label01:
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r3 = $r2.<com.google.common.cache.LocalCache: com.google.common.base.Ticker ticker>;
+
+        $l1 = virtualinvoke $r3.<com.google.common.base.Ticker: long read()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void preWriteCleanup(long)>($l1);
+
+        $r4 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i2 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+     label02:
+        $i3 = -1;
+
+        $i2 = $i2 + $i3;
+
+        $i2 = $i2 & $i0;
+
+     label03:
+        $r5 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i2);
+
+        $r6 = (com.google.common.cache.LocalCache$ReferenceEntry) $r5;
+
+     label04:
+        $r7 = $r6;
+
+     label05:
+        if $r7 == null goto label24;
+
+     label06:
+        $r5 = interfaceinvoke $r7.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        $i3 = interfaceinvoke $r7.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+     label07:
+        if $i3 != $i0 goto label25;
+
+        if $r5 == null goto label25;
+
+     label08:
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r8 = $r2.<com.google.common.cache.LocalCache: com.google.common.base.Equivalence keyEquivalence>;
+
+        $z0 = virtualinvoke $r8.<com.google.common.base.Equivalence: boolean equivalent(java.lang.Object,java.lang.Object)>($r1, $r5);
+
+     label09:
+        if $z0 == 0 goto label25;
+
+     label10:
+        $r9 = interfaceinvoke $r7.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r1 = interfaceinvoke $r9.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+     label11:
+        if $r1 == null goto label14;
+
+     label12:
+        $r10 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause EXPLICIT>;
+
+     label13:
+        goto label18;
+
+     label14:
+        $z0 = interfaceinvoke $r9.<com.google.common.cache.LocalCache$ValueReference: boolean isActive()>();
+
+     label15:
+        if $z0 == 0 goto label24;
+
+     label16:
+        $r10 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause COLLECTED>;
+
+     label17:
+        goto label13;
+
+     label18:
+        $i3 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+     label19:
+        $i3 = $i3 + 1;
+
+     label20:
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i3;
+
+        $r6 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry removeValueFromChain(com.google.common.cache.LocalCache$ReferenceEntry,com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,int,java.lang.Object,com.google.common.cache.LocalCache$ValueReference,com.google.common.cache.RemovalCause)>($r6, $r7, $r5, $i0, $r1, $r9, $r10);
+
+        $i0 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label21:
+        $i3 = -1;
+
+        $i0 = $i0 + $i3;
+
+     label22:
+        virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i2, $r6);
+
+        r0.<com.google.common.cache.LocalCache$Segment: int count> = $i0;
+
+     label23:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return $r1;
+
+     label24:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return null;
+
+     label25:
+        $r7 = interfaceinvoke $r7.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+     label26:
+        goto label05;
+
+     label27:
+        $r11 := @caughtexception;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        goto label28;
+
+     label28:
+        throw $r11;
+
+        catch java.lang.Throwable from label01 to label02 with label27;
+        catch java.lang.Throwable from label03 to label04 with label27;
+        catch java.lang.Throwable from label06 to label07 with label27;
+        catch java.lang.Throwable from label08 to label09 with label27;
+        catch java.lang.Throwable from label10 to label11 with label27;
+        catch java.lang.Throwable from label12 to label13 with label27;
+        catch java.lang.Throwable from label14 to label15 with label27;
+        catch java.lang.Throwable from label16 to label17 with label27;
+        catch java.lang.Throwable from label18 to label19 with label27;
+        catch java.lang.Throwable from label20 to label21 with label27;
+        catch java.lang.Throwable from label22 to label23 with label27;
+        catch java.lang.Throwable from label25 to label26 with label27;
+    }
+
+    public boolean remove(java.lang.Object, int, java.lang.Object)
+    {
+        java.lang.Throwable $r13;
+        long $l1;
+        com.google.common.cache.LocalCache$ValueReference $r10;
+        java.util.concurrent.atomic.AtomicReferenceArray $r5;
+        com.google.common.cache.LocalCache $r3;
+        int $i0, $i2, $i3;
+        boolean $z0, $z1;
+        com.google.common.base.Equivalence $r9;
+        com.google.common.base.Ticker $r4;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r7, $r8;
+        com.google.common.cache.RemovalCause $r11, $r12;
+        java.lang.Object $r1, $r2, $r6;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: java.lang.Object;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+     label01:
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r4 = $r3.<com.google.common.cache.LocalCache: com.google.common.base.Ticker ticker>;
+
+        $l1 = virtualinvoke $r4.<com.google.common.base.Ticker: long read()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void preWriteCleanup(long)>($l1);
+
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i2 = virtualinvoke $r5.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+     label02:
+        $z0 = 1;
+
+        $i2 = $i2 - 1;
+
+        $i2 = $i2 & $i0;
+
+     label03:
+        $r6 = virtualinvoke $r5.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i2);
+
+        $r7 = (com.google.common.cache.LocalCache$ReferenceEntry) $r6;
+
+     label04:
+        $r8 = $r7;
+
+     label05:
+        if $r8 == null goto label26;
+
+     label06:
+        $r6 = interfaceinvoke $r8.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        $i3 = interfaceinvoke $r8.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+     label07:
+        if $i3 != $i0 goto label27;
+
+        if $r6 == null goto label27;
+
+     label08:
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r9 = $r3.<com.google.common.cache.LocalCache: com.google.common.base.Equivalence keyEquivalence>;
+
+        $z1 = virtualinvoke $r9.<com.google.common.base.Equivalence: boolean equivalent(java.lang.Object,java.lang.Object)>($r1, $r6);
+
+     label09:
+        if $z1 == 0 goto label27;
+
+     label10:
+        $r10 = interfaceinvoke $r8.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r1 = interfaceinvoke $r10.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r9 = $r3.<com.google.common.cache.LocalCache: com.google.common.base.Equivalence valueEquivalence>;
+
+        $z1 = virtualinvoke $r9.<com.google.common.base.Equivalence: boolean equivalent(java.lang.Object,java.lang.Object)>($r2, $r1);
+
+     label11:
+        if $z1 == 0 goto label14;
+
+     label12:
+        $r11 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause EXPLICIT>;
+
+     label13:
+        goto label18;
+
+     label14:
+        if $r1 != null goto label26;
+
+     label15:
+        $z1 = interfaceinvoke $r10.<com.google.common.cache.LocalCache$ValueReference: boolean isActive()>();
+
+     label16:
+        if $z1 == 0 goto label26;
+
+     label17:
+        $r11 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause COLLECTED>;
+
+     label18:
+        $i3 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+     label19:
+        $i3 = $i3 + 1;
+
+     label20:
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i3;
+
+        $r7 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry removeValueFromChain(com.google.common.cache.LocalCache$ReferenceEntry,com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,int,java.lang.Object,com.google.common.cache.LocalCache$ValueReference,com.google.common.cache.RemovalCause)>($r7, $r8, $r6, $i0, $r1, $r10, $r11);
+
+        $i0 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label21:
+        $i0 = $i0 - 1;
+
+     label22:
+        virtualinvoke $r5.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i2, $r7);
+
+        r0.<com.google.common.cache.LocalCache$Segment: int count> = $i0;
+
+        $r12 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause EXPLICIT>;
+
+     label23:
+        if $r11 != $r12 goto label24;
+
+        goto label25;
+
+     label24:
+        $z0 = 0;
+
+     label25:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return $z0;
+
+     label26:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return 0;
+
+     label27:
+        $r8 = interfaceinvoke $r8.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+     label28:
+        goto label05;
+
+     label29:
+        $r13 := @caughtexception;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        goto label30;
+
+     label30:
+        throw $r13;
+
+        catch java.lang.Throwable from label01 to label02 with label29;
+        catch java.lang.Throwable from label03 to label04 with label29;
+        catch java.lang.Throwable from label06 to label07 with label29;
+        catch java.lang.Throwable from label08 to label09 with label29;
+        catch java.lang.Throwable from label10 to label11 with label29;
+        catch java.lang.Throwable from label12 to label13 with label29;
+        catch java.lang.Throwable from label15 to label16 with label29;
+        catch java.lang.Throwable from label17 to label19 with label29;
+        catch java.lang.Throwable from label20 to label21 with label29;
+        catch java.lang.Throwable from label22 to label23 with label29;
+        catch java.lang.Throwable from label27 to label28 with label29;
+    }
+
+    public void removeCollectedEntry(com.google.common.cache.LocalCache$ReferenceEntry)
+    {
+        com.google.common.cache.LocalCache$ValueReference $r4;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r1;
+        com.google.common.cache.RemovalCause $r2;
+        int $i0, $i1;
+        java.lang.Object $r3, $r5;
+        java.util.Queue $r6;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $r3 = interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        $i0 = interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+        $r4 = interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r5 = interfaceinvoke $r4.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+        $r4 = interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $i1 = interfaceinvoke $r4.<com.google.common.cache.LocalCache$ValueReference: int getWeight()>();
+
+        $r2 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause COLLECTED>;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void enqueueNotification(java.lang.Object,int,java.lang.Object,int,com.google.common.cache.RemovalCause)>($r3, $i0, $r5, $i1, $r2);
+
+        $r6 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue writeQueue>;
+
+        interfaceinvoke $r6.<java.util.Queue: boolean remove(java.lang.Object)>($r1);
+
+        $r6 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue accessQueue>;
+
+        interfaceinvoke $r6.<java.util.Queue: boolean remove(java.lang.Object)>($r1);
+
+        return;
+    }
+
+    public boolean removeEntry(com.google.common.cache.LocalCache$ReferenceEntry, int, com.google.common.cache.RemovalCause)
+    {
+        com.google.common.cache.LocalCache$ValueReference $r7;
+        com.google.common.cache.LocalCache$Segment r0;
+        java.util.concurrent.atomic.AtomicReferenceArray $r3;
+        com.google.common.cache.LocalCache$ReferenceEntry $r2, $r5, $r6;
+        com.google.common.cache.RemovalCause $r1;
+        int $i0, $i1, $i2;
+        java.lang.Object $r4, $r8;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r2 := @parameter0: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $i0 := @parameter1: int;
+
+        $r1 := @parameter2: com.google.common.cache.RemovalCause;
+
+        $r3 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i1 = virtualinvoke $r3.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+        $i1 = $i1 - 1;
+
+        $i1 = $i1 & $i0;
+
+        $r4 = virtualinvoke $r3.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i1);
+
+        $r5 = (com.google.common.cache.LocalCache$ReferenceEntry) $r4;
+
+        $r6 = $r5;
+
+     label1:
+        if $r6 == null goto label3;
+
+        if $r6 != $r2 goto label2;
+
+        $i2 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+        $i2 = $i2 + 1;
+
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i2;
+
+        $r4 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        $r7 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r8 = interfaceinvoke $r7.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+        $r7 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r2 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry removeValueFromChain(com.google.common.cache.LocalCache$ReferenceEntry,com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,int,java.lang.Object,com.google.common.cache.LocalCache$ValueReference,com.google.common.cache.RemovalCause)>($r5, $r6, $r4, $i0, $r8, $r7, $r1);
+
+        $i0 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+        $i0 = $i0 - 1;
+
+        virtualinvoke $r3.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i1, $r2);
+
+        r0.<com.google.common.cache.LocalCache$Segment: int count> = $i0;
+
+        return 1;
+
+     label2:
+        $r6 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+        goto label1;
+
+     label3:
+        return 0;
+    }
+
+    public com.google.common.cache.LocalCache$ReferenceEntry removeEntryFromChain(com.google.common.cache.LocalCache$ReferenceEntry, com.google.common.cache.LocalCache$ReferenceEntry)
+    {
+        com.google.common.cache.LocalCache$ReferenceEntry $r1, $r2, $r3, $r4;
+        int $i0, $i1;
+        com.google.common.cache.LocalCache$Segment r0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r2 := @parameter0: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $r1 := @parameter1: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $i0 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+        $r3 = interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+     label1:
+        if $r2 == $r1 goto label4;
+
+        $r4 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry copyEntry(com.google.common.cache.LocalCache$ReferenceEntry,com.google.common.cache.LocalCache$ReferenceEntry)>($r2, $r3);
+
+        if $r4 == null goto label2;
+
+        $r3 = $r4;
+
+        goto label3;
+
+     label2:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void removeCollectedEntry(com.google.common.cache.LocalCache$ReferenceEntry)>($r2);
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+     label3:
+        $r2 = interfaceinvoke $r2.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+        goto label1;
+
+     label4:
+        r0.<com.google.common.cache.LocalCache$Segment: int count> = $i0;
+
+        return $r3;
+    }
+
+    public boolean removeLoadingValue(java.lang.Object, int, com.google.common.cache.LocalCache$LoadingValueReference)
+    {
+        java.lang.Throwable $r10;
+        com.google.common.base.Equivalence $r8;
+        com.google.common.cache.LocalCache$LoadingValueReference $r1;
+        com.google.common.cache.LocalCache$ValueReference $r9;
+        com.google.common.cache.LocalCache$Segment r0;
+        java.util.concurrent.atomic.AtomicReferenceArray $r2;
+        com.google.common.cache.LocalCache$ReferenceEntry $r5, $r6;
+        com.google.common.cache.LocalCache $r7;
+        int $i0, $i1, $i2;
+        java.lang.Object $r3, $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r3 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r1 := @parameter2: com.google.common.cache.LocalCache$LoadingValueReference;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+     label01:
+        $r2 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i1 = virtualinvoke $r2.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+     label02:
+        $i1 = $i1 - 1;
+
+        $i1 = $i1 & $i0;
+
+     label03:
+        $r4 = virtualinvoke $r2.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i1);
+
+        $r5 = (com.google.common.cache.LocalCache$ReferenceEntry) $r4;
+
+     label04:
+        $r6 = $r5;
+
+     label05:
+        if $r6 == null goto label18;
+
+     label06:
+        $r4 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        $i2 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+     label07:
+        if $i2 != $i0 goto label19;
+
+        if $r4 == null goto label19;
+
+     label08:
+        $r7 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r8 = $r7.<com.google.common.cache.LocalCache: com.google.common.base.Equivalence keyEquivalence>;
+
+        $z0 = virtualinvoke $r8.<com.google.common.base.Equivalence: boolean equivalent(java.lang.Object,java.lang.Object)>($r3, $r4);
+
+     label09:
+        if $z0 == 0 goto label19;
+
+     label10:
+        $r9 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+     label11:
+        if $r9 != $r1 goto label18;
+
+     label12:
+        $z0 = virtualinvoke $r1.<com.google.common.cache.LocalCache$LoadingValueReference: boolean isActive()>();
+
+     label13:
+        if $z0 == 0 goto label16;
+
+     label14:
+        $r9 = virtualinvoke $r1.<com.google.common.cache.LocalCache$LoadingValueReference: com.google.common.cache.LocalCache$ValueReference getOldValue()>();
+
+        interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: void setValueReference(com.google.common.cache.LocalCache$ValueReference)>($r9);
+
+     label15:
+        goto label17;
+
+     label16:
+        $r5 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry removeEntryFromChain(com.google.common.cache.LocalCache$ReferenceEntry,com.google.common.cache.LocalCache$ReferenceEntry)>($r5, $r6);
+
+        virtualinvoke $r2.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i1, $r5);
+
+     label17:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return 1;
+
+     label18:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return 0;
+
+     label19:
+        $r6 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+     label20:
+        goto label05;
+
+     label21:
+        $r10 := @caughtexception;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        goto label22;
+
+     label22:
+        throw $r10;
+
+        catch java.lang.Throwable from label01 to label02 with label21;
+        catch java.lang.Throwable from label03 to label04 with label21;
+        catch java.lang.Throwable from label06 to label07 with label21;
+        catch java.lang.Throwable from label08 to label09 with label21;
+        catch java.lang.Throwable from label10 to label11 with label21;
+        catch java.lang.Throwable from label12 to label13 with label21;
+        catch java.lang.Throwable from label14 to label15 with label21;
+        catch java.lang.Throwable from label16 to label17 with label21;
+        catch java.lang.Throwable from label19 to label20 with label21;
+    }
+
+    public com.google.common.cache.LocalCache$ReferenceEntry removeValueFromChain(com.google.common.cache.LocalCache$ReferenceEntry, com.google.common.cache.LocalCache$ReferenceEntry, java.lang.Object, int, java.lang.Object, com.google.common.cache.LocalCache$ValueReference, com.google.common.cache.RemovalCause)
+    {
+        com.google.common.cache.LocalCache$ValueReference $r2;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r4, $r5;
+        com.google.common.cache.RemovalCause $r3;
+        int $i0, $i1;
+        java.lang.Object $r1, $r6;
+        java.util.Queue $r7;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r4 := @parameter0: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $r5 := @parameter1: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $r6 := @parameter2: java.lang.Object;
+
+        $i0 := @parameter3: int;
+
+        $r1 := @parameter4: java.lang.Object;
+
+        $r2 := @parameter5: com.google.common.cache.LocalCache$ValueReference;
+
+        $r3 := @parameter6: com.google.common.cache.RemovalCause;
+
+        $i1 = interfaceinvoke $r2.<com.google.common.cache.LocalCache$ValueReference: int getWeight()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void enqueueNotification(java.lang.Object,int,java.lang.Object,int,com.google.common.cache.RemovalCause)>($r6, $i0, $r1, $i1, $r3);
+
+        $r7 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue writeQueue>;
+
+        interfaceinvoke $r7.<java.util.Queue: boolean remove(java.lang.Object)>($r5);
+
+        $r7 = r0.<com.google.common.cache.LocalCache$Segment: java.util.Queue accessQueue>;
+
+        interfaceinvoke $r7.<java.util.Queue: boolean remove(java.lang.Object)>($r5);
+
+        $z0 = interfaceinvoke $r2.<com.google.common.cache.LocalCache$ValueReference: boolean isLoading()>();
+
+        if $z0 == 0 goto label1;
+
+        interfaceinvoke $r2.<com.google.common.cache.LocalCache$ValueReference: void notifyNewValue(java.lang.Object)>(null);
+
+        return $r4;
+
+     label1:
+        $r4 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry removeEntryFromChain(com.google.common.cache.LocalCache$ReferenceEntry,com.google.common.cache.LocalCache$ReferenceEntry)>($r4, $r5);
+
+        return $r4;
+    }
+
+    public java.lang.Object replace(java.lang.Object, int, java.lang.Object)
+    {
+        java.lang.Throwable $r13;
+        long $l2;
+        com.google.common.cache.LocalCache$ValueReference $r11;
+        java.util.concurrent.atomic.AtomicReferenceArray $r4;
+        com.google.common.cache.LocalCache $r5;
+        int $i0, $i1, $i3;
+        boolean $z0;
+        com.google.common.base.Equivalence $r10;
+        com.google.common.base.Ticker $r6;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r8, $r9;
+        com.google.common.cache.RemovalCause $r3;
+        java.lang.Object $r1, $r2, $r7, $r12;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: java.lang.Object;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+     label01:
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r6 = $r5.<com.google.common.cache.LocalCache: com.google.common.base.Ticker ticker>;
+
+        $l2 = virtualinvoke $r6.<com.google.common.base.Ticker: long read()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void preWriteCleanup(long)>($l2);
+
+        $r4 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i1 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+     label02:
+        $i3 = -1;
+
+        $i1 = $i1 + $i3;
+
+        $i1 = $i0 & $i1;
+
+     label03:
+        $r7 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i1);
+
+        $r8 = (com.google.common.cache.LocalCache$ReferenceEntry) $r7;
+
+     label04:
+        $r9 = $r8;
+
+     label05:
+        if $r9 == null goto label19;
+
+     label06:
+        $r7 = interfaceinvoke $r9.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        $i3 = interfaceinvoke $r9.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+     label07:
+        if $i3 != $i0 goto label24;
+
+        if $r7 == null goto label24;
+
+     label08:
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r10 = $r5.<com.google.common.cache.LocalCache: com.google.common.base.Equivalence keyEquivalence>;
+
+        $z0 = virtualinvoke $r10.<com.google.common.base.Equivalence: boolean equivalent(java.lang.Object,java.lang.Object)>($r1, $r7);
+
+     label09:
+        if $z0 == 0 goto label24;
+
+     label10:
+        $r11 = interfaceinvoke $r9.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r12 = interfaceinvoke $r11.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+     label11:
+        if $r12 != null goto label20;
+
+     label12:
+        $z0 = interfaceinvoke $r11.<com.google.common.cache.LocalCache$ValueReference: boolean isActive()>();
+
+     label13:
+        if $z0 == 0 goto label19;
+
+     label14:
+        $i3 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+     label15:
+        $i3 = $i3 + 1;
+
+     label16:
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i3;
+
+        $r3 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause COLLECTED>;
+
+        $r8 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry removeValueFromChain(com.google.common.cache.LocalCache$ReferenceEntry,com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,int,java.lang.Object,com.google.common.cache.LocalCache$ValueReference,com.google.common.cache.RemovalCause)>($r8, $r9, $r7, $i0, $r12, $r11, $r3);
+
+        $i0 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label17:
+        $i3 = -1;
+
+        $i0 = $i0 + $i3;
+
+     label18:
+        virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i1, $r8);
+
+        r0.<com.google.common.cache.LocalCache$Segment: int count> = $i0;
+
+     label19:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return null;
+
+     label20:
+        $i1 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+     label21:
+        $i1 = $i1 + 1;
+
+     label22:
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i1;
+
+        $i1 = interfaceinvoke $r11.<com.google.common.cache.LocalCache$ValueReference: int getWeight()>();
+
+        $r3 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause REPLACED>;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void enqueueNotification(java.lang.Object,int,java.lang.Object,int,com.google.common.cache.RemovalCause)>($r1, $i0, $r12, $i1, $r3);
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void setValue(com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,java.lang.Object,long)>($r9, $r1, $r2, $l2);
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void evictEntries(com.google.common.cache.LocalCache$ReferenceEntry)>($r9);
+
+     label23:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return $r12;
+
+     label24:
+        $r9 = interfaceinvoke $r9.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+     label25:
+        goto label05;
+
+     label26:
+        $r13 := @caughtexception;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        goto label27;
+
+     label27:
+        throw $r13;
+
+        catch java.lang.Throwable from label01 to label02 with label26;
+        catch java.lang.Throwable from label03 to label04 with label26;
+        catch java.lang.Throwable from label06 to label07 with label26;
+        catch java.lang.Throwable from label08 to label09 with label26;
+        catch java.lang.Throwable from label10 to label11 with label26;
+        catch java.lang.Throwable from label12 to label13 with label26;
+        catch java.lang.Throwable from label14 to label15 with label26;
+        catch java.lang.Throwable from label16 to label17 with label26;
+        catch java.lang.Throwable from label18 to label19 with label26;
+        catch java.lang.Throwable from label20 to label21 with label26;
+        catch java.lang.Throwable from label22 to label23 with label26;
+        catch java.lang.Throwable from label24 to label25 with label26;
+    }
+
+    public boolean replace(java.lang.Object, int, java.lang.Object, java.lang.Object)
+    {
+        java.lang.Throwable $r14;
+        long $l2;
+        com.google.common.cache.LocalCache$ValueReference $r12;
+        java.util.concurrent.atomic.AtomicReferenceArray $r7;
+        com.google.common.cache.LocalCache $r5;
+        int $i0, $i1, $i3;
+        boolean $z0;
+        com.google.common.base.Equivalence $r11;
+        com.google.common.base.Ticker $r6;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r9, $r10;
+        com.google.common.cache.RemovalCause $r4;
+        java.lang.Object $r1, $r2, $r3, $r8, $r13;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: java.lang.Object;
+
+        $r3 := @parameter3: java.lang.Object;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+     label01:
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r6 = $r5.<com.google.common.cache.LocalCache: com.google.common.base.Ticker ticker>;
+
+        $l2 = virtualinvoke $r6.<com.google.common.base.Ticker: long read()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void preWriteCleanup(long)>($l2);
+
+        $r7 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i1 = virtualinvoke $r7.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+     label02:
+        $i1 = $i1 - 1;
+
+        $i1 = $i0 & $i1;
+
+     label03:
+        $r8 = virtualinvoke $r7.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i1);
+
+        $r9 = (com.google.common.cache.LocalCache$ReferenceEntry) $r8;
+
+     label04:
+        $r10 = $r9;
+
+     label05:
+        if $r10 == null goto label19;
+
+     label06:
+        $r8 = interfaceinvoke $r10.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        $i3 = interfaceinvoke $r10.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+     label07:
+        if $i3 != $i0 goto label28;
+
+        if $r8 == null goto label28;
+
+     label08:
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r11 = $r5.<com.google.common.cache.LocalCache: com.google.common.base.Equivalence keyEquivalence>;
+
+        $z0 = virtualinvoke $r11.<com.google.common.base.Equivalence: boolean equivalent(java.lang.Object,java.lang.Object)>($r1, $r8);
+
+     label09:
+        if $z0 == 0 goto label28;
+
+     label10:
+        $r12 = interfaceinvoke $r10.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r13 = interfaceinvoke $r12.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+     label11:
+        if $r13 != null goto label20;
+
+     label12:
+        $z0 = interfaceinvoke $r12.<com.google.common.cache.LocalCache$ValueReference: boolean isActive()>();
+
+     label13:
+        if $z0 == 0 goto label19;
+
+     label14:
+        $i3 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+     label15:
+        $i3 = $i3 + 1;
+
+     label16:
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i3;
+
+        $r4 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause COLLECTED>;
+
+        $r9 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry removeValueFromChain(com.google.common.cache.LocalCache$ReferenceEntry,com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,int,java.lang.Object,com.google.common.cache.LocalCache$ValueReference,com.google.common.cache.RemovalCause)>($r9, $r10, $r8, $i0, $r13, $r12, $r4);
+
+        $i0 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label17:
+        $i0 = $i0 - 1;
+
+     label18:
+        virtualinvoke $r7.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i1, $r9);
+
+        r0.<com.google.common.cache.LocalCache$Segment: int count> = $i0;
+
+     label19:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return 0;
+
+     label20:
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r11 = $r5.<com.google.common.cache.LocalCache: com.google.common.base.Equivalence valueEquivalence>;
+
+        $z0 = virtualinvoke $r11.<com.google.common.base.Equivalence: boolean equivalent(java.lang.Object,java.lang.Object)>($r2, $r13);
+
+     label21:
+        if $z0 == 0 goto label26;
+
+     label22:
+        $i1 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+     label23:
+        $i1 = $i1 + 1;
+
+     label24:
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i1;
+
+        $i1 = interfaceinvoke $r12.<com.google.common.cache.LocalCache$ValueReference: int getWeight()>();
+
+        $r4 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause REPLACED>;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void enqueueNotification(java.lang.Object,int,java.lang.Object,int,com.google.common.cache.RemovalCause)>($r1, $i0, $r13, $i1, $r4);
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void setValue(com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,java.lang.Object,long)>($r10, $r1, $r3, $l2);
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void evictEntries(com.google.common.cache.LocalCache$ReferenceEntry)>($r10);
+
+     label25:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return 1;
+
+     label26:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void recordLockedRead(com.google.common.cache.LocalCache$ReferenceEntry,long)>($r10, $l2);
+
+     label27:
+        goto label19;
+
+     label28:
+        $r10 = interfaceinvoke $r10.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+     label29:
+        goto label05;
+
+     label30:
+        $r14 := @caughtexception;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        goto label31;
+
+     label31:
+        throw $r14;
+
+        catch java.lang.Throwable from label01 to label02 with label30;
+        catch java.lang.Throwable from label03 to label04 with label30;
+        catch java.lang.Throwable from label06 to label07 with label30;
+        catch java.lang.Throwable from label08 to label09 with label30;
+        catch java.lang.Throwable from label10 to label11 with label30;
+        catch java.lang.Throwable from label12 to label13 with label30;
+        catch java.lang.Throwable from label14 to label15 with label30;
+        catch java.lang.Throwable from label16 to label17 with label30;
+        catch java.lang.Throwable from label18 to label19 with label30;
+        catch java.lang.Throwable from label20 to label21 with label30;
+        catch java.lang.Throwable from label22 to label23 with label30;
+        catch java.lang.Throwable from label24 to label25 with label30;
+        catch java.lang.Throwable from label26 to label27 with label30;
+        catch java.lang.Throwable from label28 to label29 with label30;
+    }
+
+    public void runLockedCleanup(long)
+    {
+        java.lang.Throwable $r2;
+        java.util.concurrent.atomic.AtomicInteger $r1;
+        long $l0;
+        com.google.common.cache.LocalCache$Segment r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $l0 := @parameter0: long;
+
+        $z0 = virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: boolean tryLock()>();
+
+        if $z0 == 0 goto label4;
+
+     label1:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void drainReferenceQueues()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void expireEntries(long)>($l0);
+
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicInteger readCount>;
+
+        virtualinvoke $r1.<java.util.concurrent.atomic.AtomicInteger: void set(int)>(0);
+
+     label2:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        throw $r2;
+
+     label4:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public void runUnlockedCleanup()
+    {
+        com.google.common.cache.LocalCache $r1;
+        com.google.common.cache.LocalCache$Segment r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $z0 = virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: boolean isHeldByCurrentThread()>();
+
+        if $z0 != 0 goto label1;
+
+        $r1 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        virtualinvoke $r1.<com.google.common.cache.LocalCache: void processPendingNotifications()>();
+
+     label1:
+        return;
+    }
+
+    public java.lang.Object scheduleRefresh(com.google.common.cache.LocalCache$ReferenceEntry, java.lang.Object, int, java.lang.Object, long, com.google.common.cache.CacheLoader)
+    {
+        long $l2, $l3;
+        com.google.common.cache.LocalCache$ValueReference $r6;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.CacheLoader $r3;
+        com.google.common.cache.LocalCache$ReferenceEntry $r4;
+        byte $b1;
+        com.google.common.cache.LocalCache $r5;
+        int $i0, $i4;
+        java.lang.Object $r1, $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r4 := @parameter0: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $r1 := @parameter1: java.lang.Object;
+
+        $i0 := @parameter2: int;
+
+        $r2 := @parameter3: java.lang.Object;
+
+        $l2 := @parameter4: long;
+
+        $r3 := @parameter5: com.google.common.cache.CacheLoader;
+
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $z0 = virtualinvoke $r5.<com.google.common.cache.LocalCache: boolean refreshes()>();
+
+        if $z0 == 0 goto label1;
+
+        $l3 = interfaceinvoke $r4.<com.google.common.cache.LocalCache$ReferenceEntry: long getWriteTime()>();
+
+        $l2 = $l2 - $l3;
+
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $l3 = $r5.<com.google.common.cache.LocalCache: long refreshNanos>;
+
+        $b1 = $l2 cmp $l3;
+
+        $i4 = (int) $b1;
+
+        if $i4 <= 0 goto label1;
+
+        $r6 = interfaceinvoke $r4.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $z0 = interfaceinvoke $r6.<com.google.common.cache.LocalCache$ValueReference: boolean isLoading()>();
+
+        if $z0 != 0 goto label1;
+
+        $r1 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: java.lang.Object refresh(java.lang.Object,int,com.google.common.cache.CacheLoader,boolean)>($r1, $i0, $r3, 1);
+
+        if $r1 == null goto label1;
+
+        return $r1;
+
+     label1:
+        return $r2;
+    }
+
+    public void setValue(com.google.common.cache.LocalCache$ReferenceEntry, java.lang.Object, java.lang.Object, long)
+    {
+        com.google.common.cache.LocalCache$Strength $r7;
+        long $l0;
+        com.google.common.cache.LocalCache$ValueReference $r4, $r8;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r1;
+        com.google.common.cache.LocalCache $r5;
+        int $i1;
+        java.lang.Object $r2, $r3;
+        com.google.common.cache.Weigher $r6;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $r3 := @parameter1: java.lang.Object;
+
+        $r2 := @parameter2: java.lang.Object;
+
+        $l0 := @parameter3: long;
+
+        $r4 = interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r6 = $r5.<com.google.common.cache.LocalCache: com.google.common.cache.Weigher weigher>;
+
+        $i1 = interfaceinvoke $r6.<com.google.common.cache.Weigher: int weigh(java.lang.Object,java.lang.Object)>($r3, $r2);
+
+        if $i1 < 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        staticinvoke <com.google.common.base.Preconditions: void checkState(boolean,java.lang.Object)>($z0, "Weights must be non-negative");
+
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r7 = $r5.<com.google.common.cache.LocalCache: com.google.common.cache.LocalCache$Strength valueStrength>;
+
+        $r8 = virtualinvoke $r7.<com.google.common.cache.LocalCache$Strength: com.google.common.cache.LocalCache$ValueReference referenceValue(com.google.common.cache.LocalCache$Segment,com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,int)>(r0, $r1, $r2, $i1);
+
+        interfaceinvoke $r1.<com.google.common.cache.LocalCache$ReferenceEntry: void setValueReference(com.google.common.cache.LocalCache$ValueReference)>($r8);
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void recordWrite(com.google.common.cache.LocalCache$ReferenceEntry,int,long)>($r1, $i1, $l0);
+
+        interfaceinvoke $r4.<com.google.common.cache.LocalCache$ValueReference: void notifyNewValue(java.lang.Object)>($r2);
+
+        return;
+    }
+
+    public boolean storeLoadedValue(java.lang.Object, int, com.google.common.cache.LocalCache$LoadingValueReference, java.lang.Object)
+    {
+        java.lang.Throwable $r14;
+        long $l2;
+        com.google.common.cache.LocalCache$ValueReference $r11, $r12;
+        java.util.concurrent.atomic.AtomicReferenceArray $r4;
+        com.google.common.cache.LocalCache $r5;
+        int $i0, $i1, $i3, $i4;
+        boolean $z0;
+        com.google.common.base.Equivalence $r10;
+        com.google.common.cache.LocalCache$LoadingValueReference $r2;
+        com.google.common.base.Ticker $r6;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r8, $r9;
+        com.google.common.cache.RemovalCause $r13;
+        java.lang.Object $r1, $r3, $r7;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: com.google.common.cache.LocalCache$LoadingValueReference;
+
+        $r3 := @parameter3: java.lang.Object;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+     label01:
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r6 = $r5.<com.google.common.cache.LocalCache: com.google.common.base.Ticker ticker>;
+
+        $l2 = virtualinvoke $r6.<com.google.common.base.Ticker: long read()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void preWriteCleanup(long)>($l2);
+
+        $i3 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label02:
+        $i3 = $i3 + 1;
+
+     label03:
+        $i1 = r0.<com.google.common.cache.LocalCache$Segment: int threshold>;
+
+     label04:
+        if $i3 <= $i1 goto label07;
+
+     label05:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void expand()>();
+
+        $i3 = r0.<com.google.common.cache.LocalCache$Segment: int count>;
+
+     label06:
+        $i3 = $i3 + 1;
+
+     label07:
+        $r4 = r0.<com.google.common.cache.LocalCache$Segment: java.util.concurrent.atomic.AtomicReferenceArray table>;
+
+        $i1 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: int length()>();
+
+     label08:
+        $i1 = $i1 - 1;
+
+        $i1 = $i0 & $i1;
+
+     label09:
+        $r7 = virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: java.lang.Object get(int)>($i1);
+
+        $r8 = (com.google.common.cache.LocalCache$ReferenceEntry) $r7;
+
+     label10:
+        $r9 = $r8;
+
+     label11:
+        if $r9 == null goto label35;
+
+     label12:
+        $r7 = interfaceinvoke $r9.<com.google.common.cache.LocalCache$ReferenceEntry: java.lang.Object getKey()>();
+
+        $i4 = interfaceinvoke $r9.<com.google.common.cache.LocalCache$ReferenceEntry: int getHash()>();
+
+     label13:
+        if $i4 != $i0 goto label33;
+
+        if $r7 == null goto label33;
+
+     label14:
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r10 = $r5.<com.google.common.cache.LocalCache: com.google.common.base.Equivalence keyEquivalence>;
+
+        $z0 = virtualinvoke $r10.<com.google.common.base.Equivalence: boolean equivalent(java.lang.Object,java.lang.Object)>($r1, $r7);
+
+     label15:
+        if $z0 == 0 goto label33;
+
+     label16:
+        $r11 = interfaceinvoke $r9.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ValueReference getValueReference()>();
+
+        $r7 = interfaceinvoke $r11.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object get()>();
+
+     label17:
+        if $r2 == $r11 goto label22;
+
+        if $r7 != null goto label20;
+
+     label18:
+        $r12 = <com.google.common.cache.LocalCache: com.google.common.cache.LocalCache$ValueReference UNSET>;
+
+     label19:
+        if $r11 == $r12 goto label20;
+
+        goto label22;
+
+     label20:
+        $r13 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause REPLACED>;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void enqueueNotification(java.lang.Object,int,java.lang.Object,int,com.google.common.cache.RemovalCause)>($r1, $i0, $r3, 0, $r13);
+
+     label21:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return 0;
+
+     label22:
+        $i1 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+     label23:
+        $i1 = $i1 + 1;
+
+     label24:
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i1;
+
+        $z0 = virtualinvoke $r2.<com.google.common.cache.LocalCache$LoadingValueReference: boolean isActive()>();
+
+     label25:
+        if $z0 == 0 goto label31;
+
+        if $r7 != null goto label28;
+
+     label26:
+        $r13 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause COLLECTED>;
+
+     label27:
+        goto label29;
+
+     label28:
+        $r13 = <com.google.common.cache.RemovalCause: com.google.common.cache.RemovalCause REPLACED>;
+
+     label29:
+        $i1 = virtualinvoke $r2.<com.google.common.cache.LocalCache$LoadingValueReference: int getWeight()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void enqueueNotification(java.lang.Object,int,java.lang.Object,int,com.google.common.cache.RemovalCause)>($r1, $i0, $r7, $i1, $r13);
+
+     label30:
+        $i0 = -1;
+
+        $i3 = $i3 + $i0;
+
+     label31:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void setValue(com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,java.lang.Object,long)>($r9, $r1, $r3, $l2);
+
+        r0.<com.google.common.cache.LocalCache$Segment: int count> = $i3;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void evictEntries(com.google.common.cache.LocalCache$ReferenceEntry)>($r9);
+
+     label32:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        return 1;
+
+     label33:
+        $r9 = interfaceinvoke $r9.<com.google.common.cache.LocalCache$ReferenceEntry: com.google.common.cache.LocalCache$ReferenceEntry getNext()>();
+
+     label34:
+        goto label11;
+
+     label35:
+        $i4 = r0.<com.google.common.cache.LocalCache$Segment: int modCount>;
+
+     label36:
+        $i4 = $i4 + 1;
+
+     label37:
+        r0.<com.google.common.cache.LocalCache$Segment: int modCount> = $i4;
+
+        $r8 = virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache$ReferenceEntry newEntry(java.lang.Object,int,com.google.common.cache.LocalCache$ReferenceEntry)>($r1, $i0, $r8);
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void setValue(com.google.common.cache.LocalCache$ReferenceEntry,java.lang.Object,java.lang.Object,long)>($r8, $r1, $r3, $l2);
+
+        virtualinvoke $r4.<java.util.concurrent.atomic.AtomicReferenceArray: void set(int,java.lang.Object)>($i1, $r8);
+
+        r0.<com.google.common.cache.LocalCache$Segment: int count> = $i3;
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void evictEntries(com.google.common.cache.LocalCache$ReferenceEntry)>($r8);
+
+     label38:
+        goto label32;
+
+     label39:
+        $r14 := @caughtexception;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void postWriteCleanup()>();
+
+        goto label40;
+
+     label40:
+        throw $r14;
+
+        catch java.lang.Throwable from label01 to label02 with label39;
+        catch java.lang.Throwable from label03 to label04 with label39;
+        catch java.lang.Throwable from label05 to label06 with label39;
+        catch java.lang.Throwable from label07 to label08 with label39;
+        catch java.lang.Throwable from label09 to label10 with label39;
+        catch java.lang.Throwable from label12 to label13 with label39;
+        catch java.lang.Throwable from label14 to label15 with label39;
+        catch java.lang.Throwable from label16 to label17 with label39;
+        catch java.lang.Throwable from label18 to label19 with label39;
+        catch java.lang.Throwable from label20 to label21 with label39;
+        catch java.lang.Throwable from label22 to label23 with label39;
+        catch java.lang.Throwable from label24 to label25 with label39;
+        catch java.lang.Throwable from label26 to label27 with label39;
+        catch java.lang.Throwable from label28 to label30 with label39;
+        catch java.lang.Throwable from label31 to label32 with label39;
+        catch java.lang.Throwable from label33 to label34 with label39;
+        catch java.lang.Throwable from label35 to label36 with label39;
+        catch java.lang.Throwable from label37 to label38 with label39;
+    }
+
+    public void tryDrainReferenceQueues()
+    {
+        java.lang.Throwable $r1;
+        com.google.common.cache.LocalCache$Segment r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $z0 = virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: boolean tryLock()>();
+
+        if $z0 == 0 goto label4;
+
+     label1:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void drainReferenceQueues()>();
+
+     label2:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        return;
+
+     label3:
+        $r1 := @caughtexception;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        throw $r1;
+
+     label4:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public void tryExpireEntries(long)
+    {
+        java.lang.Throwable $r1;
+        long $l0;
+        com.google.common.cache.LocalCache$Segment r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $l0 := @parameter0: long;
+
+        $z0 = virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: boolean tryLock()>();
+
+        if $z0 == 0 goto label4;
+
+     label1:
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void expireEntries(long)>($l0);
+
+     label2:
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        return;
+
+     label3:
+        $r1 := @caughtexception;
+
+        virtualinvoke r0.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        throw $r1;
+
+     label4:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public java.lang.Object waitForLoadingValue(com.google.common.cache.LocalCache$ReferenceEntry, java.lang.Object, com.google.common.cache.LocalCache$ValueReference)
+    {
+        java.lang.Throwable $r11;
+        com.google.common.cache.AbstractCache$StatsCounter $r7;
+        long $l0;
+        com.google.common.cache.LocalCache$ValueReference $r3;
+        java.lang.AssertionError $r12;
+        com.google.common.base.Ticker $r6;
+        com.google.common.cache.LocalCache$Segment r0;
+        com.google.common.cache.LocalCache$ReferenceEntry $r1;
+        com.google.common.cache.LocalCache $r5;
+        java.lang.Object $r2, $r4;
+        java.lang.StringBuilder $r9;
+        java.lang.String $r10;
+        com.google.common.cache.CacheLoader$InvalidCacheLoadException $r8;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.LocalCache$Segment;
+
+        $r1 := @parameter0: com.google.common.cache.LocalCache$ReferenceEntry;
+
+        $r2 := @parameter1: java.lang.Object;
+
+        $r3 := @parameter2: com.google.common.cache.LocalCache$ValueReference;
+
+        $z0 = interfaceinvoke $r3.<com.google.common.cache.LocalCache$ValueReference: boolean isLoading()>();
+
+        if $z0 == 0 goto label7;
+
+        $z0 = staticinvoke <java.lang.Thread: boolean holdsLock(java.lang.Object)>($r1);
+
+        $z0 = $z0 ^ 1;
+
+        staticinvoke <com.google.common.base.Preconditions: void checkState(boolean,java.lang.String,java.lang.Object)>($z0, "Recursive load of: %s", $r2);
+
+     label1:
+        $r4 = interfaceinvoke $r3.<com.google.common.cache.LocalCache$ValueReference: java.lang.Object waitForValue()>();
+
+     label2:
+        if $r4 == null goto label5;
+
+     label3:
+        $r5 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.LocalCache map>;
+
+        $r6 = $r5.<com.google.common.cache.LocalCache: com.google.common.base.Ticker ticker>;
+
+        $l0 = virtualinvoke $r6.<com.google.common.base.Ticker: long read()>();
+
+        virtualinvoke r0.<com.google.common.cache.LocalCache$Segment: void recordRead(com.google.common.cache.LocalCache$ReferenceEntry,long)>($r1, $l0);
+
+     label4:
+        $r7 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.AbstractCache$StatsCounter statsCounter>;
+
+        interfaceinvoke $r7.<com.google.common.cache.AbstractCache$StatsCounter: void recordMisses(int)>(1);
+
+        return $r4;
+
+     label5:
+        $r8 = new com.google.common.cache.CacheLoader$InvalidCacheLoadException;
+
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("CacheLoader returned null for key ");
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".");
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r8.<com.google.common.cache.CacheLoader$InvalidCacheLoadException: void <init>(java.lang.String)>($r10);
+
+        throw $r8;
+
+     label6:
+        $r11 := @caughtexception;
+
+        $r7 = r0.<com.google.common.cache.LocalCache$Segment: com.google.common.cache.AbstractCache$StatsCounter statsCounter>;
+
+        interfaceinvoke $r7.<com.google.common.cache.AbstractCache$StatsCounter: void recordMisses(int)>(1);
+
+        throw $r11;
+
+     label7:
+        $r12 = new java.lang.AssertionError;
+
+        specialinvoke $r12.<java.lang.AssertionError: void <init>()>();
+
+        throw $r12;
+
+        catch java.lang.Throwable from label1 to label2 with label6;
+        catch java.lang.Throwable from label3 to label4 with label6;
+        catch java.lang.Throwable from label5 to label6 with label6;
+    }
+}

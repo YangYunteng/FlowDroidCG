@@ -1,0 +1,385 @@
+public final class com.google.protobuf.ByteBufferWriter extends java.lang.Object
+{
+    public static final java.lang.ThreadLocal BUFFER;
+    public static final float BUFFER_REALLOCATION_THRESHOLD;
+    public static final long CHANNEL_FIELD_OFFSET;
+    public static final java.lang.Class FILE_OUTPUT_STREAM_CLASS;
+    public static final int MAX_CACHED_BUFFER_SIZE;
+    public static final int MIN_CACHED_BUFFER_SIZE;
+
+    static void <clinit>()
+    {
+        java.lang.ThreadLocal $r0;
+        java.lang.Class $r1;
+        long $l0;
+
+        <com.google.protobuf.ByteBufferWriter: int MIN_CACHED_BUFFER_SIZE> = 1024;
+
+        <com.google.protobuf.ByteBufferWriter: int MAX_CACHED_BUFFER_SIZE> = 16384;
+
+        <com.google.protobuf.ByteBufferWriter: float BUFFER_REALLOCATION_THRESHOLD> = 0.5F;
+
+        $r0 = new java.lang.ThreadLocal;
+
+        specialinvoke $r0.<java.lang.ThreadLocal: void <init>()>();
+
+        <com.google.protobuf.ByteBufferWriter: java.lang.ThreadLocal BUFFER> = $r0;
+
+        $r1 = staticinvoke <com.google.protobuf.ByteBufferWriter: java.lang.Class safeGetClass(java.lang.String)>("java.io.FileOutputStream");
+
+        <com.google.protobuf.ByteBufferWriter: java.lang.Class FILE_OUTPUT_STREAM_CLASS> = $r1;
+
+        $r1 = <com.google.protobuf.ByteBufferWriter: java.lang.Class FILE_OUTPUT_STREAM_CLASS>;
+
+        $l0 = staticinvoke <com.google.protobuf.ByteBufferWriter: long getChannelFieldOffset(java.lang.Class)>($r1);
+
+        <com.google.protobuf.ByteBufferWriter: long CHANNEL_FIELD_OFFSET> = $l0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.protobuf.ByteBufferWriter r0;
+
+        r0 := @this: com.google.protobuf.ByteBufferWriter;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void clearCachedBuffer()
+    {
+        java.lang.ThreadLocal $r0;
+
+        $r0 = <com.google.protobuf.ByteBufferWriter: java.lang.ThreadLocal BUFFER>;
+
+        virtualinvoke $r0.<java.lang.ThreadLocal: void set(java.lang.Object)>(null);
+
+        return;
+    }
+
+    public static byte[] getBuffer()
+    {
+        byte[] $r3;
+        java.lang.ThreadLocal $r0;
+        java.lang.Object $r1;
+        java.lang.ref.SoftReference $r2;
+
+        $r0 = <com.google.protobuf.ByteBufferWriter: java.lang.ThreadLocal BUFFER>;
+
+        $r1 = virtualinvoke $r0.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        $r2 = (java.lang.ref.SoftReference) $r1;
+
+        if $r2 != null goto label1;
+
+        return null;
+
+     label1:
+        $r1 = virtualinvoke $r2.<java.lang.ref.SoftReference: java.lang.Object get()>();
+
+        $r3 = (byte[]) $r1;
+
+        return $r3;
+    }
+
+    public static long getChannelFieldOffset(java.lang.Class)
+    {
+        java.lang.Throwable $r0;
+        java.lang.Class $r1;
+        long $l0;
+        java.lang.reflect.Field $r2;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.Class;
+
+        if $r1 == null goto label5;
+
+     label1:
+        $z0 = staticinvoke <com.google.protobuf.UnsafeUtil: boolean hasUnsafeArrayOperations()>();
+
+     label2:
+        if $z0 == 0 goto label5;
+
+     label3:
+        $r2 = virtualinvoke $r1.<java.lang.Class: java.lang.reflect.Field getDeclaredField(java.lang.String)>("channel");
+
+        $l0 = staticinvoke <com.google.protobuf.UnsafeUtil: long objectFieldOffset(java.lang.reflect.Field)>($r2);
+
+     label4:
+        return $l0;
+
+     label5:
+        return -1L;
+
+     label6:
+        $r0 := @caughtexception;
+
+        goto label5;
+
+        catch java.lang.Throwable from label1 to label2 with label6;
+        catch java.lang.Throwable from label3 to label4 with label6;
+    }
+
+    public static byte[] getOrCreateBuffer(int)
+    {
+        byte[] $r0;
+        int $i0, $i1;
+        boolean $z0;
+
+        $i0 := @parameter0: int;
+
+        $i0 = staticinvoke <java.lang.Math: int max(int,int)>($i0, 1024);
+
+        $r0 = staticinvoke <com.google.protobuf.ByteBufferWriter: byte[] getBuffer()>();
+
+        if $r0 == null goto label1;
+
+        $i1 = lengthof $r0;
+
+        $z0 = staticinvoke <com.google.protobuf.ByteBufferWriter: boolean needToReallocate(int,int)>($i0, $i1);
+
+        if $z0 == 0 goto label2;
+
+     label1:
+        $r0 = newarray (byte)[$i0];
+
+        if $i0 > 16384 goto label2;
+
+        staticinvoke <com.google.protobuf.ByteBufferWriter: void setBuffer(byte[])>($r0);
+
+     label2:
+        return $r0;
+    }
+
+    public static boolean needToReallocate(int, int)
+    {
+        byte $b2;
+        int $i0, $i1;
+        float $f0, $f1;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        if $i1 >= $i0 goto label1;
+
+        $f0 = (float) $i1;
+
+        $f1 = (float) $i0;
+
+        $f1 = $f1 * 0.5F;
+
+        $b2 = $f0 cmpg $f1;
+
+        $i0 = (int) $b2;
+
+        if $i0 >= 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static java.lang.Class safeGetClass(java.lang.String)
+    {
+        java.lang.Class $r0;
+        java.lang.ClassNotFoundException $r1;
+        java.lang.String $r2;
+
+        $r2 := @parameter0: java.lang.String;
+
+     label1:
+        $r0 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>($r2);
+
+     label2:
+        return $r0;
+
+     label3:
+        return null;
+
+     label4:
+        $r1 := @caughtexception;
+
+        goto label3;
+
+        catch java.lang.ClassNotFoundException from label1 to label2 with label4;
+    }
+
+    public static void setBuffer(byte[])
+    {
+        byte[] $r0;
+        java.lang.ThreadLocal $r1;
+        java.lang.ref.SoftReference $r2;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 = <com.google.protobuf.ByteBufferWriter: java.lang.ThreadLocal BUFFER>;
+
+        $r2 = new java.lang.ref.SoftReference;
+
+        specialinvoke $r2.<java.lang.ref.SoftReference: void <init>(java.lang.Object)>($r0);
+
+        virtualinvoke $r1.<java.lang.ThreadLocal: void set(java.lang.Object)>($r2);
+
+        return;
+    }
+
+    public static void write(java.nio.ByteBuffer, java.io.OutputStream)
+    {
+        java.io.OutputStream $r1;
+        java.lang.Throwable $r3;
+        byte[] $r2;
+        java.nio.ByteBuffer $r0;
+        int $i0, $i1, $i2;
+        boolean $z0;
+
+        $r0 := @parameter0: java.nio.ByteBuffer;
+
+        $r1 := @parameter1: java.io.OutputStream;
+
+        $i0 = virtualinvoke $r0.<java.nio.ByteBuffer: int position()>();
+
+     label01:
+        $z0 = virtualinvoke $r0.<java.nio.ByteBuffer: boolean hasArray()>();
+
+     label02:
+        if $z0 == 0 goto label07;
+
+     label03:
+        $r2 = virtualinvoke $r0.<java.nio.ByteBuffer: byte[] array()>();
+
+        $i1 = virtualinvoke $r0.<java.nio.ByteBuffer: int arrayOffset()>();
+
+        $i2 = virtualinvoke $r0.<java.nio.ByteBuffer: int position()>();
+
+     label04:
+        $i1 = $i1 + $i2;
+
+     label05:
+        $i2 = virtualinvoke $r0.<java.nio.ByteBuffer: int remaining()>();
+
+        virtualinvoke $r1.<java.io.OutputStream: void write(byte[],int,int)>($r2, $i1, $i2);
+
+     label06:
+        goto label14;
+
+     label07:
+        $z0 = staticinvoke <com.google.protobuf.ByteBufferWriter: boolean writeToChannel(java.nio.ByteBuffer,java.io.OutputStream)>($r0, $r1);
+
+     label08:
+        if $z0 != 0 goto label14;
+
+     label09:
+        $i1 = virtualinvoke $r0.<java.nio.ByteBuffer: int remaining()>();
+
+        $r2 = staticinvoke <com.google.protobuf.ByteBufferWriter: byte[] getOrCreateBuffer(int)>($i1);
+
+     label10:
+        $z0 = virtualinvoke $r0.<java.nio.ByteBuffer: boolean hasRemaining()>();
+
+     label11:
+        if $z0 == 0 goto label14;
+
+     label12:
+        $i1 = virtualinvoke $r0.<java.nio.ByteBuffer: int remaining()>();
+
+        $i2 = lengthof $r2;
+
+        $i1 = staticinvoke <java.lang.Math: int min(int,int)>($i1, $i2);
+
+        virtualinvoke $r0.<java.nio.ByteBuffer: java.nio.ByteBuffer get(byte[],int,int)>($r2, 0, $i1);
+
+        virtualinvoke $r1.<java.io.OutputStream: void write(byte[],int,int)>($r2, 0, $i1);
+
+     label13:
+        goto label10;
+
+     label14:
+        virtualinvoke $r0.<java.nio.ByteBuffer: java.nio.Buffer position(int)>($i0);
+
+        return;
+
+     label15:
+        $r3 := @caughtexception;
+
+        virtualinvoke $r0.<java.nio.ByteBuffer: java.nio.Buffer position(int)>($i0);
+
+        goto label16;
+
+     label16:
+        throw $r3;
+
+        catch java.lang.Throwable from label01 to label02 with label15;
+        catch java.lang.Throwable from label03 to label04 with label15;
+        catch java.lang.Throwable from label05 to label06 with label15;
+        catch java.lang.Throwable from label07 to label08 with label15;
+        catch java.lang.Throwable from label09 to label11 with label15;
+        catch java.lang.Throwable from label12 to label13 with label15;
+    }
+
+    public static boolean writeToChannel(java.nio.ByteBuffer, java.io.OutputStream)
+    {
+        java.io.OutputStream $r2;
+        long $l0;
+        java.lang.ClassCastException $r0;
+        java.nio.ByteBuffer $r1;
+        byte $b1;
+        int $i2;
+        java.nio.channels.WritableByteChannel $r5;
+        java.lang.Class $r3;
+        java.lang.Object $r4;
+        boolean $z0;
+
+        $r1 := @parameter0: java.nio.ByteBuffer;
+
+        $r2 := @parameter1: java.io.OutputStream;
+
+        $l0 = <com.google.protobuf.ByteBufferWriter: long CHANNEL_FIELD_OFFSET>;
+
+        $b1 = $l0 cmp 0L;
+
+        $i2 = (int) $b1;
+
+        if $i2 < 0 goto label5;
+
+        $r3 = <com.google.protobuf.ByteBufferWriter: java.lang.Class FILE_OUTPUT_STREAM_CLASS>;
+
+        $z0 = virtualinvoke $r3.<java.lang.Class: boolean isInstance(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label5;
+
+        $l0 = <com.google.protobuf.ByteBufferWriter: long CHANNEL_FIELD_OFFSET>;
+
+     label1:
+        $r4 = staticinvoke <com.google.protobuf.UnsafeUtil: java.lang.Object getObject(java.lang.Object,long)>($r2, $l0);
+
+        $r5 = (java.nio.channels.WritableByteChannel) $r4;
+
+     label2:
+        goto label4;
+
+     label3:
+        $r5 = null;
+
+     label4:
+        if $r5 == null goto label5;
+
+        interfaceinvoke $r5.<java.nio.channels.WritableByteChannel: int write(java.nio.ByteBuffer)>($r1);
+
+        return 1;
+
+     label5:
+        return 0;
+
+     label6:
+        $r0 := @caughtexception;
+
+        goto label3;
+
+        catch java.lang.ClassCastException from label1 to label2 with label6;
+    }
+}

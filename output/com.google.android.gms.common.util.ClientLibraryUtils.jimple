@@ -1,0 +1,139 @@
+public class com.google.android.gms.common.util.ClientLibraryUtils extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        com.google.android.gms.common.util.ClientLibraryUtils r0;
+
+        r0 := @this: com.google.android.gms.common.util.ClientLibraryUtils;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static int getClientVersion(android.content.Context, java.lang.String)
+    {
+        android.content.Context $r0;
+        android.os.Bundle $r4;
+        int $i0;
+        java.lang.String $r1;
+        android.content.pm.PackageInfo $r2;
+        android.content.pm.ApplicationInfo $r3;
+
+        $r0 := @parameter0: android.content.Context;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = staticinvoke <com.google.android.gms.common.util.ClientLibraryUtils: android.content.pm.PackageInfo zzb(android.content.Context,java.lang.String)>($r0, $r1);
+
+        if $r2 == null goto label3;
+
+        $r3 = $r2.<android.content.pm.PackageInfo: android.content.pm.ApplicationInfo applicationInfo>;
+
+        if $r3 != null goto label1;
+
+        $i0 = -1;
+
+        return $i0;
+
+     label1:
+        $r4 = $r3.<android.content.pm.ApplicationInfo: android.os.Bundle metaData>;
+
+        if $r4 != null goto label2;
+
+        $i0 = -1;
+
+        return $i0;
+
+     label2:
+        $i0 = -1;
+
+        $i0 = virtualinvoke $r4.<android.os.Bundle: int getInt(java.lang.String,int)>("com.google.android.gms.version", $i0);
+
+        return $i0;
+
+     label3:
+        $i0 = -1;
+
+        return $i0;
+    }
+
+    public static boolean isPackageSide()
+    {
+        return 0;
+    }
+
+    public static android.content.pm.PackageInfo zzb(android.content.Context, java.lang.String)
+    {
+        android.content.Context $r2;
+        android.content.pm.PackageManager$NameNotFoundException $r1;
+        com.google.android.gms.common.wrappers.PackageManagerWrapper $r3;
+        java.lang.String $r0;
+        android.content.pm.PackageInfo $r4;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r0 := @parameter1: java.lang.String;
+
+     label1:
+        $r3 = staticinvoke <com.google.android.gms.common.wrappers.Wrappers: com.google.android.gms.common.wrappers.PackageManagerWrapper packageManager(android.content.Context)>($r2);
+
+        $r4 = virtualinvoke $r3.<com.google.android.gms.common.wrappers.PackageManagerWrapper: android.content.pm.PackageInfo getPackageInfo(java.lang.String,int)>($r0, 128);
+
+     label2:
+        return $r4;
+
+     label3:
+        return null;
+
+     label4:
+        $r1 := @caughtexception;
+
+        goto label3;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label1 to label2 with label4;
+    }
+
+    public static boolean zzc(android.content.Context, java.lang.String)
+    {
+        android.content.Context $r1;
+        android.content.pm.PackageManager$NameNotFoundException $r0;
+        int $i0;
+        com.google.android.gms.common.wrappers.PackageManagerWrapper $r4;
+        java.lang.String $r2, $r3;
+        android.content.pm.ApplicationInfo $r5;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 = "com.google.android.gms";
+
+        virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+     label1:
+        $r4 = staticinvoke <com.google.android.gms.common.wrappers.Wrappers: com.google.android.gms.common.wrappers.PackageManagerWrapper packageManager(android.content.Context)>($r1);
+
+        $r5 = virtualinvoke $r4.<com.google.android.gms.common.wrappers.PackageManagerWrapper: android.content.pm.ApplicationInfo getApplicationInfo(java.lang.String,int)>($r2, 0);
+
+     label2:
+        $i0 = $r5.<android.content.pm.ApplicationInfo: int flags>;
+
+        $i0 = $i0 & 2097152;
+
+        if $i0 == 0 goto label3;
+
+        return 1;
+
+     label3:
+        return 0;
+
+     label4:
+        $r0 := @caughtexception;
+
+        return 0;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label1 to label2 with label4;
+    }
+}

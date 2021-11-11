@@ -1,0 +1,96 @@
+public class project.android.imageprocessing.filter.processing.ErosionFilter extends project.android.imageprocessing.filter.TwoPassMultiPixelFilter
+{
+    public int erosionRadius;
+
+    public void <init>(int)
+    {
+        int $i0;
+        project.android.imageprocessing.filter.processing.ErosionFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.ErosionFilter;
+
+        $i0 := @parameter0: int;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.TwoPassMultiPixelFilter: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.processing.ErosionFilter: int erosionRadius> = $i0;
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        int $i0;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r1;
+        project.android.imageprocessing.filter.processing.ErosionFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.processing.ErosionFilter;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(java.lang.String)>("precision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform float u_TexelWidth;\nuniform float u_TexelHeight;\nconst int dilationSize = ");
+
+        $i0 = r0.<project.android.imageprocessing.filter.processing.ErosionFilter: int erosionRadius>;
+
+        $i0 = $i0 * 2;
+
+        $i0 = $i0 + 1;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(";\n");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("const int dilationRadius = ");
+
+        $i0 = r0.<project.android.imageprocessing.filter.processing.ErosionFilter: int erosionRadius>;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(";\n");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("void main(){\n");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("   vec2 step = vec2(");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("u_TexelWidth");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("u_TexelHeight");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(");\n");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("   float stepIntensity[dilationSize];\n");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("   for(int i = 0; i < dilationSize; i++) {\n");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("     stepIntensity[i] = texture2D(");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("u_Texture0");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("v_TexCoord");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" + step * float(i - dilationRadius)).r;\n");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("   }\n");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("   float minValue = 1.0;\n");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("   for(int i = 0; i < dilationSize; i++) {\n");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("     minValue = min(minValue, stepIntensity[i]);\n");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("   }\n");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("   gl_FragColor = vec4(vec3(minValue), 1.0);\n");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("}\n");
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+}

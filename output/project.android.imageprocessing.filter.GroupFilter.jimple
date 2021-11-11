@@ -1,0 +1,266 @@
+public abstract class project.android.imageprocessing.filter.GroupFilter extends project.android.imageprocessing.filter.BasicFilter
+{
+    public java.util.List filters;
+    public java.util.List initialFilters;
+    public java.util.List terminalFilters;
+
+    public void <init>()
+    {
+        project.android.imageprocessing.filter.GroupFilter r0;
+        java.util.ArrayList $r1;
+
+        r0 := @this: project.android.imageprocessing.filter.GroupFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.BasicFilter: void <init>()>();
+
+        $r1 = new java.util.ArrayList;
+
+        specialinvoke $r1.<java.util.ArrayList: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.GroupFilter: java.util.List initialFilters> = $r1;
+
+        $r1 = new java.util.ArrayList;
+
+        specialinvoke $r1.<java.util.ArrayList: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.GroupFilter: java.util.List terminalFilters> = $r1;
+
+        $r1 = new java.util.ArrayList;
+
+        specialinvoke $r1.<java.util.ArrayList: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.GroupFilter: java.util.List filters> = $r1;
+
+        return;
+    }
+
+    public void destroy()
+    {
+        project.android.imageprocessing.filter.BasicFilter $r4;
+        java.util.List $r1;
+        java.util.Iterator $r2;
+        java.lang.Object $r3;
+        project.android.imageprocessing.filter.GroupFilter r0;
+        boolean $z0;
+
+        r0 := @this: project.android.imageprocessing.filter.GroupFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.input.GLTextureOutputRenderer: void destroy()>();
+
+        $r1 = r0.<project.android.imageprocessing.filter.GroupFilter: java.util.List filters>;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 != 0 goto label2;
+
+        return;
+
+     label2:
+        $r3 = interfaceinvoke $r2.<java.util.Iterator: java.lang.Object next()>();
+
+        $r4 = (project.android.imageprocessing.filter.BasicFilter) $r3;
+
+        virtualinvoke $r4.<project.android.imageprocessing.input.GLTextureOutputRenderer: void destroy()>();
+
+        goto label1;
+    }
+
+    public void newTextureReady(int, project.android.imageprocessing.input.GLTextureOutputRenderer, boolean)
+    {
+        java.lang.Throwable $r7;
+        project.android.imageprocessing.filter.BasicFilter $r8;
+        java.util.Iterator $r4;
+        project.android.imageprocessing.output.GLTextureInputRenderer $r6;
+        project.android.imageprocessing.input.GLTextureOutputRenderer $r1;
+        java.util.List $r2;
+        int $i0, $i1;
+        java.lang.Object $r3, $r5;
+        project.android.imageprocessing.filter.GroupFilter r0;
+        boolean $z0, $z1;
+
+        r0 := @this: project.android.imageprocessing.filter.GroupFilter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: project.android.imageprocessing.input.GLTextureOutputRenderer;
+
+        $z0 := @parameter2: boolean;
+
+        $r2 = r0.<project.android.imageprocessing.filter.GroupFilter: java.util.List terminalFilters>;
+
+        $z1 = interfaceinvoke $r2.<java.util.List: boolean contains(java.lang.Object)>($r1);
+
+        if $z1 == 0 goto label7;
+
+        $i1 = virtualinvoke $r1.<project.android.imageprocessing.GLRenderer: int getWidth()>();
+
+        virtualinvoke r0.<project.android.imageprocessing.GLRenderer: void setWidth(int)>($i1);
+
+        $i1 = virtualinvoke $r1.<project.android.imageprocessing.GLRenderer: int getHeight()>();
+
+        virtualinvoke r0.<project.android.imageprocessing.GLRenderer: void setHeight(int)>($i1);
+
+        $r3 = virtualinvoke r0.<project.android.imageprocessing.input.GLTextureOutputRenderer: java.lang.Object getLockObject()>();
+
+        entermonitor $r3;
+
+     label1:
+        $r2 = virtualinvoke r0.<project.android.imageprocessing.input.GLTextureOutputRenderer: java.util.List getTargets()>();
+
+        $r4 = interfaceinvoke $r2.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $z1 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z1 != 0 goto label4;
+
+        exitmonitor $r3;
+
+     label3:
+        return;
+
+     label4:
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (project.android.imageprocessing.output.GLTextureInputRenderer) $r5;
+
+        interfaceinvoke $r6.<project.android.imageprocessing.output.GLTextureInputRenderer: void newTextureReady(int,project.android.imageprocessing.input.GLTextureOutputRenderer,boolean)>($i0, r0, $z0);
+
+        goto label2;
+
+     label5:
+        $r7 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label6:
+        throw $r7;
+
+     label7:
+        $r2 = r0.<project.android.imageprocessing.filter.GroupFilter: java.util.List initialFilters>;
+
+        $r4 = interfaceinvoke $r2.<java.util.List: java.util.Iterator iterator()>();
+
+     label8:
+        $z1 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z1 != 0 goto label9;
+
+        return;
+
+     label9:
+        $r3 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r8 = (project.android.imageprocessing.filter.BasicFilter) $r3;
+
+        virtualinvoke $r8.<project.android.imageprocessing.filter.BasicFilter: void newTextureReady(int,project.android.imageprocessing.input.GLTextureOutputRenderer,boolean)>($i0, $r1, $z0);
+
+        goto label8;
+
+        catch java.lang.Throwable from label1 to label3 with label5;
+        catch java.lang.Throwable from label4 to label6 with label5;
+    }
+
+    public void registerFilter(project.android.imageprocessing.filter.BasicFilter)
+    {
+        project.android.imageprocessing.filter.BasicFilter $r1;
+        java.util.List $r2;
+        project.android.imageprocessing.filter.GroupFilter r0;
+        boolean $z0;
+
+        r0 := @this: project.android.imageprocessing.filter.GroupFilter;
+
+        $r1 := @parameter0: project.android.imageprocessing.filter.BasicFilter;
+
+        $r2 = r0.<project.android.imageprocessing.filter.GroupFilter: java.util.List filters>;
+
+        $z0 = interfaceinvoke $r2.<java.util.List: boolean contains(java.lang.Object)>($r1);
+
+        if $z0 != 0 goto label1;
+
+        $r2 = r0.<project.android.imageprocessing.filter.GroupFilter: java.util.List filters>;
+
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r1);
+
+     label1:
+        return;
+    }
+
+    public void registerInitialFilter(project.android.imageprocessing.filter.BasicFilter)
+    {
+        project.android.imageprocessing.filter.BasicFilter $r1;
+        java.util.List $r2;
+        project.android.imageprocessing.filter.GroupFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.GroupFilter;
+
+        $r1 := @parameter0: project.android.imageprocessing.filter.BasicFilter;
+
+        $r2 = r0.<project.android.imageprocessing.filter.GroupFilter: java.util.List initialFilters>;
+
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r1);
+
+        virtualinvoke r0.<project.android.imageprocessing.filter.GroupFilter: void registerFilter(project.android.imageprocessing.filter.BasicFilter)>($r1);
+
+        return;
+    }
+
+    public void registerTerminalFilter(project.android.imageprocessing.filter.BasicFilter)
+    {
+        project.android.imageprocessing.filter.BasicFilter $r1;
+        java.util.List $r2;
+        project.android.imageprocessing.filter.GroupFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.GroupFilter;
+
+        $r1 := @parameter0: project.android.imageprocessing.filter.BasicFilter;
+
+        $r2 = r0.<project.android.imageprocessing.filter.GroupFilter: java.util.List terminalFilters>;
+
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r1);
+
+        virtualinvoke r0.<project.android.imageprocessing.filter.GroupFilter: void registerFilter(project.android.imageprocessing.filter.BasicFilter)>($r1);
+
+        return;
+    }
+
+    public void setRenderSize(int, int)
+    {
+        project.android.imageprocessing.filter.BasicFilter $r4;
+        java.util.Iterator $r2;
+        java.util.List $r1;
+        int $i0, $i1;
+        java.lang.Object $r3;
+        project.android.imageprocessing.filter.GroupFilter r0;
+        boolean $z0;
+
+        r0 := @this: project.android.imageprocessing.filter.GroupFilter;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $r1 = r0.<project.android.imageprocessing.filter.GroupFilter: java.util.List filters>;
+
+        $r2 = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 != 0 goto label2;
+
+        return;
+
+     label2:
+        $r3 = interfaceinvoke $r2.<java.util.Iterator: java.lang.Object next()>();
+
+        $r4 = (project.android.imageprocessing.filter.BasicFilter) $r3;
+
+        virtualinvoke $r4.<project.android.imageprocessing.GLRenderer: void setRenderSize(int,int)>($i0, $i1);
+
+        goto label1;
+    }
+}

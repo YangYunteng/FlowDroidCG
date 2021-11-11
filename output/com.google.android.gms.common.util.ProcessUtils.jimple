@@ -1,0 +1,174 @@
+public class com.google.android.gms.common.util.ProcessUtils extends java.lang.Object
+{
+    public static java.lang.String zzhv;
+    public static int zzhw;
+
+    static void <clinit>()
+    {
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.android.gms.common.util.ProcessUtils r0;
+
+        r0 := @this: com.google.android.gms.common.util.ProcessUtils;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.lang.String getMyProcessName()
+    {
+        int $i0;
+        java.lang.String $r0;
+
+        $r0 = <com.google.android.gms.common.util.ProcessUtils: java.lang.String zzhv>;
+
+        if $r0 != null goto label2;
+
+        $i0 = <com.google.android.gms.common.util.ProcessUtils: int zzhw>;
+
+        if $i0 != 0 goto label1;
+
+        $i0 = staticinvoke <android.os.Process: int myPid()>();
+
+        <com.google.android.gms.common.util.ProcessUtils: int zzhw> = $i0;
+
+     label1:
+        $i0 = <com.google.android.gms.common.util.ProcessUtils: int zzhw>;
+
+        $r0 = staticinvoke <com.google.android.gms.common.util.ProcessUtils: java.lang.String zzd(int)>($i0);
+
+        <com.google.android.gms.common.util.ProcessUtils: java.lang.String zzhv> = $r0;
+
+     label2:
+        $r0 = <com.google.android.gms.common.util.ProcessUtils: java.lang.String zzhv>;
+
+        return $r0;
+    }
+
+    public static java.lang.String zzd(int)
+    {
+        java.lang.Throwable $r7, $r8;
+        java.io.IOException $r1, $r2;
+        int $i0;
+        java.lang.StringBuilder $r0;
+        java.io.BufferedReader $r3, $r5, $r6;
+        java.lang.String $r4;
+
+        $i0 := @parameter0: int;
+
+        $r3 = null;
+
+        if $i0 > 0 goto label01;
+
+        return null;
+
+     label01:
+        $r0 = new java.lang.StringBuilder;
+
+     label02:
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>(int)>(25);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/proc/");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/cmdline");
+
+        $r4 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r5 = staticinvoke <com.google.android.gms.common.util.ProcessUtils: java.io.BufferedReader zzk(java.lang.String)>($r4);
+
+     label03:
+        $r6 = $r5;
+
+     label04:
+        $r4 = virtualinvoke $r5.<java.io.BufferedReader: java.lang.String readLine()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.String: java.lang.String trim()>();
+
+     label05:
+        staticinvoke <com.google.android.gms.common.util.IOUtils: void closeQuietly(java.io.Closeable)>($r5);
+
+        return $r4;
+
+     label06:
+        $r7 := @caughtexception;
+
+        $r3 = $r5;
+
+        $r8 = $r7;
+
+        goto label08;
+
+     label07:
+        $r8 := @caughtexception;
+
+     label08:
+        staticinvoke <com.google.android.gms.common.util.IOUtils: void closeQuietly(java.io.Closeable)>($r3);
+
+        throw $r8;
+
+     label09:
+        $r6 = null;
+
+     label10:
+        staticinvoke <com.google.android.gms.common.util.IOUtils: void closeQuietly(java.io.Closeable)>($r6);
+
+        return null;
+
+     label11:
+        $r1 := @caughtexception;
+
+        goto label09;
+
+     label12:
+        $r2 := @caughtexception;
+
+        goto label10;
+
+        catch java.io.IOException from label02 to label03 with label11;
+        catch java.lang.Throwable from label01 to label03 with label07;
+        catch java.io.IOException from label04 to label05 with label12;
+        catch java.lang.Throwable from label04 to label05 with label06;
+    }
+
+    public static java.io.BufferedReader zzk(java.lang.String)
+    {
+        java.lang.Throwable $r4;
+        android.os.StrictMode$ThreadPolicy $r2;
+        java.io.BufferedReader $r0;
+        java.io.FileReader $r1;
+        java.lang.String $r3;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r2 = staticinvoke <android.os.StrictMode: android.os.StrictMode$ThreadPolicy allowThreadDiskReads()>();
+
+     label1:
+        $r0 = new java.io.BufferedReader;
+
+        $r1 = new java.io.FileReader;
+
+        specialinvoke $r1.<java.io.FileReader: void <init>(java.lang.String)>($r3);
+
+        specialinvoke $r0.<java.io.BufferedReader: void <init>(java.io.Reader)>($r1);
+
+     label2:
+        staticinvoke <android.os.StrictMode: void setThreadPolicy(android.os.StrictMode$ThreadPolicy)>($r2);
+
+        return $r0;
+
+     label3:
+        $r4 := @caughtexception;
+
+        staticinvoke <android.os.StrictMode: void setThreadPolicy(android.os.StrictMode$ThreadPolicy)>($r2);
+
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+}

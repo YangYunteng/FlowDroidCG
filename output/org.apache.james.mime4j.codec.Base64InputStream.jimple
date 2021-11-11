@@ -1,0 +1,792 @@
+public class org.apache.james.mime4j.codec.Base64InputStream extends java.io.InputStream
+{
+    public static final boolean $assertionsDisabled;
+    public static final int[] BASE64_DECODE;
+    public static final byte BASE64_PAD;
+    public static final int ENCODED_BUFFER_SIZE;
+    public static final int EOF;
+    public static org.apache.commons.logging.Log log;
+    public boolean closed;
+    public final byte[] encoded;
+    public boolean eof;
+    public final java.io.InputStream in;
+    public int position;
+    public final org.apache.james.mime4j.codec.ByteQueue q;
+    public final byte[] singleByte;
+    public int size;
+    public boolean strict;
+
+    static void <clinit>()
+    {
+        byte[] $r2;
+        short $s3;
+        byte $b2;
+        int[] $r0;
+        int $i0, $i1, $i4;
+        org.apache.commons.logging.Log $r1;
+
+        <org.apache.james.mime4j.codec.Base64InputStream: int EOF> = -1;
+
+        <org.apache.james.mime4j.codec.Base64InputStream: int ENCODED_BUFFER_SIZE> = 1536;
+
+        <org.apache.james.mime4j.codec.Base64InputStream: byte BASE64_PAD> = 61;
+
+        <org.apache.james.mime4j.codec.Base64InputStream: boolean $assertionsDisabled> = 0;
+
+        $r1 = staticinvoke <org.apache.commons.logging.LogFactory: org.apache.commons.logging.Log getLog(java.lang.Class)>(class "Lorg/apache/james/mime4j/codec/Base64InputStream;");
+
+        <org.apache.james.mime4j.codec.Base64InputStream: org.apache.commons.logging.Log log> = $r1;
+
+        $r0 = newarray (int)[256];
+
+        <org.apache.james.mime4j.codec.Base64InputStream: int[] BASE64_DECODE> = $r0;
+
+        $i0 = 0;
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= 256 goto label2;
+
+        $r0 = <org.apache.james.mime4j.codec.Base64InputStream: int[] BASE64_DECODE>;
+
+        $i4 = -1;
+
+        $r0[$i1] = $i4;
+
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label2:
+        $r2 = <org.apache.james.mime4j.codec.Base64OutputStream: byte[] BASE64_TABLE>;
+
+        $i1 = lengthof $r2;
+
+        if $i0 >= $i1 goto label3;
+
+        $r0 = <org.apache.james.mime4j.codec.Base64InputStream: int[] BASE64_DECODE>;
+
+        $b2 = $r2[$i0];
+
+        $s3 = (short) $b2;
+
+        $s3 = $s3 & 255;
+
+        $i1 = (int) $s3;
+
+        $r0[$i1] = $i0;
+
+        $i0 = $i0 + 1;
+
+        goto label2;
+
+     label3:
+        return;
+    }
+
+    public void <init>(java.io.InputStream)
+    {
+        org.apache.james.mime4j.codec.Base64InputStream r0;
+        java.io.InputStream $r1;
+
+        r0 := @this: org.apache.james.mime4j.codec.Base64InputStream;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        specialinvoke r0.<org.apache.james.mime4j.codec.Base64InputStream: void <init>(java.io.InputStream,boolean)>($r1, 0);
+
+        return;
+    }
+
+    public void <init>(java.io.InputStream, boolean)
+    {
+        byte[] $r2;
+        org.apache.james.mime4j.codec.ByteQueue $r3;
+        java.lang.IllegalArgumentException $r4;
+        org.apache.james.mime4j.codec.Base64InputStream r0;
+        boolean $z0;
+        java.io.InputStream $r1;
+
+        r0 := @this: org.apache.james.mime4j.codec.Base64InputStream;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        $z0 := @parameter1: boolean;
+
+        specialinvoke r0.<java.io.InputStream: void <init>()>();
+
+        $r2 = newarray (byte)[1];
+
+        r0.<org.apache.james.mime4j.codec.Base64InputStream: byte[] singleByte> = $r2;
+
+        r0.<org.apache.james.mime4j.codec.Base64InputStream: boolean closed> = 0;
+
+        $r2 = newarray (byte)[1536];
+
+        r0.<org.apache.james.mime4j.codec.Base64InputStream: byte[] encoded> = $r2;
+
+        r0.<org.apache.james.mime4j.codec.Base64InputStream: int position> = 0;
+
+        r0.<org.apache.james.mime4j.codec.Base64InputStream: int size> = 0;
+
+        $r3 = new org.apache.james.mime4j.codec.ByteQueue;
+
+        specialinvoke $r3.<org.apache.james.mime4j.codec.ByteQueue: void <init>()>();
+
+        r0.<org.apache.james.mime4j.codec.Base64InputStream: org.apache.james.mime4j.codec.ByteQueue q> = $r3;
+
+        if $r1 == null goto label1;
+
+        r0.<org.apache.james.mime4j.codec.Base64InputStream: java.io.InputStream in> = $r1;
+
+        r0.<org.apache.james.mime4j.codec.Base64InputStream: boolean strict> = $z0;
+
+        return;
+
+     label1:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r4;
+    }
+
+    private int decodePad(int, int, byte[], int, int)
+    {
+        byte[] $r1;
+        org.apache.james.mime4j.codec.ByteQueue $r2;
+        byte $b4, $b5;
+        int $i0, $i1, $i2, $i3;
+        org.apache.james.mime4j.codec.Base64InputStream r0;
+
+        r0 := @this: org.apache.james.mime4j.codec.Base64InputStream;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $r1 := @parameter2: byte[];
+
+        $i2 := @parameter3: int;
+
+        $i3 := @parameter4: int;
+
+        r0.<org.apache.james.mime4j.codec.Base64InputStream: boolean eof> = 1;
+
+        if $i1 != 2 goto label2;
+
+        $i0 = $i0 >>> 4;
+
+        $b4 = (byte) $i0;
+
+        if $i2 >= $i3 goto label1;
+
+        $i0 = $i2 + 1;
+
+        $r1[$i2] = $b4;
+
+        return $i0;
+
+     label1:
+        $r2 = r0.<org.apache.james.mime4j.codec.Base64InputStream: org.apache.james.mime4j.codec.ByteQueue q>;
+
+        virtualinvoke $r2.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b4);
+
+        return $i2;
+
+     label2:
+        if $i1 != 3 goto label5;
+
+        $i1 = $i0 >>> 10;
+
+        $b4 = (byte) $i1;
+
+        $i0 = $i0 >>> 2;
+
+        $i0 = $i0 & 255;
+
+        $b5 = (byte) $i0;
+
+        $i0 = -1;
+
+        $i0 = $i3 + $i0;
+
+        if $i2 >= $i0 goto label3;
+
+        $i0 = $i2 + 1;
+
+        $r1[$i2] = $b4;
+
+        $i1 = $i0 + 1;
+
+        $r1[$i0] = $b5;
+
+        return $i1;
+
+     label3:
+        if $i2 >= $i3 goto label4;
+
+        $i0 = $i2 + 1;
+
+        $r1[$i2] = $b4;
+
+        $r2 = r0.<org.apache.james.mime4j.codec.Base64InputStream: org.apache.james.mime4j.codec.ByteQueue q>;
+
+        virtualinvoke $r2.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b5);
+
+        return $i0;
+
+     label4:
+        $r2 = r0.<org.apache.james.mime4j.codec.Base64InputStream: org.apache.james.mime4j.codec.ByteQueue q>;
+
+        virtualinvoke $r2.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b4);
+
+        $r2 = r0.<org.apache.james.mime4j.codec.Base64InputStream: org.apache.james.mime4j.codec.ByteQueue q>;
+
+        virtualinvoke $r2.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b5);
+
+        return $i2;
+
+     label5:
+        specialinvoke r0.<org.apache.james.mime4j.codec.Base64InputStream: void handleUnexpecedPad(int)>($i1);
+
+        return $i2;
+    }
+
+    private void handleUnexpecedPad(int)
+    {
+        int $i0;
+        java.lang.StringBuilder $r1;
+        org.apache.commons.logging.Log $r3;
+        java.io.IOException $r4;
+        java.lang.String $r2;
+        org.apache.james.mime4j.codec.Base64InputStream r0;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.codec.Base64InputStream;
+
+        $i0 := @parameter0: int;
+
+        $z0 = r0.<org.apache.james.mime4j.codec.Base64InputStream: boolean strict>;
+
+        if $z0 != 0 goto label1;
+
+        $r3 = <org.apache.james.mime4j.codec.Base64InputStream: org.apache.commons.logging.Log log>;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("unexpected padding character; dropping ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" sextet(s)");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r3.<org.apache.commons.logging.Log: void warn(java.lang.Object)>($r2);
+
+        return;
+
+     label1:
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>("unexpected padding character");
+
+        throw $r4;
+    }
+
+    private void handleUnexpectedEof(int)
+    {
+        int $i0;
+        java.lang.StringBuilder $r1;
+        org.apache.commons.logging.Log $r3;
+        java.io.IOException $r4;
+        java.lang.String $r2;
+        org.apache.james.mime4j.codec.Base64InputStream r0;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.codec.Base64InputStream;
+
+        $i0 := @parameter0: int;
+
+        $z0 = r0.<org.apache.james.mime4j.codec.Base64InputStream: boolean strict>;
+
+        if $z0 != 0 goto label1;
+
+        $r3 = <org.apache.james.mime4j.codec.Base64InputStream: org.apache.commons.logging.Log log>;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("unexpected end of file; dropping ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" sextet(s)");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r3.<org.apache.commons.logging.Log: void warn(java.lang.Object)>($r2);
+
+        return;
+
+     label1:
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>("unexpected end of file");
+
+        throw $r4;
+    }
+
+    private int read0(byte[], int, int)
+    {
+        byte[] $r1, $r4;
+        short $s8;
+        byte $b5, $b9, $b10;
+        int[] $r5;
+        int $i0, $i1, $i2, $i3, $i4, $i6, $i7;
+        boolean $z0;
+        org.apache.james.mime4j.codec.ByteQueue $r2;
+        org.apache.james.mime4j.codec.Base64InputStream r0;
+        java.io.InputStream $r3;
+
+        r0 := @this: org.apache.james.mime4j.codec.Base64InputStream;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 = r0.<org.apache.james.mime4j.codec.Base64InputStream: org.apache.james.mime4j.codec.ByteQueue q>;
+
+        $i2 = virtualinvoke $r2.<org.apache.james.mime4j.codec.ByteQueue: int count()>();
+
+        $i3 = $i0;
+
+     label01:
+        $i4 = -1;
+
+        if $i2 <= 0 goto label02;
+
+        if $i3 >= $i1 goto label02;
+
+        $r2 = r0.<org.apache.james.mime4j.codec.Base64InputStream: org.apache.james.mime4j.codec.ByteQueue q>;
+
+        $b5 = virtualinvoke $r2.<org.apache.james.mime4j.codec.ByteQueue: byte dequeue()>();
+
+        $r1[$i3] = $b5;
+
+        $i3 = $i3 + 1;
+
+        $i2 = $i2 + $i4;
+
+        goto label01;
+
+     label02:
+        $z0 = r0.<org.apache.james.mime4j.codec.Base64InputStream: boolean eof>;
+
+        if $z0 == 0 goto label04;
+
+        if $i3 != $i0 goto label03;
+
+        $i0 = -1;
+
+        return $i0;
+
+     label03:
+        $i0 = $i3 - $i0;
+
+        return $i0;
+
+     label04:
+        $i4 = 0;
+
+        $i2 = 0;
+
+     label05:
+        if $i3 >= $i1 goto label19;
+
+     label06:
+        $i6 = r0.<org.apache.james.mime4j.codec.Base64InputStream: int position>;
+
+        $i7 = r0.<org.apache.james.mime4j.codec.Base64InputStream: int size>;
+
+        if $i6 != $i7 goto label10;
+
+        $r3 = r0.<org.apache.james.mime4j.codec.Base64InputStream: java.io.InputStream in>;
+
+        $r4 = r0.<org.apache.james.mime4j.codec.Base64InputStream: byte[] encoded>;
+
+        $i6 = lengthof $r4;
+
+        $i6 = virtualinvoke $r3.<java.io.InputStream: int read(byte[],int,int)>($r4, 0, $i6);
+
+        $i7 = -1;
+
+        if $i6 != $i7 goto label09;
+
+        r0.<org.apache.james.mime4j.codec.Base64InputStream: boolean eof> = 1;
+
+        if $i4 == 0 goto label07;
+
+        specialinvoke r0.<org.apache.james.mime4j.codec.Base64InputStream: void handleUnexpectedEof(int)>($i4);
+
+     label07:
+        if $i3 != $i0 goto label08;
+
+        $i0 = -1;
+
+        return $i0;
+
+     label08:
+        $i0 = $i3 - $i0;
+
+        return $i0;
+
+     label09:
+        if $i6 <= 0 goto label06;
+
+        r0.<org.apache.james.mime4j.codec.Base64InputStream: int position> = 0;
+
+        r0.<org.apache.james.mime4j.codec.Base64InputStream: int size> = $i6;
+
+        goto label06;
+
+     label10:
+        $i6 = r0.<org.apache.james.mime4j.codec.Base64InputStream: int position>;
+
+        $i7 = r0.<org.apache.james.mime4j.codec.Base64InputStream: int size>;
+
+        if $i6 >= $i7 goto label18;
+
+        if $i3 >= $i1 goto label18;
+
+        $r4 = r0.<org.apache.james.mime4j.codec.Base64InputStream: byte[] encoded>;
+
+        $i7 = $i6 + 1;
+
+        r0.<org.apache.james.mime4j.codec.Base64InputStream: int position> = $i7;
+
+        $b5 = $r4[$i6];
+
+        $s8 = (short) $b5;
+
+        $s8 = $s8 & 255;
+
+        $i6 = (int) $s8;
+
+        if $i6 != 61 goto label11;
+
+        $i1 = specialinvoke r0.<org.apache.james.mime4j.codec.Base64InputStream: int decodePad(int,int,byte[],int,int)>($i2, $i4, $r1, $i3, $i1);
+
+        $i0 = $i1 - $i0;
+
+        return $i0;
+
+     label11:
+        $r5 = <org.apache.james.mime4j.codec.Base64InputStream: int[] BASE64_DECODE>;
+
+        $i6 = (int) $s8;
+
+        $i6 = $r5[$i6];
+
+        if $i6 >= 0 goto label12;
+
+        goto label10;
+
+     label12:
+        $i2 = $i2 << 6;
+
+        $i2 = $i2 | $i6;
+
+        $i4 = $i4 + 1;
+
+        if $i4 != 4 goto label17;
+
+        $i4 = $i2 >>> 16;
+
+        $b5 = (byte) $i4;
+
+        $i4 = $i2 >>> 8;
+
+        $b9 = (byte) $i4;
+
+        $b10 = (byte) $i2;
+
+        $i4 = -2;
+
+        $i4 = $i1 + $i4;
+
+        if $i3 >= $i4 goto label13;
+
+        $i4 = $i3 + 1;
+
+        $r1[$i3] = $b5;
+
+        $i6 = $i4 + 1;
+
+        $r1[$i4] = $b9;
+
+        $i3 = $i6 + 1;
+
+        $r1[$i6] = $b10;
+
+        $i4 = 0;
+
+        goto label10;
+
+     label13:
+        $i2 = -1;
+
+        $i2 = $i1 + $i2;
+
+        if $i3 >= $i2 goto label14;
+
+        $i2 = $i3 + 1;
+
+        $r1[$i3] = $b5;
+
+        $r1[$i2] = $b9;
+
+        $r2 = r0.<org.apache.james.mime4j.codec.Base64InputStream: org.apache.james.mime4j.codec.ByteQueue q>;
+
+        virtualinvoke $r2.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b10);
+
+        goto label16;
+
+     label14:
+        if $i3 >= $i1 goto label15;
+
+        $r1[$i3] = $b5;
+
+        $r2 = r0.<org.apache.james.mime4j.codec.Base64InputStream: org.apache.james.mime4j.codec.ByteQueue q>;
+
+        virtualinvoke $r2.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b9);
+
+        $r2 = r0.<org.apache.james.mime4j.codec.Base64InputStream: org.apache.james.mime4j.codec.ByteQueue q>;
+
+        virtualinvoke $r2.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b10);
+
+        goto label16;
+
+     label15:
+        $r2 = r0.<org.apache.james.mime4j.codec.Base64InputStream: org.apache.james.mime4j.codec.ByteQueue q>;
+
+        virtualinvoke $r2.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b5);
+
+        $r2 = r0.<org.apache.james.mime4j.codec.Base64InputStream: org.apache.james.mime4j.codec.ByteQueue q>;
+
+        virtualinvoke $r2.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b9);
+
+        $r2 = r0.<org.apache.james.mime4j.codec.Base64InputStream: org.apache.james.mime4j.codec.ByteQueue q>;
+
+        virtualinvoke $r2.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b10);
+
+     label16:
+        $i0 = $i1 - $i0;
+
+        return $i0;
+
+     label17:
+        goto label10;
+
+     label18:
+        goto label05;
+
+     label19:
+        $i0 = $i1 - $i0;
+
+        return $i0;
+    }
+
+    public void close()
+    {
+        org.apache.james.mime4j.codec.Base64InputStream r0;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.codec.Base64InputStream;
+
+        $z0 = r0.<org.apache.james.mime4j.codec.Base64InputStream: boolean closed>;
+
+        if $z0 == 0 goto label1;
+
+        return;
+
+     label1:
+        r0.<org.apache.james.mime4j.codec.Base64InputStream: boolean closed> = 1;
+
+        return;
+    }
+
+    public int read()
+    {
+        byte[] $r1;
+        java.io.IOException $r2;
+        short $s2;
+        byte $b1;
+        int $i0, $i3;
+        org.apache.james.mime4j.codec.Base64InputStream r0;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.codec.Base64InputStream;
+
+        $z0 = r0.<org.apache.james.mime4j.codec.Base64InputStream: boolean closed>;
+
+        if $z0 != 0 goto label3;
+
+     label1:
+        $r1 = r0.<org.apache.james.mime4j.codec.Base64InputStream: byte[] singleByte>;
+
+        $i0 = specialinvoke r0.<org.apache.james.mime4j.codec.Base64InputStream: int read0(byte[],int,int)>($r1, 0, 1);
+
+        $i3 = -1;
+
+        if $i0 != $i3 goto label2;
+
+        $i0 = -1;
+
+        return $i0;
+
+     label2:
+        if $i0 != 1 goto label1;
+
+        $r1 = r0.<org.apache.james.mime4j.codec.Base64InputStream: byte[] singleByte>;
+
+        $b1 = $r1[0];
+
+        $s2 = (short) $b1;
+
+        $s2 = $s2 & 255;
+
+        $i0 = (int) $s2;
+
+        return $i0;
+
+     label3:
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Base64InputStream has been closed");
+
+        goto label4;
+
+     label4:
+        throw $r2;
+    }
+
+    public int read(byte[])
+    {
+        byte[] $r1;
+        int $i0;
+        java.io.IOException $r3;
+        org.apache.james.mime4j.codec.Base64InputStream r0;
+        java.lang.NullPointerException $r2;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.codec.Base64InputStream;
+
+        $r1 := @parameter0: byte[];
+
+        $z0 = r0.<org.apache.james.mime4j.codec.Base64InputStream: boolean closed>;
+
+        if $z0 != 0 goto label3;
+
+        if $r1 == null goto label2;
+
+        $i0 = lengthof $r1;
+
+        if $i0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $i0 = lengthof $r1;
+
+        $i0 = specialinvoke r0.<org.apache.james.mime4j.codec.Base64InputStream: int read0(byte[],int,int)>($r1, 0, $i0);
+
+        return $i0;
+
+     label2:
+        $r2 = new java.lang.NullPointerException;
+
+        specialinvoke $r2.<java.lang.NullPointerException: void <init>()>();
+
+        throw $r2;
+
+     label3:
+        $r3 = new java.io.IOException;
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>("Base64InputStream has been closed");
+
+        throw $r3;
+    }
+
+    public int read(byte[], int, int)
+    {
+        byte[] $r1;
+        java.lang.IndexOutOfBoundsException $r2;
+        java.io.IOException $r4;
+        java.lang.NullPointerException $r3;
+        int $i0, $i1, $i2, $i3;
+        org.apache.james.mime4j.codec.Base64InputStream r0;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.codec.Base64InputStream;
+
+        $r1 := @parameter0: byte[];
+
+        $i2 := @parameter1: int;
+
+        $i0 := @parameter2: int;
+
+        $z0 = r0.<org.apache.james.mime4j.codec.Base64InputStream: boolean closed>;
+
+        if $z0 != 0 goto label4;
+
+        if $r1 == null goto label3;
+
+        if $i2 < 0 goto label2;
+
+        if $i0 < 0 goto label2;
+
+        $i3 = $i2 + $i0;
+
+        $i1 = lengthof $r1;
+
+        if $i3 > $i1 goto label2;
+
+        if $i0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $i2 = specialinvoke r0.<org.apache.james.mime4j.codec.Base64InputStream: int read0(byte[],int,int)>($r1, $i2, $i3);
+
+        return $i2;
+
+     label2:
+        $r2 = new java.lang.IndexOutOfBoundsException;
+
+        specialinvoke $r2.<java.lang.IndexOutOfBoundsException: void <init>()>();
+
+        throw $r2;
+
+     label3:
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>()>();
+
+        throw $r3;
+
+     label4:
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>("Base64InputStream has been closed");
+
+        throw $r4;
+    }
+}

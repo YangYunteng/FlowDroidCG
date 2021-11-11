@@ -1,0 +1,749 @@
+public final class com.google.common.io.ByteStreams extends java.lang.Object
+{
+    public static final java.io.OutputStream NULL_OUTPUT_STREAM;
+    public static final int ZERO_COPY_CHUNK_SIZE;
+
+    static void <clinit>()
+    {
+        com.google.common.io.ByteStreams$1 $r0;
+
+        <com.google.common.io.ByteStreams: int ZERO_COPY_CHUNK_SIZE> = 524288;
+
+        $r0 = new com.google.common.io.ByteStreams$1;
+
+        specialinvoke $r0.<com.google.common.io.ByteStreams$1: void <init>()>();
+
+        <com.google.common.io.ByteStreams: java.io.OutputStream NULL_OUTPUT_STREAM> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.common.io.ByteStreams r0;
+
+        r0 := @this: com.google.common.io.ByteStreams;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static long copy(java.io.InputStream, java.io.OutputStream)
+    {
+        java.io.OutputStream $r1;
+        byte[] $r2;
+        int $i1, $i3;
+        long $l0, $l2;
+        java.io.InputStream $r0;
+
+        $r0 := @parameter0: java.io.InputStream;
+
+        $r1 := @parameter1: java.io.OutputStream;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = staticinvoke <com.google.common.io.ByteStreams: byte[] createBuffer()>();
+
+        $l0 = 0L;
+
+     label1:
+        $i1 = virtualinvoke $r0.<java.io.InputStream: int read(byte[])>($r2);
+
+        $i3 = -1;
+
+        if $i1 != $i3 goto label2;
+
+        return $l0;
+
+     label2:
+        virtualinvoke $r1.<java.io.OutputStream: void write(byte[],int,int)>($r2, 0, $i1);
+
+        $l2 = (long) $i1;
+
+        $l0 = $l0 + $l2;
+
+        goto label1;
+    }
+
+    public static long copy(java.nio.channels.ReadableByteChannel, java.nio.channels.WritableByteChannel)
+    {
+        byte[] $r3;
+        java.nio.channels.ReadableByteChannel $r1;
+        long $l0, $l1, $l2;
+        java.nio.ByteBuffer $r4;
+        byte $b3;
+        int $i4, $i5;
+        java.nio.channels.WritableByteChannel $r0;
+        java.nio.channels.FileChannel $r2;
+        boolean $z0;
+
+        $r1 := @parameter0: java.nio.channels.ReadableByteChannel;
+
+        $r0 := @parameter1: java.nio.channels.WritableByteChannel;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        $z0 = $r1 instanceof java.nio.channels.FileChannel;
+
+        $l0 = 0L;
+
+        if $z0 == 0 goto label2;
+
+        $r2 = (java.nio.channels.FileChannel) $r1;
+
+        $l0 = virtualinvoke $r2.<java.nio.channels.FileChannel: long position()>();
+
+        $l1 = $l0;
+
+     label1:
+        $l2 = virtualinvoke $r2.<java.nio.channels.FileChannel: long transferTo(long,long,java.nio.channels.WritableByteChannel)>($l1, 524288L, $r0);
+
+        $l1 = $l1 + $l2;
+
+        virtualinvoke $r2.<java.nio.channels.FileChannel: java.nio.channels.FileChannel position(long)>($l1);
+
+        $b3 = $l2 cmp 0L;
+
+        $i4 = (int) $b3;
+
+        if $i4 > 0 goto label1;
+
+        $l2 = virtualinvoke $r2.<java.nio.channels.FileChannel: long size()>();
+
+        $b3 = $l1 cmp $l2;
+
+        $i4 = (int) $b3;
+
+        if $i4 < 0 goto label1;
+
+        $l0 = $l1 - $l0;
+
+        return $l0;
+
+     label2:
+        $r3 = staticinvoke <com.google.common.io.ByteStreams: byte[] createBuffer()>();
+
+        $r4 = staticinvoke <java.nio.ByteBuffer: java.nio.ByteBuffer wrap(byte[])>($r3);
+
+     label3:
+        $i4 = interfaceinvoke $r1.<java.nio.channels.ReadableByteChannel: int read(java.nio.ByteBuffer)>($r4);
+
+        $i5 = -1;
+
+        if $i4 == $i5 goto label6;
+
+        virtualinvoke $r4.<java.nio.ByteBuffer: java.nio.Buffer flip()>();
+
+     label4:
+        $z0 = virtualinvoke $r4.<java.nio.ByteBuffer: boolean hasRemaining()>();
+
+        if $z0 == 0 goto label5;
+
+        $i4 = interfaceinvoke $r0.<java.nio.channels.WritableByteChannel: int write(java.nio.ByteBuffer)>($r4);
+
+        $l1 = (long) $i4;
+
+        $l0 = $l0 + $l1;
+
+        goto label4;
+
+     label5:
+        virtualinvoke $r4.<java.nio.ByteBuffer: java.nio.Buffer clear()>();
+
+        goto label3;
+
+     label6:
+        return $l0;
+    }
+
+    public static byte[] createBuffer()
+    {
+        byte[] $r0;
+
+        $r0 = newarray (byte)[8192];
+
+        return $r0;
+    }
+
+    public static long exhaust(java.io.InputStream)
+    {
+        byte[] $r1;
+        byte $b0;
+        int $i2;
+        long $l1, $l3;
+        java.io.InputStream $r0;
+
+        $r0 := @parameter0: java.io.InputStream;
+
+        $r1 = staticinvoke <com.google.common.io.ByteStreams: byte[] createBuffer()>();
+
+        $l1 = 0L;
+
+     label1:
+        $i2 = virtualinvoke $r0.<java.io.InputStream: int read(byte[])>($r1);
+
+        $l3 = (long) $i2;
+
+        $b0 = $l3 cmp -1L;
+
+        if $b0 == 0 goto label2;
+
+        $l1 = $l1 + $l3;
+
+        goto label1;
+
+     label2:
+        return $l1;
+    }
+
+    public static java.io.InputStream limit(java.io.InputStream, long)
+    {
+        long $l0;
+        com.google.common.io.ByteStreams$LimitedInputStream $r1;
+        java.io.InputStream $r0;
+
+        $r0 := @parameter0: java.io.InputStream;
+
+        $l0 := @parameter1: long;
+
+        $r1 = new com.google.common.io.ByteStreams$LimitedInputStream;
+
+        specialinvoke $r1.<com.google.common.io.ByteStreams$LimitedInputStream: void <init>(java.io.InputStream,long)>($r0, $l0);
+
+        return $r1;
+    }
+
+    public static com.google.common.io.ByteArrayDataInput newDataInput(java.io.ByteArrayInputStream)
+    {
+        com.google.common.io.ByteStreams$ByteArrayDataInputStream $r0;
+        java.io.ByteArrayInputStream $r1;
+
+        $r1 := @parameter0: java.io.ByteArrayInputStream;
+
+        $r0 = new com.google.common.io.ByteStreams$ByteArrayDataInputStream;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        specialinvoke $r0.<com.google.common.io.ByteStreams$ByteArrayDataInputStream: void <init>(java.io.ByteArrayInputStream)>($r1);
+
+        return $r0;
+    }
+
+    public static com.google.common.io.ByteArrayDataInput newDataInput(byte[])
+    {
+        com.google.common.io.ByteArrayDataInput $r1;
+        byte[] $r2;
+        java.io.ByteArrayInputStream $r0;
+
+        $r2 := @parameter0: byte[];
+
+        $r0 = new java.io.ByteArrayInputStream;
+
+        specialinvoke $r0.<java.io.ByteArrayInputStream: void <init>(byte[])>($r2);
+
+        $r1 = staticinvoke <com.google.common.io.ByteStreams: com.google.common.io.ByteArrayDataInput newDataInput(java.io.ByteArrayInputStream)>($r0);
+
+        return $r1;
+    }
+
+    public static com.google.common.io.ByteArrayDataInput newDataInput(byte[], int)
+    {
+        byte[] $r1;
+        java.io.ByteArrayInputStream $r2;
+        int $i0, $i1;
+        com.google.common.io.ByteArrayDataInput $r0;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 = lengthof $r1;
+
+        staticinvoke <com.google.common.base.Preconditions: int checkPositionIndex(int,int)>($i0, $i1);
+
+        $r2 = new java.io.ByteArrayInputStream;
+
+        $i1 = lengthof $r1;
+
+        $i1 = $i1 - $i0;
+
+        specialinvoke $r2.<java.io.ByteArrayInputStream: void <init>(byte[],int,int)>($r1, $i0, $i1);
+
+        $r0 = staticinvoke <com.google.common.io.ByteStreams: com.google.common.io.ByteArrayDataInput newDataInput(java.io.ByteArrayInputStream)>($r2);
+
+        return $r0;
+    }
+
+    public static com.google.common.io.ByteArrayDataOutput newDataOutput()
+    {
+        java.io.ByteArrayOutputStream $r1;
+        com.google.common.io.ByteArrayDataOutput $r0;
+
+        $r1 = new java.io.ByteArrayOutputStream;
+
+        specialinvoke $r1.<java.io.ByteArrayOutputStream: void <init>()>();
+
+        $r0 = staticinvoke <com.google.common.io.ByteStreams: com.google.common.io.ByteArrayDataOutput newDataOutput(java.io.ByteArrayOutputStream)>($r1);
+
+        return $r0;
+    }
+
+    public static com.google.common.io.ByteArrayDataOutput newDataOutput(int)
+    {
+        java.lang.Object[] $r3;
+        java.io.ByteArrayOutputStream $r0;
+        int $i0;
+        java.lang.String $r5;
+        java.lang.IllegalArgumentException $r2;
+        java.lang.Integer $r4;
+        com.google.common.io.ByteArrayDataOutput $r1;
+
+        $i0 := @parameter0: int;
+
+        if $i0 < 0 goto label1;
+
+        $r0 = new java.io.ByteArrayOutputStream;
+
+        specialinvoke $r0.<java.io.ByteArrayOutputStream: void <init>(int)>($i0);
+
+        $r1 = staticinvoke <com.google.common.io.ByteStreams: com.google.common.io.ByteArrayDataOutput newDataOutput(java.io.ByteArrayOutputStream)>($r0);
+
+        return $r1;
+
+     label1:
+        $r2 = new java.lang.IllegalArgumentException;
+
+        $r3 = newarray (java.lang.Object)[1];
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r3[0] = $r4;
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Invalid size: %s", $r3);
+
+        specialinvoke $r2.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r5);
+
+        throw $r2;
+    }
+
+    public static com.google.common.io.ByteArrayDataOutput newDataOutput(java.io.ByteArrayOutputStream)
+    {
+        java.io.ByteArrayOutputStream $r1;
+        com.google.common.io.ByteStreams$ByteArrayDataOutputStream $r0;
+
+        $r1 := @parameter0: java.io.ByteArrayOutputStream;
+
+        $r0 = new com.google.common.io.ByteStreams$ByteArrayDataOutputStream;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        specialinvoke $r0.<com.google.common.io.ByteStreams$ByteArrayDataOutputStream: void <init>(java.io.ByteArrayOutputStream)>($r1);
+
+        return $r0;
+    }
+
+    public static java.io.OutputStream nullOutputStream()
+    {
+        java.io.OutputStream r0;
+
+        r0 = <com.google.common.io.ByteStreams: java.io.OutputStream NULL_OUTPUT_STREAM>;
+
+        return r0;
+    }
+
+    public static int read(java.io.InputStream, byte[], int, int)
+    {
+        byte[] $r1;
+        java.lang.IndexOutOfBoundsException $r2;
+        int $i0, $i1, $i2, $i3, $i4;
+        java.io.InputStream $r0;
+
+        $r0 := @parameter0: java.io.InputStream;
+
+        $r1 := @parameter1: byte[];
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        if $i1 < 0 goto label4;
+
+        $i3 = 0;
+
+     label1:
+        if $i3 >= $i1 goto label3;
+
+        $i2 = $i0 + $i3;
+
+        $i4 = $i1 - $i3;
+
+        $i2 = virtualinvoke $r0.<java.io.InputStream: int read(byte[],int,int)>($r1, $i2, $i4);
+
+        $i4 = -1;
+
+        if $i2 != $i4 goto label2;
+
+        return $i3;
+
+     label2:
+        $i3 = $i3 + $i2;
+
+        goto label1;
+
+     label3:
+        return $i3;
+
+     label4:
+        $r2 = new java.lang.IndexOutOfBoundsException;
+
+        specialinvoke $r2.<java.lang.IndexOutOfBoundsException: void <init>(java.lang.String)>("len is negative");
+
+        goto label5;
+
+     label5:
+        throw $r2;
+    }
+
+    public static java.lang.Object readBytes(java.io.InputStream, com.google.common.io.ByteProcessor)
+    {
+        byte[] $r2;
+        com.google.common.io.ByteProcessor $r0;
+        int $i0, $i1;
+        java.lang.Object $r3;
+        java.io.InputStream $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        $r0 := @parameter1: com.google.common.io.ByteProcessor;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        $r2 = staticinvoke <com.google.common.io.ByteStreams: byte[] createBuffer()>();
+
+     label1:
+        $i0 = virtualinvoke $r1.<java.io.InputStream: int read(byte[])>($r2);
+
+        $i1 = -1;
+
+        if $i0 == $i1 goto label2;
+
+        $z0 = interfaceinvoke $r0.<com.google.common.io.ByteProcessor: boolean processBytes(byte[],int,int)>($r2, 0, $i0);
+
+        if $z0 != 0 goto label1;
+
+     label2:
+        $r3 = interfaceinvoke $r0.<com.google.common.io.ByteProcessor: java.lang.Object getResult()>();
+
+        return $r3;
+    }
+
+    public static void readFully(java.io.InputStream, byte[])
+    {
+        int $i0;
+        byte[] $r1;
+        java.io.InputStream $r0;
+
+        $r0 := @parameter0: java.io.InputStream;
+
+        $r1 := @parameter1: byte[];
+
+        $i0 = lengthof $r1;
+
+        staticinvoke <com.google.common.io.ByteStreams: void readFully(java.io.InputStream,byte[],int,int)>($r0, $r1, 0, $i0);
+
+        return;
+    }
+
+    public static void readFully(java.io.InputStream, byte[], int, int)
+    {
+        byte[] $r1;
+        int $i0, $i1;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r4;
+        java.io.EOFException $r2;
+        java.io.InputStream $r0;
+
+        $r0 := @parameter0: java.io.InputStream;
+
+        $r1 := @parameter1: byte[];
+
+        $i1 := @parameter2: int;
+
+        $i0 := @parameter3: int;
+
+        $i1 = staticinvoke <com.google.common.io.ByteStreams: int read(java.io.InputStream,byte[],int,int)>($r0, $r1, $i1, $i0);
+
+        if $i1 != $i0 goto label1;
+
+        return;
+
+     label1:
+        $r2 = new java.io.EOFException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("reached end of stream after reading ");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" bytes; ");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" bytes expected");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.io.EOFException: void <init>(java.lang.String)>($r4);
+
+        throw $r2;
+    }
+
+    public static void skipFully(java.io.InputStream, long)
+    {
+        long $l0, $l1;
+        java.io.EOFException $r4;
+        byte $b2;
+        int $i3;
+        java.lang.StringBuilder $r0, $r3;
+        java.lang.String $r2;
+        java.io.InputStream $r1;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        $l0 := @parameter1: long;
+
+        $l1 = staticinvoke <com.google.common.io.ByteStreams: long skipUpTo(java.io.InputStream,long)>($r1, $l0);
+
+        $b2 = $l1 cmp $l0;
+
+        $i3 = (int) $b2;
+
+        if $i3 < 0 goto label1;
+
+        return;
+
+     label1:
+        $r4 = new java.io.EOFException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        $r0 = $r3;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("reached end of stream after skipping ");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l1);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" bytes; ");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l0);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" bytes expected");
+
+        $r2 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<java.io.EOFException: void <init>(java.lang.String)>($r2);
+
+        throw $r4;
+    }
+
+    public static long skipSafely(java.io.InputStream, long)
+    {
+        int $i1;
+        long $l0, $l2;
+        java.io.InputStream $r0;
+
+        $r0 := @parameter0: java.io.InputStream;
+
+        $l0 := @parameter1: long;
+
+        $i1 = virtualinvoke $r0.<java.io.InputStream: int available()>();
+
+        if $i1 != 0 goto label1;
+
+        return 0L;
+
+     label1:
+        $l2 = (long) $i1;
+
+        $l0 = staticinvoke <java.lang.Math: long min(long,long)>($l2, $l0);
+
+        $l0 = virtualinvoke $r0.<java.io.InputStream: long skip(long)>($l0);
+
+        return $l0;
+    }
+
+    public static long skipUpTo(java.io.InputStream, long)
+    {
+        byte[] $r1;
+        long $l0, $l2, $l4, $l5, $l6;
+        byte $b3;
+        int $i1;
+        java.io.InputStream $r0;
+
+        $r0 := @parameter0: java.io.InputStream;
+
+        $l0 := @parameter1: long;
+
+        $r1 = staticinvoke <com.google.common.io.ByteStreams: byte[] createBuffer()>();
+
+        $l2 = 0L;
+
+     label1:
+        $b3 = $l2 cmp $l0;
+
+        $i1 = (int) $b3;
+
+        if $i1 >= 0 goto label3;
+
+        $l4 = $l0 - $l2;
+
+        $l5 = staticinvoke <com.google.common.io.ByteStreams: long skipSafely(java.io.InputStream,long)>($r0, $l4);
+
+        $l6 = $l5;
+
+        $b3 = $l5 cmp 0L;
+
+        if $b3 != 0 goto label2;
+
+        $i1 = lengthof $r1;
+
+        $l5 = (long) $i1;
+
+        $l4 = staticinvoke <java.lang.Math: long min(long,long)>($l4, $l5);
+
+        $i1 = (int) $l4;
+
+        $i1 = virtualinvoke $r0.<java.io.InputStream: int read(byte[],int,int)>($r1, 0, $i1);
+
+        $l6 = (long) $i1;
+
+        $b3 = $l6 cmp -1L;
+
+        if $b3 != 0 goto label2;
+
+        return $l2;
+
+     label2:
+        $l2 = $l2 + $l6;
+
+        goto label1;
+
+     label3:
+        return $l2;
+    }
+
+    public static byte[] toByteArray(java.io.InputStream)
+    {
+        byte[] $r2;
+        java.io.ByteArrayOutputStream $r0;
+        int $i0;
+        java.io.InputStream $r1;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        $r0 = new java.io.ByteArrayOutputStream;
+
+        $i0 = virtualinvoke $r1.<java.io.InputStream: int available()>();
+
+        $i0 = staticinvoke <java.lang.Math: int max(int,int)>(32, $i0);
+
+        specialinvoke $r0.<java.io.ByteArrayOutputStream: void <init>(int)>($i0);
+
+        staticinvoke <com.google.common.io.ByteStreams: long copy(java.io.InputStream,java.io.OutputStream)>($r1, $r0);
+
+        $r2 = virtualinvoke $r0.<java.io.ByteArrayOutputStream: byte[] toByteArray()>();
+
+        return $r2;
+    }
+
+    public static byte[] toByteArray(java.io.InputStream, int)
+    {
+        byte[] $r0, $r3;
+        com.google.common.io.ByteStreams$FastByteArrayOutputStream $r2, $r4;
+        int $i0, $i1, $i2, $i3, $i4;
+        java.io.InputStream $r1;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        $i1 := @parameter1: int;
+
+        $r0 = newarray (byte)[$i1];
+
+        $i2 = $i1;
+
+     label1:
+        if $i2 <= 0 goto label3;
+
+        $i0 = $i1 - $i2;
+
+        $i3 = virtualinvoke $r1.<java.io.InputStream: int read(byte[],int,int)>($r0, $i0, $i2);
+
+        $i4 = -1;
+
+        if $i3 != $i4 goto label2;
+
+        $r0 = staticinvoke <java.util.Arrays: byte[] copyOf(byte[],int)>($r0, $i0);
+
+        return $r0;
+
+     label2:
+        $i2 = $i2 - $i3;
+
+        goto label1;
+
+     label3:
+        $i1 = virtualinvoke $r1.<java.io.InputStream: int read()>();
+
+        $i0 = -1;
+
+        if $i1 != $i0 goto label4;
+
+        return $r0;
+
+     label4:
+        $r4 = new com.google.common.io.ByteStreams$FastByteArrayOutputStream;
+
+        $r2 = $r4;
+
+        specialinvoke $r4.<com.google.common.io.ByteStreams$FastByteArrayOutputStream: void <init>(com.google.common.io.ByteStreams$1)>(null);
+
+        virtualinvoke $r2.<java.io.ByteArrayOutputStream: void write(int)>($i1);
+
+        staticinvoke <com.google.common.io.ByteStreams: long copy(java.io.InputStream,java.io.OutputStream)>($r1, $r2);
+
+        $i1 = lengthof $r0;
+
+        $i0 = virtualinvoke $r2.<java.io.ByteArrayOutputStream: int size()>();
+
+        $i1 = $i1 + $i0;
+
+        $r3 = newarray (byte)[$i1];
+
+        $i1 = lengthof $r0;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r0, 0, $r3, 0, $i1);
+
+        $i1 = lengthof $r0;
+
+        virtualinvoke $r2.<com.google.common.io.ByteStreams$FastByteArrayOutputStream: void writeTo(byte[],int)>($r3, $i1);
+
+        return $r3;
+    }
+}

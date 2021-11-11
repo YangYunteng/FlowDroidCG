@@ -1,0 +1,174 @@
+public class com.foresee.sdk.cxMeasure.tracker.services.a$1 extends com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask
+{
+    public final com.foresee.sdk.cxMeasure.tracker.services.a aD;
+
+    public void <init>(com.foresee.sdk.cxMeasure.tracker.services.a, java.lang.String)
+    {
+        java.lang.String $r2;
+        com.foresee.sdk.cxMeasure.tracker.services.a$1 r0;
+        com.foresee.sdk.cxMeasure.tracker.services.a $r1;
+
+        r0 := @this: com.foresee.sdk.cxMeasure.tracker.services.a$1;
+
+        $r1 := @parameter0: com.foresee.sdk.cxMeasure.tracker.services.a;
+
+        $r2 := @parameter1: java.lang.String;
+
+        r0.<com.foresee.sdk.cxMeasure.tracker.services.a$1: com.foresee.sdk.cxMeasure.tracker.services.a aD> = $r1;
+
+        specialinvoke r0.<com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask: void <init>(java.lang.String)>($r2);
+
+        return;
+    }
+
+    public com.foresee.sdk.cxMeasure.tracker.b.b$a a(java.io.InputStream, int)
+    {
+        byte[] $r4;
+        java.lang.Object[] $r1;
+        com.foresee.sdk.cxMeasure.tracker.services.a$1 r0;
+        java.io.ByteArrayOutputStream $r3, $r12;
+        java.io.IOException $r10;
+        java.lang.Integer $r8;
+        android.graphics.Bitmap $r5;
+        int $i0, $i1;
+        com.foresee.sdk.common.b$a $r6;
+        java.lang.String $r7, $r9;
+        com.foresee.sdk.cxMeasure.tracker.b.b$a r11;
+        java.io.InputStream $r2;
+
+        r0 := @this: com.foresee.sdk.cxMeasure.tracker.services.a$1;
+
+        $r2 := @parameter0: java.io.InputStream;
+
+        $i0 := @parameter1: int;
+
+        $r12 = new java.io.ByteArrayOutputStream;
+
+        $r3 = $r12;
+
+     label01:
+        specialinvoke $r12.<java.io.ByteArrayOutputStream: void <init>()>();
+
+     label02:
+        $r4 = newarray (byte)[2048];
+
+     label03:
+        $i0 = lengthof $r4;
+
+     label04:
+        $i0 = virtualinvoke $r2.<java.io.InputStream: int read(byte[],int,int)>($r4, 0, $i0);
+
+     label05:
+        $i1 = -1;
+
+        if $i0 == $i1 goto label08;
+
+     label06:
+        virtualinvoke $r3.<java.io.ByteArrayOutputStream: void write(byte[],int,int)>($r4, 0, $i0);
+
+     label07:
+        goto label03;
+
+     label08:
+        virtualinvoke $r3.<java.io.ByteArrayOutputStream: void flush()>();
+
+        virtualinvoke $r2.<java.io.InputStream: void close()>();
+
+        $r4 = virtualinvoke $r3.<java.io.ByteArrayOutputStream: byte[] toByteArray()>();
+
+     label09:
+        $i0 = lengthof $r4;
+
+     label10:
+        $r5 = staticinvoke <android.graphics.BitmapFactory: android.graphics.Bitmap decodeByteArray(byte[],int,int)>($r4, 0, $i0);
+
+     label11:
+        if $r5 != null goto label12;
+
+        r11 = <com.foresee.sdk.cxMeasure.tracker.b.b$a: com.foresee.sdk.cxMeasure.tracker.b.b$a SERVER_ERROR>;
+
+        return r11;
+
+     label12:
+        $i0 = virtualinvoke $r5.<android.graphics.Bitmap: int getWidth()>();
+
+     label13:
+        $r6 = <com.foresee.sdk.common.b$a: com.foresee.sdk.common.b$a INFO>;
+
+        $r7 = <com.foresee.sdk.cxMeasure.tracker.logging.LogTags: java.lang.String TRIGGER_CODE>;
+
+        $r1 = newarray (java.lang.Object)[1];
+
+     label14:
+        $r8 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+     label15:
+        $r1[0] = $r8;
+
+     label16:
+        $r9 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Validation returned with width = %d", $r1);
+
+        staticinvoke <com.foresee.sdk.common.b: void b(com.foresee.sdk.common.b$a,java.lang.String,java.lang.String)>($r6, $r7, $r9);
+
+     label17:
+        if $i0 == 1 goto label20;
+
+        if $i0 == 2 goto label19;
+
+        if $i0 == 3 goto label18;
+
+        goto label22;
+
+     label18:
+        r11 = <com.foresee.sdk.cxMeasure.tracker.b.b$a: com.foresee.sdk.cxMeasure.tracker.b.b$a INVALID_FORMAT>;
+
+        return r11;
+
+     label19:
+        r11 = <com.foresee.sdk.cxMeasure.tracker.b.b$a: com.foresee.sdk.cxMeasure.tracker.b.b$a REQUIRED_FIELD>;
+
+        return r11;
+
+     label20:
+        r11 = <com.foresee.sdk.cxMeasure.tracker.b.b$a: com.foresee.sdk.cxMeasure.tracker.b.b$a VALID>;
+
+        return r11;
+
+     label21:
+        $r10 := @caughtexception;
+
+        virtualinvoke $r10.<java.io.IOException: void printStackTrace()>();
+
+     label22:
+        r11 = <com.foresee.sdk.cxMeasure.tracker.b.b$a: com.foresee.sdk.cxMeasure.tracker.b.b$a UNKNOWN>;
+
+        return r11;
+
+        catch java.io.IOException from label01 to label02 with label21;
+        catch java.io.IOException from label04 to label05 with label21;
+        catch java.io.IOException from label06 to label07 with label21;
+        catch java.io.IOException from label08 to label09 with label21;
+        catch java.io.IOException from label10 to label11 with label21;
+        catch java.io.IOException from label12 to label13 with label21;
+        catch java.io.IOException from label14 to label15 with label21;
+        catch java.io.IOException from label16 to label17 with label21;
+    }
+
+    public java.lang.Object processResponse(java.io.InputStream, int)
+    {
+        com.foresee.sdk.cxMeasure.tracker.services.a$1 r0;
+        int $i0;
+        com.foresee.sdk.cxMeasure.tracker.b.b$a $r1;
+        java.io.InputStream $r2;
+
+        r0 := @this: com.foresee.sdk.cxMeasure.tracker.services.a$1;
+
+        $r2 := @parameter0: java.io.InputStream;
+
+        $i0 := @parameter1: int;
+
+        $r1 = virtualinvoke r0.<com.foresee.sdk.cxMeasure.tracker.services.a$1: com.foresee.sdk.cxMeasure.tracker.b.b$a a(java.io.InputStream,int)>($r2, $i0);
+
+        return $r1;
+    }
+}

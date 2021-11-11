@@ -1,0 +1,518 @@
+public class com.google.common.util.concurrent.CycleDetectingLockFactory extends java.lang.Object
+{
+    public static final java.lang.ThreadLocal acquiredLocks;
+    public static final java.util.concurrent.ConcurrentMap lockGraphNodesPerType;
+    public static final java.util.logging.Logger logger;
+    public final com.google.common.util.concurrent.CycleDetectingLockFactory$Policy policy;
+
+    static void <clinit>()
+    {
+        java.lang.Class $r2;
+        java.lang.String $r3;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$1 $r5;
+        com.google.common.collect.MapMaker $r0;
+        java.util.logging.Logger $r4;
+        java.util.concurrent.ConcurrentMap $r1;
+
+        $r0 = new com.google.common.collect.MapMaker;
+
+        specialinvoke $r0.<com.google.common.collect.MapMaker: void <init>()>();
+
+        $r0 = virtualinvoke $r0.<com.google.common.collect.MapMaker: com.google.common.collect.MapMaker weakKeys()>();
+
+        $r1 = virtualinvoke $r0.<com.google.common.collect.MapMaker: java.util.concurrent.ConcurrentMap makeMap()>();
+
+        <com.google.common.util.concurrent.CycleDetectingLockFactory: java.util.concurrent.ConcurrentMap lockGraphNodesPerType> = $r1;
+
+        $r2 = class "Lcom/google/common/util/concurrent/CycleDetectingLockFactory;";
+
+        $r3 = virtualinvoke $r2.<java.lang.Class: java.lang.String getName()>();
+
+        $r4 = staticinvoke <java.util.logging.Logger: java.util.logging.Logger getLogger(java.lang.String)>($r3);
+
+        <com.google.common.util.concurrent.CycleDetectingLockFactory: java.util.logging.Logger logger> = $r4;
+
+        $r5 = new com.google.common.util.concurrent.CycleDetectingLockFactory$1;
+
+        specialinvoke $r5.<com.google.common.util.concurrent.CycleDetectingLockFactory$1: void <init>()>();
+
+        <com.google.common.util.concurrent.CycleDetectingLockFactory: java.lang.ThreadLocal acquiredLocks> = $r5;
+
+        return;
+    }
+
+    public void <init>(com.google.common.util.concurrent.CycleDetectingLockFactory$Policy)
+    {
+        com.google.common.util.concurrent.CycleDetectingLockFactory r0;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$Policy $r1;
+
+        r0 := @this: com.google.common.util.concurrent.CycleDetectingLockFactory;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.CycleDetectingLockFactory$Policy;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        r0.<com.google.common.util.concurrent.CycleDetectingLockFactory: com.google.common.util.concurrent.CycleDetectingLockFactory$Policy policy> = $r1;
+
+        return;
+    }
+
+    public void <init>(com.google.common.util.concurrent.CycleDetectingLockFactory$Policy, com.google.common.util.concurrent.CycleDetectingLockFactory$1)
+    {
+        com.google.common.util.concurrent.CycleDetectingLockFactory$1 $r2;
+        com.google.common.util.concurrent.CycleDetectingLockFactory r0;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$Policy $r1;
+
+        r0 := @this: com.google.common.util.concurrent.CycleDetectingLockFactory;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.CycleDetectingLockFactory$Policy;
+
+        $r2 := @parameter1: com.google.common.util.concurrent.CycleDetectingLockFactory$1;
+
+        specialinvoke r0.<com.google.common.util.concurrent.CycleDetectingLockFactory: void <init>(com.google.common.util.concurrent.CycleDetectingLockFactory$Policy)>($r1);
+
+        return;
+    }
+
+    private void aboutToAcquire(com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock)
+    {
+        java.lang.ThreadLocal $r3;
+        com.google.common.util.concurrent.CycleDetectingLockFactory r0;
+        java.util.ArrayList $r5;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode $r6;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$Policy $r1;
+        java.lang.Object $r4;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.CycleDetectingLockFactory;
+
+        $r2 := @parameter0: com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock;
+
+        $z0 = interfaceinvoke $r2.<com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock: boolean isAcquiredByCurrentThread()>();
+
+        if $z0 != 0 goto label1;
+
+        $r3 = <com.google.common.util.concurrent.CycleDetectingLockFactory: java.lang.ThreadLocal acquiredLocks>;
+
+        $r4 = virtualinvoke $r3.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        $r5 = (java.util.ArrayList) $r4;
+
+        $r6 = interfaceinvoke $r2.<com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock: com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode getLockGraphNode()>();
+
+        $r1 = r0.<com.google.common.util.concurrent.CycleDetectingLockFactory: com.google.common.util.concurrent.CycleDetectingLockFactory$Policy policy>;
+
+        virtualinvoke $r6.<com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode: void checkAcquiredLocks(com.google.common.util.concurrent.CycleDetectingLockFactory$Policy,java.util.List)>($r1, $r5);
+
+        virtualinvoke $r5.<java.util.ArrayList: boolean add(java.lang.Object)>($r6);
+
+     label1:
+        return;
+    }
+
+    public static java.util.logging.Logger access$100()
+    {
+        java.util.logging.Logger r0;
+
+        r0 = <com.google.common.util.concurrent.CycleDetectingLockFactory: java.util.logging.Logger logger>;
+
+        return r0;
+    }
+
+    public static void access$600(com.google.common.util.concurrent.CycleDetectingLockFactory, com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock)
+    {
+        com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock $r1;
+        com.google.common.util.concurrent.CycleDetectingLockFactory $r0;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.CycleDetectingLockFactory;
+
+        $r1 := @parameter1: com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock;
+
+        specialinvoke $r0.<com.google.common.util.concurrent.CycleDetectingLockFactory: void aboutToAcquire(com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock)>($r1);
+
+        return;
+    }
+
+    public static void access$700(com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock)
+    {
+        com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock $r0;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock;
+
+        staticinvoke <com.google.common.util.concurrent.CycleDetectingLockFactory: void lockStateChanged(com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock)>($r0);
+
+        return;
+    }
+
+    public static java.util.Map createNodes(java.lang.Class)
+    {
+        java.lang.Object[] $r3;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$Policies $r9;
+        java.util.ArrayList $r5;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode $r0, $r12;
+        java.lang.Enum $r6;
+        java.util.Map $r11;
+        int $i0, $i1, $i2, $i3;
+        java.lang.String $r7;
+        java.util.EnumMap $r2;
+        java.util.List $r10;
+        java.lang.Enum[] $r4;
+        java.lang.Class $r1;
+        java.lang.Object $r8;
+
+        $r1 := @parameter0: java.lang.Class;
+
+        $r2 = staticinvoke <com.google.common.collect.Maps: java.util.EnumMap newEnumMap(java.lang.Class)>($r1);
+
+        $r3 = virtualinvoke $r1.<java.lang.Class: java.lang.Object[] getEnumConstants()>();
+
+        $r4 = (java.lang.Enum[]) $r3;
+
+        $i0 = lengthof $r4;
+
+        $r5 = staticinvoke <com.google.common.collect.Lists: java.util.ArrayList newArrayListWithCapacity(int)>($i0);
+
+        $i1 = lengthof $r4;
+
+        $i2 = 0;
+
+        $i3 = 0;
+
+     label1:
+        if $i3 >= $i1 goto label2;
+
+        $r6 = $r4[$i3];
+
+        $r12 = new com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode;
+
+        $r0 = $r12;
+
+        $r7 = staticinvoke <com.google.common.util.concurrent.CycleDetectingLockFactory: java.lang.String getLockName(java.lang.Enum)>($r6);
+
+        specialinvoke $r12.<com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode: void <init>(java.lang.String)>($r7);
+
+        virtualinvoke $r5.<java.util.ArrayList: boolean add(java.lang.Object)>($r0);
+
+        virtualinvoke $r2.<java.util.EnumMap: java.lang.Object put(java.lang.Enum,java.lang.Object)>($r6, $r0);
+
+        $i3 = $i3 + 1;
+
+        goto label1;
+
+     label2:
+        $i1 = 1;
+
+     label3:
+        if $i1 >= $i0 goto label4;
+
+        $r8 = virtualinvoke $r5.<java.util.ArrayList: java.lang.Object get(int)>($i1);
+
+        $r0 = (com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode) $r8;
+
+        $r9 = <com.google.common.util.concurrent.CycleDetectingLockFactory$Policies: com.google.common.util.concurrent.CycleDetectingLockFactory$Policies THROW>;
+
+        $r10 = virtualinvoke $r5.<java.util.ArrayList: java.util.List subList(int,int)>(0, $i1);
+
+        virtualinvoke $r0.<com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode: void checkAcquiredLocks(com.google.common.util.concurrent.CycleDetectingLockFactory$Policy,java.util.List)>($r9, $r10);
+
+        $i1 = $i1 + 1;
+
+        goto label3;
+
+     label4:
+        $i1 = -1;
+
+        $i1 = $i0 + $i1;
+
+        if $i2 >= $i1 goto label5;
+
+        $r8 = virtualinvoke $r5.<java.util.ArrayList: java.lang.Object get(int)>($i2);
+
+        $r0 = (com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode) $r8;
+
+        $r9 = <com.google.common.util.concurrent.CycleDetectingLockFactory$Policies: com.google.common.util.concurrent.CycleDetectingLockFactory$Policies DISABLED>;
+
+        $i2 = $i2 + 1;
+
+        $r10 = virtualinvoke $r5.<java.util.ArrayList: java.util.List subList(int,int)>($i2, $i0);
+
+        virtualinvoke $r0.<com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode: void checkAcquiredLocks(com.google.common.util.concurrent.CycleDetectingLockFactory$Policy,java.util.List)>($r9, $r10);
+
+        goto label4;
+
+     label5:
+        $r11 = staticinvoke <java.util.Collections: java.util.Map unmodifiableMap(java.util.Map)>($r2);
+
+        return $r11;
+    }
+
+    public static java.lang.String getLockName(java.lang.Enum)
+    {
+        java.lang.Enum $r1;
+        java.lang.StringBuilder $r0;
+        java.lang.Class $r2;
+        java.lang.String $r3;
+
+        $r1 := @parameter0: java.lang.Enum;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.lang.Enum: java.lang.Class getDeclaringClass()>();
+
+        $r3 = virtualinvoke $r2.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".");
+
+        $r3 = virtualinvoke $r1.<java.lang.Enum: java.lang.String name()>();
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r3;
+    }
+
+    public static java.util.Map getOrCreateNodes(java.lang.Class)
+    {
+        java.util.Map $r3, $r4;
+        java.lang.Class $r1;
+        java.lang.Object $r2;
+        java.util.concurrent.ConcurrentMap $r0;
+
+        $r1 := @parameter0: java.lang.Class;
+
+        $r0 = <com.google.common.util.concurrent.CycleDetectingLockFactory: java.util.concurrent.ConcurrentMap lockGraphNodesPerType>;
+
+        $r2 = interfaceinvoke $r0.<java.util.concurrent.ConcurrentMap: java.lang.Object get(java.lang.Object)>($r1);
+
+        $r3 = (java.util.Map) $r2;
+
+        if $r3 == null goto label1;
+
+        return $r3;
+
+     label1:
+        $r3 = staticinvoke <com.google.common.util.concurrent.CycleDetectingLockFactory: java.util.Map createNodes(java.lang.Class)>($r1);
+
+        $r0 = <com.google.common.util.concurrent.CycleDetectingLockFactory: java.util.concurrent.ConcurrentMap lockGraphNodesPerType>;
+
+        $r2 = interfaceinvoke $r0.<java.util.concurrent.ConcurrentMap: java.lang.Object putIfAbsent(java.lang.Object,java.lang.Object)>($r1, $r3);
+
+        $r4 = (java.util.Map) $r2;
+
+        $r2 = staticinvoke <com.google.common.base.MoreObjects: java.lang.Object firstNonNull(java.lang.Object,java.lang.Object)>($r4, $r3);
+
+        $r3 = (java.util.Map) $r2;
+
+        return $r3;
+    }
+
+    public static void lockStateChanged(com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock)
+    {
+        java.lang.ThreadLocal $r1;
+        java.util.ArrayList $r3;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode $r4;
+        int $i0, $i1;
+        java.lang.Object $r2;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock;
+
+        $z0 = interfaceinvoke $r0.<com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock: boolean isAcquiredByCurrentThread()>();
+
+        if $z0 != 0 goto label3;
+
+        $r1 = <com.google.common.util.concurrent.CycleDetectingLockFactory: java.lang.ThreadLocal acquiredLocks>;
+
+        $r2 = virtualinvoke $r1.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        $r3 = (java.util.ArrayList) $r2;
+
+        $r4 = interfaceinvoke $r0.<com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingLock: com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode getLockGraphNode()>();
+
+        $i0 = virtualinvoke $r3.<java.util.ArrayList: int size()>();
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+     label1:
+        if $i0 < 0 goto label3;
+
+        $r2 = virtualinvoke $r3.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        if $r2 != $r4 goto label2;
+
+        virtualinvoke $r3.<java.util.ArrayList: java.lang.Object remove(int)>($i0);
+
+        return;
+
+     label2:
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    public static com.google.common.util.concurrent.CycleDetectingLockFactory newInstance(com.google.common.util.concurrent.CycleDetectingLockFactory$Policy)
+    {
+        com.google.common.util.concurrent.CycleDetectingLockFactory $r1;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$Policy $r0;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.CycleDetectingLockFactory$Policy;
+
+        $r1 = new com.google.common.util.concurrent.CycleDetectingLockFactory;
+
+        specialinvoke $r1.<com.google.common.util.concurrent.CycleDetectingLockFactory: void <init>(com.google.common.util.concurrent.CycleDetectingLockFactory$Policy)>($r0);
+
+        return $r1;
+    }
+
+    public static com.google.common.util.concurrent.CycleDetectingLockFactory$WithExplicitOrdering newInstanceWithExplicitOrdering(java.lang.Class, com.google.common.util.concurrent.CycleDetectingLockFactory$Policy)
+    {
+        com.google.common.util.concurrent.CycleDetectingLockFactory$WithExplicitOrdering $r1;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$Policy $r0;
+        java.util.Map $r2;
+        java.lang.Class $r3;
+
+        $r3 := @parameter0: java.lang.Class;
+
+        $r0 := @parameter1: com.google.common.util.concurrent.CycleDetectingLockFactory$Policy;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r3);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r0);
+
+        $r2 = staticinvoke <com.google.common.util.concurrent.CycleDetectingLockFactory: java.util.Map getOrCreateNodes(java.lang.Class)>($r3);
+
+        $r1 = new com.google.common.util.concurrent.CycleDetectingLockFactory$WithExplicitOrdering;
+
+        specialinvoke $r1.<com.google.common.util.concurrent.CycleDetectingLockFactory$WithExplicitOrdering: void <init>(com.google.common.util.concurrent.CycleDetectingLockFactory$Policy,java.util.Map)>($r0, $r2);
+
+        return $r1;
+    }
+
+    public java.util.concurrent.locks.ReentrantLock newReentrantLock(java.lang.String)
+    {
+        java.lang.String $r2;
+        java.util.concurrent.locks.ReentrantLock $r1;
+        com.google.common.util.concurrent.CycleDetectingLockFactory r0;
+
+        r0 := @this: com.google.common.util.concurrent.CycleDetectingLockFactory;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r1 = virtualinvoke r0.<com.google.common.util.concurrent.CycleDetectingLockFactory: java.util.concurrent.locks.ReentrantLock newReentrantLock(java.lang.String,boolean)>($r2, 0);
+
+        return $r1;
+    }
+
+    public java.util.concurrent.locks.ReentrantLock newReentrantLock(java.lang.String, boolean)
+    {
+        java.util.concurrent.locks.ReentrantLock $r4;
+        com.google.common.util.concurrent.CycleDetectingLockFactory r0;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingReentrantLock $r5;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$Policies $r3;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode $r6;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$Policy $r2;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.CycleDetectingLockFactory;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $z0 := @parameter1: boolean;
+
+        $r2 = r0.<com.google.common.util.concurrent.CycleDetectingLockFactory: com.google.common.util.concurrent.CycleDetectingLockFactory$Policy policy>;
+
+        $r3 = <com.google.common.util.concurrent.CycleDetectingLockFactory$Policies: com.google.common.util.concurrent.CycleDetectingLockFactory$Policies DISABLED>;
+
+        if $r2 != $r3 goto label1;
+
+        $r4 = new java.util.concurrent.locks.ReentrantLock;
+
+        specialinvoke $r4.<java.util.concurrent.locks.ReentrantLock: void <init>(boolean)>($z0);
+
+        return $r4;
+
+     label1:
+        $r5 = new com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingReentrantLock;
+
+        $r6 = new com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode;
+
+        specialinvoke $r6.<com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode: void <init>(java.lang.String)>($r1);
+
+        specialinvoke $r5.<com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingReentrantLock: void <init>(com.google.common.util.concurrent.CycleDetectingLockFactory,com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode,boolean,com.google.common.util.concurrent.CycleDetectingLockFactory$1)>(r0, $r6, $z0, null);
+
+        return $r5;
+    }
+
+    public java.util.concurrent.locks.ReentrantReadWriteLock newReentrantReadWriteLock(java.lang.String)
+    {
+        java.util.concurrent.locks.ReentrantReadWriteLock $r1;
+        java.lang.String $r2;
+        com.google.common.util.concurrent.CycleDetectingLockFactory r0;
+
+        r0 := @this: com.google.common.util.concurrent.CycleDetectingLockFactory;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r1 = virtualinvoke r0.<com.google.common.util.concurrent.CycleDetectingLockFactory: java.util.concurrent.locks.ReentrantReadWriteLock newReentrantReadWriteLock(java.lang.String,boolean)>($r2, 0);
+
+        return $r1;
+    }
+
+    public java.util.concurrent.locks.ReentrantReadWriteLock newReentrantReadWriteLock(java.lang.String, boolean)
+    {
+        com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingReentrantReadWriteLock $r5;
+        com.google.common.util.concurrent.CycleDetectingLockFactory r0;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$Policies $r3;
+        java.util.concurrent.locks.ReentrantReadWriteLock $r4;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode $r6;
+        com.google.common.util.concurrent.CycleDetectingLockFactory$Policy $r2;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.CycleDetectingLockFactory;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $z0 := @parameter1: boolean;
+
+        $r2 = r0.<com.google.common.util.concurrent.CycleDetectingLockFactory: com.google.common.util.concurrent.CycleDetectingLockFactory$Policy policy>;
+
+        $r3 = <com.google.common.util.concurrent.CycleDetectingLockFactory$Policies: com.google.common.util.concurrent.CycleDetectingLockFactory$Policies DISABLED>;
+
+        if $r2 != $r3 goto label1;
+
+        $r4 = new java.util.concurrent.locks.ReentrantReadWriteLock;
+
+        specialinvoke $r4.<java.util.concurrent.locks.ReentrantReadWriteLock: void <init>(boolean)>($z0);
+
+        return $r4;
+
+     label1:
+        $r5 = new com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingReentrantReadWriteLock;
+
+        $r6 = new com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode;
+
+        specialinvoke $r6.<com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode: void <init>(java.lang.String)>($r1);
+
+        specialinvoke $r5.<com.google.common.util.concurrent.CycleDetectingLockFactory$CycleDetectingReentrantReadWriteLock: void <init>(com.google.common.util.concurrent.CycleDetectingLockFactory,com.google.common.util.concurrent.CycleDetectingLockFactory$LockGraphNode,boolean,com.google.common.util.concurrent.CycleDetectingLockFactory$1)>(r0, $r6, $z0, null);
+
+        return $r5;
+    }
+}

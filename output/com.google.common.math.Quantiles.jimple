@@ -1,0 +1,717 @@
+public final class com.google.common.math.Quantiles extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        com.google.common.math.Quantiles r0;
+
+        r0 := @this: com.google.common.math.Quantiles;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void access$300(int, int)
+    {
+        int $i0, $i1;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        staticinvoke <com.google.common.math.Quantiles: void checkIndex(int,int)>($i0, $i1);
+
+        return;
+    }
+
+    public static double[] access$400(long[])
+    {
+        double[] $r0;
+        long[] $r1;
+
+        $r1 := @parameter0: long[];
+
+        $r0 = staticinvoke <com.google.common.math.Quantiles: double[] longsToDoubles(long[])>($r1);
+
+        return $r0;
+    }
+
+    public static double[] access$500(int[])
+    {
+        double[] $r0;
+        int[] $r1;
+
+        $r1 := @parameter0: int[];
+
+        $r0 = staticinvoke <com.google.common.math.Quantiles: double[] intsToDoubles(int[])>($r1);
+
+        return $r0;
+    }
+
+    public static boolean access$600(double[])
+    {
+        double[] $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: double[];
+
+        $z0 = staticinvoke <com.google.common.math.Quantiles: boolean containsNaN(double[])>($r0);
+
+        return $z0;
+    }
+
+    public static void access$700(int, double[], int, int)
+    {
+        int $i0, $i1, $i2;
+        double[] $r0;
+
+        $i0 := @parameter0: int;
+
+        $r0 := @parameter1: double[];
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        staticinvoke <com.google.common.math.Quantiles: void selectInPlace(int,double[],int,int)>($i0, $r0, $i1, $i2);
+
+        return;
+    }
+
+    public static double access$800(double, double, double, double)
+    {
+        double $d0, $d1, $d2, $d3;
+
+        $d3 := @parameter0: double;
+
+        $d0 := @parameter1: double;
+
+        $d1 := @parameter2: double;
+
+        $d2 := @parameter3: double;
+
+        $d3 = staticinvoke <com.google.common.math.Quantiles: double interpolate(double,double,double,double)>($d3, $d0, $d1, $d2);
+
+        return $d3;
+    }
+
+    public static void access$900(int[], int, int, double[], int, int)
+    {
+        int[] $r0;
+        int $i0, $i1, $i2, $i3;
+        double[] $r1;
+
+        $r0 := @parameter0: int[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r1 := @parameter3: double[];
+
+        $i2 := @parameter4: int;
+
+        $i3 := @parameter5: int;
+
+        staticinvoke <com.google.common.math.Quantiles: void selectAllInPlace(int[],int,int,double[],int,int)>($r0, $i0, $i1, $r1, $i2, $i3);
+
+        return;
+    }
+
+    public static void checkIndex(int, int)
+    {
+        int $i0, $i1;
+        java.lang.StringBuilder $r0;
+        java.lang.String $r1;
+        java.lang.IllegalArgumentException $r2;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        if $i0 < 0 goto label1;
+
+        if $i0 > $i1 goto label1;
+
+        return;
+
+     label1:
+        $r2 = new java.lang.IllegalArgumentException;
+
+        $r0 = new java.lang.StringBuilder;
+
+        specialinvoke $r0.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Quantile indexes must be between 0 and the scale, which is ");
+
+        virtualinvoke $r0.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r1 = virtualinvoke $r0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r1);
+
+        throw $r2;
+    }
+
+    public static int chooseNextSelection(int[], int, int, int, int)
+    {
+        int[] $r0;
+        int $i0, $i1, $i2, $i3, $i4, $i5;
+
+        $r0 := @parameter0: int[];
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $i3 := @parameter3: int;
+
+        $i4 := @parameter4: int;
+
+        if $i1 != $i2 goto label1;
+
+        return $i1;
+
+     label1:
+        $i3 = $i3 + $i4;
+
+        $i4 = $i3 >>> 1;
+
+     label2:
+        $i5 = $i1 + 1;
+
+        if $i2 <= $i5 goto label5;
+
+        $i5 = $i1 + $i2;
+
+        $i5 = $i5 >>> 1;
+
+        $i0 = $r0[$i5];
+
+        if $i0 <= $i4 goto label3;
+
+        $i2 = $i5;
+
+        goto label2;
+
+     label3:
+        $i1 = $r0[$i5];
+
+        if $i1 >= $i4 goto label4;
+
+        $i1 = $i5;
+
+        goto label2;
+
+     label4:
+        return $i5;
+
+     label5:
+        $i4 = $r0[$i1];
+
+        $i3 = $i3 - $i4;
+
+        $i4 = $r0[$i2];
+
+        $i3 = $i3 - $i4;
+
+        if $i3 <= 0 goto label6;
+
+        return $i2;
+
+     label6:
+        return $i1;
+    }
+
+    public static transient boolean containsNaN(double[])
+    {
+        int $i0, $i1;
+        double[] $r0;
+        boolean $z0;
+        double $d0;
+
+        $r0 := @parameter0: double[];
+
+        $i0 = lengthof $r0;
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label3;
+
+        $d0 = $r0[$i1];
+
+        $z0 = staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        if $z0 == 0 goto label2;
+
+        return 1;
+
+     label2:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label3:
+        return 0;
+    }
+
+    public static double interpolate(double, double, double, double)
+    {
+        byte $b0;
+        double $d0, $d1, $d2, $d3;
+
+        $d2 := @parameter0: double;
+
+        $d3 := @parameter1: double;
+
+        $d0 := @parameter2: double;
+
+        $d1 := @parameter3: double;
+
+        $b0 = $d2 cmpl #-Infinity;
+
+        if $b0 != 0 goto label2;
+
+        $b0 = $d3 cmpl #Infinity;
+
+        if $b0 != 0 goto label1;
+
+        return #NaN;
+
+     label1:
+        return #-Infinity;
+
+     label2:
+        $b0 = $d3 cmpl #Infinity;
+
+        if $b0 != 0 goto label3;
+
+        return #Infinity;
+
+     label3:
+        $d3 = $d3 - $d2;
+
+        $d3 = $d3 * $d0;
+
+        $d3 = $d3 / $d1;
+
+        $d2 = $d2 + $d3;
+
+        return $d2;
+    }
+
+    public static double[] intsToDoubles(int[])
+    {
+        int[] $r0;
+        int $i0, $i1, $i2;
+        double[] $r1;
+        double $d0;
+
+        $r0 := @parameter0: int[];
+
+        $i0 = lengthof $r0;
+
+        $r1 = newarray (double)[$i0];
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label2;
+
+        $i2 = $r0[$i1];
+
+        $d0 = (double) $i2;
+
+        $r1[$i1] = $d0;
+
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label2:
+        return $r1;
+    }
+
+    public static double[] longsToDoubles(long[])
+    {
+        long[] $r0;
+        int $i0, $i1;
+        double[] $r1;
+        long $l2;
+        double $d0;
+
+        $r0 := @parameter0: long[];
+
+        $i0 = lengthof $r0;
+
+        $r1 = newarray (double)[$i0];
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label2;
+
+        $l2 = $r0[$i1];
+
+        $d0 = (double) $l2;
+
+        $r1[$i1] = $d0;
+
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label2:
+        return $r1;
+    }
+
+    public static com.google.common.math.Quantiles$ScaleAndIndex median()
+    {
+        com.google.common.math.Quantiles$ScaleAndIndex $r1;
+        com.google.common.math.Quantiles$Scale $r0;
+
+        $r0 = staticinvoke <com.google.common.math.Quantiles: com.google.common.math.Quantiles$Scale scale(int)>(2);
+
+        $r1 = virtualinvoke $r0.<com.google.common.math.Quantiles$Scale: com.google.common.math.Quantiles$ScaleAndIndex index(int)>(1);
+
+        return $r1;
+    }
+
+    public static void movePivotToStartOfSlice(double[], int, int)
+    {
+        double[] $r0;
+        byte $b2;
+        int $i0, $i1, $i3, $i4;
+        boolean $z0, $z1, $z2;
+        double $d0, $d1;
+
+        $r0 := @parameter0: double[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i3 = $i0 + $i1;
+
+        $z0 = 1;
+
+        $i3 = $i3 >>> 1;
+
+        $d0 = $r0[$i1];
+
+        $d1 = $r0[$i3];
+
+        $b2 = $d0 cmpg $d1;
+
+        $i4 = (int) $b2;
+
+        if $i4 >= 0 goto label1;
+
+        $z1 = 1;
+
+        goto label2;
+
+     label1:
+        $z1 = 0;
+
+     label2:
+        $d0 = $r0[$i3];
+
+        $d1 = $r0[$i0];
+
+        $b2 = $d0 cmpg $d1;
+
+        $i4 = (int) $b2;
+
+        if $i4 >= 0 goto label3;
+
+        $z2 = 1;
+
+        goto label4;
+
+     label3:
+        $z2 = 0;
+
+     label4:
+        $d0 = $r0[$i1];
+
+        $d1 = $r0[$i0];
+
+        $b2 = $d0 cmpg $d1;
+
+        $i4 = (int) $b2;
+
+        if $i4 >= 0 goto label5;
+
+        goto label6;
+
+     label5:
+        $z0 = 0;
+
+     label6:
+        if $z1 != $z2 goto label7;
+
+        staticinvoke <com.google.common.math.Quantiles: void swap(double[],int,int)>($r0, $i3, $i0);
+
+        return;
+
+     label7:
+        if $z1 == $z0 goto label8;
+
+        staticinvoke <com.google.common.math.Quantiles: void swap(double[],int,int)>($r0, $i0, $i1);
+
+     label8:
+        return;
+    }
+
+    public static int partition(double[], int, int)
+    {
+        double[] $r0;
+        byte $b1;
+        int $i0, $i2, $i3, $i4;
+        double $d0, $d1;
+
+        $r0 := @parameter0: double[];
+
+        $i0 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        staticinvoke <com.google.common.math.Quantiles: void movePivotToStartOfSlice(double[],int,int)>($r0, $i0, $i2);
+
+        $d0 = $r0[$i0];
+
+        $i3 = $i2;
+
+     label1:
+        if $i2 <= $i0 goto label3;
+
+        $d1 = $r0[$i2];
+
+        $b1 = $d1 cmpl $d0;
+
+        $i4 = (int) $b1;
+
+        if $i4 <= 0 goto label2;
+
+        staticinvoke <com.google.common.math.Quantiles: void swap(double[],int,int)>($r0, $i3, $i2);
+
+        $i4 = -1;
+
+        $i3 = $i3 + $i4;
+
+     label2:
+        $i4 = -1;
+
+        $i2 = $i2 + $i4;
+
+        goto label1;
+
+     label3:
+        staticinvoke <com.google.common.math.Quantiles: void swap(double[],int,int)>($r0, $i0, $i3);
+
+        return $i3;
+    }
+
+    public static com.google.common.math.Quantiles$Scale percentiles()
+    {
+        com.google.common.math.Quantiles$Scale $r0;
+
+        $r0 = staticinvoke <com.google.common.math.Quantiles: com.google.common.math.Quantiles$Scale scale(int)>(100);
+
+        return $r0;
+    }
+
+    public static com.google.common.math.Quantiles$Scale quartiles()
+    {
+        com.google.common.math.Quantiles$Scale $r0;
+
+        $r0 = staticinvoke <com.google.common.math.Quantiles: com.google.common.math.Quantiles$Scale scale(int)>(4);
+
+        return $r0;
+    }
+
+    public static com.google.common.math.Quantiles$Scale scale(int)
+    {
+        int $i0;
+        com.google.common.math.Quantiles$Scale $r0;
+
+        $i0 := @parameter0: int;
+
+        $r0 = new com.google.common.math.Quantiles$Scale;
+
+        specialinvoke $r0.<com.google.common.math.Quantiles$Scale: void <init>(int,com.google.common.math.Quantiles$1)>($i0, null);
+
+        return $r0;
+    }
+
+    public static void selectAllInPlace(int[], int, int, double[], int, int)
+    {
+        double[] $r1;
+        int[] $r0;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7;
+
+        $r0 := @parameter0: int[];
+
+        $i6 := @parameter1: int;
+
+        $i0 := @parameter2: int;
+
+        $r1 := @parameter3: double[];
+
+        $i1 := @parameter4: int;
+
+        $i2 := @parameter5: int;
+
+        $i5 = staticinvoke <com.google.common.math.Quantiles: int chooseNextSelection(int[],int,int,int,int)>($r0, $i6, $i0, $i1, $i2);
+
+        $i3 = $r0[$i5];
+
+        staticinvoke <com.google.common.math.Quantiles: void selectInPlace(int,double[],int,int)>($i3, $r1, $i1, $i2);
+
+        $i7 = -1;
+
+        $i7 = $i5 + $i7;
+
+     label1:
+        if $i7 < $i6 goto label2;
+
+        $i4 = $r0[$i7];
+
+        if $i4 != $i3 goto label2;
+
+        $i4 = -1;
+
+        $i7 = $i7 + $i4;
+
+        goto label1;
+
+     label2:
+        if $i7 < $i6 goto label3;
+
+        $i4 = -1;
+
+        $i4 = $i3 + $i4;
+
+        staticinvoke <com.google.common.math.Quantiles: void selectAllInPlace(int[],int,int,double[],int,int)>($r0, $i6, $i7, $r1, $i1, $i4);
+
+     label3:
+        $i6 = $i5 + 1;
+
+     label4:
+        if $i6 > $i0 goto label5;
+
+        $i1 = $r0[$i6];
+
+        if $i1 != $i3 goto label5;
+
+        $i6 = $i6 + 1;
+
+        goto label4;
+
+     label5:
+        if $i6 > $i0 goto label6;
+
+        $i1 = $i3 + 1;
+
+        staticinvoke <com.google.common.math.Quantiles: void selectAllInPlace(int[],int,int,double[],int,int)>($r0, $i6, $i0, $r1, $i1, $i2);
+
+     label6:
+        return;
+    }
+
+    public static void selectInPlace(int, double[], int, int)
+    {
+        double[] $r0;
+        byte $b0;
+        int $i1, $i2, $i3, $i4, $i5;
+        double $d0, $d1;
+
+        $i2 := @parameter0: int;
+
+        $r0 := @parameter1: double[];
+
+        $i3 := @parameter2: int;
+
+        $i4 := @parameter3: int;
+
+        if $i2 != $i3 goto label4;
+
+        $i2 = $i3 + 1;
+
+        $i1 = $i3;
+
+     label1:
+        if $i2 > $i4 goto label3;
+
+        $d0 = $r0[$i1];
+
+        $d1 = $r0[$i2];
+
+        $b0 = $d0 cmpl $d1;
+
+        $i5 = (int) $b0;
+
+        if $i5 <= 0 goto label2;
+
+        $i1 = $i2;
+
+     label2:
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label3:
+        if $i1 == $i3 goto label6;
+
+        staticinvoke <com.google.common.math.Quantiles: void swap(double[],int,int)>($r0, $i1, $i3);
+
+        return;
+
+     label4:
+        if $i4 <= $i3 goto label6;
+
+        $i1 = staticinvoke <com.google.common.math.Quantiles: int partition(double[],int,int)>($r0, $i3, $i4);
+
+        if $i1 < $i2 goto label5;
+
+        $i4 = -1;
+
+        $i4 = $i1 + $i4;
+
+     label5:
+        if $i1 > $i2 goto label4;
+
+        $i3 = $i1 + 1;
+
+        goto label4;
+
+     label6:
+        return;
+    }
+
+    public static void swap(double[], int, int)
+    {
+        double[] $r0;
+        int $i0, $i1;
+        double $d0, $d1;
+
+        $r0 := @parameter0: double[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $d0 = $r0[$i0];
+
+        $d1 = $r0[$i1];
+
+        $r0[$i0] = $d1;
+
+        $r0[$i1] = $d0;
+
+        return;
+    }
+}

@@ -1,0 +1,952 @@
+public class project.android.imageprocessing.filter.colour.ToneCurveFilter extends project.android.imageprocessing.filter.MultiInputFilter
+{
+    public int[] bluePart;
+    public int[] greenPart;
+    public int[] redPart;
+    public int[] splineTexture;
+
+    public void <init>(android.graphics.Point[], android.graphics.Point[], android.graphics.Point[], android.graphics.Point[])
+    {
+        float[] $r5, $r6, $r7, $r8;
+        int[] $r9;
+        android.graphics.Point[] $r1, $r2, $r3, $r4;
+        int $i0, $i1;
+        float $f0, $f1, $f2;
+        project.android.imageprocessing.filter.colour.ToneCurveFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.ToneCurveFilter;
+
+        $r1 := @parameter0: android.graphics.Point[];
+
+        $r2 := @parameter1: android.graphics.Point[];
+
+        $r3 := @parameter2: android.graphics.Point[];
+
+        $r4 := @parameter3: android.graphics.Point[];
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void <init>(int)>(2);
+
+        $r5 = specialinvoke r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: float[] getPreparedSpline(android.graphics.Point[])>($r1);
+
+        $r6 = specialinvoke r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: float[] getPreparedSpline(android.graphics.Point[])>($r3);
+
+        $r7 = specialinvoke r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: float[] getPreparedSpline(android.graphics.Point[])>($r2);
+
+        $r8 = specialinvoke r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: float[] getPreparedSpline(android.graphics.Point[])>($r4);
+
+        $r9 = newarray (int)[256];
+
+        r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: int[] redPart> = $r9;
+
+        $r9 = newarray (int)[256];
+
+        r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: int[] greenPart> = $r9;
+
+        $r9 = newarray (int)[256];
+
+        r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: int[] bluePart> = $r9;
+
+        $i0 = 0;
+
+     label1:
+        if $i0 < 256 goto label2;
+
+        return;
+
+     label2:
+        $r9 = r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: int[] redPart>;
+
+        $f1 = (float) $i0;
+
+        $f0 = $r5[$i0];
+
+        $f0 = $f0 + $f1;
+
+        $f2 = $r8[$i0];
+
+        $f0 = $f0 + $f2;
+
+        $f0 = staticinvoke <java.lang.Math: float max(float,float)>($f0, 0.0F);
+
+        $f0 = staticinvoke <java.lang.Math: float min(float,float)>($f0, 255.0F);
+
+        $i1 = (int) $f0;
+
+        $r9[$i0] = $i1;
+
+        $r9 = r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: int[] greenPart>;
+
+        $f0 = $r7[$i0];
+
+        $f2 = $f0 + $f1;
+
+        $f0 = $r8[$i0];
+
+        $f0 = $f2 + $f0;
+
+        $f0 = staticinvoke <java.lang.Math: float max(float,float)>($f0, 0.0F);
+
+        $f0 = staticinvoke <java.lang.Math: float min(float,float)>($f0, 255.0F);
+
+        $i1 = (int) $f0;
+
+        $r9[$i0] = $i1;
+
+        $r9 = r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: int[] bluePart>;
+
+        $f0 = $r6[$i0];
+
+        $f1 = $f1 + $f0;
+
+        $f0 = $r8[$i0];
+
+        $f1 = $f1 + $f0;
+
+        $f1 = staticinvoke <java.lang.Math: float max(float,float)>($f1, 0.0F);
+
+        $f1 = staticinvoke <java.lang.Math: float min(float,float)>($f1, 255.0F);
+
+        $i1 = (int) $f1;
+
+        $r9[$i0] = $i1;
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+    }
+
+    private void createSplineTexture()
+    {
+        int[] $r1, $r3;
+        java.nio.IntBuffer $r2;
+        int $i0, $i1, $i2, $i3;
+        project.android.imageprocessing.filter.colour.ToneCurveFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.ToneCurveFilter;
+
+        $r1 = newarray (int)[256];
+
+        $i0 = 0;
+
+     label1:
+        if $i0 < 256 goto label2;
+
+        $r3 = newarray (int)[1];
+
+        r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: int[] splineTexture> = $r3;
+
+        $r3 = r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: int[] splineTexture>;
+
+        staticinvoke <android.opengl.GLES20: void glGenTextures(int,int[],int)>(1, $r3, 0);
+
+        $r3 = r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: int[] splineTexture>;
+
+        $i0 = $r3[0];
+
+        staticinvoke <android.opengl.GLES20: void glBindTexture(int,int)>(3553, $i0);
+
+        staticinvoke <android.opengl.GLES20: void glTexParameteri(int,int,int)>(3553, 10241, 9728);
+
+        staticinvoke <android.opengl.GLES20: void glTexParameteri(int,int,int)>(3553, 10240, 9728);
+
+        $r2 = staticinvoke <java.nio.IntBuffer: java.nio.IntBuffer wrap(int[])>($r1);
+
+        staticinvoke <android.opengl.GLES20: void glTexImage2D(int,int,int,int,int,int,int,int,java.nio.Buffer)>(3553, 0, 6408, 256, 1, 0, 6408, 5121, $r2);
+
+        return;
+
+     label2:
+        $r3 = r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: int[] redPart>;
+
+        $i1 = $r3[$i0];
+
+        $i1 = $i1 & 255;
+
+        $r3 = r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: int[] greenPart>;
+
+        $i2 = $r3[$i0];
+
+        $i2 = $i2 << 8;
+
+        $i3 = 65280;
+
+        $i2 = $i2 & $i3;
+
+        $i1 = $i1 | $i2;
+
+        $r3 = r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: int[] bluePart>;
+
+        $i2 = $r3[$i0];
+
+        $i2 = $i2 << 16;
+
+        $i2 = $i2 & 16711680;
+
+        $i1 = $i1 | $i2;
+
+        $i1 = $i1 | -16777216;
+
+        $r1[$i0] = $i1;
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+    }
+
+    private float[] getPreparedSpline(android.graphics.Point[])
+    {
+        android.graphics.Point $r4, $r6, $r8;
+        float[] $r5;
+        java.util.List $r2;
+        int $i0, $i1, $i2;
+        android.graphics.Point[] $r1;
+        float $f0;
+        java.lang.Object $r3;
+        project.android.imageprocessing.filter.colour.ToneCurveFilter r0;
+        project.android.imageprocessing.filter.colour.ToneCurveFilter$1 $r7;
+        double $d0, $d1;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.ToneCurveFilter;
+
+        $r1 := @parameter0: android.graphics.Point[];
+
+        $r7 = new project.android.imageprocessing.filter.colour.ToneCurveFilter$1;
+
+        specialinvoke $r7.<project.android.imageprocessing.filter.colour.ToneCurveFilter$1: void <init>(project.android.imageprocessing.filter.colour.ToneCurveFilter)>(r0);
+
+        staticinvoke <java.util.Arrays: void sort(java.lang.Object[],java.util.Comparator)>($r1, $r7);
+
+        $r2 = specialinvoke r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: java.util.List getSplineCurve(android.graphics.Point[])>($r1);
+
+        $i1 = 0;
+
+        $r3 = interfaceinvoke $r2.<java.util.List: java.lang.Object get(int)>(0);
+
+        $r4 = (android.graphics.Point) $r3;
+
+        $i0 = $r4.<android.graphics.Point: int x>;
+
+        if $i0 <= 0 goto label3;
+
+        $r3 = interfaceinvoke $r2.<java.util.List: java.lang.Object get(int)>(0);
+
+        $r4 = (android.graphics.Point) $r3;
+
+        $i0 = $r4.<android.graphics.Point: int x>;
+
+     label1:
+        if $i0 >= 0 goto label2;
+
+        goto label3;
+
+     label2:
+        $r6 = new android.graphics.Point;
+
+        specialinvoke $r6.<android.graphics.Point: void <init>(int,int)>($i0, 0);
+
+        interfaceinvoke $r2.<java.util.List: void add(int,java.lang.Object)>(0, $r6);
+
+        $i2 = -1;
+
+        $i0 = $i0 + $i2;
+
+        goto label1;
+
+     label3:
+        $i0 = interfaceinvoke $r2.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i0 = $i0 + $i2;
+
+        $r3 = interfaceinvoke $r2.<java.util.List: java.lang.Object get(int)>($i0);
+
+        $r4 = (android.graphics.Point) $r3;
+
+        $i0 = $r4.<android.graphics.Point: int x>;
+
+        if $i0 >= 255 goto label6;
+
+        $i0 = interfaceinvoke $r2.<java.util.List: int size()>();
+
+        $i2 = -1;
+
+        $i0 = $i0 + $i2;
+
+        $r3 = interfaceinvoke $r2.<java.util.List: java.lang.Object get(int)>($i0);
+
+        $r4 = (android.graphics.Point) $r3;
+
+        $i0 = $r4.<android.graphics.Point: int x>;
+
+     label4:
+        if $i0 < 256 goto label5;
+
+        goto label6;
+
+     label5:
+        $r6 = new android.graphics.Point;
+
+        specialinvoke $r6.<android.graphics.Point: void <init>(int,int)>($i0, 255);
+
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r6);
+
+        $i0 = $i0 + 1;
+
+        goto label4;
+
+     label6:
+        $i0 = interfaceinvoke $r2.<java.util.List: int size()>();
+
+        $r5 = newarray (float)[$i0];
+
+     label7:
+        $i0 = interfaceinvoke $r2.<java.util.List: int size()>();
+
+        if $i1 < $i0 goto label8;
+
+        return $r5;
+
+     label8:
+        $r3 = interfaceinvoke $r2.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r4 = (android.graphics.Point) $r3;
+
+        $r8 = new android.graphics.Point;
+
+        $r6 = $r8;
+
+        $i0 = $r4.<android.graphics.Point: int x>;
+
+        specialinvoke $r8.<android.graphics.Point: void <init>(int,int)>($i0, $i0);
+
+        $i2 = $r6.<android.graphics.Point: int x>;
+
+        $i0 = $r4.<android.graphics.Point: int x>;
+
+        $i0 = $i2 - $i0;
+
+        $d0 = (double) $i0;
+
+        $d0 = staticinvoke <java.lang.Math: double pow(double,double)>($d0, 2.0);
+
+        $i2 = $r6.<android.graphics.Point: int y>;
+
+        $i0 = $r4.<android.graphics.Point: int y>;
+
+        $i0 = $i2 - $i0;
+
+        $d1 = (double) $i0;
+
+        $d1 = staticinvoke <java.lang.Math: double pow(double,double)>($d1, 2.0);
+
+        $d0 = $d0 + $d1;
+
+        $d0 = staticinvoke <java.lang.Math: double sqrt(double)>($d0);
+
+        $f0 = (float) $d0;
+
+        $i0 = $r6.<android.graphics.Point: int y>;
+
+        $i2 = $r4.<android.graphics.Point: int y>;
+
+        if $i0 <= $i2 goto label9;
+
+        $f0 = neg $f0;
+
+     label9:
+        $r5[$i1] = $f0;
+
+        $i1 = $i1 + 1;
+
+        goto label7;
+    }
+
+    private java.util.List getSplineCurve(android.graphics.Point[])
+    {
+        double[] $r5;
+        java.util.ArrayList $r2, $r7;
+        byte $b7;
+        android.graphics.Point[] $r1, $r4;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6;
+        project.android.imageprocessing.filter.colour.ToneCurveFilter r0;
+        double $d0, $d1, $d2, $d3, $d4;
+        android.graphics.Point $r3, $r6, $r8;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.ToneCurveFilter;
+
+        $r1 := @parameter0: android.graphics.Point[];
+
+        $r4 = $r1;
+
+        $r5 = specialinvoke r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: double[] secondDerivative(android.graphics.Point[])>($r1);
+
+        $i2 = lengthof $r5;
+
+        if $i2 >= 1 goto label1;
+
+        return null;
+
+     label1:
+        $r7 = new java.util.ArrayList;
+
+        $r2 = $r7;
+
+        $i4 = $i2 + 1;
+
+        specialinvoke $r7.<java.util.ArrayList: void <init>(int)>($i4);
+
+        $i4 = 0;
+
+     label2:
+        $i0 = -1;
+
+        $i0 = $i2 + $i0;
+
+        if $i4 < $i0 goto label3;
+
+        $i4 = interfaceinvoke $r2.<java.util.List: int size()>();
+
+        if $i4 != 255 goto label8;
+
+        $i4 = lengthof $r4;
+
+        $i4 = $i4 - 1;
+
+        $r6 = $r4[$i4];
+
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r6);
+
+        return $r2;
+
+     label3:
+        $r6 = $r4[$i4];
+
+        $i0 = $i4 + 1;
+
+        $r3 = $r4[$i0];
+
+        $i3 = $r6.<android.graphics.Point: int x>;
+
+     label4:
+        $i5 = $r3.<android.graphics.Point: int x>;
+
+        if $i3 < $i5 goto label5;
+
+        $i4 = $i0;
+
+        goto label2;
+
+     label5:
+        $i1 = $r6.<android.graphics.Point: int x>;
+
+        $i6 = $i3 - $i1;
+
+        $d0 = (double) $i6;
+
+        $i6 = $i5 - $i1;
+
+        $d1 = (double) $i6;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d1);
+
+        $d1 = $d0 / $d1;
+
+        $d2 = 1.0 - $d1;
+
+        $i1 = $i5 - $i1;
+
+        $d3 = (double) $i1;
+
+        $i1 = $r6.<android.graphics.Point: int y>;
+
+        $d0 = (double) $i1;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        $d0 = $d0 * $d2;
+
+        $i1 = $r3.<android.graphics.Point: int y>;
+
+        $d4 = (double) $i1;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d4);
+
+        $d4 = $d4 * $d1;
+
+        $d0 = $d0 + $d4;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d3);
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d3);
+
+        $d3 = $d3 * $d3;
+
+        $d3 = $d3 / 6.0;
+
+        $d4 = $d2 * $d2;
+
+        $d4 = $d4 * $d2;
+
+        $d2 = $d4 - $d2;
+
+        $d4 = $r5[$i4];
+
+        $d2 = $d2 * $d4;
+
+        $d4 = $d1 * $d1;
+
+        $d4 = $d4 * $d1;
+
+        $d1 = $d4 - $d1;
+
+        $d4 = $r5[$i0];
+
+        $d1 = $d1 * $d4;
+
+        $d1 = $d2 + $d1;
+
+        $d1 = $d3 * $d1;
+
+        $d0 = $d0 + $d1;
+
+        $b7 = $d0 cmpl 255.0;
+
+        $i1 = (int) $b7;
+
+        if $i1 <= 0 goto label6;
+
+        $d0 = 255.0;
+
+        goto label7;
+
+     label6:
+        $b7 = $d0 cmpg 0.0;
+
+        $i1 = (int) $b7;
+
+        if $i1 >= 0 goto label7;
+
+        $d0 = 0.0;
+
+     label7:
+        $r8 = new android.graphics.Point;
+
+        $i1 = (int) $d0;
+
+        specialinvoke $r8.<android.graphics.Point: void <init>(int,int)>($i3, $i1);
+
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r8);
+
+        $i3 = $i3 + 1;
+
+        $r4 = $r1;
+
+        goto label4;
+
+     label8:
+        return $r2;
+    }
+
+    private double[] secondDerivative(android.graphics.Point[])
+    {
+        double[] $r5, $r6, $r7;
+        int[] $r2;
+        android.graphics.Point[] $r1;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7;
+        project.android.imageprocessing.filter.colour.ToneCurveFilter r0;
+        double $d0, $d1, $d2;
+        android.graphics.Point $r8, $r9, $r10;
+        java.lang.Object $r3;
+        double[][] $r4;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.ToneCurveFilter;
+
+        $r1 := @parameter0: android.graphics.Point[];
+
+        $i0 = lengthof $r1;
+
+        if $i0 > 1 goto label1;
+
+        return null;
+
+     label1:
+        $r2 = newarray (int)[2];
+
+        $r2[0] = $i0;
+
+        $r2[1] = 3;
+
+        $r3 = staticinvoke <java.lang.reflect.Array: java.lang.Object newInstance(java.lang.Class,int[])>(class "D", $r2);
+
+        $r4 = (double[][]) $r3;
+
+        $r5 = newarray (double)[$i0];
+
+        $i2 = 0;
+
+        $r6 = $r4[0];
+
+        $r6[1] = 1.0;
+
+        $r6 = $r4[0];
+
+        $r6[0] = 0.0;
+
+        $r6 = $r4[0];
+
+        $r6[2] = 0.0;
+
+        $i3 = 1;
+
+     label2:
+        $i1 = -1;
+
+        $i1 = $i0 + $i1;
+
+        if $i3 < $i1 goto label9;
+
+        $r5[0] = 0.0;
+
+        $r5[$i1] = 0.0;
+
+        $r6 = $r4[$i1];
+
+        $r6[1] = 1.0;
+
+        $r6 = $r4[$i1];
+
+        $r6[0] = 0.0;
+
+        $r6 = $r4[$i1];
+
+        $r6[2] = 0.0;
+
+        $i3 = 1;
+
+     label3:
+        if $i3 < $i0 goto label8;
+
+        $i3 = -2;
+
+        $i3 = $i0 + $i3;
+
+     label4:
+        if $i3 >= 0 goto label7;
+
+        $r6 = newarray (double)[$i0];
+
+     label5:
+        if $i2 < $i0 goto label6;
+
+        return $r6;
+
+     label6:
+        $d0 = $r5[$i2];
+
+        $r7 = $r4[$i2];
+
+        $d1 = $r7[1];
+
+        $d0 = $d0 / $d1;
+
+        $r6[$i2] = $d0;
+
+        $i2 = $i2 + 1;
+
+        goto label5;
+
+     label7:
+        $r6 = $r4[$i3];
+
+        $d0 = $r6[2];
+
+        $i1 = $i3 + 1;
+
+        $r6 = $r4[$i1];
+
+        $d1 = $r6[1];
+
+        $d0 = $d0 / $d1;
+
+        $r6 = $r4[$i3];
+
+        $d1 = $r6[1];
+
+        $r7 = $r4[$i1];
+
+        $d2 = $r7[0];
+
+        $d2 = $d2 * $d0;
+
+        $d1 = $d1 - $d2;
+
+        $r6[1] = $d1;
+
+        $r6 = $r4[$i3];
+
+        $r6[2] = 0.0;
+
+        $d1 = $r5[$i3];
+
+        $d2 = $r5[$i1];
+
+        $d0 = $d0 * $d2;
+
+        $d0 = $d1 - $d0;
+
+        $r5[$i3] = $d0;
+
+        $i1 = -1;
+
+        $i3 = $i3 + $i1;
+
+        goto label4;
+
+     label8:
+        $r6 = $r4[$i3];
+
+        $d0 = $r6[0];
+
+        $i1 = -1;
+
+        $i1 = $i3 + $i1;
+
+        $r6 = $r4[$i1];
+
+        $d1 = $r6[1];
+
+        $d0 = $d0 / $d1;
+
+        $r6 = $r4[$i3];
+
+        $d1 = $r6[1];
+
+        $r7 = $r4[$i1];
+
+        $d2 = $r7[2];
+
+        $d2 = $d2 * $d0;
+
+        $d1 = $d1 - $d2;
+
+        $r6[1] = $d1;
+
+        $r6 = $r4[$i3];
+
+        $r6[0] = 0.0;
+
+        $d1 = $r5[$i3];
+
+        $d2 = $r5[$i1];
+
+        $d0 = $d0 * $d2;
+
+        $d0 = $d1 - $d0;
+
+        $r5[$i3] = $d0;
+
+        $i3 = $i3 + 1;
+
+        goto label3;
+
+     label9:
+        $i2 = -1;
+
+        $i2 = $i3 + $i2;
+
+        $r8 = $r1[$i2];
+
+        $r9 = $r1[$i3];
+
+        $i2 = $i3 + 1;
+
+        $r10 = $r1[$i2];
+
+        $r6 = $r4[$i3];
+
+        $i4 = $r9.<android.graphics.Point: int x>;
+
+        $i1 = $r8.<android.graphics.Point: int x>;
+
+        $i5 = $i4 - $i1;
+
+        $d0 = (double) $i5;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        $d0 = $d0 / 6.0;
+
+        $r6[0] = $d0;
+
+        $r6 = $r4[$i3];
+
+        $i5 = $r10.<android.graphics.Point: int x>;
+
+        $i6 = $i5 - $i1;
+
+        $d0 = (double) $i6;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        $d0 = $d0 / 3.0;
+
+        $r6[1] = $d0;
+
+        $r6 = $r4[$i3];
+
+        $i6 = $i5 - $i4;
+
+        $d0 = (double) $i6;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        $d0 = $d0 / 6.0;
+
+        $r6[2] = $d0;
+
+        $i7 = $r10.<android.graphics.Point: int y>;
+
+        $i6 = $r9.<android.graphics.Point: int y>;
+
+        $i7 = $i7 - $i6;
+
+        $d0 = (double) $i7;
+
+        $i5 = $i5 - $i4;
+
+        $d1 = (double) $i5;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d1);
+
+        $d0 = $d0 / $d1;
+
+        $i5 = $r8.<android.graphics.Point: int y>;
+
+        $i5 = $i6 - $i5;
+
+        $d1 = (double) $i5;
+
+        $i1 = $i4 - $i1;
+
+        $d2 = (double) $i1;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d1);
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d2);
+
+        $d1 = $d1 / $d2;
+
+        $d0 = $d0 - $d1;
+
+        $r5[$i3] = $d0;
+
+        $i3 = $i2;
+
+        $i2 = 0;
+
+        goto label2;
+    }
+
+    public void destroy()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.colour.ToneCurveFilter r0;
+        int[] $r1;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.ToneCurveFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.input.GLTextureOutputRenderer: void destroy()>();
+
+        $r1 = r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: int[] splineTexture>;
+
+        if $r1 == null goto label1;
+
+        $i0 = $r1[0];
+
+        if $i0 == 0 goto label1;
+
+        staticinvoke <android.opengl.GLES20: void glDeleteTextures(int,int[],int)>(1, $r1, 0);
+
+        r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: int[] splineTexture> = null;
+
+     label1:
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.colour.ToneCurveFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.ToneCurveFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nuniform sampler2D u_Texture1;\nvarying vec2 v_TexCoord;\nconst float halfPixelWidth = 1.0/512.0;void main(){\n   vec4 texColour = texture2D(u_Texture0,v_TexCoord);\n   float rVal;\n   if(texColour.r < halfPixelWidth) {     rVal = texture2D(u_Texture1, vec2(texColour.r + halfPixelWidth, 0.5)).r;\n   } else {\n     rVal = texture2D(u_Texture1, vec2(texColour.r - halfPixelWidth, 0.5)).r;\n   }\n   float gVal;\n   if(texColour.g < halfPixelWidth) {     gVal = texture2D(u_Texture1, vec2(texColour.g + halfPixelWidth, 0.5)).r;\n   } else {\n     gVal = texture2D(u_Texture1, vec2(texColour.g - halfPixelWidth, 0.5)).r;\n   }\n   float bVal;\n   if(texColour.b < halfPixelWidth) {     bVal = texture2D(u_Texture1, vec2(texColour.b + halfPixelWidth, 0.5)).r;\n   } else {\n     bVal = texture2D(u_Texture1, vec2(texColour.b - halfPixelWidth, 0.5)).r;\n   }\n   gl_FragColor = vec4(rVal,gVal,bVal,texColour.a);\n}\n";
+    }
+
+    public void newTextureReady(int, project.android.imageprocessing.input.GLTextureOutputRenderer, boolean)
+    {
+        project.android.imageprocessing.input.GLTextureOutputRenderer $r1;
+        java.util.List $r2;
+        int[] $r4;
+        int $i0, $i1;
+        java.lang.Object $r3;
+        project.android.imageprocessing.filter.colour.ToneCurveFilter r0;
+        boolean $z0, $z1;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.ToneCurveFilter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: project.android.imageprocessing.input.GLTextureOutputRenderer;
+
+        $z0 := @parameter2: boolean;
+
+        $r2 = r0.<project.android.imageprocessing.filter.MultiInputFilter: java.util.List filterLocations>;
+
+        $i1 = interfaceinvoke $r2.<java.util.List: int size()>();
+
+        if $i1 < 2 goto label1;
+
+        $r2 = r0.<project.android.imageprocessing.filter.MultiInputFilter: java.util.List filterLocations>;
+
+        $r3 = interfaceinvoke $r2.<java.util.List: java.lang.Object get(int)>(0);
+
+        $z1 = virtualinvoke $r1.<java.lang.Object: boolean equals(java.lang.Object)>($r3);
+
+        if $z1 != 0 goto label2;
+
+     label1:
+        virtualinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void clearRegisteredFilterLocations()>();
+
+        virtualinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void registerFilterLocation(project.android.imageprocessing.input.GLTextureOutputRenderer,int)>($r1, 0);
+
+        virtualinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void registerFilterLocation(project.android.imageprocessing.input.GLTextureOutputRenderer,int)>(r0, 1);
+
+     label2:
+        $r4 = r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: int[] splineTexture>;
+
+        if $r4 == null goto label3;
+
+        $i1 = $r4[0];
+
+        if $i1 != 0 goto label4;
+
+     label3:
+        specialinvoke r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: void createSplineTexture()>();
+
+     label4:
+        $r4 = r0.<project.android.imageprocessing.filter.colour.ToneCurveFilter: int[] splineTexture>;
+
+        $i1 = $r4[0];
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void newTextureReady(int,project.android.imageprocessing.input.GLTextureOutputRenderer,boolean)>($i1, r0, $z0);
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void newTextureReady(int,project.android.imageprocessing.input.GLTextureOutputRenderer,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+}

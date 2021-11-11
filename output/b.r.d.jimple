@@ -1,0 +1,230 @@
+public final class b.r.d extends java.lang.Object
+{
+
+    public static long a(java.io.File)
+    {
+        java.lang.Throwable $r3;
+        java.io.RandomAccessFile $r0;
+        b.r.d$a $r2;
+        long $l0;
+        java.io.File $r1;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 = new java.io.RandomAccessFile;
+
+        specialinvoke $r0.<java.io.RandomAccessFile: void <init>(java.io.File,java.lang.String)>($r1, "r");
+
+     label1:
+        $r2 = staticinvoke <b.r.d: b.r.d$a a(java.io.RandomAccessFile)>($r0);
+
+        $l0 = staticinvoke <b.r.d: long a(java.io.RandomAccessFile,b.r.d$a)>($r0, $r2);
+
+     label2:
+        virtualinvoke $r0.<java.io.RandomAccessFile: void close()>();
+
+        return $l0;
+
+     label3:
+        $r3 := @caughtexception;
+
+        virtualinvoke $r0.<java.io.RandomAccessFile: void close()>();
+
+        throw $r3;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public static long a(java.io.RandomAccessFile, b.r.d$a)
+    {
+        java.io.RandomAccessFile $r1;
+        byte[] $r3;
+        b.r.d$a $r2;
+        long $l0, $l1;
+        byte $b3;
+        int $i2, $i4;
+        java.util.zip.CRC32 $r0, $r4;
+
+        $r1 := @parameter0: java.io.RandomAccessFile;
+
+        $r2 := @parameter1: b.r.d$a;
+
+        $r4 = new java.util.zip.CRC32;
+
+        $r0 = $r4;
+
+        specialinvoke $r4.<java.util.zip.CRC32: void <init>()>();
+
+        $l0 = $r2.<b.r.d$a: long b>;
+
+        $l1 = $r2.<b.r.d$a: long a>;
+
+        virtualinvoke $r1.<java.io.RandomAccessFile: void seek(long)>($l1);
+
+        $l1 = staticinvoke <java.lang.Math: long min(long,long)>(16384L, $l0);
+
+        $i2 = (int) $l1;
+
+        $r3 = newarray (byte)[16384];
+
+        $i2 = virtualinvoke $r1.<java.io.RandomAccessFile: int read(byte[],int,int)>($r3, 0, $i2);
+
+     label1:
+        $i4 = -1;
+
+        if $i2 == $i4 goto label3;
+
+        virtualinvoke $r0.<java.util.zip.CRC32: void update(byte[],int,int)>($r3, 0, $i2);
+
+        $l1 = (long) $i2;
+
+        $l0 = $l0 - $l1;
+
+        $b3 = $l0 cmp 0L;
+
+        if $b3 != 0 goto label2;
+
+        goto label3;
+
+     label2:
+        $l1 = staticinvoke <java.lang.Math: long min(long,long)>(16384L, $l0);
+
+        $i2 = (int) $l1;
+
+        $i2 = virtualinvoke $r1.<java.io.RandomAccessFile: int read(byte[],int,int)>($r3, 0, $i2);
+
+        goto label1;
+
+     label3:
+        $l0 = virtualinvoke $r0.<java.util.zip.CRC32: long getValue()>();
+
+        return $l0;
+    }
+
+    public static b.r.d$a a(java.io.RandomAccessFile)
+    {
+        java.io.RandomAccessFile $r0;
+        java.util.zip.ZipException $r5;
+        b.r.d$a $r1, $r4;
+        long $l1, $l2, $l3;
+        byte $b0;
+        int $i4, $i5;
+        java.lang.StringBuilder $r2, $r6;
+        java.lang.String $r3;
+
+        $r0 := @parameter0: java.io.RandomAccessFile;
+
+        $l1 = virtualinvoke $r0.<java.io.RandomAccessFile: long length()>();
+
+        $l1 = $l1 - 22L;
+
+        $l2 = 0L;
+
+        $b0 = $l1 cmp 0L;
+
+        $i4 = (int) $b0;
+
+        if $i4 < 0 goto label6;
+
+        $l3 = $l1 - 65536L;
+
+        $b0 = $l3 cmp 0L;
+
+        $i4 = (int) $b0;
+
+        if $i4 >= 0 goto label1;
+
+        goto label2;
+
+     label1:
+        $l2 = $l3;
+
+     label2:
+        $i4 = staticinvoke <java.lang.Integer: int reverseBytes(int)>(101010256);
+
+     label3:
+        virtualinvoke $r0.<java.io.RandomAccessFile: void seek(long)>($l1);
+
+        $i5 = virtualinvoke $r0.<java.io.RandomAccessFile: int readInt()>();
+
+        if $i5 != $i4 goto label4;
+
+        virtualinvoke $r0.<java.io.RandomAccessFile: int skipBytes(int)>(2);
+
+        virtualinvoke $r0.<java.io.RandomAccessFile: int skipBytes(int)>(2);
+
+        virtualinvoke $r0.<java.io.RandomAccessFile: int skipBytes(int)>(2);
+
+        virtualinvoke $r0.<java.io.RandomAccessFile: int skipBytes(int)>(2);
+
+        $r4 = new b.r.d$a;
+
+        $r1 = $r4;
+
+        specialinvoke $r4.<b.r.d$a: void <init>()>();
+
+        $i4 = virtualinvoke $r0.<java.io.RandomAccessFile: int readInt()>();
+
+        $i4 = staticinvoke <java.lang.Integer: int reverseBytes(int)>($i4);
+
+        $l1 = (long) $i4;
+
+        $l1 = $l1 & 4294967295L;
+
+        $r1.<b.r.d$a: long b> = $l1;
+
+        $i4 = virtualinvoke $r0.<java.io.RandomAccessFile: int readInt()>();
+
+        $i4 = staticinvoke <java.lang.Integer: int reverseBytes(int)>($i4);
+
+        $l1 = (long) $i4;
+
+        $l1 = $l1 & 4294967295L;
+
+        $r1.<b.r.d$a: long a> = $l1;
+
+        return $r1;
+
+     label4:
+        $l1 = $l1 - 1L;
+
+        $b0 = $l1 cmp $l2;
+
+        $i5 = (int) $b0;
+
+        if $i5 < 0 goto label5;
+
+        goto label3;
+
+     label5:
+        $r5 = new java.util.zip.ZipException;
+
+        specialinvoke $r5.<java.util.zip.ZipException: void <init>(java.lang.String)>("End Of Central Directory signature not found");
+
+        throw $r5;
+
+     label6:
+        $r5 = new java.util.zip.ZipException;
+
+        $r6 = new java.lang.StringBuilder;
+
+        $r2 = $r6;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("File too short to be a zip file: ");
+
+        $l1 = virtualinvoke $r0.<java.io.RandomAccessFile: long length()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l1);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.util.zip.ZipException: void <init>(java.lang.String)>($r3);
+
+        goto label7;
+
+     label7:
+        throw $r5;
+    }
+}

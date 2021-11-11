@@ -1,0 +1,96 @@
+public class project.android.imageprocessing.filter.effect.CrosshatchFilter extends project.android.imageprocessing.filter.BasicFilter
+{
+    public static final java.lang.String UNIFORM_CROSS_HATCH_SPACING;
+    public static final java.lang.String UNIFORM_LINE_WIDTH;
+    public float crossHatchSpacing;
+    public int crossHatchSpacingHandle;
+    public float lineWidth;
+    public int lineWidthHandle;
+
+    public void <init>(float, float)
+    {
+        float $f0, $f1;
+        project.android.imageprocessing.filter.effect.CrosshatchFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.CrosshatchFilter;
+
+        $f0 := @parameter0: float;
+
+        $f1 := @parameter1: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.BasicFilter: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.effect.CrosshatchFilter: float crossHatchSpacing> = $f0;
+
+        r0.<project.android.imageprocessing.filter.effect.CrosshatchFilter: float lineWidth> = $f1;
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.effect.CrosshatchFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.CrosshatchFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform float u_CrossHatchSpacing;\nuniform float u_LineWidth;\nconst highp vec3 W = vec3(0.2125, 0.7154, 0.0721);\nvoid main(){\n  highp float luminance = dot(texture2D(u_Texture0, v_TexCoord).rgb, W);\n  lowp vec4 colorToDisplay = vec4(1.0, 1.0, 1.0, 1.0);\n  if (luminance < 1.00) {\n    \tif (mod(v_TexCoord.x + v_TexCoord.y, u_CrossHatchSpacing) <= u_LineWidth) {\n      \tcolorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);\n\t    }\n\t}\n\tif (luminance < 0.75) {\n    \tif (mod(v_TexCoord.x - v_TexCoord.y, u_CrossHatchSpacing) <= u_LineWidth) {\n       \tcolorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);\n     \t}\n \t}\n\tif (luminance < 0.50) {\n    \tif (mod(v_TexCoord.x + v_TexCoord.y - (u_CrossHatchSpacing / 2.0), u_CrossHatchSpacing) <= u_LineWidth) {\n        \tcolorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);\n    \t}\n\t}\n\tif (luminance < 0.3) {\n\t\tif (mod(v_TexCoord.x - v_TexCoord.y - (u_CrossHatchSpacing / 2.0), u_CrossHatchSpacing) <= u_LineWidth) {\n     \t\tcolorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);\n\t\t}\n\t}\n  gl_FragColor = colorToDisplay;\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.effect.CrosshatchFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.CrosshatchFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_CrossHatchSpacing");
+
+        r0.<project.android.imageprocessing.filter.effect.CrosshatchFilter: int crossHatchSpacingHandle> = $i0;
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_LineWidth");
+
+        r0.<project.android.imageprocessing.filter.effect.CrosshatchFilter: int lineWidthHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        int $i0;
+        float $f0;
+        project.android.imageprocessing.filter.effect.CrosshatchFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.CrosshatchFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.effect.CrosshatchFilter: int crossHatchSpacingHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.effect.CrosshatchFilter: float crossHatchSpacing>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        $i0 = r0.<project.android.imageprocessing.filter.effect.CrosshatchFilter: int lineWidthHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.effect.CrosshatchFilter: float lineWidth>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.effect.CrosshatchFilter: java.lang.String UNIFORM_LINE_WIDTH> = "u_LineWidth";
+
+        <project.android.imageprocessing.filter.effect.CrosshatchFilter: java.lang.String UNIFORM_CROSS_HATCH_SPACING> = "u_CrossHatchSpacing";
+
+        return;
+    }
+}

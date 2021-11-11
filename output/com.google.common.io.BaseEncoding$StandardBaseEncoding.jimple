@@ -1,0 +1,1001 @@
+public class com.google.common.io.BaseEncoding$StandardBaseEncoding extends com.google.common.io.BaseEncoding
+{
+    public final com.google.common.io.BaseEncoding$Alphabet alphabet;
+    public transient com.google.common.io.BaseEncoding lowerCase;
+    public final java.lang.Character paddingChar;
+    public transient com.google.common.io.BaseEncoding upperCase;
+
+    public void <init>(com.google.common.io.BaseEncoding$Alphabet, java.lang.Character)
+    {
+        java.lang.Character $r1;
+        com.google.common.io.BaseEncoding$Alphabet $r2, $r3;
+        char $c0;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r2 := @parameter0: com.google.common.io.BaseEncoding$Alphabet;
+
+        $r1 := @parameter1: java.lang.Character;
+
+        specialinvoke r0.<com.google.common.io.BaseEncoding: void <init>()>();
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        $r3 = $r2;
+
+        r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet> = $r3;
+
+        if $r1 == null goto label2;
+
+        $c0 = virtualinvoke $r1.<java.lang.Character: char charValue()>();
+
+        $z0 = virtualinvoke $r2.<com.google.common.io.BaseEncoding$Alphabet: boolean matches(char)>($c0);
+
+        if $z0 != 0 goto label1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+        goto label3;
+
+     label2:
+        $z0 = 1;
+
+     label3:
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.String,java.lang.Object)>($z0, "Padding character %s was already in alphabet", $r1);
+
+        r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.Character paddingChar> = $r1;
+
+        return;
+    }
+
+    public void <init>(java.lang.String, java.lang.String, java.lang.Character)
+    {
+        java.lang.Character $r2;
+        com.google.common.io.BaseEncoding$Alphabet $r3;
+        char[] $r4;
+        java.lang.String $r1, $r5;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r5 := @parameter1: java.lang.String;
+
+        $r2 := @parameter2: java.lang.Character;
+
+        $r3 = new com.google.common.io.BaseEncoding$Alphabet;
+
+        $r4 = virtualinvoke $r5.<java.lang.String: char[] toCharArray()>();
+
+        specialinvoke $r3.<com.google.common.io.BaseEncoding$Alphabet: void <init>(java.lang.String,char[])>($r1, $r4);
+
+        specialinvoke r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: void <init>(com.google.common.io.BaseEncoding$Alphabet,java.lang.Character)>($r3, $r2);
+
+        return;
+    }
+
+    public boolean canDecode(java.lang.CharSequence)
+    {
+        java.lang.CharSequence $r1;
+        com.google.common.io.BaseEncoding$Alphabet $r2;
+        int $i0, $i1;
+        char $c2;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r1 := @parameter0: java.lang.CharSequence;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r1 = virtualinvoke r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.CharSequence trimTrailingPadding(java.lang.CharSequence)>($r1);
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i0 = interfaceinvoke $r1.<java.lang.CharSequence: int length()>();
+
+        $z0 = virtualinvoke $r2.<com.google.common.io.BaseEncoding$Alphabet: boolean isValidPaddingStartPosition(int)>($i0);
+
+        if $z0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $i0 = 0;
+
+     label2:
+        $i1 = interfaceinvoke $r1.<java.lang.CharSequence: int length()>();
+
+        if $i0 >= $i1 goto label4;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $c2 = interfaceinvoke $r1.<java.lang.CharSequence: char charAt(int)>($i0);
+
+        $z0 = virtualinvoke $r2.<com.google.common.io.BaseEncoding$Alphabet: boolean canDecode(char)>($c2);
+
+        if $z0 != 0 goto label3;
+
+        return 0;
+
+     label3:
+        $i0 = $i0 + 1;
+
+        goto label2;
+
+     label4:
+        return 1;
+    }
+
+    public int decodeTo(byte[], java.lang.CharSequence)
+    {
+        byte[] $r1;
+        com.google.common.io.BaseEncoding$Alphabet $r3;
+        long $l3, $l8;
+        byte $b9;
+        int $i0, $i1, $i2, $i4, $i5, $i6;
+        java.lang.String $r5;
+        boolean $z0;
+        java.lang.CharSequence $r2;
+        com.google.common.io.BaseEncoding$DecodingException $r7;
+        char $c7;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+        java.lang.StringBuilder $r4, $r6;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r1 := @parameter0: byte[];
+
+        $r2 := @parameter1: java.lang.CharSequence;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = virtualinvoke r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.CharSequence trimTrailingPadding(java.lang.CharSequence)>($r2);
+
+        $r3 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i0 = interfaceinvoke $r2.<java.lang.CharSequence: int length()>();
+
+        $z0 = virtualinvoke $r3.<com.google.common.io.BaseEncoding$Alphabet: boolean isValidPaddingStartPosition(int)>($i0);
+
+        if $z0 == 0 goto label8;
+
+        $i0 = 0;
+
+        $i1 = 0;
+
+     label1:
+        $i2 = interfaceinvoke $r2.<java.lang.CharSequence: int length()>();
+
+        if $i0 >= $i2 goto label7;
+
+        $l3 = 0L;
+
+        $i4 = 0;
+
+        $i2 = 0;
+
+     label2:
+        $r3 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i5 = $r3.<com.google.common.io.BaseEncoding$Alphabet: int charsPerChunk>;
+
+        if $i4 >= $i5 goto label4;
+
+        $i5 = $r3.<com.google.common.io.BaseEncoding$Alphabet: int bitsPerChar>;
+
+        $l3 = $l3 << $i5;
+
+        $i5 = $i0 + $i4;
+
+        $i6 = interfaceinvoke $r2.<java.lang.CharSequence: int length()>();
+
+        if $i5 >= $i6 goto label3;
+
+        $r3 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i5 = $i2 + 1;
+
+        $i2 = $i2 + $i0;
+
+        $c7 = interfaceinvoke $r2.<java.lang.CharSequence: char charAt(int)>($i2);
+
+        $i2 = virtualinvoke $r3.<com.google.common.io.BaseEncoding$Alphabet: int decode(char)>($c7);
+
+        $l8 = (long) $i2;
+
+        $l3 = $l3 | $l8;
+
+        $i2 = $i5;
+
+     label3:
+        $i4 = $i4 + 1;
+
+        goto label2;
+
+     label4:
+        $i4 = $r3.<com.google.common.io.BaseEncoding$Alphabet: int bytesPerChunk>;
+
+        $i5 = $i4 * 8;
+
+        $i6 = $r3.<com.google.common.io.BaseEncoding$Alphabet: int bitsPerChar>;
+
+        $i2 = $i2 * $i6;
+
+        $i2 = $i5 - $i2;
+
+        $i5 = -1;
+
+        $i4 = $i4 + $i5;
+
+        $i4 = $i4 * 8;
+
+     label5:
+        if $i4 < $i2 goto label6;
+
+        $i5 = $i1 + 1;
+
+        $l8 = $l3 >>> $i4;
+
+        $l8 = $l8 & 255L;
+
+        $i6 = (int) $l8;
+
+        $b9 = (byte) $i6;
+
+        $r1[$i1] = $b9;
+
+        $i1 = -8;
+
+        $i4 = $i4 + $i1;
+
+        $i1 = $i5;
+
+        goto label5;
+
+     label6:
+        $r3 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i2 = $r3.<com.google.common.io.BaseEncoding$Alphabet: int charsPerChunk>;
+
+        $i0 = $i0 + $i2;
+
+        goto label1;
+
+     label7:
+        return $i1;
+
+     label8:
+        $r7 = new com.google.common.io.BaseEncoding$DecodingException;
+
+        $r6 = new java.lang.StringBuilder;
+
+        $r4 = $r6;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid input length ");
+
+        $i0 = interfaceinvoke $r2.<java.lang.CharSequence: int length()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r7.<com.google.common.io.BaseEncoding$DecodingException: void <init>(java.lang.String)>($r5);
+
+        goto label9;
+
+     label9:
+        throw $r7;
+    }
+
+    public java.io.InputStream decodingStream(java.io.Reader)
+    {
+        com.google.common.io.BaseEncoding$StandardBaseEncoding$2 $r2;
+        java.io.Reader $r1;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r1 := @parameter0: java.io.Reader;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = new com.google.common.io.BaseEncoding$StandardBaseEncoding$2;
+
+        specialinvoke $r2.<com.google.common.io.BaseEncoding$StandardBaseEncoding$2: void <init>(com.google.common.io.BaseEncoding$StandardBaseEncoding,java.io.Reader)>(r0, $r1);
+
+        return $r2;
+    }
+
+    public void encodeChunkTo(java.lang.Appendable, byte[], int, int)
+    {
+        byte[] $r2;
+        com.google.common.io.BaseEncoding$Alphabet $r3;
+        long $l4, $l8;
+        short $s7;
+        byte $b6;
+        java.lang.Character $r4;
+        int $i0, $i1, $i2, $i3, $i5;
+        boolean $z0;
+        java.lang.Appendable $r1;
+        char $c9;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r1 := @parameter0: java.lang.Appendable;
+
+        $r2 := @parameter1: byte[];
+
+        $i1 := @parameter2: int;
+
+        $i0 := @parameter3: int;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $i2 = $i1 + $i0;
+
+        $i3 = lengthof $r2;
+
+        staticinvoke <com.google.common.base.Preconditions: void checkPositionIndexes(int,int,int)>($i1, $i2, $i3);
+
+        $r3 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i3 = $r3.<com.google.common.io.BaseEncoding$Alphabet: int bytesPerChunk>;
+
+        $i2 = 0;
+
+        if $i0 > $i3 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean)>($z0);
+
+        $l4 = 0L;
+
+        $i3 = 0;
+
+     label3:
+        if $i3 >= $i0 goto label4;
+
+        $i5 = $i1 + $i3;
+
+        $b6 = $r2[$i5];
+
+        $s7 = (short) $b6;
+
+        $s7 = $s7 & 255;
+
+        $l8 = (long) $s7;
+
+        $l4 = $l4 | $l8;
+
+        $l4 = $l4 << 8;
+
+        $i3 = $i3 + 1;
+
+        goto label3;
+
+     label4:
+        $i1 = $i0 + 1;
+
+        $i1 = $i1 * 8;
+
+        $r3 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i3 = $r3.<com.google.common.io.BaseEncoding$Alphabet: int bitsPerChar>;
+
+        $i1 = $i1 - $i3;
+
+     label5:
+        $i3 = $i0 * 8;
+
+        if $i2 >= $i3 goto label6;
+
+        $i3 = $i1 - $i2;
+
+        $l8 = $l4 >>> $i3;
+
+        $i3 = (int) $l8;
+
+        $r3 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i5 = $r3.<com.google.common.io.BaseEncoding$Alphabet: int mask>;
+
+        $i3 = $i3 & $i5;
+
+        $c9 = virtualinvoke $r3.<com.google.common.io.BaseEncoding$Alphabet: char encode(int)>($i3);
+
+        interfaceinvoke $r1.<java.lang.Appendable: java.lang.Appendable append(char)>($c9);
+
+        $r3 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i3 = $r3.<com.google.common.io.BaseEncoding$Alphabet: int bitsPerChar>;
+
+        $i2 = $i2 + $i3;
+
+        goto label5;
+
+     label6:
+        $r4 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.Character paddingChar>;
+
+        if $r4 == null goto label8;
+
+     label7:
+        $r3 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i1 = $r3.<com.google.common.io.BaseEncoding$Alphabet: int bytesPerChunk>;
+
+        $i1 = $i1 * 8;
+
+        if $i2 >= $i1 goto label8;
+
+        $r4 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.Character paddingChar>;
+
+        $c9 = virtualinvoke $r4.<java.lang.Character: char charValue()>();
+
+        interfaceinvoke $r1.<java.lang.Appendable: java.lang.Appendable append(char)>($c9);
+
+        $r3 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i1 = $r3.<com.google.common.io.BaseEncoding$Alphabet: int bitsPerChar>;
+
+        $i2 = $i2 + $i1;
+
+        goto label7;
+
+     label8:
+        return;
+    }
+
+    public void encodeTo(java.lang.Appendable, byte[], int, int)
+    {
+        byte[] $r2;
+        java.lang.Appendable $r1;
+        com.google.common.io.BaseEncoding$Alphabet $r3;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+        int $i0, $i1, $i2, $i3, $i4, $i5;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r1 := @parameter0: java.lang.Appendable;
+
+        $r2 := @parameter1: byte[];
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $i3 = $i0 + $i1;
+
+        $i4 = lengthof $r2;
+
+        staticinvoke <com.google.common.base.Preconditions: void checkPositionIndexes(int,int,int)>($i0, $i3, $i4);
+
+        $i3 = 0;
+
+     label1:
+        if $i3 >= $i1 goto label2;
+
+        $i4 = $i0 + $i3;
+
+        $r3 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i5 = $r3.<com.google.common.io.BaseEncoding$Alphabet: int bytesPerChunk>;
+
+        $i2 = $i1 - $i3;
+
+        $i2 = staticinvoke <java.lang.Math: int min(int,int)>($i5, $i2);
+
+        virtualinvoke r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: void encodeChunkTo(java.lang.Appendable,byte[],int,int)>($r1, $r2, $i4, $i2);
+
+        $r3 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i4 = $r3.<com.google.common.io.BaseEncoding$Alphabet: int bytesPerChunk>;
+
+        $i3 = $i3 + $i4;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public java.io.OutputStream encodingStream(java.io.Writer)
+    {
+        java.io.Writer $r1;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding$1 $r2;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r1 := @parameter0: java.io.Writer;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = new com.google.common.io.BaseEncoding$StandardBaseEncoding$1;
+
+        specialinvoke $r2.<com.google.common.io.BaseEncoding$StandardBaseEncoding$1: void <init>(com.google.common.io.BaseEncoding$StandardBaseEncoding,java.io.Writer)>(r0, $r1);
+
+        return $r2;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        com.google.common.io.BaseEncoding$Alphabet $r1, $r4;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0, $r3;
+        java.lang.Character $r5, $r6;
+        java.lang.Object $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $z0 = $r2 instanceof com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        if $z0 == 0 goto label1;
+
+        $r3 = (com.google.common.io.BaseEncoding$StandardBaseEncoding) $r2;
+
+        $r4 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $r1 = $r3.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $z0 = virtualinvoke $r4.<com.google.common.io.BaseEncoding$Alphabet: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        $r5 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.Character paddingChar>;
+
+        $r6 = $r3.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.Character paddingChar>;
+
+        $z0 = staticinvoke <com.google.common.base.Objects: boolean equal(java.lang.Object,java.lang.Object)>($r5, $r6);
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public int hashCode()
+    {
+        java.lang.Object[] $r3;
+        java.lang.Character $r1;
+        com.google.common.io.BaseEncoding$Alphabet $r2;
+        int $i0, $i1;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i0 = virtualinvoke $r2.<com.google.common.io.BaseEncoding$Alphabet: int hashCode()>();
+
+        $r3 = newarray (java.lang.Object)[1];
+
+        $r1 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.Character paddingChar>;
+
+        $r3[0] = $r1;
+
+        $i1 = staticinvoke <com.google.common.base.Objects: int hashCode(java.lang.Object[])>($r3);
+
+        $i0 = $i0 ^ $i1;
+
+        return $i0;
+    }
+
+    public com.google.common.io.BaseEncoding lowerCase()
+    {
+        java.lang.Character $r4;
+        com.google.common.io.BaseEncoding $r1;
+        com.google.common.io.BaseEncoding$Alphabet $r2, $r3;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r1 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding lowerCase>;
+
+        if $r1 != null goto label3;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $r2 = virtualinvoke $r2.<com.google.common.io.BaseEncoding$Alphabet: com.google.common.io.BaseEncoding$Alphabet lowerCase()>();
+
+        $r3 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        if $r2 != $r3 goto label1;
+
+        $r1 = r0;
+
+        goto label2;
+
+     label1:
+        $r4 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.Character paddingChar>;
+
+        $r1 = virtualinvoke r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding newInstance(com.google.common.io.BaseEncoding$Alphabet,java.lang.Character)>($r2, $r4);
+
+     label2:
+        r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding lowerCase> = $r1;
+
+     label3:
+        return $r1;
+    }
+
+    public int maxDecodedSize(int)
+    {
+        com.google.common.io.BaseEncoding$Alphabet $r1;
+        int $i0, $i1;
+        long $l2, $l3;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i1 = $r1.<com.google.common.io.BaseEncoding$Alphabet: int bitsPerChar>;
+
+        $l2 = (long) $i1;
+
+        $l3 = (long) $i0;
+
+        $l2 = $l2 * $l3;
+
+        $l2 = $l2 + 7L;
+
+        $l2 = $l2 / 8L;
+
+        $i0 = (int) $l2;
+
+        return $i0;
+    }
+
+    public int maxEncodedSize(int)
+    {
+        com.google.common.io.BaseEncoding$Alphabet $r2;
+        int $i0, $i1, $i2;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+        java.math.RoundingMode $r1;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $i0 := @parameter0: int;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i1 = $r2.<com.google.common.io.BaseEncoding$Alphabet: int charsPerChunk>;
+
+        $i2 = $r2.<com.google.common.io.BaseEncoding$Alphabet: int bytesPerChunk>;
+
+        $r1 = <java.math.RoundingMode: java.math.RoundingMode CEILING>;
+
+        $i0 = staticinvoke <com.google.common.math.IntMath: int divide(int,int,java.math.RoundingMode)>($i0, $i2, $r1);
+
+        $i0 = $i1 * $i0;
+
+        return $i0;
+    }
+
+    public com.google.common.io.BaseEncoding newInstance(com.google.common.io.BaseEncoding$Alphabet, java.lang.Character)
+    {
+        java.lang.Character $r2;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+        com.google.common.io.BaseEncoding$Alphabet $r1;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r1 := @parameter0: com.google.common.io.BaseEncoding$Alphabet;
+
+        $r2 := @parameter1: java.lang.Character;
+
+        r0 = new com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        specialinvoke r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: void <init>(com.google.common.io.BaseEncoding$Alphabet,java.lang.Character)>($r1, $r2);
+
+        return r0;
+    }
+
+    public com.google.common.io.BaseEncoding omitPadding()
+    {
+        java.lang.Character $r2;
+        com.google.common.io.BaseEncoding $r1;
+        com.google.common.io.BaseEncoding$Alphabet $r3;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.Character paddingChar>;
+
+        if $r2 != null goto label1;
+
+        return r0;
+
+     label1:
+        $r3 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $r1 = virtualinvoke r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding newInstance(com.google.common.io.BaseEncoding$Alphabet,java.lang.Character)>($r3, null);
+
+        return $r1;
+    }
+
+    public java.lang.String toString()
+    {
+        java.lang.Character $r4;
+        com.google.common.io.BaseEncoding$Alphabet $r2;
+        int $i0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r3;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(java.lang.String)>("BaseEncoding.");
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $r3 = virtualinvoke $r2.<com.google.common.io.BaseEncoding$Alphabet: java.lang.String toString()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i0 = $r2.<com.google.common.io.BaseEncoding$Alphabet: int bitsPerChar>;
+
+        $i0 = 8 % $i0;
+
+        if $i0 == 0 goto label2;
+
+        $r4 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.Character paddingChar>;
+
+        if $r4 != null goto label1;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".omitPadding()");
+
+        goto label2;
+
+     label1:
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".withPadChar(\'");
+
+        $r4 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.Character paddingChar>;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\')");
+
+     label2:
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r3;
+    }
+
+    public java.lang.CharSequence trimTrailingPadding(java.lang.CharSequence)
+    {
+        java.lang.CharSequence $r1;
+        char $c0, $c2;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+        java.lang.Character $r2;
+        int $i1, $i3, $i4;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r1 := @parameter0: java.lang.CharSequence;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.Character paddingChar>;
+
+        if $r2 != null goto label1;
+
+        return $r1;
+
+     label1:
+        $c0 = virtualinvoke $r2.<java.lang.Character: char charValue()>();
+
+        $i1 = interfaceinvoke $r1.<java.lang.CharSequence: int length()>();
+
+        $i3 = -1;
+
+        $i1 = $i1 + $i3;
+
+     label2:
+        if $i1 < 0 goto label4;
+
+        $c2 = interfaceinvoke $r1.<java.lang.CharSequence: char charAt(int)>($i1);
+
+        $i3 = (int) $c2;
+
+        $i4 = (int) $c0;
+
+        if $i3 == $i4 goto label3;
+
+        goto label4;
+
+     label3:
+        $i3 = -1;
+
+        $i1 = $i1 + $i3;
+
+        goto label2;
+
+     label4:
+        $i1 = $i1 + 1;
+
+        $r1 = interfaceinvoke $r1.<java.lang.CharSequence: java.lang.CharSequence subSequence(int,int)>(0, $i1);
+
+        return $r1;
+    }
+
+    public com.google.common.io.BaseEncoding upperCase()
+    {
+        java.lang.Character $r4;
+        com.google.common.io.BaseEncoding $r1;
+        com.google.common.io.BaseEncoding$Alphabet $r2, $r3;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r1 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding upperCase>;
+
+        if $r1 != null goto label3;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $r2 = virtualinvoke $r2.<com.google.common.io.BaseEncoding$Alphabet: com.google.common.io.BaseEncoding$Alphabet upperCase()>();
+
+        $r3 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        if $r2 != $r3 goto label1;
+
+        $r1 = r0;
+
+        goto label2;
+
+     label1:
+        $r4 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.Character paddingChar>;
+
+        $r1 = virtualinvoke r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding newInstance(com.google.common.io.BaseEncoding$Alphabet,java.lang.Character)>($r2, $r4);
+
+     label2:
+        r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding upperCase> = $r1;
+
+     label3:
+        return $r1;
+    }
+
+    public com.google.common.io.BaseEncoding withPadChar(char)
+    {
+        com.google.common.io.BaseEncoding $r3;
+        com.google.common.io.BaseEncoding$Alphabet $r1;
+        char $c0, $c2;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+        java.lang.Character $r2;
+        int $i1, $i3;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $c0 := @parameter0: char;
+
+        $r1 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $i1 = $r1.<com.google.common.io.BaseEncoding$Alphabet: int bitsPerChar>;
+
+        $i1 = 8 % $i1;
+
+        if $i1 == 0 goto label2;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.Character paddingChar>;
+
+        if $r2 == null goto label1;
+
+        $c2 = virtualinvoke $r2.<java.lang.Character: char charValue()>();
+
+        $i1 = (int) $c2;
+
+        $i3 = (int) $c0;
+
+        if $i1 != $i3 goto label1;
+
+        return r0;
+
+     label1:
+        $r1 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $r2 = staticinvoke <java.lang.Character: java.lang.Character valueOf(char)>($c0);
+
+        $r3 = virtualinvoke r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding newInstance(com.google.common.io.BaseEncoding$Alphabet,java.lang.Character)>($r1, $r2);
+
+        return $r3;
+
+     label2:
+        return r0;
+    }
+
+    public com.google.common.io.BaseEncoding withSeparator(java.lang.String, int)
+    {
+        com.google.common.io.BaseEncoding$Alphabet $r2;
+        char $c3;
+        com.google.common.io.BaseEncoding$StandardBaseEncoding r0;
+        java.lang.Character $r3;
+        int $i0, $i1, $i2;
+        com.google.common.io.BaseEncoding$SeparatedBaseEncoding $r4;
+        java.lang.String $r1;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.common.io.BaseEncoding$StandardBaseEncoding;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        $z0 = 0;
+
+        $i1 = 0;
+
+     label1:
+        $i2 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i1 >= $i2 goto label2;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: com.google.common.io.BaseEncoding$Alphabet alphabet>;
+
+        $c3 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i1);
+
+        $z1 = virtualinvoke $r2.<com.google.common.io.BaseEncoding$Alphabet: boolean matches(char)>($c3);
+
+        $z1 = $z1 ^ 1;
+
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.String,java.lang.Object)>($z1, "Separator (%s) cannot contain alphabet characters", $r1);
+
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label2:
+        $r3 = r0.<com.google.common.io.BaseEncoding$StandardBaseEncoding: java.lang.Character paddingChar>;
+
+        if $r3 == null goto label4;
+
+        $c3 = virtualinvoke $r3.<java.lang.Character: char charValue()>();
+
+        $i1 = (int) $c3;
+
+        $i1 = virtualinvoke $r1.<java.lang.String: int indexOf(int)>($i1);
+
+        if $i1 >= 0 goto label3;
+
+        $z0 = 1;
+
+     label3:
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.String,java.lang.Object)>($z0, "Separator (%s) cannot contain padding character", $r1);
+
+     label4:
+        $r4 = new com.google.common.io.BaseEncoding$SeparatedBaseEncoding;
+
+        specialinvoke $r4.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: void <init>(com.google.common.io.BaseEncoding,java.lang.String,int)>(r0, $r1, $i0);
+
+        return $r4;
+    }
+}

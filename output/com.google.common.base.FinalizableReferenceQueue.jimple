@@ -1,0 +1,298 @@
+public class com.google.common.base.FinalizableReferenceQueue extends java.lang.Object implements java.io.Closeable
+{
+    public static final java.lang.String FINALIZER_CLASS_NAME;
+    public static final java.util.logging.Logger logger;
+    public static final java.lang.reflect.Method startFinalizer;
+    public final java.lang.ref.PhantomReference frqRef;
+    public final java.lang.ref.ReferenceQueue queue;
+    public final boolean threadStarted;
+
+    static void <clinit>()
+    {
+        java.util.logging.Logger $r2;
+        com.google.common.base.FinalizableReferenceQueue$FinalizerLoader[] $r3;
+        java.lang.Class $r0;
+        java.lang.String $r1;
+        com.google.common.base.FinalizableReferenceQueue$DecoupledLoader $r5;
+        com.google.common.base.FinalizableReferenceQueue$SystemLoader $r4;
+        com.google.common.base.FinalizableReferenceQueue$DirectLoader $r6;
+        java.lang.reflect.Method $r7;
+
+        <com.google.common.base.FinalizableReferenceQueue: java.lang.String FINALIZER_CLASS_NAME> = "com.google.common.base.internal.Finalizer";
+
+        $r0 = class "Lcom/google/common/base/FinalizableReferenceQueue;";
+
+        $r1 = virtualinvoke $r0.<java.lang.Class: java.lang.String getName()>();
+
+        $r2 = staticinvoke <java.util.logging.Logger: java.util.logging.Logger getLogger(java.lang.String)>($r1);
+
+        <com.google.common.base.FinalizableReferenceQueue: java.util.logging.Logger logger> = $r2;
+
+        $r3 = newarray (com.google.common.base.FinalizableReferenceQueue$FinalizerLoader)[3];
+
+        $r4 = new com.google.common.base.FinalizableReferenceQueue$SystemLoader;
+
+        specialinvoke $r4.<com.google.common.base.FinalizableReferenceQueue$SystemLoader: void <init>()>();
+
+        $r3[0] = $r4;
+
+        $r5 = new com.google.common.base.FinalizableReferenceQueue$DecoupledLoader;
+
+        specialinvoke $r5.<com.google.common.base.FinalizableReferenceQueue$DecoupledLoader: void <init>()>();
+
+        $r3[1] = $r5;
+
+        $r6 = new com.google.common.base.FinalizableReferenceQueue$DirectLoader;
+
+        specialinvoke $r6.<com.google.common.base.FinalizableReferenceQueue$DirectLoader: void <init>()>();
+
+        $r3[2] = $r6;
+
+        $r0 = staticinvoke <com.google.common.base.FinalizableReferenceQueue: java.lang.Class loadFinalizer(com.google.common.base.FinalizableReferenceQueue$FinalizerLoader[])>($r3);
+
+        $r7 = staticinvoke <com.google.common.base.FinalizableReferenceQueue: java.lang.reflect.Method getStartFinalizer(java.lang.Class)>($r0);
+
+        <com.google.common.base.FinalizableReferenceQueue: java.lang.reflect.Method startFinalizer> = $r7;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        java.lang.ref.PhantomReference $r1;
+        java.lang.Throwable $r5;
+        java.lang.IllegalAccessException $r8;
+        java.lang.Object[] $r4;
+        com.google.common.base.FinalizableReferenceQueue r0;
+        java.lang.AssertionError $r9;
+        java.util.logging.Logger $r6;
+        java.lang.ref.ReferenceQueue $r2;
+        java.util.logging.Level $r7;
+        java.lang.reflect.Method $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.base.FinalizableReferenceQueue;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r2 = new java.lang.ref.ReferenceQueue;
+
+        specialinvoke $r2.<java.lang.ref.ReferenceQueue: void <init>()>();
+
+        r0.<com.google.common.base.FinalizableReferenceQueue: java.lang.ref.ReferenceQueue queue> = $r2;
+
+        $r1 = new java.lang.ref.PhantomReference;
+
+        $r2 = r0.<com.google.common.base.FinalizableReferenceQueue: java.lang.ref.ReferenceQueue queue>;
+
+        specialinvoke $r1.<java.lang.ref.PhantomReference: void <init>(java.lang.Object,java.lang.ref.ReferenceQueue)>(r0, $r2);
+
+        r0.<com.google.common.base.FinalizableReferenceQueue: java.lang.ref.PhantomReference frqRef> = $r1;
+
+        $z0 = 1;
+
+     label1:
+        $r3 = <com.google.common.base.FinalizableReferenceQueue: java.lang.reflect.Method startFinalizer>;
+
+        $r4 = newarray (java.lang.Object)[3];
+
+        $r4[0] = class "Lcom/google/common/base/FinalizableReference;";
+
+        $r2 = r0.<com.google.common.base.FinalizableReferenceQueue: java.lang.ref.ReferenceQueue queue>;
+
+        $r4[1] = $r2;
+
+        $r1 = r0.<com.google.common.base.FinalizableReferenceQueue: java.lang.ref.PhantomReference frqRef>;
+
+        $r4[2] = $r1;
+
+     label2:
+        virtualinvoke $r3.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>(null, $r4);
+
+     label3:
+        goto label5;
+
+     label4:
+        $r5 := @caughtexception;
+
+        $r6 = <com.google.common.base.FinalizableReferenceQueue: java.util.logging.Logger logger>;
+
+        $r7 = <java.util.logging.Level: java.util.logging.Level INFO>;
+
+        virtualinvoke $r6.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r7, "Failed to start reference finalizer thread. Reference cleanup will only occur when new references are created.", $r5);
+
+        $z0 = 0;
+
+     label5:
+        r0.<com.google.common.base.FinalizableReferenceQueue: boolean threadStarted> = $z0;
+
+        return;
+
+     label6:
+        $r8 := @caughtexception;
+
+        $r9 = new java.lang.AssertionError;
+
+        specialinvoke $r9.<java.lang.AssertionError: void <init>(java.lang.Object)>($r8);
+
+        throw $r9;
+
+        catch java.lang.IllegalAccessException from label2 to label3 with label6;
+        catch java.lang.Throwable from label1 to label3 with label4;
+    }
+
+    public static java.util.logging.Logger access$000()
+    {
+        java.util.logging.Logger r0;
+
+        r0 = <com.google.common.base.FinalizableReferenceQueue: java.util.logging.Logger logger>;
+
+        return r0;
+    }
+
+    public static java.lang.reflect.Method getStartFinalizer(java.lang.Class)
+    {
+        java.lang.NoSuchMethodException $r3;
+        java.lang.Class[] $r2;
+        java.lang.Class $r1;
+        java.lang.AssertionError $r4;
+        java.lang.reflect.Method $r0;
+
+        $r1 := @parameter0: java.lang.Class;
+
+        $r2 = newarray (java.lang.Class)[3];
+
+        $r2[0] = class "Ljava/lang/Class;";
+
+        $r2[1] = class "Ljava/lang/ref/ReferenceQueue;";
+
+        $r2[2] = class "Ljava/lang/ref/PhantomReference;";
+
+     label1:
+        $r0 = virtualinvoke $r1.<java.lang.Class: java.lang.reflect.Method getMethod(java.lang.String,java.lang.Class[])>("startFinalizer", $r2);
+
+     label2:
+        return $r0;
+
+     label3:
+        $r3 := @caughtexception;
+
+        $r4 = new java.lang.AssertionError;
+
+        specialinvoke $r4.<java.lang.AssertionError: void <init>(java.lang.Object)>($r3);
+
+        throw $r4;
+
+        catch java.lang.NoSuchMethodException from label1 to label2 with label3;
+    }
+
+    public static transient java.lang.Class loadFinalizer(com.google.common.base.FinalizableReferenceQueue$FinalizerLoader[])
+    {
+        com.google.common.base.FinalizableReferenceQueue$FinalizerLoader[] $r1;
+        com.google.common.base.FinalizableReferenceQueue$FinalizerLoader $r2;
+        int $i0, $i1;
+        java.lang.Class $r0;
+        java.lang.AssertionError $r3;
+
+        $r1 := @parameter0: com.google.common.base.FinalizableReferenceQueue$FinalizerLoader[];
+
+        $i0 = lengthof $r1;
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label3;
+
+        $r2 = $r1[$i1];
+
+        $r0 = interfaceinvoke $r2.<com.google.common.base.FinalizableReferenceQueue$FinalizerLoader: java.lang.Class loadFinalizer()>();
+
+        if $r0 == null goto label2;
+
+        return $r0;
+
+     label2:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label3:
+        $r3 = new java.lang.AssertionError;
+
+        specialinvoke $r3.<java.lang.AssertionError: void <init>()>();
+
+        goto label4;
+
+     label4:
+        throw $r3;
+    }
+
+    public void cleanUp()
+    {
+        java.lang.Throwable $r6;
+        com.google.common.base.FinalizableReferenceQueue r0;
+        java.util.logging.Logger $r1;
+        java.lang.ref.ReferenceQueue $r4;
+        java.util.logging.Level $r2;
+        java.lang.ref.Reference $r3;
+        com.google.common.base.FinalizableReference $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.common.base.FinalizableReferenceQueue;
+
+        $z0 = r0.<com.google.common.base.FinalizableReferenceQueue: boolean threadStarted>;
+
+        if $z0 == 0 goto label1;
+
+        return;
+
+     label1:
+        $r4 = r0.<com.google.common.base.FinalizableReferenceQueue: java.lang.ref.ReferenceQueue queue>;
+
+        $r3 = virtualinvoke $r4.<java.lang.ref.ReferenceQueue: java.lang.ref.Reference poll()>();
+
+        if $r3 == null goto label5;
+
+        virtualinvoke $r3.<java.lang.ref.Reference: void clear()>();
+
+     label2:
+        $r5 = (com.google.common.base.FinalizableReference) $r3;
+
+        interfaceinvoke $r5.<com.google.common.base.FinalizableReference: void finalizeReferent()>();
+
+     label3:
+        goto label1;
+
+     label4:
+        $r6 := @caughtexception;
+
+        $r1 = <com.google.common.base.FinalizableReferenceQueue: java.util.logging.Logger logger>;
+
+        $r2 = <java.util.logging.Level: java.util.logging.Level SEVERE>;
+
+        virtualinvoke $r1.<java.util.logging.Logger: void log(java.util.logging.Level,java.lang.String,java.lang.Throwable)>($r2, "Error cleaning up after reference.", $r6);
+
+        goto label1;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label2 to label3 with label4;
+    }
+
+    public void close()
+    {
+        java.lang.ref.PhantomReference $r1;
+        com.google.common.base.FinalizableReferenceQueue r0;
+
+        r0 := @this: com.google.common.base.FinalizableReferenceQueue;
+
+        $r1 = r0.<com.google.common.base.FinalizableReferenceQueue: java.lang.ref.PhantomReference frqRef>;
+
+        virtualinvoke $r1.<java.lang.ref.PhantomReference: boolean enqueue()>();
+
+        virtualinvoke r0.<com.google.common.base.FinalizableReferenceQueue: void cleanUp()>();
+
+        return;
+    }
+}

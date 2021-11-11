@@ -1,0 +1,635 @@
+public class org.apache.james.mime4j.codec.QuotedPrintableInputStream extends java.io.InputStream
+{
+    public static org.apache.commons.logging.Log log;
+    public org.apache.james.mime4j.codec.ByteQueue byteq;
+    public boolean closed;
+    public org.apache.james.mime4j.codec.ByteQueue pushbackq;
+    public byte state;
+    public java.io.InputStream stream;
+
+    static void <clinit>()
+    {
+        org.apache.commons.logging.Log $r0;
+
+        $r0 = staticinvoke <org.apache.commons.logging.LogFactory: org.apache.commons.logging.Log getLog(java.lang.Class)>(class "Lorg/apache/james/mime4j/codec/QuotedPrintableInputStream;");
+
+        <org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.commons.logging.Log log> = $r0;
+
+        return;
+    }
+
+    public void <init>(java.io.InputStream)
+    {
+        org.apache.james.mime4j.codec.ByteQueue $r2;
+        org.apache.james.mime4j.codec.QuotedPrintableInputStream r0;
+        java.io.InputStream $r1;
+
+        r0 := @this: org.apache.james.mime4j.codec.QuotedPrintableInputStream;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        specialinvoke r0.<java.io.InputStream: void <init>()>();
+
+        $r2 = new org.apache.james.mime4j.codec.ByteQueue;
+
+        specialinvoke $r2.<org.apache.james.mime4j.codec.ByteQueue: void <init>()>();
+
+        r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue byteq> = $r2;
+
+        $r2 = new org.apache.james.mime4j.codec.ByteQueue;
+
+        specialinvoke $r2.<org.apache.james.mime4j.codec.ByteQueue: void <init>()>();
+
+        r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue pushbackq> = $r2;
+
+        r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: byte state> = 0;
+
+        r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: boolean closed> = 0;
+
+        r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: java.io.InputStream stream> = $r1;
+
+        return;
+    }
+
+    private byte asciiCharToNumericValue(byte)
+    {
+        char $c3;
+        java.lang.IllegalArgumentException $r4;
+        org.apache.james.mime4j.codec.QuotedPrintableInputStream r0;
+        byte $b0, $b2;
+        int $i1;
+        java.lang.StringBuilder $r2, $r3;
+        java.lang.String $r1;
+
+        r0 := @this: org.apache.james.mime4j.codec.QuotedPrintableInputStream;
+
+        $b0 := @parameter0: byte;
+
+        $i1 = (int) $b0;
+
+        if $i1 < 48 goto label2;
+
+        $i1 = (int) $b0;
+
+        if $i1 > 57 goto label2;
+
+        $i1 = (int) $b0;
+
+        $i1 = $i1 - 48;
+
+     label1:
+        $b0 = (byte) $i1;
+
+        return $b0;
+
+     label2:
+        $b2 = 65;
+
+        $i1 = (int) $b0;
+
+        if $i1 < 65 goto label4;
+
+        $i1 = (int) $b0;
+
+        if $i1 > 90 goto label4;
+
+     label3:
+        $i1 = (int) $b0;
+
+        $i1 = $i1 - $b2;
+
+        $i1 = $i1 + 10;
+
+        goto label1;
+
+     label4:
+        $b2 = 97;
+
+        $i1 = (int) $b0;
+
+        if $i1 < 97 goto label5;
+
+        $i1 = (int) $b0;
+
+        if $i1 > 122 goto label5;
+
+        goto label3;
+
+     label5:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        $r2 = $r3;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $c3 = (char) $b0;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c3);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" is not a hexadecimal digit");
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r1);
+
+        goto label6;
+
+     label6:
+        throw $r4;
+    }
+
+    private void fillBuffer()
+    {
+        org.apache.james.mime4j.codec.ByteQueue $r1;
+        org.apache.james.mime4j.codec.QuotedPrintableInputStream r0;
+        byte $b0, $b2, $b3;
+        int $i1, $i4;
+        org.apache.commons.logging.Log $r2;
+        java.lang.StringBuilder $r3, $r5;
+        java.lang.String $r4;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.codec.QuotedPrintableInputStream;
+
+        $b0 = 0;
+
+     label01:
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue byteq>;
+
+        $i1 = virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: int count()>();
+
+        if $i1 != 0 goto label23;
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue pushbackq>;
+
+        $i1 = virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: int count()>();
+
+        if $i1 != 0 goto label02;
+
+        specialinvoke r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: void populatePushbackQueue()>();
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue pushbackq>;
+
+        $i1 = virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: int count()>();
+
+        if $i1 != 0 goto label02;
+
+        return;
+
+     label02:
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue pushbackq>;
+
+        $b2 = virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: byte dequeue()>();
+
+        $b3 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: byte state>;
+
+        if $b3 == 0 goto label21;
+
+        if $b3 == 1 goto label12;
+
+        $i1 = (int) $b3;
+
+        if $i1 == 2 goto label09;
+
+        $i1 = (int) $b3;
+
+        if $i1 == 3 goto label03;
+
+        $r2 = <org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.commons.logging.Log log>;
+
+        $r5 = new java.lang.StringBuilder;
+
+        $r3 = $r5;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal state: ");
+
+        $b3 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: byte state>;
+
+        $i1 = (int) $b3;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r2.<org.apache.commons.logging.Log: void error(java.lang.Object)>($r4);
+
+        r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: byte state> = 0;
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue byteq>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b2);
+
+        goto label01;
+
+     label03:
+        $i1 = (int) $b2;
+
+        if $i1 < 48 goto label04;
+
+        $i1 = (int) $b2;
+
+        if $i1 <= 57 goto label06;
+
+     label04:
+        $i1 = (int) $b2;
+
+        if $i1 < 65 goto label05;
+
+        $i1 = (int) $b2;
+
+        if $i1 <= 70 goto label06;
+
+     label05:
+        $i1 = (int) $b2;
+
+        if $i1 < 97 goto label07;
+
+        $i1 = (int) $b2;
+
+        if $i1 > 102 goto label07;
+
+     label06:
+        $b3 = specialinvoke r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: byte asciiCharToNumericValue(byte)>($b0);
+
+        $b2 = specialinvoke r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: byte asciiCharToNumericValue(byte)>($b2);
+
+        r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: byte state> = 0;
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue byteq>;
+
+        $i1 = (int) $b3;
+
+        $i1 = $i1 << 4;
+
+        $i4 = (int) $b2;
+
+        $i1 = $i4 | $i1;
+
+        $b2 = (byte) $i1;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b2);
+
+        goto label01;
+
+     label07:
+        $r2 = <org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.commons.logging.Log log>;
+
+        $z0 = interfaceinvoke $r2.<org.apache.commons.logging.Log: boolean isWarnEnabled()>();
+
+        if $z0 == 0 goto label08;
+
+        $r2 = <org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.commons.logging.Log log>;
+
+        $r5 = new java.lang.StringBuilder;
+
+        $r3 = $r5;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Malformed MIME; expected [0-9A-Z], got ");
+
+        $i1 = (int) $b2;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r2.<org.apache.commons.logging.Log: void warn(java.lang.Object)>($r4);
+
+     label08:
+        r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: byte state> = 0;
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue byteq>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>(61);
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue byteq>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b0);
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue byteq>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b2);
+
+        goto label01;
+
+     label09:
+        $i1 = (int) $b2;
+
+        if $i1 != 10 goto label10;
+
+        r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: byte state> = 0;
+
+        goto label01;
+
+     label10:
+        $r2 = <org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.commons.logging.Log log>;
+
+        $z0 = interfaceinvoke $r2.<org.apache.commons.logging.Log: boolean isWarnEnabled()>();
+
+        if $z0 == 0 goto label11;
+
+        $r2 = <org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.commons.logging.Log log>;
+
+        $r5 = new java.lang.StringBuilder;
+
+        $r3 = $r5;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Malformed MIME; expected 10, got ");
+
+        $i1 = (int) $b2;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r2.<org.apache.commons.logging.Log: void warn(java.lang.Object)>($r4);
+
+     label11:
+        r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: byte state> = 0;
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue byteq>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>(61);
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue byteq>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>(13);
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue byteq>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b2);
+
+        goto label01;
+
+     label12:
+        $i1 = (int) $b2;
+
+        if $i1 != 13 goto label13;
+
+        r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: byte state> = 2;
+
+        goto label01;
+
+     label13:
+        $i1 = (int) $b2;
+
+        if $i1 < 48 goto label14;
+
+        $i1 = (int) $b2;
+
+        if $i1 <= 57 goto label16;
+
+     label14:
+        $i1 = (int) $b2;
+
+        if $i1 < 65 goto label15;
+
+        $i1 = (int) $b2;
+
+        if $i1 <= 70 goto label16;
+
+     label15:
+        $i1 = (int) $b2;
+
+        if $i1 < 97 goto label17;
+
+        $i1 = (int) $b2;
+
+        if $i1 > 102 goto label17;
+
+     label16:
+        r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: byte state> = 3;
+
+        $b0 = $b2;
+
+        goto label01;
+
+     label17:
+        $i1 = (int) $b2;
+
+        if $i1 != 61 goto label19;
+
+        $r2 = <org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.commons.logging.Log log>;
+
+        $z0 = interfaceinvoke $r2.<org.apache.commons.logging.Log: boolean isWarnEnabled()>();
+
+        if $z0 == 0 goto label18;
+
+        $r2 = <org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.commons.logging.Log log>;
+
+        interfaceinvoke $r2.<org.apache.commons.logging.Log: void warn(java.lang.Object)>("Malformed MIME; got ==");
+
+     label18:
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue byteq>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>(61);
+
+        goto label01;
+
+     label19:
+        $r2 = <org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.commons.logging.Log log>;
+
+        $z0 = interfaceinvoke $r2.<org.apache.commons.logging.Log: boolean isWarnEnabled()>();
+
+        if $z0 == 0 goto label20;
+
+        $r2 = <org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.commons.logging.Log log>;
+
+        $r5 = new java.lang.StringBuilder;
+
+        $r3 = $r5;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Malformed MIME; expected \\r or [0-9A-Z], got ");
+
+        $i1 = (int) $b2;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r2.<org.apache.commons.logging.Log: void warn(java.lang.Object)>($r4);
+
+     label20:
+        r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: byte state> = 0;
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue byteq>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>(61);
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue byteq>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b2);
+
+        goto label01;
+
+     label21:
+        $i1 = (int) $b2;
+
+        if $i1 == 61 goto label22;
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue byteq>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b2);
+
+        goto label01;
+
+     label22:
+        r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: byte state> = 1;
+
+        goto label01;
+
+     label23:
+        return;
+    }
+
+    private void populatePushbackQueue()
+    {
+        org.apache.james.mime4j.codec.ByteQueue $r1;
+        org.apache.james.mime4j.codec.QuotedPrintableInputStream r0;
+        byte $b1;
+        int $i0, $i2;
+        java.io.InputStream $r2;
+
+        r0 := @this: org.apache.james.mime4j.codec.QuotedPrintableInputStream;
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue pushbackq>;
+
+        $i0 = virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: int count()>();
+
+        if $i0 == 0 goto label1;
+
+        return;
+
+     label1:
+        $r2 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: java.io.InputStream stream>;
+
+        $i0 = virtualinvoke $r2.<java.io.InputStream: int read()>();
+
+        $i2 = -1;
+
+        if $i0 == $i2 goto label4;
+
+        if $i0 == 13 goto label3;
+
+        if $i0 == 32 goto label2;
+
+        if $i0 == 9 goto label2;
+
+        if $i0 == 10 goto label3;
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue pushbackq>;
+
+        $b1 = (byte) $i0;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b1);
+
+        return;
+
+     label2:
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue pushbackq>;
+
+        $b1 = (byte) $i0;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b1);
+
+        goto label1;
+
+     label3:
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue pushbackq>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void clear()>();
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue pushbackq>;
+
+        $b1 = (byte) $i0;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void enqueue(byte)>($b1);
+
+        return;
+
+     label4:
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue pushbackq>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: void clear()>();
+
+        return;
+    }
+
+    public void close()
+    {
+        org.apache.james.mime4j.codec.QuotedPrintableInputStream r0;
+
+        r0 := @this: org.apache.james.mime4j.codec.QuotedPrintableInputStream;
+
+        r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: boolean closed> = 1;
+
+        return;
+    }
+
+    public int read()
+    {
+        org.apache.james.mime4j.codec.ByteQueue $r1;
+        short $s2;
+        org.apache.james.mime4j.codec.QuotedPrintableInputStream r0;
+        byte $b1;
+        int $i0;
+        java.io.IOException $r2;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.codec.QuotedPrintableInputStream;
+
+        $z0 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: boolean closed>;
+
+        if $z0 != 0 goto label3;
+
+        specialinvoke r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: void fillBuffer()>();
+
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue byteq>;
+
+        $i0 = virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: int count()>();
+
+        if $i0 != 0 goto label1;
+
+        $i0 = -1;
+
+        return $i0;
+
+     label1:
+        $r1 = r0.<org.apache.james.mime4j.codec.QuotedPrintableInputStream: org.apache.james.mime4j.codec.ByteQueue byteq>;
+
+        $b1 = virtualinvoke $r1.<org.apache.james.mime4j.codec.ByteQueue: byte dequeue()>();
+
+        $i0 = (int) $b1;
+
+        if $i0 < 0 goto label2;
+
+        $i0 = (int) $b1;
+
+        return $i0;
+
+     label2:
+        $s2 = (short) $b1;
+
+        $s2 = $s2 & 255;
+
+        $i0 = (int) $s2;
+
+        return $i0;
+
+     label3:
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("QuotedPrintableInputStream has been closed");
+
+        throw $r2;
+    }
+}

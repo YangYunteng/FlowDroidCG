@@ -1,0 +1,89 @@
+public final class com.google.common.util.concurrent.TimeoutFuture$Fire extends java.lang.Object implements java.lang.Runnable
+{
+    public com.google.common.util.concurrent.TimeoutFuture timeoutFutureRef;
+
+    public void <init>(com.google.common.util.concurrent.TimeoutFuture)
+    {
+        com.google.common.util.concurrent.TimeoutFuture$Fire r0;
+        com.google.common.util.concurrent.TimeoutFuture $r1;
+
+        r0 := @this: com.google.common.util.concurrent.TimeoutFuture$Fire;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.TimeoutFuture;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.common.util.concurrent.TimeoutFuture$Fire: com.google.common.util.concurrent.TimeoutFuture timeoutFutureRef> = $r1;
+
+        return;
+    }
+
+    public void run()
+    {
+        java.lang.Throwable $r6;
+        com.google.common.util.concurrent.ListenableFuture $r3;
+        java.util.concurrent.TimeoutException $r1;
+        com.google.common.util.concurrent.TimeoutFuture $r2;
+        com.google.common.util.concurrent.TimeoutFuture$Fire r0;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.TimeoutFuture$Fire;
+
+        $r2 = r0.<com.google.common.util.concurrent.TimeoutFuture$Fire: com.google.common.util.concurrent.TimeoutFuture timeoutFutureRef>;
+
+        if $r2 != null goto label1;
+
+        return;
+
+     label1:
+        $r3 = staticinvoke <com.google.common.util.concurrent.TimeoutFuture: com.google.common.util.concurrent.ListenableFuture access$000(com.google.common.util.concurrent.TimeoutFuture)>($r2);
+
+        if $r3 != null goto label2;
+
+        return;
+
+     label2:
+        r0.<com.google.common.util.concurrent.TimeoutFuture$Fire: com.google.common.util.concurrent.TimeoutFuture timeoutFutureRef> = null;
+
+        $z0 = interfaceinvoke $r3.<java.util.concurrent.Future: boolean isDone()>();
+
+        if $z0 == 0 goto label3;
+
+        virtualinvoke $r2.<com.google.common.util.concurrent.AbstractFuture: boolean setFuture(com.google.common.util.concurrent.ListenableFuture)>($r3);
+
+        return;
+
+     label3:
+        $r1 = new java.util.concurrent.TimeoutException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Future timed out: ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r1.<java.util.concurrent.TimeoutException: void <init>(java.lang.String)>($r5);
+
+        virtualinvoke $r2.<com.google.common.util.concurrent.AbstractFuture: boolean setException(java.lang.Throwable)>($r1);
+
+     label4:
+        interfaceinvoke $r3.<java.util.concurrent.Future: boolean cancel(boolean)>(1);
+
+        return;
+
+     label5:
+        $r6 := @caughtexception;
+
+        interfaceinvoke $r3.<java.util.concurrent.Future: boolean cancel(boolean)>(1);
+
+        throw $r6;
+
+        catch java.lang.Throwable from label3 to label4 with label5;
+    }
+}

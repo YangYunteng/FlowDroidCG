@@ -1,0 +1,136 @@
+public final class com.google.android.gms.internal.ads.zzamg extends java.lang.Object
+{
+    public android.os.Handler mHandler;
+    public final java.lang.Object mLock;
+    public android.os.HandlerThread zzcts;
+    public int zzctt;
+
+    public void <init>()
+    {
+        java.lang.Object $r1;
+        com.google.android.gms.internal.ads.zzamg r0;
+
+        r0 := @this: com.google.android.gms.internal.ads.zzamg;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.android.gms.internal.ads.zzamg: android.os.HandlerThread zzcts> = null;
+
+        r0.<com.google.android.gms.internal.ads.zzamg: android.os.Handler mHandler> = null;
+
+        r0.<com.google.android.gms.internal.ads.zzamg: int zzctt> = 0;
+
+        $r1 = new java.lang.Object;
+
+        specialinvoke $r1.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.android.gms.internal.ads.zzamg: java.lang.Object mLock> = $r1;
+
+        return;
+    }
+
+    public final android.os.Handler getHandler()
+    {
+        com.google.android.gms.internal.ads.zzamg r0;
+        android.os.Handler r1;
+
+        r0 := @this: com.google.android.gms.internal.ads.zzamg;
+
+        r1 = r0.<com.google.android.gms.internal.ads.zzamg: android.os.Handler mHandler>;
+
+        return r1;
+    }
+
+    public final android.os.Looper zzsa()
+    {
+        java.lang.Throwable $r6;
+        com.google.android.gms.internal.ads.zzamg r0;
+        android.os.HandlerThread $r2;
+        android.os.Handler $r3;
+        android.os.Looper $r4;
+        int $i0;
+        java.lang.Object $r1, $r5;
+
+        r0 := @this: com.google.android.gms.internal.ads.zzamg;
+
+        $r1 = r0.<com.google.android.gms.internal.ads.zzamg: java.lang.Object mLock>;
+
+        entermonitor $r1;
+
+     label1:
+        $i0 = r0.<com.google.android.gms.internal.ads.zzamg: int zzctt>;
+
+        if $i0 != 0 goto label3;
+
+        $r2 = r0.<com.google.android.gms.internal.ads.zzamg: android.os.HandlerThread zzcts>;
+
+        if $r2 != null goto label2;
+
+        staticinvoke <com.google.android.gms.internal.ads.zzakb: void v(java.lang.String)>("Starting the looper thread.");
+
+        $r2 = new android.os.HandlerThread;
+
+        specialinvoke $r2.<android.os.HandlerThread: void <init>(java.lang.String)>("LooperProvider");
+
+        r0.<com.google.android.gms.internal.ads.zzamg: android.os.HandlerThread zzcts> = $r2;
+
+        $r2 = r0.<com.google.android.gms.internal.ads.zzamg: android.os.HandlerThread zzcts>;
+
+        virtualinvoke $r2.<android.os.HandlerThread: void start()>();
+
+        $r3 = new android.os.Handler;
+
+        $r2 = r0.<com.google.android.gms.internal.ads.zzamg: android.os.HandlerThread zzcts>;
+
+        $r4 = virtualinvoke $r2.<android.os.HandlerThread: android.os.Looper getLooper()>();
+
+        specialinvoke $r3.<android.os.Handler: void <init>(android.os.Looper)>($r4);
+
+        r0.<com.google.android.gms.internal.ads.zzamg: android.os.Handler mHandler> = $r3;
+
+        staticinvoke <com.google.android.gms.internal.ads.zzakb: void v(java.lang.String)>("Looper thread started.");
+
+        goto label4;
+
+     label2:
+        staticinvoke <com.google.android.gms.internal.ads.zzakb: void v(java.lang.String)>("Resuming the looper thread");
+
+        $r5 = r0.<com.google.android.gms.internal.ads.zzamg: java.lang.Object mLock>;
+
+        virtualinvoke $r5.<java.lang.Object: void notifyAll()>();
+
+        goto label4;
+
+     label3:
+        $r2 = r0.<com.google.android.gms.internal.ads.zzamg: android.os.HandlerThread zzcts>;
+
+        staticinvoke <com.google.android.gms.common.internal.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r2, "Invalid state: mHandlerThread should already been initialized.");
+
+     label4:
+        $i0 = r0.<com.google.android.gms.internal.ads.zzamg: int zzctt>;
+
+        $i0 = $i0 + 1;
+
+        r0.<com.google.android.gms.internal.ads.zzamg: int zzctt> = $i0;
+
+        $r2 = r0.<com.google.android.gms.internal.ads.zzamg: android.os.HandlerThread zzcts>;
+
+        $r4 = virtualinvoke $r2.<android.os.HandlerThread: android.os.Looper getLooper()>();
+
+        exitmonitor $r1;
+
+     label5:
+        return $r4;
+
+     label6:
+        $r6 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label7:
+        throw $r6;
+
+        catch java.lang.Throwable from label1 to label5 with label6;
+        catch java.lang.Throwable from label6 to label7 with label6;
+    }
+}

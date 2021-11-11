@@ -1,0 +1,149 @@
+public class com.google.android.gms.common.internal.GoogleApiAvailabilityCache extends java.lang.Object
+{
+    public final android.util.SparseIntArray zapd;
+    public com.google.android.gms.common.GoogleApiAvailabilityLight zape;
+
+    public void <init>()
+    {
+        com.google.android.gms.common.internal.GoogleApiAvailabilityCache r0;
+        com.google.android.gms.common.GoogleApiAvailability $r1;
+
+        r0 := @this: com.google.android.gms.common.internal.GoogleApiAvailabilityCache;
+
+        $r1 = staticinvoke <com.google.android.gms.common.GoogleApiAvailability: com.google.android.gms.common.GoogleApiAvailability getInstance()>();
+
+        specialinvoke r0.<com.google.android.gms.common.internal.GoogleApiAvailabilityCache: void <init>(com.google.android.gms.common.GoogleApiAvailabilityLight)>($r1);
+
+        return;
+    }
+
+    public void <init>(com.google.android.gms.common.GoogleApiAvailabilityLight)
+    {
+        com.google.android.gms.common.internal.GoogleApiAvailabilityCache r0;
+        com.google.android.gms.common.GoogleApiAvailabilityLight $r1;
+        android.util.SparseIntArray $r2;
+
+        r0 := @this: com.google.android.gms.common.internal.GoogleApiAvailabilityCache;
+
+        $r1 := @parameter0: com.google.android.gms.common.GoogleApiAvailabilityLight;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r2 = new android.util.SparseIntArray;
+
+        specialinvoke $r2.<android.util.SparseIntArray: void <init>()>();
+
+        r0.<com.google.android.gms.common.internal.GoogleApiAvailabilityCache: android.util.SparseIntArray zapd> = $r2;
+
+        staticinvoke <com.google.android.gms.common.internal.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        r0.<com.google.android.gms.common.internal.GoogleApiAvailabilityCache: com.google.android.gms.common.GoogleApiAvailabilityLight zape> = $r1;
+
+        return;
+    }
+
+    public void flush()
+    {
+        com.google.android.gms.common.internal.GoogleApiAvailabilityCache r0;
+        android.util.SparseIntArray $r1;
+
+        r0 := @this: com.google.android.gms.common.internal.GoogleApiAvailabilityCache;
+
+        $r1 = r0.<com.google.android.gms.common.internal.GoogleApiAvailabilityCache: android.util.SparseIntArray zapd>;
+
+        virtualinvoke $r1.<android.util.SparseIntArray: void clear()>();
+
+        return;
+    }
+
+    public int getClientAvailability(android.content.Context, com.google.android.gms.common.api.Api$Client)
+    {
+        android.content.Context $r2;
+        android.util.SparseIntArray $r1;
+        com.google.android.gms.common.GoogleApiAvailabilityLight $r4;
+        com.google.android.gms.common.api.Api$Client $r3;
+        com.google.android.gms.common.internal.GoogleApiAvailabilityCache r0;
+        int $i0, $i1, $i2, $i3;
+        boolean $z0;
+
+        r0 := @this: com.google.android.gms.common.internal.GoogleApiAvailabilityCache;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r3 := @parameter1: com.google.android.gms.common.api.Api$Client;
+
+        staticinvoke <com.google.android.gms.common.internal.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        staticinvoke <com.google.android.gms.common.internal.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r3);
+
+        $z0 = interfaceinvoke $r3.<com.google.android.gms.common.api.Api$Client: boolean requiresGooglePlayServices()>();
+
+        if $z0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $i0 = interfaceinvoke $r3.<com.google.android.gms.common.api.Api$Client: int getMinApkVersion()>();
+
+        $r1 = r0.<com.google.android.gms.common.internal.GoogleApiAvailabilityCache: android.util.SparseIntArray zapd>;
+
+        $i2 = -1;
+
+        $i1 = virtualinvoke $r1.<android.util.SparseIntArray: int get(int,int)>($i0, $i2);
+
+        $i2 = $i1;
+
+        $i3 = -1;
+
+        if $i1 == $i3 goto label2;
+
+        return $i1;
+
+     label2:
+        $i1 = 0;
+
+     label3:
+        $r1 = r0.<com.google.android.gms.common.internal.GoogleApiAvailabilityCache: android.util.SparseIntArray zapd>;
+
+        $i3 = virtualinvoke $r1.<android.util.SparseIntArray: int size()>();
+
+        if $i1 >= $i3 goto label5;
+
+        $r1 = r0.<com.google.android.gms.common.internal.GoogleApiAvailabilityCache: android.util.SparseIntArray zapd>;
+
+        $i3 = virtualinvoke $r1.<android.util.SparseIntArray: int keyAt(int)>($i1);
+
+        if $i3 <= $i0 goto label4;
+
+        $r1 = r0.<com.google.android.gms.common.internal.GoogleApiAvailabilityCache: android.util.SparseIntArray zapd>;
+
+        $i3 = virtualinvoke $r1.<android.util.SparseIntArray: int get(int)>($i3);
+
+        if $i3 != 0 goto label4;
+
+        $i2 = 0;
+
+        goto label5;
+
+     label4:
+        $i1 = $i1 + 1;
+
+        goto label3;
+
+     label5:
+        $i1 = -1;
+
+        if $i2 != $i1 goto label6;
+
+        $r4 = r0.<com.google.android.gms.common.internal.GoogleApiAvailabilityCache: com.google.android.gms.common.GoogleApiAvailabilityLight zape>;
+
+        $i2 = virtualinvoke $r4.<com.google.android.gms.common.GoogleApiAvailabilityLight: int isGooglePlayServicesAvailable(android.content.Context,int)>($r2, $i0);
+
+     label6:
+        $r1 = r0.<com.google.android.gms.common.internal.GoogleApiAvailabilityCache: android.util.SparseIntArray zapd>;
+
+        virtualinvoke $r1.<android.util.SparseIntArray: void put(int,int)>($i0, $i2);
+
+        return $i2;
+    }
+}

@@ -1,0 +1,397 @@
+public abstract class com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask extends android.os.AsyncTask
+{
+    public static final int CONNECT_TIMEOUT;
+    public static final int SOCKET_TIMEOUT;
+    public com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask$AsyncCallback callback;
+    public java.lang.Throwable thrown;
+    public java.lang.String userAgent;
+
+    public void <init>(java.lang.String)
+    {
+        com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask;
+
+        $r1 := @parameter0: java.lang.String;
+
+        specialinvoke r0.<android.os.AsyncTask: void <init>()>();
+
+        r0.<com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask: java.lang.String userAgent> = $r1;
+
+        return;
+    }
+
+    private java.lang.Object doRequest(java.lang.String)
+    {
+        java.net.HttpURLConnection $r5;
+        java.lang.Throwable $r14;
+        java.lang.Object[] $r8;
+        java.net.URL $r2;
+        java.lang.Integer $r11;
+        java.net.URLConnection $r3;
+        java.net.SocketTimeoutException $r13;
+        int $i0;
+        java.lang.String $r1, $r7, $r9;
+        java.io.IOException $r12;
+        com.foresee.sdk.common.b$a $r6;
+        com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask r0;
+        java.lang.Object $r4;
+        java.io.InputStream $r10;
+
+        r0 := @this: com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask;
+
+        $r1 := @parameter0: java.lang.String;
+
+     label01:
+        $r2 = new java.net.URL;
+
+     label02:
+        specialinvoke $r2.<java.net.URL: void <init>(java.lang.String)>($r1);
+
+        $r3 = virtualinvoke $r2.<java.net.URL: java.net.URLConnection openConnection()>();
+
+        $r4 = staticinvoke <com.google.firebase.perf.network.FirebasePerfUrlConnection: java.lang.Object instrument(java.lang.Object)>($r3);
+
+     label03:
+        $r3 = (java.net.URLConnection) $r4;
+
+        $r5 = (java.net.HttpURLConnection) $r3;
+
+     label04:
+        virtualinvoke $r5.<java.net.HttpURLConnection: void setConnectTimeout(int)>(5000);
+
+        virtualinvoke $r5.<java.net.HttpURLConnection: void setReadTimeout(int)>(5000);
+
+     label05:
+        $r6 = <com.foresee.sdk.common.b$a: com.foresee.sdk.common.b$a INFO>;
+
+        $r7 = <com.foresee.sdk.cxMeasure.tracker.logging.LogTags: java.lang.String TRIGGER_CODE>;
+
+        $r8 = newarray (java.lang.Object)[1];
+
+        $r9 = r0.<com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask: java.lang.String userAgent>;
+
+        $r8[0] = $r9;
+
+     label06:
+        $r9 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Adding User-Agent header: %s", $r8);
+
+        staticinvoke <com.foresee.sdk.common.b: void b(com.foresee.sdk.common.b$a,java.lang.String,java.lang.String)>($r6, $r7, $r9);
+
+     label07:
+        $r7 = r0.<com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask: java.lang.String userAgent>;
+
+     label08:
+        virtualinvoke $r5.<java.net.HttpURLConnection: void setRequestProperty(java.lang.String,java.lang.String)>("User-Agent", $r7);
+
+        $r10 = virtualinvoke $r5.<java.net.HttpURLConnection: java.io.InputStream getInputStream()>();
+
+     label09:
+        $r6 = <com.foresee.sdk.common.b$a: com.foresee.sdk.common.b$a INFO>;
+
+        $r7 = <com.foresee.sdk.cxMeasure.tracker.logging.LogTags: java.lang.String TRIGGER_CODE>;
+
+        $r8 = newarray (java.lang.Object)[2];
+
+        $r8[0] = $r1;
+
+     label10:
+        $i0 = virtualinvoke $r5.<java.net.HttpURLConnection: int getResponseCode()>();
+
+        $r11 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+     label11:
+        $r8[1] = $r11;
+
+     label12:
+        $r9 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("HTTP GET to %s returned code: %d", $r8);
+
+        staticinvoke <com.foresee.sdk.common.b: void c(com.foresee.sdk.common.b$a,java.lang.String,java.lang.String)>($r6, $r7, $r9);
+
+        $i0 = virtualinvoke $r5.<java.net.HttpURLConnection: int getResponseCode()>();
+
+        $r4 = virtualinvoke r0.<com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask: java.lang.Object processResponse(java.io.InputStream,int)>($r10, $i0);
+
+     label13:
+        if $r5 == null goto label26;
+
+        virtualinvoke $r5.<java.net.HttpURLConnection: void disconnect()>();
+
+        return $r4;
+
+     label14:
+        $r12 := @caughtexception;
+
+        goto label18;
+
+     label15:
+        $r13 := @caughtexception;
+
+        goto label21;
+
+     label16:
+        $r14 := @caughtexception;
+
+        $r5 = null;
+
+        goto label24;
+
+     label17:
+        $r12 := @caughtexception;
+
+        $r5 = null;
+
+     label18:
+        virtualinvoke $r12.<java.io.IOException: void printStackTrace()>();
+
+        $r6 = <com.foresee.sdk.common.b$a: com.foresee.sdk.common.b$a ERROR>;
+
+        $r7 = <com.foresee.sdk.cxMeasure.tracker.logging.LogTags: java.lang.String TRIGGER_CODE>;
+
+        $r8 = newarray (java.lang.Object)[1];
+
+        $r8[0] = $r1;
+
+        $r1 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Attempted HTTP GET to: %s", $r8);
+
+        staticinvoke <com.foresee.sdk.common.b: void c(com.foresee.sdk.common.b$a,java.lang.String,java.lang.String)>($r6, $r7, $r1);
+
+        $r6 = <com.foresee.sdk.common.b$a: com.foresee.sdk.common.b$a ERROR>;
+
+        $r1 = <com.foresee.sdk.cxMeasure.tracker.logging.LogTags: java.lang.String TRIGGER_CODE>;
+
+        $r7 = virtualinvoke $r12.<java.io.IOException: java.lang.String getMessage()>();
+
+        staticinvoke <com.foresee.sdk.common.b: void c(com.foresee.sdk.common.b$a,java.lang.String,java.lang.String,java.lang.Throwable)>($r6, $r1, $r7, $r12);
+
+        r0.<com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask: java.lang.Throwable thrown> = $r12;
+
+     label19:
+        if $r5 == null goto label27;
+
+        virtualinvoke $r5.<java.net.HttpURLConnection: void disconnect()>();
+
+        return null;
+
+     label20:
+        $r13 := @caughtexception;
+
+        $r5 = null;
+
+     label21:
+        $r6 = <com.foresee.sdk.common.b$a: com.foresee.sdk.common.b$a ERROR>;
+
+        $r7 = <com.foresee.sdk.cxMeasure.tracker.logging.LogTags: java.lang.String TRIGGER_CODE>;
+
+        $r8 = newarray (java.lang.Object)[1];
+
+        $r8[0] = $r1;
+
+        $r1 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Attempted HTTP GET to: %s socket timed out", $r8);
+
+        staticinvoke <com.foresee.sdk.common.b: void c(com.foresee.sdk.common.b$a,java.lang.String,java.lang.String)>($r6, $r7, $r1);
+
+        $r6 = <com.foresee.sdk.common.b$a: com.foresee.sdk.common.b$a ERROR>;
+
+        $r1 = <com.foresee.sdk.cxMeasure.tracker.logging.LogTags: java.lang.String TRIGGER_CODE>;
+
+        $r7 = virtualinvoke $r13.<java.net.SocketTimeoutException: java.lang.String getMessage()>();
+
+        staticinvoke <com.foresee.sdk.common.b: void c(com.foresee.sdk.common.b$a,java.lang.String,java.lang.String,java.lang.Throwable)>($r6, $r1, $r7, $r13);
+
+        r0.<com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask: java.lang.Throwable thrown> = $r13;
+
+     label22:
+        if $r5 == null goto label27;
+
+        virtualinvoke $r5.<java.net.HttpURLConnection: void disconnect()>();
+
+        return null;
+
+     label23:
+        $r14 := @caughtexception;
+
+     label24:
+        if $r5 == null goto label25;
+
+        virtualinvoke $r5.<java.net.HttpURLConnection: void disconnect()>();
+
+     label25:
+        throw $r14;
+
+     label26:
+        return $r4;
+
+     label27:
+        return null;
+
+        catch java.net.SocketTimeoutException from label02 to label03 with label20;
+        catch java.io.IOException from label02 to label03 with label17;
+        catch java.lang.Throwable from label01 to label04 with label16;
+        catch java.net.SocketTimeoutException from label04 to label05 with label15;
+        catch java.net.SocketTimeoutException from label06 to label07 with label15;
+        catch java.net.SocketTimeoutException from label08 to label09 with label15;
+        catch java.net.SocketTimeoutException from label10 to label11 with label15;
+        catch java.net.SocketTimeoutException from label12 to label13 with label15;
+        catch java.io.IOException from label04 to label05 with label14;
+        catch java.io.IOException from label06 to label07 with label14;
+        catch java.io.IOException from label08 to label09 with label14;
+        catch java.io.IOException from label10 to label11 with label14;
+        catch java.io.IOException from label12 to label13 with label14;
+        catch java.lang.Throwable from label04 to label13 with label23;
+        catch java.lang.Throwable from label18 to label19 with label23;
+        catch java.lang.Throwable from label21 to label22 with label23;
+    }
+
+    public volatile java.lang.Object doInBackground(java.lang.Object[])
+    {
+        java.lang.Object[] $r2;
+        com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask r0;
+        java.lang.Object $r1;
+        java.lang.String[] $r3;
+
+        r0 := @this: com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask;
+
+        $r2 := @parameter0: java.lang.Object[];
+
+        $r3 = (java.lang.String[]) $r2;
+
+        $r1 = virtualinvoke r0.<com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask: java.lang.Object doInBackground(java.lang.String[])>($r3);
+
+        return $r1;
+    }
+
+    public transient java.lang.Object doInBackground(java.lang.String[])
+    {
+        java.lang.String[] $r1;
+        java.lang.Thread $r2;
+        int $i0, $i1;
+        com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask r0;
+        java.lang.StringBuilder $r3, $r8;
+        java.lang.Class $r4;
+        java.lang.Object $r7;
+        java.lang.String $r5, $r6;
+
+        r0 := @this: com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask;
+
+        $r1 := @parameter0: java.lang.String[];
+
+        $r2 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        $r8 = new java.lang.StringBuilder;
+
+        $r3 = $r8;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke r0.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r5 = virtualinvoke $r4.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $r5 = $r1[0];
+
+        $r6 = $r1[0];
+
+        $i0 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+        $i1 = -30;
+
+        $i0 = $i0 + $i1;
+
+        $i0 = staticinvoke <java.lang.Math: int max(int,int)>(0, $i0);
+
+        $r6 = $r1[0];
+
+        $i1 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.String: java.lang.String substring(int,int)>($i0, $i1);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r2.<java.lang.Thread: void setName(java.lang.String)>($r5);
+
+        staticinvoke <com.foresee.sdk.common.utils.Util: void setGlobalThreadStatsTag()>();
+
+        $r5 = $r1[0];
+
+        $r7 = specialinvoke r0.<com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask: java.lang.Object doRequest(java.lang.String)>($r5);
+
+        return $r7;
+    }
+
+    public com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask$AsyncCallback getCallback()
+    {
+        com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask$AsyncCallback r1;
+        com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask r0;
+
+        r0 := @this: com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask;
+
+        r1 = r0.<com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask: com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask$AsyncCallback callback>;
+
+        return r1;
+    }
+
+    public void onPostExecute(java.lang.Object)
+    {
+        java.lang.Throwable $r3;
+        com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask$AsyncCallback $r1;
+        com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask r0;
+        java.lang.Object $r2;
+
+        r0 := @this: com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        specialinvoke r0.<android.os.AsyncTask: void onPostExecute(java.lang.Object)>($r2);
+
+        $r1 = r0.<com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask: com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask$AsyncCallback callback>;
+
+        if $r1 == null goto label2;
+
+        if $r2 == null goto label1;
+
+        interfaceinvoke $r1.<com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask$AsyncCallback: void onComplete(java.lang.Object)>($r2);
+
+        return;
+
+     label1:
+        $r3 = r0.<com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask: java.lang.Throwable thrown>;
+
+        interfaceinvoke $r1.<com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask$AsyncCallback: void onFailure(java.lang.Throwable)>($r3);
+
+     label2:
+        return;
+    }
+
+    public abstract java.lang.Object processResponse(java.io.InputStream, int);
+
+    public void setCallback(com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask$AsyncCallback)
+    {
+        com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask$AsyncCallback $r1;
+        com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask r0;
+
+        r0 := @this: com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask;
+
+        $r1 := @parameter0: com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask$AsyncCallback;
+
+        r0.<com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask: com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask$AsyncCallback callback> = $r1;
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask: int SOCKET_TIMEOUT> = 5000;
+
+        <com.foresee.sdk.cxMeasure.tracker.tasks.HttpGetAsyncTask: int CONNECT_TIMEOUT> = 5000;
+
+        return;
+    }
+}

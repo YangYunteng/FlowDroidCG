@@ -1,0 +1,307 @@
+public class com.google.zxing.ResultPoint extends java.lang.Object
+{
+    public final float x;
+    public final float y;
+
+    public void <init>(float, float)
+    {
+        float $f0, $f1;
+        com.google.zxing.ResultPoint r0;
+
+        r0 := @this: com.google.zxing.ResultPoint;
+
+        $f0 := @parameter0: float;
+
+        $f1 := @parameter1: float;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.zxing.ResultPoint: float x> = $f0;
+
+        r0.<com.google.zxing.ResultPoint: float y> = $f1;
+
+        return;
+    }
+
+    public static float crossProductZ(com.google.zxing.ResultPoint, com.google.zxing.ResultPoint, com.google.zxing.ResultPoint)
+    {
+        com.google.zxing.ResultPoint $r0, $r1, $r2;
+        float $f0, $f1, $f2, $f3;
+
+        $r0 := @parameter0: com.google.zxing.ResultPoint;
+
+        $r1 := @parameter1: com.google.zxing.ResultPoint;
+
+        $r2 := @parameter2: com.google.zxing.ResultPoint;
+
+        $f0 = $r1.<com.google.zxing.ResultPoint: float x>;
+
+        $f1 = $r1.<com.google.zxing.ResultPoint: float y>;
+
+        $f2 = $r2.<com.google.zxing.ResultPoint: float x>;
+
+        $f2 = $f2 - $f0;
+
+        $f3 = $r0.<com.google.zxing.ResultPoint: float y>;
+
+        $f3 = $f3 - $f1;
+
+        $f2 = $f2 * $f3;
+
+        $f3 = $r2.<com.google.zxing.ResultPoint: float y>;
+
+        $f1 = $f3 - $f1;
+
+        $f3 = $r0.<com.google.zxing.ResultPoint: float x>;
+
+        $f0 = $f3 - $f0;
+
+        $f0 = $f1 * $f0;
+
+        $f0 = $f2 - $f0;
+
+        return $f0;
+    }
+
+    public static float distance(com.google.zxing.ResultPoint, com.google.zxing.ResultPoint)
+    {
+        com.google.zxing.ResultPoint $r0, $r1;
+        float $f0, $f1, $f2, $f3;
+
+        $r0 := @parameter0: com.google.zxing.ResultPoint;
+
+        $r1 := @parameter1: com.google.zxing.ResultPoint;
+
+        $f0 = $r0.<com.google.zxing.ResultPoint: float x>;
+
+        $f2 = $r0.<com.google.zxing.ResultPoint: float y>;
+
+        $f1 = $r1.<com.google.zxing.ResultPoint: float x>;
+
+        $f3 = $r1.<com.google.zxing.ResultPoint: float y>;
+
+        $f0 = staticinvoke <com.google.zxing.common.detector.MathUtils: float distance(float,float,float,float)>($f0, $f2, $f1, $f3);
+
+        return $f0;
+    }
+
+    public static void orderBestPatterns(com.google.zxing.ResultPoint[])
+    {
+        com.google.zxing.ResultPoint $r1, $r2, $r3, $r4;
+        com.google.zxing.ResultPoint[] $r0;
+        byte $b0;
+        int $i1;
+        float $f0, $f1, $f2;
+
+        $r0 := @parameter0: com.google.zxing.ResultPoint[];
+
+        $r1 = $r0[0];
+
+        $r2 = $r0[1];
+
+        $f0 = staticinvoke <com.google.zxing.ResultPoint: float distance(com.google.zxing.ResultPoint,com.google.zxing.ResultPoint)>($r1, $r2);
+
+        $r1 = $r0[1];
+
+        $r2 = $r0[2];
+
+        $f1 = staticinvoke <com.google.zxing.ResultPoint: float distance(com.google.zxing.ResultPoint,com.google.zxing.ResultPoint)>($r1, $r2);
+
+        $r1 = $r0[0];
+
+        $r2 = $r0[2];
+
+        $f2 = staticinvoke <com.google.zxing.ResultPoint: float distance(com.google.zxing.ResultPoint,com.google.zxing.ResultPoint)>($r1, $r2);
+
+        $b0 = $f1 cmpl $f0;
+
+        $i1 = (int) $b0;
+
+        if $i1 < 0 goto label1;
+
+        $b0 = $f1 cmpl $f2;
+
+        $i1 = (int) $b0;
+
+        if $i1 < 0 goto label1;
+
+        $r2 = $r0[0];
+
+        $r3 = $r0[1];
+
+        $r4 = $r0[2];
+
+        goto label3;
+
+     label1:
+        $b0 = $f2 cmpl $f1;
+
+        $i1 = (int) $b0;
+
+        if $i1 < 0 goto label2;
+
+        $b0 = $f2 cmpl $f0;
+
+        $i1 = (int) $b0;
+
+        if $i1 < 0 goto label2;
+
+        $r2 = $r0[1];
+
+        $r3 = $r0[0];
+
+        $r4 = $r0[2];
+
+        goto label3;
+
+     label2:
+        $r2 = $r0[2];
+
+        $r3 = $r0[0];
+
+        $r4 = $r0[1];
+
+     label3:
+        $f0 = staticinvoke <com.google.zxing.ResultPoint: float crossProductZ(com.google.zxing.ResultPoint,com.google.zxing.ResultPoint,com.google.zxing.ResultPoint)>($r3, $r2, $r4);
+
+        $b0 = $f0 cmpg 0.0F;
+
+        $i1 = (int) $b0;
+
+        if $i1 >= 0 goto label4;
+
+        $r1 = $r4;
+
+        $r4 = $r3;
+
+        $r3 = $r1;
+
+     label4:
+        $r0[0] = $r3;
+
+        $r0[1] = $r2;
+
+        $r0[2] = $r4;
+
+        return;
+    }
+
+    public final boolean equals(java.lang.Object)
+    {
+        com.google.zxing.ResultPoint r0, $r2;
+        byte $b0;
+        float $f0, $f1;
+        java.lang.Object $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.ResultPoint;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $z0 = $r1 instanceof com.google.zxing.ResultPoint;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (com.google.zxing.ResultPoint) $r1;
+
+        $f1 = r0.<com.google.zxing.ResultPoint: float x>;
+
+        $f0 = $r2.<com.google.zxing.ResultPoint: float x>;
+
+        $b0 = $f1 cmpl $f0;
+
+        if $b0 != 0 goto label1;
+
+        $f0 = r0.<com.google.zxing.ResultPoint: float y>;
+
+        $f1 = $r2.<com.google.zxing.ResultPoint: float y>;
+
+        $b0 = $f0 cmpl $f1;
+
+        if $b0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public final float getX()
+    {
+        float f0;
+        com.google.zxing.ResultPoint r0;
+
+        r0 := @this: com.google.zxing.ResultPoint;
+
+        f0 = r0.<com.google.zxing.ResultPoint: float x>;
+
+        return f0;
+    }
+
+    public final float getY()
+    {
+        float f0;
+        com.google.zxing.ResultPoint r0;
+
+        r0 := @this: com.google.zxing.ResultPoint;
+
+        f0 = r0.<com.google.zxing.ResultPoint: float y>;
+
+        return f0;
+    }
+
+    public final int hashCode()
+    {
+        com.google.zxing.ResultPoint r0;
+        int $i0, $i1;
+        float $f0;
+
+        r0 := @this: com.google.zxing.ResultPoint;
+
+        $f0 = r0.<com.google.zxing.ResultPoint: float x>;
+
+        $i0 = staticinvoke <java.lang.Float: int floatToIntBits(float)>($f0);
+
+        $i0 = $i0 * 31;
+
+        $f0 = r0.<com.google.zxing.ResultPoint: float y>;
+
+        $i1 = staticinvoke <java.lang.Float: int floatToIntBits(float)>($f0);
+
+        $i0 = $i0 + $i1;
+
+        return $i0;
+    }
+
+    public final java.lang.String toString()
+    {
+        com.google.zxing.ResultPoint r0;
+        float $f0;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.zxing.ResultPoint;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>(int)>(25);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(40);
+
+        $f0 = r0.<com.google.zxing.ResultPoint: float x>;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(float)>($f0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(44);
+
+        $f0 = r0.<com.google.zxing.ResultPoint: float y>;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(float)>($f0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(41);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+}

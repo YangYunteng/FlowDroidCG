@@ -1,0 +1,4772 @@
+public class org.codehaus.jackson.impl.Utf8Generator extends org.codehaus.jackson.impl.JsonGeneratorBase
+{
+    public static final byte BYTE_0;
+    public static final byte BYTE_BACKSLASH;
+    public static final byte BYTE_COLON;
+    public static final byte BYTE_COMMA;
+    public static final byte BYTE_LBRACKET;
+    public static final byte BYTE_LCURLY;
+    public static final byte BYTE_QUOTE;
+    public static final byte BYTE_RBRACKET;
+    public static final byte BYTE_RCURLY;
+    public static final byte BYTE_SPACE;
+    public static final byte BYTE_u;
+    public static final byte[] FALSE_BYTES;
+    public static final byte[] HEX_CHARS;
+    public static final int MAX_BYTES_TO_BUFFER;
+    public static final byte[] NULL_BYTES;
+    public static final int SURR1_FIRST;
+    public static final int SURR1_LAST;
+    public static final int SURR2_FIRST;
+    public static final int SURR2_LAST;
+    public static final byte[] TRUE_BYTES;
+    public static final int[] sOutputEscapes;
+    public boolean _bufferRecyclable;
+    public char[] _charBuffer;
+    public final int _charBufferLength;
+    public org.codehaus.jackson.io.CharacterEscapes _characterEscapes;
+    public byte[] _entityBuffer;
+    public final org.codehaus.jackson.io.IOContext _ioContext;
+    public int _maximumNonEscapedChar;
+    public byte[] _outputBuffer;
+    public final int _outputEnd;
+    public int[] _outputEscapes;
+    public final int _outputMaxContiguous;
+    public final java.io.OutputStream _outputStream;
+    public int _outputTail;
+
+    static void <clinit>()
+    {
+        byte[] $r0;
+        int[] $r1;
+
+        <org.codehaus.jackson.impl.Utf8Generator: int SURR2_LAST> = 57343;
+
+        <org.codehaus.jackson.impl.Utf8Generator: int SURR2_FIRST> = 56320;
+
+        <org.codehaus.jackson.impl.Utf8Generator: int SURR1_LAST> = 56319;
+
+        <org.codehaus.jackson.impl.Utf8Generator: int SURR1_FIRST> = 55296;
+
+        <org.codehaus.jackson.impl.Utf8Generator: int MAX_BYTES_TO_BUFFER> = 512;
+
+        <org.codehaus.jackson.impl.Utf8Generator: byte BYTE_u> = 117;
+
+        <org.codehaus.jackson.impl.Utf8Generator: byte BYTE_SPACE> = 32;
+
+        <org.codehaus.jackson.impl.Utf8Generator: byte BYTE_RCURLY> = 125;
+
+        <org.codehaus.jackson.impl.Utf8Generator: byte BYTE_RBRACKET> = 93;
+
+        <org.codehaus.jackson.impl.Utf8Generator: byte BYTE_QUOTE> = 34;
+
+        <org.codehaus.jackson.impl.Utf8Generator: byte BYTE_LCURLY> = 123;
+
+        <org.codehaus.jackson.impl.Utf8Generator: byte BYTE_LBRACKET> = 91;
+
+        <org.codehaus.jackson.impl.Utf8Generator: byte BYTE_COMMA> = 44;
+
+        <org.codehaus.jackson.impl.Utf8Generator: byte BYTE_COLON> = 58;
+
+        <org.codehaus.jackson.impl.Utf8Generator: byte BYTE_BACKSLASH> = 92;
+
+        <org.codehaus.jackson.impl.Utf8Generator: byte BYTE_0> = 48;
+
+        $r0 = staticinvoke <org.codehaus.jackson.util.CharTypes: byte[] copyHexBytes()>();
+
+        <org.codehaus.jackson.impl.Utf8Generator: byte[] HEX_CHARS> = $r0;
+
+        $r0 = newarray (byte)[4];
+
+        $r0[0] = 110;
+
+        $r0[1] = 117;
+
+        $r0[2] = 108;
+
+        $r0[3] = 108;
+
+        <org.codehaus.jackson.impl.Utf8Generator: byte[] NULL_BYTES> = $r0;
+
+        $r0 = newarray (byte)[4];
+
+        $r0[0] = 116;
+
+        $r0[1] = 114;
+
+        $r0[2] = 117;
+
+        $r0[3] = 101;
+
+        <org.codehaus.jackson.impl.Utf8Generator: byte[] TRUE_BYTES> = $r0;
+
+        $r0 = newarray (byte)[5];
+
+        $r0[0] = 102;
+
+        $r0[1] = 97;
+
+        $r0[2] = 108;
+
+        $r0[3] = 115;
+
+        $r0[4] = 101;
+
+        <org.codehaus.jackson.impl.Utf8Generator: byte[] FALSE_BYTES> = $r0;
+
+        $r1 = staticinvoke <org.codehaus.jackson.util.CharTypes: int[] get7BitOutputEscapes()>();
+
+        <org.codehaus.jackson.impl.Utf8Generator: int[] sOutputEscapes> = $r1;
+
+        return;
+    }
+
+    public void <init>(org.codehaus.jackson.io.IOContext, int, org.codehaus.jackson.ObjectCodec, java.io.OutputStream)
+    {
+        java.io.OutputStream $r2;
+        org.codehaus.jackson.io.IOContext $r3;
+        byte[] $r5;
+        org.codehaus.jackson.JsonGenerator$Feature $r7;
+        org.codehaus.jackson.ObjectCodec $r1;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        int[] $r4;
+        int $i0;
+        char[] $r6;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r3 := @parameter0: org.codehaus.jackson.io.IOContext;
+
+        $i0 := @parameter1: int;
+
+        $r1 := @parameter2: org.codehaus.jackson.ObjectCodec;
+
+        $r2 := @parameter3: java.io.OutputStream;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: void <init>(int,org.codehaus.jackson.ObjectCodec)>($i0, $r1);
+
+        $r4 = <org.codehaus.jackson.impl.Utf8Generator: int[] sOutputEscapes>;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int[] _outputEscapes> = $r4;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = 0;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: org.codehaus.jackson.io.IOContext _ioContext> = $r3;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: java.io.OutputStream _outputStream> = $r2;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: boolean _bufferRecyclable> = 1;
+
+        $r5 = virtualinvoke $r3.<org.codehaus.jackson.io.IOContext: byte[] allocWriteEncodingBuffer()>();
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer> = $r5;
+
+        $r5 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = lengthof $r5;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd> = $i0;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        $i0 = $i0 >> 3;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputMaxContiguous> = $i0;
+
+        $r6 = virtualinvoke $r3.<org.codehaus.jackson.io.IOContext: char[] allocConcatBuffer()>();
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer> = $r6;
+
+        $r6 = r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer>;
+
+        $i0 = lengthof $r6;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _charBufferLength> = $i0;
+
+        $r7 = <org.codehaus.jackson.JsonGenerator$Feature: org.codehaus.jackson.JsonGenerator$Feature ESCAPE_NON_ASCII>;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean isEnabled(org.codehaus.jackson.JsonGenerator$Feature)>($r7);
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: org.codehaus.jackson.JsonGenerator setHighestNonEscapedChar(int)>(127);
+
+     label1:
+        return;
+    }
+
+    public void <init>(org.codehaus.jackson.io.IOContext, int, org.codehaus.jackson.ObjectCodec, java.io.OutputStream, byte[], int, boolean)
+    {
+        java.io.OutputStream $r2;
+        byte[] $r3;
+        org.codehaus.jackson.io.IOContext $r4;
+        org.codehaus.jackson.JsonGenerator$Feature $r7;
+        org.codehaus.jackson.ObjectCodec $r1;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        int[] $r5;
+        int $i0, $i1;
+        char[] $r6;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r4 := @parameter0: org.codehaus.jackson.io.IOContext;
+
+        $i1 := @parameter1: int;
+
+        $r1 := @parameter2: org.codehaus.jackson.ObjectCodec;
+
+        $r2 := @parameter3: java.io.OutputStream;
+
+        $r3 := @parameter4: byte[];
+
+        $i0 := @parameter5: int;
+
+        $z0 := @parameter6: boolean;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: void <init>(int,org.codehaus.jackson.ObjectCodec)>($i1, $r1);
+
+        $r5 = <org.codehaus.jackson.impl.Utf8Generator: int[] sOutputEscapes>;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int[] _outputEscapes> = $r5;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = 0;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: org.codehaus.jackson.io.IOContext _ioContext> = $r4;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: java.io.OutputStream _outputStream> = $r2;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: boolean _bufferRecyclable> = $z0;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer> = $r3;
+
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i1 = lengthof $r3;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd> = $i1;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        $i1 = $i1 >> 3;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputMaxContiguous> = $i1;
+
+        $r6 = virtualinvoke $r4.<org.codehaus.jackson.io.IOContext: char[] allocConcatBuffer()>();
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer> = $r6;
+
+        $r6 = r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer>;
+
+        $i1 = lengthof $r6;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _charBufferLength> = $i1;
+
+        $r7 = <org.codehaus.jackson.JsonGenerator$Feature: org.codehaus.jackson.JsonGenerator$Feature ESCAPE_NON_ASCII>;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean isEnabled(org.codehaus.jackson.JsonGenerator$Feature)>($r7);
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: org.codehaus.jackson.JsonGenerator setHighestNonEscapedChar(int)>(127);
+
+     label1:
+        return;
+    }
+
+    private int _handleLongCustomEscape(byte[], int, int, byte[], int)
+    {
+        java.io.OutputStream $r3;
+        byte[] $r1, $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        int $i0, $i1, $i2, $i3, $i4;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r2 := @parameter0: byte[];
+
+        $i2 := @parameter1: int;
+
+        $i0 := @parameter2: int;
+
+        $r1 := @parameter3: byte[];
+
+        $i3 := @parameter4: int;
+
+        $i1 = lengthof $r1;
+
+        $i4 = $i2 + $i1;
+
+        if $i4 <= $i0 goto label2;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i4 = lengthof $r2;
+
+        if $i1 <= $i4 goto label1;
+
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: java.io.OutputStream _outputStream>;
+
+        virtualinvoke $r3.<java.io.OutputStream: void write(byte[],int,int)>($r1, 0, $i1);
+
+        return $i2;
+
+     label1:
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, 0, $r2, $i2, $i1);
+
+        $i2 = $i2 + $i1;
+
+     label2:
+        $i3 = $i3 * 6;
+
+        $i3 = $i3 + $i2;
+
+        if $i3 <= $i0 goto label3;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+     label3:
+        return $i2;
+    }
+
+    private final int _outputMultiByteChar(int, int)
+    {
+        byte[] $r1, $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        byte $b4;
+        int $i0, $i1, $i2, $i3;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i3 = 55296;
+
+        if $i0 < $i3 goto label1;
+
+        $i3 = 57343;
+
+        if $i0 > $i3 goto label1;
+
+        $i2 = $i1 + 1;
+
+        $r1[$i1] = 92;
+
+        $i3 = $i2 + 1;
+
+        $r1[$i2] = 117;
+
+        $i1 = $i3 + 1;
+
+        $r2 = <org.codehaus.jackson.impl.Utf8Generator: byte[] HEX_CHARS>;
+
+        $i2 = $i0 >> 12;
+
+        $i2 = $i2 & 15;
+
+        $b4 = $r2[$i2];
+
+        $r1[$i3] = $b4;
+
+        $i3 = $i1 + 1;
+
+        $i2 = $i0 >> 8;
+
+        $i2 = $i2 & 15;
+
+        $b4 = $r2[$i2];
+
+        $r1[$i1] = $b4;
+
+        $i1 = $i3 + 1;
+
+        $i2 = $i0 >> 4;
+
+        $i2 = $i2 & 15;
+
+        $b4 = $r2[$i2];
+
+        $r1[$i3] = $b4;
+
+        $i3 = $i1 + 1;
+
+        $i0 = $i0 & 15;
+
+        $b4 = $r2[$i0];
+
+        $r1[$i1] = $b4;
+
+        return $i3;
+
+     label1:
+        $i3 = $i1 + 1;
+
+        $i2 = $i0 >> 12;
+
+        $i2 = $i2 | 224;
+
+        $b4 = (byte) $i2;
+
+        $r1[$i1] = $b4;
+
+        $i1 = $i3 + 1;
+
+        $i2 = $i0 >> 6;
+
+        $i2 = $i2 & 63;
+
+        $i2 = $i2 | 128;
+
+        $b4 = (byte) $i2;
+
+        $r1[$i3] = $b4;
+
+        $i3 = $i1 + 1;
+
+        $i0 = $i0 & 63;
+
+        $i0 = $i0 | 128;
+
+        $b4 = (byte) $i0;
+
+        $r1[$i1] = $b4;
+
+        return $i3;
+    }
+
+    private final int _outputRawMultiByteChar(int, char[], int, int)
+    {
+        byte[] $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        char $c3;
+        byte $b5;
+        int $i0, $i1, $i2, $i4;
+        char[] $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: char[];
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        $i4 = 55296;
+
+        if $i0 < $i4 goto label2;
+
+        $i4 = 57343;
+
+        if $i0 > $i4 goto label2;
+
+        if $i1 < $i2 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: void _reportError(java.lang.String)>("Split surrogate on writeRaw() input (last character)");
+
+     label1:
+        $c3 = $r1[$i1];
+
+        $i2 = (int) $c3;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _outputSurrogates(int,int)>($i0, $i2);
+
+        $i0 = $i1 + 1;
+
+        return $i0;
+
+     label2:
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i4 = $i2 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i4;
+
+        $i4 = $i0 >> 12;
+
+        $i4 = $i4 | 224;
+
+        $b5 = (byte) $i4;
+
+        $r2[$i2] = $b5;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i4 = $i2 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i4;
+
+        $i4 = $i0 >> 6;
+
+        $i4 = $i4 & 63;
+
+        $i4 = $i4 | 128;
+
+        $b5 = (byte) $i4;
+
+        $r2[$i2] = $b5;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i4 = $i2 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i4;
+
+        $i0 = $i0 & 63;
+
+        $i0 = $i0 | 128;
+
+        $b5 = (byte) $i0;
+
+        $r2[$i2] = $b5;
+
+        return $i1;
+    }
+
+    private final void _writeBytes(byte[])
+    {
+        java.io.OutputStream $r2;
+        byte[] $r1, $r3;
+        int $i0, $i1, $i2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 = lengthof $r1;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i1 + $i0;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i1 <= $i2 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+        if $i0 <= 512 goto label1;
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: java.io.OutputStream _outputStream>;
+
+        virtualinvoke $r2.<java.io.OutputStream: void write(byte[],int,int)>($r1, 0, $i0);
+
+        return;
+
+     label1:
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, 0, $r3, $i1, $i0);
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = $i1 + $i0;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        return;
+    }
+
+    private final void _writeBytes(byte[], int, int)
+    {
+        java.io.OutputStream $r2;
+        byte[] $r1, $r3;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        int $i0, $i1, $i2, $i3;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i2 + $i1;
+
+        $i3 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i2 <= $i3 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+        if $i1 <= 512 goto label1;
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: java.io.OutputStream _outputStream>;
+
+        virtualinvoke $r2.<java.io.OutputStream: void write(byte[],int,int)>($r1, $i0, $i1);
+
+        return;
+
+     label1:
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, $i0, $r3, $i2, $i1);
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = $i0 + $i1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        return;
+    }
+
+    private int _writeCustomEscape(byte[], int, org.codehaus.jackson.SerializableString, int)
+    {
+        byte[] $r1, $r3;
+        int $i0, $i1, $i2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.SerializableString $r2;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: byte[];
+
+        $i1 := @parameter1: int;
+
+        $r2 := @parameter2: org.codehaus.jackson.SerializableString;
+
+        $i2 := @parameter3: int;
+
+        $r3 = interfaceinvoke $r2.<org.codehaus.jackson.SerializableString: byte[] asUnquotedUTF8()>();
+
+        $i0 = lengthof $r3;
+
+        if $i0 <= 6 goto label1;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        $i1 = specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: int _handleLongCustomEscape(byte[],int,int,byte[],int)>($r1, $i1, $i0, $r3, $i2);
+
+        return $i1;
+
+     label1:
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, 0, $r1, $i1, $i0);
+
+        $i1 = $i1 + $i0;
+
+        return $i1;
+    }
+
+    private final void _writeCustomStringSegment2(char[], int, int)
+    {
+        byte[] $r4;
+        org.codehaus.jackson.io.CharacterEscapes $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.SerializableString $r5;
+        byte $b7;
+        int[] $r1;
+        int $i0, $i1, $i2, $i3, $i4, $i6;
+        java.lang.String $r7;
+        char $c5;
+        org.codehaus.jackson.JsonGenerationException $r9;
+        char[] $r3;
+        java.lang.StringBuilder $r6, $r8;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r3 := @parameter0: char[];
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i3 = $i2 - $i1;
+
+        $i3 = $i3 * 6;
+
+        $i0 = $i0 + $i3;
+
+        $i3 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 <= $i3 goto label01;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label01:
+        $i4 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $r4 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int[] _outputEscapes>;
+
+        $i3 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _maximumNonEscapedChar>;
+
+        if $i3 > 0 goto label02;
+
+        $i3 = 65535;
+
+     label02:
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: org.codehaus.jackson.io.CharacterEscapes _characterEscapes>;
+
+     label03:
+        if $i1 >= $i2 goto label13;
+
+        $i0 = $i1 + 1;
+
+        $c5 = $r3[$i1];
+
+        $i1 = (int) $c5;
+
+        if $i1 > 127 goto label08;
+
+        $i1 = (int) $c5;
+
+        $i1 = $r1[$i1];
+
+        if $i1 != 0 goto label04;
+
+        $b7 = (byte) $c5;
+
+        $r4[$i4] = $b7;
+
+        $i1 = $i0;
+
+        $i4 = $i4 + 1;
+
+        goto label03;
+
+     label04:
+        $i1 = (int) $c5;
+
+        $i1 = $r1[$i1];
+
+        if $i1 <= 0 goto label05;
+
+        $i6 = $i4 + 1;
+
+        $r4[$i4] = 92;
+
+        $i4 = $i6 + 1;
+
+        $b7 = (byte) $i1;
+
+        $r4[$i6] = $b7;
+
+        goto label09;
+
+     label05:
+        $i6 = -2;
+
+        if $i1 != $i6 goto label07;
+
+        $i1 = (int) $c5;
+
+        $r5 = virtualinvoke $r2.<org.codehaus.jackson.io.CharacterEscapes: org.codehaus.jackson.SerializableString getEscapeSequence(int)>($i1);
+
+        if $r5 == null goto label06;
+
+        $i1 = $i2 - $i0;
+
+        $i4 = specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: int _writeCustomEscape(byte[],int,org.codehaus.jackson.SerializableString,int)>($r4, $i4, $r5, $i1);
+
+        goto label09;
+
+     label06:
+        $r9 = new org.codehaus.jackson.JsonGenerationException;
+
+        $r8 = new java.lang.StringBuilder;
+
+        $r6 = $r8;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid custom escape definitions; custom escape not found for character code 0x");
+
+        $i1 = (int) $c5;
+
+        $r7 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i1);
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", although was supposed to have one");
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r9.<org.codehaus.jackson.JsonGenerationException: void <init>(java.lang.String)>($r7);
+
+        throw $r9;
+
+     label07:
+        $i1 = (int) $c5;
+
+        $i4 = specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: int _writeGenericEscape(int,int)>($i1, $i4);
+
+        goto label09;
+
+     label08:
+        $i1 = (int) $c5;
+
+        if $i1 <= $i3 goto label10;
+
+        $i1 = (int) $c5;
+
+        $i4 = specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: int _writeGenericEscape(int,int)>($i1, $i4);
+
+     label09:
+        $i1 = $i0;
+
+        goto label03;
+
+     label10:
+        $i1 = (int) $c5;
+
+        $r5 = virtualinvoke $r2.<org.codehaus.jackson.io.CharacterEscapes: org.codehaus.jackson.SerializableString getEscapeSequence(int)>($i1);
+
+        if $r5 == null goto label11;
+
+        $i1 = $i2 - $i0;
+
+        $i4 = specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: int _writeCustomEscape(byte[],int,org.codehaus.jackson.SerializableString,int)>($r4, $i4, $r5, $i1);
+
+        goto label09;
+
+     label11:
+        $i1 = (int) $c5;
+
+        if $i1 > 2047 goto label12;
+
+        $i1 = $i4 + 1;
+
+        $i6 = (int) $c5;
+
+        $i6 = $i6 >> 6;
+
+        $i6 = $i6 | 192;
+
+        $b7 = (byte) $i6;
+
+        $r4[$i4] = $b7;
+
+        $i4 = $i1 + 1;
+
+        $c5 = $c5 & 63;
+
+        $c5 = $c5 | 128;
+
+        $b7 = (byte) $c5;
+
+        $r4[$i1] = $b7;
+
+        goto label09;
+
+     label12:
+        $i1 = (int) $c5;
+
+        $i4 = specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputMultiByteChar(int,int)>($i1, $i4);
+
+        goto label09;
+
+     label13:
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i4;
+
+        return;
+    }
+
+    private int _writeGenericEscape(int, int)
+    {
+        byte[] $r1, $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        byte $b5;
+        int $i0, $i1, $i2, $i3, $i4;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i2 = $i1 + 1;
+
+        $r1[$i1] = 92;
+
+        $i1 = $i2 + 1;
+
+        $r1[$i2] = 117;
+
+        if $i0 <= 255 goto label1;
+
+        $i2 = $i0 >> 8;
+
+        $i3 = 255 & $i2;
+
+        $i2 = $i1 + 1;
+
+        $r2 = <org.codehaus.jackson.impl.Utf8Generator: byte[] HEX_CHARS>;
+
+        $i4 = $i3 >> 4;
+
+        $b5 = $r2[$i4];
+
+        $r1[$i1] = $b5;
+
+        $i1 = $i2 + 1;
+
+        $i3 = $i3 & 15;
+
+        $b5 = $r2[$i3];
+
+        $r1[$i2] = $b5;
+
+        $i0 = $i0 & 255;
+
+        goto label2;
+
+     label1:
+        $i2 = $i1 + 1;
+
+        $r1[$i1] = 48;
+
+        $i1 = $i2 + 1;
+
+        $r1[$i2] = 48;
+
+     label2:
+        $i2 = $i1 + 1;
+
+        $r2 = <org.codehaus.jackson.impl.Utf8Generator: byte[] HEX_CHARS>;
+
+        $i3 = $i0 >> 4;
+
+        $b5 = $r2[$i3];
+
+        $r1[$i1] = $b5;
+
+        $i1 = $i2 + 1;
+
+        $i0 = $i0 & 15;
+
+        $b5 = $r2[$i0];
+
+        $r1[$i2] = $b5;
+
+        return $i1;
+    }
+
+    private final void _writeLongString(java.lang.String)
+    {
+        byte[] $r2;
+        int $i0, $i1;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        java.lang.String $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r2[$i0] = 34;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegments(java.lang.String)>($r1);
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label2:
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r2[$i0] = 34;
+
+        return;
+    }
+
+    private final void _writeLongString(char[], int, int)
+    {
+        byte[] $r2;
+        int $i0, $i1, $i2;
+        char[] $r1;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: char[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i2 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i2;
+
+        $r2[$i0] = 34;
+
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer>;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegments(char[],int,int)>($r1, 0, $i1);
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label2:
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r2[$i0] = 34;
+
+        return;
+    }
+
+    private final void _writeNull()
+    {
+        byte[] $r1, $r2;
+        int $i0, $i1;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = $i0 + 4;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        $r2 = <org.codehaus.jackson.impl.Utf8Generator: byte[] NULL_BYTES>;
+
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, 0, $r1, $i0, 4);
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = $i0 + 4;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        return;
+    }
+
+    private final void _writeQuotedInt(int)
+    {
+        byte[] $r1;
+        int $i0, $i1, $i2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $i0 := @parameter0: int;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i1 + 13;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i1 < $i2 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i1 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i2;
+
+        $r1[$i1] = 34;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = staticinvoke <org.codehaus.jackson.io.NumberOutput: int outputInt(int,byte[],int)>($i0, $r1, $i1);
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r1[$i0] = 34;
+
+        return;
+    }
+
+    private final void _writeQuotedLong(long)
+    {
+        byte[] $r1;
+        int $i0, $i2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        long $l1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $l1 := @parameter0: long;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = $i0 + 23;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i2 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i2;
+
+        $r1[$i0] = 34;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = staticinvoke <org.codehaus.jackson.io.NumberOutput: int outputLong(long,byte[],int)>($l1, $r1, $i0);
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i2;
+
+        $r1[$i0] = 34;
+
+        return;
+    }
+
+    private final void _writeQuotedRaw(java.lang.Object)
+    {
+        byte[] $r3;
+        int $i0, $i1;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        java.lang.Object $r2;
+        java.lang.String $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r3[$i0] = 34;
+
+        $r1 = virtualinvoke $r2.<java.lang.Object: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void writeRaw(java.lang.String)>($r1);
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label2:
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r3[$i0] = 34;
+
+        return;
+    }
+
+    private final void _writeSegmentedRaw(char[], int, int)
+    {
+        byte[] $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        char $c3;
+        byte $b6;
+        int $i0, $i1, $i2, $i4, $i5;
+        char[] $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: char[];
+
+        $i2 := @parameter1: int;
+
+        $i0 := @parameter2: int;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+     label1:
+        if $i2 >= $i0 goto label8;
+
+     label2:
+        $c3 = $r1[$i2];
+
+        $i4 = (int) $c3;
+
+        if $i4 < 128 goto label6;
+
+        $i4 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i4 = $i4 + 3;
+
+        $i5 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i4 < $i5 goto label3;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label3:
+        $i4 = $i2 + 1;
+
+        $c3 = $r1[$i2];
+
+        $i2 = (int) $c3;
+
+        if $i2 >= 2048 goto label4;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i5 = $i2 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i5;
+
+        $i5 = (int) $c3;
+
+        $i5 = $i5 >> 6;
+
+        $i5 = $i5 | 192;
+
+        $b6 = (byte) $i5;
+
+        $r2[$i2] = $b6;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i5 = $i2 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i5;
+
+        $c3 = $c3 & 63;
+
+        $c3 = $c3 | 128;
+
+        $b6 = (byte) $c3;
+
+        $r2[$i2] = $b6;
+
+        goto label5;
+
+     label4:
+        $i2 = (int) $c3;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputRawMultiByteChar(int,char[],int,int)>($i2, $r1, $i4, $i0);
+
+     label5:
+        $i2 = $i4;
+
+        goto label1;
+
+     label6:
+        $i4 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        if $i4 < $i1 goto label7;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label7:
+        $i4 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i5 = $i4 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i5;
+
+        $b6 = (byte) $c3;
+
+        $r2[$i4] = $b6;
+
+        $i2 = $i2 + 1;
+
+        if $i2 < $i0 goto label2;
+
+     label8:
+        return;
+    }
+
+    private final void _writeStringSegment(char[], int, int)
+    {
+        byte[] $r2;
+        org.codehaus.jackson.io.CharacterEscapes $r4;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        char $c3;
+        byte $b5;
+        int[] $r3;
+        int $i0, $i1, $i2, $i4;
+        char[] $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: char[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i1 = $i1 + $i0;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: int[] _outputEscapes>;
+
+     label1:
+        if $i0 >= $i1 goto label3;
+
+        $c3 = $r1[$i0];
+
+        $i4 = (int) $c3;
+
+        if $i4 > 127 goto label3;
+
+        $i4 = (int) $c3;
+
+        $i4 = $r3[$i4];
+
+        if $i4 == 0 goto label2;
+
+        goto label3;
+
+     label2:
+        $b5 = (byte) $c3;
+
+        $r2[$i2] = $b5;
+
+        $i0 = $i0 + 1;
+
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label3:
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i2;
+
+        if $i0 >= $i1 goto label6;
+
+        $r4 = r0.<org.codehaus.jackson.impl.Utf8Generator: org.codehaus.jackson.io.CharacterEscapes _characterEscapes>;
+
+        if $r4 == null goto label4;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeCustomStringSegment2(char[],int,int)>($r1, $i0, $i1);
+
+        return;
+
+     label4:
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _maximumNonEscapedChar>;
+
+        if $i2 != 0 goto label5;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegment2(char[],int,int)>($r1, $i0, $i1);
+
+        return;
+
+     label5:
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegmentASCII2(char[],int,int)>($r1, $i0, $i1);
+
+     label6:
+        return;
+    }
+
+    private final void _writeStringSegment2(char[], int, int)
+    {
+        byte[] $r3;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        char $c4;
+        byte $b6;
+        int[] $r2;
+        int $i0, $i1, $i2, $i3, $i5;
+        char[] $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: char[];
+
+        $i2 := @parameter1: int;
+
+        $i0 := @parameter2: int;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i3 = $i0 - $i2;
+
+        $i3 = $i3 * 6;
+
+        $i1 = $i1 + $i3;
+
+        $i3 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i1 <= $i3 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        $i3 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int[] _outputEscapes>;
+
+     label2:
+        if $i2 >= $i0 goto label8;
+
+        $i1 = $i2 + 1;
+
+        $c4 = $r1[$i2];
+
+        $i2 = (int) $c4;
+
+        if $i2 > 127 goto label5;
+
+        $i2 = (int) $c4;
+
+        $i2 = $r2[$i2];
+
+        if $i2 != 0 goto label3;
+
+        $b6 = (byte) $c4;
+
+        $r3[$i3] = $b6;
+
+        $i2 = $i1;
+
+        $i3 = $i3 + 1;
+
+        goto label2;
+
+     label3:
+        $i2 = (int) $c4;
+
+        $i2 = $r2[$i2];
+
+        if $i2 <= 0 goto label4;
+
+        $i5 = $i3 + 1;
+
+        $r3[$i3] = 92;
+
+        $i3 = $i5 + 1;
+
+        $b6 = (byte) $i2;
+
+        $r3[$i5] = $b6;
+
+        goto label7;
+
+     label4:
+        $i2 = (int) $c4;
+
+        $i3 = specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: int _writeGenericEscape(int,int)>($i2, $i3);
+
+        goto label7;
+
+     label5:
+        $i2 = (int) $c4;
+
+        if $i2 > 2047 goto label6;
+
+        $i2 = $i3 + 1;
+
+        $i5 = (int) $c4;
+
+        $i5 = $i5 >> 6;
+
+        $i5 = $i5 | 192;
+
+        $b6 = (byte) $i5;
+
+        $r3[$i3] = $b6;
+
+        $i3 = $i2 + 1;
+
+        $c4 = $c4 & 63;
+
+        $c4 = $c4 | 128;
+
+        $b6 = (byte) $c4;
+
+        $r3[$i2] = $b6;
+
+        goto label7;
+
+     label6:
+        $i2 = (int) $c4;
+
+        $i3 = specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputMultiByteChar(int,int)>($i2, $i3);
+
+     label7:
+        $i2 = $i1;
+
+        goto label2;
+
+     label8:
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i3;
+
+        return;
+    }
+
+    private final void _writeStringSegmentASCII2(char[], int, int)
+    {
+        byte[] $r3;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        char $c5;
+        byte $b7;
+        int[] $r2;
+        int $i0, $i1, $i2, $i3, $i4, $i6;
+        char[] $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: char[];
+
+        $i3 := @parameter1: int;
+
+        $i0 := @parameter2: int;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i0 - $i3;
+
+        $i2 = $i2 * 6;
+
+        $i1 = $i1 + $i2;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i1 <= $i2 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        $i4 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int[] _outputEscapes>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _maximumNonEscapedChar>;
+
+     label2:
+        if $i3 >= $i0 goto label9;
+
+        $i2 = $i3 + 1;
+
+        $c5 = $r1[$i3];
+
+        $i3 = (int) $c5;
+
+        if $i3 > 127 goto label5;
+
+        $i3 = (int) $c5;
+
+        $i3 = $r2[$i3];
+
+        if $i3 != 0 goto label3;
+
+        $b7 = (byte) $c5;
+
+        $r3[$i4] = $b7;
+
+        $i3 = $i2;
+
+        $i4 = $i4 + 1;
+
+        goto label2;
+
+     label3:
+        $i3 = (int) $c5;
+
+        $i3 = $r2[$i3];
+
+        if $i3 <= 0 goto label4;
+
+        $i6 = $i4 + 1;
+
+        $r3[$i4] = 92;
+
+        $i4 = $i6 + 1;
+
+        $b7 = (byte) $i3;
+
+        $r3[$i6] = $b7;
+
+        goto label6;
+
+     label4:
+        $i3 = (int) $c5;
+
+        $i4 = specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: int _writeGenericEscape(int,int)>($i3, $i4);
+
+        goto label6;
+
+     label5:
+        $i3 = (int) $c5;
+
+        if $i3 <= $i1 goto label7;
+
+        $i3 = (int) $c5;
+
+        $i4 = specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: int _writeGenericEscape(int,int)>($i3, $i4);
+
+     label6:
+        $i3 = $i2;
+
+        goto label2;
+
+     label7:
+        $i3 = (int) $c5;
+
+        if $i3 > 2047 goto label8;
+
+        $i3 = $i4 + 1;
+
+        $i6 = (int) $c5;
+
+        $i6 = $i6 >> 6;
+
+        $i6 = $i6 | 192;
+
+        $b7 = (byte) $i6;
+
+        $r3[$i4] = $b7;
+
+        $i4 = $i3 + 1;
+
+        $c5 = $c5 & 63;
+
+        $c5 = $c5 | 128;
+
+        $b7 = (byte) $c5;
+
+        $r3[$i3] = $b7;
+
+        goto label6;
+
+     label8:
+        $i3 = (int) $c5;
+
+        $i4 = specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputMultiByteChar(int,int)>($i3, $i4);
+
+        goto label6;
+
+     label9:
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i4;
+
+        return;
+    }
+
+    private final void _writeStringSegments(java.lang.String)
+    {
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        int $i0, $i1, $i2, $i3, $i4;
+        char[] $r2;
+        java.lang.String $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i2 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer>;
+
+        $i1 = 0;
+
+     label1:
+        if $i2 <= 0 goto label3;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputMaxContiguous>;
+
+        $i3 = staticinvoke <java.lang.Math: int min(int,int)>($i0, $i2);
+
+        $i0 = $i1 + $i3;
+
+        virtualinvoke $r1.<java.lang.String: void getChars(int,int,char[],int)>($i1, $i0, $r2, 0);
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i4 = $i1 + $i3;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i4 <= $i1 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label2:
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegment(char[],int,int)>($r2, 0, $i3);
+
+        $i2 = $i2 - $i3;
+
+        $i1 = $i0;
+
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    private final void _writeStringSegments(char[], int, int)
+    {
+        int $i0, $i1, $i2, $i3, $i4;
+        char[] $r1;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: char[];
+
+        $i2 := @parameter1: int;
+
+        $i3 := @parameter2: int;
+
+     label1:
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputMaxContiguous>;
+
+        $i1 = staticinvoke <java.lang.Math: int min(int,int)>($i1, $i3);
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i4 = $i0 + $i1;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i4 <= $i0 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label2:
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegment(char[],int,int)>($r1, $i2, $i1);
+
+        $i2 = $i2 + $i1;
+
+        $i3 = $i3 - $i1;
+
+        if $i3 > 0 goto label1;
+
+        return;
+    }
+
+    private final void _writeUTF8Segment(byte[], int, int)
+    {
+        byte[] $r1, $r3;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        byte $b5;
+        int[] $r2;
+        int $i0, $i1, $i2, $i3, $i4;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int[] _outputEscapes>;
+
+        $i3 = $i0 + $i1;
+
+        $i4 = $i0;
+
+     label1:
+        if $i4 >= $i3 goto label3;
+
+        $i2 = $i4 + 1;
+
+        $b5 = $r1[$i4];
+
+        $i4 = (int) $b5;
+
+        if $i4 < 0 goto label2;
+
+        $i4 = (int) $b5;
+
+        $i4 = $r2[$i4];
+
+        if $i4 == 0 goto label2;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeUTF8Segment2(byte[],int,int)>($r1, $i0, $i1);
+
+        return;
+
+     label2:
+        $i4 = $i2;
+
+        goto label1;
+
+     label3:
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i2 + $i1;
+
+        $i3 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i2 <= $i3 goto label4;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label4:
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, $i0, $r3, $i2, $i1);
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = $i0 + $i1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        return;
+    }
+
+    private final void _writeUTF8Segment2(byte[], int, int)
+    {
+        byte[] $r1, $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        byte $b5;
+        int[] $r3;
+        int $i0, $i1, $i2, $i3, $i4;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: byte[];
+
+        $i1 := @parameter1: int;
+
+        $i0 := @parameter2: int;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i3 = $i0 * 6;
+
+        $i3 = $i3 + $i2;
+
+        $i4 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i3 <= $i4 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+     label1:
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: int[] _outputEscapes>;
+
+        $i3 = $i0 + $i1;
+
+     label2:
+        if $i1 >= $i3 goto label7;
+
+        $i0 = $i1 + 1;
+
+        $b5 = $r1[$i1];
+
+        $i1 = (int) $b5;
+
+        if $i1 < 0 goto label6;
+
+        $i1 = (int) $b5;
+
+        $i1 = $r3[$i1];
+
+        if $i1 != 0 goto label3;
+
+        goto label6;
+
+     label3:
+        $i1 = (int) $b5;
+
+        $i1 = $r3[$i1];
+
+        if $i1 <= 0 goto label4;
+
+        $i4 = $i2 + 1;
+
+        $r2[$i2] = 92;
+
+        $i2 = $i4 + 1;
+
+        $b5 = (byte) $i1;
+
+        $r2[$i4] = $b5;
+
+        goto label5;
+
+     label4:
+        $i1 = (int) $b5;
+
+        $i2 = specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: int _writeGenericEscape(int,int)>($i1, $i2);
+
+     label5:
+        $i1 = $i0;
+
+        goto label2;
+
+     label6:
+        $r2[$i2] = $b5;
+
+        $i1 = $i0;
+
+        $i2 = $i2 + 1;
+
+        goto label2;
+
+     label7:
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i2;
+
+        return;
+    }
+
+    private final void _writeUTF8Segments(byte[], int, int)
+    {
+        byte[] $r1;
+        int $i0, $i1, $i2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: byte[];
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+     label1:
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputMaxContiguous>;
+
+        $i0 = staticinvoke <java.lang.Math: int min(int,int)>($i0, $i2);
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeUTF8Segment(byte[],int,int)>($r1, $i1, $i0);
+
+        $i1 = $i1 + $i0;
+
+        $i2 = $i2 - $i0;
+
+        if $i2 > 0 goto label1;
+
+        return;
+    }
+
+    public final int _decodeSurrogate(int, int)
+    {
+        int $i0, $i1, $i2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        java.lang.StringBuilder $r1, $r3;
+        java.lang.String $r2;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 = 56320;
+
+        if $i1 < $i2 goto label1;
+
+        $i2 = 57343;
+
+        if $i1 <= $i2 goto label2;
+
+     label1:
+        $r3 = new java.lang.StringBuilder;
+
+        $r1 = $r3;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Incomplete surrogate pair: first char 0x");
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", second 0x");
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i1);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: void _reportError(java.lang.String)>($r2);
+
+     label2:
+        $i2 = 55296;
+
+        $i0 = $i0 - $i2;
+
+        $i0 = $i0 << 10;
+
+        $i0 = $i0 + 65536;
+
+        $i2 = 56320;
+
+        $i1 = $i1 - $i2;
+
+        $i0 = $i0 + $i1;
+
+        return $i0;
+    }
+
+    public final void _flushBuffer()
+    {
+        java.io.OutputStream $r1;
+        byte[] $r2;
+        int $i0;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        if $i0 <= 0 goto label1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = 0;
+
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: java.io.OutputStream _outputStream>;
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        virtualinvoke $r1.<java.io.OutputStream: void write(byte[],int,int)>($r2, 0, $i0);
+
+     label1:
+        return;
+    }
+
+    public final void _outputSurrogates(int, int)
+    {
+        byte[] $r1;
+        byte $b3;
+        int $i0, $i1, $i2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i0 = virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: int _decodeSurrogate(int,int)>($i0, $i1);
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i1 + 4;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i1 <= $i2 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i1 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i2;
+
+        $i2 = $i0 >> 18;
+
+        $i2 = $i2 | 240;
+
+        $b3 = (byte) $i2;
+
+        $r1[$i1] = $b3;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i1 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i2;
+
+        $i2 = $i0 >> 12;
+
+        $i2 = $i2 & 63;
+
+        $i2 = $i2 | 128;
+
+        $b3 = (byte) $i2;
+
+        $r1[$i1] = $b3;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i1 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i2;
+
+        $i2 = $i0 >> 6;
+
+        $i2 = $i2 & 63;
+
+        $i2 = $i2 | 128;
+
+        $b3 = (byte) $i2;
+
+        $r1[$i1] = $b3;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i1 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i2;
+
+        $i0 = $i0 & 63;
+
+        $i0 = $i0 | 128;
+
+        $b3 = (byte) $i0;
+
+        $r1[$i1] = $b3;
+
+        return;
+    }
+
+    public void _releaseBuffers()
+    {
+        byte[] $r1;
+        org.codehaus.jackson.io.IOContext $r2;
+        char[] $r3;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        if $r1 == null goto label1;
+
+        $z0 = r0.<org.codehaus.jackson.impl.Utf8Generator: boolean _bufferRecyclable>;
+
+        if $z0 == 0 goto label1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer> = null;
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: org.codehaus.jackson.io.IOContext _ioContext>;
+
+        virtualinvoke $r2.<org.codehaus.jackson.io.IOContext: void releaseWriteEncodingBuffer(byte[])>($r1);
+
+     label1:
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer>;
+
+        if $r3 == null goto label2;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer> = null;
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: org.codehaus.jackson.io.IOContext _ioContext>;
+
+        virtualinvoke $r2.<org.codehaus.jackson.io.IOContext: void releaseConcatBuffer(char[])>($r3);
+
+     label2:
+        return;
+    }
+
+    public final void _verifyPrettyValueWrite(java.lang.String, int)
+    {
+        org.codehaus.jackson.PrettyPrinter $r2;
+        int $i0;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        java.lang.String $r1;
+        org.codehaus.jackson.impl.JsonWriteContext $r3;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        if $i0 == 0 goto label4;
+
+        if $i0 == 1 goto label3;
+
+        if $i0 == 2 goto label2;
+
+        if $i0 == 3 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: void _cantHappen()>();
+
+        return;
+
+     label1:
+        $r2 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        interfaceinvoke $r2.<org.codehaus.jackson.PrettyPrinter: void writeRootValueSeparator(org.codehaus.jackson.JsonGenerator)>(r0);
+
+        return;
+
+     label2:
+        $r2 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        interfaceinvoke $r2.<org.codehaus.jackson.PrettyPrinter: void writeObjectFieldValueSeparator(org.codehaus.jackson.JsonGenerator)>(r0);
+
+        return;
+
+     label3:
+        $r2 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        interfaceinvoke $r2.<org.codehaus.jackson.PrettyPrinter: void writeArrayValueSeparator(org.codehaus.jackson.JsonGenerator)>(r0);
+
+        return;
+
+     label4:
+        $r3 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext>;
+
+        $z0 = virtualinvoke $r3.<org.codehaus.jackson.JsonStreamContext: boolean inArray()>();
+
+        if $z0 == 0 goto label5;
+
+        $r2 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        interfaceinvoke $r2.<org.codehaus.jackson.PrettyPrinter: void beforeArrayValues(org.codehaus.jackson.JsonGenerator)>(r0);
+
+        return;
+
+     label5:
+        $r3 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext>;
+
+        $z0 = virtualinvoke $r3.<org.codehaus.jackson.JsonStreamContext: boolean inObject()>();
+
+        if $z0 == 0 goto label6;
+
+        $r2 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        interfaceinvoke $r2.<org.codehaus.jackson.PrettyPrinter: void beforeObjectEntries(org.codehaus.jackson.JsonGenerator)>(r0);
+
+     label6:
+        return;
+    }
+
+    public final void _verifyValueWrite(java.lang.String)
+    {
+        byte[] $r6;
+        org.codehaus.jackson.PrettyPrinter $r5;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.impl.JsonWriteContext $r2;
+        byte $b1;
+        int $i0, $i2;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r1, $r4;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext>;
+
+        $i0 = virtualinvoke $r2.<org.codehaus.jackson.impl.JsonWriteContext: int writeValue()>();
+
+        if $i0 != 5 goto label1;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Can not ");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", expecting field name");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: void _reportError(java.lang.String)>($r4);
+
+     label1:
+        $r5 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        if $r5 != null goto label7;
+
+        if $i0 == 1 goto label4;
+
+        if $i0 == 2 goto label3;
+
+        if $i0 == 3 goto label2;
+
+        return;
+
+     label2:
+        $b1 = 32;
+
+        goto label5;
+
+     label3:
+        $b1 = 58;
+
+        goto label5;
+
+     label4:
+        $b1 = 44;
+
+     label5:
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i2 goto label6;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label6:
+        $r6 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $r6[$i0] = $b1;
+
+        $i0 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        return;
+
+     label7:
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyPrettyValueWrite(java.lang.String,int)>($r1, $i0);
+
+        return;
+    }
+
+    public void _writeBinary(org.codehaus.jackson.Base64Variant, byte[], int, int)
+    {
+        byte[] $r2, $r3;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        short $s8;
+        byte $b7;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6;
+        org.codehaus.jackson.Base64Variant $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: org.codehaus.jackson.Base64Variant;
+
+        $r2 := @parameter1: byte[];
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        $i3 = -3;
+
+        $i3 = $i2 + $i3;
+
+        $i4 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        $i5 = -6;
+
+        $i4 = $i4 + $i5;
+
+        $i5 = virtualinvoke $r1.<org.codehaus.jackson.Base64Variant: int getMaxLineLength()>();
+
+        $i5 = $i5 >> 2;
+
+     label1:
+        if $i1 > $i3 goto label4;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        if $i0 <= $i4 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label2:
+        $i6 = $i1 + 1;
+
+        $b7 = $r2[$i1];
+
+        $i1 = (int) $b7;
+
+        $i1 = $i1 << 8;
+
+        $i0 = $i6 + 1;
+
+        $b7 = $r2[$i6];
+
+        $s8 = (short) $b7;
+
+        $s8 = $s8 & 255;
+
+        $i6 = (int) $s8;
+
+        $i1 = $i1 | $i6;
+
+        $i6 = $i1 << 8;
+
+        $i1 = $i0 + 1;
+
+        $b7 = $r2[$i0];
+
+        $s8 = (short) $b7;
+
+        $s8 = $s8 & 255;
+
+        $i0 = (int) $s8;
+
+        $i6 = $i6 | $i0;
+
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = virtualinvoke $r1.<org.codehaus.jackson.Base64Variant: int encodeBase64Chunk(int,byte[],int)>($i6, $r3, $i0);
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        $i0 = -1;
+
+        $i5 = $i5 + $i0;
+
+        if $i5 > 0 goto label3;
+
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i5 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = $i5 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        $r3[$i5] = 92;
+
+        $i5 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = $i5 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        $r3[$i5] = 110;
+
+        $i5 = virtualinvoke $r1.<org.codehaus.jackson.Base64Variant: int getMaxLineLength()>();
+
+        $i5 = $i5 >> 2;
+
+     label3:
+        goto label1;
+
+     label4:
+        $i2 = $i2 - $i1;
+
+        if $i2 <= 0 goto label7;
+
+        $i3 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        if $i3 <= $i4 goto label5;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label5:
+        $i3 = $i1 + 1;
+
+        $b7 = $r2[$i1];
+
+        $i1 = (int) $b7;
+
+        $i1 = $i1 << 16;
+
+        if $i2 != 2 goto label6;
+
+        $b7 = $r2[$i3];
+
+        $s8 = (short) $b7;
+
+        $s8 = $s8 & 255;
+
+        $i3 = (int) $s8;
+
+        $i3 = $i3 << 8;
+
+        $i1 = $i1 | $i3;
+
+     label6:
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i3 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = virtualinvoke $r1.<org.codehaus.jackson.Base64Variant: int encodeBase64Partial(int,int,byte[],int)>($i1, $i2, $r2, $i3);
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+     label7:
+        return;
+    }
+
+    public final void _writeFieldName(java.lang.String)
+    {
+        byte[] $r3;
+        org.codehaus.jackson.JsonGenerator$Feature $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        int $i0, $i1, $i2;
+        char[] $r4;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = <org.codehaus.jackson.JsonGenerator$Feature: org.codehaus.jackson.JsonGenerator$Feature QUOTE_FIELD_NAMES>;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean isEnabled(org.codehaus.jackson.JsonGenerator$Feature)>($r2);
+
+        if $z0 != 0 goto label1;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegments(java.lang.String)>($r1);
+
+        return;
+
+     label1:
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label2:
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r3[$i0] = 34;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _charBufferLength>;
+
+        if $i0 > $i1 goto label5;
+
+        $r4 = r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer>;
+
+        virtualinvoke $r1.<java.lang.String: void getChars(int,int,char[],int)>(0, $i0, $r4, 0);
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputMaxContiguous>;
+
+        if $i0 > $i1 goto label4;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i1 + $i0;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i1 <= $i2 goto label3;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label3:
+        $r4 = r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer>;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegment(char[],int,int)>($r4, 0, $i0);
+
+        goto label6;
+
+     label4:
+        $r4 = r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer>;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegments(char[],int,int)>($r4, 0, $i0);
+
+        goto label6;
+
+     label5:
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegments(java.lang.String)>($r1);
+
+     label6:
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label7;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label7:
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r3[$i0] = 34;
+
+        return;
+    }
+
+    public final void _writeFieldName(org.codehaus.jackson.SerializableString)
+    {
+        byte[] $r2, $r4;
+        org.codehaus.jackson.JsonGenerator$Feature $r3;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.SerializableString $r1;
+        int $i0, $i1, $i2, $i3;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: org.codehaus.jackson.SerializableString;
+
+        $r2 = interfaceinvoke $r1.<org.codehaus.jackson.SerializableString: byte[] asQuotedUTF8()>();
+
+        $r3 = <org.codehaus.jackson.JsonGenerator$Feature: org.codehaus.jackson.JsonGenerator$Feature QUOTE_FIELD_NAMES>;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean isEnabled(org.codehaus.jackson.JsonGenerator$Feature)>($r3);
+
+        if $z0 != 0 goto label1;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeBytes(byte[])>($r2);
+
+        return;
+
+     label1:
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i2 < $i0 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label2:
+        $r4 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = $i2 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        $r4[$i2] = 34;
+
+        $i2 = lengthof $r2;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + $i2;
+
+        $i3 = $i1 + 1;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i3 >= $i1 goto label3;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, 0, $r4, $i0, $i2);
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i0 + $i2;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i2;
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = $i2 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        $r2[$i2] = 34;
+
+        return;
+
+     label3:
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeBytes(byte[])>($r2);
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i2 < $i0 goto label4;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label4:
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = $i2 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        $r2[$i2] = 34;
+
+        return;
+    }
+
+    public final void _writePPFieldName(java.lang.String, boolean)
+    {
+        byte[] $r4;
+        org.codehaus.jackson.JsonGenerator$Feature $r3;
+        org.codehaus.jackson.PrettyPrinter $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        int $i0, $i1, $i2;
+        char[] $r5;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $z0 := @parameter1: boolean;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        interfaceinvoke $r2.<org.codehaus.jackson.PrettyPrinter: void writeObjectEntrySeparator(org.codehaus.jackson.JsonGenerator)>(r0);
+
+        goto label2;
+
+     label1:
+        $r2 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        interfaceinvoke $r2.<org.codehaus.jackson.PrettyPrinter: void beforeObjectEntries(org.codehaus.jackson.JsonGenerator)>(r0);
+
+     label2:
+        $r3 = <org.codehaus.jackson.JsonGenerator$Feature: org.codehaus.jackson.JsonGenerator$Feature QUOTE_FIELD_NAMES>;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean isEnabled(org.codehaus.jackson.JsonGenerator$Feature)>($r3);
+
+        if $z0 == 0 goto label9;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label3;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label3:
+        $r4 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r4[$i0] = 34;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _charBufferLength>;
+
+        if $i0 > $i1 goto label6;
+
+        $r5 = r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer>;
+
+        virtualinvoke $r1.<java.lang.String: void getChars(int,int,char[],int)>(0, $i0, $r5, 0);
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputMaxContiguous>;
+
+        if $i0 > $i1 goto label5;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i1 + $i0;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i1 <= $i2 goto label4;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label4:
+        $r5 = r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer>;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegment(char[],int,int)>($r5, 0, $i0);
+
+        goto label7;
+
+     label5:
+        $r5 = r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer>;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegments(char[],int,int)>($r5, 0, $i0);
+
+        goto label7;
+
+     label6:
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegments(java.lang.String)>($r1);
+
+     label7:
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label8;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label8:
+        $r4 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r4[$i0] = 34;
+
+        return;
+
+     label9:
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegments(java.lang.String)>($r1);
+
+        return;
+    }
+
+    public final void _writePPFieldName(org.codehaus.jackson.SerializableString, boolean)
+    {
+        byte[] $r4;
+        org.codehaus.jackson.JsonGenerator$Feature $r3;
+        org.codehaus.jackson.PrettyPrinter $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.SerializableString $r1;
+        int $i0, $i1;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: org.codehaus.jackson.SerializableString;
+
+        $z0 := @parameter1: boolean;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        interfaceinvoke $r2.<org.codehaus.jackson.PrettyPrinter: void writeObjectEntrySeparator(org.codehaus.jackson.JsonGenerator)>(r0);
+
+        goto label2;
+
+     label1:
+        $r2 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        interfaceinvoke $r2.<org.codehaus.jackson.PrettyPrinter: void beforeObjectEntries(org.codehaus.jackson.JsonGenerator)>(r0);
+
+     label2:
+        $r3 = <org.codehaus.jackson.JsonGenerator$Feature: org.codehaus.jackson.JsonGenerator$Feature QUOTE_FIELD_NAMES>;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean isEnabled(org.codehaus.jackson.JsonGenerator$Feature)>($r3);
+
+        if $z0 == 0 goto label4;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label3;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label3:
+        $r4 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = $i1 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        $r4[$i1] = 34;
+
+     label4:
+        $r4 = interfaceinvoke $r1.<org.codehaus.jackson.SerializableString: byte[] asQuotedUTF8()>();
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeBytes(byte[])>($r4);
+
+        if $z0 == 0 goto label6;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label5;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label5:
+        $r4 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r4[$i0] = 34;
+
+     label6:
+        return;
+    }
+
+    public void close()
+    {
+        java.io.OutputStream $r5;
+        byte[] $r1;
+        org.codehaus.jackson.io.IOContext $r4;
+        org.codehaus.jackson.JsonGenerator$Feature $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.impl.JsonWriteContext $r3;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: void close()>();
+
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        if $r1 == null goto label3;
+
+        $r2 = <org.codehaus.jackson.JsonGenerator$Feature: org.codehaus.jackson.JsonGenerator$Feature AUTO_CLOSE_JSON_CONTENT>;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean isEnabled(org.codehaus.jackson.JsonGenerator$Feature)>($r2);
+
+        if $z0 == 0 goto label3;
+
+     label1:
+        $r3 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext getOutputContext()>();
+
+        $z0 = virtualinvoke $r3.<org.codehaus.jackson.JsonStreamContext: boolean inArray()>();
+
+        if $z0 == 0 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void writeEndArray()>();
+
+        goto label1;
+
+     label2:
+        $z0 = virtualinvoke $r3.<org.codehaus.jackson.JsonStreamContext: boolean inObject()>();
+
+        if $z0 == 0 goto label3;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void writeEndObject()>();
+
+        goto label1;
+
+     label3:
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+        $r4 = r0.<org.codehaus.jackson.impl.Utf8Generator: org.codehaus.jackson.io.IOContext _ioContext>;
+
+        $z0 = virtualinvoke $r4.<org.codehaus.jackson.io.IOContext: boolean isResourceManaged()>();
+
+        if $z0 != 0 goto label5;
+
+        $r2 = <org.codehaus.jackson.JsonGenerator$Feature: org.codehaus.jackson.JsonGenerator$Feature AUTO_CLOSE_TARGET>;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean isEnabled(org.codehaus.jackson.JsonGenerator$Feature)>($r2);
+
+        if $z0 == 0 goto label4;
+
+        goto label5;
+
+     label4:
+        $r5 = r0.<org.codehaus.jackson.impl.Utf8Generator: java.io.OutputStream _outputStream>;
+
+        virtualinvoke $r5.<java.io.OutputStream: void flush()>();
+
+        goto label6;
+
+     label5:
+        $r5 = r0.<org.codehaus.jackson.impl.Utf8Generator: java.io.OutputStream _outputStream>;
+
+        virtualinvoke $r5.<java.io.OutputStream: void close()>();
+
+     label6:
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _releaseBuffers()>();
+
+        return;
+    }
+
+    public final void flush()
+    {
+        java.io.OutputStream $r1;
+        org.codehaus.jackson.JsonGenerator$Feature $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: java.io.OutputStream _outputStream>;
+
+        if $r1 == null goto label1;
+
+        $r2 = <org.codehaus.jackson.JsonGenerator$Feature: org.codehaus.jackson.JsonGenerator$Feature FLUSH_PASSED_TO_STREAM>;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean isEnabled(org.codehaus.jackson.JsonGenerator$Feature)>($r2);
+
+        if $z0 == 0 goto label1;
+
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: java.io.OutputStream _outputStream>;
+
+        virtualinvoke $r1.<java.io.OutputStream: void flush()>();
+
+     label1:
+        return;
+    }
+
+    public org.codehaus.jackson.io.CharacterEscapes getCharacterEscapes()
+    {
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.io.CharacterEscapes r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: org.codehaus.jackson.io.CharacterEscapes _characterEscapes>;
+
+        return r1;
+    }
+
+    public int getHighestEscapedChar()
+    {
+        int i0;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _maximumNonEscapedChar>;
+
+        return i0;
+    }
+
+    public java.lang.Object getOutputTarget()
+    {
+        java.io.OutputStream r1;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: java.io.OutputStream _outputStream>;
+
+        return r1;
+    }
+
+    public org.codehaus.jackson.JsonGenerator setCharacterEscapes(org.codehaus.jackson.io.CharacterEscapes)
+    {
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.io.CharacterEscapes $r2;
+        int[] $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r2 := @parameter0: org.codehaus.jackson.io.CharacterEscapes;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: org.codehaus.jackson.io.CharacterEscapes _characterEscapes> = $r2;
+
+        if $r2 != null goto label1;
+
+        $r1 = <org.codehaus.jackson.impl.Utf8Generator: int[] sOutputEscapes>;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int[] _outputEscapes> = $r1;
+
+        return r0;
+
+     label1:
+        $r1 = virtualinvoke $r2.<org.codehaus.jackson.io.CharacterEscapes: int[] getEscapeCodesForAscii()>();
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int[] _outputEscapes> = $r1;
+
+        return r0;
+    }
+
+    public org.codehaus.jackson.JsonGenerator setHighestNonEscapedChar(int)
+    {
+        int $i0;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $i0 := @parameter0: int;
+
+        if $i0 >= 0 goto label1;
+
+        $i0 = 0;
+
+     label1:
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _maximumNonEscapedChar> = $i0;
+
+        return r0;
+    }
+
+    public void writeBinary(org.codehaus.jackson.Base64Variant, byte[], int, int)
+    {
+        byte[] $r2, $r3;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.Base64Variant $r1;
+        int $i0, $i1, $i2, $i3;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: org.codehaus.jackson.Base64Variant;
+
+        $r2 := @parameter1: byte[];
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("write binary value");
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i3 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i2 < $i3 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i3 = $i2 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i3;
+
+        $r3[$i2] = 34;
+
+        $i1 = $i1 + $i0;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeBinary(org.codehaus.jackson.Base64Variant,byte[],int,int)>($r1, $r2, $i0, $i1);
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label2:
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r2[$i0] = 34;
+
+        return;
+    }
+
+    public void writeBoolean(boolean)
+    {
+        byte[] $r1, $r2;
+        int $i0, $i1;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $z0 := @parameter0: boolean;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("write boolean value");
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i1 + 5;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i1 < $i0 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        if $z0 == 0 goto label2;
+
+        $r2 = <org.codehaus.jackson.impl.Utf8Generator: byte[] TRUE_BYTES>;
+
+        goto label3;
+
+     label2:
+        $r2 = <org.codehaus.jackson.impl.Utf8Generator: byte[] FALSE_BYTES>;
+
+     label3:
+        $i1 = lengthof $r2;
+
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, 0, $r1, $i0, $i1);
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + $i1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        return;
+    }
+
+    public final void writeEndArray()
+    {
+        byte[] $r5;
+        org.codehaus.jackson.PrettyPrinter $r4;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.impl.JsonWriteContext $r1;
+        int $i0, $i1;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext>;
+
+        $z0 = virtualinvoke $r1.<org.codehaus.jackson.JsonStreamContext: boolean inArray()>();
+
+        if $z0 != 0 goto label1;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Current context not an ARRAY but ");
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext>;
+
+        $r3 = virtualinvoke $r1.<org.codehaus.jackson.JsonStreamContext: java.lang.String getTypeDesc()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: void _reportError(java.lang.String)>($r3);
+
+     label1:
+        $r4 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        if $r4 == null goto label2;
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext>;
+
+        $i0 = virtualinvoke $r1.<org.codehaus.jackson.JsonStreamContext: int getEntryCount()>();
+
+        interfaceinvoke $r4.<org.codehaus.jackson.PrettyPrinter: void writeEndArray(org.codehaus.jackson.JsonGenerator,int)>(r0, $i0);
+
+        goto label4;
+
+     label2:
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label3;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label3:
+        $r5 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r5[$i0] = 93;
+
+     label4:
+        $r1 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext>;
+
+        $r1 = virtualinvoke $r1.<org.codehaus.jackson.impl.JsonWriteContext: org.codehaus.jackson.impl.JsonWriteContext getParent()>();
+
+        r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext> = $r1;
+
+        return;
+    }
+
+    public final void writeEndObject()
+    {
+        byte[] $r5;
+        org.codehaus.jackson.PrettyPrinter $r4;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.impl.JsonWriteContext $r1;
+        int $i0, $i1;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext>;
+
+        $z0 = virtualinvoke $r1.<org.codehaus.jackson.JsonStreamContext: boolean inObject()>();
+
+        if $z0 != 0 goto label1;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Current context not an object but ");
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext>;
+
+        $r3 = virtualinvoke $r1.<org.codehaus.jackson.JsonStreamContext: java.lang.String getTypeDesc()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: void _reportError(java.lang.String)>($r3);
+
+     label1:
+        $r1 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext>;
+
+        $r1 = virtualinvoke $r1.<org.codehaus.jackson.impl.JsonWriteContext: org.codehaus.jackson.impl.JsonWriteContext getParent()>();
+
+        r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext> = $r1;
+
+        $r4 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        if $r4 == null goto label2;
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext>;
+
+        $i0 = virtualinvoke $r1.<org.codehaus.jackson.JsonStreamContext: int getEntryCount()>();
+
+        interfaceinvoke $r4.<org.codehaus.jackson.PrettyPrinter: void writeEndObject(org.codehaus.jackson.JsonGenerator,int)>(r0, $i0);
+
+        return;
+
+     label2:
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label3;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label3:
+        $r5 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r5[$i0] = 125;
+
+        return;
+    }
+
+    public final void writeFieldName(java.lang.String)
+    {
+        byte[] $r4;
+        org.codehaus.jackson.PrettyPrinter $r3;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.impl.JsonWriteContext $r2;
+        int $i0, $i1;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext>;
+
+        $i0 = virtualinvoke $r2.<org.codehaus.jackson.impl.JsonWriteContext: int writeFieldName(java.lang.String)>($r1);
+
+        if $i0 != 4 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: void _reportError(java.lang.String)>("Can not write a field name, expecting a value");
+
+     label1:
+        $r3 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        $z0 = 1;
+
+        if $r3 == null goto label4;
+
+        if $i0 != 1 goto label2;
+
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writePPFieldName(java.lang.String,boolean)>($r1, $z0);
+
+        return;
+
+     label4:
+        if $i0 != 1 goto label6;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label5;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label5:
+        $r4 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r4[$i0] = 44;
+
+     label6:
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeFieldName(java.lang.String)>($r1);
+
+        return;
+    }
+
+    public final void writeFieldName(org.codehaus.jackson.SerializableString)
+    {
+        byte[] $r5;
+        org.codehaus.jackson.PrettyPrinter $r4;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.impl.JsonWriteContext $r2;
+        org.codehaus.jackson.SerializableString $r1;
+        int $i0, $i1;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: org.codehaus.jackson.SerializableString;
+
+        $r2 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext>;
+
+        $r3 = interfaceinvoke $r1.<org.codehaus.jackson.SerializableString: java.lang.String getValue()>();
+
+        $i0 = virtualinvoke $r2.<org.codehaus.jackson.impl.JsonWriteContext: int writeFieldName(java.lang.String)>($r3);
+
+        if $i0 != 4 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: void _reportError(java.lang.String)>("Can not write a field name, expecting a value");
+
+     label1:
+        $r4 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        $z0 = 1;
+
+        if $r4 == null goto label4;
+
+        if $i0 != 1 goto label2;
+
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writePPFieldName(org.codehaus.jackson.SerializableString,boolean)>($r1, $z0);
+
+        return;
+
+     label4:
+        if $i0 != 1 goto label6;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label5;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label5:
+        $r5 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r5[$i0] = 44;
+
+     label6:
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeFieldName(org.codehaus.jackson.SerializableString)>($r1);
+
+        return;
+    }
+
+    public final void writeFieldName(org.codehaus.jackson.io.SerializedString)
+    {
+        byte[] $r5;
+        org.codehaus.jackson.PrettyPrinter $r4;
+        org.codehaus.jackson.io.SerializedString $r1;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.impl.JsonWriteContext $r2;
+        int $i0, $i1;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: org.codehaus.jackson.io.SerializedString;
+
+        $r2 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext>;
+
+        $r3 = virtualinvoke $r1.<org.codehaus.jackson.io.SerializedString: java.lang.String getValue()>();
+
+        $i0 = virtualinvoke $r2.<org.codehaus.jackson.impl.JsonWriteContext: int writeFieldName(java.lang.String)>($r3);
+
+        if $i0 != 4 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: void _reportError(java.lang.String)>("Can not write a field name, expecting a value");
+
+     label1:
+        $r4 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        $z0 = 1;
+
+        if $r4 == null goto label4;
+
+        if $i0 != 1 goto label2;
+
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writePPFieldName(org.codehaus.jackson.SerializableString,boolean)>($r1, $z0);
+
+        return;
+
+     label4:
+        if $i0 != 1 goto label6;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label5;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label5:
+        $r5 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r5[$i0] = 44;
+
+     label6:
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeFieldName(org.codehaus.jackson.SerializableString)>($r1);
+
+        return;
+    }
+
+    public void writeNull()
+    {
+        org.codehaus.jackson.impl.Utf8Generator r0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("write null value");
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeNull()>();
+
+        return;
+    }
+
+    public void writeNumber(double)
+    {
+        org.codehaus.jackson.JsonGenerator$Feature $r1;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        java.lang.String $r2;
+        double $d0;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $d0 := @parameter0: double;
+
+        $z0 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean _cfgNumbersAsStrings>;
+
+        if $z0 != 0 goto label3;
+
+        $z0 = staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        if $z0 != 0 goto label1;
+
+        $z0 = staticinvoke <java.lang.Double: boolean isInfinite(double)>($d0);
+
+        if $z0 == 0 goto label2;
+
+     label1:
+        $r1 = <org.codehaus.jackson.JsonGenerator$Feature: org.codehaus.jackson.JsonGenerator$Feature QUOTE_NON_NUMERIC_NUMBERS>;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean isEnabled(org.codehaus.jackson.JsonGenerator$Feature)>($r1);
+
+        if $z0 == 0 goto label2;
+
+        goto label3;
+
+     label2:
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("write number");
+
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(double)>($d0);
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void writeRaw(java.lang.String)>($r2);
+
+        return;
+
+     label3:
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(double)>($d0);
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void writeString(java.lang.String)>($r2);
+
+        return;
+    }
+
+    public void writeNumber(float)
+    {
+        org.codehaus.jackson.JsonGenerator$Feature $r1;
+        float $f0;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        java.lang.String $r2;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $f0 := @parameter0: float;
+
+        $z0 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean _cfgNumbersAsStrings>;
+
+        if $z0 != 0 goto label3;
+
+        $z0 = staticinvoke <java.lang.Float: boolean isNaN(float)>($f0);
+
+        if $z0 != 0 goto label1;
+
+        $z0 = staticinvoke <java.lang.Float: boolean isInfinite(float)>($f0);
+
+        if $z0 == 0 goto label2;
+
+     label1:
+        $r1 = <org.codehaus.jackson.JsonGenerator$Feature: org.codehaus.jackson.JsonGenerator$Feature QUOTE_NON_NUMERIC_NUMBERS>;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean isEnabled(org.codehaus.jackson.JsonGenerator$Feature)>($r1);
+
+        if $z0 == 0 goto label2;
+
+        goto label3;
+
+     label2:
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("write number");
+
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(float)>($f0);
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void writeRaw(java.lang.String)>($r2);
+
+        return;
+
+     label3:
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(float)>($f0);
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void writeString(java.lang.String)>($r2);
+
+        return;
+    }
+
+    public void writeNumber(int)
+    {
+        byte[] $r1;
+        int $i0, $i1, $i2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $i0 := @parameter0: int;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("write number");
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i1 + 11;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i1 < $i2 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        $z0 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean _cfgNumbersAsStrings>;
+
+        if $z0 == 0 goto label2;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeQuotedInt(int)>($i0);
+
+        return;
+
+     label2:
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = staticinvoke <org.codehaus.jackson.io.NumberOutput: int outputInt(int,byte[],int)>($i0, $r1, $i1);
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        return;
+    }
+
+    public void writeNumber(long)
+    {
+        byte[] $r1;
+        int $i0, $i2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        long $l1;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $l1 := @parameter0: long;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("write number");
+
+        $z0 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean _cfgNumbersAsStrings>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeQuotedLong(long)>($l1);
+
+        return;
+
+     label1:
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = $i0 + 21;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i2 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label2:
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i0 = staticinvoke <org.codehaus.jackson.io.NumberOutput: int outputLong(long,byte[],int)>($l1, $r1, $i0);
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i0;
+
+        return;
+    }
+
+    public void writeNumber(java.lang.String)
+    {
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: java.lang.String;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("write number");
+
+        $z0 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean _cfgNumbersAsStrings>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeQuotedRaw(java.lang.Object)>($r1);
+
+        return;
+
+     label1:
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void writeRaw(java.lang.String)>($r1);
+
+        return;
+    }
+
+    public void writeNumber(java.math.BigDecimal)
+    {
+        java.math.BigDecimal $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r2 := @parameter0: java.math.BigDecimal;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("write number");
+
+        if $r2 != null goto label1;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeNull()>();
+
+        return;
+
+     label1:
+        $z0 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean _cfgNumbersAsStrings>;
+
+        if $z0 == 0 goto label2;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeQuotedRaw(java.lang.Object)>($r2);
+
+        return;
+
+     label2:
+        $r1 = virtualinvoke $r2.<java.math.BigDecimal: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void writeRaw(java.lang.String)>($r1);
+
+        return;
+    }
+
+    public void writeNumber(java.math.BigInteger)
+    {
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        java.math.BigInteger $r2;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r2 := @parameter0: java.math.BigInteger;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("write number");
+
+        if $r2 != null goto label1;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeNull()>();
+
+        return;
+
+     label1:
+        $z0 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: boolean _cfgNumbersAsStrings>;
+
+        if $z0 == 0 goto label2;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeQuotedRaw(java.lang.Object)>($r2);
+
+        return;
+
+     label2:
+        $r1 = virtualinvoke $r2.<java.math.BigInteger: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void writeRaw(java.lang.String)>($r1);
+
+        return;
+    }
+
+    public void writeRaw(char)
+    {
+        byte[] $r1;
+        byte $b3;
+        int $i1, $i2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        char $c0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $c0 := @parameter0: char;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i1 + 3;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i1 < $i2 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i1 = (int) $c0;
+
+        if $i1 > 127 goto label2;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i1 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i2;
+
+        $b3 = (byte) $c0;
+
+        $r1[$i1] = $b3;
+
+        return;
+
+     label2:
+        $i1 = (int) $c0;
+
+        if $i1 >= 2048 goto label3;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i1 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i2;
+
+        $i2 = (int) $c0;
+
+        $i2 = $i2 >> 6;
+
+        $i2 = $i2 | 192;
+
+        $b3 = (byte) $i2;
+
+        $r1[$i1] = $b3;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i1 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i2;
+
+        $c0 = $c0 & 63;
+
+        $c0 = $c0 | 128;
+
+        $b3 = (byte) $c0;
+
+        $r1[$i1] = $b3;
+
+        return;
+
+     label3:
+        $i1 = (int) $c0;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputRawMultiByteChar(int,char[],int,int)>($i1, null, 0, 0);
+
+        return;
+    }
+
+    public void writeRaw(java.lang.String)
+    {
+        int $i0, $i1, $i2, $i3;
+        char[] $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        java.lang.String $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i1 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $i2 = 0;
+
+     label1:
+        if $i1 <= 0 goto label3;
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer>;
+
+        $i3 = lengthof $r2;
+
+        if $i1 >= $i3 goto label2;
+
+        $i3 = $i1;
+
+     label2:
+        $i0 = $i2 + $i3;
+
+        virtualinvoke $r1.<java.lang.String: void getChars(int,int,char[],int)>($i2, $i0, $r2, 0);
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void writeRaw(char[],int,int)>($r2, 0, $i3);
+
+        $i1 = $i1 - $i3;
+
+        $i2 = $i0;
+
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    public void writeRaw(java.lang.String, int, int)
+    {
+        int $i0, $i1, $i2, $i3;
+        char[] $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        java.lang.String $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+     label1:
+        if $i2 <= 0 goto label3;
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer>;
+
+        $i3 = lengthof $r2;
+
+        if $i2 >= $i3 goto label2;
+
+        $i3 = $i2;
+
+     label2:
+        $i0 = $i1 + $i3;
+
+        virtualinvoke $r1.<java.lang.String: void getChars(int,int,char[],int)>($i1, $i0, $r2, 0);
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void writeRaw(char[],int,int)>($r2, 0, $i3);
+
+        $i2 = $i2 - $i3;
+
+        $i1 = $i0;
+
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    public final void writeRaw(char[], int, int)
+    {
+        byte[] $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        char $c5;
+        byte $b6;
+        int $i0, $i1, $i2, $i3, $i4;
+        char[] $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: char[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 = $i1 + $i1;
+
+        $i2 = $i2 + $i1;
+
+        $i3 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i3 = $i3 + $i2;
+
+        $i4 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i3 <= $i4 goto label2;
+
+        if $i4 >= $i2 goto label1;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeSegmentedRaw(char[],int,int)>($r1, $i0, $i1);
+
+        return;
+
+     label1:
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label2:
+        $i1 = $i1 + $i0;
+
+     label3:
+        if $i0 >= $i1 goto label8;
+
+     label4:
+        $c5 = $r1[$i0];
+
+        $i2 = (int) $c5;
+
+        if $i2 <= 127 goto label7;
+
+        $i2 = $i0 + 1;
+
+        $c5 = $r1[$i0];
+
+        $i0 = (int) $c5;
+
+        if $i0 >= 2048 goto label5;
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i3 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i3;
+
+        $i3 = (int) $c5;
+
+        $i3 = $i3 >> 6;
+
+        $i3 = $i3 | 192;
+
+        $b6 = (byte) $i3;
+
+        $r2[$i0] = $b6;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i3 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i3;
+
+        $c5 = $c5 & 63;
+
+        $c5 = $c5 | 128;
+
+        $b6 = (byte) $c5;
+
+        $r2[$i0] = $b6;
+
+        goto label6;
+
+     label5:
+        $i0 = (int) $c5;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputRawMultiByteChar(int,char[],int,int)>($i0, $r1, $i2, $i1);
+
+     label6:
+        $i0 = $i2;
+
+        goto label3;
+
+     label7:
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i3 = $i2 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i3;
+
+        $b6 = (byte) $c5;
+
+        $r2[$i2] = $b6;
+
+        $i0 = $i0 + 1;
+
+        if $i0 < $i1 goto label4;
+
+     label8:
+        return;
+    }
+
+    public void writeRawUTF8String(byte[], int, int)
+    {
+        byte[] $r1, $r2;
+        int $i0, $i1, $i2, $i3;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("write text value");
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i3 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i2 < $i3 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i3 = $i2 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i3;
+
+        $r2[$i2] = 34;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeBytes(byte[],int,int)>($r1, $i0, $i1);
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label2:
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r1[$i0] = 34;
+
+        return;
+    }
+
+    public final void writeStartArray()
+    {
+        byte[] $r3;
+        org.codehaus.jackson.PrettyPrinter $r2;
+        int $i0, $i1;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.impl.JsonWriteContext $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("start an array");
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext>;
+
+        $r1 = virtualinvoke $r1.<org.codehaus.jackson.impl.JsonWriteContext: org.codehaus.jackson.impl.JsonWriteContext createChildArrayContext()>();
+
+        r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext> = $r1;
+
+        $r2 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        if $r2 == null goto label1;
+
+        interfaceinvoke $r2.<org.codehaus.jackson.PrettyPrinter: void writeStartArray(org.codehaus.jackson.JsonGenerator)>(r0);
+
+        return;
+
+     label1:
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label2:
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r3[$i0] = 91;
+
+        return;
+    }
+
+    public final void writeStartObject()
+    {
+        byte[] $r3;
+        org.codehaus.jackson.PrettyPrinter $r2;
+        int $i0, $i1;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.impl.JsonWriteContext $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("start an object");
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext>;
+
+        $r1 = virtualinvoke $r1.<org.codehaus.jackson.impl.JsonWriteContext: org.codehaus.jackson.impl.JsonWriteContext createChildObjectContext()>();
+
+        r0.<org.codehaus.jackson.impl.JsonGeneratorBase: org.codehaus.jackson.impl.JsonWriteContext _writeContext> = $r1;
+
+        $r2 = r0.<org.codehaus.jackson.JsonGenerator: org.codehaus.jackson.PrettyPrinter _cfgPrettyPrinter>;
+
+        if $r2 == null goto label1;
+
+        interfaceinvoke $r2.<org.codehaus.jackson.PrettyPrinter: void writeStartObject(org.codehaus.jackson.JsonGenerator)>(r0);
+
+        return;
+
+     label1:
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label2:
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r3[$i0] = 123;
+
+        return;
+    }
+
+    public void writeString(java.lang.String)
+    {
+        byte[] $r3;
+        int $i0, $i1, $i2;
+        char[] $r2;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        java.lang.String $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: java.lang.String;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("write text value");
+
+        if $r1 != null goto label1;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeNull()>();
+
+        return;
+
+     label1:
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _charBufferLength>;
+
+        if $i0 <= $i1 goto label2;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeLongString(java.lang.String)>($r1);
+
+        return;
+
+     label2:
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer>;
+
+        virtualinvoke $r1.<java.lang.String: void getChars(int,int,char[],int)>(0, $i0, $r2, 0);
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputMaxContiguous>;
+
+        if $i0 <= $i1 goto label3;
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer>;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeLongString(char[],int,int)>($r2, 0, $i0);
+
+        return;
+
+     label3:
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i1 + $i0;
+
+        $i1 = $i1 + 2;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i1 <= $i2 goto label4;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label4:
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i1 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i2;
+
+        $r3[$i1] = 34;
+
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: char[] _charBuffer>;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegment(char[],int,int)>($r2, 0, $i0);
+
+        $r3 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r3[$i0] = 34;
+
+        return;
+    }
+
+    public final void writeString(org.codehaus.jackson.SerializableString)
+    {
+        byte[] $r1;
+        int $i0, $i1;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        org.codehaus.jackson.SerializableString $r2;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r2 := @parameter0: org.codehaus.jackson.SerializableString;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("write text value");
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r1[$i0] = 34;
+
+        $r1 = interfaceinvoke $r2.<org.codehaus.jackson.SerializableString: byte[] asQuotedUTF8()>();
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeBytes(byte[])>($r1);
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label2:
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r1[$i0] = 34;
+
+        return;
+    }
+
+    public void writeString(char[], int, int)
+    {
+        byte[] $r2;
+        int $i0, $i1, $i2, $i3;
+        char[] $r1;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: char[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("write text value");
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i3 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i2 < $i3 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i3 = $i2 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i3;
+
+        $r2[$i2] = 34;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputMaxContiguous>;
+
+        if $i1 > $i2 goto label3;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i2 = $i2 + $i1;
+
+        $i3 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i2 <= $i3 goto label2;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label2:
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegment(char[],int,int)>($r1, $i0, $i1);
+
+        goto label4;
+
+     label3:
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeStringSegments(char[],int,int)>($r1, $i0, $i1);
+
+     label4:
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label5;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label5:
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r2[$i0] = 34;
+
+        return;
+    }
+
+    public final void writeStringField(java.lang.String, java.lang.String)
+    {
+        org.codehaus.jackson.impl.Utf8Generator r0;
+        java.lang.String $r1, $r2;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void writeFieldName(java.lang.String)>($r1);
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void writeString(java.lang.String)>($r2);
+
+        return;
+    }
+
+    public void writeUTF8String(byte[], int, int)
+    {
+        byte[] $r1, $r2;
+        int $i0, $i1, $i2, $i3;
+        org.codehaus.jackson.impl.Utf8Generator r0;
+
+        r0 := @this: org.codehaus.jackson.impl.Utf8Generator;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _verifyValueWrite(java.lang.String)>("write text value");
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i3 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i2 < $i3 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label1:
+        $r2 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i3 = $i2 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i3;
+
+        $r2[$i2] = 34;
+
+        $i2 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputMaxContiguous>;
+
+        if $i1 > $i2 goto label2;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeUTF8Segment(byte[],int,int)>($r1, $i0, $i1);
+
+        goto label3;
+
+     label2:
+        specialinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _writeUTF8Segments(byte[],int,int)>($r1, $i0, $i1);
+
+     label3:
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputEnd>;
+
+        if $i0 < $i1 goto label4;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.Utf8Generator: void _flushBuffer()>();
+
+     label4:
+        $r1 = r0.<org.codehaus.jackson.impl.Utf8Generator: byte[] _outputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.impl.Utf8Generator: int _outputTail> = $i1;
+
+        $r1[$i0] = 34;
+
+        return;
+    }
+}

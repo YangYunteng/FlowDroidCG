@@ -1,0 +1,483 @@
+public class com.google.android.gms.gcm.GcmListenerService extends com.google.android.gms.iid.zze
+{
+    public com.google.android.gms.internal.gcm.zzl zzg;
+
+    public void <init>()
+    {
+        com.google.android.gms.internal.gcm.zzl $r1;
+        com.google.android.gms.gcm.GcmListenerService r0;
+
+        r0 := @this: com.google.android.gms.gcm.GcmListenerService;
+
+        specialinvoke r0.<com.google.android.gms.iid.zze: void <init>()>();
+
+        $r1 = <com.google.android.gms.internal.gcm.zzm: com.google.android.gms.internal.gcm.zzl zzdk>;
+
+        r0.<com.google.android.gms.gcm.GcmListenerService: com.google.android.gms.internal.gcm.zzl zzg> = $r1;
+
+        return;
+    }
+
+    public static void zzd(android.os.Bundle)
+    {
+        android.os.Bundle $r0;
+        java.util.Iterator $r2;
+        java.util.Set $r1;
+        java.lang.Object $r3;
+        java.lang.String $r4;
+        boolean $z0;
+
+        $r0 := @parameter0: android.os.Bundle;
+
+        $r1 = virtualinvoke $r0.<android.os.Bundle: java.util.Set keySet()>();
+
+        $r2 = interfaceinvoke $r1.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r3 = interfaceinvoke $r2.<java.util.Iterator: java.lang.Object next()>();
+
+        $r4 = (java.lang.String) $r3;
+
+        if $r4 == null goto label1;
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean startsWith(java.lang.String)>("google.c.");
+
+        if $z0 == 0 goto label1;
+
+        interfaceinvoke $r2.<java.util.Iterator: void remove()>();
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public void handleIntent(android.content.Intent)
+    {
+        android.app.KeyguardManager $r7;
+        android.app.ActivityManager$RunningAppProcessInfo $r11;
+        com.google.android.gms.gcm.zzd $r12;
+        java.lang.Throwable $r16, $r17;
+        android.app.ActivityManager $r8;
+        android.os.Bundle $r4, $r13;
+        com.google.android.gms.gcm.GcmListenerService r0;
+        android.content.Intent $r1;
+        byte $b1;
+        int $i0, $i2;
+        java.lang.String $r2, $r3, $r5;
+        boolean $z0, $z1;
+        com.google.android.gms.internal.gcm.zzl $r15;
+        java.util.Iterator $r10;
+        java.util.Set $r14;
+        java.util.List $r9;
+        java.lang.Object $r6;
+
+        r0 := @this: com.google.android.gms.gcm.GcmListenerService;
+
+        $r1 := @parameter0: android.content.Intent;
+
+        $r2 = virtualinvoke $r1.<android.content.Intent: java.lang.String getAction()>();
+
+        $r3 = "com.google.android.c2dm.intent.RECEIVE";
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 != 0 goto label03;
+
+        $r2 = "Unknown intent action: ";
+
+        $r3 = virtualinvoke $r1.<android.content.Intent: java.lang.String getAction()>();
+
+        $r3 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r3);
+
+        $i0 = virtualinvoke $r3.<java.lang.String: int length()>();
+
+        if $i0 == 0 goto label01;
+
+        $r2 = virtualinvoke $r2.<java.lang.String: java.lang.String concat(java.lang.String)>($r3);
+
+        goto label02;
+
+     label01:
+        $r2 = new java.lang.String;
+
+        specialinvoke $r2.<java.lang.String: void <init>(java.lang.String)>("Unknown intent action: ");
+
+     label02:
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("GcmListenerService", $r2);
+
+        return;
+
+     label03:
+        $r3 = virtualinvoke $r1.<android.content.Intent: java.lang.String getStringExtra(java.lang.String)>("message_type");
+
+        $r2 = $r3;
+
+        if $r3 != null goto label04;
+
+        $r2 = "gcm";
+
+     label04:
+        $b1 = -1;
+
+        $i0 = virtualinvoke $r2.<java.lang.String: int hashCode()>();
+
+        $z0 = 0;
+
+        lookupswitch($i0)
+        {
+            case -2062414158: goto label09;
+            case 102161: goto label08;
+            case 814694033: goto label07;
+            case 814800675: goto label06;
+            default: goto label05;
+        };
+
+     label05:
+        goto label10;
+
+     label06:
+        $z1 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>("send_event");
+
+        if $z1 == 0 goto label10;
+
+        $b1 = 2;
+
+        goto label10;
+
+     label07:
+        $z1 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>("send_error");
+
+        if $z1 == 0 goto label10;
+
+        $b1 = 3;
+
+        goto label10;
+
+     label08:
+        $z1 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>("gcm");
+
+        if $z1 == 0 goto label10;
+
+        $b1 = 0;
+
+        goto label10;
+
+     label09:
+        $z1 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>("deleted_messages");
+
+        if $z1 == 0 goto label10;
+
+        $b1 = 1;
+
+     label10:
+        if $b1 == 0 goto label17;
+
+        if $b1 == 1 goto label16;
+
+        if $b1 == 2 goto label15;
+
+        if $b1 == 3 goto label13;
+
+        $r3 = "Received message with unknown type: ";
+
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r2);
+
+        $i0 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        if $i0 == 0 goto label11;
+
+        $r2 = virtualinvoke $r3.<java.lang.String: java.lang.String concat(java.lang.String)>($r2);
+
+        goto label12;
+
+     label11:
+        $r2 = new java.lang.String;
+
+        specialinvoke $r2.<java.lang.String: void <init>(java.lang.String)>("Received message with unknown type: ");
+
+     label12:
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("GcmListenerService", $r2);
+
+        return;
+
+     label13:
+        $r3 = virtualinvoke $r1.<android.content.Intent: java.lang.String getStringExtra(java.lang.String)>("google.message_id");
+
+        $r2 = $r3;
+
+        if $r3 != null goto label14;
+
+        $r2 = virtualinvoke $r1.<android.content.Intent: java.lang.String getStringExtra(java.lang.String)>("message_id");
+
+     label14:
+        $r3 = virtualinvoke $r1.<android.content.Intent: java.lang.String getStringExtra(java.lang.String)>("error");
+
+        virtualinvoke r0.<com.google.android.gms.gcm.GcmListenerService: void onSendError(java.lang.String,java.lang.String)>($r2, $r3);
+
+        return;
+
+     label15:
+        $r2 = virtualinvoke $r1.<android.content.Intent: java.lang.String getStringExtra(java.lang.String)>("google.message_id");
+
+        virtualinvoke r0.<com.google.android.gms.gcm.GcmListenerService: void onMessageSent(java.lang.String)>($r2);
+
+        return;
+
+     label16:
+        virtualinvoke r0.<com.google.android.gms.gcm.GcmListenerService: void onDeletedMessages()>();
+
+        return;
+
+     label17:
+        $r4 = virtualinvoke $r1.<android.content.Intent: android.os.Bundle getExtras()>();
+
+        virtualinvoke $r4.<android.os.Bundle: void remove(java.lang.String)>("message_type");
+
+        virtualinvoke $r4.<android.os.Bundle: void remove(java.lang.String)>("androidx.contentpager.content.wakelockid");
+
+        $r2 = "gcm.n.e";
+
+        $r3 = staticinvoke <com.google.android.gms.gcm.zzd: java.lang.String zzd(android.os.Bundle,java.lang.String)>($r4, "gcm.n.e");
+
+        $r5 = "1";
+
+        $z1 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+
+        if $z1 != 0 goto label19;
+
+        $r3 = staticinvoke <com.google.android.gms.gcm.zzd: java.lang.String zzd(android.os.Bundle,java.lang.String)>($r4, "gcm.n.icon");
+
+        if $r3 == null goto label18;
+
+        goto label19;
+
+     label18:
+        $z1 = 0;
+
+        goto label20;
+
+     label19:
+        $z1 = 1;
+
+     label20:
+        if $z1 == 0 goto label29;
+
+        $r6 = virtualinvoke r0.<android.content.ContextWrapper: java.lang.Object getSystemService(java.lang.String)>("keyguard");
+
+        $r7 = (android.app.KeyguardManager) $r6;
+
+        $z1 = virtualinvoke $r7.<android.app.KeyguardManager: boolean inKeyguardRestrictedInputMode()>();
+
+        if $z1 != 0 goto label22;
+
+        $i0 = staticinvoke <android.os.Process: int myPid()>();
+
+        $r6 = virtualinvoke r0.<android.content.ContextWrapper: java.lang.Object getSystemService(java.lang.String)>("activity");
+
+        $r8 = (android.app.ActivityManager) $r6;
+
+        $r9 = virtualinvoke $r8.<android.app.ActivityManager: java.util.List getRunningAppProcesses()>();
+
+        if $r9 == null goto label22;
+
+        $r10 = interfaceinvoke $r9.<java.util.List: java.util.Iterator iterator()>();
+
+     label21:
+        $z1 = interfaceinvoke $r10.<java.util.Iterator: boolean hasNext()>();
+
+        if $z1 == 0 goto label22;
+
+        $r6 = interfaceinvoke $r10.<java.util.Iterator: java.lang.Object next()>();
+
+        $r11 = (android.app.ActivityManager$RunningAppProcessInfo) $r6;
+
+        $i2 = $r11.<android.app.ActivityManager$RunningAppProcessInfo: int pid>;
+
+        if $i2 != $i0 goto label21;
+
+        $i0 = $r11.<android.app.ActivityManager$RunningAppProcessInfo: int importance>;
+
+        if $i0 != 100 goto label22;
+
+        $z0 = 1;
+
+     label22:
+        if $z0 != 0 goto label23;
+
+        $r12 = staticinvoke <com.google.android.gms.gcm.zzd: com.google.android.gms.gcm.zzd zzd(android.content.Context)>(r0);
+
+        virtualinvoke $r12.<com.google.android.gms.gcm.zzd: boolean zze(android.os.Bundle)>($r4);
+
+        return;
+
+     label23:
+        $r13 = new android.os.Bundle;
+
+        specialinvoke $r13.<android.os.Bundle: void <init>()>();
+
+        $r14 = virtualinvoke $r4.<android.os.Bundle: java.util.Set keySet()>();
+
+        $r10 = interfaceinvoke $r14.<java.util.Set: java.util.Iterator iterator()>();
+
+     label24:
+        $z0 = interfaceinvoke $r10.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label27;
+
+        $r6 = interfaceinvoke $r10.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (java.lang.String) $r6;
+
+        $r3 = virtualinvoke $r4.<android.os.Bundle: java.lang.String getString(java.lang.String)>($r5);
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean startsWith(java.lang.String)>("gcm.notification.");
+
+        if $z0 == 0 goto label25;
+
+        $r5 = virtualinvoke $r5.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("gcm.notification.", "gcm.n.");
+
+     label25:
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean startsWith(java.lang.String)>("gcm.n.");
+
+        if $z0 == 0 goto label24;
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r5);
+
+        if $z0 != 0 goto label26;
+
+        $r5 = virtualinvoke $r5.<java.lang.String: java.lang.String substring(int)>(6);
+
+        virtualinvoke $r13.<android.os.Bundle: void putString(java.lang.String,java.lang.String)>($r5, $r3);
+
+     label26:
+        interfaceinvoke $r10.<java.util.Iterator: void remove()>();
+
+        goto label24;
+
+     label27:
+        $r2 = virtualinvoke $r13.<android.os.Bundle: java.lang.String getString(java.lang.String)>("sound2");
+
+        if $r2 == null goto label28;
+
+        virtualinvoke $r13.<android.os.Bundle: void remove(java.lang.String)>("sound2");
+
+        virtualinvoke $r13.<android.os.Bundle: void putString(java.lang.String,java.lang.String)>("sound", $r2);
+
+     label28:
+        $z0 = virtualinvoke $r13.<android.os.Bundle: boolean isEmpty()>();
+
+        if $z0 != 0 goto label29;
+
+        virtualinvoke $r4.<android.os.Bundle: void putBundle(java.lang.String,android.os.Bundle)>("notification", $r13);
+
+     label29:
+        $r2 = virtualinvoke $r4.<android.os.Bundle: java.lang.String getString(java.lang.String)>("from");
+
+        virtualinvoke $r4.<android.os.Bundle: void remove(java.lang.String)>("from");
+
+        staticinvoke <com.google.android.gms.gcm.GcmListenerService: void zzd(android.os.Bundle)>($r4);
+
+        $r15 = r0.<com.google.android.gms.gcm.GcmListenerService: com.google.android.gms.internal.gcm.zzl zzg>;
+
+        interfaceinvoke $r15.<com.google.android.gms.internal.gcm.zzl: com.google.android.gms.internal.gcm.zzo zzl(java.lang.String)>("onMessageReceived");
+
+     label30:
+        virtualinvoke r0.<com.google.android.gms.gcm.GcmListenerService: void onMessageReceived(java.lang.String,android.os.Bundle)>($r2, $r4);
+
+     label31:
+        return;
+
+     label32:
+        $r16 := @caughtexception;
+
+        goto label35;
+
+     label33:
+        $r17 := @caughtexception;
+
+     label34:
+        throw $r17;
+
+     label35:
+        goto label36;
+
+     label36:
+        throw $r16;
+
+        catch java.lang.Throwable from label30 to label31 with label33;
+        catch java.lang.Throwable from label34 to label35 with label32;
+    }
+
+    public void onCreate()
+    {
+        com.google.android.gms.internal.gcm.zzl $r1;
+        com.google.android.gms.gcm.GcmListenerService r0;
+
+        r0 := @this: com.google.android.gms.gcm.GcmListenerService;
+
+        specialinvoke r0.<android.app.Service: void onCreate()>();
+
+        staticinvoke <com.google.android.gms.internal.gcm.zzm: com.google.android.gms.internal.gcm.zzm zzab()>();
+
+        $r1 = <com.google.android.gms.internal.gcm.zzm: com.google.android.gms.internal.gcm.zzl zzdk>;
+
+        r0.<com.google.android.gms.gcm.GcmListenerService: com.google.android.gms.internal.gcm.zzl zzg> = $r1;
+
+        return;
+    }
+
+    public void onDeletedMessages()
+    {
+        com.google.android.gms.gcm.GcmListenerService r0;
+
+        r0 := @this: com.google.android.gms.gcm.GcmListenerService;
+
+        return;
+    }
+
+    public void onMessageReceived(java.lang.String, android.os.Bundle)
+    {
+        java.lang.String $r1;
+        android.os.Bundle $r2;
+        com.google.android.gms.gcm.GcmListenerService r0;
+
+        r0 := @this: com.google.android.gms.gcm.GcmListenerService;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: android.os.Bundle;
+
+        return;
+    }
+
+    public void onMessageSent(java.lang.String)
+    {
+        java.lang.String $r1;
+        com.google.android.gms.gcm.GcmListenerService r0;
+
+        r0 := @this: com.google.android.gms.gcm.GcmListenerService;
+
+        $r1 := @parameter0: java.lang.String;
+
+        return;
+    }
+
+    public void onSendError(java.lang.String, java.lang.String)
+    {
+        java.lang.String $r1, $r2;
+        com.google.android.gms.gcm.GcmListenerService r0;
+
+        r0 := @this: com.google.android.gms.gcm.GcmListenerService;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        return;
+    }
+}

@@ -1,0 +1,216 @@
+public class org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer extends org.codehaus.jackson.map.jsontype.impl.TypeDeserializerBase
+{
+
+    public void <init>(org.codehaus.jackson.type.JavaType, org.codehaus.jackson.map.jsontype.TypeIdResolver, org.codehaus.jackson.map.BeanProperty)
+    {
+        org.codehaus.jackson.map.jsontype.TypeIdResolver $r2;
+        org.codehaus.jackson.type.JavaType $r1;
+        org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer r0;
+        org.codehaus.jackson.map.BeanProperty $r3;
+
+        r0 := @this: org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer;
+
+        $r1 := @parameter0: org.codehaus.jackson.type.JavaType;
+
+        $r2 := @parameter1: org.codehaus.jackson.map.jsontype.TypeIdResolver;
+
+        $r3 := @parameter2: org.codehaus.jackson.map.BeanProperty;
+
+        specialinvoke r0.<org.codehaus.jackson.map.jsontype.impl.TypeDeserializerBase: void <init>(org.codehaus.jackson.type.JavaType,org.codehaus.jackson.map.jsontype.TypeIdResolver,org.codehaus.jackson.map.BeanProperty)>($r1, $r2, $r3);
+
+        return;
+    }
+
+    private final java.lang.Object _deserialize(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        org.codehaus.jackson.JsonToken $r2, $r7;
+        org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer r0;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.map.JsonMappingException $r8;
+        org.codehaus.jackson.map.JsonDeserializer $r5;
+        java.lang.Object $r6;
+        java.lang.String $r4;
+        org.codehaus.jackson.JsonParser $r3;
+
+        r0 := @this: org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer;
+
+        $r3 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r4 = virtualinvoke r0.<org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer: java.lang.String _locateTypeId(org.codehaus.jackson.JsonParser,org.codehaus.jackson.map.DeserializationContext)>($r3, $r1);
+
+        $r5 = virtualinvoke r0.<org.codehaus.jackson.map.jsontype.impl.TypeDeserializerBase: org.codehaus.jackson.map.JsonDeserializer _findDeserializer(org.codehaus.jackson.map.DeserializationContext,java.lang.String)>($r1, $r4);
+
+        $r6 = virtualinvoke $r5.<org.codehaus.jackson.map.JsonDeserializer: java.lang.Object deserialize(org.codehaus.jackson.JsonParser,org.codehaus.jackson.map.DeserializationContext)>($r3, $r1);
+
+        $r7 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken nextToken()>();
+
+        $r2 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken END_ARRAY>;
+
+        if $r7 != $r2 goto label1;
+
+        return $r6;
+
+     label1:
+        $r8 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException wrongTokenException(org.codehaus.jackson.JsonParser,org.codehaus.jackson.JsonToken,java.lang.String)>($r3, $r2, "expected closing END_ARRAY after type information and deserialized value");
+
+        throw $r8;
+    }
+
+    public final java.lang.String _locateTypeId(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        org.codehaus.jackson.JsonToken $r3, $r4;
+        org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer r0;
+        org.codehaus.jackson.map.DeserializationContext $r2;
+        org.codehaus.jackson.map.JsonMappingException $r7;
+        java.lang.StringBuilder $r6;
+        java.lang.String $r5;
+        org.codehaus.jackson.JsonParser $r1;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer;
+
+        $r1 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r2 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $z0 = virtualinvoke $r1.<org.codehaus.jackson.JsonParser: boolean isExpectedStartArrayToken()>();
+
+        if $z0 == 0 goto label2;
+
+        $r3 = virtualinvoke $r1.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken nextToken()>();
+
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_STRING>;
+
+        if $r3 != $r4 goto label1;
+
+        $r5 = virtualinvoke $r1.<org.codehaus.jackson.JsonParser: java.lang.String getText()>();
+
+        virtualinvoke $r1.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken nextToken()>();
+
+        return $r5;
+
+     label1:
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("need JSON String that contains type id (for subtype of ");
+
+        $r5 = virtualinvoke r0.<org.codehaus.jackson.map.jsontype.impl.TypeDeserializerBase: java.lang.String baseTypeName()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r5 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r7 = virtualinvoke $r2.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException wrongTokenException(org.codehaus.jackson.JsonParser,org.codehaus.jackson.JsonToken,java.lang.String)>($r1, $r4, $r5);
+
+        throw $r7;
+
+     label2:
+        $r3 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken START_ARRAY>;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("need JSON Array to contain As.WRAPPER_ARRAY type information for class ");
+
+        $r5 = virtualinvoke r0.<org.codehaus.jackson.map.jsontype.impl.TypeDeserializerBase: java.lang.String baseTypeName()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r5 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r7 = virtualinvoke $r2.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException wrongTokenException(org.codehaus.jackson.JsonParser,org.codehaus.jackson.JsonToken,java.lang.String)>($r1, $r3, $r5);
+
+        throw $r7;
+    }
+
+    public java.lang.Object deserializeTypedFromAny(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        java.lang.Object $r2;
+        org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer r0;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.JsonParser $r3;
+
+        r0 := @this: org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer;
+
+        $r3 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r2 = specialinvoke r0.<org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer: java.lang.Object _deserialize(org.codehaus.jackson.JsonParser,org.codehaus.jackson.map.DeserializationContext)>($r3, $r1);
+
+        return $r2;
+    }
+
+    public java.lang.Object deserializeTypedFromArray(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        java.lang.Object $r2;
+        org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer r0;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.JsonParser $r3;
+
+        r0 := @this: org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer;
+
+        $r3 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r2 = specialinvoke r0.<org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer: java.lang.Object _deserialize(org.codehaus.jackson.JsonParser,org.codehaus.jackson.map.DeserializationContext)>($r3, $r1);
+
+        return $r2;
+    }
+
+    public java.lang.Object deserializeTypedFromObject(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        java.lang.Object $r2;
+        org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer r0;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.JsonParser $r3;
+
+        r0 := @this: org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer;
+
+        $r3 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r2 = specialinvoke r0.<org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer: java.lang.Object _deserialize(org.codehaus.jackson.JsonParser,org.codehaus.jackson.map.DeserializationContext)>($r3, $r1);
+
+        return $r2;
+    }
+
+    public java.lang.Object deserializeTypedFromScalar(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        java.lang.Object $r2;
+        org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer r0;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.JsonParser $r3;
+
+        r0 := @this: org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer;
+
+        $r3 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r2 = specialinvoke r0.<org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer: java.lang.Object _deserialize(org.codehaus.jackson.JsonParser,org.codehaus.jackson.map.DeserializationContext)>($r3, $r1);
+
+        return $r2;
+    }
+
+    public org.codehaus.jackson.annotate.JsonTypeInfo$As getTypeInclusion()
+    {
+        org.codehaus.jackson.annotate.JsonTypeInfo$As r1;
+        org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer r0;
+
+        r0 := @this: org.codehaus.jackson.map.jsontype.impl.AsArrayTypeDeserializer;
+
+        r1 = <org.codehaus.jackson.annotate.JsonTypeInfo$As: org.codehaus.jackson.annotate.JsonTypeInfo$As WRAPPER_ARRAY>;
+
+        return r1;
+    }
+}

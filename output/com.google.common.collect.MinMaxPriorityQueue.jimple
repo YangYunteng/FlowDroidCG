@@ -1,0 +1,994 @@
+public final class com.google.common.collect.MinMaxPriorityQueue extends java.util.AbstractQueue
+{
+    public static final int DEFAULT_CAPACITY;
+    public static final int EVEN_POWERS_OF_TWO;
+    public static final int ODD_POWERS_OF_TWO;
+    public final com.google.common.collect.MinMaxPriorityQueue$Heap maxHeap;
+    public final int maximumSize;
+    public final com.google.common.collect.MinMaxPriorityQueue$Heap minHeap;
+    public int modCount;
+    public java.lang.Object[] queue;
+    public int size;
+
+    public void <init>(com.google.common.collect.MinMaxPriorityQueue$Builder, int)
+    {
+        java.lang.Object[] $r5;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+        com.google.common.collect.MinMaxPriorityQueue$Builder $r1;
+        com.google.common.collect.Ordering $r2;
+        int $i0, $i1;
+        com.google.common.collect.MinMaxPriorityQueue$Heap $r3, $r4;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $r1 := @parameter0: com.google.common.collect.MinMaxPriorityQueue$Builder;
+
+        $i0 := @parameter1: int;
+
+        specialinvoke r0.<java.util.AbstractQueue: void <init>()>();
+
+        $r2 = staticinvoke <com.google.common.collect.MinMaxPriorityQueue$Builder: com.google.common.collect.Ordering access$200(com.google.common.collect.MinMaxPriorityQueue$Builder)>($r1);
+
+        $r3 = new com.google.common.collect.MinMaxPriorityQueue$Heap;
+
+        specialinvoke $r3.<com.google.common.collect.MinMaxPriorityQueue$Heap: void <init>(com.google.common.collect.MinMaxPriorityQueue,com.google.common.collect.Ordering)>(r0, $r2);
+
+        r0.<com.google.common.collect.MinMaxPriorityQueue: com.google.common.collect.MinMaxPriorityQueue$Heap minHeap> = $r3;
+
+        $r3 = new com.google.common.collect.MinMaxPriorityQueue$Heap;
+
+        $r2 = virtualinvoke $r2.<com.google.common.collect.Ordering: com.google.common.collect.Ordering reverse()>();
+
+        specialinvoke $r3.<com.google.common.collect.MinMaxPriorityQueue$Heap: void <init>(com.google.common.collect.MinMaxPriorityQueue,com.google.common.collect.Ordering)>(r0, $r2);
+
+        r0.<com.google.common.collect.MinMaxPriorityQueue: com.google.common.collect.MinMaxPriorityQueue$Heap maxHeap> = $r3;
+
+        $r3 = r0.<com.google.common.collect.MinMaxPriorityQueue: com.google.common.collect.MinMaxPriorityQueue$Heap minHeap>;
+
+        $r4 = r0.<com.google.common.collect.MinMaxPriorityQueue: com.google.common.collect.MinMaxPriorityQueue$Heap maxHeap>;
+
+        $r3.<com.google.common.collect.MinMaxPriorityQueue$Heap: com.google.common.collect.MinMaxPriorityQueue$Heap otherHeap> = $r4;
+
+        $r4.<com.google.common.collect.MinMaxPriorityQueue$Heap: com.google.common.collect.MinMaxPriorityQueue$Heap otherHeap> = $r3;
+
+        $i1 = staticinvoke <com.google.common.collect.MinMaxPriorityQueue$Builder: int access$300(com.google.common.collect.MinMaxPriorityQueue$Builder)>($r1);
+
+        r0.<com.google.common.collect.MinMaxPriorityQueue: int maximumSize> = $i1;
+
+        $r5 = newarray (java.lang.Object)[$i0];
+
+        r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object[] queue> = $r5;
+
+        return;
+    }
+
+    public void <init>(com.google.common.collect.MinMaxPriorityQueue$Builder, int, com.google.common.collect.MinMaxPriorityQueue$1)
+    {
+        com.google.common.collect.MinMaxPriorityQueue$Builder $r1;
+        int $i0;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+        com.google.common.collect.MinMaxPriorityQueue$1 $r2;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $r1 := @parameter0: com.google.common.collect.MinMaxPriorityQueue$Builder;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: com.google.common.collect.MinMaxPriorityQueue$1;
+
+        specialinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: void <init>(com.google.common.collect.MinMaxPriorityQueue$Builder,int)>($r1, $i0);
+
+        return;
+    }
+
+    public static java.lang.Object[] access$500(com.google.common.collect.MinMaxPriorityQueue)
+    {
+        java.lang.Object[] r1;
+        com.google.common.collect.MinMaxPriorityQueue $r0;
+
+        $r0 := @parameter0: com.google.common.collect.MinMaxPriorityQueue;
+
+        r1 = $r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object[] queue>;
+
+        return r1;
+    }
+
+    public static int access$600(com.google.common.collect.MinMaxPriorityQueue)
+    {
+        int i0;
+        com.google.common.collect.MinMaxPriorityQueue $r0;
+
+        $r0 := @parameter0: com.google.common.collect.MinMaxPriorityQueue;
+
+        i0 = $r0.<com.google.common.collect.MinMaxPriorityQueue: int size>;
+
+        return i0;
+    }
+
+    public static int access$700(com.google.common.collect.MinMaxPriorityQueue)
+    {
+        int i0;
+        com.google.common.collect.MinMaxPriorityQueue $r0;
+
+        $r0 := @parameter0: com.google.common.collect.MinMaxPriorityQueue;
+
+        i0 = $r0.<com.google.common.collect.MinMaxPriorityQueue: int modCount>;
+
+        return i0;
+    }
+
+    private int calculateNewCapacity()
+    {
+        java.lang.Object[] $r1;
+        int $i0, $i1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $r1 = r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object[] queue>;
+
+        $i0 = lengthof $r1;
+
+        if $i0 >= 64 goto label1;
+
+        $i0 = $i0 + 1;
+
+        $i0 = $i0 * 2;
+
+        goto label2;
+
+     label1:
+        $i0 = $i0 / 2;
+
+        $i0 = staticinvoke <com.google.common.math.IntMath: int checkedMultiply(int,int)>($i0, 3);
+
+     label2:
+        $i1 = r0.<com.google.common.collect.MinMaxPriorityQueue: int maximumSize>;
+
+        $i0 = staticinvoke <com.google.common.collect.MinMaxPriorityQueue: int capAtMaximumSize(int,int)>($i0, $i1);
+
+        return $i0;
+    }
+
+    public static int capAtMaximumSize(int, int)
+    {
+        int $i0, $i1, $i2;
+
+        $i1 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        $i1 = staticinvoke <java.lang.Math: int min(int,int)>($i1, $i0);
+
+        $i1 = $i1 + 1;
+
+        return $i1;
+    }
+
+    public static com.google.common.collect.MinMaxPriorityQueue create()
+    {
+        com.google.common.collect.MinMaxPriorityQueue$Builder $r0;
+        com.google.common.collect.Ordering $r1;
+        com.google.common.collect.MinMaxPriorityQueue $r2;
+
+        $r0 = new com.google.common.collect.MinMaxPriorityQueue$Builder;
+
+        $r1 = staticinvoke <com.google.common.collect.Ordering: com.google.common.collect.Ordering natural()>();
+
+        specialinvoke $r0.<com.google.common.collect.MinMaxPriorityQueue$Builder: void <init>(java.util.Comparator,com.google.common.collect.MinMaxPriorityQueue$1)>($r1, null);
+
+        $r2 = virtualinvoke $r0.<com.google.common.collect.MinMaxPriorityQueue$Builder: com.google.common.collect.MinMaxPriorityQueue create()>();
+
+        return $r2;
+    }
+
+    public static com.google.common.collect.MinMaxPriorityQueue create(java.lang.Iterable)
+    {
+        com.google.common.collect.MinMaxPriorityQueue$Builder $r0;
+        com.google.common.collect.Ordering $r2;
+        java.lang.Iterable $r1;
+        com.google.common.collect.MinMaxPriorityQueue $r3;
+
+        $r1 := @parameter0: java.lang.Iterable;
+
+        $r0 = new com.google.common.collect.MinMaxPriorityQueue$Builder;
+
+        $r2 = staticinvoke <com.google.common.collect.Ordering: com.google.common.collect.Ordering natural()>();
+
+        specialinvoke $r0.<com.google.common.collect.MinMaxPriorityQueue$Builder: void <init>(java.util.Comparator,com.google.common.collect.MinMaxPriorityQueue$1)>($r2, null);
+
+        $r3 = virtualinvoke $r0.<com.google.common.collect.MinMaxPriorityQueue$Builder: com.google.common.collect.MinMaxPriorityQueue create(java.lang.Iterable)>($r1);
+
+        return $r3;
+    }
+
+    public static com.google.common.collect.MinMaxPriorityQueue$Builder expectedSize(int)
+    {
+        com.google.common.collect.MinMaxPriorityQueue$Builder $r0;
+        int $i0;
+        com.google.common.collect.Ordering $r1;
+
+        $i0 := @parameter0: int;
+
+        $r0 = new com.google.common.collect.MinMaxPriorityQueue$Builder;
+
+        $r1 = staticinvoke <com.google.common.collect.Ordering: com.google.common.collect.Ordering natural()>();
+
+        specialinvoke $r0.<com.google.common.collect.MinMaxPriorityQueue$Builder: void <init>(java.util.Comparator,com.google.common.collect.MinMaxPriorityQueue$1)>($r1, null);
+
+        $r0 = virtualinvoke $r0.<com.google.common.collect.MinMaxPriorityQueue$Builder: com.google.common.collect.MinMaxPriorityQueue$Builder expectedSize(int)>($i0);
+
+        return $r0;
+    }
+
+    private com.google.common.collect.MinMaxPriorityQueue$MoveDesc fillHole(int, java.lang.Object)
+    {
+        com.google.common.collect.MinMaxPriorityQueue r0;
+        com.google.common.collect.MinMaxPriorityQueue$MoveDesc $r3;
+        int $i0, $i1, $i2;
+        java.lang.Object $r1, $r4;
+        com.google.common.collect.MinMaxPriorityQueue$Heap $r2;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.lang.Object;
+
+        $r2 = specialinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: com.google.common.collect.MinMaxPriorityQueue$Heap heapForIndex(int)>($i0);
+
+        $i1 = virtualinvoke $r2.<com.google.common.collect.MinMaxPriorityQueue$Heap: int fillHoleAt(int)>($i0);
+
+        $i2 = virtualinvoke $r2.<com.google.common.collect.MinMaxPriorityQueue$Heap: int bubbleUpAlternatingLevels(int,java.lang.Object)>($i1, $r1);
+
+        if $i2 != $i1 goto label1;
+
+        $r3 = virtualinvoke $r2.<com.google.common.collect.MinMaxPriorityQueue$Heap: com.google.common.collect.MinMaxPriorityQueue$MoveDesc tryCrossOverAndBubbleUp(int,int,java.lang.Object)>($i0, $i1, $r1);
+
+        return $r3;
+
+     label1:
+        if $i2 >= $i0 goto label2;
+
+        $r3 = new com.google.common.collect.MinMaxPriorityQueue$MoveDesc;
+
+        $r4 = virtualinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object elementData(int)>($i0);
+
+        specialinvoke $r3.<com.google.common.collect.MinMaxPriorityQueue$MoveDesc: void <init>(java.lang.Object,java.lang.Object)>($r1, $r4);
+
+        return $r3;
+
+     label2:
+        return null;
+    }
+
+    private int getMaxElementIndex()
+    {
+        int $i0;
+        com.google.common.collect.MinMaxPriorityQueue$Heap $r1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $i0 = r0.<com.google.common.collect.MinMaxPriorityQueue: int size>;
+
+        if $i0 == 1 goto label2;
+
+        if $i0 == 2 goto label3;
+
+        $r1 = r0.<com.google.common.collect.MinMaxPriorityQueue: com.google.common.collect.MinMaxPriorityQueue$Heap maxHeap>;
+
+        $i0 = virtualinvoke $r1.<com.google.common.collect.MinMaxPriorityQueue$Heap: int compareElements(int,int)>(1, 2);
+
+        if $i0 > 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 2;
+
+     label2:
+        return 0;
+
+     label3:
+        return 1;
+    }
+
+    private void growIfNeeded()
+    {
+        java.lang.Object[] $r1, $r2;
+        int $i0, $i1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $i0 = r0.<com.google.common.collect.MinMaxPriorityQueue: int size>;
+
+        $r1 = r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object[] queue>;
+
+        $i1 = lengthof $r1;
+
+        if $i0 <= $i1 goto label1;
+
+        $i0 = specialinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: int calculateNewCapacity()>();
+
+        $r1 = newarray (java.lang.Object)[$i0];
+
+        $r2 = r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object[] queue>;
+
+        $i0 = lengthof $r2;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, 0, $r1, 0, $i0);
+
+        r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object[] queue> = $r1;
+
+     label1:
+        return;
+    }
+
+    private com.google.common.collect.MinMaxPriorityQueue$Heap heapForIndex(int)
+    {
+        int $i0;
+        com.google.common.collect.MinMaxPriorityQueue$Heap r1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $i0 := @parameter0: int;
+
+        $z0 = staticinvoke <com.google.common.collect.MinMaxPriorityQueue: boolean isEvenLevel(int)>($i0);
+
+        if $z0 == 0 goto label1;
+
+        r1 = r0.<com.google.common.collect.MinMaxPriorityQueue: com.google.common.collect.MinMaxPriorityQueue$Heap minHeap>;
+
+        return r1;
+
+     label1:
+        r1 = r0.<com.google.common.collect.MinMaxPriorityQueue: com.google.common.collect.MinMaxPriorityQueue$Heap maxHeap>;
+
+        return r1;
+    }
+
+    public static int initialQueueSize(int, int, java.lang.Iterable)
+    {
+        java.util.Collection $r1;
+        int $i0, $i1, $i2;
+        java.lang.Iterable $r0;
+        boolean $z0;
+
+        $i1 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $r0 := @parameter2: java.lang.Iterable;
+
+        $i2 = -1;
+
+        if $i1 != $i2 goto label1;
+
+        $i1 = 11;
+
+     label1:
+        $z0 = $r0 instanceof java.util.Collection;
+
+        if $z0 == 0 goto label2;
+
+        $r1 = (java.util.Collection) $r0;
+
+        $i2 = interfaceinvoke $r1.<java.util.Collection: int size()>();
+
+        $i1 = staticinvoke <java.lang.Math: int max(int,int)>($i1, $i2);
+
+     label2:
+        $i1 = staticinvoke <com.google.common.collect.MinMaxPriorityQueue: int capAtMaximumSize(int,int)>($i1, $i0);
+
+        return $i1;
+    }
+
+    public static boolean isEvenLevel(int)
+    {
+        int $i0, $i1;
+        boolean $z0;
+
+        $i0 := @parameter0: int;
+
+        $i0 = $i0 + 1;
+
+        $i1 = -1;
+
+        $i0 = $i0 ^ $i1;
+
+        $i1 = -1;
+
+        $i1 = $i0 ^ $i1;
+
+        if $i1 <= 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        staticinvoke <com.google.common.base.Preconditions: void checkState(boolean,java.lang.Object)>($z0, "negative index");
+
+        $i0 = 1431655765 & $i1;
+
+        $i1 = $i1 & -1431655766;
+
+        if $i0 <= $i1 goto label3;
+
+        return 1;
+
+     label3:
+        return 0;
+    }
+
+    public static com.google.common.collect.MinMaxPriorityQueue$Builder maximumSize(int)
+    {
+        com.google.common.collect.MinMaxPriorityQueue$Builder $r0;
+        int $i0;
+        com.google.common.collect.Ordering $r1;
+
+        $i0 := @parameter0: int;
+
+        $r0 = new com.google.common.collect.MinMaxPriorityQueue$Builder;
+
+        $r1 = staticinvoke <com.google.common.collect.Ordering: com.google.common.collect.Ordering natural()>();
+
+        specialinvoke $r0.<com.google.common.collect.MinMaxPriorityQueue$Builder: void <init>(java.util.Comparator,com.google.common.collect.MinMaxPriorityQueue$1)>($r1, null);
+
+        $r0 = virtualinvoke $r0.<com.google.common.collect.MinMaxPriorityQueue$Builder: com.google.common.collect.MinMaxPriorityQueue$Builder maximumSize(int)>($i0);
+
+        return $r0;
+    }
+
+    public static com.google.common.collect.MinMaxPriorityQueue$Builder orderedBy(java.util.Comparator)
+    {
+        com.google.common.collect.MinMaxPriorityQueue$Builder $r1;
+        java.util.Comparator $r0;
+
+        $r0 := @parameter0: java.util.Comparator;
+
+        $r1 = new com.google.common.collect.MinMaxPriorityQueue$Builder;
+
+        specialinvoke $r1.<com.google.common.collect.MinMaxPriorityQueue$Builder: void <init>(java.util.Comparator,com.google.common.collect.MinMaxPriorityQueue$1)>($r0, null);
+
+        return $r1;
+    }
+
+    private java.lang.Object removeAndGet(int)
+    {
+        int $i0;
+        java.lang.Object $r1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $i0 := @parameter0: int;
+
+        $r1 = virtualinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object elementData(int)>($i0);
+
+        virtualinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: com.google.common.collect.MinMaxPriorityQueue$MoveDesc removeAt(int)>($i0);
+
+        return $r1;
+    }
+
+    public boolean add(java.lang.Object)
+    {
+        java.lang.Object $r1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        virtualinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: boolean offer(java.lang.Object)>($r1);
+
+        return 1;
+    }
+
+    public boolean addAll(java.util.Collection)
+    {
+        java.util.Iterator $r2;
+        java.util.Collection $r1;
+        java.lang.Object $r3;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $r1 := @parameter0: java.util.Collection;
+
+        $r2 = interfaceinvoke $r1.<java.util.Collection: java.util.Iterator iterator()>();
+
+        $z0 = 0;
+
+     label1:
+        $z1 = interfaceinvoke $r2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z1 == 0 goto label2;
+
+        $r3 = interfaceinvoke $r2.<java.util.Iterator: java.lang.Object next()>();
+
+        virtualinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: boolean offer(java.lang.Object)>($r3);
+
+        $z0 = 1;
+
+        goto label1;
+
+     label2:
+        return $z0;
+    }
+
+    public int capacity()
+    {
+        int $i0;
+        java.lang.Object[] $r1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $r1 = r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object[] queue>;
+
+        $i0 = lengthof $r1;
+
+        return $i0;
+    }
+
+    public void clear()
+    {
+        java.lang.Object[] $r1;
+        int $i0, $i1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $i0 = 0;
+
+     label1:
+        $i1 = r0.<com.google.common.collect.MinMaxPriorityQueue: int size>;
+
+        if $i0 >= $i1 goto label2;
+
+        $r1 = r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object[] queue>;
+
+        $r1[$i0] = null;
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label2:
+        r0.<com.google.common.collect.MinMaxPriorityQueue: int size> = 0;
+
+        return;
+    }
+
+    public java.util.Comparator comparator()
+    {
+        com.google.common.collect.MinMaxPriorityQueue$Heap $r1;
+        com.google.common.collect.Ordering r2;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $r1 = r0.<com.google.common.collect.MinMaxPriorityQueue: com.google.common.collect.MinMaxPriorityQueue$Heap minHeap>;
+
+        r2 = $r1.<com.google.common.collect.MinMaxPriorityQueue$Heap: com.google.common.collect.Ordering ordering>;
+
+        return r2;
+    }
+
+    public java.lang.Object elementData(int)
+    {
+        java.lang.Object[] $r1;
+        int $i0;
+        java.lang.Object $r2;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object[] queue>;
+
+        $r2 = $r1[$i0];
+
+        return $r2;
+    }
+
+    public boolean isIntact()
+    {
+        int $i0, $i1;
+        com.google.common.collect.MinMaxPriorityQueue$Heap $r1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $i0 = 1;
+
+     label1:
+        $i1 = r0.<com.google.common.collect.MinMaxPriorityQueue: int size>;
+
+        if $i0 >= $i1 goto label3;
+
+        $r1 = specialinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: com.google.common.collect.MinMaxPriorityQueue$Heap heapForIndex(int)>($i0);
+
+        $z0 = staticinvoke <com.google.common.collect.MinMaxPriorityQueue$Heap: boolean access$400(com.google.common.collect.MinMaxPriorityQueue$Heap,int)>($r1, $i0);
+
+        if $z0 != 0 goto label2;
+
+        return 0;
+
+     label2:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label3:
+        return 1;
+    }
+
+    public java.util.Iterator iterator()
+    {
+        com.google.common.collect.MinMaxPriorityQueue$QueueIterator $r1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $r1 = new com.google.common.collect.MinMaxPriorityQueue$QueueIterator;
+
+        specialinvoke $r1.<com.google.common.collect.MinMaxPriorityQueue$QueueIterator: void <init>(com.google.common.collect.MinMaxPriorityQueue,com.google.common.collect.MinMaxPriorityQueue$1)>(r0, null);
+
+        return $r1;
+    }
+
+    public boolean offer(java.lang.Object)
+    {
+        int $i0, $i1;
+        java.lang.Object $r1, $r3;
+        com.google.common.collect.MinMaxPriorityQueue$Heap $r2;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $i0 = r0.<com.google.common.collect.MinMaxPriorityQueue: int modCount>;
+
+        $i0 = $i0 + 1;
+
+        r0.<com.google.common.collect.MinMaxPriorityQueue: int modCount> = $i0;
+
+        $i0 = r0.<com.google.common.collect.MinMaxPriorityQueue: int size>;
+
+        $i1 = $i0 + 1;
+
+        r0.<com.google.common.collect.MinMaxPriorityQueue: int size> = $i1;
+
+        specialinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: void growIfNeeded()>();
+
+        $r2 = specialinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: com.google.common.collect.MinMaxPriorityQueue$Heap heapForIndex(int)>($i0);
+
+        virtualinvoke $r2.<com.google.common.collect.MinMaxPriorityQueue$Heap: void bubbleUp(int,java.lang.Object)>($i0, $r1);
+
+        $i0 = r0.<com.google.common.collect.MinMaxPriorityQueue: int size>;
+
+        $i1 = r0.<com.google.common.collect.MinMaxPriorityQueue: int maximumSize>;
+
+        if $i0 <= $i1 goto label2;
+
+        $r3 = virtualinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object pollLast()>();
+
+        if $r3 == $r1 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    public java.lang.Object peek()
+    {
+        java.lang.Object $r1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $z0 = virtualinvoke r0.<java.util.AbstractQueue: boolean isEmpty()>();
+
+        if $z0 == 0 goto label1;
+
+        return null;
+
+     label1:
+        $r1 = virtualinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object elementData(int)>(0);
+
+        return $r1;
+    }
+
+    public java.lang.Object peekFirst()
+    {
+        java.lang.Object $r1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $r1 = virtualinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object peek()>();
+
+        return $r1;
+    }
+
+    public java.lang.Object peekLast()
+    {
+        int $i0;
+        java.lang.Object $r1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $z0 = virtualinvoke r0.<java.util.AbstractQueue: boolean isEmpty()>();
+
+        if $z0 == 0 goto label1;
+
+        return null;
+
+     label1:
+        $i0 = specialinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: int getMaxElementIndex()>();
+
+        $r1 = virtualinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object elementData(int)>($i0);
+
+        return $r1;
+    }
+
+    public java.lang.Object poll()
+    {
+        java.lang.Object $r1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $z0 = virtualinvoke r0.<java.util.AbstractQueue: boolean isEmpty()>();
+
+        if $z0 == 0 goto label1;
+
+        return null;
+
+     label1:
+        $r1 = specialinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object removeAndGet(int)>(0);
+
+        return $r1;
+    }
+
+    public java.lang.Object pollFirst()
+    {
+        java.lang.Object $r1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $r1 = virtualinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object poll()>();
+
+        return $r1;
+    }
+
+    public java.lang.Object pollLast()
+    {
+        int $i0;
+        java.lang.Object $r1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $z0 = virtualinvoke r0.<java.util.AbstractQueue: boolean isEmpty()>();
+
+        if $z0 == 0 goto label1;
+
+        return null;
+
+     label1:
+        $i0 = specialinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: int getMaxElementIndex()>();
+
+        $r1 = specialinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object removeAndGet(int)>($i0);
+
+        return $r1;
+    }
+
+    public com.google.common.collect.MinMaxPriorityQueue$MoveDesc removeAt(int)
+    {
+        java.lang.Object[] $r1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+        com.google.common.collect.MinMaxPriorityQueue$MoveDesc $r5, $r6, $r7;
+        int $i0, $i1, $i2;
+        java.lang.Object $r2, $r4;
+        com.google.common.collect.MinMaxPriorityQueue$Heap $r3;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $i1 := @parameter0: int;
+
+        $i2 = r0.<com.google.common.collect.MinMaxPriorityQueue: int size>;
+
+        staticinvoke <com.google.common.base.Preconditions: int checkPositionIndex(int,int)>($i1, $i2);
+
+        $i2 = r0.<com.google.common.collect.MinMaxPriorityQueue: int modCount>;
+
+        $i2 = $i2 + 1;
+
+        r0.<com.google.common.collect.MinMaxPriorityQueue: int modCount> = $i2;
+
+        $i2 = r0.<com.google.common.collect.MinMaxPriorityQueue: int size>;
+
+        $i0 = -1;
+
+        $i2 = $i2 + $i0;
+
+        r0.<com.google.common.collect.MinMaxPriorityQueue: int size> = $i2;
+
+        $i2 = r0.<com.google.common.collect.MinMaxPriorityQueue: int size>;
+
+        if $i2 != $i1 goto label1;
+
+        $r1 = r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object[] queue>;
+
+        $r1[$i2] = null;
+
+        return null;
+
+     label1:
+        $r2 = virtualinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object elementData(int)>($i2);
+
+        $i2 = r0.<com.google.common.collect.MinMaxPriorityQueue: int size>;
+
+        $r3 = specialinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: com.google.common.collect.MinMaxPriorityQueue$Heap heapForIndex(int)>($i2);
+
+        $i2 = virtualinvoke $r3.<com.google.common.collect.MinMaxPriorityQueue$Heap: int swapWithConceptuallyLastElement(java.lang.Object)>($r2);
+
+        if $i2 != $i1 goto label2;
+
+        $r1 = r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object[] queue>;
+
+        $i1 = r0.<com.google.common.collect.MinMaxPriorityQueue: int size>;
+
+        $r1[$i1] = null;
+
+        return null;
+
+     label2:
+        $i0 = r0.<com.google.common.collect.MinMaxPriorityQueue: int size>;
+
+        $r4 = virtualinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object elementData(int)>($i0);
+
+        $r1 = r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object[] queue>;
+
+        $i0 = r0.<com.google.common.collect.MinMaxPriorityQueue: int size>;
+
+        $r1[$i0] = null;
+
+        $r5 = specialinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: com.google.common.collect.MinMaxPriorityQueue$MoveDesc fillHole(int,java.lang.Object)>($i1, $r4);
+
+        if $i2 >= $i1 goto label4;
+
+        if $r5 != null goto label3;
+
+        $r6 = new com.google.common.collect.MinMaxPriorityQueue$MoveDesc;
+
+        specialinvoke $r6.<com.google.common.collect.MinMaxPriorityQueue$MoveDesc: void <init>(java.lang.Object,java.lang.Object)>($r2, $r4);
+
+        return $r6;
+
+     label3:
+        $r7 = new com.google.common.collect.MinMaxPriorityQueue$MoveDesc;
+
+        $r4 = $r5.<com.google.common.collect.MinMaxPriorityQueue$MoveDesc: java.lang.Object replaced>;
+
+        specialinvoke $r7.<com.google.common.collect.MinMaxPriorityQueue$MoveDesc: void <init>(java.lang.Object,java.lang.Object)>($r2, $r4);
+
+        return $r7;
+
+     label4:
+        return $r5;
+    }
+
+    public java.lang.Object removeFirst()
+    {
+        java.lang.Object $r1;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $r1 = virtualinvoke r0.<java.util.AbstractQueue: java.lang.Object remove()>();
+
+        return $r1;
+    }
+
+    public java.lang.Object removeLast()
+    {
+        int $i0;
+        java.lang.Object $r1;
+        java.util.NoSuchElementException $r2;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $z0 = virtualinvoke r0.<java.util.AbstractQueue: boolean isEmpty()>();
+
+        if $z0 != 0 goto label1;
+
+        $i0 = specialinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: int getMaxElementIndex()>();
+
+        $r1 = specialinvoke r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object removeAndGet(int)>($i0);
+
+        return $r1;
+
+     label1:
+        $r2 = new java.util.NoSuchElementException;
+
+        specialinvoke $r2.<java.util.NoSuchElementException: void <init>()>();
+
+        throw $r2;
+    }
+
+    public int size()
+    {
+        int i0;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        i0 = r0.<com.google.common.collect.MinMaxPriorityQueue: int size>;
+
+        return i0;
+    }
+
+    public java.lang.Object[] toArray()
+    {
+        java.lang.Object[] $r1, $r2;
+        int $i0;
+        com.google.common.collect.MinMaxPriorityQueue r0;
+
+        r0 := @this: com.google.common.collect.MinMaxPriorityQueue;
+
+        $i0 = r0.<com.google.common.collect.MinMaxPriorityQueue: int size>;
+
+        $r1 = newarray (java.lang.Object)[$i0];
+
+        $r2 = r0.<com.google.common.collect.MinMaxPriorityQueue: java.lang.Object[] queue>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, 0, $r1, 0, $i0);
+
+        return $r1;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.common.collect.MinMaxPriorityQueue: int ODD_POWERS_OF_TWO> = -1431655766;
+
+        <com.google.common.collect.MinMaxPriorityQueue: int EVEN_POWERS_OF_TWO> = 1431655765;
+
+        <com.google.common.collect.MinMaxPriorityQueue: int DEFAULT_CAPACITY> = 11;
+
+        return;
+    }
+}

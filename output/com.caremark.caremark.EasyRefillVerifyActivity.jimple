@@ -1,0 +1,1714 @@
+public class com.caremark.caremark.EasyRefillVerifyActivity extends com.caremark.caremark.EasyRefillBaseActivity
+{
+    public static final java.lang.String ADDRESS_PO;
+    public static final java.lang.String ADDRESS_POBOX;
+    public static final int EDIT_PAYMENT_METHOD;
+    public static final int EDIT_PAYMENT_METHOD_CANCEL;
+    public static final int EDIT_SHIPPING_ADDRESS;
+    public static final int EDIT_SHIPPING_ADDRESS_CANCEL;
+    public static final int EDIT_SHIPPING_METHOD;
+    public static final java.lang.String IS_SCAN;
+    public final int REMOVE_REFILL_ITEM;
+    public final int REMOVE_REFILL_LAST_ITEM;
+    public boolean isOneTimeShippingAddress;
+    public java.util.List mAddressList;
+    public android.widget.TextView mBillingExpirationDate;
+    public android.view.View mBtnAddMore;
+    public android.widget.TextView mBtnEditPaymentMethod;
+    public android.widget.TextView mBtnEditShippingAddress;
+    public android.view.View mBtnScanMore;
+    public android.widget.Button mBtnSubmit;
+    public android.widget.ImageView mCardImage;
+    public android.widget.TextView mCardNumber;
+    public java.util.ArrayList mCcList;
+    public android.view.View mCcSection;
+    public c.c.a.j.a.f$c mCurrentShippingMethod;
+    public java.util.List mCurrentShippingMethodsList;
+    public c.c.a.j.a.f$a mDefaultAddress;
+    public c.c.a.j.a.f$b mDefaultPaymentAcc;
+    public android.widget.TextView mDeliveryType;
+    public android.widget.TextView mEstimatedDrugCost;
+    public android.widget.TextView mEstimatedOrderTotal;
+    public android.widget.TextView mEstimatedShippingCost;
+    public android.widget.ListView mItemslistView;
+    public java.lang.String mLastRemoveRefillNumber;
+    public int mLastRemoveRefillPosition;
+    public android.view.View mNoAddress;
+    public android.widget.TextView mShippingAddress;
+    public c.c.a.j.a.f mShippingAndPaymentResponse;
+    public android.widget.TextView mShippingNumber;
+    public android.view.View mTextNoCC;
+
+    public void <init>()
+    {
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        specialinvoke r0.<com.caremark.caremark.EasyRefillBaseActivity: void <init>()>();
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: int REMOVE_REFILL_ITEM> = 1;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: int REMOVE_REFILL_LAST_ITEM> = 2;
+
+        return;
+    }
+
+    public static int access$100(com.caremark.caremark.EasyRefillVerifyActivity)
+    {
+        int i0;
+        com.caremark.caremark.EasyRefillVerifyActivity $r0;
+
+        $r0 := @parameter0: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        i0 = $r0.<com.caremark.caremark.EasyRefillVerifyActivity: int mLastRemoveRefillPosition>;
+
+        return i0;
+    }
+
+    public static void access$200(com.caremark.caremark.EasyRefillVerifyActivity)
+    {
+        com.caremark.caremark.EasyRefillVerifyActivity $r0;
+
+        $r0 := @parameter0: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        specialinvoke $r0.<com.caremark.caremark.EasyRefillVerifyActivity: void loadRefills()>();
+
+        return;
+    }
+
+    public static void access$300(com.caremark.caremark.EasyRefillVerifyActivity)
+    {
+        com.caremark.caremark.EasyRefillVerifyActivity $r0;
+
+        $r0 := @parameter0: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        specialinvoke $r0.<com.caremark.caremark.EasyRefillVerifyActivity: void updateCurrentShippingMethods()>();
+
+        return;
+    }
+
+    public static void access$400(com.caremark.caremark.EasyRefillVerifyActivity)
+    {
+        com.caremark.caremark.EasyRefillVerifyActivity $r0;
+
+        $r0 := @parameter0: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        specialinvoke $r0.<com.caremark.caremark.EasyRefillVerifyActivity: void setShippingMethodLabel()>();
+
+        return;
+    }
+
+    public static void access$500(com.caremark.caremark.EasyRefillVerifyActivity)
+    {
+        com.caremark.caremark.EasyRefillVerifyActivity $r0;
+
+        $r0 := @parameter0: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        specialinvoke $r0.<com.caremark.caremark.EasyRefillVerifyActivity: void updateOrderTotal()>();
+
+        return;
+    }
+
+    private void checkSubmitButton()
+    {
+        c.c.a.j.a.f$a $r2;
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        android.widget.Button $r1;
+        c.c.a.j.a.f$b $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $r1 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.Button mBtnSubmit>;
+
+        $r2 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$a mDefaultAddress>;
+
+        if $r2 == null goto label1;
+
+        $r3 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$b mDefaultPaymentAcc>;
+
+        if $r3 == null goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        virtualinvoke $r1.<android.widget.Button: void setEnabled(boolean)>($z0);
+
+        return;
+    }
+
+    private void loadRefills()
+    {
+        com.caremark.caremark.EasyRefillVerifyActivity$a $r1;
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        com.caremark.caremark.EasyRefillBaseActivity$a $r2;
+        android.widget.ListView $r4;
+        java.util.ArrayList $r3;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $r1 = new com.caremark.caremark.EasyRefillVerifyActivity$a;
+
+        $r2 = staticinvoke <com.caremark.caremark.EasyRefillBaseActivity$b: com.caremark.caremark.EasyRefillBaseActivity$a b()>();
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.EasyRefillBaseActivity$a: java.util.ArrayList p()>();
+
+        specialinvoke $r1.<com.caremark.caremark.EasyRefillVerifyActivity$a: void <init>(com.caremark.caremark.EasyRefillVerifyActivity,android.content.Context,java.util.ArrayList)>(r0, r0, $r3);
+
+        $r4 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.ListView mItemslistView>;
+
+        virtualinvoke $r4.<android.widget.ListView: void setAdapter(android.widget.ListAdapter)>($r1);
+
+        return;
+    }
+
+    private void setDataInViews(android.content.Intent)
+    {
+        android.text.Spanned $r11;
+        java.util.Iterator $r8;
+        c.c.a.j.a.f $r3;
+        com.caremark.caremark.EasyRefillBaseActivity$a $r2;
+        android.content.Intent $r1;
+        java.util.ArrayList $r12;
+        c.c.a.j.a.f$b $r13;
+        c.c.a.j.a.f$a $r7;
+        java.util.List $r4;
+        android.widget.TextView $r9;
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        android.view.View $r5;
+        java.lang.Object $r6;
+        java.lang.String $r10;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $r1 := @parameter0: android.content.Intent;
+
+        if $r1 == null goto label13;
+
+        specialinvoke r0.<com.caremark.caremark.EasyRefillVerifyActivity: void loadRefills()>();
+
+        $r2 = staticinvoke <com.caremark.caremark.EasyRefillBaseActivity$b: com.caremark.caremark.EasyRefillBaseActivity$a b()>();
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.EasyRefillBaseActivity$a: c.c.a.j.a.f t()>();
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f mShippingAndPaymentResponse> = $r3;
+
+        specialinvoke r0.<com.caremark.caremark.EasyRefillVerifyActivity: void updateCurrentShippingMethods()>();
+
+        specialinvoke r0.<com.caremark.caremark.EasyRefillVerifyActivity: void setShippingMethodLabel()>();
+
+        $r3 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f mShippingAndPaymentResponse>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.j.a.f: java.util.List d()>();
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.List mAddressList> = $r4;
+
+        $r4 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.List mAddressList>;
+
+        if $r4 == null goto label04;
+
+        $z0 = interfaceinvoke $r4.<java.util.List: boolean isEmpty()>();
+
+        if $z0 == 0 goto label01;
+
+        goto label04;
+
+     label01:
+        $r5 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mNoAddress>;
+
+        virtualinvoke $r5.<android.view.View: void setVisibility(int)>(8);
+
+        $r4 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.List mAddressList>;
+
+        $r6 = interfaceinvoke $r4.<java.util.List: java.lang.Object get(int)>(0);
+
+        $r7 = (c.c.a.j.a.f$a) $r6;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$a mDefaultAddress> = $r7;
+
+        $r4 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.List mAddressList>;
+
+        $r8 = interfaceinvoke $r4.<java.util.List: java.util.Iterator iterator()>();
+
+     label02:
+        $z0 = interfaceinvoke $r8.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label03;
+
+        $r6 = interfaceinvoke $r8.<java.util.Iterator: java.lang.Object next()>();
+
+        $r7 = (c.c.a.j.a.f$a) $r6;
+
+        $z0 = virtualinvoke $r7.<c.c.a.j.a.f$a: boolean h()>();
+
+        if $z0 == 0 goto label02;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$a mDefaultAddress> = $r7;
+
+     label03:
+        $r9 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mBtnEditShippingAddress>;
+
+        $r10 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821253);
+
+        $r11 = staticinvoke <android.text.Html: android.text.Spanned fromHtml(java.lang.String)>($r10);
+
+        virtualinvoke $r9.<android.widget.TextView: void setText(java.lang.CharSequence)>($r11);
+
+        specialinvoke r0.<com.caremark.caremark.EasyRefillVerifyActivity: void setShippingAddressLabel()>();
+
+        goto label05;
+
+     label04:
+        $r9 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mShippingAddress>;
+
+        virtualinvoke $r9.<android.widget.TextView: void setVisibility(int)>(8);
+
+        $r9 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mShippingNumber>;
+
+        virtualinvoke $r9.<android.widget.TextView: void setVisibility(int)>(8);
+
+        $r9 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mBtnEditShippingAddress>;
+
+        $r10 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821249);
+
+        $r11 = staticinvoke <android.text.Html: android.text.Spanned fromHtml(java.lang.String)>($r10);
+
+        virtualinvoke $r9.<android.widget.TextView: void setText(java.lang.CharSequence)>($r11);
+
+     label05:
+        $r3 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f mShippingAndPaymentResponse>;
+
+        $r12 = virtualinvoke $r3.<c.c.a.j.a.f: java.util.ArrayList e()>();
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.ArrayList mCcList> = $r12;
+
+        $r12 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.ArrayList mCcList>;
+
+        if $r12 == null goto label09;
+
+        $z0 = virtualinvoke $r12.<java.util.ArrayList: boolean isEmpty()>();
+
+        if $z0 == 0 goto label06;
+
+        goto label09;
+
+     label06:
+        $r5 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mTextNoCC>;
+
+        virtualinvoke $r5.<android.view.View: void setVisibility(int)>(8);
+
+        $r12 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.ArrayList mCcList>;
+
+        $r6 = virtualinvoke $r12.<java.util.ArrayList: java.lang.Object get(int)>(0);
+
+        $r13 = (c.c.a.j.a.f$b) $r6;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$b mDefaultPaymentAcc> = $r13;
+
+        $r12 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.ArrayList mCcList>;
+
+        $r8 = virtualinvoke $r12.<java.util.ArrayList: java.util.Iterator iterator()>();
+
+     label07:
+        $z0 = interfaceinvoke $r8.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label08;
+
+        $r6 = interfaceinvoke $r8.<java.util.Iterator: java.lang.Object next()>();
+
+        $r13 = (c.c.a.j.a.f$b) $r6;
+
+        $z0 = virtualinvoke $r13.<c.c.a.j.a.f$b: boolean g()>();
+
+        if $z0 == 0 goto label07;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$b mDefaultPaymentAcc> = $r13;
+
+     label08:
+        specialinvoke r0.<com.caremark.caremark.EasyRefillVerifyActivity: void setPaymentMethodLabel()>();
+
+        $r9 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mBtnEditPaymentMethod>;
+
+        $r10 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821253);
+
+        $r11 = staticinvoke <android.text.Html: android.text.Spanned fromHtml(java.lang.String)>($r10);
+
+        virtualinvoke $r9.<android.widget.TextView: void setText(java.lang.CharSequence)>($r11);
+
+        goto label10;
+
+     label09:
+        $r5 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mCcSection>;
+
+        virtualinvoke $r5.<android.view.View: void setVisibility(int)>(8);
+
+        $r9 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mBtnEditPaymentMethod>;
+
+        $r10 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821249);
+
+        $r11 = staticinvoke <android.text.Html: android.text.Spanned fromHtml(java.lang.String)>($r10);
+
+        virtualinvoke $r9.<android.widget.TextView: void setText(java.lang.CharSequence)>($r11);
+
+     label10:
+        $z0 = virtualinvoke $r1.<android.content.Intent: boolean getBooleanExtra(java.lang.String,boolean)>("is_scan", 0);
+
+        if $z0 == 0 goto label11;
+
+        $r5 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mBtnAddMore>;
+
+        virtualinvoke $r5.<android.view.View: void setVisibility(int)>(8);
+
+        $r5 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mBtnScanMore>;
+
+        virtualinvoke $r5.<android.view.View: void setVisibility(int)>(0);
+
+        goto label12;
+
+     label11:
+        $r5 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mBtnScanMore>;
+
+        virtualinvoke $r5.<android.view.View: void setVisibility(int)>(8);
+
+        $r5 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mBtnAddMore>;
+
+        virtualinvoke $r5.<android.view.View: void setVisibility(int)>(0);
+
+     label12:
+        specialinvoke r0.<com.caremark.caremark.EasyRefillVerifyActivity: void checkSubmitButton()>();
+
+     label13:
+        return;
+    }
+
+    private void setPaymentMethodLabel()
+    {
+        java.lang.Object[] $r5;
+        android.widget.ImageView $r4;
+        c.c.a.j.a.f$b $r1;
+        android.widget.TextView $r3;
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        int $i0;
+        java.lang.String $r2;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $r1 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$b mDefaultPaymentAcc>;
+
+        $r2 = virtualinvoke $r1.<c.c.a.j.a.f$b: java.lang.String a()>();
+
+        if $r2 == null goto label2;
+
+        $r3 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mCardNumber>;
+
+        virtualinvoke $r3.<android.widget.TextView: void setText(java.lang.CharSequence)>($r2);
+
+        $r1 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$b mDefaultPaymentAcc>;
+
+        $r2 = virtualinvoke $r1.<c.c.a.j.a.f$b: java.lang.String c()>();
+
+        $i0 = staticinvoke <com.caremark.caremark.EasyRefillBaseActivity: int creditCardTypeToImageRes(java.lang.String)>($r2);
+
+        if $i0 <= 0 goto label1;
+
+        $r4 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.ImageView mCardImage>;
+
+        $r1 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$b mDefaultPaymentAcc>;
+
+        $r2 = virtualinvoke $r1.<c.c.a.j.a.f$b: java.lang.String c()>();
+
+        $i0 = staticinvoke <com.caremark.caremark.EasyRefillBaseActivity: int creditCardTypeToImageRes(java.lang.String)>($r2);
+
+        virtualinvoke $r4.<android.widget.ImageView: void setImageResource(int)>($i0);
+
+        goto label3;
+
+     label1:
+        $r4 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.ImageView mCardImage>;
+
+        virtualinvoke $r4.<android.widget.ImageView: void setVisibility(int)>(8);
+
+        goto label3;
+
+     label2:
+        $r4 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.ImageView mCardImage>;
+
+        virtualinvoke $r4.<android.widget.ImageView: void setVisibility(int)>(8);
+
+     label3:
+        $r1 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$b mDefaultPaymentAcc>;
+
+        $r2 = virtualinvoke $r1.<c.c.a.j.a.f$b: java.lang.String e()>();
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r2);
+
+        if $z0 == 0 goto label4;
+
+        $r3 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mBillingExpirationDate>;
+
+        $r1 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$b mDefaultPaymentAcc>;
+
+        $r2 = virtualinvoke $r1.<c.c.a.j.a.f$b: java.lang.String b()>();
+
+        virtualinvoke $r3.<android.widget.TextView: void setText(java.lang.CharSequence)>($r2);
+
+        return;
+
+     label4:
+        $r3 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mBillingExpirationDate>;
+
+        $r5 = newarray (java.lang.Object)[1];
+
+        $r5[0] = $r2;
+
+        $r2 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int,java.lang.Object[])>(2131821515, $r5);
+
+        virtualinvoke $r3.<android.widget.TextView: void setText(java.lang.CharSequence)>($r2);
+
+        return;
+    }
+
+    private void setShippingAddressLabel()
+    {
+        c.c.a.j.a.f$a $r2;
+        android.widget.TextView $r1;
+        java.lang.Object[] $r4;
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        java.lang.String $r3;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $r1 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mShippingNumber>;
+
+        $r2 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$a mDefaultAddress>;
+
+        $r3 = virtualinvoke $r2.<c.c.a.j.a.f$a: java.lang.String f()>();
+
+        $r3 = staticinvoke <com.caremark.caremark.util.ViewUtils: java.lang.String maskShippingNumber(android.content.Context,java.lang.String)>(r0, $r3);
+
+        virtualinvoke $r1.<android.widget.TextView: void setText(java.lang.CharSequence)>($r3);
+
+        $r1 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mShippingAddress>;
+
+        $r4 = newarray (java.lang.Object)[2];
+
+        $r2 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$a mDefaultAddress>;
+
+        $r3 = virtualinvoke $r2.<c.c.a.j.a.f$a: java.lang.String b()>();
+
+        $r4[0] = $r3;
+
+        $r2 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$a mDefaultAddress>;
+
+        $r3 = virtualinvoke $r2.<c.c.a.j.a.f$a: java.lang.String a()>();
+
+        $r4[1] = $r3;
+
+        $r3 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int,java.lang.Object[])>(2131822454, $r4);
+
+        $r3 = staticinvoke <com.caremark.caremark.util.ViewUtils: java.lang.String maskAddressLine(android.content.Context,java.lang.String)>(r0, $r3);
+
+        virtualinvoke $r1.<android.widget.TextView: void setText(java.lang.CharSequence)>($r3);
+
+        return;
+    }
+
+    private void setShippingMethodLabel()
+    {
+        android.widget.TextView $r1;
+        java.lang.Object[] $r2;
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        java.lang.String $r4;
+        c.c.a.j.a.f$c $r3;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $r1 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mDeliveryType>;
+
+        $r2 = newarray (java.lang.Object)[2];
+
+        $r3 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$c mCurrentShippingMethod>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.j.a.f$c: java.lang.String a()>();
+
+        $r2[0] = $r4;
+
+        $r3 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$c mCurrentShippingMethod>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.j.a.f$c: java.lang.String c()>();
+
+        $r4 = staticinvoke <com.caremark.caremark.util.PriceUtils: java.lang.String formatCurrency(java.lang.String)>($r4);
+
+        $r2[1] = $r4;
+
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int,java.lang.Object[])>(2131822458, $r2);
+
+        virtualinvoke $r1.<android.widget.TextView: void setText(java.lang.CharSequence)>($r4);
+
+        specialinvoke r0.<com.caremark.caremark.EasyRefillVerifyActivity: void updateOrderTotal()>();
+
+        return;
+    }
+
+    private void submitOrder()
+    {
+        com.caremark.caremark.EasyRefillBaseActivity$c $r9;
+        c.c.a.n.c.b $r6;
+        com.caremark.caremark.EasyRefillBaseActivity$a $r5;
+        c.c.a.j.a.f$c $r2;
+        c.c.a.j.a.f$b $r3;
+        java.util.ArrayList $r10;
+        c.c.a.j.a.f$a $r1;
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        com.caremark.caremark.EasyRefillBaseActivity$SubmitOrderTask $r7;
+        c.c.a.j.a.c $r8;
+        java.lang.String $r4;
+        java.lang.Void[] $r11;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $r3 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$b mDefaultPaymentAcc>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.j.a.f$b: java.lang.String e()>();
+
+        $z0 = virtualinvoke r0.<com.caremark.caremark.EasyRefillBaseActivity: boolean checkExpirationDate(java.lang.String)>($r4);
+
+        if $z0 == 0 goto label1;
+
+        $r3 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$b mDefaultPaymentAcc>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.j.a.f$b: java.lang.String f()>();
+
+        virtualinvoke r0.<com.caremark.caremark.EasyRefillBaseActivity: boolean showCreditCardExpiration(java.lang.String)>($r4);
+
+        return;
+
+     label1:
+        $r5 = staticinvoke <com.caremark.caremark.EasyRefillBaseActivity$b: com.caremark.caremark.EasyRefillBaseActivity$a b()>();
+
+        $r6 = <c.c.a.n.c.b: c.c.a.n.c.b Sa>;
+
+        staticinvoke <com.caremark.caremark.EasyRefillBaseActivity: void updateHighestStepIfNeeded(c.c.a.n.c.b)>($r6);
+
+        $r7 = new com.caremark.caremark.EasyRefillBaseActivity$SubmitOrderTask;
+
+        $r1 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$a mDefaultAddress>;
+
+        $r2 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$c mCurrentShippingMethod>;
+
+        $r3 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$b mDefaultPaymentAcc>;
+
+        $r8 = virtualinvoke $r5.<com.caremark.caremark.EasyRefillBaseActivity$a: c.c.a.j.a.c b()>();
+
+        $r9 = virtualinvoke $r5.<com.caremark.caremark.EasyRefillBaseActivity$a: com.caremark.caremark.EasyRefillBaseActivity$c r()>();
+
+        $r10 = virtualinvoke $r5.<com.caremark.caremark.EasyRefillBaseActivity$a: java.util.ArrayList p()>();
+
+        specialinvoke $r7.<com.caremark.caremark.EasyRefillBaseActivity$SubmitOrderTask: void <init>(com.caremark.caremark.EasyRefillVerifyActivity,int,c.c.a.j.a.f$a,c.c.a.j.a.f$c,c.c.a.j.a.f$b,c.c.a.j.a.c,com.caremark.caremark.EasyRefillBaseActivity$c,java.util.ArrayList)>(r0, 1111, $r1, $r2, $r3, $r8, $r9, $r10);
+
+        r0.<com.caremark.caremark.EasyRefillBaseActivity: android.os.AsyncTask currentTask> = $r7;
+
+        $r11 = newarray (java.lang.Void)[0];
+
+        virtualinvoke $r7.<android.os.AsyncTask: android.os.AsyncTask execute(java.lang.Object[])>($r11);
+
+        return;
+    }
+
+    private void updateCurrentShippingMethods()
+    {
+        java.util.Iterator $r4;
+        c.c.a.j.a.f $r8;
+        com.caremark.caremark.EasyRefillBaseActivity$a $r2;
+        c.c.a.j.a.f$c $r1, $r7, $r10;
+        java.util.ArrayList $r3;
+        c.c.a.j.a.e$a $r6;
+        java.util.List $r9;
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        java.lang.Object $r5;
+        boolean $z0, $z1;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $r2 = staticinvoke <com.caremark.caremark.EasyRefillBaseActivity$b: com.caremark.caremark.EasyRefillBaseActivity$a b()>();
+
+        $r3 = virtualinvoke $r2.<com.caremark.caremark.EasyRefillBaseActivity$a: java.util.ArrayList p()>();
+
+        $r4 = virtualinvoke $r3.<java.util.ArrayList: java.util.Iterator iterator()>();
+
+     label01:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label02;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (c.c.a.j.a.e$a) $r5;
+
+        $z0 = virtualinvoke $r6.<c.c.a.j.a.e$a: boolean j()>();
+
+        if $z0 == 0 goto label01;
+
+        $z0 = 1;
+
+        goto label03;
+
+     label02:
+        $z0 = 0;
+
+     label03:
+        $r3 = new java.util.ArrayList;
+
+        specialinvoke $r3.<java.util.ArrayList: void <init>()>();
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.List mCurrentShippingMethodsList> = $r3;
+
+        $r7 = null;
+
+        $r8 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f mShippingAndPaymentResponse>;
+
+        $r9 = virtualinvoke $r8.<c.c.a.j.a.f: java.util.List f()>();
+
+        $r4 = interfaceinvoke $r9.<java.util.List: java.util.Iterator iterator()>();
+
+     label04:
+        $z1 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z1 == 0 goto label08;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r10 = (c.c.a.j.a.f$c) $r5;
+
+        $r1 = new c.c.a.j.a.f$c;
+
+        specialinvoke $r1.<c.c.a.j.a.f$c: void <init>(c.c.a.j.a.f$c)>($r10);
+
+        $z1 = virtualinvoke $r1.<c.c.a.j.a.f$c: boolean f()>();
+
+        if $z1 == 0 goto label05;
+
+        $r7 = $r1;
+
+     label05:
+        if $z0 == 0 goto label07;
+
+        $z1 = virtualinvoke $r1.<c.c.a.j.a.f$c: boolean f()>();
+
+        if $z1 == 0 goto label06;
+
+        virtualinvoke $r1.<c.c.a.j.a.f$c: void c(java.lang.String)>("0.0");
+
+     label06:
+        $z1 = virtualinvoke $r1.<c.c.a.j.a.f$c: boolean d()>();
+
+        if $z1 == 0 goto label04;
+
+        $r9 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.List mCurrentShippingMethodsList>;
+
+        interfaceinvoke $r9.<java.util.List: boolean add(java.lang.Object)>($r1);
+
+        goto label04;
+
+     label07:
+        $r9 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.List mCurrentShippingMethodsList>;
+
+        interfaceinvoke $r9.<java.util.List: boolean add(java.lang.Object)>($r1);
+
+        goto label04;
+
+     label08:
+        $r2 = staticinvoke <com.caremark.caremark.EasyRefillBaseActivity$b: com.caremark.caremark.EasyRefillBaseActivity$a b()>();
+
+        $r1 = virtualinvoke $r2.<com.caremark.caremark.EasyRefillBaseActivity$a: c.c.a.j.a.f$c d()>();
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$c mCurrentShippingMethod> = $r1;
+
+        $r2 = staticinvoke <com.caremark.caremark.EasyRefillBaseActivity$b: com.caremark.caremark.EasyRefillBaseActivity$a b()>();
+
+        $z1 = virtualinvoke $r2.<com.caremark.caremark.EasyRefillBaseActivity$a: boolean A()>();
+
+        $r1 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$c mCurrentShippingMethod>;
+
+        if $r1 == null goto label10;
+
+        if $z1 == 0 goto label10;
+
+        $z1 = virtualinvoke $r1.<c.c.a.j.a.f$c: boolean d()>();
+
+        if $z1 != 0 goto label09;
+
+        if $z0 != 0 goto label10;
+
+     label09:
+        $r1 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$c mCurrentShippingMethod>;
+
+        $z0 = virtualinvoke $r1.<c.c.a.j.a.f$c: boolean f()>();
+
+        if $z0 == 0 goto label14;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$c mCurrentShippingMethod> = $r7;
+
+        return;
+
+     label10:
+        $r7 = new c.c.a.j.a.f$c;
+
+        $r9 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.List mCurrentShippingMethodsList>;
+
+        $r5 = interfaceinvoke $r9.<java.util.List: java.lang.Object get(int)>(0);
+
+        $r1 = (c.c.a.j.a.f$c) $r5;
+
+        specialinvoke $r7.<c.c.a.j.a.f$c: void <init>(c.c.a.j.a.f$c)>($r1);
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$c mCurrentShippingMethod> = $r7;
+
+        $r9 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.List mCurrentShippingMethodsList>;
+
+        $r4 = interfaceinvoke $r9.<java.util.List: java.util.Iterator iterator()>();
+
+     label11:
+        $z1 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z1 == 0 goto label13;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r7 = (c.c.a.j.a.f$c) $r5;
+
+        $z1 = virtualinvoke $r7.<c.c.a.j.a.f$c: boolean e()>();
+
+        if $z1 == 0 goto label12;
+
+        if $z0 != 0 goto label12;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$c mCurrentShippingMethod> = $r7;
+
+        goto label13;
+
+     label12:
+        $z1 = virtualinvoke $r7.<c.c.a.j.a.f$c: boolean f()>();
+
+        if $z1 == 0 goto label11;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$c mCurrentShippingMethod> = $r7;
+
+        if $z0 == 0 goto label11;
+
+     label13:
+        $r2 = staticinvoke <com.caremark.caremark.EasyRefillBaseActivity$b: com.caremark.caremark.EasyRefillBaseActivity$a b()>();
+
+        $r7 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$c mCurrentShippingMethod>;
+
+        virtualinvoke $r2.<com.caremark.caremark.EasyRefillBaseActivity$a: void a(c.c.a.j.a.f$c)>($r7);
+
+        $r2 = staticinvoke <com.caremark.caremark.EasyRefillBaseActivity$b: com.caremark.caremark.EasyRefillBaseActivity$a b()>();
+
+        virtualinvoke $r2.<com.caremark.caremark.EasyRefillBaseActivity$a: void a(boolean)>(0);
+
+     label14:
+        return;
+    }
+
+    private void updateOrderTotal()
+    {
+        java.lang.Float $r7;
+        java.lang.Object[] $r10;
+        android.text.Spanned $r11;
+        java.util.ArrayList $r2;
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        int $i0, $i1;
+        java.lang.String $r5, $r9;
+        com.caremark.caremark.EasyRefillBaseActivity$a $r1;
+        c.c.a.j.a.f$c $r6;
+        c.c.a.j.a.e$a $r4;
+        android.widget.TextView $r8;
+        float $f0, $f1;
+        java.lang.Object $r3;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $r1 = staticinvoke <com.caremark.caremark.EasyRefillBaseActivity$b: com.caremark.caremark.EasyRefillBaseActivity$a b()>();
+
+        $r2 = virtualinvoke $r1.<com.caremark.caremark.EasyRefillBaseActivity$a: java.util.ArrayList p()>();
+
+        $i0 = 0;
+
+        $f0 = 0.0F;
+
+     label1:
+        $i1 = virtualinvoke $r2.<java.util.ArrayList: int size()>();
+
+        if $i0 >= $i1 goto label3;
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r4 = (c.c.a.j.a.e$a) $r3;
+
+        $r5 = virtualinvoke $r4.<c.c.a.j.a.e$a: java.lang.String d()>();
+
+        if $r5 == null goto label2;
+
+        $i1 = virtualinvoke $r5.<java.lang.String: int length()>();
+
+        if $i1 == 0 goto label2;
+
+        $f1 = staticinvoke <java.lang.Float: float parseFloat(java.lang.String)>($r5);
+
+        $f0 = $f0 + $f1;
+
+     label2:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label3:
+        $r6 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$c mCurrentShippingMethod>;
+
+        $r5 = virtualinvoke $r6.<c.c.a.j.a.f$c: java.lang.String c()>();
+
+        $f1 = staticinvoke <java.lang.Float: float parseFloat(java.lang.String)>($r5);
+
+        $f1 = $f1 + $f0;
+
+        $r7 = staticinvoke <java.lang.Float: java.lang.Float valueOf(float)>($f1);
+
+        $r8 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mEstimatedDrugCost>;
+
+        $r9 = staticinvoke <com.caremark.caremark.util.PriceUtils: java.lang.String formatCurrency(float)>($f0);
+
+        virtualinvoke $r8.<android.widget.TextView: void setText(java.lang.CharSequence)>($r9);
+
+        $r8 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mEstimatedShippingCost>;
+
+        $r5 = staticinvoke <com.caremark.caremark.util.PriceUtils: java.lang.String formatCurrency(java.lang.String)>($r5);
+
+        virtualinvoke $r8.<android.widget.TextView: void setText(java.lang.CharSequence)>($r5);
+
+        $r8 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mEstimatedOrderTotal>;
+
+        $r10 = newarray (java.lang.Object)[1];
+
+        $f0 = virtualinvoke $r7.<java.lang.Float: float floatValue()>();
+
+        $r5 = staticinvoke <com.caremark.caremark.util.PriceUtils: java.lang.String formatCurrency(float)>($f0);
+
+        $r10[0] = $r5;
+
+        $r5 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int,java.lang.Object[])>(2131821507, $r10);
+
+        $r11 = staticinvoke <android.text.Html: android.text.Spanned fromHtml(java.lang.String)>($r5);
+
+        virtualinvoke $r8.<android.widget.TextView: void setText(java.lang.CharSequence)>($r11);
+
+        return;
+    }
+
+    public int getContentViewId()
+    {
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        return 2131492992;
+    }
+
+    public void onBackPressed()
+    {
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        virtualinvoke r0.<android.app.Activity: void showDialog(int)>(4365);
+
+        return;
+    }
+
+    public void onClick(android.view.View)
+    {
+        int $i0;
+        android.view.View $r1;
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $r1 := @parameter0: android.view.View;
+
+        $i0 = virtualinvoke $r1.<android.view.View: int getId()>();
+
+        lookupswitch($i0)
+        {
+            case 2131296507: goto label9;
+            case 2131296509: goto label8;
+            case 2131296540: goto label7;
+            case 2131296548: goto label6;
+            case 2131296549: goto label5;
+            case 2131296997: goto label4;
+            case 2131297003: goto label3;
+            case 2131297004: goto label2;
+            default: goto label1;
+        };
+
+     label1:
+        specialinvoke r0.<com.caremark.caremark.EasyRefillBaseActivity: void onClick(android.view.View)>($r1);
+
+        return;
+
+     label2:
+        virtualinvoke r0.<android.app.Activity: void showDialog(int)>(4);
+
+        return;
+
+     label3:
+        virtualinvoke r0.<android.app.Activity: void showDialog(int)>(3);
+
+        return;
+
+     label4:
+        virtualinvoke r0.<android.app.Activity: void showDialog(int)>(5);
+
+        return;
+
+     label5:
+        virtualinvoke r0.<android.app.Activity: void showDialog(int)>(1043);
+
+        return;
+
+     label6:
+        virtualinvoke r0.<com.caremark.caremark.EasyRefillBaseActivity: void trackComplete()>();
+
+        specialinvoke r0.<com.caremark.caremark.EasyRefillVerifyActivity: void submitOrder()>();
+
+        return;
+
+     label7:
+        virtualinvoke r0.<com.caremark.caremark.EasyRefillBaseActivity: void startNewRefill(boolean)>(0);
+
+        return;
+
+     label8:
+        virtualinvoke r0.<android.app.Activity: void showDialog(int)>(4365);
+
+        return;
+
+     label9:
+        virtualinvoke r0.<com.caremark.caremark.EasyRefillBaseActivity: void startNewRefill(boolean)>(1);
+
+        return;
+    }
+
+    public void onCreate(android.os.Bundle)
+    {
+        android.os.Bundle $r1;
+        android.text.Spanned $r8;
+        c.c.a.n.c.b $r2;
+        android.view.LayoutInflater $r5;
+        android.widget.ImageView $r10;
+        android.content.Intent $r11;
+        android.widget.TextView $r6;
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        android.view.View $r3;
+        android.widget.Button $r9;
+        android.widget.ListView $r4;
+        java.lang.String $r7;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        specialinvoke r0.<com.caremark.caremark.EasyRefillBaseActivity: void onCreate(android.os.Bundle)>($r1);
+
+        $r2 = <c.c.a.n.c.b: c.c.a.n.c.b Na>;
+
+        staticinvoke <com.caremark.caremark.EasyRefillBaseActivity: void updateHighestStepIfNeeded(c.c.a.n.c.b)>($r2);
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297295);
+
+        $r4 = (android.widget.ListView) $r3;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.ListView mItemslistView> = $r4;
+
+        $r4 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.ListView mItemslistView>;
+
+        virtualinvoke $r4.<android.widget.ListView: void setDivider(android.graphics.drawable.Drawable)>(null);
+
+        $r4 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.ListView mItemslistView>;
+
+        virtualinvoke $r4.<android.widget.ListView: void setVerticalFadingEdgeEnabled(boolean)>(0);
+
+        $r5 = virtualinvoke r0.<android.app.Activity: android.view.LayoutInflater getLayoutInflater()>();
+
+        $r3 = virtualinvoke $r5.<android.view.LayoutInflater: android.view.View inflate(int,android.view.ViewGroup)>(2131492994, null);
+
+        $r4 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.ListView mItemslistView>;
+
+        virtualinvoke $r4.<android.widget.ListView: void addHeaderView(android.view.View)>($r3);
+
+        $r5 = virtualinvoke r0.<android.app.Activity: android.view.LayoutInflater getLayoutInflater()>();
+
+        $r3 = virtualinvoke $r5.<android.view.LayoutInflater: android.view.View inflate(int,android.view.ViewGroup)>(2131492993, null);
+
+        $r4 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.ListView mItemslistView>;
+
+        virtualinvoke $r4.<android.widget.ListView: void addFooterView(android.view.View)>($r3);
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297003);
+
+        $r6 = (android.widget.TextView) $r3;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mBtnEditShippingAddress> = $r6;
+
+        $r6 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mBtnEditShippingAddress>;
+
+        virtualinvoke $r6.<android.widget.TextView: void setOnClickListener(android.view.View$OnClickListener)>(r0);
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297004);
+
+        $r6 = (android.widget.TextView) $r3;
+
+        $r7 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821253);
+
+        $r8 = staticinvoke <android.text.Html: android.text.Spanned fromHtml(java.lang.String)>($r7);
+
+        virtualinvoke $r6.<android.widget.TextView: void setText(java.lang.CharSequence)>($r8);
+
+        virtualinvoke $r6.<android.widget.TextView: void setOnClickListener(android.view.View$OnClickListener)>(r0);
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131296997);
+
+        $r6 = (android.widget.TextView) $r3;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mBtnEditPaymentMethod> = $r6;
+
+        $r6 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mBtnEditPaymentMethod>;
+
+        virtualinvoke $r6.<android.widget.TextView: void setOnClickListener(android.view.View$OnClickListener)>(r0);
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131296549);
+
+        virtualinvoke $r3.<android.view.View: void setOnClickListener(android.view.View$OnClickListener)>(r0);
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131296540);
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mBtnScanMore> = $r3;
+
+        $r3 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mBtnScanMore>;
+
+        virtualinvoke $r3.<android.view.View: void setOnClickListener(android.view.View$OnClickListener)>(r0);
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131296507);
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mBtnAddMore> = $r3;
+
+        $r3 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mBtnAddMore>;
+
+        virtualinvoke $r3.<android.view.View: void setOnClickListener(android.view.View$OnClickListener)>(r0);
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131296548);
+
+        $r9 = (android.widget.Button) $r3;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.Button mBtnSubmit> = $r9;
+
+        $r9 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.Button mBtnSubmit>;
+
+        virtualinvoke $r9.<android.widget.Button: void setOnClickListener(android.view.View$OnClickListener)>(r0);
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131296509);
+
+        virtualinvoke $r3.<android.view.View: void setOnClickListener(android.view.View$OnClickListener)>(r0);
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131298238);
+
+        $r6 = (android.widget.TextView) $r3;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mShippingNumber> = $r6;
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131298236);
+
+        $r6 = (android.widget.TextView) $r3;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mShippingAddress> = $r6;
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297447);
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mNoAddress> = $r3;
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131298229);
+
+        $r6 = (android.widget.TextView) $r3;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mDeliveryType> = $r6;
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131298228);
+
+        $r6 = (android.widget.TextView) $r3;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mCardNumber> = $r6;
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131298227);
+
+        $r6 = (android.widget.TextView) $r3;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mBillingExpirationDate> = $r6;
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131296575);
+
+        $r10 = (android.widget.ImageView) $r3;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.ImageView mCardImage> = $r10;
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297449);
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mTextNoCC> = $r3;
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297065);
+
+        $r6 = (android.widget.TextView) $r3;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mEstimatedDrugCost> = $r6;
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297067);
+
+        $r6 = (android.widget.TextView) $r3;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mEstimatedShippingCost> = $r6;
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297066);
+
+        $r6 = (android.widget.TextView) $r3;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mEstimatedOrderTotal> = $r6;
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131296591);
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mCcSection> = $r3;
+
+        $r11 = virtualinvoke r0.<android.app.Activity: android.content.Intent getIntent()>();
+
+        specialinvoke r0.<com.caremark.caremark.EasyRefillVerifyActivity: void setDataInViews(android.content.Intent)>($r11);
+
+        return;
+    }
+
+    public android.app.Dialog onCreateDialog(int)
+    {
+        java.lang.Object[] $r17;
+        c.c.a.ea $r6;
+        android.app.Dialog $r1;
+        java.lang.String[] $r3;
+        com.caremark.caremark.ui.dialogs.EasyRefillEditShippingAdressDialog $r15;
+        java.util.ArrayList $r10;
+        c.c.a.ba $r7;
+        int[] $r22;
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        c.c.a.da $r5;
+        int $i0;
+        com.caremark.caremark.ui.dialogs.CaremarkAlertDialog $r2;
+        java.lang.String $r4;
+        com.caremark.caremark.ui.dialogs.EasyRefillEditPaymentMethodDialog $r9;
+        boolean $z0;
+        c.c.a.X $r20;
+        c.c.a.Z $r18;
+        c.c.a.Y $r21;
+        c.c.a.fa $r23;
+        com.caremark.caremark.ui.dialogs.EasyRefillEditShippingMethodDialog $r12;
+        c.c.a.j.a.f$c $r14;
+        c.c.a.j.a.f$b $r11;
+        c.c.a.j.a.f$a $r16;
+        java.util.List $r13;
+        c.c.a.aa $r19;
+        c.c.a.ca $r8;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $i0 := @parameter0: int;
+
+        if $i0 == 2131298041 goto label9;
+
+        lookupswitch($i0)
+        {
+            case 1: goto label8;
+            case 2: goto label7;
+            case 3: goto label6;
+            case 4: goto label5;
+            case 5: goto label4;
+            case 6: goto label3;
+            case 7: goto label2;
+            default: goto label1;
+        };
+
+     label1:
+        $r1 = specialinvoke r0.<com.caremark.caremark.EasyRefillBaseActivity: android.app.Dialog onCreateDialog(int)>($i0);
+
+        return $r1;
+
+     label2:
+        $r2 = new com.caremark.caremark.ui.dialogs.CaremarkAlertDialog;
+
+        $r3 = newarray (java.lang.String)[1];
+
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821255);
+
+        $r3[0] = $r4;
+
+        specialinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void <init>(android.content.Context,java.lang.String[])>(r0, $r3);
+
+        virtualinvoke $r2.<android.app.Dialog: void setCancelable(boolean)>(0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setCloseButtonText(int)>(2131820802);
+
+        $r5 = new c.c.a.da;
+
+        specialinvoke $r5.<c.c.a.da: void <init>(com.caremark.caremark.EasyRefillVerifyActivity)>(r0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setOnCloseButtonListener(com.caremark.caremark.ui.dialogs.CaremarkAlertDialog$a)>($r5);
+
+        $r6 = new c.c.a.ea;
+
+        specialinvoke $r6.<c.c.a.ea: void <init>(com.caremark.caremark.EasyRefillVerifyActivity)>(r0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setPositiveButton(com.caremark.caremark.ui.dialogs.CaremarkAlertDialog$a,int)>($r6, 2131820830);
+
+        return $r2;
+
+     label3:
+        $r2 = new com.caremark.caremark.ui.dialogs.CaremarkAlertDialog;
+
+        $r3 = newarray (java.lang.String)[1];
+
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821255);
+
+        $r3[0] = $r4;
+
+        specialinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void <init>(android.content.Context,java.lang.String[])>(r0, $r3);
+
+        virtualinvoke $r2.<android.app.Dialog: void setCancelable(boolean)>(0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setCloseButtonText(int)>(2131820802);
+
+        $r7 = new c.c.a.ba;
+
+        specialinvoke $r7.<c.c.a.ba: void <init>(com.caremark.caremark.EasyRefillVerifyActivity)>(r0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setOnCloseButtonListener(com.caremark.caremark.ui.dialogs.CaremarkAlertDialog$a)>($r7);
+
+        $r8 = new c.c.a.ca;
+
+        specialinvoke $r8.<c.c.a.ca: void <init>(com.caremark.caremark.EasyRefillVerifyActivity)>(r0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setPositiveButton(com.caremark.caremark.ui.dialogs.CaremarkAlertDialog$a,int)>($r8, 2131820830);
+
+        return $r2;
+
+     label4:
+        $r9 = new com.caremark.caremark.ui.dialogs.EasyRefillEditPaymentMethodDialog;
+
+        $r10 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.ArrayList mCcList>;
+
+        $r11 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$b mDefaultPaymentAcc>;
+
+        specialinvoke $r9.<com.caremark.caremark.ui.dialogs.EasyRefillEditPaymentMethodDialog: void <init>(com.caremark.caremark.EasyRefillVerifyActivity,java.util.List,c.c.a.j.a.f$b)>(r0, $r10, $r11);
+
+        return $r9;
+
+     label5:
+        $r12 = new com.caremark.caremark.ui.dialogs.EasyRefillEditShippingMethodDialog;
+
+        $r13 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.List mCurrentShippingMethodsList>;
+
+        $r14 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$c mCurrentShippingMethod>;
+
+        specialinvoke $r12.<com.caremark.caremark.ui.dialogs.EasyRefillEditShippingMethodDialog: void <init>(com.caremark.caremark.EasyRefillVerifyActivity,java.util.List,c.c.a.j.a.f$c)>(r0, $r13, $r14);
+
+        return $r12;
+
+     label6:
+        $r15 = new com.caremark.caremark.ui.dialogs.EasyRefillEditShippingAdressDialog;
+
+        $r13 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.List mAddressList>;
+
+        $r16 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$a mDefaultAddress>;
+
+        $z0 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: boolean isOneTimeShippingAddress>;
+
+        specialinvoke $r15.<com.caremark.caremark.ui.dialogs.EasyRefillEditShippingAdressDialog: void <init>(com.caremark.caremark.EasyRefillVerifyActivity,java.util.List,c.c.a.j.a.f$a,boolean)>(r0, $r13, $r16, $z0);
+
+        return $r15;
+
+     label7:
+        $r2 = new com.caremark.caremark.ui.dialogs.CaremarkAlertDialog;
+
+        $r3 = newarray (java.lang.String)[1];
+
+        $r17 = newarray (java.lang.Object)[1];
+
+        $r4 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.lang.String mLastRemoveRefillNumber>;
+
+        $r17[0] = $r4;
+
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int,java.lang.Object[])>(2131821263, $r17);
+
+        $r3[0] = $r4;
+
+        specialinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void <init>(android.content.Context,java.lang.String[])>(r0, $r3);
+
+        virtualinvoke $r2.<android.app.Dialog: void setCancelable(boolean)>(0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setCloseButtonText(int)>(2131820802);
+
+        $r18 = new c.c.a.Z;
+
+        specialinvoke $r18.<c.c.a.Z: void <init>(com.caremark.caremark.EasyRefillVerifyActivity)>(r0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setOnCloseButtonListener(com.caremark.caremark.ui.dialogs.CaremarkAlertDialog$a)>($r18);
+
+        $r19 = new c.c.a.aa;
+
+        specialinvoke $r19.<c.c.a.aa: void <init>(com.caremark.caremark.EasyRefillVerifyActivity)>(r0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setPositiveButton(com.caremark.caremark.ui.dialogs.CaremarkAlertDialog$a,int)>($r19, 2131820830);
+
+        return $r2;
+
+     label8:
+        $r2 = new com.caremark.caremark.ui.dialogs.CaremarkAlertDialog;
+
+        $r3 = newarray (java.lang.String)[1];
+
+        $r17 = newarray (java.lang.Object)[1];
+
+        $r4 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.lang.String mLastRemoveRefillNumber>;
+
+        $r17[0] = $r4;
+
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int,java.lang.Object[])>(2131821262, $r17);
+
+        $r3[0] = $r4;
+
+        specialinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void <init>(android.content.Context,java.lang.String[])>(r0, $r3);
+
+        virtualinvoke $r2.<android.app.Dialog: void setCancelable(boolean)>(0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setCloseButtonText(int)>(2131820802);
+
+        $r20 = new c.c.a.X;
+
+        specialinvoke $r20.<c.c.a.X: void <init>(com.caremark.caremark.EasyRefillVerifyActivity)>(r0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setOnCloseButtonListener(com.caremark.caremark.ui.dialogs.CaremarkAlertDialog$a)>($r20);
+
+        $r21 = new c.c.a.Y;
+
+        specialinvoke $r21.<c.c.a.Y: void <init>(com.caremark.caremark.EasyRefillVerifyActivity)>(r0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setPositiveButton(com.caremark.caremark.ui.dialogs.CaremarkAlertDialog$a,int)>($r21, 2131820830);
+
+        return $r2;
+
+     label9:
+        $r2 = new com.caremark.caremark.ui.dialogs.CaremarkAlertDialog;
+
+        $r22 = newarray (int)[1];
+
+        $r22[0] = 2131822448;
+
+        specialinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void <init>(android.content.Context,int[])>(r0, $r22);
+
+        virtualinvoke $r2.<android.app.Dialog: void setCancelable(boolean)>(1);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setCloseButtonText(int)>(2131821926);
+
+        $r23 = new c.c.a.fa;
+
+        specialinvoke $r23.<c.c.a.fa: void <init>(com.caremark.caremark.EasyRefillVerifyActivity)>(r0);
+
+        virtualinvoke $r2.<com.caremark.caremark.ui.dialogs.CaremarkAlertDialog: void setOnCloseButtonListener(com.caremark.caremark.ui.dialogs.CaremarkAlertDialog$a)>($r23);
+
+        return $r2;
+    }
+
+    public void onPause()
+    {
+        c.c.a.d.l $r1;
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        android.os.Handler $r2;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        specialinvoke r0.<com.caremark.caremark.BaseActivity: void onPause()>();
+
+        $r1 = r0.<com.caremark.caremark.BaseActivity: c.c.a.d.l sessionManager>;
+
+        $r2 = r0.<com.caremark.caremark.BaseActivity: android.os.Handler sessionListener>;
+
+        virtualinvoke $r1.<c.c.a.d.l: void b(android.os.Handler)>($r2);
+
+        return;
+    }
+
+    public void onResume()
+    {
+        c.c.a.d.l $r1;
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        android.os.Handler $r2;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        specialinvoke r0.<com.caremark.caremark.BaseActivity: void onResume()>();
+
+        $r1 = r0.<com.caremark.caremark.BaseActivity: c.c.a.d.l sessionManager>;
+
+        $r2 = r0.<com.caremark.caremark.BaseActivity: android.os.Handler sessionListener>;
+
+        virtualinvoke $r1.<c.c.a.d.l: void a(android.os.Handler)>($r2);
+
+        return;
+    }
+
+    public void removeItem(int, java.lang.String)
+    {
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        com.caremark.caremark.EasyRefillBaseActivity$a $r2;
+        int $i0;
+        java.lang.String $r1;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.lang.String;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: int mLastRemoveRefillPosition> = $i0;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.lang.String mLastRemoveRefillNumber> = $r1;
+
+        $r2 = staticinvoke <com.caremark.caremark.EasyRefillBaseActivity$b: com.caremark.caremark.EasyRefillBaseActivity$a b()>();
+
+        $i0 = virtualinvoke $r2.<com.caremark.caremark.EasyRefillBaseActivity$a: int c()>();
+
+        if $i0 != 1 goto label1;
+
+        virtualinvoke r0.<android.app.Activity: void showDialog(int)>(2);
+
+        return;
+
+     label1:
+        virtualinvoke r0.<android.app.Activity: void showDialog(int)>(1);
+
+        return;
+    }
+
+    public void setOneTimeShippingAddressFlag(boolean)
+    {
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $z0 := @parameter0: boolean;
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: boolean isOneTimeShippingAddress> = $z0;
+
+        return;
+    }
+
+    public void setPaymentMethod(c.c.a.j.a.f$b)
+    {
+        android.text.Spanned $r9;
+        java.util.Iterator $r3;
+        c.c.a.j.a.f$b $r1;
+        java.util.ArrayList $r2;
+        android.widget.TextView $r8;
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        android.view.View $r7;
+        java.lang.Object $r4;
+        java.lang.String $r5, $r6;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $r1 := @parameter0: c.c.a.j.a.f$b;
+
+        virtualinvoke r0.<android.app.Activity: void removeDialog(int)>(5);
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$b mDefaultPaymentAcc> = $r1;
+
+        $r2 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.ArrayList mCcList>;
+
+        if $r2 != null goto label1;
+
+        $r2 = new java.util.ArrayList;
+
+        specialinvoke $r2.<java.util.ArrayList: void <init>()>();
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.ArrayList mCcList> = $r2;
+
+     label1:
+        $r2 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.ArrayList mCcList>;
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r1 = (c.c.a.j.a.f$b) $r4;
+
+        $r5 = virtualinvoke $r1.<c.c.a.j.a.f$b: java.lang.String d()>();
+
+        $r1 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$b mDefaultPaymentAcc>;
+
+        $r6 = virtualinvoke $r1.<c.c.a.j.a.f$b: java.lang.String d()>();
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 == 0 goto label2;
+
+        $z0 = 1;
+
+        goto label4;
+
+     label3:
+        $z0 = 0;
+
+     label4:
+        if $z0 != 0 goto label5;
+
+        $r2 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: java.util.ArrayList mCcList>;
+
+        $r1 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$b mDefaultPaymentAcc>;
+
+        virtualinvoke $r2.<java.util.ArrayList: boolean add(java.lang.Object)>($r1);
+
+     label5:
+        $r7 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mTextNoCC>;
+
+        virtualinvoke $r7.<android.view.View: void setVisibility(int)>(8);
+
+        $r7 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mCcSection>;
+
+        virtualinvoke $r7.<android.view.View: void setVisibility(int)>(0);
+
+        $r8 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mBtnEditPaymentMethod>;
+
+        $r5 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821253);
+
+        $r9 = staticinvoke <android.text.Html: android.text.Spanned fromHtml(java.lang.String)>($r5);
+
+        virtualinvoke $r8.<android.widget.TextView: void setText(java.lang.CharSequence)>($r9);
+
+        specialinvoke r0.<com.caremark.caremark.EasyRefillVerifyActivity: void setPaymentMethodLabel()>();
+
+        specialinvoke r0.<com.caremark.caremark.EasyRefillVerifyActivity: void checkSubmitButton()>();
+
+        return;
+    }
+
+    public void setShippingAddress(c.c.a.j.a.f$a)
+    {
+        c.c.a.j.a.f$a $r1;
+        android.widget.TextView $r3;
+        android.text.Spanned $r5;
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        android.view.View $r2;
+        java.lang.String $r4;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $r1 := @parameter0: c.c.a.j.a.f$a;
+
+        virtualinvoke r0.<android.app.Activity: void removeDialog(int)>(3);
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$a mDefaultAddress> = $r1;
+
+        $r2 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.view.View mNoAddress>;
+
+        virtualinvoke $r2.<android.view.View: void setVisibility(int)>(8);
+
+        $r3 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mShippingAddress>;
+
+        virtualinvoke $r3.<android.widget.TextView: void setVisibility(int)>(0);
+
+        $r3 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mShippingNumber>;
+
+        virtualinvoke $r3.<android.widget.TextView: void setVisibility(int)>(0);
+
+        $r3 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: android.widget.TextView mBtnEditShippingAddress>;
+
+        $r4 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821253);
+
+        $r5 = staticinvoke <android.text.Html: android.text.Spanned fromHtml(java.lang.String)>($r4);
+
+        virtualinvoke $r3.<android.widget.TextView: void setText(java.lang.CharSequence)>($r5);
+
+        specialinvoke r0.<com.caremark.caremark.EasyRefillVerifyActivity: void setShippingAddressLabel()>();
+
+        specialinvoke r0.<com.caremark.caremark.EasyRefillVerifyActivity: void checkSubmitButton()>();
+
+        return;
+    }
+
+    public void setShippingMethod(c.c.a.j.a.f$c)
+    {
+        com.caremark.caremark.EasyRefillVerifyActivity r0;
+        c.c.a.j.a.f$c $r1;
+        com.caremark.caremark.EasyRefillBaseActivity$a $r2;
+
+        r0 := @this: com.caremark.caremark.EasyRefillVerifyActivity;
+
+        $r1 := @parameter0: c.c.a.j.a.f$c;
+
+        virtualinvoke r0.<android.app.Activity: void removeDialog(int)>(4);
+
+        r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$c mCurrentShippingMethod> = $r1;
+
+        $r2 = staticinvoke <com.caremark.caremark.EasyRefillBaseActivity$b: com.caremark.caremark.EasyRefillBaseActivity$a b()>();
+
+        $r1 = r0.<com.caremark.caremark.EasyRefillVerifyActivity: c.c.a.j.a.f$c mCurrentShippingMethod>;
+
+        virtualinvoke $r2.<com.caremark.caremark.EasyRefillBaseActivity$a: void a(c.c.a.j.a.f$c)>($r1);
+
+        $r2 = staticinvoke <com.caremark.caremark.EasyRefillBaseActivity$b: com.caremark.caremark.EasyRefillBaseActivity$a b()>();
+
+        virtualinvoke $r2.<com.caremark.caremark.EasyRefillBaseActivity$a: void a(boolean)>(1);
+
+        specialinvoke r0.<com.caremark.caremark.EasyRefillVerifyActivity: void setShippingMethodLabel()>();
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <com.caremark.caremark.EasyRefillVerifyActivity: java.lang.String IS_SCAN> = "is_scan";
+
+        <com.caremark.caremark.EasyRefillVerifyActivity: int EDIT_SHIPPING_METHOD> = 4;
+
+        <com.caremark.caremark.EasyRefillVerifyActivity: int EDIT_SHIPPING_ADDRESS_CANCEL> = 6;
+
+        <com.caremark.caremark.EasyRefillVerifyActivity: int EDIT_SHIPPING_ADDRESS> = 3;
+
+        <com.caremark.caremark.EasyRefillVerifyActivity: int EDIT_PAYMENT_METHOD_CANCEL> = 7;
+
+        <com.caremark.caremark.EasyRefillVerifyActivity: int EDIT_PAYMENT_METHOD> = 5;
+
+        <com.caremark.caremark.EasyRefillVerifyActivity: java.lang.String ADDRESS_POBOX> = "pobox";
+
+        <com.caremark.caremark.EasyRefillVerifyActivity: java.lang.String ADDRESS_PO> = "po";
+
+        return;
+    }
+}

@@ -1,0 +1,123 @@
+public class project.android.imageprocessing.filter.colour.ColourMatrixFilter extends project.android.imageprocessing.filter.BasicFilter
+{
+    public static final java.lang.String UNIFORM_COLORMATRIX;
+    public static final java.lang.String UNIFORM_INTENSITY;
+    public float[] colorMatrix;
+    public int colorMatrixHandle;
+    public float intensity;
+    public int intensityHandle;
+
+    public void <init>(float[], float)
+    {
+        project.android.imageprocessing.filter.colour.ColourMatrixFilter r0;
+        byte $b0;
+        int $i1;
+        float $f0, $f1;
+        float[] $r1;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.ColourMatrixFilter;
+
+        $r1 := @parameter0: float[];
+
+        $f0 := @parameter1: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.BasicFilter: void <init>()>();
+
+        r0.<project.android.imageprocessing.filter.colour.ColourMatrixFilter: float[] colorMatrix> = $r1;
+
+        $f1 = 0.0F;
+
+        $b0 = $f0 cmpg 0.0F;
+
+        $i1 = (int) $b0;
+
+        if $i1 >= 0 goto label1;
+
+        goto label2;
+
+     label1:
+        $f1 = $f0;
+
+     label2:
+        $b0 = $f1 cmpl 1.0F;
+
+        $i1 = (int) $b0;
+
+        if $i1 <= 0 goto label3;
+
+        $f1 = 1.0F;
+
+     label3:
+        r0.<project.android.imageprocessing.filter.colour.ColourMatrixFilter: float intensity> = $f1;
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.colour.ColourMatrixFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.ColourMatrixFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform float u_Intensity;\nuniform mat4 u_ColorMatrix;\nvoid main(){\n   vec4 color = texture2D(u_Texture0,v_TexCoord);\n   vec4 matrixResult = vec4(color.rgb, 1.0) * u_ColorMatrix;\n   vec4 colorResult = u_Intensity * matrixResult + (1.0 - u_Intensity) * color;\n   gl_FragColor = vec4(colorResult.rgb, color.a);\n}\n";
+    }
+
+    public void initShaderHandles()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.colour.ColourMatrixFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.ColourMatrixFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void initShaderHandles()>();
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_ColorMatrix");
+
+        r0.<project.android.imageprocessing.filter.colour.ColourMatrixFilter: int colorMatrixHandle> = $i0;
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetUniformLocation(int,java.lang.String)>($i0, "u_Intensity");
+
+        r0.<project.android.imageprocessing.filter.colour.ColourMatrixFilter: int intensityHandle> = $i0;
+
+        return;
+    }
+
+    public void passShaderValues()
+    {
+        project.android.imageprocessing.filter.colour.ColourMatrixFilter r0;
+        int $i0;
+        float $f0;
+        float[] $r1;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.ColourMatrixFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.GLRenderer: void passShaderValues()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.ColourMatrixFilter: int colorMatrixHandle>;
+
+        $r1 = r0.<project.android.imageprocessing.filter.colour.ColourMatrixFilter: float[] colorMatrix>;
+
+        staticinvoke <android.opengl.GLES20: void glUniformMatrix4fv(int,int,boolean,float[],int)>($i0, 1, 0, $r1, 0);
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.ColourMatrixFilter: int intensityHandle>;
+
+        $f0 = r0.<project.android.imageprocessing.filter.colour.ColourMatrixFilter: float intensity>;
+
+        staticinvoke <android.opengl.GLES20: void glUniform1f(int,float)>($i0, $f0);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <project.android.imageprocessing.filter.colour.ColourMatrixFilter: java.lang.String UNIFORM_INTENSITY> = "u_Intensity";
+
+        <project.android.imageprocessing.filter.colour.ColourMatrixFilter: java.lang.String UNIFORM_COLORMATRIX> = "u_ColorMatrix";
+
+        return;
+    }
+}

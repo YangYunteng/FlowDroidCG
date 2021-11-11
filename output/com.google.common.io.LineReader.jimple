@@ -1,0 +1,158 @@
+public final class com.google.common.io.LineReader extends java.lang.Object
+{
+    public final char[] buf;
+    public final java.nio.CharBuffer cbuf;
+    public final com.google.common.io.LineBuffer lineBuf;
+    public final java.util.Queue lines;
+    public final java.lang.Readable readable;
+    public final java.io.Reader reader;
+
+    public void <init>(java.lang.Readable)
+    {
+        java.nio.CharBuffer $r2;
+        java.io.Reader $r7;
+        com.google.common.io.LineReader r0;
+        java.lang.Readable $r1, $r6;
+        char[] $r3;
+        java.util.LinkedList $r4;
+        com.google.common.io.LineReader$1 $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.common.io.LineReader;
+
+        $r1 := @parameter0: java.lang.Readable;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r2 = staticinvoke <com.google.common.io.CharStreams: java.nio.CharBuffer createBuffer()>();
+
+        r0.<com.google.common.io.LineReader: java.nio.CharBuffer cbuf> = $r2;
+
+        $r2 = r0.<com.google.common.io.LineReader: java.nio.CharBuffer cbuf>;
+
+        $r3 = virtualinvoke $r2.<java.nio.CharBuffer: char[] array()>();
+
+        r0.<com.google.common.io.LineReader: char[] buf> = $r3;
+
+        $r4 = new java.util.LinkedList;
+
+        specialinvoke $r4.<java.util.LinkedList: void <init>()>();
+
+        r0.<com.google.common.io.LineReader: java.util.Queue lines> = $r4;
+
+        $r5 = new com.google.common.io.LineReader$1;
+
+        specialinvoke $r5.<com.google.common.io.LineReader$1: void <init>(com.google.common.io.LineReader)>(r0);
+
+        r0.<com.google.common.io.LineReader: com.google.common.io.LineBuffer lineBuf> = $r5;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r6 = $r1;
+
+        r0.<com.google.common.io.LineReader: java.lang.Readable readable> = $r6;
+
+        $z0 = $r1 instanceof java.io.Reader;
+
+        if $z0 == 0 goto label1;
+
+        $r7 = (java.io.Reader) $r1;
+
+        goto label2;
+
+     label1:
+        $r7 = null;
+
+     label2:
+        r0.<com.google.common.io.LineReader: java.io.Reader reader> = $r7;
+
+        return;
+    }
+
+    public static java.util.Queue access$000(com.google.common.io.LineReader)
+    {
+        java.util.Queue r1;
+        com.google.common.io.LineReader $r0;
+
+        $r0 := @parameter0: com.google.common.io.LineReader;
+
+        r1 = $r0.<com.google.common.io.LineReader: java.util.Queue lines>;
+
+        return r1;
+    }
+
+    public java.lang.String readLine()
+    {
+        java.nio.CharBuffer $r3;
+        com.google.common.io.LineBuffer $r7;
+        java.io.Reader $r4;
+        com.google.common.io.LineReader r0;
+        int $i0, $i1;
+        java.lang.Readable $r6;
+        char[] $r5;
+        java.lang.Object $r2;
+        java.util.Queue $r1;
+        java.lang.String $r8;
+
+        r0 := @this: com.google.common.io.LineReader;
+
+     label1:
+        $r1 = r0.<com.google.common.io.LineReader: java.util.Queue lines>;
+
+        $r2 = interfaceinvoke $r1.<java.util.Queue: java.lang.Object peek()>();
+
+        if $r2 != null goto label5;
+
+        $r3 = r0.<com.google.common.io.LineReader: java.nio.CharBuffer cbuf>;
+
+        virtualinvoke $r3.<java.nio.CharBuffer: java.nio.Buffer clear()>();
+
+        $r4 = r0.<com.google.common.io.LineReader: java.io.Reader reader>;
+
+        if $r4 == null goto label2;
+
+        $r5 = r0.<com.google.common.io.LineReader: char[] buf>;
+
+        $i0 = lengthof $r5;
+
+        $i0 = virtualinvoke $r4.<java.io.Reader: int read(char[],int,int)>($r5, 0, $i0);
+
+        goto label3;
+
+     label2:
+        $r6 = r0.<com.google.common.io.LineReader: java.lang.Readable readable>;
+
+        $r3 = r0.<com.google.common.io.LineReader: java.nio.CharBuffer cbuf>;
+
+        $i0 = interfaceinvoke $r6.<java.lang.Readable: int read(java.nio.CharBuffer)>($r3);
+
+     label3:
+        $i1 = -1;
+
+        if $i0 != $i1 goto label4;
+
+        $r7 = r0.<com.google.common.io.LineReader: com.google.common.io.LineBuffer lineBuf>;
+
+        virtualinvoke $r7.<com.google.common.io.LineBuffer: void finish()>();
+
+        goto label5;
+
+     label4:
+        $r7 = r0.<com.google.common.io.LineReader: com.google.common.io.LineBuffer lineBuf>;
+
+        $r5 = r0.<com.google.common.io.LineReader: char[] buf>;
+
+        virtualinvoke $r7.<com.google.common.io.LineBuffer: void add(char[],int,int)>($r5, 0, $i0);
+
+        goto label1;
+
+     label5:
+        $r1 = r0.<com.google.common.io.LineReader: java.util.Queue lines>;
+
+        $r2 = interfaceinvoke $r1.<java.util.Queue: java.lang.Object poll()>();
+
+        $r8 = (java.lang.String) $r2;
+
+        return $r8;
+    }
+}

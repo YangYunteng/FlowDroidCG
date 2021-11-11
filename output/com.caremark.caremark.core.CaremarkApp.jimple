@@ -1,0 +1,1242 @@
+public class com.caremark.caremark.core.CaremarkApp extends android.app.Application
+{
+    public static final int BYTES_IN_KB;
+    public static final int MAX_MEMORY_CLASS_FOR_LOW_PERFORMANCE_MODE;
+    public static final int MIN_MEMORY_CLASS_FOR_HIGH_PERFORMANCE_MODE;
+    public static final java.lang.String TAG;
+    public static android.content.Context context;
+    public static com.caremark.caremark.util.IceSessionManager iceSessionManager;
+    public static java.lang.Boolean isAppFirstLaunch;
+    public final java.lang.String APP_INFO_DATA;
+    public boolean DEVELOPER_MODE;
+    public final java.util.Map activityTaskMap;
+    public c.c.a.j.b connectionObserver;
+    public com.caremark.caremark.core.image.ExternalStorageObserver externalStorageObserver;
+    public com.caremark.caremark.util.IceUtil iceUtil;
+    public boolean isDeepLink;
+    public java.util.concurrent.atomic.AtomicBoolean isExternalStorageAvailable;
+    public java.util.HashMap mapIconWithResourceId;
+    public java.util.HashMap mapViewWithResourceId;
+    public com.caremark.caremark.core.CaremarkApp$a memoryClass;
+    public int memorySize;
+    public java.lang.String methodNameForMyAccountLinks;
+    public com.caremark.caremark.util.PinningFailureReportBroadcastReceiver pinningFailureReportBroadcastReceiver;
+    public com.caremark.caremark.synclib.dao.ResponseData responseData;
+    public c.c.a.d.l sessionManager;
+
+    static void <clinit>()
+    {
+        java.lang.Boolean $r0;
+
+        <com.caremark.caremark.core.CaremarkApp: java.lang.String TAG> = "com.caremark.caremark.core.CaremarkApp";
+
+        <com.caremark.caremark.core.CaremarkApp: int MIN_MEMORY_CLASS_FOR_HIGH_PERFORMANCE_MODE> = 40;
+
+        <com.caremark.caremark.core.CaremarkApp: int MAX_MEMORY_CLASS_FOR_LOW_PERFORMANCE_MODE> = 30;
+
+        <com.caremark.caremark.core.CaremarkApp: int BYTES_IN_KB> = 1024;
+
+        $r0 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(0);
+
+        <com.caremark.caremark.core.CaremarkApp: java.lang.Boolean isAppFirstLaunch> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.caremark.caremark.util.IceSessionManager $r3;
+        java.lang.Boolean $r4;
+        com.caremark.caremark.core.CaremarkApp$a $r1;
+        java.util.HashMap $r2;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        specialinvoke r0.<android.app.Application: void <init>()>();
+
+        r0.<com.caremark.caremark.core.CaremarkApp: java.lang.String methodNameForMyAccountLinks> = "";
+
+        r0.<com.caremark.caremark.core.CaremarkApp: boolean DEVELOPER_MODE> = 0;
+
+        $r1 = <com.caremark.caremark.core.CaremarkApp$a: com.caremark.caremark.core.CaremarkApp$a a>;
+
+        r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.core.CaremarkApp$a memoryClass> = $r1;
+
+        r0.<com.caremark.caremark.core.CaremarkApp: java.lang.String APP_INFO_DATA> = "app_info_data";
+
+        r0.<com.caremark.caremark.core.CaremarkApp: boolean isDeepLink> = 0;
+
+        $r2 = new java.util.HashMap;
+
+        specialinvoke $r2.<java.util.HashMap: void <init>()>();
+
+        r0.<com.caremark.caremark.core.CaremarkApp: java.util.Map activityTaskMap> = $r2;
+
+        $r3 = staticinvoke <com.caremark.caremark.util.IceSessionManager: com.caremark.caremark.util.IceSessionManager getInstance()>();
+
+        <com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.util.IceSessionManager iceSessionManager> = $r3;
+
+        $r4 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+        <com.caremark.caremark.core.CaremarkApp: java.lang.Boolean isAppFirstLaunch> = $r4;
+
+        return;
+    }
+
+    public static com.caremark.caremark.core.image.ExternalStorageObserver access$000(com.caremark.caremark.core.CaremarkApp)
+    {
+        com.caremark.caremark.core.image.ExternalStorageObserver r1;
+        com.caremark.caremark.core.CaremarkApp $r0;
+
+        $r0 := @parameter0: com.caremark.caremark.core.CaremarkApp;
+
+        r1 = $r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.core.image.ExternalStorageObserver externalStorageObserver>;
+
+        return r1;
+    }
+
+    public static java.util.concurrent.atomic.AtomicBoolean access$100(com.caremark.caremark.core.CaremarkApp)
+    {
+        java.util.concurrent.atomic.AtomicBoolean r1;
+        com.caremark.caremark.core.CaremarkApp $r0;
+
+        $r0 := @parameter0: com.caremark.caremark.core.CaremarkApp;
+
+        r1 = $r0.<com.caremark.caremark.core.CaremarkApp: java.util.concurrent.atomic.AtomicBoolean isExternalStorageAvailable>;
+
+        return r1;
+    }
+
+    private void enableStrictModePolicy()
+    {
+        android.os.StrictMode$ThreadPolicy$Builder $r1;
+        android.os.StrictMode$VmPolicy$Builder $r3;
+        android.os.StrictMode$ThreadPolicy $r2;
+        android.os.StrictMode$VmPolicy $r4;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 = new android.os.StrictMode$ThreadPolicy$Builder;
+
+        specialinvoke $r1.<android.os.StrictMode$ThreadPolicy$Builder: void <init>()>();
+
+        $r1 = virtualinvoke $r1.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder detectAll()>();
+
+        $r1 = virtualinvoke $r1.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder penaltyDialog()>();
+
+        $r1 = virtualinvoke $r1.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy$Builder penaltyLog()>();
+
+        $r2 = virtualinvoke $r1.<android.os.StrictMode$ThreadPolicy$Builder: android.os.StrictMode$ThreadPolicy build()>();
+
+        staticinvoke <android.os.StrictMode: void setThreadPolicy(android.os.StrictMode$ThreadPolicy)>($r2);
+
+        $r3 = new android.os.StrictMode$VmPolicy$Builder;
+
+        specialinvoke $r3.<android.os.StrictMode$VmPolicy$Builder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<android.os.StrictMode$VmPolicy$Builder: android.os.StrictMode$VmPolicy$Builder detectLeakedSqlLiteObjects()>();
+
+        $r3 = virtualinvoke $r3.<android.os.StrictMode$VmPolicy$Builder: android.os.StrictMode$VmPolicy$Builder detectLeakedClosableObjects()>();
+
+        $r3 = virtualinvoke $r3.<android.os.StrictMode$VmPolicy$Builder: android.os.StrictMode$VmPolicy$Builder penaltyLog()>();
+
+        $r3 = virtualinvoke $r3.<android.os.StrictMode$VmPolicy$Builder: android.os.StrictMode$VmPolicy$Builder penaltyDeath()>();
+
+        $r4 = virtualinvoke $r3.<android.os.StrictMode$VmPolicy$Builder: android.os.StrictMode$VmPolicy build()>();
+
+        staticinvoke <android.os.StrictMode: void setVmPolicy(android.os.StrictMode$VmPolicy)>($r4);
+
+        return;
+    }
+
+    private void generateIconHashMap()
+    {
+        java.util.HashMap $r1;
+        java.lang.Integer $r2;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 = new java.util.HashMap;
+
+        specialinvoke $r1.<java.util.HashMap: void <init>()>();
+
+        r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapIconWithResourceId> = $r1;
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapIconWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131230842);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("easyRefill.png", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapIconWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131230865);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("mailService.png", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapIconWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131230858);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("account.png", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapIconWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131230861);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("viewRecentOrdersICE.png", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapIconWithResourceId>;
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("viewOrders.png", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapIconWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131230857);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("viewRxHistory.png", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapIconWithResourceId>;
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("refillPrescriptions.png", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapIconWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131230841);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("checkCost.png", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapIconWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131230882);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("pharmacyLocator.png", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapIconWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131230860);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("viewIDCard.png", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapIconWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131230859);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("currentPrescription.png", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapIconWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131230844);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("viewFinancialSummary.png", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapIconWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131230883);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("autoRefillICE.png", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapIconWithResourceId>;
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("refillPrescriptionsICE.png", $r2);
+
+        return;
+    }
+
+    private void generateViewHashMap()
+    {
+        java.util.HashMap $r1;
+        java.lang.Integer $r2, $r3, $r4;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 = new java.util.HashMap;
+
+        specialinvoke $r1.<java.util.HashMap: void <init>()>();
+
+        r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId> = $r1;
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131296974);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("easyRefill", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131297554);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("mailService", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131297429);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("account", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131298288);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("viewRecentOrdersICE", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("viewOrders", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131297735);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("viewRxHistory", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131297365);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("refillPrescriptions", $r3);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131296608);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("checkCost", $r4);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131297120);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("pharmacyLocator", $r4);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131297644);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("viewIDCard", $r4);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131296824);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("currentPrescription", $r4);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131298282);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("viewFinancialSummary", $r4);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("autoRefillICE", $r3);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("refillPrescriptionsICE", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131297384);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("billingAndShipping", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131297090);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("familyAccess", $r2);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2131231126);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("cvsApplogo", $r2);
+
+        return;
+    }
+
+    public static android.content.Context getAppContext()
+    {
+        android.content.Context r0;
+
+        r0 = <com.caremark.caremark.core.CaremarkApp: android.content.Context context>;
+
+        return r0;
+    }
+
+    private void initImageUtils()
+    {
+        android.app.ActivityManager $r2;
+        int $i0, $i1;
+        java.lang.Object $r1;
+        com.caremark.caremark.core.CaremarkApp$a $r3;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 = virtualinvoke r0.<android.app.Application: java.lang.Object getSystemService(java.lang.String)>("activity");
+
+        $r2 = (android.app.ActivityManager) $r1;
+
+        $i0 = virtualinvoke $r2.<android.app.ActivityManager: int getMemoryClass()>();
+
+        $i1 = $i0 * 1024;
+
+        $i1 = $i1 * 1024;
+
+        r0.<com.caremark.caremark.core.CaremarkApp: int memorySize> = $i1;
+
+        if $i0 > 30 goto label1;
+
+        $r3 = <com.caremark.caremark.core.CaremarkApp$a: com.caremark.caremark.core.CaremarkApp$a a>;
+
+        r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.core.CaremarkApp$a memoryClass> = $r3;
+
+        goto label3;
+
+     label1:
+        if $i0 < 40 goto label2;
+
+        $r3 = <com.caremark.caremark.core.CaremarkApp$a: com.caremark.caremark.core.CaremarkApp$a c>;
+
+        r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.core.CaremarkApp$a memoryClass> = $r3;
+
+        goto label3;
+
+     label2:
+        $r3 = <com.caremark.caremark.core.CaremarkApp$a: com.caremark.caremark.core.CaremarkApp$a b>;
+
+        r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.core.CaremarkApp$a memoryClass> = $r3;
+
+     label3:
+        $i0 = r0.<com.caremark.caremark.core.CaremarkApp: int memorySize>;
+
+        staticinvoke <c.c.a.d.c.g: void a(int)>($i0);
+
+        $r3 = r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.core.CaremarkApp$a memoryClass>;
+
+        staticinvoke <c.c.a.d.c.f: void a(com.caremark.caremark.core.CaremarkApp$a)>($r3);
+
+        return;
+    }
+
+    private void registerExternalStorageMonitor()
+    {
+        android.content.IntentFilter $r1;
+        com.caremark.caremark.core.image.ExternalStorageObserver $r2;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 = new android.content.IntentFilter;
+
+        specialinvoke $r1.<android.content.IntentFilter: void <init>(java.lang.String)>("android.intent.action.MEDIA_MOUNTED");
+
+        virtualinvoke $r1.<android.content.IntentFilter: void addDataScheme(java.lang.String)>("file");
+
+        virtualinvoke $r1.<android.content.IntentFilter: void addAction(java.lang.String)>("android.intent.action.MEDIA_UNMOUNTED");
+
+        virtualinvoke $r1.<android.content.IntentFilter: void addAction(java.lang.String)>("android.intent.action.MEDIA_EJECT");
+
+        virtualinvoke $r1.<android.content.IntentFilter: void addAction(java.lang.String)>("android.intent.action.MEDIA_SHARED");
+
+        virtualinvoke $r1.<android.content.IntentFilter: void addAction(java.lang.String)>("android.intent.action.UMS_CONNECTED");
+
+        virtualinvoke $r1.<android.content.IntentFilter: void addAction(java.lang.String)>("android.intent.action.UMS_DISCONNECTED");
+
+        $r2 = new com.caremark.caremark.core.image.ExternalStorageObserver;
+
+        specialinvoke $r2.<com.caremark.caremark.core.image.ExternalStorageObserver: void <init>()>();
+
+        r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.core.image.ExternalStorageObserver externalStorageObserver> = $r2;
+
+        $r2 = r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.core.image.ExternalStorageObserver externalStorageObserver>;
+
+        virtualinvoke r0.<android.app.Application: android.content.Intent registerReceiver(android.content.BroadcastReceiver,android.content.IntentFilter)>($r2, $r1);
+
+        return;
+    }
+
+    private void registerPinningFailureReportBroadcastReceiver()
+    {
+        android.content.IntentFilter $r2;
+        b.p.a.b $r3;
+        com.caremark.caremark.util.PinningFailureReportBroadcastReceiver $r1;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.util.PinningFailureReportBroadcastReceiver pinningFailureReportBroadcastReceiver>;
+
+        if $r1 != null goto label1;
+
+        $r1 = new com.caremark.caremark.util.PinningFailureReportBroadcastReceiver;
+
+        specialinvoke $r1.<com.caremark.caremark.util.PinningFailureReportBroadcastReceiver: void <init>()>();
+
+        r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.util.PinningFailureReportBroadcastReceiver pinningFailureReportBroadcastReceiver> = $r1;
+
+     label1:
+        $r3 = staticinvoke <b.p.a.b: b.p.a.b a(android.content.Context)>(r0);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.util.PinningFailureReportBroadcastReceiver pinningFailureReportBroadcastReceiver>;
+
+        $r2 = new android.content.IntentFilter;
+
+        specialinvoke $r2.<android.content.IntentFilter: void <init>(java.lang.String)>("com.datatheorem.android.trustkit.reporting.BackgroundReporter:REPORT_VALIDATION_EVENT");
+
+        virtualinvoke $r3.<b.p.a.b: void a(android.content.BroadcastReceiver,android.content.IntentFilter)>($r1, $r2);
+
+        return;
+    }
+
+    private void restartApplication()
+    {
+        android.content.Context $r2;
+        android.content.pm.PackageManager $r3;
+        android.content.Intent $r5;
+        java.lang.String $r4;
+        c.c.a.d.l $r1;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: c.c.a.d.l sessionManager>;
+
+        virtualinvoke $r1.<c.c.a.d.l: void a(boolean)>(0);
+
+        $r2 = virtualinvoke r0.<android.app.Application: android.content.Context getBaseContext()>();
+
+        $r3 = virtualinvoke $r2.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+        $r2 = virtualinvoke r0.<android.app.Application: android.content.Context getBaseContext()>();
+
+        $r4 = virtualinvoke $r2.<android.content.Context: java.lang.String getPackageName()>();
+
+        $r5 = virtualinvoke $r3.<android.content.pm.PackageManager: android.content.Intent getLaunchIntentForPackage(java.lang.String)>($r4);
+
+        virtualinvoke $r5.<android.content.Intent: android.content.Intent addFlags(int)>(67141632);
+
+        virtualinvoke r0.<android.app.Application: void startActivity(android.content.Intent)>($r5);
+
+        staticinvoke <java.lang.System: void exit(int)>(0);
+
+        return;
+    }
+
+    private void unRegisterPinningFailureReportBroadcastReceiver()
+    {
+        b.p.a.b $r2;
+        com.caremark.caremark.util.PinningFailureReportBroadcastReceiver $r1;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.util.PinningFailureReportBroadcastReceiver pinningFailureReportBroadcastReceiver>;
+
+        if $r1 == null goto label1;
+
+        $r2 = staticinvoke <b.p.a.b: b.p.a.b a(android.content.Context)>(r0);
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.util.PinningFailureReportBroadcastReceiver pinningFailureReportBroadcastReceiver>;
+
+        virtualinvoke $r2.<b.p.a.b: void a(android.content.BroadcastReceiver)>($r1);
+
+     label1:
+        return;
+    }
+
+    public void addTask(java.lang.Class, com.caremark.caremark.core.SafeAsyncTask)
+    {
+        com.caremark.caremark.core.SafeAsyncTask $r1;
+        java.util.ArrayList $r7;
+        java.util.List $r6;
+        java.util.Map $r2;
+        java.lang.Class $r3;
+        java.lang.Object $r5;
+        java.lang.String $r4;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r3 := @parameter0: java.lang.Class;
+
+        $r1 := @parameter1: com.caremark.caremark.core.SafeAsyncTask;
+
+        $r4 = virtualinvoke $r3.<java.lang.Class: java.lang.String getCanonicalName()>();
+
+        $r2 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.Map activityTaskMap>;
+
+        $r5 = interfaceinvoke $r2.<java.util.Map: java.lang.Object get(java.lang.Object)>($r4);
+
+        $r6 = (java.util.List) $r5;
+
+        if $r6 != null goto label1;
+
+        $r7 = new java.util.ArrayList;
+
+        $r6 = $r7;
+
+        specialinvoke $r7.<java.util.ArrayList: void <init>()>();
+
+        $r2 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.Map activityTaskMap>;
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+     label1:
+        interfaceinvoke $r6.<java.util.List: boolean add(java.lang.Object)>($r1);
+
+        return;
+    }
+
+    public void attach(android.app.Activity)
+    {
+        java.util.Iterator $r7;
+        com.caremark.caremark.core.SafeAsyncTask $r8;
+        java.util.List $r6;
+        java.util.Map $r2;
+        java.lang.Class $r3;
+        java.lang.Object $r5;
+        java.lang.String $r4;
+        android.app.Activity $r1;
+        com.caremark.caremark.core.CaremarkApp r0;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        $r2 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.Map activityTaskMap>;
+
+        $r3 = virtualinvoke $r1.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r4 = virtualinvoke $r3.<java.lang.Class: java.lang.String getCanonicalName()>();
+
+        $r5 = interfaceinvoke $r2.<java.util.Map: java.lang.Object get(java.lang.Object)>($r4);
+
+        $r6 = (java.util.List) $r5;
+
+        if $r6 == null goto label2;
+
+        $r7 = interfaceinvoke $r6.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r7.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r7.<java.util.Iterator: java.lang.Object next()>();
+
+        $r8 = (com.caremark.caremark.core.SafeAsyncTask) $r5;
+
+        virtualinvoke $r8.<com.caremark.caremark.core.SafeAsyncTask: void setActivity(android.app.Activity)>($r1);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public void attachBaseContext(android.content.Context)
+    {
+        android.content.Context $r1;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 := @parameter0: android.content.Context;
+
+        specialinvoke r0.<android.app.Application: void attachBaseContext(android.content.Context)>($r1);
+
+        staticinvoke <b.r.a: void d(android.content.Context)>(r0);
+
+        return;
+    }
+
+    public void closeIceSessionManager()
+    {
+        com.caremark.caremark.core.CaremarkApp r0;
+        com.caremark.caremark.util.IceSessionManager $r1;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 = <com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.util.IceSessionManager iceSessionManager>;
+
+        virtualinvoke $r1.<com.caremark.caremark.util.IceSessionManager: void setiCEtoken(java.lang.String)>("");
+
+        return;
+    }
+
+    public void detach(android.app.Activity)
+    {
+        java.util.Iterator $r7;
+        com.caremark.caremark.core.SafeAsyncTask $r8;
+        java.util.List $r6;
+        java.util.Map $r2;
+        java.lang.Class $r3;
+        java.lang.Object $r5;
+        java.lang.String $r4;
+        android.app.Activity $r1;
+        com.caremark.caremark.core.CaremarkApp r0;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 := @parameter0: android.app.Activity;
+
+        $r2 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.Map activityTaskMap>;
+
+        $r3 = virtualinvoke $r1.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r4 = virtualinvoke $r3.<java.lang.Class: java.lang.String getCanonicalName()>();
+
+        $r5 = interfaceinvoke $r2.<java.util.Map: java.lang.Object get(java.lang.Object)>($r4);
+
+        $r6 = (java.util.List) $r5;
+
+        if $r6 == null goto label2;
+
+        $r7 = interfaceinvoke $r6.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r7.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r7.<java.util.Iterator: java.lang.Object next()>();
+
+        $r8 = (com.caremark.caremark.core.SafeAsyncTask) $r5;
+
+        virtualinvoke $r8.<com.caremark.caremark.core.SafeAsyncTask: void setActivity(android.app.Activity)>(null);
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public com.caremark.caremark.util.IceSessionManager getIceSessionManager()
+    {
+        com.caremark.caremark.core.CaremarkApp r0;
+        com.caremark.caremark.util.IceSessionManager r1;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        r1 = <com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.util.IceSessionManager iceSessionManager>;
+
+        return r1;
+    }
+
+    public com.caremark.caremark.util.IceUtil getIceUtil()
+    {
+        com.caremark.caremark.util.IceUtil r1;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        r1 = r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.util.IceUtil iceUtil>;
+
+        return r1;
+    }
+
+    public java.util.HashMap getIconHashMap()
+    {
+        java.util.HashMap r1;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapIconWithResourceId>;
+
+        return r1;
+    }
+
+    public com.caremark.caremark.synclib.dao.ResponseData getResponseData()
+    {
+        com.caremark.caremark.synclib.dao.ResponseData $r2;
+        c.c.a.d.i $r1;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.d.i: com.caremark.caremark.synclib.dao.ResponseData H()>();
+
+        return $r2;
+    }
+
+    public c.c.a.d.l getSessionManager()
+    {
+        c.c.a.d.l r1;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        r1 = r0.<com.caremark.caremark.core.CaremarkApp: c.c.a.d.l sessionManager>;
+
+        return r1;
+    }
+
+    public java.util.HashMap getViewHashMap()
+    {
+        java.util.HashMap r1;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.HashMap mapViewWithResourceId>;
+
+        return r1;
+    }
+
+    public boolean isDeepLink()
+    {
+        com.caremark.caremark.core.CaremarkApp r0;
+        boolean z0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        z0 = r0.<com.caremark.caremark.core.CaremarkApp: boolean isDeepLink>;
+
+        return z0;
+    }
+
+    public boolean isExternalStorageAvailable()
+    {
+        java.util.concurrent.atomic.AtomicBoolean $r1;
+        com.caremark.caremark.core.CaremarkApp r0;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.concurrent.atomic.AtomicBoolean isExternalStorageAvailable>;
+
+        $z0 = virtualinvoke $r1.<java.util.concurrent.atomic.AtomicBoolean: boolean get()>();
+
+        return $z0;
+    }
+
+    public void onCreate()
+    {
+        android.content.Context $r2;
+        com.caremark.caremark.network.HttpDataClient $r23;
+        com.caremark.caremark.core.image.ExternalStorageObserver $r14;
+        java.util.concurrent.atomic.AtomicBoolean $r16;
+        c.c.a.d.a.c $r22;
+        com.caremark.caremark.util.IceUtil $r1;
+        c.c.a.d.c.d $r17;
+        c.c.a.d.d $r10;
+        c.c.a.d.b $r15;
+        int $i0;
+        c.c.a.j.b $r20;
+        c.c.a.d.e $r9;
+        java.lang.String $r11, $r27;
+        c.c.a.d.l $r21;
+        c.c.a.d.i $r6;
+        java.lang.Void[] $r13;
+        com.caremark.caremark.core.CaremarkApp r0;
+        boolean $z0;
+        com.google.firebase.crashlytics.FirebaseCrashlytics $r3;
+        java.util.UUID $r25;
+        com.caremark.caremark.core.async.AdvertisingIdAsyncTask $r12;
+        c.c.a.d.b.a.d.d $r7;
+        com.caremark.caremark.util.DeviceUuidFactory $r24;
+        c.c.a.d.b.a.d.c $r5;
+        android.graphics.Bitmap $r19;
+        c.c.a.d.b.a.d.b $r8;
+        java.lang.StringBuilder $r26;
+        c.c.a.d.b.b.a.a $r4;
+        android.content.res.Resources $r18;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $z0 = r0.<com.caremark.caremark.core.CaremarkApp: boolean DEVELOPER_MODE>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.caremark.caremark.core.CaremarkApp: void enableStrictModePolicy()>();
+
+     label1:
+        specialinvoke r0.<android.app.Application: void onCreate()>();
+
+        $r1 = staticinvoke <com.caremark.caremark.util.IceUtil: com.caremark.caremark.util.IceUtil getInstance(com.caremark.caremark.core.CaremarkApp)>(r0);
+
+        r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.util.IceUtil iceUtil> = $r1;
+
+        $r2 = virtualinvoke r0.<android.app.Application: android.content.Context getApplicationContext()>();
+
+        <com.caremark.caremark.core.CaremarkApp: android.content.Context context> = $r2;
+
+        $r3 = staticinvoke <com.google.firebase.crashlytics.FirebaseCrashlytics: com.google.firebase.crashlytics.FirebaseCrashlytics getInstance()>();
+
+        virtualinvoke $r3.<com.google.firebase.crashlytics.FirebaseCrashlytics: void setCrashlyticsCollectionEnabled(boolean)>(1);
+
+        staticinvoke <com.caremark.caremark.util.ForeseeHelper: void initialize(android.app.Application)>(r0);
+
+        staticinvoke <c.f.a.a.b: c.f.a.a.b b(android.content.Context)>(r0);
+
+        specialinvoke r0.<com.caremark.caremark.core.CaremarkApp: void registerPinningFailureReportBroadcastReceiver()>();
+
+        $r4 = staticinvoke <c.c.a.d.b.b.a.a: c.c.a.d.b.b.a.a b()>();
+
+        virtualinvoke $r4.<c.c.a.d.b.b.a.a: void d(android.content.Context)>(r0);
+
+        $r5 = staticinvoke <c.c.a.d.b.a.d.c: c.c.a.d.b.a.d.c a()>();
+
+        $r2 = virtualinvoke r0.<android.app.Application: android.content.Context getApplicationContext()>();
+
+        virtualinvoke $r5.<c.c.a.d.b.a.d.c: void a(android.content.Context)>($r2);
+
+        $r6 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $r2 = virtualinvoke r0.<android.app.Application: android.content.Context getApplicationContext()>();
+
+        virtualinvoke $r6.<c.c.a.d.i: void b(android.content.Context)>($r2);
+
+        $r7 = staticinvoke <c.c.a.d.b.a.d.d: c.c.a.d.b.a.d.d d()>();
+
+        $r2 = virtualinvoke r0.<android.app.Application: android.content.Context getApplicationContext()>();
+
+        virtualinvoke $r7.<c.c.a.d.b.a.d.d: void a(android.content.Context)>($r2);
+
+        $r8 = staticinvoke <c.c.a.d.b.a.d.b: c.c.a.d.b.a.d.b b()>();
+
+        $r2 = virtualinvoke r0.<android.app.Application: android.content.Context getApplicationContext()>();
+
+        virtualinvoke $r8.<c.c.a.d.b.a.d.b: void d(android.content.Context)>($r2);
+
+        $r9 = staticinvoke <c.c.a.d.e: c.c.a.d.e a()>();
+
+        $r2 = virtualinvoke r0.<android.app.Application: android.content.Context getApplicationContext()>();
+
+        virtualinvoke $r9.<c.c.a.d.e: void a(android.content.Context)>($r2);
+
+        $r10 = staticinvoke <c.c.a.d.d: c.c.a.d.d w()>();
+
+        $r2 = virtualinvoke r0.<android.app.Application: android.content.Context getApplicationContext()>();
+
+        virtualinvoke $r10.<c.c.a.d.d: void a(android.content.Context)>($r2);
+
+        specialinvoke r0.<com.caremark.caremark.core.CaremarkApp: void initImageUtils()>();
+
+        specialinvoke r0.<com.caremark.caremark.core.CaremarkApp: void registerExternalStorageMonitor()>();
+
+        $r6 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $r11 = virtualinvoke $r6.<c.c.a.d.i: java.lang.String a()>();
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r11);
+
+        if $z0 == 0 goto label2;
+
+        $r12 = new com.caremark.caremark.core.async.AdvertisingIdAsyncTask;
+
+        specialinvoke $r12.<com.caremark.caremark.core.async.AdvertisingIdAsyncTask: void <init>(android.content.Context)>(r0);
+
+        $r13 = newarray (java.lang.Void)[0];
+
+        virtualinvoke $r12.<android.os.AsyncTask: android.os.AsyncTask execute(java.lang.Object[])>($r13);
+
+     label2:
+        $r14 = r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.core.image.ExternalStorageObserver externalStorageObserver>;
+
+        $r15 = new c.c.a.d.b;
+
+        specialinvoke $r15.<c.c.a.d.b: void <init>(com.caremark.caremark.core.CaremarkApp)>(r0);
+
+        virtualinvoke $r14.<com.caremark.caremark.core.image.ExternalStorageObserver: void addListener(com.caremark.caremark.core.image.ExternalStorageObserver$a)>($r15);
+
+        $r16 = new java.util.concurrent.atomic.AtomicBoolean;
+
+        $r14 = r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.core.image.ExternalStorageObserver externalStorageObserver>;
+
+        $z0 = virtualinvoke $r14.<com.caremark.caremark.core.image.ExternalStorageObserver: boolean isStorageAvailable()>();
+
+        specialinvoke $r16.<java.util.concurrent.atomic.AtomicBoolean: void <init>(boolean)>($z0);
+
+        r0.<com.caremark.caremark.core.CaremarkApp: java.util.concurrent.atomic.AtomicBoolean isExternalStorageAvailable> = $r16;
+
+        $r17 = staticinvoke <c.c.a.d.c.d: c.c.a.d.c.d b()>();
+
+        $r16 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.concurrent.atomic.AtomicBoolean isExternalStorageAvailable>;
+
+        $r18 = virtualinvoke r0.<android.app.Application: android.content.res.Resources getResources()>();
+
+        $r19 = staticinvoke <android.graphics.BitmapFactory: android.graphics.Bitmap decodeResource(android.content.res.Resources,int)>($r18, 2131231049);
+
+        virtualinvoke $r17.<c.c.a.d.c.d: void a(java.util.concurrent.atomic.AtomicBoolean,android.graphics.Bitmap)>($r16, $r19);
+
+        $r20 = new c.c.a.j.b;
+
+        specialinvoke $r20.<c.c.a.j.b: void <init>()>();
+
+        r0.<com.caremark.caremark.core.CaremarkApp: c.c.a.j.b connectionObserver> = $r20;
+
+        $r20 = r0.<com.caremark.caremark.core.CaremarkApp: c.c.a.j.b connectionObserver>;
+
+        $r2 = virtualinvoke r0.<android.app.Application: android.content.Context getApplicationContext()>();
+
+        virtualinvoke $r20.<c.c.a.j.b: void a(android.content.Context)>($r2);
+
+        $r21 = new c.c.a.d.l;
+
+        $r2 = virtualinvoke r0.<android.app.Application: android.content.Context getApplicationContext()>();
+
+        specialinvoke $r21.<c.c.a.d.l: void <init>(android.content.Context)>($r2);
+
+        r0.<com.caremark.caremark.core.CaremarkApp: c.c.a.d.l sessionManager> = $r21;
+
+        $r22 = staticinvoke <c.c.a.d.a.c: c.c.a.d.a.c a()>();
+
+        $r2 = virtualinvoke r0.<android.app.Application: android.content.Context getApplicationContext()>();
+
+        virtualinvoke $r22.<c.c.a.d.a.c: void a(android.content.Context)>($r2);
+
+        $r23 = staticinvoke <com.caremark.caremark.network.HttpDataClient: com.caremark.caremark.network.HttpDataClient getInstance()>();
+
+        virtualinvoke $r23.<com.caremark.caremark.network.HttpDataClient: void init(android.content.Context)>(r0);
+
+        $r9 = staticinvoke <c.c.a.d.e: c.c.a.d.e a()>();
+
+        virtualinvoke $r9.<c.c.a.d.e: void a(android.content.Context)>(r0);
+
+        $r2 = virtualinvoke r0.<android.app.Application: android.content.Context getApplicationContext()>();
+
+        staticinvoke <android.webkit.CookieSyncManager: android.webkit.CookieSyncManager createInstance(android.content.Context)>($r2);
+
+        $r21 = r0.<com.caremark.caremark.core.CaremarkApp: c.c.a.d.l sessionManager>;
+
+        virtualinvoke $r21.<c.c.a.d.l: void a(boolean)>(0);
+
+        $r6 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $z0 = virtualinvoke $r6.<c.c.a.d.i: boolean ta()>();
+
+        if $z0 != 0 goto label3;
+
+        $r6 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        virtualinvoke $r6.<c.c.a.d.i: void I(java.lang.String)>("");
+
+     label3:
+        $r24 = new com.caremark.caremark.util.DeviceUuidFactory;
+
+        specialinvoke $r24.<com.caremark.caremark.util.DeviceUuidFactory: void <init>(android.content.Context)>(r0);
+
+        $r25 = virtualinvoke $r24.<com.caremark.caremark.util.DeviceUuidFactory: java.util.UUID getDeviceUuid()>();
+
+        $r11 = virtualinvoke $r25.<java.util.UUID: java.lang.String toString()>();
+
+        virtualinvoke $r11.<java.lang.String: java.lang.String replaceAll(java.lang.String,java.lang.String)>("-", "");
+
+        $r6 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $i0 = virtualinvoke $r6.<c.c.a.d.i: int b()>();
+
+        staticinvoke <com.caremark.caremark.util.ForeseeHelper: void resetSurveyIfNeeded(int)>($i0);
+
+        specialinvoke r0.<com.caremark.caremark.core.CaremarkApp: void generateIconHashMap()>();
+
+        specialinvoke r0.<com.caremark.caremark.core.CaremarkApp: void generateViewHashMap()>();
+
+        $z0 = staticinvoke <com.caremark.caremark.util.PermissionUtils: boolean hasPermissionRevoked(android.content.Context)>(r0);
+
+        if $z0 == 0 goto label4;
+
+        $r11 = <com.caremark.caremark.core.CaremarkApp: java.lang.String TAG>;
+
+        $r26 = new java.lang.StringBuilder;
+
+        specialinvoke $r26.<java.lang.StringBuilder: void <init>()>();
+
+        $r27 = <com.caremark.caremark.core.CaremarkApp: java.lang.String TAG>;
+
+        virtualinvoke $r26.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r27);
+
+        virtualinvoke $r26.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" : Permission Revoked so restarting application");
+
+        $r27 = virtualinvoke $r26.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r11, $r27);
+
+        specialinvoke r0.<com.caremark.caremark.core.CaremarkApp: void restartApplication()>();
+
+     label4:
+        return;
+    }
+
+    public void onTerminate()
+    {
+        android.content.Context $r1;
+        c.c.a.j.b $r3;
+        android.content.Intent $r2;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r2 = new android.content.Intent;
+
+        $r1 = staticinvoke <com.caremark.caremark.core.CaremarkApp: android.content.Context getAppContext()>();
+
+        specialinvoke $r2.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r1, class "Lcom/caremark/caremark/network/RefreshService;");
+
+        virtualinvoke r0.<android.app.Application: boolean stopService(android.content.Intent)>($r2);
+
+        $r3 = r0.<com.caremark.caremark.core.CaremarkApp: c.c.a.j.b connectionObserver>;
+
+        virtualinvoke $r3.<c.c.a.j.b: void b()>();
+
+        r0.<com.caremark.caremark.core.CaremarkApp: c.c.a.j.b connectionObserver> = null;
+
+        r0.<com.caremark.caremark.core.CaremarkApp: c.c.a.d.l sessionManager> = null;
+
+        specialinvoke r0.<com.caremark.caremark.core.CaremarkApp: void unRegisterPinningFailureReportBroadcastReceiver()>();
+
+        specialinvoke r0.<android.app.Application: void onTerminate()>();
+
+        return;
+    }
+
+    public void registerConnectionHandler(android.os.Handler)
+    {
+        c.c.a.j.b $r2;
+        com.caremark.caremark.core.CaremarkApp r0;
+        android.os.Handler $r1;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 := @parameter0: android.os.Handler;
+
+        $r2 = r0.<com.caremark.caremark.core.CaremarkApp: c.c.a.j.b connectionObserver>;
+
+        virtualinvoke $r2.<c.c.a.j.b: void a(android.os.Handler)>($r1);
+
+        return;
+    }
+
+    public void removeTask(com.caremark.caremark.core.SafeAsyncTask)
+    {
+        java.util.Map$Entry $r6;
+        java.util.Iterator $r4;
+        com.caremark.caremark.core.SafeAsyncTask $r1;
+        java.util.Set $r3;
+        java.util.List $r7;
+        java.util.Map $r2;
+        int $i0, $i1;
+        java.lang.Object $r5;
+        com.caremark.caremark.core.CaremarkApp r0;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 := @parameter0: com.caremark.caremark.core.SafeAsyncTask;
+
+        $r2 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.Map activityTaskMap>;
+
+        $r3 = interfaceinvoke $r2.<java.util.Map: java.util.Set entrySet()>();
+
+        $r4 = interfaceinvoke $r3.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label5;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (java.util.Map$Entry) $r5;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r7 = (java.util.List) $r5;
+
+        $i0 = 0;
+
+     label2:
+        $i1 = interfaceinvoke $r7.<java.util.List: int size()>();
+
+        if $i0 >= $i1 goto label4;
+
+        $r5 = interfaceinvoke $r7.<java.util.List: java.lang.Object get(int)>($i0);
+
+        if $r5 != $r1 goto label3;
+
+        interfaceinvoke $r7.<java.util.List: java.lang.Object remove(int)>($i0);
+
+        goto label4;
+
+     label3:
+        $i0 = $i0 + 1;
+
+        goto label2;
+
+     label4:
+        $i0 = interfaceinvoke $r7.<java.util.List: int size()>();
+
+        if $i0 != 0 goto label1;
+
+        $r2 = r0.<com.caremark.caremark.core.CaremarkApp: java.util.Map activityTaskMap>;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object remove(java.lang.Object)>($r5);
+
+     label5:
+        return;
+    }
+
+    public void setDeepLink(boolean)
+    {
+        com.caremark.caremark.core.CaremarkApp r0;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $z0 := @parameter0: boolean;
+
+        r0.<com.caremark.caremark.core.CaremarkApp: boolean isDeepLink> = $z0;
+
+        return;
+    }
+
+    public void setResponseData(com.caremark.caremark.synclib.dao.ResponseData)
+    {
+        com.caremark.caremark.synclib.dao.ResponseData $r1;
+        c.c.a.d.i $r2;
+        com.caremark.caremark.core.CaremarkApp r0;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 := @parameter0: com.caremark.caremark.synclib.dao.ResponseData;
+
+        r0.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.synclib.dao.ResponseData responseData> = $r1;
+
+        $r2 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        virtualinvoke $r2.<c.c.a.d.i: void a(com.caremark.caremark.synclib.dao.ResponseData)>($r1);
+
+        return;
+    }
+
+    public void unregisterConnectionHandler(android.os.Handler)
+    {
+        c.c.a.j.b $r2;
+        com.caremark.caremark.core.CaremarkApp r0;
+        android.os.Handler $r1;
+
+        r0 := @this: com.caremark.caremark.core.CaremarkApp;
+
+        $r1 := @parameter0: android.os.Handler;
+
+        $r2 = r0.<com.caremark.caremark.core.CaremarkApp: c.c.a.j.b connectionObserver>;
+
+        virtualinvoke $r2.<c.c.a.j.b: void b(android.os.Handler)>($r1);
+
+        return;
+    }
+}

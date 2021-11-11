@@ -1,0 +1,210 @@
+public class org.codehaus.jackson.format.InputAccessor$Std extends java.lang.Object implements org.codehaus.jackson.format.InputAccessor
+{
+    public final byte[] _buffer;
+    public int _bufferedAmount;
+    public final java.io.InputStream _in;
+    public int _ptr;
+
+    public void <init>(java.io.InputStream, byte[])
+    {
+        byte[] $r1;
+        org.codehaus.jackson.format.InputAccessor$Std r0;
+        java.io.InputStream $r2;
+
+        r0 := @this: org.codehaus.jackson.format.InputAccessor$Std;
+
+        $r2 := @parameter0: java.io.InputStream;
+
+        $r1 := @parameter1: byte[];
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<org.codehaus.jackson.format.InputAccessor$Std: java.io.InputStream _in> = $r2;
+
+        r0.<org.codehaus.jackson.format.InputAccessor$Std: byte[] _buffer> = $r1;
+
+        r0.<org.codehaus.jackson.format.InputAccessor$Std: int _bufferedAmount> = 0;
+
+        return;
+    }
+
+    public void <init>(byte[])
+    {
+        int $i0;
+        byte[] $r1;
+        org.codehaus.jackson.format.InputAccessor$Std r0;
+
+        r0 := @this: org.codehaus.jackson.format.InputAccessor$Std;
+
+        $r1 := @parameter0: byte[];
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<org.codehaus.jackson.format.InputAccessor$Std: java.io.InputStream _in> = null;
+
+        r0.<org.codehaus.jackson.format.InputAccessor$Std: byte[] _buffer> = $r1;
+
+        $i0 = lengthof $r1;
+
+        r0.<org.codehaus.jackson.format.InputAccessor$Std: int _bufferedAmount> = $i0;
+
+        return;
+    }
+
+    public org.codehaus.jackson.format.DataFormatMatcher createMatcher(org.codehaus.jackson.JsonFactory, org.codehaus.jackson.format.MatchStrength)
+    {
+        byte[] $r4;
+        org.codehaus.jackson.format.MatchStrength $r2;
+        int $i0;
+        org.codehaus.jackson.format.DataFormatMatcher $r5;
+        org.codehaus.jackson.format.InputAccessor$Std r0;
+        org.codehaus.jackson.JsonFactory $r1;
+        java.io.InputStream $r3;
+
+        r0 := @this: org.codehaus.jackson.format.InputAccessor$Std;
+
+        $r1 := @parameter0: org.codehaus.jackson.JsonFactory;
+
+        $r2 := @parameter1: org.codehaus.jackson.format.MatchStrength;
+
+        $r5 = new org.codehaus.jackson.format.DataFormatMatcher;
+
+        $r3 = r0.<org.codehaus.jackson.format.InputAccessor$Std: java.io.InputStream _in>;
+
+        $r4 = r0.<org.codehaus.jackson.format.InputAccessor$Std: byte[] _buffer>;
+
+        $i0 = r0.<org.codehaus.jackson.format.InputAccessor$Std: int _bufferedAmount>;
+
+        specialinvoke $r5.<org.codehaus.jackson.format.DataFormatMatcher: void <init>(java.io.InputStream,byte[],int,org.codehaus.jackson.JsonFactory,org.codehaus.jackson.format.MatchStrength)>($r3, $r4, $i0, $r1, $r2);
+
+        return $r5;
+    }
+
+    public boolean hasMoreBytes()
+    {
+        byte[] $r2;
+        int $i0, $i1;
+        org.codehaus.jackson.format.InputAccessor$Std r0;
+        java.io.InputStream $r1;
+
+        r0 := @this: org.codehaus.jackson.format.InputAccessor$Std;
+
+        $i0 = r0.<org.codehaus.jackson.format.InputAccessor$Std: int _ptr>;
+
+        $i1 = r0.<org.codehaus.jackson.format.InputAccessor$Std: int _bufferedAmount>;
+
+        if $i0 >= $i1 goto label1;
+
+        return 1;
+
+     label1:
+        $r2 = r0.<org.codehaus.jackson.format.InputAccessor$Std: byte[] _buffer>;
+
+        $i1 = lengthof $r2;
+
+        $i1 = $i1 - $i0;
+
+        if $i1 >= 1 goto label2;
+
+        return 0;
+
+     label2:
+        $r1 = r0.<org.codehaus.jackson.format.InputAccessor$Std: java.io.InputStream _in>;
+
+        $i0 = virtualinvoke $r1.<java.io.InputStream: int read(byte[],int,int)>($r2, $i0, $i1);
+
+        if $i0 > 0 goto label3;
+
+        return 0;
+
+     label3:
+        $i1 = r0.<org.codehaus.jackson.format.InputAccessor$Std: int _bufferedAmount>;
+
+        $i0 = $i1 + $i0;
+
+        r0.<org.codehaus.jackson.format.InputAccessor$Std: int _bufferedAmount> = $i0;
+
+        return 1;
+    }
+
+    public byte nextByte()
+    {
+        byte[] $r3;
+        org.codehaus.jackson.format.InputAccessor$Std r0;
+        java.io.EOFException $r1;
+        byte $b2;
+        int $i0, $i1;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r4;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.format.InputAccessor$Std;
+
+        $i0 = r0.<org.codehaus.jackson.format.InputAccessor$Std: int _ptr>;
+
+        $i1 = r0.<org.codehaus.jackson.format.InputAccessor$Std: int _bufferedAmount>;
+
+        $i1 = neg $i1;
+
+        if $i0 <= $i1 goto label2;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.format.InputAccessor$Std: boolean hasMoreBytes()>();
+
+        if $z0 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        $r1 = new java.io.EOFException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not read more than ");
+
+        $i0 = r0.<org.codehaus.jackson.format.InputAccessor$Std: int _ptr>;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" bytes (max buffer size: ");
+
+        $r3 = r0.<org.codehaus.jackson.format.InputAccessor$Std: byte[] _buffer>;
+
+        $i0 = lengthof $r3;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r1.<java.io.EOFException: void <init>(java.lang.String)>($r4);
+
+        throw $r1;
+
+     label2:
+        $r3 = r0.<org.codehaus.jackson.format.InputAccessor$Std: byte[] _buffer>;
+
+        $i0 = r0.<org.codehaus.jackson.format.InputAccessor$Std: int _ptr>;
+
+        $i1 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.format.InputAccessor$Std: int _ptr> = $i1;
+
+        $b2 = $r3[$i0];
+
+        return $b2;
+    }
+
+    public void reset()
+    {
+        org.codehaus.jackson.format.InputAccessor$Std r0;
+
+        r0 := @this: org.codehaus.jackson.format.InputAccessor$Std;
+
+        r0.<org.codehaus.jackson.format.InputAccessor$Std: int _ptr> = 0;
+
+        return;
+    }
+}

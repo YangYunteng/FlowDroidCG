@@ -1,0 +1,245 @@
+public final class androidx.lifecycle.Validator extends java.lang.Object
+{
+    public final javax.'annotation'.processing.ProcessingEnvironment processingEnv;
+
+    public void <init>(javax.'annotation'.processing.ProcessingEnvironment)
+    {
+        javax.'annotation'.processing.ProcessingEnvironment $r1;
+        androidx.lifecycle.Validator r0;
+
+        r0 := @this: androidx.lifecycle.Validator;
+
+        $r1 := @parameter0: javax.'annotation'.processing.ProcessingEnvironment;
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r1, "processingEnv");
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<androidx.lifecycle.Validator: javax.'annotation'.processing.ProcessingEnvironment processingEnv> = $r1;
+
+        return;
+    }
+
+    public final javax.'annotation'.processing.ProcessingEnvironment getProcessingEnv()
+    {
+        javax.'annotation'.processing.ProcessingEnvironment r1;
+        androidx.lifecycle.Validator r0;
+
+        r0 := @this: androidx.lifecycle.Validator;
+
+        r1 = r0.<androidx.lifecycle.Validator: javax.'annotation'.processing.ProcessingEnvironment processingEnv>;
+
+        return r1;
+    }
+
+    public final void printErrorMessage(java.lang.CharSequence, javax.lang.model.element.Element)
+    {
+        javax.tools.Diagnostic$Kind $r3;
+        java.lang.CharSequence $r1;
+        androidx.lifecycle.Validator r0;
+        javax.'annotation'.processing.ProcessingEnvironment $r5;
+        javax.lang.model.element.Element $r2;
+        javax.'annotation'.processing.Messager $r4;
+
+        r0 := @this: androidx.lifecycle.Validator;
+
+        $r1 := @parameter0: java.lang.CharSequence;
+
+        $r2 := @parameter1: javax.lang.model.element.Element;
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r1, "msg");
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r2, "elem");
+
+        $r5 = r0.<androidx.lifecycle.Validator: javax.'annotation'.processing.ProcessingEnvironment processingEnv>;
+
+        $r4 = interfaceinvoke $r5.<javax.'annotation'.processing.ProcessingEnvironment: javax.'annotation'.processing.Messager getMessager()>();
+
+        $r3 = <javax.tools.Diagnostic$Kind: javax.tools.Diagnostic$Kind ERROR>;
+
+        interfaceinvoke $r4.<javax.'annotation'.processing.Messager: void printMessage(javax.tools.Diagnostic$Kind,java.lang.CharSequence,javax.lang.model.element.Element)>($r3, $r1, $r2);
+
+        return;
+    }
+
+    public final boolean validateClass(javax.lang.model.element.Element)
+    {
+        javax.lang.model.element.Modifier $r1;
+        androidx.lifecycle.Validator r0;
+        java.util.Set $r3;
+        javax.lang.model.element.Element $r2;
+        boolean $z0;
+
+        r0 := @this: androidx.lifecycle.Validator;
+
+        $r2 := @parameter0: javax.lang.model.element.Element;
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r2, "classElement");
+
+        $z0 = staticinvoke <com.google.auto.common.MoreElements: boolean isType(javax.lang.model.element.Element)>($r2);
+
+        if $z0 != 0 goto label1;
+
+        virtualinvoke r0.<androidx.lifecycle.Validator: void printErrorMessage(java.lang.CharSequence,javax.lang.model.element.Element)>("Parent of OnLifecycleEvent should be a class or interface", $r2);
+
+        return 0;
+
+     label1:
+        $r3 = interfaceinvoke $r2.<javax.lang.model.element.Element: java.util.Set getModifiers()>();
+
+        $r1 = <javax.lang.model.element.Modifier: javax.lang.model.element.Modifier PRIVATE>;
+
+        $z0 = interfaceinvoke $r3.<java.util.Set: boolean contains(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label2;
+
+        virtualinvoke r0.<androidx.lifecycle.Validator: void printErrorMessage(java.lang.CharSequence,javax.lang.model.element.Element)>("class containing OnLifecycleEvent methods can not be private", $r2);
+
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    public final boolean validateMethod(javax.lang.model.element.ExecutableElement, androidx.lifecycle.Lifecycle$Event)
+    {
+        javax.lang.model.element.Modifier $r4;
+        androidx.lifecycle.Validator r0;
+        javax.lang.model.element.ExecutableElement $r1;
+        javax.lang.model.element.VariableElement $r9;
+        java.util.Set $r3;
+        javax.lang.model.element.Element $r5;
+        androidx.lifecycle.Lifecycle$Event $r2, $r7;
+        java.util.List $r6;
+        int $i0;
+        java.lang.Object $r8;
+        boolean $z0;
+
+        r0 := @this: androidx.lifecycle.Validator;
+
+        $r1 := @parameter0: javax.lang.model.element.ExecutableElement;
+
+        $r2 := @parameter1: androidx.lifecycle.Lifecycle$Event;
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r1, "method");
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r2, "event");
+
+        $r3 = interfaceinvoke $r1.<javax.lang.model.element.ExecutableElement: java.util.Set getModifiers()>();
+
+        $r4 = <javax.lang.model.element.Modifier: javax.lang.model.element.Modifier PRIVATE>;
+
+        $z0 = interfaceinvoke $r3.<java.util.Set: boolean contains(java.lang.Object)>($r4);
+
+        if $z0 == 0 goto label1;
+
+        $r5 = (javax.lang.model.element.Element) $r1;
+
+        virtualinvoke r0.<androidx.lifecycle.Validator: void printErrorMessage(java.lang.CharSequence,javax.lang.model.element.Element)>("method marked with OnLifecycleEvent annotation can not be private", $r5);
+
+        return 0;
+
+     label1:
+        $r6 = interfaceinvoke $r1.<javax.lang.model.element.ExecutableElement: java.util.List getParameters()>();
+
+        $i0 = interfaceinvoke $r6.<java.util.List: int size()>();
+
+        if $i0 <= 2 goto label2;
+
+        $r5 = (javax.lang.model.element.Element) $r1;
+
+        virtualinvoke r0.<androidx.lifecycle.Validator: void printErrorMessage(java.lang.CharSequence,javax.lang.model.element.Element)>("callback method cannot have more than 2 parameters", $r5);
+
+        return 0;
+
+     label2:
+        $i0 = interfaceinvoke $r6.<java.util.List: int size()>();
+
+        if $i0 != 2 goto label3;
+
+        $r7 = <androidx.lifecycle.Lifecycle$Event: androidx.lifecycle.Lifecycle$Event ON_ANY>;
+
+        if $r2 == $r7 goto label3;
+
+        $r5 = (javax.lang.model.element.Element) $r1;
+
+        virtualinvoke r0.<androidx.lifecycle.Validator: void printErrorMessage(java.lang.CharSequence,javax.lang.model.element.Element)>("only callback annotated with ON_ANY can have 2 parameters", $r5);
+
+        return 0;
+
+     label3:
+        $i0 = interfaceinvoke $r6.<java.util.List: int size()>();
+
+        if $i0 != 2 goto label4;
+
+        $r8 = interfaceinvoke $r6.<java.util.List: java.lang.Object get(int)>(1);
+
+        staticinvoke <i.f.b.i: void a(java.lang.Object,java.lang.String)>($r8, "params[1]");
+
+        $r9 = (javax.lang.model.element.VariableElement) $r8;
+
+        $z0 = virtualinvoke r0.<androidx.lifecycle.Validator: boolean validateParam(javax.lang.model.element.VariableElement,java.lang.Class,java.lang.String)>($r9, class "Landroidx/lifecycle/Lifecycle$Event;", "2nd argument of a callback method must be Lifecycle.Event and represent the current event");
+
+        if $z0 != 0 goto label4;
+
+        return 0;
+
+     label4:
+        $i0 = interfaceinvoke $r6.<java.util.List: int size()>();
+
+        if $i0 <= 0 goto label5;
+
+        $r8 = interfaceinvoke $r6.<java.util.List: java.lang.Object get(int)>(0);
+
+        staticinvoke <i.f.b.i: void a(java.lang.Object,java.lang.String)>($r8, "params[0]");
+
+        $r9 = (javax.lang.model.element.VariableElement) $r8;
+
+        $z0 = virtualinvoke r0.<androidx.lifecycle.Validator: boolean validateParam(javax.lang.model.element.VariableElement,java.lang.Class,java.lang.String)>($r9, class "Landroidx/lifecycle/LifecycleOwner;", "1st argument of a callback method must be a LifecycleOwner which represents the source of the event");
+
+        return $z0;
+
+     label5:
+        return 1;
+    }
+
+    public final boolean validateParam(javax.lang.model.element.VariableElement, java.lang.Class, java.lang.String)
+    {
+        javax.lang.model.type.TypeMirror $r4;
+        androidx.lifecycle.Validator r0;
+        javax.lang.model.element.VariableElement $r2;
+        java.lang.Class $r3;
+        javax.lang.model.element.Element $r5;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: androidx.lifecycle.Validator;
+
+        $r2 := @parameter0: javax.lang.model.element.VariableElement;
+
+        $r3 := @parameter1: java.lang.Class;
+
+        $r1 := @parameter2: java.lang.String;
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r2, "param");
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r3, "expectedType");
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r1, "errorMsg");
+
+        $r4 = interfaceinvoke $r2.<javax.lang.model.element.VariableElement: javax.lang.model.type.TypeMirror asType()>();
+
+        $z0 = staticinvoke <com.google.auto.common.MoreTypes: boolean isTypeOf(java.lang.Class,javax.lang.model.type.TypeMirror)>($r3, $r4);
+
+        if $z0 != 0 goto label1;
+
+        $r5 = (javax.lang.model.element.Element) $r2;
+
+        virtualinvoke r0.<androidx.lifecycle.Validator: void printErrorMessage(java.lang.CharSequence,javax.lang.model.element.Element)>($r1, $r5);
+
+        return 0;
+
+     label1:
+        return 1;
+    }
+}

@@ -1,0 +1,789 @@
+public class com.google.android.gms.gcm.GcmNetworkManager extends java.lang.Object
+{
+    public static final int RESULT_FAILURE;
+    public static final int RESULT_RESCHEDULE;
+    public static final int RESULT_SUCCESS;
+    public static com.google.android.gms.gcm.GcmNetworkManager zzh;
+    public final android.content.Context zzi;
+    public final java.util.Map zzj;
+
+    public void <init>(android.content.Context)
+    {
+        com.google.android.gms.gcm.GcmNetworkManager r0;
+        android.content.Context $r1;
+        b.f.b $r2;
+
+        r0 := @this: com.google.android.gms.gcm.GcmNetworkManager;
+
+        $r1 := @parameter0: android.content.Context;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r2 = new b.f.b;
+
+        specialinvoke $r2.<b.f.b: void <init>()>();
+
+        r0.<com.google.android.gms.gcm.GcmNetworkManager: java.util.Map zzj> = $r2;
+
+        r0.<com.google.android.gms.gcm.GcmNetworkManager: android.content.Context zzi> = $r1;
+
+        return;
+    }
+
+    public static com.google.android.gms.gcm.GcmNetworkManager getInstance(android.content.Context)
+    {
+        com.google.android.gms.gcm.GcmNetworkManager $r1;
+        java.lang.Throwable $r2;
+        android.content.Context $r0;
+
+        $r0 := @parameter0: android.content.Context;
+
+        entermonitor class "Lcom/google/android/gms/gcm/GcmNetworkManager;";
+
+     label1:
+        $r1 = <com.google.android.gms.gcm.GcmNetworkManager: com.google.android.gms.gcm.GcmNetworkManager zzh>;
+
+        if $r1 != null goto label2;
+
+        $r1 = new com.google.android.gms.gcm.GcmNetworkManager;
+
+        $r0 = virtualinvoke $r0.<android.content.Context: android.content.Context getApplicationContext()>();
+
+        specialinvoke $r1.<com.google.android.gms.gcm.GcmNetworkManager: void <init>(android.content.Context)>($r0);
+
+        <com.google.android.gms.gcm.GcmNetworkManager: com.google.android.gms.gcm.GcmNetworkManager zzh> = $r1;
+
+     label2:
+        $r1 = <com.google.android.gms.gcm.GcmNetworkManager: com.google.android.gms.gcm.GcmNetworkManager zzh>;
+
+        exitmonitor class "Lcom/google/android/gms/gcm/GcmNetworkManager;";
+
+     label3:
+        return $r1;
+
+     label4:
+        $r2 := @caughtexception;
+
+        exitmonitor class "Lcom/google/android/gms/gcm/GcmNetworkManager;";
+
+     label5:
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public static void zzd(java.lang.String)
+    {
+        int $i0;
+        java.lang.String $r0;
+        java.lang.IllegalArgumentException $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r0);
+
+        if $z0 != 0 goto label2;
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if 100 < $i0 goto label1;
+
+        return;
+
+     label1:
+        $r1 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Tag is larger than max permissible tag length (100)");
+
+        throw $r1;
+
+     label2:
+        $r1 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Must provide a valid tag.");
+
+        throw $r1;
+    }
+
+    public static void zzd(java.lang.Throwable, com.google.android.gms.gcm.zzp)
+    {
+        java.lang.Throwable $r0, $r2;
+        com.google.android.gms.gcm.zzp $r1;
+
+        $r0 := @parameter0: java.lang.Throwable;
+
+        $r1 := @parameter1: com.google.android.gms.gcm.zzp;
+
+        if $r0 == null goto label4;
+
+     label1:
+        virtualinvoke $r1.<com.google.android.gms.gcm.zzp: void close()>();
+
+     label2:
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        staticinvoke <com.google.android.gms.internal.gcm.zzq: void zzd(java.lang.Throwable,java.lang.Throwable)>($r0, $r2);
+
+        return;
+
+     label4:
+        virtualinvoke $r1.<com.google.android.gms.gcm.zzp: void close()>();
+
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    private final com.google.android.gms.gcm.zzn zze()
+    {
+        android.content.Context $r1;
+        com.google.android.gms.gcm.zzo $r2;
+        com.google.android.gms.gcm.zzm $r3;
+        com.google.android.gms.gcm.GcmNetworkManager r0;
+        int $i0;
+
+        r0 := @this: com.google.android.gms.gcm.GcmNetworkManager;
+
+        $r1 = r0.<com.google.android.gms.gcm.GcmNetworkManager: android.content.Context zzi>;
+
+        $i0 = staticinvoke <com.google.android.gms.gcm.GoogleCloudMessaging: int zzf(android.content.Context)>($r1);
+
+        if $i0 >= 5000000 goto label1;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("GcmNetworkManager", "Google Play services is not available, dropping all GcmNetworkManager requests");
+
+        $r2 = new com.google.android.gms.gcm.zzo;
+
+        specialinvoke $r2.<com.google.android.gms.gcm.zzo: void <init>()>();
+
+        return $r2;
+
+     label1:
+        $r3 = new com.google.android.gms.gcm.zzm;
+
+        $r1 = r0.<com.google.android.gms.gcm.GcmNetworkManager: android.content.Context zzi>;
+
+        specialinvoke $r3.<com.google.android.gms.gcm.zzm: void <init>(android.content.Context)>($r1);
+
+        return $r3;
+    }
+
+    private final boolean zze(java.lang.String)
+    {
+        android.content.Context $r2;
+        java.util.Iterator $r7;
+        android.content.pm.PackageManager $r3;
+        com.google.android.gms.gcm.GcmNetworkManager r0;
+        android.content.Intent $r5;
+        java.lang.IllegalArgumentException $r11;
+        android.content.pm.ResolveInfo $r9;
+        java.util.List $r4;
+        int $i0;
+        java.lang.Object $r8;
+        android.content.pm.ServiceInfo $r10;
+        java.lang.StringBuilder $r12;
+        java.lang.String $r1, $r6;
+        boolean $z0;
+
+        r0 := @this: com.google.android.gms.gcm.GcmNetworkManager;
+
+        $r1 := @parameter0: java.lang.String;
+
+        staticinvoke <com.google.android.gms.common.internal.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r1, "GcmTaskService must not be null.");
+
+        $r2 = r0.<com.google.android.gms.gcm.GcmNetworkManager: android.content.Context zzi>;
+
+        $r3 = virtualinvoke $r2.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+        if $r3 != null goto label1;
+
+        $r4 = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        goto label4;
+
+     label1:
+        if $r1 == null goto label2;
+
+        $r5 = new android.content.Intent;
+
+        specialinvoke $r5.<android.content.Intent: void <init>(java.lang.String)>("com.google.android.gms.gcm.ACTION_TASK_READY");
+
+        $r2 = r0.<com.google.android.gms.gcm.GcmNetworkManager: android.content.Context zzi>;
+
+        $r5 = virtualinvoke $r5.<android.content.Intent: android.content.Intent setClassName(android.content.Context,java.lang.String)>($r2, $r1);
+
+        goto label3;
+
+     label2:
+        $r5 = new android.content.Intent;
+
+        specialinvoke $r5.<android.content.Intent: void <init>(java.lang.String)>("com.google.android.gms.gcm.ACTION_TASK_READY");
+
+        $r2 = r0.<com.google.android.gms.gcm.GcmNetworkManager: android.content.Context zzi>;
+
+        $r6 = virtualinvoke $r2.<android.content.Context: java.lang.String getPackageName()>();
+
+        $r5 = virtualinvoke $r5.<android.content.Intent: android.content.Intent setPackage(java.lang.String)>($r6);
+
+     label3:
+        $r4 = virtualinvoke $r3.<android.content.pm.PackageManager: java.util.List queryIntentServices(android.content.Intent,int)>($r5, 0);
+
+     label4:
+        $z0 = staticinvoke <com.google.android.gms.common.util.CollectionUtils: boolean isEmpty(java.util.Collection)>($r4);
+
+        if $z0 == 0 goto label5;
+
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r1);
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String concat(java.lang.String)>(" is not available. This may cause the task to be lost.");
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("GcmNetworkManager", $r1);
+
+        return 1;
+
+     label5:
+        $r7 = interfaceinvoke $r4.<java.util.List: java.util.Iterator iterator()>();
+
+     label6:
+        $z0 = interfaceinvoke $r7.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label7;
+
+        $r8 = interfaceinvoke $r7.<java.util.Iterator: java.lang.Object next()>();
+
+        $r9 = (android.content.pm.ResolveInfo) $r8;
+
+        $r10 = $r9.<android.content.pm.ResolveInfo: android.content.pm.ServiceInfo serviceInfo>;
+
+        if $r10 == null goto label6;
+
+        $z0 = $r10.<android.content.pm.ServiceInfo: boolean enabled>;
+
+        if $z0 == 0 goto label6;
+
+        return 1;
+
+     label7:
+        $r11 = new java.lang.IllegalArgumentException;
+
+        $r6 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r1);
+
+        $i0 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+        $i0 = $i0 + 118;
+
+        $r12 = new java.lang.StringBuilder;
+
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>(int)>($i0);
+
+        virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("The GcmTaskService class you provided ");
+
+        virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" does not seem to support receiving com.google.android.gms.gcm.ACTION_TASK_READY");
+
+        $r1 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r11.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r1);
+
+        goto label8;
+
+     label8:
+        throw $r11;
+    }
+
+    public void cancelAllTasks(java.lang.Class)
+    {
+        java.lang.Throwable $r7, $r8;
+        android.content.Context $r3;
+        android.content.ComponentName $r2;
+        com.google.android.gms.gcm.GcmNetworkManager r0;
+        com.google.android.gms.gcm.zzp $r4;
+        com.google.android.gms.gcm.zzn $r6;
+        java.lang.Class $r1;
+        java.lang.String $r5;
+
+        r0 := @this: com.google.android.gms.gcm.GcmNetworkManager;
+
+        $r1 := @parameter0: java.lang.Class;
+
+        $r2 = new android.content.ComponentName;
+
+        $r3 = r0.<com.google.android.gms.gcm.GcmNetworkManager: android.content.Context zzi>;
+
+        specialinvoke $r2.<android.content.ComponentName: void <init>(android.content.Context,java.lang.Class)>($r3, $r1);
+
+        $r4 = new com.google.android.gms.gcm.zzp;
+
+        specialinvoke $r4.<com.google.android.gms.gcm.zzp: void <init>(java.lang.String)>("nts:client:cancelAll");
+
+     label1:
+        $r5 = virtualinvoke $r2.<android.content.ComponentName: java.lang.String getClassName()>();
+
+        specialinvoke r0.<com.google.android.gms.gcm.GcmNetworkManager: boolean zze(java.lang.String)>($r5);
+
+        $r6 = specialinvoke r0.<com.google.android.gms.gcm.GcmNetworkManager: com.google.android.gms.gcm.zzn zze()>();
+
+        interfaceinvoke $r6.<com.google.android.gms.gcm.zzn: boolean zzd(android.content.ComponentName)>($r2);
+
+     label2:
+        staticinvoke <com.google.android.gms.gcm.GcmNetworkManager: void zzd(java.lang.Throwable,com.google.android.gms.gcm.zzp)>(null, $r4);
+
+        return;
+
+     label3:
+        $r7 := @caughtexception;
+
+        goto label6;
+
+     label4:
+        $r8 := @caughtexception;
+
+     label5:
+        throw $r8;
+
+     label6:
+        staticinvoke <com.google.android.gms.gcm.GcmNetworkManager: void zzd(java.lang.Throwable,com.google.android.gms.gcm.zzp)>($r8, $r4);
+
+        throw $r7;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label5 to label6 with label3;
+    }
+
+    public void cancelTask(java.lang.String, java.lang.Class)
+    {
+        java.lang.Throwable $r9, $r10;
+        android.content.Context $r5;
+        android.content.ComponentName $r1;
+        com.google.android.gms.gcm.GcmNetworkManager r0;
+        com.google.android.gms.gcm.zzp $r6;
+        com.google.android.gms.gcm.zzn $r8;
+        int $i0;
+        java.lang.Class $r4;
+        java.lang.String $r2, $r3, $r7;
+
+        r0 := @this: com.google.android.gms.gcm.GcmNetworkManager;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r4 := @parameter1: java.lang.Class;
+
+        $r1 = new android.content.ComponentName;
+
+        $r5 = r0.<com.google.android.gms.gcm.GcmNetworkManager: android.content.Context zzi>;
+
+        specialinvoke $r1.<android.content.ComponentName: void <init>(android.content.Context,java.lang.Class)>($r5, $r4);
+
+        $r6 = new com.google.android.gms.gcm.zzp;
+
+        $r7 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r3);
+
+        $i0 = virtualinvoke $r7.<java.lang.String: int length()>();
+
+        $r2 = "nts:client:cancel:";
+
+        if $i0 == 0 goto label1;
+
+        $r2 = virtualinvoke $r2.<java.lang.String: java.lang.String concat(java.lang.String)>($r7);
+
+        goto label2;
+
+     label1:
+        $r2 = new java.lang.String;
+
+        specialinvoke $r2.<java.lang.String: void <init>(java.lang.String)>("nts:client:cancel:");
+
+     label2:
+        specialinvoke $r6.<com.google.android.gms.gcm.zzp: void <init>(java.lang.String)>($r2);
+
+     label3:
+        staticinvoke <com.google.android.gms.gcm.GcmNetworkManager: void zzd(java.lang.String)>($r3);
+
+        $r2 = virtualinvoke $r1.<android.content.ComponentName: java.lang.String getClassName()>();
+
+        specialinvoke r0.<com.google.android.gms.gcm.GcmNetworkManager: boolean zze(java.lang.String)>($r2);
+
+        $r8 = specialinvoke r0.<com.google.android.gms.gcm.GcmNetworkManager: com.google.android.gms.gcm.zzn zze()>();
+
+        interfaceinvoke $r8.<com.google.android.gms.gcm.zzn: boolean zzd(android.content.ComponentName,java.lang.String)>($r1, $r3);
+
+     label4:
+        staticinvoke <com.google.android.gms.gcm.GcmNetworkManager: void zzd(java.lang.Throwable,com.google.android.gms.gcm.zzp)>(null, $r6);
+
+        return;
+
+     label5:
+        $r9 := @caughtexception;
+
+        goto label8;
+
+     label6:
+        $r10 := @caughtexception;
+
+     label7:
+        throw $r10;
+
+     label8:
+        staticinvoke <com.google.android.gms.gcm.GcmNetworkManager: void zzd(java.lang.Throwable,com.google.android.gms.gcm.zzp)>($r10, $r6);
+
+        throw $r9;
+
+        catch java.lang.Throwable from label3 to label4 with label6;
+        catch java.lang.Throwable from label7 to label8 with label5;
+    }
+
+    public void schedule(com.google.android.gms.gcm.Task)
+    {
+        java.lang.Throwable $r9, $r10, $r11;
+        com.google.android.gms.gcm.GcmNetworkManager r0;
+        com.google.android.gms.gcm.Task $r2;
+        com.google.android.gms.gcm.zzp $r1;
+        com.google.android.gms.gcm.zzn $r5;
+        java.util.Map $r6;
+        int $i0;
+        java.lang.Boolean $r8;
+        java.lang.Object $r7;
+        java.lang.String $r3, $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.android.gms.gcm.GcmNetworkManager;
+
+        $r2 := @parameter0: com.google.android.gms.gcm.Task;
+
+        entermonitor r0;
+
+     label01:
+        $r1 = new com.google.android.gms.gcm.zzp;
+
+        $r3 = "nts:client:schedule:";
+
+        $r4 = virtualinvoke $r2.<com.google.android.gms.gcm.Task: java.lang.String getTag()>();
+
+        $r4 = staticinvoke <java.lang.String: java.lang.String valueOf(java.lang.Object)>($r4);
+
+        $i0 = virtualinvoke $r4.<java.lang.String: int length()>();
+
+        if $i0 == 0 goto label02;
+
+        $r3 = virtualinvoke $r3.<java.lang.String: java.lang.String concat(java.lang.String)>($r4);
+
+        goto label03;
+
+     label02:
+        $r3 = new java.lang.String;
+
+        specialinvoke $r3.<java.lang.String: void <init>(java.lang.String)>("nts:client:schedule:");
+
+     label03:
+        specialinvoke $r1.<com.google.android.gms.gcm.zzp: void <init>(java.lang.String)>($r3);
+
+     label04:
+        $r3 = virtualinvoke $r2.<com.google.android.gms.gcm.Task: java.lang.String getServiceName()>();
+
+        specialinvoke r0.<com.google.android.gms.gcm.GcmNetworkManager: boolean zze(java.lang.String)>($r3);
+
+        $r5 = specialinvoke r0.<com.google.android.gms.gcm.GcmNetworkManager: com.google.android.gms.gcm.zzn zze()>();
+
+        $z0 = interfaceinvoke $r5.<com.google.android.gms.gcm.zzn: boolean zzd(com.google.android.gms.gcm.Task)>($r2);
+
+        if $z0 == 0 goto label05;
+
+        $r6 = r0.<com.google.android.gms.gcm.GcmNetworkManager: java.util.Map zzj>;
+
+        $r3 = virtualinvoke $r2.<com.google.android.gms.gcm.Task: java.lang.String getServiceName()>();
+
+        $r7 = interfaceinvoke $r6.<java.util.Map: java.lang.Object get(java.lang.Object)>($r3);
+
+        $r6 = (java.util.Map) $r7;
+
+        if $r6 == null goto label05;
+
+        $r3 = virtualinvoke $r2.<com.google.android.gms.gcm.Task: java.lang.String getTag()>();
+
+        $z0 = interfaceinvoke $r6.<java.util.Map: boolean containsKey(java.lang.Object)>($r3);
+
+        if $z0 == 0 goto label05;
+
+        $r3 = virtualinvoke $r2.<com.google.android.gms.gcm.Task: java.lang.String getTag()>();
+
+        $r8 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+        interfaceinvoke $r6.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r3, $r8);
+
+     label05:
+        staticinvoke <com.google.android.gms.gcm.GcmNetworkManager: void zzd(java.lang.Throwable,com.google.android.gms.gcm.zzp)>(null, $r1);
+
+     label06:
+        exitmonitor r0;
+
+        return;
+
+     label07:
+        $r9 := @caughtexception;
+
+        goto label10;
+
+     label08:
+        $r10 := @caughtexception;
+
+     label09:
+        throw $r10;
+
+     label10:
+        staticinvoke <com.google.android.gms.gcm.GcmNetworkManager: void zzd(java.lang.Throwable,com.google.android.gms.gcm.zzp)>($r10, $r1);
+
+        throw $r9;
+
+     label11:
+        $r11 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r11;
+
+        catch java.lang.Throwable from label01 to label04 with label11;
+        catch java.lang.Throwable from label04 to label05 with label08;
+        catch java.lang.Throwable from label04 to label05 with label07;
+        catch java.lang.Throwable from label05 to label06 with label11;
+        catch java.lang.Throwable from label09 to label10 with label07;
+        catch java.lang.Throwable from label10 to label11 with label11;
+    }
+
+    public final boolean zzd(java.lang.String, java.lang.String)
+    {
+        java.lang.Throwable $r7;
+        com.google.android.gms.gcm.GcmNetworkManager r0;
+        b.f.b $r8;
+        java.util.Map $r3, $r5;
+        java.lang.Boolean $r6;
+        java.lang.Object $r4;
+        java.lang.String $r1, $r2;
+
+        r0 := @this: com.google.android.gms.gcm.GcmNetworkManager;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        entermonitor r0;
+
+     label1:
+        $r3 = r0.<com.google.android.gms.gcm.GcmNetworkManager: java.util.Map zzj>;
+
+        $r4 = interfaceinvoke $r3.<java.util.Map: java.lang.Object get(java.lang.Object)>($r2);
+
+        $r3 = (java.util.Map) $r4;
+
+        if $r3 != null goto label2;
+
+        $r8 = new b.f.b;
+
+        $r3 = $r8;
+
+        specialinvoke $r8.<b.f.b: void <init>()>();
+
+        $r5 = r0.<com.google.android.gms.gcm.GcmNetworkManager: java.util.Map zzj>;
+
+        interfaceinvoke $r5.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r2, $r3);
+
+     label2:
+        $r6 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(0);
+
+        $r4 = interfaceinvoke $r3.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r1, $r6);
+
+     label3:
+        if $r4 != null goto label4;
+
+        exitmonitor r0;
+
+        return 1;
+
+     label4:
+        exitmonitor r0;
+
+        return 0;
+
+     label5:
+        $r7 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r7;
+
+        catch java.lang.Throwable from label1 to label3 with label5;
+    }
+
+    public final void zze(java.lang.String, java.lang.String)
+    {
+        java.lang.Throwable $r5;
+        java.util.Map $r3;
+        com.google.android.gms.gcm.GcmNetworkManager r0;
+        java.lang.Object $r4;
+        java.lang.String $r1, $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.android.gms.gcm.GcmNetworkManager;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: java.lang.String;
+
+        entermonitor r0;
+
+     label1:
+        $r3 = r0.<com.google.android.gms.gcm.GcmNetworkManager: java.util.Map zzj>;
+
+        $r4 = interfaceinvoke $r3.<java.util.Map: java.lang.Object get(java.lang.Object)>($r1);
+
+        $r3 = (java.util.Map) $r4;
+
+        if $r3 == null goto label4;
+
+        $r4 = interfaceinvoke $r3.<java.util.Map: java.lang.Object remove(java.lang.Object)>($r2);
+
+        if $r4 == null goto label2;
+
+        $z0 = 1;
+
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        if $z0 == 0 goto label4;
+
+        $z0 = interfaceinvoke $r3.<java.util.Map: boolean isEmpty()>();
+
+        if $z0 == 0 goto label4;
+
+        $r3 = r0.<com.google.android.gms.gcm.GcmNetworkManager: java.util.Map zzj>;
+
+        interfaceinvoke $r3.<java.util.Map: java.lang.Object remove(java.lang.Object)>($r1);
+
+     label4:
+        exitmonitor r0;
+
+        return;
+
+     label5:
+        $r5 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+    }
+
+    public final boolean zzf(java.lang.String)
+    {
+        java.lang.Throwable $r3;
+        java.util.Map $r1;
+        com.google.android.gms.gcm.GcmNetworkManager r0;
+        java.lang.String $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.android.gms.gcm.GcmNetworkManager;
+
+        $r2 := @parameter0: java.lang.String;
+
+        entermonitor r0;
+
+     label1:
+        $r1 = r0.<com.google.android.gms.gcm.GcmNetworkManager: java.util.Map zzj>;
+
+        $z0 = interfaceinvoke $r1.<java.util.Map: boolean containsKey(java.lang.Object)>($r2);
+
+     label2:
+        exitmonitor r0;
+
+        return $z0;
+
+     label3:
+        $r3 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r3;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public final boolean zzf(java.lang.String, java.lang.String)
+    {
+        java.lang.Throwable $r6;
+        com.google.android.gms.gcm.GcmNetworkManager r0;
+        java.util.Map $r3;
+        java.lang.Boolean $r5;
+        java.lang.Object $r4;
+        java.lang.String $r1, $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.android.gms.gcm.GcmNetworkManager;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        entermonitor r0;
+
+     label1:
+        $r3 = r0.<com.google.android.gms.gcm.GcmNetworkManager: java.util.Map zzj>;
+
+        $r4 = interfaceinvoke $r3.<java.util.Map: java.lang.Object get(java.lang.Object)>($r2);
+
+        $r3 = (java.util.Map) $r4;
+
+        if $r3 == null goto label5;
+
+        $r4 = interfaceinvoke $r3.<java.util.Map: java.lang.Object get(java.lang.Object)>($r1);
+
+        $r5 = (java.lang.Boolean) $r4;
+
+     label2:
+        if $r5 != null goto label3;
+
+        exitmonitor r0;
+
+        return 0;
+
+     label3:
+        $z0 = virtualinvoke $r5.<java.lang.Boolean: boolean booleanValue()>();
+
+     label4:
+        exitmonitor r0;
+
+        return $z0;
+
+     label5:
+        exitmonitor r0;
+
+        return 0;
+
+     label6:
+        $r6 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r6;
+
+        catch java.lang.Throwable from label1 to label2 with label6;
+        catch java.lang.Throwable from label3 to label4 with label6;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.android.gms.gcm.GcmNetworkManager: int RESULT_RESCHEDULE> = 1;
+
+        <com.google.android.gms.gcm.GcmNetworkManager: int RESULT_FAILURE> = 2;
+
+        return;
+    }
+}

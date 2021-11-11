@@ -1,0 +1,649 @@
+public class com.google.firebase.remoteconfig.RemoteConfigComponent extends java.lang.Object
+{
+    public static final java.lang.String ACTIVATE_FILE_NAME;
+    public static final long CONNECTION_TIMEOUT_IN_SECONDS;
+    public static final java.lang.String DEFAULTS_FILE_NAME;
+    public static final com.google.android.gms.common.util.Clock DEFAULT_CLOCK;
+    public static final java.lang.String DEFAULT_NAMESPACE;
+    public static final java.util.Random DEFAULT_RANDOM;
+    public static final java.lang.String FETCH_FILE_NAME;
+    public static final java.lang.String FIREBASE_REMOTE_CONFIG_FILE_NAME_PREFIX;
+    public static final java.lang.String PREFERENCES_FILE_NAME;
+    public final com.google.firebase.analytics.connector.AnalyticsConnector analyticsConnector;
+    public final java.lang.String appId;
+    public final android.content.Context context;
+    public java.util.Map customHeaders;
+    public final java.util.concurrent.ExecutorService executorService;
+    public final com.google.firebase.abt.FirebaseABTesting firebaseAbt;
+    public final com.google.firebase.FirebaseApp firebaseApp;
+    public final com.google.firebase.installations.FirebaseInstallationsApi firebaseInstallations;
+    public final java.util.Map frcNamespaceInstances;
+
+    static void <clinit>()
+    {
+        com.google.android.gms.common.util.Clock $r0;
+        java.util.Random $r1;
+
+        <com.google.firebase.remoteconfig.RemoteConfigComponent: java.lang.String PREFERENCES_FILE_NAME> = "settings";
+
+        <com.google.firebase.remoteconfig.RemoteConfigComponent: java.lang.String FIREBASE_REMOTE_CONFIG_FILE_NAME_PREFIX> = "frc";
+
+        <com.google.firebase.remoteconfig.RemoteConfigComponent: java.lang.String FETCH_FILE_NAME> = "fetch";
+
+        <com.google.firebase.remoteconfig.RemoteConfigComponent: java.lang.String DEFAULT_NAMESPACE> = "firebase";
+
+        <com.google.firebase.remoteconfig.RemoteConfigComponent: java.lang.String DEFAULTS_FILE_NAME> = "defaults";
+
+        <com.google.firebase.remoteconfig.RemoteConfigComponent: long CONNECTION_TIMEOUT_IN_SECONDS> = 60L;
+
+        <com.google.firebase.remoteconfig.RemoteConfigComponent: java.lang.String ACTIVATE_FILE_NAME> = "activate";
+
+        $r0 = staticinvoke <com.google.android.gms.common.util.DefaultClock: com.google.android.gms.common.util.Clock getInstance()>();
+
+        <com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.android.gms.common.util.Clock DEFAULT_CLOCK> = $r0;
+
+        $r1 = new java.util.Random;
+
+        specialinvoke $r1.<java.util.Random: void <init>()>();
+
+        <com.google.firebase.remoteconfig.RemoteConfigComponent: java.util.Random DEFAULT_RANDOM> = $r1;
+
+        return;
+    }
+
+    public void <init>(android.content.Context, com.google.firebase.FirebaseApp, com.google.firebase.installations.FirebaseInstallationsApi, com.google.firebase.abt.FirebaseABTesting, com.google.firebase.analytics.connector.AnalyticsConnector)
+    {
+        android.content.Context $r1;
+        com.google.firebase.remoteconfig.internal.LegacyConfigsHandler $r6;
+        com.google.firebase.remoteconfig.RemoteConfigComponent r0;
+        com.google.firebase.abt.FirebaseABTesting $r4;
+        com.google.firebase.FirebaseOptions $r8;
+        com.google.firebase.installations.FirebaseInstallationsApi $r3;
+        com.google.firebase.analytics.connector.AnalyticsConnector $r5;
+        java.lang.String $r9;
+        java.util.concurrent.ExecutorService $r7;
+        com.google.firebase.FirebaseApp $r2;
+
+        r0 := @this: com.google.firebase.remoteconfig.RemoteConfigComponent;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 := @parameter1: com.google.firebase.FirebaseApp;
+
+        $r3 := @parameter2: com.google.firebase.installations.FirebaseInstallationsApi;
+
+        $r4 := @parameter3: com.google.firebase.abt.FirebaseABTesting;
+
+        $r5 := @parameter4: com.google.firebase.analytics.connector.AnalyticsConnector;
+
+        $r7 = staticinvoke <java.util.concurrent.Executors: java.util.concurrent.ExecutorService newCachedThreadPool()>();
+
+        $r6 = new com.google.firebase.remoteconfig.internal.LegacyConfigsHandler;
+
+        $r8 = virtualinvoke $r2.<com.google.firebase.FirebaseApp: com.google.firebase.FirebaseOptions getOptions()>();
+
+        $r9 = virtualinvoke $r8.<com.google.firebase.FirebaseOptions: java.lang.String getApplicationId()>();
+
+        specialinvoke $r6.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: void <init>(android.content.Context,java.lang.String)>($r1, $r9);
+
+        specialinvoke r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: void <init>(android.content.Context,java.util.concurrent.ExecutorService,com.google.firebase.FirebaseApp,com.google.firebase.installations.FirebaseInstallationsApi,com.google.firebase.abt.FirebaseABTesting,com.google.firebase.analytics.connector.AnalyticsConnector,com.google.firebase.remoteconfig.internal.LegacyConfigsHandler,boolean)>($r1, $r7, $r2, $r3, $r4, $r5, $r6, 1);
+
+        return;
+    }
+
+    public void <init>(android.content.Context, java.util.concurrent.ExecutorService, com.google.firebase.FirebaseApp, com.google.firebase.installations.FirebaseInstallationsApi, com.google.firebase.abt.FirebaseABTesting, com.google.firebase.analytics.connector.AnalyticsConnector, com.google.firebase.remoteconfig.internal.LegacyConfigsHandler, boolean)
+    {
+        android.content.Context $r7;
+        com.google.firebase.remoteconfig.internal.LegacyConfigsHandler $r6;
+        com.google.firebase.remoteconfig.RemoteConfigComponent r0;
+        com.google.firebase.abt.FirebaseABTesting $r4;
+        com.google.firebase.FirebaseOptions $r9;
+        java.util.HashMap $r8;
+        java.util.concurrent.Callable $r11;
+        com.google.firebase.installations.FirebaseInstallationsApi $r3;
+        com.google.firebase.analytics.connector.AnalyticsConnector $r5;
+        java.lang.String $r10;
+        java.util.concurrent.ExecutorService $r1;
+        com.google.firebase.FirebaseApp $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.RemoteConfigComponent;
+
+        $r7 := @parameter0: android.content.Context;
+
+        $r1 := @parameter1: java.util.concurrent.ExecutorService;
+
+        $r2 := @parameter2: com.google.firebase.FirebaseApp;
+
+        $r3 := @parameter3: com.google.firebase.installations.FirebaseInstallationsApi;
+
+        $r4 := @parameter4: com.google.firebase.abt.FirebaseABTesting;
+
+        $r5 := @parameter5: com.google.firebase.analytics.connector.AnalyticsConnector;
+
+        $r6 := @parameter6: com.google.firebase.remoteconfig.internal.LegacyConfigsHandler;
+
+        $z0 := @parameter7: boolean;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r8 = new java.util.HashMap;
+
+        specialinvoke $r8.<java.util.HashMap: void <init>()>();
+
+        r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: java.util.Map frcNamespaceInstances> = $r8;
+
+        $r8 = new java.util.HashMap;
+
+        specialinvoke $r8.<java.util.HashMap: void <init>()>();
+
+        r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: java.util.Map customHeaders> = $r8;
+
+        r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: android.content.Context context> = $r7;
+
+        r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: java.util.concurrent.ExecutorService executorService> = $r1;
+
+        r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.FirebaseApp firebaseApp> = $r2;
+
+        r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.installations.FirebaseInstallationsApi firebaseInstallations> = $r3;
+
+        r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.abt.FirebaseABTesting firebaseAbt> = $r4;
+
+        r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.analytics.connector.AnalyticsConnector analyticsConnector> = $r5;
+
+        $r9 = virtualinvoke $r2.<com.google.firebase.FirebaseApp: com.google.firebase.FirebaseOptions getOptions()>();
+
+        $r10 = virtualinvoke $r9.<com.google.firebase.FirebaseOptions: java.lang.String getApplicationId()>();
+
+        r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: java.lang.String appId> = $r10;
+
+        if $z0 == 0 goto label1;
+
+        $r11 = staticinvoke <com.google.firebase.remoteconfig.RemoteConfigComponent$$Lambda$1: java.util.concurrent.Callable lambdaFactory$(com.google.firebase.remoteconfig.RemoteConfigComponent)>(r0);
+
+        staticinvoke <com.google.android.gms.tasks.Tasks: com.google.android.gms.tasks.Task call(java.util.concurrent.Executor,java.util.concurrent.Callable)>($r1, $r11);
+
+        virtualinvoke $r6.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r11 = staticinvoke <com.google.firebase.remoteconfig.RemoteConfigComponent$$Lambda$4: java.util.concurrent.Callable lambdaFactory$(com.google.firebase.remoteconfig.internal.LegacyConfigsHandler)>($r6);
+
+        staticinvoke <com.google.android.gms.tasks.Tasks: com.google.android.gms.tasks.Task call(java.util.concurrent.Executor,java.util.concurrent.Callable)>($r1, $r11);
+
+     label1:
+        return;
+    }
+
+    public static com.google.firebase.remoteconfig.internal.ConfigCacheClient getCacheClient(android.content.Context, java.lang.String, java.lang.String, java.lang.String)
+    {
+        android.content.Context $r1;
+        java.lang.Object[] $r4;
+        com.google.firebase.remoteconfig.internal.ConfigStorageClient $r6;
+        java.lang.String $r0, $r2, $r3;
+        java.util.concurrent.ExecutorService $r5;
+        com.google.firebase.remoteconfig.internal.ConfigCacheClient $r7;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: java.lang.String;
+
+        $r0 := @parameter3: java.lang.String;
+
+        $r4 = newarray (java.lang.Object)[4];
+
+        $r4[0] = "frc";
+
+        $r4[1] = $r2;
+
+        $r4[2] = $r3;
+
+        $r4[3] = $r0;
+
+        $r2 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("%s_%s_%s_%s.json", $r4);
+
+        $r5 = staticinvoke <java.util.concurrent.Executors: java.util.concurrent.ExecutorService newCachedThreadPool()>();
+
+        $r6 = staticinvoke <com.google.firebase.remoteconfig.internal.ConfigStorageClient: com.google.firebase.remoteconfig.internal.ConfigStorageClient getInstance(android.content.Context,java.lang.String)>($r1, $r2);
+
+        $r7 = staticinvoke <com.google.firebase.remoteconfig.internal.ConfigCacheClient: com.google.firebase.remoteconfig.internal.ConfigCacheClient getInstance(java.util.concurrent.ExecutorService,com.google.firebase.remoteconfig.internal.ConfigStorageClient)>($r5, $r6);
+
+        return $r7;
+    }
+
+    private com.google.firebase.remoteconfig.internal.ConfigCacheClient getCacheClient(java.lang.String, java.lang.String)
+    {
+        android.content.Context $r2;
+        com.google.firebase.remoteconfig.RemoteConfigComponent r0;
+        java.lang.String $r1, $r3, $r5;
+        com.google.firebase.remoteconfig.internal.ConfigCacheClient $r4;
+
+        r0 := @this: com.google.firebase.remoteconfig.RemoteConfigComponent;
+
+        $r5 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: android.content.Context context>;
+
+        $r3 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: java.lang.String appId>;
+
+        $r4 = staticinvoke <com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.remoteconfig.internal.ConfigCacheClient getCacheClient(android.content.Context,java.lang.String,java.lang.String,java.lang.String)>($r2, $r3, $r5, $r1);
+
+        return $r4;
+    }
+
+    private com.google.firebase.remoteconfig.internal.ConfigGetParameterHandler getGetHandler(com.google.firebase.remoteconfig.internal.ConfigCacheClient, com.google.firebase.remoteconfig.internal.ConfigCacheClient)
+    {
+        com.google.firebase.remoteconfig.RemoteConfigComponent r0;
+        com.google.firebase.remoteconfig.internal.ConfigCacheClient $r1, $r2;
+        com.google.firebase.remoteconfig.internal.ConfigGetParameterHandler $r3;
+
+        r0 := @this: com.google.firebase.remoteconfig.RemoteConfigComponent;
+
+        $r1 := @parameter0: com.google.firebase.remoteconfig.internal.ConfigCacheClient;
+
+        $r2 := @parameter1: com.google.firebase.remoteconfig.internal.ConfigCacheClient;
+
+        $r3 = new com.google.firebase.remoteconfig.internal.ConfigGetParameterHandler;
+
+        specialinvoke $r3.<com.google.firebase.remoteconfig.internal.ConfigGetParameterHandler: void <init>(com.google.firebase.remoteconfig.internal.ConfigCacheClient,com.google.firebase.remoteconfig.internal.ConfigCacheClient)>($r1, $r2);
+
+        return $r3;
+    }
+
+    public static com.google.firebase.remoteconfig.internal.ConfigMetadataClient getMetadataClient(android.content.Context, java.lang.String, java.lang.String)
+    {
+        android.content.Context $r1;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient $r5;
+        java.lang.Object[] $r3;
+        android.content.SharedPreferences $r4;
+        java.lang.String $r0, $r2;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r0 := @parameter2: java.lang.String;
+
+        $r3 = newarray (java.lang.Object)[4];
+
+        $r3[0] = "frc";
+
+        $r3[1] = $r2;
+
+        $r3[2] = $r0;
+
+        $r3[3] = "settings";
+
+        $r2 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("%s_%s_%s_%s", $r3);
+
+        $r4 = virtualinvoke $r1.<android.content.Context: android.content.SharedPreferences getSharedPreferences(java.lang.String,int)>($r2, 0);
+
+        $r5 = new com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        specialinvoke $r5.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: void <init>(android.content.SharedPreferences)>($r4);
+
+        return $r5;
+    }
+
+    public static boolean isAbtSupported(com.google.firebase.FirebaseApp, java.lang.String)
+    {
+        java.lang.String $r1;
+        com.google.firebase.FirebaseApp $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: com.google.firebase.FirebaseApp;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>("firebase");
+
+        if $z0 == 0 goto label1;
+
+        $z0 = staticinvoke <com.google.firebase.remoteconfig.RemoteConfigComponent: boolean isPrimaryApp(com.google.firebase.FirebaseApp)>($r0);
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static boolean isPrimaryApp(com.google.firebase.FirebaseApp)
+    {
+        java.lang.String $r1;
+        com.google.firebase.FirebaseApp $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: com.google.firebase.FirebaseApp;
+
+        $r1 = virtualinvoke $r0.<com.google.firebase.FirebaseApp: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>("[DEFAULT]");
+
+        return $z0;
+    }
+
+    public com.google.firebase.remoteconfig.FirebaseRemoteConfig get(com.google.firebase.FirebaseApp, java.lang.String, com.google.firebase.installations.FirebaseInstallationsApi, com.google.firebase.abt.FirebaseABTesting, java.util.concurrent.Executor, com.google.firebase.remoteconfig.internal.ConfigCacheClient, com.google.firebase.remoteconfig.internal.ConfigCacheClient, com.google.firebase.remoteconfig.internal.ConfigCacheClient, com.google.firebase.remoteconfig.internal.ConfigFetchHandler, com.google.firebase.remoteconfig.internal.ConfigGetParameterHandler, com.google.firebase.remoteconfig.internal.ConfigMetadataClient)
+    {
+        java.lang.Throwable $r16;
+        android.content.Context $r12;
+        com.google.firebase.remoteconfig.internal.ConfigGetParameterHandler $r10;
+        java.util.Map $r13;
+        java.lang.String $r2;
+        boolean $z0;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler $r9;
+        com.google.firebase.remoteconfig.RemoteConfigComponent r0;
+        java.util.concurrent.Executor $r5;
+        com.google.firebase.abt.FirebaseABTesting $r4;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient $r11;
+        com.google.firebase.installations.FirebaseInstallationsApi $r3;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfig $r14;
+        java.lang.Object $r15;
+        com.google.firebase.remoteconfig.internal.ConfigCacheClient $r6, $r7, $r8;
+        com.google.firebase.FirebaseApp $r1;
+
+        r0 := @this: com.google.firebase.remoteconfig.RemoteConfigComponent;
+
+        $r1 := @parameter0: com.google.firebase.FirebaseApp;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: com.google.firebase.installations.FirebaseInstallationsApi;
+
+        $r4 := @parameter3: com.google.firebase.abt.FirebaseABTesting;
+
+        $r5 := @parameter4: java.util.concurrent.Executor;
+
+        $r6 := @parameter5: com.google.firebase.remoteconfig.internal.ConfigCacheClient;
+
+        $r7 := @parameter6: com.google.firebase.remoteconfig.internal.ConfigCacheClient;
+
+        $r8 := @parameter7: com.google.firebase.remoteconfig.internal.ConfigCacheClient;
+
+        $r9 := @parameter8: com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $r10 := @parameter9: com.google.firebase.remoteconfig.internal.ConfigGetParameterHandler;
+
+        $r11 := @parameter10: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        entermonitor r0;
+
+     label1:
+        $r13 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: java.util.Map frcNamespaceInstances>;
+
+        $z0 = interfaceinvoke $r13.<java.util.Map: boolean containsKey(java.lang.Object)>($r2);
+
+        if $z0 != 0 goto label4;
+
+        $r14 = new com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+
+        $r12 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: android.content.Context context>;
+
+        $z0 = staticinvoke <com.google.firebase.remoteconfig.RemoteConfigComponent: boolean isAbtSupported(com.google.firebase.FirebaseApp,java.lang.String)>($r1, $r2);
+
+        if $z0 == 0 goto label2;
+
+        goto label3;
+
+     label2:
+        $r4 = null;
+
+     label3:
+        specialinvoke $r14.<com.google.firebase.remoteconfig.FirebaseRemoteConfig: void <init>(android.content.Context,com.google.firebase.FirebaseApp,com.google.firebase.installations.FirebaseInstallationsApi,com.google.firebase.abt.FirebaseABTesting,java.util.concurrent.Executor,com.google.firebase.remoteconfig.internal.ConfigCacheClient,com.google.firebase.remoteconfig.internal.ConfigCacheClient,com.google.firebase.remoteconfig.internal.ConfigCacheClient,com.google.firebase.remoteconfig.internal.ConfigFetchHandler,com.google.firebase.remoteconfig.internal.ConfigGetParameterHandler,com.google.firebase.remoteconfig.internal.ConfigMetadataClient)>($r12, $r1, $r3, $r4, $r5, $r6, $r7, $r8, $r9, $r10, $r11);
+
+        virtualinvoke $r14.<com.google.firebase.remoteconfig.FirebaseRemoteConfig: void startLoadingConfigsFromDisk()>();
+
+        $r13 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: java.util.Map frcNamespaceInstances>;
+
+        interfaceinvoke $r13.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r2, $r14);
+
+     label4:
+        $r13 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: java.util.Map frcNamespaceInstances>;
+
+        $r15 = interfaceinvoke $r13.<java.util.Map: java.lang.Object get(java.lang.Object)>($r2);
+
+        $r14 = (com.google.firebase.remoteconfig.FirebaseRemoteConfig) $r15;
+
+     label5:
+        exitmonitor r0;
+
+        return $r14;
+
+     label6:
+        $r16 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r16;
+
+        catch java.lang.Throwable from label1 to label5 with label6;
+    }
+
+    public com.google.firebase.remoteconfig.FirebaseRemoteConfig get(java.lang.String)
+    {
+        java.lang.Throwable $r15;
+        android.content.Context $r9;
+        com.google.firebase.remoteconfig.internal.ConfigGetParameterHandler $r13;
+        java.lang.String $r5, $r10;
+        java.util.concurrent.ExecutorService $r4;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler $r12;
+        com.google.firebase.remoteconfig.RemoteConfigComponent r0;
+        com.google.firebase.abt.FirebaseABTesting $r3;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient $r11;
+        com.google.firebase.installations.FirebaseInstallationsApi $r2;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfig $r14;
+        com.google.firebase.remoteconfig.internal.ConfigCacheClient $r6, $r7, $r8;
+        com.google.firebase.FirebaseApp $r1;
+
+        r0 := @this: com.google.firebase.remoteconfig.RemoteConfigComponent;
+
+        $r5 := @parameter0: java.lang.String;
+
+        entermonitor r0;
+
+     label1:
+        $r6 = specialinvoke r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.remoteconfig.internal.ConfigCacheClient getCacheClient(java.lang.String,java.lang.String)>($r5, "fetch");
+
+        $r7 = specialinvoke r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.remoteconfig.internal.ConfigCacheClient getCacheClient(java.lang.String,java.lang.String)>($r5, "activate");
+
+        $r8 = specialinvoke r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.remoteconfig.internal.ConfigCacheClient getCacheClient(java.lang.String,java.lang.String)>($r5, "defaults");
+
+        $r9 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: android.content.Context context>;
+
+        $r10 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: java.lang.String appId>;
+
+        $r11 = staticinvoke <com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.remoteconfig.internal.ConfigMetadataClient getMetadataClient(android.content.Context,java.lang.String,java.lang.String)>($r9, $r10, $r5);
+
+        $r1 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.FirebaseApp firebaseApp>;
+
+        $r2 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.installations.FirebaseInstallationsApi firebaseInstallations>;
+
+        $r3 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.abt.FirebaseABTesting firebaseAbt>;
+
+        $r4 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: java.util.concurrent.ExecutorService executorService>;
+
+        $r12 = virtualinvoke r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.remoteconfig.internal.ConfigFetchHandler getFetchHandler(java.lang.String,com.google.firebase.remoteconfig.internal.ConfigCacheClient,com.google.firebase.remoteconfig.internal.ConfigMetadataClient)>($r5, $r6, $r11);
+
+        $r13 = specialinvoke r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.remoteconfig.internal.ConfigGetParameterHandler getGetHandler(com.google.firebase.remoteconfig.internal.ConfigCacheClient,com.google.firebase.remoteconfig.internal.ConfigCacheClient)>($r7, $r8);
+
+        $r14 = virtualinvoke r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.remoteconfig.FirebaseRemoteConfig get(com.google.firebase.FirebaseApp,java.lang.String,com.google.firebase.installations.FirebaseInstallationsApi,com.google.firebase.abt.FirebaseABTesting,java.util.concurrent.Executor,com.google.firebase.remoteconfig.internal.ConfigCacheClient,com.google.firebase.remoteconfig.internal.ConfigCacheClient,com.google.firebase.remoteconfig.internal.ConfigCacheClient,com.google.firebase.remoteconfig.internal.ConfigFetchHandler,com.google.firebase.remoteconfig.internal.ConfigGetParameterHandler,com.google.firebase.remoteconfig.internal.ConfigMetadataClient)>($r1, $r5, $r2, $r3, $r4, $r6, $r7, $r8, $r12, $r13, $r11);
+
+     label2:
+        exitmonitor r0;
+
+        return $r14;
+
+     label3:
+        $r15 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r15;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public com.google.firebase.remoteconfig.FirebaseRemoteConfig getDefault()
+    {
+        com.google.firebase.remoteconfig.RemoteConfigComponent r0;
+        com.google.firebase.remoteconfig.FirebaseRemoteConfig $r1;
+
+        r0 := @this: com.google.firebase.remoteconfig.RemoteConfigComponent;
+
+        $r1 = virtualinvoke r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.remoteconfig.FirebaseRemoteConfig get(java.lang.String)>("firebase");
+
+        return $r1;
+    }
+
+    public com.google.firebase.remoteconfig.internal.ConfigFetchHandler getFetchHandler(java.lang.String, com.google.firebase.remoteconfig.internal.ConfigCacheClient, com.google.firebase.remoteconfig.internal.ConfigMetadataClient)
+    {
+        java.lang.Throwable $r15;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient $r14;
+        com.google.firebase.FirebaseOptions $r12;
+        java.util.Random $r6;
+        java.util.Map $r7;
+        com.google.firebase.analytics.connector.AnalyticsConnector $r11;
+        java.lang.String $r9, $r13;
+        java.util.concurrent.ExecutorService $r4;
+        boolean $z0;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHandler $r8;
+        com.google.android.gms.common.util.Clock $r5;
+        com.google.firebase.remoteconfig.RemoteConfigComponent r0;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient $r2;
+        com.google.firebase.installations.FirebaseInstallationsApi $r3;
+        com.google.firebase.remoteconfig.internal.ConfigCacheClient $r1;
+        com.google.firebase.FirebaseApp $r10;
+
+        r0 := @this: com.google.firebase.remoteconfig.RemoteConfigComponent;
+
+        $r9 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: com.google.firebase.remoteconfig.internal.ConfigCacheClient;
+
+        $r2 := @parameter2: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        entermonitor r0;
+
+     label1:
+        $r8 = new com.google.firebase.remoteconfig.internal.ConfigFetchHandler;
+
+        $r3 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.installations.FirebaseInstallationsApi firebaseInstallations>;
+
+        $r10 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.FirebaseApp firebaseApp>;
+
+        $z0 = staticinvoke <com.google.firebase.remoteconfig.RemoteConfigComponent: boolean isPrimaryApp(com.google.firebase.FirebaseApp)>($r10);
+
+        if $z0 == 0 goto label2;
+
+        $r11 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.analytics.connector.AnalyticsConnector analyticsConnector>;
+
+        goto label3;
+
+     label2:
+        $r11 = null;
+
+     label3:
+        $r4 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: java.util.concurrent.ExecutorService executorService>;
+
+        $r5 = <com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.android.gms.common.util.Clock DEFAULT_CLOCK>;
+
+        $r6 = <com.google.firebase.remoteconfig.RemoteConfigComponent: java.util.Random DEFAULT_RANDOM>;
+
+        $r10 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.FirebaseApp firebaseApp>;
+
+        $r12 = virtualinvoke $r10.<com.google.firebase.FirebaseApp: com.google.firebase.FirebaseOptions getOptions()>();
+
+        $r13 = virtualinvoke $r12.<com.google.firebase.FirebaseOptions: java.lang.String getApiKey()>();
+
+        $r14 = virtualinvoke r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient getFrcBackendApiClient(java.lang.String,java.lang.String,com.google.firebase.remoteconfig.internal.ConfigMetadataClient)>($r13, $r9, $r2);
+
+        $r7 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: java.util.Map customHeaders>;
+
+        specialinvoke $r8.<com.google.firebase.remoteconfig.internal.ConfigFetchHandler: void <init>(com.google.firebase.installations.FirebaseInstallationsApi,com.google.firebase.analytics.connector.AnalyticsConnector,java.util.concurrent.Executor,com.google.android.gms.common.util.Clock,java.util.Random,com.google.firebase.remoteconfig.internal.ConfigCacheClient,com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient,com.google.firebase.remoteconfig.internal.ConfigMetadataClient,java.util.Map)>($r3, $r11, $r4, $r5, $r6, $r1, $r14, $r2, $r7);
+
+     label4:
+        exitmonitor r0;
+
+        return $r8;
+
+     label5:
+        $r15 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r15;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+    }
+
+    public com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient getFrcBackendApiClient(java.lang.String, java.lang.String, com.google.firebase.remoteconfig.internal.ConfigMetadataClient)
+    {
+        android.content.Context $r4;
+        com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient $r8;
+        com.google.firebase.remoteconfig.RemoteConfigComponent r0;
+        com.google.firebase.FirebaseOptions $r6;
+        long $l0, $l1;
+        com.google.firebase.remoteconfig.internal.ConfigMetadataClient $r3;
+        java.lang.String $r1, $r2, $r7;
+        com.google.firebase.FirebaseApp $r5;
+
+        r0 := @this: com.google.firebase.remoteconfig.RemoteConfigComponent;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: com.google.firebase.remoteconfig.internal.ConfigMetadataClient;
+
+        $r5 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.FirebaseApp firebaseApp>;
+
+        $r6 = virtualinvoke $r5.<com.google.firebase.FirebaseApp: com.google.firebase.FirebaseOptions getOptions()>();
+
+        $r7 = virtualinvoke $r6.<com.google.firebase.FirebaseOptions: java.lang.String getApplicationId()>();
+
+        $r8 = new com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient;
+
+        $r4 = r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: android.content.Context context>;
+
+        $l0 = virtualinvoke $r3.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: long getFetchTimeoutInSeconds()>();
+
+        $l1 = virtualinvoke $r3.<com.google.firebase.remoteconfig.internal.ConfigMetadataClient: long getFetchTimeoutInSeconds()>();
+
+        specialinvoke $r8.<com.google.firebase.remoteconfig.internal.ConfigFetchHttpClient: void <init>(android.content.Context,java.lang.String,java.lang.String,java.lang.String,long,long)>($r4, $r7, $r1, $r2, $l0, $l1);
+
+        return $r8;
+    }
+
+    public void setCustomHeaders(java.util.Map)
+    {
+        java.lang.Throwable $r2;
+        com.google.firebase.remoteconfig.RemoteConfigComponent r0;
+        java.util.Map $r1;
+
+        r0 := @this: com.google.firebase.remoteconfig.RemoteConfigComponent;
+
+        $r1 := @parameter0: java.util.Map;
+
+        entermonitor r0;
+
+     label1:
+        r0.<com.google.firebase.remoteconfig.RemoteConfigComponent: java.util.Map customHeaders> = $r1;
+
+     label2:
+        exitmonitor r0;
+
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        exitmonitor r0;
+
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+}

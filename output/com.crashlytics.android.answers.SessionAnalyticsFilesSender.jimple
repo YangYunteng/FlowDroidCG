@@ -1,0 +1,157 @@
+public class com.crashlytics.android.answers.SessionAnalyticsFilesSender extends f.a.a.a.a.b.a implements f.a.a.a.a.d.g
+{
+    public static final java.lang.String FILE_CONTENT_TYPE;
+    public static final java.lang.String FILE_PARAM_NAME;
+    public final java.lang.String apiKey;
+
+    public void <init>(f.a.a.a.l, java.lang.String, java.lang.String, f.a.a.a.a.e.g, java.lang.String)
+    {
+        f.a.a.a.a.e.g $r4;
+        f.a.a.a.a.e.d $r6;
+        java.lang.String $r2, $r3, $r5;
+        com.crashlytics.android.answers.SessionAnalyticsFilesSender r0;
+        f.a.a.a.l $r1;
+
+        r0 := @this: com.crashlytics.android.answers.SessionAnalyticsFilesSender;
+
+        $r1 := @parameter0: f.a.a.a.l;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: java.lang.String;
+
+        $r4 := @parameter3: f.a.a.a.a.e.g;
+
+        $r5 := @parameter4: java.lang.String;
+
+        $r6 = <f.a.a.a.a.e.d: f.a.a.a.a.e.d b>;
+
+        specialinvoke r0.<f.a.a.a.a.b.a: void <init>(f.a.a.a.l,java.lang.String,java.lang.String,f.a.a.a.a.e.g,f.a.a.a.a.e.d)>($r1, $r2, $r3, $r4, $r6);
+
+        r0.<com.crashlytics.android.answers.SessionAnalyticsFilesSender: java.lang.String apiKey> = $r5;
+
+        return;
+    }
+
+    public boolean send(java.util.List)
+    {
+        f.a.a.a.o $r10;
+        io.fabric.sdk.android.services.network.HttpRequest $r2;
+        java.util.Iterator $r5;
+        com.crashlytics.android.answers.SessionAnalyticsFilesSender r0;
+        java.io.File $r7;
+        java.util.List $r1;
+        int $i0;
+        java.lang.Object $r6;
+        java.lang.StringBuilder $r8;
+        java.lang.String $r4, $r9;
+        f.a.a.a.l $r3;
+        boolean $z0;
+
+        r0 := @this: com.crashlytics.android.answers.SessionAnalyticsFilesSender;
+
+        $r1 := @parameter0: java.util.List;
+
+        $r2 = virtualinvoke r0.<f.a.a.a.a.b.a: io.fabric.sdk.android.services.network.HttpRequest getHttpRequest()>();
+
+        virtualinvoke $r2.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest c(java.lang.String,java.lang.String)>("X-CRASHLYTICS-API-CLIENT-TYPE", "android");
+
+        $r3 = r0.<f.a.a.a.a.b.a: f.a.a.a.l kit>;
+
+        $r4 = virtualinvoke $r3.<f.a.a.a.l: java.lang.String getVersion()>();
+
+        virtualinvoke $r2.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest c(java.lang.String,java.lang.String)>("X-CRASHLYTICS-API-CLIENT-VERSION", $r4);
+
+        $r4 = r0.<com.crashlytics.android.answers.SessionAnalyticsFilesSender: java.lang.String apiKey>;
+
+        virtualinvoke $r2.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest c(java.lang.String,java.lang.String)>("X-CRASHLYTICS-API-KEY", $r4);
+
+        $r5 = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+
+        $i0 = 0;
+
+     label1:
+        $z0 = interfaceinvoke $r5.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r6 = interfaceinvoke $r5.<java.util.Iterator: java.lang.Object next()>();
+
+        $r7 = (java.io.File) $r6;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("session_analytics_file_");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r4 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r9 = virtualinvoke $r7.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r2.<io.fabric.sdk.android.services.network.HttpRequest: io.fabric.sdk.android.services.network.HttpRequest a(java.lang.String,java.lang.String,java.lang.String,java.io.File)>($r4, $r9, "application/vnd.crashlytics.android.events", $r7);
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label2:
+        $r10 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Sending ");
+
+        $i0 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" analytics files to ");
+
+        $r4 = virtualinvoke r0.<f.a.a.a.a.b.a: java.lang.String getUrl()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r4 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r10.<f.a.a.a.o: void d(java.lang.String,java.lang.String)>("Answers", $r4);
+
+        $i0 = virtualinvoke $r2.<io.fabric.sdk.android.services.network.HttpRequest: int g()>();
+
+        $r10 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Response code for analytics file send is ");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r4 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r10.<f.a.a.a.o: void d(java.lang.String,java.lang.String)>("Answers", $r4);
+
+        $i0 = staticinvoke <f.a.a.a.a.b.D: int a(int)>($i0);
+
+        if $i0 != 0 goto label3;
+
+        return 1;
+
+     label3:
+        return 0;
+    }
+
+    public static void <clinit>()
+    {
+        <com.crashlytics.android.answers.SessionAnalyticsFilesSender: java.lang.String FILE_PARAM_NAME> = "session_analytics_file_";
+
+        <com.crashlytics.android.answers.SessionAnalyticsFilesSender: java.lang.String FILE_CONTENT_TYPE> = "application/vnd.crashlytics.android.events";
+
+        return;
+    }
+}

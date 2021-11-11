@@ -1,0 +1,398 @@
+public final class com.google.zxing.qrcode.decoder.Decoder extends java.lang.Object
+{
+    public final com.google.zxing.common.reedsolomon.ReedSolomonDecoder rsDecoder;
+
+    public void <init>()
+    {
+        com.google.zxing.qrcode.decoder.Decoder r0;
+        com.google.zxing.common.reedsolomon.ReedSolomonDecoder $r1;
+        com.google.zxing.common.reedsolomon.GenericGF $r2;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.Decoder;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r1 = new com.google.zxing.common.reedsolomon.ReedSolomonDecoder;
+
+        $r2 = <com.google.zxing.common.reedsolomon.GenericGF: com.google.zxing.common.reedsolomon.GenericGF QR_CODE_FIELD_256>;
+
+        specialinvoke $r1.<com.google.zxing.common.reedsolomon.ReedSolomonDecoder: void <init>(com.google.zxing.common.reedsolomon.GenericGF)>($r2);
+
+        r0.<com.google.zxing.qrcode.decoder.Decoder: com.google.zxing.common.reedsolomon.ReedSolomonDecoder rsDecoder> = $r1;
+
+        return;
+    }
+
+    private void correctErrors(byte[], int)
+    {
+        byte[] $r4;
+        com.google.zxing.qrcode.decoder.Decoder r0;
+        com.google.zxing.ChecksumException $r2;
+        short $s5;
+        byte $b4;
+        int[] $r1;
+        com.google.zxing.common.reedsolomon.ReedSolomonDecoder $r5;
+        int $i0, $i1, $i2, $i3, $i6;
+        com.google.zxing.common.reedsolomon.ReedSolomonException $r3;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.Decoder;
+
+        $r4 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 = lengthof $r4;
+
+        $r1 = newarray (int)[$i1];
+
+        $i2 = 0;
+
+        $i3 = 0;
+
+     label1:
+        if $i3 >= $i1 goto label2;
+
+        $b4 = $r4[$i3];
+
+        $s5 = (short) $b4;
+
+        $s5 = $s5 & 255;
+
+        $i6 = (int) $s5;
+
+        $r1[$i3] = $i6;
+
+        $i3 = $i3 + 1;
+
+        goto label1;
+
+     label2:
+        $i1 = lengthof $r4;
+
+        $i1 = $i1 - $i0;
+
+        $r5 = r0.<com.google.zxing.qrcode.decoder.Decoder: com.google.zxing.common.reedsolomon.ReedSolomonDecoder rsDecoder>;
+
+     label3:
+        virtualinvoke $r5.<com.google.zxing.common.reedsolomon.ReedSolomonDecoder: void decode(int[],int)>($r1, $i1);
+
+     label4:
+        if $i2 >= $i0 goto label5;
+
+        $i1 = $r1[$i2];
+
+        $b4 = (byte) $i1;
+
+        $r4[$i2] = $b4;
+
+        $i2 = $i2 + 1;
+
+        goto label4;
+
+     label5:
+        return;
+
+     label6:
+        $r2 = staticinvoke <com.google.zxing.ChecksumException: com.google.zxing.ChecksumException getChecksumInstance()>();
+
+        goto label7;
+
+     label7:
+        throw $r2;
+
+     label8:
+        $r3 := @caughtexception;
+
+        goto label6;
+
+        catch com.google.zxing.common.reedsolomon.ReedSolomonException from label3 to label4 with label8;
+    }
+
+    private com.google.zxing.common.DecoderResult decode(com.google.zxing.qrcode.decoder.BitMatrixParser, java.util.Map)
+    {
+        com.google.zxing.qrcode.decoder.DataBlock $r8;
+        byte[] $r6, $r9;
+        com.google.zxing.qrcode.decoder.Decoder r0;
+        com.google.zxing.qrcode.decoder.ErrorCorrectionLevel $r5;
+        byte $b1;
+        com.google.zxing.qrcode.decoder.FormatInformation $r4;
+        java.util.Map $r1;
+        int $i0, $i2, $i3, $i4, $i5, $i6;
+        com.google.zxing.qrcode.decoder.BitMatrixParser $r2;
+        com.google.zxing.common.DecoderResult $r10;
+        com.google.zxing.qrcode.decoder.Version $r3;
+        com.google.zxing.qrcode.decoder.DataBlock[] $r7;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.Decoder;
+
+        $r2 := @parameter0: com.google.zxing.qrcode.decoder.BitMatrixParser;
+
+        $r1 := @parameter1: java.util.Map;
+
+        $r3 = virtualinvoke $r2.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.qrcode.decoder.Version readVersion()>();
+
+        $r4 = virtualinvoke $r2.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.qrcode.decoder.FormatInformation readFormatInformation()>();
+
+        $r5 = virtualinvoke $r4.<com.google.zxing.qrcode.decoder.FormatInformation: com.google.zxing.qrcode.decoder.ErrorCorrectionLevel getErrorCorrectionLevel()>();
+
+        $r6 = virtualinvoke $r2.<com.google.zxing.qrcode.decoder.BitMatrixParser: byte[] readCodewords()>();
+
+        $r7 = staticinvoke <com.google.zxing.qrcode.decoder.DataBlock: com.google.zxing.qrcode.decoder.DataBlock[] getDataBlocks(byte[],com.google.zxing.qrcode.decoder.Version,com.google.zxing.qrcode.decoder.ErrorCorrectionLevel)>($r6, $r3, $r5);
+
+        $i2 = lengthof $r7;
+
+        $i3 = 0;
+
+        $i4 = 0;
+
+     label1:
+        if $i3 >= $i2 goto label2;
+
+        $r8 = $r7[$i3];
+
+        $i0 = virtualinvoke $r8.<com.google.zxing.qrcode.decoder.DataBlock: int getNumDataCodewords()>();
+
+        $i4 = $i4 + $i0;
+
+        $i3 = $i3 + 1;
+
+        goto label1;
+
+     label2:
+        $r6 = newarray (byte)[$i4];
+
+        $i2 = lengthof $r7;
+
+        $i3 = 0;
+
+        $i0 = 0;
+
+     label3:
+        if $i3 >= $i2 goto label6;
+
+        $r8 = $r7[$i3];
+
+        $r9 = virtualinvoke $r8.<com.google.zxing.qrcode.decoder.DataBlock: byte[] getCodewords()>();
+
+        $i4 = virtualinvoke $r8.<com.google.zxing.qrcode.decoder.DataBlock: int getNumDataCodewords()>();
+
+        specialinvoke r0.<com.google.zxing.qrcode.decoder.Decoder: void correctErrors(byte[],int)>($r9, $i4);
+
+        $i5 = $i0;
+
+        $i6 = 0;
+
+     label4:
+        if $i6 >= $i4 goto label5;
+
+        $b1 = $r9[$i6];
+
+        $r6[$i5] = $b1;
+
+        $i6 = $i6 + 1;
+
+        $i5 = $i5 + 1;
+
+        goto label4;
+
+     label5:
+        $i3 = $i3 + 1;
+
+        $i0 = $i5;
+
+        goto label3;
+
+     label6:
+        $r10 = staticinvoke <com.google.zxing.qrcode.decoder.DecodedBitStreamParser: com.google.zxing.common.DecoderResult decode(byte[],com.google.zxing.qrcode.decoder.Version,com.google.zxing.qrcode.decoder.ErrorCorrectionLevel,java.util.Map)>($r6, $r3, $r5, $r1);
+
+        return $r10;
+    }
+
+    public com.google.zxing.common.DecoderResult decode(com.google.zxing.common.BitMatrix)
+    {
+        com.google.zxing.common.DecoderResult $r1;
+        com.google.zxing.qrcode.decoder.Decoder r0;
+        com.google.zxing.common.BitMatrix $r2;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.Decoder;
+
+        $r2 := @parameter0: com.google.zxing.common.BitMatrix;
+
+        $r1 = virtualinvoke r0.<com.google.zxing.qrcode.decoder.Decoder: com.google.zxing.common.DecoderResult decode(com.google.zxing.common.BitMatrix,java.util.Map)>($r2, null);
+
+        return $r1;
+    }
+
+    public com.google.zxing.common.DecoderResult decode(com.google.zxing.common.BitMatrix, java.util.Map)
+    {
+        com.google.zxing.qrcode.decoder.BitMatrixParser $r3;
+        com.google.zxing.qrcode.decoder.Decoder r0;
+        com.google.zxing.ChecksumException $r6, $r8;
+        com.google.zxing.qrcode.decoder.QRCodeDecoderMetaData $r7;
+        com.google.zxing.common.DecoderResult $r5;
+        java.util.Map $r2;
+        com.google.zxing.common.BitMatrix $r1;
+        com.google.zxing.FormatException $r4, $r9;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.Decoder;
+
+        $r1 := @parameter0: com.google.zxing.common.BitMatrix;
+
+        $r2 := @parameter1: java.util.Map;
+
+        $r3 = new com.google.zxing.qrcode.decoder.BitMatrixParser;
+
+        specialinvoke $r3.<com.google.zxing.qrcode.decoder.BitMatrixParser: void <init>(com.google.zxing.common.BitMatrix)>($r1);
+
+        $r4 = null;
+
+     label01:
+        $r5 = specialinvoke r0.<com.google.zxing.qrcode.decoder.Decoder: com.google.zxing.common.DecoderResult decode(com.google.zxing.qrcode.decoder.BitMatrixParser,java.util.Map)>($r3, $r2);
+
+     label02:
+        return $r5;
+
+     label03:
+        $r6 := @caughtexception;
+
+        goto label05;
+
+     label04:
+        $r4 := @caughtexception;
+
+        $r6 = null;
+
+     label05:
+        virtualinvoke $r3.<com.google.zxing.qrcode.decoder.BitMatrixParser: void remask()>();
+
+        virtualinvoke $r3.<com.google.zxing.qrcode.decoder.BitMatrixParser: void setMirror(boolean)>(1);
+
+        virtualinvoke $r3.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.qrcode.decoder.Version readVersion()>();
+
+        virtualinvoke $r3.<com.google.zxing.qrcode.decoder.BitMatrixParser: com.google.zxing.qrcode.decoder.FormatInformation readFormatInformation()>();
+
+        virtualinvoke $r3.<com.google.zxing.qrcode.decoder.BitMatrixParser: void mirror()>();
+
+        $r5 = specialinvoke r0.<com.google.zxing.qrcode.decoder.Decoder: com.google.zxing.common.DecoderResult decode(com.google.zxing.qrcode.decoder.BitMatrixParser,java.util.Map)>($r3, $r2);
+
+     label06:
+        $r7 = new com.google.zxing.qrcode.decoder.QRCodeDecoderMetaData;
+
+     label07:
+        specialinvoke $r7.<com.google.zxing.qrcode.decoder.QRCodeDecoderMetaData: void <init>(boolean)>(1);
+
+        virtualinvoke $r5.<com.google.zxing.common.DecoderResult: void setOther(java.lang.Object)>($r7);
+
+     label08:
+        return $r5;
+
+     label09:
+        $r8 := @caughtexception;
+
+        if $r4 != null goto label11;
+
+        if $r6 == null goto label10;
+
+        throw $r6;
+
+     label10:
+        throw $r8;
+
+     label11:
+        throw $r4;
+
+     label12:
+        $r9 := @caughtexception;
+
+        if $r4 != null goto label14;
+
+        if $r6 == null goto label13;
+
+        throw $r6;
+
+     label13:
+        throw $r9;
+
+     label14:
+        throw $r4;
+
+        catch com.google.zxing.FormatException from label01 to label02 with label04;
+        catch com.google.zxing.ChecksumException from label01 to label02 with label03;
+        catch com.google.zxing.FormatException from label05 to label06 with label12;
+        catch com.google.zxing.FormatException from label07 to label08 with label12;
+        catch com.google.zxing.ChecksumException from label05 to label06 with label09;
+        catch com.google.zxing.ChecksumException from label07 to label08 with label09;
+    }
+
+    public com.google.zxing.common.DecoderResult decode(boolean[][])
+    {
+        com.google.zxing.common.DecoderResult $r1;
+        com.google.zxing.qrcode.decoder.Decoder r0;
+        boolean[][] $r2;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.Decoder;
+
+        $r2 := @parameter0: boolean[][];
+
+        $r1 = virtualinvoke r0.<com.google.zxing.qrcode.decoder.Decoder: com.google.zxing.common.DecoderResult decode(boolean[][],java.util.Map)>($r2, null);
+
+        return $r1;
+    }
+
+    public com.google.zxing.common.DecoderResult decode(boolean[][], java.util.Map)
+    {
+        com.google.zxing.qrcode.decoder.Decoder r0;
+        boolean[] $r5;
+        com.google.zxing.common.DecoderResult $r3;
+        java.util.Map $r1;
+        int $i0, $i1, $i2;
+        com.google.zxing.common.BitMatrix $r2;
+        boolean[][] $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.qrcode.decoder.Decoder;
+
+        $r4 := @parameter0: boolean[][];
+
+        $r1 := @parameter1: java.util.Map;
+
+        $i0 = lengthof $r4;
+
+        $r2 = new com.google.zxing.common.BitMatrix;
+
+        specialinvoke $r2.<com.google.zxing.common.BitMatrix: void <init>(int)>($i0);
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label5;
+
+        $i2 = 0;
+
+     label2:
+        if $i2 >= $i0 goto label4;
+
+        $r5 = $r4[$i1];
+
+        $z0 = $r5[$i2];
+
+        if $z0 == 0 goto label3;
+
+        virtualinvoke $r2.<com.google.zxing.common.BitMatrix: void set(int,int)>($i2, $i1);
+
+     label3:
+        $i2 = $i2 + 1;
+
+        goto label2;
+
+     label4:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label5:
+        $r3 = virtualinvoke r0.<com.google.zxing.qrcode.decoder.Decoder: com.google.zxing.common.DecoderResult decode(com.google.zxing.common.BitMatrix,java.util.Map)>($r2, $r1);
+
+        return $r3;
+    }
+}

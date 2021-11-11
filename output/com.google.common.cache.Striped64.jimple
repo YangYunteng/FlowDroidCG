@@ -1,0 +1,568 @@
+public abstract class com.google.common.cache.Striped64 extends java.lang.Number
+{
+    public static final int NCPU;
+    public static final sun.misc.Unsafe UNSAFE;
+    public static final long baseOffset;
+    public static final long busyOffset;
+    public static final java.util.Random rng;
+    public static final java.lang.ThreadLocal threadHashCode;
+    public transient volatile long base;
+    public transient volatile int busy;
+    public transient volatile com.google.common.cache.Striped64$Cell[] cells;
+
+    static void <clinit>()
+    {
+        sun.misc.Unsafe $r3;
+        java.lang.ThreadLocal $r0;
+        java.lang.Runtime $r2;
+        java.lang.Error $r7;
+        java.util.Random $r1;
+        long $l1;
+        java.lang.reflect.Field $r5;
+        java.lang.Exception $r6;
+        int $i0;
+        java.lang.Class $r4;
+
+        $r0 = new java.lang.ThreadLocal;
+
+        specialinvoke $r0.<java.lang.ThreadLocal: void <init>()>();
+
+        <com.google.common.cache.Striped64: java.lang.ThreadLocal threadHashCode> = $r0;
+
+        $r1 = new java.util.Random;
+
+        specialinvoke $r1.<java.util.Random: void <init>()>();
+
+        <com.google.common.cache.Striped64: java.util.Random rng> = $r1;
+
+        $r2 = staticinvoke <java.lang.Runtime: java.lang.Runtime getRuntime()>();
+
+        $i0 = virtualinvoke $r2.<java.lang.Runtime: int availableProcessors()>();
+
+        <com.google.common.cache.Striped64: int NCPU> = $i0;
+
+     label1:
+        $r3 = staticinvoke <com.google.common.cache.Striped64: sun.misc.Unsafe getUnsafe()>();
+
+     label2:
+        <com.google.common.cache.Striped64: sun.misc.Unsafe UNSAFE> = $r3;
+
+        $r4 = class "Lcom/google/common/cache/Striped64;";
+
+        $r3 = <com.google.common.cache.Striped64: sun.misc.Unsafe UNSAFE>;
+
+     label3:
+        $r5 = virtualinvoke $r4.<java.lang.Class: java.lang.reflect.Field getDeclaredField(java.lang.String)>("base");
+
+        $l1 = virtualinvoke $r3.<sun.misc.Unsafe: long objectFieldOffset(java.lang.reflect.Field)>($r5);
+
+     label4:
+        <com.google.common.cache.Striped64: long baseOffset> = $l1;
+
+        $r3 = <com.google.common.cache.Striped64: sun.misc.Unsafe UNSAFE>;
+
+     label5:
+        $r5 = virtualinvoke $r4.<java.lang.Class: java.lang.reflect.Field getDeclaredField(java.lang.String)>("busy");
+
+        $l1 = virtualinvoke $r3.<sun.misc.Unsafe: long objectFieldOffset(java.lang.reflect.Field)>($r5);
+
+     label6:
+        <com.google.common.cache.Striped64: long busyOffset> = $l1;
+
+        return;
+
+     label7:
+        $r6 := @caughtexception;
+
+        $r7 = new java.lang.Error;
+
+        specialinvoke $r7.<java.lang.Error: void <init>(java.lang.Throwable)>($r6);
+
+        throw $r7;
+
+        catch java.lang.Exception from label1 to label2 with label7;
+        catch java.lang.Exception from label3 to label4 with label7;
+        catch java.lang.Exception from label5 to label6 with label7;
+    }
+
+    public void <init>()
+    {
+        com.google.common.cache.Striped64 r0;
+
+        r0 := @this: com.google.common.cache.Striped64;
+
+        specialinvoke r0.<java.lang.Number: void <init>()>();
+
+        return;
+    }
+
+    public static sun.misc.Unsafe access$000()
+    {
+        sun.misc.Unsafe $r0;
+
+        $r0 = staticinvoke <com.google.common.cache.Striped64: sun.misc.Unsafe getUnsafe()>();
+
+        return $r0;
+    }
+
+    public static sun.misc.Unsafe getUnsafe()
+    {
+        sun.misc.Unsafe $r2;
+        java.lang.Throwable $r6;
+        java.security.PrivilegedActionException $r5;
+        com.google.common.cache.Striped64$1 $r3;
+        java.lang.SecurityException $r1;
+        java.lang.Object $r4;
+        java.lang.RuntimeException $r0;
+
+     label1:
+        $r2 = staticinvoke <sun.misc.Unsafe: sun.misc.Unsafe getUnsafe()>();
+
+     label2:
+        return $r2;
+
+     label3:
+        $r3 = new com.google.common.cache.Striped64$1;
+
+     label4:
+        specialinvoke $r3.<com.google.common.cache.Striped64$1: void <init>()>();
+
+        $r4 = staticinvoke <java.security.AccessController: java.lang.Object doPrivileged(java.security.PrivilegedExceptionAction)>($r3);
+
+     label5:
+        $r2 = (sun.misc.Unsafe) $r4;
+
+        return $r2;
+
+     label6:
+        $r5 := @caughtexception;
+
+        $r0 = new java.lang.RuntimeException;
+
+        $r6 = virtualinvoke $r5.<java.security.PrivilegedActionException: java.lang.Throwable getCause()>();
+
+        specialinvoke $r0.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>("Could not initialize intrinsics", $r6);
+
+        throw $r0;
+
+     label7:
+        $r1 := @caughtexception;
+
+        goto label3;
+
+        catch java.lang.SecurityException from label1 to label2 with label7;
+        catch java.security.PrivilegedActionException from label4 to label5 with label6;
+    }
+
+    public final boolean casBase(long, long)
+    {
+        sun.misc.Unsafe $r1;
+        long $l0, $l1, $l2;
+        com.google.common.cache.Striped64 r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.Striped64;
+
+        $l2 := @parameter0: long;
+
+        $l0 := @parameter1: long;
+
+        $r1 = <com.google.common.cache.Striped64: sun.misc.Unsafe UNSAFE>;
+
+        $l1 = <com.google.common.cache.Striped64: long baseOffset>;
+
+        $z0 = virtualinvoke $r1.<sun.misc.Unsafe: boolean compareAndSwapLong(java.lang.Object,long,long,long)>(r0, $l1, $l2, $l0);
+
+        return $z0;
+    }
+
+    public final boolean casBusy()
+    {
+        sun.misc.Unsafe $r1;
+        long $l0;
+        com.google.common.cache.Striped64 r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.cache.Striped64;
+
+        $r1 = <com.google.common.cache.Striped64: sun.misc.Unsafe UNSAFE>;
+
+        $l0 = <com.google.common.cache.Striped64: long busyOffset>;
+
+        $z0 = virtualinvoke $r1.<sun.misc.Unsafe: boolean compareAndSwapInt(java.lang.Object,long,int,int)>(r0, $l0, 0, 1);
+
+        return $z0;
+    }
+
+    public abstract long fn(long, long);
+
+    public final void internalReset(long)
+    {
+        int $i1, $i2;
+        long $l0;
+        com.google.common.cache.Striped64$Cell[] $r1;
+        com.google.common.cache.Striped64$Cell $r2;
+        com.google.common.cache.Striped64 r0;
+
+        r0 := @this: com.google.common.cache.Striped64;
+
+        $l0 := @parameter0: long;
+
+        $r1 = r0.<com.google.common.cache.Striped64: com.google.common.cache.Striped64$Cell[] cells>;
+
+        r0.<com.google.common.cache.Striped64: long base> = $l0;
+
+        if $r1 == null goto label3;
+
+        $i1 = lengthof $r1;
+
+        $i2 = 0;
+
+     label1:
+        if $i2 >= $i1 goto label3;
+
+        $r2 = $r1[$i2];
+
+        if $r2 == null goto label2;
+
+        $r2.<com.google.common.cache.Striped64$Cell: long value> = $l0;
+
+     label2:
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    public final void retryUpdate(long, int[], boolean)
+    {
+        java.lang.Throwable $r7, $r9, $r10;
+        long $l0, $l4, $l5;
+        java.util.Random $r3;
+        com.google.common.cache.Striped64$Cell[] $r4, $r8;
+        int[] $r1;
+        int $i1, $i2, $i3;
+        boolean $z0, $z1, $z2;
+        java.lang.ThreadLocal $r2;
+        com.google.common.cache.Striped64 r0;
+        com.google.common.cache.Striped64$Cell $r5, $r6;
+
+        r0 := @this: com.google.common.cache.Striped64;
+
+        $l0 := @parameter0: long;
+
+        $r1 := @parameter1: int[];
+
+        $z0 := @parameter2: boolean;
+
+        if $r1 != null goto label02;
+
+        $r2 = <com.google.common.cache.Striped64: java.lang.ThreadLocal threadHashCode>;
+
+        $r1 = newarray (int)[1];
+
+        virtualinvoke $r2.<java.lang.ThreadLocal: void set(java.lang.Object)>($r1);
+
+        $r3 = <com.google.common.cache.Striped64: java.util.Random rng>;
+
+        $i1 = virtualinvoke $r3.<java.util.Random: int nextInt()>();
+
+        $i2 = $i1;
+
+        if $i1 != 0 goto label01;
+
+        $i2 = 1;
+
+     label01:
+        $r1[0] = $i2;
+
+        goto label03;
+
+     label02:
+        $i2 = $r1[0];
+
+     label03:
+        $z1 = 0;
+
+     label04:
+        $r4 = r0.<com.google.common.cache.Striped64: com.google.common.cache.Striped64$Cell[] cells>;
+
+        if $r4 == null goto label33;
+
+        $i1 = lengthof $r4;
+
+        if $i1 <= 0 goto label33;
+
+        $i3 = -1;
+
+        $i3 = $i1 + $i3;
+
+        $i3 = $i3 & $i2;
+
+        $r5 = $r4[$i3];
+
+        if $r5 != null goto label17;
+
+        $i1 = r0.<com.google.common.cache.Striped64: int busy>;
+
+        if $i1 != 0 goto label16;
+
+        $r6 = new com.google.common.cache.Striped64$Cell;
+
+        $r5 = $r6;
+
+        specialinvoke $r6.<com.google.common.cache.Striped64$Cell: void <init>(long)>($l0);
+
+        $i1 = r0.<com.google.common.cache.Striped64: int busy>;
+
+        if $i1 != 0 goto label16;
+
+        $z2 = virtualinvoke r0.<com.google.common.cache.Striped64: boolean casBusy()>();
+
+        if $z2 == 0 goto label16;
+
+     label05:
+        $r4 = r0.<com.google.common.cache.Striped64: com.google.common.cache.Striped64$Cell[] cells>;
+
+     label06:
+        if $r4 == null goto label13;
+
+     label07:
+        $i1 = lengthof $r4;
+
+     label08:
+        if $i1 <= 0 goto label13;
+
+        $i3 = -1;
+
+        $i1 = $i1 + $i3;
+
+        $i1 = $i1 & $i2;
+
+     label09:
+        $r6 = $r4[$i1];
+
+     label10:
+        if $r6 != null goto label13;
+
+     label11:
+        $r4[$i1] = $r5;
+
+     label12:
+        $z2 = 1;
+
+        goto label14;
+
+     label13:
+        $z2 = 0;
+
+     label14:
+        r0.<com.google.common.cache.Striped64: int busy> = 0;
+
+        if $z2 == 0 goto label04;
+
+        return;
+
+     label15:
+        $r7 := @caughtexception;
+
+        r0.<com.google.common.cache.Striped64: int busy> = 0;
+
+        throw $r7;
+
+     label16:
+        $z1 = 0;
+
+        goto label32;
+
+     label17:
+        if $z0 != 0 goto label18;
+
+        $z0 = 1;
+
+        goto label32;
+
+     label18:
+        $l4 = $r5.<com.google.common.cache.Striped64$Cell: long value>;
+
+        $l5 = virtualinvoke r0.<com.google.common.cache.Striped64: long fn(long,long)>($l4, $l0);
+
+        $z2 = virtualinvoke $r5.<com.google.common.cache.Striped64$Cell: boolean cas(long,long)>($l4, $l5);
+
+        if $z2 == 0 goto label19;
+
+        return;
+
+     label19:
+        $i3 = <com.google.common.cache.Striped64: int NCPU>;
+
+        if $i1 >= $i3 goto label16;
+
+        $r8 = r0.<com.google.common.cache.Striped64: com.google.common.cache.Striped64$Cell[] cells>;
+
+        if $r8 == $r4 goto label20;
+
+        goto label16;
+
+     label20:
+        if $z1 != 0 goto label21;
+
+        $z1 = 1;
+
+        goto label32;
+
+     label21:
+        $i3 = r0.<com.google.common.cache.Striped64: int busy>;
+
+        if $i3 != 0 goto label32;
+
+        $z2 = virtualinvoke r0.<com.google.common.cache.Striped64: boolean casBusy()>();
+
+        if $z2 == 0 goto label32;
+
+     label22:
+        $r8 = r0.<com.google.common.cache.Striped64: com.google.common.cache.Striped64$Cell[] cells>;
+
+     label23:
+        if $r8 != $r4 goto label30;
+
+        $i3 = $i1 << 1;
+
+     label24:
+        $r8 = newarray (com.google.common.cache.Striped64$Cell)[$i3];
+
+     label25:
+        $i3 = 0;
+
+     label26:
+        if $i3 >= $i1 goto label29;
+
+     label27:
+        $r5 = $r4[$i3];
+
+        $r8[$i3] = $r5;
+
+     label28:
+        $i3 = $i3 + 1;
+
+        goto label26;
+
+     label29:
+        r0.<com.google.common.cache.Striped64: com.google.common.cache.Striped64$Cell[] cells> = $r8;
+
+     label30:
+        r0.<com.google.common.cache.Striped64: int busy> = 0;
+
+        goto label03;
+
+     label31:
+        $r9 := @caughtexception;
+
+        r0.<com.google.common.cache.Striped64: int busy> = 0;
+
+        throw $r9;
+
+     label32:
+        $i1 = $i2 << 13;
+
+        $i2 = $i2 ^ $i1;
+
+        $i1 = $i2 >>> 17;
+
+        $i2 = $i2 ^ $i1;
+
+        $i1 = $i2 << 5;
+
+        $i2 = $i2 ^ $i1;
+
+        $r1[0] = $i2;
+
+        goto label04;
+
+     label33:
+        $i1 = r0.<com.google.common.cache.Striped64: int busy>;
+
+        if $i1 != 0 goto label45;
+
+        $r8 = r0.<com.google.common.cache.Striped64: com.google.common.cache.Striped64$Cell[] cells>;
+
+        if $r8 != $r4 goto label45;
+
+        $z2 = virtualinvoke r0.<com.google.common.cache.Striped64: boolean casBusy()>();
+
+        if $z2 == 0 goto label45;
+
+     label34:
+        $r8 = r0.<com.google.common.cache.Striped64: com.google.common.cache.Striped64$Cell[] cells>;
+
+     label35:
+        if $r8 != $r4 goto label42;
+
+     label36:
+        $r4 = newarray (com.google.common.cache.Striped64$Cell)[2];
+
+     label37:
+        $i1 = $i2 & 1;
+
+     label38:
+        $r6 = new com.google.common.cache.Striped64$Cell;
+
+     label39:
+        $r5 = $r6;
+
+     label40:
+        specialinvoke $r6.<com.google.common.cache.Striped64$Cell: void <init>(long)>($l0);
+
+        $r4[$i1] = $r5;
+
+        r0.<com.google.common.cache.Striped64: com.google.common.cache.Striped64$Cell[] cells> = $r4;
+
+     label41:
+        $z2 = 1;
+
+        goto label43;
+
+     label42:
+        $z2 = 0;
+
+     label43:
+        r0.<com.google.common.cache.Striped64: int busy> = 0;
+
+        if $z2 == 0 goto label04;
+
+        return;
+
+     label44:
+        $r10 := @caughtexception;
+
+        r0.<com.google.common.cache.Striped64: int busy> = 0;
+
+        throw $r10;
+
+     label45:
+        $l4 = r0.<com.google.common.cache.Striped64: long base>;
+
+        $l5 = virtualinvoke r0.<com.google.common.cache.Striped64: long fn(long,long)>($l4, $l0);
+
+        $z2 = virtualinvoke r0.<com.google.common.cache.Striped64: boolean casBase(long,long)>($l4, $l5);
+
+        if $z2 == 0 goto label04;
+
+        return;
+
+        catch java.lang.Throwable from label05 to label06 with label15;
+        catch java.lang.Throwable from label07 to label08 with label15;
+        catch java.lang.Throwable from label09 to label10 with label15;
+        catch java.lang.Throwable from label11 to label12 with label15;
+        catch java.lang.Throwable from label22 to label23 with label31;
+        catch java.lang.Throwable from label24 to label25 with label31;
+        catch java.lang.Throwable from label27 to label28 with label31;
+        catch java.lang.Throwable from label29 to label30 with label31;
+        catch java.lang.Throwable from label34 to label35 with label44;
+        catch java.lang.Throwable from label36 to label37 with label44;
+        catch java.lang.Throwable from label38 to label39 with label44;
+        catch java.lang.Throwable from label40 to label41 with label44;
+    }
+}

@@ -1,0 +1,1302 @@
+public final class org.codehaus.jackson.util.TokenBuffer$Parser extends org.codehaus.jackson.impl.JsonParserMinimalBase
+{
+    public transient org.codehaus.jackson.util.ByteArrayBuilder _byteBuilder;
+    public boolean _closed;
+    public org.codehaus.jackson.ObjectCodec _codec;
+    public org.codehaus.jackson.JsonLocation _location;
+    public org.codehaus.jackson.impl.JsonReadContext _parsingContext;
+    public org.codehaus.jackson.util.TokenBuffer$Segment _segment;
+    public int _segmentPtr;
+
+    public void <init>(org.codehaus.jackson.util.TokenBuffer$Segment, org.codehaus.jackson.ObjectCodec)
+    {
+        org.codehaus.jackson.util.TokenBuffer$Segment $r3;
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        org.codehaus.jackson.impl.JsonReadContext $r2;
+        org.codehaus.jackson.ObjectCodec $r1;
+        int $i0, $i1;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r3 := @parameter0: org.codehaus.jackson.util.TokenBuffer$Segment;
+
+        $r1 := @parameter1: org.codehaus.jackson.ObjectCodec;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void <init>(int)>(0);
+
+        r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.JsonLocation _location> = null;
+
+        r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.util.TokenBuffer$Segment _segment> = $r3;
+
+        $i0 = -1;
+
+        r0.<org.codehaus.jackson.util.TokenBuffer$Parser: int _segmentPtr> = $i0;
+
+        r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.ObjectCodec _codec> = $r1;
+
+        $i0 = -1;
+
+        $i1 = -1;
+
+        $r2 = staticinvoke <org.codehaus.jackson.impl.JsonReadContext: org.codehaus.jackson.impl.JsonReadContext createRootContext(int,int)>($i0, $i1);
+
+        r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.impl.JsonReadContext _parsingContext> = $r2;
+
+        return;
+    }
+
+    public final void _checkIsNumber()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        org.codehaus.jackson.JsonToken $r1;
+        org.codehaus.jackson.JsonParseException $r4;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        if $r1 == null goto label1;
+
+        $z0 = virtualinvoke $r1.<org.codehaus.jackson.JsonToken: boolean isNumeric()>();
+
+        if $z0 == 0 goto label1;
+
+        return;
+
+     label1:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Current token (");
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r1);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") not numeric, can not use numeric value accessors");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r4 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonParseException _constructError(java.lang.String)>($r3);
+
+        throw $r4;
+    }
+
+    public final java.lang.Object _currentObject()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Segment $r2;
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        int $i0;
+        java.lang.Object $r1;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r2 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.util.TokenBuffer$Segment _segment>;
+
+        $i0 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: int _segmentPtr>;
+
+        $r1 = virtualinvoke $r2.<org.codehaus.jackson.util.TokenBuffer$Segment: java.lang.Object get(int)>($i0);
+
+        return $r1;
+    }
+
+    public void _decodeBase64(java.lang.String, org.codehaus.jackson.util.ByteArrayBuilder, org.codehaus.jackson.Base64Variant)
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        char $c3, $c5;
+        org.codehaus.jackson.Base64Variant $r3;
+        int $i0, $i1, $i2, $i4, $i6;
+        java.lang.StringBuilder $r4, $r6;
+        java.lang.String $r1, $r5;
+        org.codehaus.jackson.util.ByteArrayBuilder $r2;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: org.codehaus.jackson.util.ByteArrayBuilder;
+
+        $r3 := @parameter2: org.codehaus.jackson.Base64Variant;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $i1 = 0;
+
+     label01:
+        if $i1 >= $i0 goto label17;
+
+     label02:
+        $i2 = $i1 + 1;
+
+        $c3 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i1);
+
+        if $i2 < $i0 goto label03;
+
+        return;
+
+     label03:
+        $i1 = (int) $c3;
+
+        if $i1 <= 32 goto label16;
+
+        $i4 = virtualinvoke $r3.<org.codehaus.jackson.Base64Variant: int decodeBase64Char(char)>($c3);
+
+        if $i4 >= 0 goto label04;
+
+        virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: void _reportInvalidBase64(org.codehaus.jackson.Base64Variant,char,int,java.lang.String)>($r3, $c3, 0, null);
+
+     label04:
+        if $i2 < $i0 goto label05;
+
+        virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: void _reportBase64EOF()>();
+
+     label05:
+        $i1 = $i2 + 1;
+
+        $c3 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i2);
+
+        $i2 = virtualinvoke $r3.<org.codehaus.jackson.Base64Variant: int decodeBase64Char(char)>($c3);
+
+        if $i2 >= 0 goto label06;
+
+        virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: void _reportInvalidBase64(org.codehaus.jackson.Base64Variant,char,int,java.lang.String)>($r3, $c3, 1, null);
+
+     label06:
+        $i4 = $i4 << 6;
+
+        $i4 = $i4 | $i2;
+
+        if $i1 < $i0 goto label07;
+
+        virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: void _reportBase64EOF()>();
+
+     label07:
+        $i2 = $i1 + 1;
+
+        $c3 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i1);
+
+        $i1 = virtualinvoke $r3.<org.codehaus.jackson.Base64Variant: int decodeBase64Char(char)>($c3);
+
+        if $i1 >= 0 goto label11;
+
+        $i6 = -2;
+
+        if $i1 == $i6 goto label08;
+
+        virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: void _reportInvalidBase64(org.codehaus.jackson.Base64Variant,char,int,java.lang.String)>($r3, $c3, 2, null);
+
+     label08:
+        if $i2 < $i0 goto label09;
+
+        virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: void _reportBase64EOF()>();
+
+     label09:
+        $i1 = $i2 + 1;
+
+        $c3 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i2);
+
+        $z0 = virtualinvoke $r3.<org.codehaus.jackson.Base64Variant: boolean usesPaddingChar(char)>($c3);
+
+        if $z0 != 0 goto label10;
+
+        $r6 = new java.lang.StringBuilder;
+
+        $r4 = $r6;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("expected padding character \'");
+
+        $c5 = virtualinvoke $r3.<org.codehaus.jackson.Base64Variant: char getPaddingChar()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c5);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: void _reportInvalidBase64(org.codehaus.jackson.Base64Variant,char,int,java.lang.String)>($r3, $c3, 3, $r5);
+
+     label10:
+        $i2 = $i4 >> 4;
+
+        virtualinvoke $r2.<org.codehaus.jackson.util.ByteArrayBuilder: void append(int)>($i2);
+
+        goto label01;
+
+     label11:
+        $i4 = $i4 << 6;
+
+        $i4 = $i4 | $i1;
+
+        if $i2 < $i0 goto label12;
+
+        virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: void _reportBase64EOF()>();
+
+     label12:
+        $i1 = $i2 + 1;
+
+        $c3 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i2);
+
+        $i2 = virtualinvoke $r3.<org.codehaus.jackson.Base64Variant: int decodeBase64Char(char)>($c3);
+
+        if $i2 >= 0 goto label14;
+
+        $i6 = -2;
+
+        if $i2 == $i6 goto label13;
+
+        virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: void _reportInvalidBase64(org.codehaus.jackson.Base64Variant,char,int,java.lang.String)>($r3, $c3, 3, null);
+
+     label13:
+        $i2 = $i4 >> 2;
+
+        virtualinvoke $r2.<org.codehaus.jackson.util.ByteArrayBuilder: void appendTwoBytes(int)>($i2);
+
+        goto label15;
+
+     label14:
+        $i4 = $i4 << 6;
+
+        $i2 = $i4 | $i2;
+
+        virtualinvoke $r2.<org.codehaus.jackson.util.ByteArrayBuilder: void appendThreeBytes(int)>($i2);
+
+     label15:
+        goto label01;
+
+     label16:
+        $i1 = $i2;
+
+        goto label02;
+
+     label17:
+        return;
+    }
+
+    public void _handleEOF()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _throwInternal()>();
+
+        return;
+    }
+
+    public void _reportBase64EOF()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        org.codehaus.jackson.JsonParseException $r1;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonParseException _constructError(java.lang.String)>("Unexpected end-of-String in base64 content");
+
+        throw $r1;
+    }
+
+    public void _reportInvalidBase64(org.codehaus.jackson.Base64Variant, char, int, java.lang.String)
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        char $c0;
+        org.codehaus.jackson.JsonParseException $r5;
+        org.codehaus.jackson.Base64Variant $r2;
+        int $i1, $i2;
+        java.lang.StringBuilder $r3, $r6;
+        java.lang.String $r1, $r4;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r2 := @parameter0: org.codehaus.jackson.Base64Variant;
+
+        $c0 := @parameter1: char;
+
+        $i1 := @parameter2: int;
+
+        $r1 := @parameter3: java.lang.String;
+
+        $i2 = (int) $c0;
+
+        if $i2 > 32 goto label1;
+
+        $r6 = new java.lang.StringBuilder;
+
+        $r3 = $r6;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal white space character (code 0x");
+
+        $i2 = (int) $c0;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i2);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") as character #");
+
+        $i1 = $i1 + 1;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" of 4-char base64 unit: can only used between units");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label5;
+
+     label1:
+        $z0 = virtualinvoke $r2.<org.codehaus.jackson.Base64Variant: boolean usesPaddingChar(char)>($c0);
+
+        if $z0 == 0 goto label2;
+
+        $r6 = new java.lang.StringBuilder;
+
+        $r3 = $r6;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected padding character (\'");
+
+        $c0 = virtualinvoke $r2.<org.codehaus.jackson.Base64Variant: char getPaddingChar()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\') as character #");
+
+        $i1 = $i1 + 1;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" of 4-char base64 unit: padding only legal as 3rd or 4th character");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label5;
+
+     label2:
+        $z0 = staticinvoke <java.lang.Character: boolean isDefined(char)>($c0);
+
+        if $z0 == 0 goto label4;
+
+        $z0 = staticinvoke <java.lang.Character: boolean isISOControl(char)>($c0);
+
+        if $z0 == 0 goto label3;
+
+        goto label4;
+
+     label3:
+        $r6 = new java.lang.StringBuilder;
+
+        $r3 = $r6;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal character \'");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' (code 0x");
+
+        $i1 = (int) $c0;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i1);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") in base64 content");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label5;
+
+     label4:
+        $r6 = new java.lang.StringBuilder;
+
+        $r3 = $r6;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal character (code 0x");
+
+        $i1 = (int) $c0;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.String toHexString(int)>($i1);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") in base64 content");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label5:
+        if $r1 == null goto label6;
+
+        $r6 = new java.lang.StringBuilder;
+
+        $r3 = $r6;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": ");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label6:
+        $r5 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonParseException _constructError(java.lang.String)>($r4);
+
+        throw $r5;
+    }
+
+    public void close()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $z0 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: boolean _closed>;
+
+        if $z0 != 0 goto label1;
+
+        r0.<org.codehaus.jackson.util.TokenBuffer$Parser: boolean _closed> = 1;
+
+     label1:
+        return;
+    }
+
+    public java.math.BigInteger getBigIntegerValue()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        long $l1;
+        org.codehaus.jackson.JsonParser$NumberType $r4;
+        java.math.BigDecimal $r5;
+        int[] $r3;
+        int $i0;
+        java.math.BigInteger $r2;
+        java.lang.Number $r1;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.Number getNumberValue()>();
+
+        $z0 = $r1 instanceof java.math.BigInteger;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (java.math.BigInteger) $r1;
+
+        return $r2;
+
+     label1:
+        $r3 = <org.codehaus.jackson.util.TokenBuffer$1: int[] $SwitchMap$org$codehaus$jackson$JsonParser$NumberType>;
+
+        $r4 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.JsonParser$NumberType getNumberType()>();
+
+        $i0 = virtualinvoke $r4.<java.lang.Enum: int ordinal()>();
+
+        $i0 = $r3[$i0];
+
+        if $i0 == 3 goto label2;
+
+        $l1 = virtualinvoke $r1.<java.lang.Number: long longValue()>();
+
+        $r2 = staticinvoke <java.math.BigInteger: java.math.BigInteger valueOf(long)>($l1);
+
+        return $r2;
+
+     label2:
+        $r5 = (java.math.BigDecimal) $r1;
+
+        $r2 = virtualinvoke $r5.<java.math.BigDecimal: java.math.BigInteger toBigInteger()>();
+
+        return $r2;
+    }
+
+    public byte[] getBinaryValue(org.codehaus.jackson.Base64Variant)
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        byte[] $r5;
+        org.codehaus.jackson.JsonToken $r2, $r3;
+        org.codehaus.jackson.JsonParseException $r9;
+        org.codehaus.jackson.Base64Variant $r1;
+        java.lang.Object $r4;
+        java.lang.StringBuilder $r8;
+        java.lang.String $r6;
+        org.codehaus.jackson.util.ByteArrayBuilder $r7;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 := @parameter0: org.codehaus.jackson.Base64Variant;
+
+        $r2 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        $r3 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_EMBEDDED_OBJECT>;
+
+        if $r2 != $r3 goto label1;
+
+        $r4 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.Object _currentObject()>();
+
+        $z0 = $r4 instanceof byte[];
+
+        if $z0 == 0 goto label1;
+
+        $r5 = (byte[]) $r4;
+
+        return $r5;
+
+     label1:
+        $r2 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        $r3 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_STRING>;
+
+        if $r2 != $r3 goto label4;
+
+        $r6 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.String getText()>();
+
+        if $r6 != null goto label2;
+
+        return null;
+
+     label2:
+        $r7 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.util.ByteArrayBuilder _byteBuilder>;
+
+        if $r7 != null goto label3;
+
+        $r7 = new org.codehaus.jackson.util.ByteArrayBuilder;
+
+        specialinvoke $r7.<org.codehaus.jackson.util.ByteArrayBuilder: void <init>(int)>(100);
+
+        r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.util.ByteArrayBuilder _byteBuilder> = $r7;
+
+     label3:
+        virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: void _decodeBase64(java.lang.String,org.codehaus.jackson.util.ByteArrayBuilder,org.codehaus.jackson.Base64Variant)>($r6, $r7, $r1);
+
+        $r5 = virtualinvoke $r7.<org.codehaus.jackson.util.ByteArrayBuilder: byte[] toByteArray()>();
+
+        return $r5;
+
+     label4:
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Current token (");
+
+        $r2 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") not VALUE_STRING (or VALUE_EMBEDDED_OBJECT with byte[]), can not access as binary");
+
+        $r6 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r9 = virtualinvoke r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonParseException _constructError(java.lang.String)>($r6);
+
+        throw $r9;
+    }
+
+    public org.codehaus.jackson.ObjectCodec getCodec()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        org.codehaus.jackson.ObjectCodec r1;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        r1 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.ObjectCodec _codec>;
+
+        return r1;
+    }
+
+    public org.codehaus.jackson.JsonLocation getCurrentLocation()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        org.codehaus.jackson.JsonLocation $r1;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.JsonLocation _location>;
+
+        if $r1 != null goto label1;
+
+        $r1 = <org.codehaus.jackson.JsonLocation: org.codehaus.jackson.JsonLocation NA>;
+
+     label1:
+        return $r1;
+    }
+
+    public java.lang.String getCurrentName()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        java.lang.String $r1;
+        org.codehaus.jackson.impl.JsonReadContext $r2;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r2 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.impl.JsonReadContext _parsingContext>;
+
+        $r1 = virtualinvoke $r2.<org.codehaus.jackson.impl.JsonReadContext: java.lang.String getCurrentName()>();
+
+        return $r1;
+    }
+
+    public java.math.BigDecimal getDecimalValue()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        long $l1;
+        org.codehaus.jackson.JsonParser$NumberType $r4;
+        java.math.BigDecimal $r2;
+        int[] $r3;
+        int $i0;
+        java.math.BigInteger $r5;
+        java.lang.Number $r1;
+        boolean $z0;
+        double $d0;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.Number getNumberValue()>();
+
+        $z0 = $r1 instanceof java.math.BigDecimal;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (java.math.BigDecimal) $r1;
+
+        return $r2;
+
+     label1:
+        $r3 = <org.codehaus.jackson.util.TokenBuffer$1: int[] $SwitchMap$org$codehaus$jackson$JsonParser$NumberType>;
+
+        $r4 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.JsonParser$NumberType getNumberType()>();
+
+        $i0 = virtualinvoke $r4.<java.lang.Enum: int ordinal()>();
+
+        $i0 = $r3[$i0];
+
+        if $i0 == 1 goto label3;
+
+        if $i0 == 2 goto label2;
+
+        if $i0 == 5 goto label3;
+
+        $d0 = virtualinvoke $r1.<java.lang.Number: double doubleValue()>();
+
+        $r2 = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(double)>($d0);
+
+        return $r2;
+
+     label2:
+        $r2 = new java.math.BigDecimal;
+
+        $r5 = (java.math.BigInteger) $r1;
+
+        specialinvoke $r2.<java.math.BigDecimal: void <init>(java.math.BigInteger)>($r5);
+
+        return $r2;
+
+     label3:
+        $l1 = virtualinvoke $r1.<java.lang.Number: long longValue()>();
+
+        $r2 = staticinvoke <java.math.BigDecimal: java.math.BigDecimal valueOf(long)>($l1);
+
+        return $r2;
+    }
+
+    public double getDoubleValue()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        java.lang.Number $r1;
+        double $d0;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.Number getNumberValue()>();
+
+        $d0 = virtualinvoke $r1.<java.lang.Number: double doubleValue()>();
+
+        return $d0;
+    }
+
+    public java.lang.Object getEmbeddedObject()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        org.codehaus.jackson.JsonToken $r1, $r3;
+        java.lang.Object $r2;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r3 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        $r1 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_EMBEDDED_OBJECT>;
+
+        if $r3 != $r1 goto label1;
+
+        $r2 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.Object _currentObject()>();
+
+        return $r2;
+
+     label1:
+        return null;
+    }
+
+    public float getFloatValue()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        float $f0;
+        java.lang.Number $r1;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.Number getNumberValue()>();
+
+        $f0 = virtualinvoke $r1.<java.lang.Number: float floatValue()>();
+
+        return $f0;
+    }
+
+    public int getIntValue()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        org.codehaus.jackson.JsonToken $r1, $r2;
+        int $i0;
+        java.lang.Object $r3;
+        java.lang.Number $r4;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r2 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        $r1 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r2 != $r1 goto label1;
+
+        $r3 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.Object _currentObject()>();
+
+        $r4 = (java.lang.Number) $r3;
+
+        $i0 = virtualinvoke $r4.<java.lang.Number: int intValue()>();
+
+        return $i0;
+
+     label1:
+        $r4 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.Number getNumberValue()>();
+
+        $i0 = virtualinvoke $r4.<java.lang.Number: int intValue()>();
+
+        return $i0;
+    }
+
+    public long getLongValue()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        long $l0;
+        java.lang.Number $r1;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.Number getNumberValue()>();
+
+        $l0 = virtualinvoke $r1.<java.lang.Number: long longValue()>();
+
+        return $l0;
+    }
+
+    public org.codehaus.jackson.JsonParser$NumberType getNumberType()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        java.lang.Number $r1;
+        org.codehaus.jackson.JsonParser$NumberType r2;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.Number getNumberValue()>();
+
+        $z0 = $r1 instanceof java.lang.Integer;
+
+        if $z0 == 0 goto label1;
+
+        r2 = <org.codehaus.jackson.JsonParser$NumberType: org.codehaus.jackson.JsonParser$NumberType INT>;
+
+        return r2;
+
+     label1:
+        $z0 = $r1 instanceof java.lang.Long;
+
+        if $z0 == 0 goto label2;
+
+        r2 = <org.codehaus.jackson.JsonParser$NumberType: org.codehaus.jackson.JsonParser$NumberType LONG>;
+
+        return r2;
+
+     label2:
+        $z0 = $r1 instanceof java.lang.Double;
+
+        if $z0 == 0 goto label3;
+
+        r2 = <org.codehaus.jackson.JsonParser$NumberType: org.codehaus.jackson.JsonParser$NumberType DOUBLE>;
+
+        return r2;
+
+     label3:
+        $z0 = $r1 instanceof java.math.BigDecimal;
+
+        if $z0 == 0 goto label4;
+
+        r2 = <org.codehaus.jackson.JsonParser$NumberType: org.codehaus.jackson.JsonParser$NumberType BIG_DECIMAL>;
+
+        return r2;
+
+     label4:
+        $z0 = $r1 instanceof java.lang.Float;
+
+        if $z0 == 0 goto label5;
+
+        r2 = <org.codehaus.jackson.JsonParser$NumberType: org.codehaus.jackson.JsonParser$NumberType FLOAT>;
+
+        return r2;
+
+     label5:
+        $z0 = $r1 instanceof java.math.BigInteger;
+
+        if $z0 == 0 goto label6;
+
+        r2 = <org.codehaus.jackson.JsonParser$NumberType: org.codehaus.jackson.JsonParser$NumberType BIG_INTEGER>;
+
+        return r2;
+
+     label6:
+        return null;
+    }
+
+    public final java.lang.Number getNumberValue()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        java.lang.Object $r1;
+        java.lang.Number $r2;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: void _checkIsNumber()>();
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.Object _currentObject()>();
+
+        $r2 = (java.lang.Number) $r1;
+
+        return $r2;
+    }
+
+    public org.codehaus.jackson.JsonStreamContext getParsingContext()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        org.codehaus.jackson.impl.JsonReadContext r1;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        r1 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.impl.JsonReadContext _parsingContext>;
+
+        return r1;
+    }
+
+    public java.lang.String getText()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        org.codehaus.jackson.JsonToken $r1, $r2;
+        int[] $r3;
+        int $i0;
+        java.lang.Object $r5;
+        java.lang.String $r4;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        $r2 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_STRING>;
+
+        if $r1 == $r2 goto label5;
+
+        $r2 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken FIELD_NAME>;
+
+        if $r1 != $r2 goto label1;
+
+        goto label5;
+
+     label1:
+        if $r1 != null goto label2;
+
+        return null;
+
+     label2:
+        $r3 = <org.codehaus.jackson.util.TokenBuffer$1: int[] $SwitchMap$org$codehaus$jackson$JsonToken>;
+
+        $i0 = virtualinvoke $r1.<java.lang.Enum: int ordinal()>();
+
+        $i0 = $r3[$i0];
+
+        if $i0 == 7 goto label3;
+
+        if $i0 == 8 goto label3;
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        $r4 = virtualinvoke $r1.<org.codehaus.jackson.JsonToken: java.lang.String asString()>();
+
+        return $r4;
+
+     label3:
+        $r5 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.Object _currentObject()>();
+
+        if $r5 != null goto label4;
+
+        return null;
+
+     label4:
+        $r4 = virtualinvoke $r5.<java.lang.Object: java.lang.String toString()>();
+
+        return $r4;
+
+     label5:
+        $r5 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.Object _currentObject()>();
+
+        $z0 = $r5 instanceof java.lang.String;
+
+        if $z0 == 0 goto label6;
+
+        $r4 = (java.lang.String) $r5;
+
+        return $r4;
+
+     label6:
+        if $r5 != null goto label7;
+
+        return null;
+
+     label7:
+        $r4 = virtualinvoke $r5.<java.lang.Object: java.lang.String toString()>();
+
+        return $r4;
+    }
+
+    public char[] getTextCharacters()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        char[] $r2;
+        java.lang.String $r1;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.String getText()>();
+
+        if $r1 != null goto label1;
+
+        return null;
+
+     label1:
+        $r2 = virtualinvoke $r1.<java.lang.String: char[] toCharArray()>();
+
+        return $r2;
+    }
+
+    public int getTextLength()
+    {
+        int $i0;
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        java.lang.String $r1;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.String getText()>();
+
+        if $r1 != null goto label1;
+
+        return 0;
+
+     label1:
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        return $i0;
+    }
+
+    public int getTextOffset()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        return 0;
+    }
+
+    public org.codehaus.jackson.JsonLocation getTokenLocation()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        org.codehaus.jackson.JsonLocation $r1;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.JsonLocation getCurrentLocation()>();
+
+        return $r1;
+    }
+
+    public boolean hasTextCharacters()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        return 0;
+    }
+
+    public boolean isClosed()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        boolean z0;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        z0 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: boolean _closed>;
+
+        return z0;
+    }
+
+    public org.codehaus.jackson.JsonToken nextToken()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        org.codehaus.jackson.JsonToken $r2, $r3;
+        org.codehaus.jackson.util.TokenBuffer$Segment $r1;
+        org.codehaus.jackson.impl.JsonReadContext $r6;
+        int $i0, $i1;
+        java.lang.Object $r4;
+        java.lang.String $r5;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $z0 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: boolean _closed>;
+
+        if $z0 != 0 goto label10;
+
+        $r1 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.util.TokenBuffer$Segment _segment>;
+
+        if $r1 != null goto label01;
+
+        return null;
+
+     label01:
+        $i0 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: int _segmentPtr>;
+
+        $i0 = $i0 + 1;
+
+        r0.<org.codehaus.jackson.util.TokenBuffer$Parser: int _segmentPtr> = $i0;
+
+        if $i0 < 16 goto label02;
+
+        r0.<org.codehaus.jackson.util.TokenBuffer$Parser: int _segmentPtr> = 0;
+
+        $r1 = virtualinvoke $r1.<org.codehaus.jackson.util.TokenBuffer$Segment: org.codehaus.jackson.util.TokenBuffer$Segment next()>();
+
+        r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.util.TokenBuffer$Segment _segment> = $r1;
+
+        $r1 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.util.TokenBuffer$Segment _segment>;
+
+        if $r1 != null goto label02;
+
+        return null;
+
+     label02:
+        $r1 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.util.TokenBuffer$Segment _segment>;
+
+        $i0 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: int _segmentPtr>;
+
+        $r2 = virtualinvoke $r1.<org.codehaus.jackson.util.TokenBuffer$Segment: org.codehaus.jackson.JsonToken type(int)>($i0);
+
+        r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken> = $r2;
+
+        $r2 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        $r3 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken FIELD_NAME>;
+
+        if $r2 != $r3 goto label05;
+
+        $r4 = virtualinvoke r0.<org.codehaus.jackson.util.TokenBuffer$Parser: java.lang.Object _currentObject()>();
+
+        $z0 = $r4 instanceof java.lang.String;
+
+        if $z0 == 0 goto label03;
+
+        $r5 = (java.lang.String) $r4;
+
+        goto label04;
+
+     label03:
+        $r5 = virtualinvoke $r4.<java.lang.Object: java.lang.String toString()>();
+
+     label04:
+        $r6 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.impl.JsonReadContext _parsingContext>;
+
+        virtualinvoke $r6.<org.codehaus.jackson.impl.JsonReadContext: void setCurrentName(java.lang.String)>($r5);
+
+        goto label09;
+
+     label05:
+        $r3 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken START_OBJECT>;
+
+        if $r2 != $r3 goto label06;
+
+        $r6 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.impl.JsonReadContext _parsingContext>;
+
+        $i0 = -1;
+
+        $i1 = -1;
+
+        $r6 = virtualinvoke $r6.<org.codehaus.jackson.impl.JsonReadContext: org.codehaus.jackson.impl.JsonReadContext createChildObjectContext(int,int)>($i0, $i1);
+
+        r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.impl.JsonReadContext _parsingContext> = $r6;
+
+        goto label09;
+
+     label06:
+        $r3 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken START_ARRAY>;
+
+        if $r2 != $r3 goto label07;
+
+        $r6 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.impl.JsonReadContext _parsingContext>;
+
+        $i0 = -1;
+
+        $i1 = -1;
+
+        $r6 = virtualinvoke $r6.<org.codehaus.jackson.impl.JsonReadContext: org.codehaus.jackson.impl.JsonReadContext createChildArrayContext(int,int)>($i0, $i1);
+
+        r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.impl.JsonReadContext _parsingContext> = $r6;
+
+        goto label09;
+
+     label07:
+        $r3 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken END_OBJECT>;
+
+        if $r2 == $r3 goto label08;
+
+        $r3 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken END_ARRAY>;
+
+        if $r2 != $r3 goto label09;
+
+     label08:
+        $r6 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.impl.JsonReadContext _parsingContext>;
+
+        $r6 = virtualinvoke $r6.<org.codehaus.jackson.impl.JsonReadContext: org.codehaus.jackson.impl.JsonReadContext getParent()>();
+
+        r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.impl.JsonReadContext _parsingContext> = $r6;
+
+        $r6 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.impl.JsonReadContext _parsingContext>;
+
+        if $r6 != null goto label09;
+
+        $i0 = -1;
+
+        $i1 = -1;
+
+        $r6 = staticinvoke <org.codehaus.jackson.impl.JsonReadContext: org.codehaus.jackson.impl.JsonReadContext createRootContext(int,int)>($i0, $i1);
+
+        r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.impl.JsonReadContext _parsingContext> = $r6;
+
+     label09:
+        $r2 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        return $r2;
+
+     label10:
+        return null;
+    }
+
+    public org.codehaus.jackson.JsonToken peekNextToken()
+    {
+        org.codehaus.jackson.util.TokenBuffer$Segment $r1;
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        org.codehaus.jackson.JsonToken $r2;
+        int $i0;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $z0 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: boolean _closed>;
+
+        if $z0 == 0 goto label1;
+
+        return null;
+
+     label1:
+        $r1 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.util.TokenBuffer$Segment _segment>;
+
+        $i0 = r0.<org.codehaus.jackson.util.TokenBuffer$Parser: int _segmentPtr>;
+
+        $i0 = $i0 + 1;
+
+        if $i0 < 16 goto label3;
+
+        $i0 = 0;
+
+        if $r1 != null goto label2;
+
+        $r1 = null;
+
+        goto label3;
+
+     label2:
+        $r1 = virtualinvoke $r1.<org.codehaus.jackson.util.TokenBuffer$Segment: org.codehaus.jackson.util.TokenBuffer$Segment next()>();
+
+     label3:
+        if $r1 != null goto label4;
+
+        return null;
+
+     label4:
+        $r2 = virtualinvoke $r1.<org.codehaus.jackson.util.TokenBuffer$Segment: org.codehaus.jackson.JsonToken type(int)>($i0);
+
+        return $r2;
+    }
+
+    public void setCodec(org.codehaus.jackson.ObjectCodec)
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        org.codehaus.jackson.ObjectCodec $r1;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 := @parameter0: org.codehaus.jackson.ObjectCodec;
+
+        r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.ObjectCodec _codec> = $r1;
+
+        return;
+    }
+
+    public void setLocation(org.codehaus.jackson.JsonLocation)
+    {
+        org.codehaus.jackson.util.TokenBuffer$Parser r0;
+        org.codehaus.jackson.JsonLocation $r1;
+
+        r0 := @this: org.codehaus.jackson.util.TokenBuffer$Parser;
+
+        $r1 := @parameter0: org.codehaus.jackson.JsonLocation;
+
+        r0.<org.codehaus.jackson.util.TokenBuffer$Parser: org.codehaus.jackson.JsonLocation _location> = $r1;
+
+        return;
+    }
+}

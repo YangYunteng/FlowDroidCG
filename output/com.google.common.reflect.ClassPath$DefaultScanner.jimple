@@ -1,0 +1,277 @@
+public final class com.google.common.reflect.ClassPath$DefaultScanner extends com.google.common.reflect.ClassPath$Scanner
+{
+    public final com.google.common.collect.SetMultimap resources;
+
+    public void <init>()
+    {
+        com.google.common.reflect.ClassPath$DefaultScanner r0;
+        com.google.common.collect.MultimapBuilder$MultimapBuilderWithKeys $r1;
+        com.google.common.collect.MultimapBuilder$SetMultimapBuilder $r2;
+        com.google.common.collect.SetMultimap $r3;
+
+        r0 := @this: com.google.common.reflect.ClassPath$DefaultScanner;
+
+        specialinvoke r0.<com.google.common.reflect.ClassPath$Scanner: void <init>()>();
+
+        $r1 = staticinvoke <com.google.common.collect.MultimapBuilder: com.google.common.collect.MultimapBuilder$MultimapBuilderWithKeys hashKeys()>();
+
+        $r2 = virtualinvoke $r1.<com.google.common.collect.MultimapBuilder$MultimapBuilderWithKeys: com.google.common.collect.MultimapBuilder$SetMultimapBuilder linkedHashSetValues()>();
+
+        $r3 = virtualinvoke $r2.<com.google.common.collect.MultimapBuilder$SetMultimapBuilder: com.google.common.collect.SetMultimap build()>();
+
+        r0.<com.google.common.reflect.ClassPath$DefaultScanner: com.google.common.collect.SetMultimap resources> = $r3;
+
+        return;
+    }
+
+    private void scanDirectory(java.io.File, java.lang.ClassLoader, java.lang.String, java.util.Set)
+    {
+        com.google.common.reflect.ClassPath$DefaultScanner r0;
+        java.util.Set $r4, $r10;
+        java.util.logging.Logger $r6;
+        java.io.File $r1;
+        com.google.common.collect.SetMultimap $r9;
+        int $i0, $i1;
+        java.lang.StringBuilder $r7;
+        java.lang.ClassLoader $r2;
+        java.lang.String $r3, $r8;
+        java.io.File[] $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.common.reflect.ClassPath$DefaultScanner;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r2 := @parameter1: java.lang.ClassLoader;
+
+        $r3 := @parameter2: java.lang.String;
+
+        $r4 := @parameter3: java.util.Set;
+
+        $r5 = virtualinvoke $r1.<java.io.File: java.io.File[] listFiles()>();
+
+        if $r5 != null goto label1;
+
+        $r6 = staticinvoke <com.google.common.reflect.ClassPath: java.util.logging.Logger access$100()>();
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot read directory ");
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r1);
+
+        $r3 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<java.util.logging.Logger: void warning(java.lang.String)>($r3);
+
+        return;
+
+     label1:
+        $i0 = lengthof $r5;
+
+        $i1 = 0;
+
+     label2:
+        if $i1 >= $i0 goto label5;
+
+        $r1 = $r5[$i1];
+
+        $r8 = virtualinvoke $r1.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r1.<java.io.File: boolean isDirectory()>();
+
+        if $z0 == 0 goto label3;
+
+        $r1 = virtualinvoke $r1.<java.io.File: java.io.File getCanonicalFile()>();
+
+        $z0 = interfaceinvoke $r4.<java.util.Set: boolean add(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label4;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/");
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke r0.<com.google.common.reflect.ClassPath$DefaultScanner: void scanDirectory(java.io.File,java.lang.ClassLoader,java.lang.String,java.util.Set)>($r1, $r2, $r8, $r4);
+
+        interfaceinvoke $r4.<java.util.Set: boolean remove(java.lang.Object)>($r1);
+
+        goto label4;
+
+     label3:
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $z0 = virtualinvoke $r8.<java.lang.String: boolean equals(java.lang.Object)>("META-INF/MANIFEST.MF");
+
+        if $z0 != 0 goto label4;
+
+        $r9 = r0.<com.google.common.reflect.ClassPath$DefaultScanner: com.google.common.collect.SetMultimap resources>;
+
+        $r10 = interfaceinvoke $r9.<com.google.common.collect.SetMultimap: java.util.Set get(java.lang.Object)>($r2);
+
+        interfaceinvoke $r10.<java.util.Set: boolean add(java.lang.Object)>($r8);
+
+     label4:
+        $i1 = $i1 + 1;
+
+        goto label2;
+
+     label5:
+        return;
+    }
+
+    public com.google.common.collect.ImmutableSet getResources()
+    {
+        com.google.common.reflect.ClassPath$DefaultScanner r0;
+        java.util.Map$Entry $r6;
+        com.google.common.collect.ImmutableSet $r10;
+        java.util.Iterator $r4;
+        com.google.common.reflect.ClassPath$ResourceInfo $r9;
+        com.google.common.collect.ImmutableSet$Builder $r1;
+        java.util.Set $r3;
+        com.google.common.collect.SetMultimap $r2;
+        java.lang.Object $r5;
+        java.lang.String $r7;
+        java.lang.ClassLoader $r8;
+        boolean $z0;
+
+        r0 := @this: com.google.common.reflect.ClassPath$DefaultScanner;
+
+        $r1 = staticinvoke <com.google.common.collect.ImmutableSet: com.google.common.collect.ImmutableSet$Builder builder()>();
+
+        $r2 = r0.<com.google.common.reflect.ClassPath$DefaultScanner: com.google.common.collect.SetMultimap resources>;
+
+        $r3 = interfaceinvoke $r2.<com.google.common.collect.SetMultimap: java.util.Set entries()>();
+
+        $r4 = interfaceinvoke $r3.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (java.util.Map$Entry) $r5;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r7 = (java.lang.String) $r5;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r8 = (java.lang.ClassLoader) $r5;
+
+        $r9 = staticinvoke <com.google.common.reflect.ClassPath$ResourceInfo: com.google.common.reflect.ClassPath$ResourceInfo of(java.lang.String,java.lang.ClassLoader)>($r7, $r8);
+
+        virtualinvoke $r1.<com.google.common.collect.ImmutableSet$Builder: com.google.common.collect.ImmutableSet$Builder add(java.lang.Object)>($r9);
+
+        goto label1;
+
+     label2:
+        $r10 = virtualinvoke $r1.<com.google.common.collect.ImmutableSet$Builder: com.google.common.collect.ImmutableSet build()>();
+
+        return $r10;
+    }
+
+    public void scanDirectory(java.lang.ClassLoader, java.io.File)
+    {
+        java.util.HashSet $r3;
+        com.google.common.reflect.ClassPath$DefaultScanner r0;
+        java.lang.ClassLoader $r1;
+        java.io.File $r2, $r4;
+
+        r0 := @this: com.google.common.reflect.ClassPath$DefaultScanner;
+
+        $r1 := @parameter0: java.lang.ClassLoader;
+
+        $r2 := @parameter1: java.io.File;
+
+        $r3 = new java.util.HashSet;
+
+        specialinvoke $r3.<java.util.HashSet: void <init>()>();
+
+        $r4 = virtualinvoke $r2.<java.io.File: java.io.File getCanonicalFile()>();
+
+        interfaceinvoke $r3.<java.util.Set: boolean add(java.lang.Object)>($r4);
+
+        specialinvoke r0.<com.google.common.reflect.ClassPath$DefaultScanner: void scanDirectory(java.io.File,java.lang.ClassLoader,java.lang.String,java.util.Set)>($r2, $r1, "", $r3);
+
+        return;
+    }
+
+    public void scanJarFile(java.lang.ClassLoader, java.util.jar.JarFile)
+    {
+        com.google.common.reflect.ClassPath$DefaultScanner r0;
+        java.util.Enumeration $r3;
+        java.util.Set $r8;
+        java.util.jar.JarFile $r2;
+        com.google.common.collect.SetMultimap $r7;
+        java.util.jar.JarEntry $r5;
+        java.lang.Object $r4;
+        java.lang.ClassLoader $r1;
+        java.lang.String $r6;
+        boolean $z0;
+
+        r0 := @this: com.google.common.reflect.ClassPath$DefaultScanner;
+
+        $r1 := @parameter0: java.lang.ClassLoader;
+
+        $r2 := @parameter1: java.util.jar.JarFile;
+
+        $r3 = virtualinvoke $r2.<java.util.jar.JarFile: java.util.Enumeration entries()>();
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Enumeration: boolean hasMoreElements()>();
+
+        if $z0 == 0 goto label3;
+
+        $r4 = interfaceinvoke $r3.<java.util.Enumeration: java.lang.Object nextElement()>();
+
+        $r5 = (java.util.jar.JarEntry) $r4;
+
+        $z0 = virtualinvoke $r5.<java.util.jar.JarEntry: boolean isDirectory()>();
+
+        if $z0 != 0 goto label1;
+
+        $r6 = virtualinvoke $r5.<java.util.jar.JarEntry: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>("META-INF/MANIFEST.MF");
+
+        if $z0 == 0 goto label2;
+
+        goto label1;
+
+     label2:
+        $r7 = r0.<com.google.common.reflect.ClassPath$DefaultScanner: com.google.common.collect.SetMultimap resources>;
+
+        $r8 = interfaceinvoke $r7.<com.google.common.collect.SetMultimap: java.util.Set get(java.lang.Object)>($r1);
+
+        $r6 = virtualinvoke $r5.<java.util.jar.JarEntry: java.lang.String getName()>();
+
+        interfaceinvoke $r8.<java.util.Set: boolean add(java.lang.Object)>($r6);
+
+        goto label1;
+
+     label3:
+        return;
+    }
+}

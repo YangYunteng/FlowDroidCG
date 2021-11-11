@@ -1,0 +1,257 @@
+public class c.b.a.c extends java.lang.Thread
+{
+    public static final boolean a;
+    public final java.util.concurrent.BlockingQueue b;
+    public final java.util.concurrent.BlockingQueue c;
+    public final c.b.a.a d;
+    public final c.b.a.n e;
+    public volatile boolean f;
+
+    static void <clinit>()
+    {
+        boolean $z0;
+
+        $z0 = <c.b.a.p: boolean b>;
+
+        <c.b.a.c: boolean a> = $z0;
+
+        return;
+    }
+
+    public void <init>(java.util.concurrent.BlockingQueue, java.util.concurrent.BlockingQueue, c.b.a.a, c.b.a.n)
+    {
+        c.b.a.n $r4;
+        java.util.concurrent.BlockingQueue $r1, $r2;
+        c.b.a.c r0;
+        c.b.a.a $r3;
+
+        r0 := @this: c.b.a.c;
+
+        $r1 := @parameter0: java.util.concurrent.BlockingQueue;
+
+        $r2 := @parameter1: java.util.concurrent.BlockingQueue;
+
+        $r3 := @parameter2: c.b.a.a;
+
+        $r4 := @parameter3: c.b.a.n;
+
+        specialinvoke r0.<java.lang.Thread: void <init>()>();
+
+        r0.<c.b.a.c: boolean f> = 0;
+
+        r0.<c.b.a.c: java.util.concurrent.BlockingQueue b> = $r1;
+
+        r0.<c.b.a.c: java.util.concurrent.BlockingQueue c> = $r2;
+
+        r0.<c.b.a.c: c.b.a.a d> = $r3;
+
+        r0.<c.b.a.c: c.b.a.n e> = $r4;
+
+        return;
+    }
+
+    public static java.util.concurrent.BlockingQueue a(c.b.a.c)
+    {
+        java.util.concurrent.BlockingQueue r1;
+        c.b.a.c $r0;
+
+        $r0 := @parameter0: c.b.a.c;
+
+        r1 = $r0.<c.b.a.c: java.util.concurrent.BlockingQueue c>;
+
+        return r1;
+    }
+
+    public void a()
+    {
+        c.b.a.c r0;
+
+        r0 := @this: c.b.a.c;
+
+        r0.<c.b.a.c: boolean f> = 1;
+
+        virtualinvoke r0.<java.lang.Thread: void interrupt()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        c.b.a.a$a $r9;
+        byte[] $r11;
+        java.lang.Object[] $r3;
+        c.b.a.j $r7;
+        c.b.a.n $r13;
+        c.b.a.m $r12;
+        java.util.Map $r1;
+        java.lang.String $r8;
+        boolean $z0;
+        c.d.a.a $r10;
+        java.util.concurrent.BlockingQueue $r5;
+        java.lang.InterruptedException $r2;
+        java.lang.Object $r6;
+        c.b.a.c r0;
+        c.b.a.b $r14;
+        c.b.a.a $r4;
+
+        r0 := @this: c.b.a.c;
+
+        $z0 = <c.b.a.c: boolean a>;
+
+        if $z0 == 0 goto label01;
+
+        $r3 = newarray (java.lang.Object)[0];
+
+        staticinvoke <c.b.a.p: void d(java.lang.String,java.lang.Object[])>("start new dispatcher", $r3);
+
+     label01:
+        staticinvoke <android.os.Process: void setThreadPriority(int)>(10);
+
+        $r4 = r0.<c.b.a.c: c.b.a.a d>;
+
+        interfaceinvoke $r4.<c.b.a.a: void a()>();
+
+     label02:
+        $r5 = r0.<c.b.a.c: java.util.concurrent.BlockingQueue b>;
+
+     label03:
+        $r6 = interfaceinvoke $r5.<java.util.concurrent.BlockingQueue: java.lang.Object take()>();
+
+     label04:
+        $r7 = (c.b.a.j) $r6;
+
+     label05:
+        virtualinvoke $r7.<c.b.a.j: void addMarker(java.lang.String)>("cache-queue-take");
+
+        $z0 = virtualinvoke $r7.<c.b.a.j: boolean isCanceled()>();
+
+     label06:
+        if $z0 == 0 goto label09;
+
+     label07:
+        virtualinvoke $r7.<c.b.a.j: void finish(java.lang.String)>("cache-discard-canceled");
+
+     label08:
+        goto label02;
+
+     label09:
+        $r4 = r0.<c.b.a.c: c.b.a.a d>;
+
+     label10:
+        $r8 = virtualinvoke $r7.<c.b.a.j: java.lang.String getCacheKey()>();
+
+        $r9 = interfaceinvoke $r4.<c.b.a.a: c.b.a.a$a get(java.lang.String)>($r8);
+
+     label11:
+        if $r9 != null goto label16;
+
+     label12:
+        virtualinvoke $r7.<c.b.a.j: void addMarker(java.lang.String)>("cache-miss");
+
+     label13:
+        $r5 = r0.<c.b.a.c: java.util.concurrent.BlockingQueue c>;
+
+     label14:
+        interfaceinvoke $r5.<java.util.concurrent.BlockingQueue: void put(java.lang.Object)>($r7);
+
+     label15:
+        goto label02;
+
+     label16:
+        $z0 = virtualinvoke $r9.<c.b.a.a$a: boolean a()>();
+
+     label17:
+        if $z0 == 0 goto label22;
+
+     label18:
+        virtualinvoke $r7.<c.b.a.j: void addMarker(java.lang.String)>("cache-hit-expired");
+
+        virtualinvoke $r7.<c.b.a.j: c.b.a.j setCacheEntry(c.b.a.a$a)>($r9);
+
+     label19:
+        $r5 = r0.<c.b.a.c: java.util.concurrent.BlockingQueue c>;
+
+     label20:
+        interfaceinvoke $r5.<java.util.concurrent.BlockingQueue: void put(java.lang.Object)>($r7);
+
+     label21:
+        goto label02;
+
+     label22:
+        virtualinvoke $r7.<c.b.a.j: void addMarker(java.lang.String)>("cache-hit");
+
+     label23:
+        $r10 = new c.d.a.a;
+
+        $r11 = $r9.<c.b.a.a$a: byte[] a>;
+
+        $r1 = $r9.<c.b.a.a$a: java.util.Map g>;
+
+     label24:
+        specialinvoke $r10.<c.d.a.a: void <init>(byte[],java.util.Map)>($r11, $r1);
+
+        $r12 = virtualinvoke $r7.<c.b.a.j: c.b.a.m parseNetworkResponse(c.d.a.a)>($r10);
+
+        virtualinvoke $r7.<c.b.a.j: void addMarker(java.lang.String)>("cache-hit-parsed");
+
+        $z0 = virtualinvoke $r9.<c.b.a.a$a: boolean b()>();
+
+     label25:
+        if $z0 != 0 goto label28;
+
+        $r13 = r0.<c.b.a.c: c.b.a.n e>;
+
+     label26:
+        interfaceinvoke $r13.<c.b.a.n: void a(c.b.a.j,c.b.a.m)>($r7, $r12);
+
+     label27:
+        goto label02;
+
+     label28:
+        virtualinvoke $r7.<c.b.a.j: void addMarker(java.lang.String)>("cache-hit-refresh-needed");
+
+        virtualinvoke $r7.<c.b.a.j: c.b.a.j setCacheEntry(c.b.a.a$a)>($r9);
+
+     label29:
+        $r12.<c.b.a.m: boolean d> = 1;
+
+        $r13 = r0.<c.b.a.c: c.b.a.n e>;
+
+        $r14 = new c.b.a.b;
+
+     label30:
+        specialinvoke $r14.<c.b.a.b: void <init>(c.b.a.c,c.b.a.j)>(r0, $r7);
+
+        interfaceinvoke $r13.<c.b.a.n: void a(c.b.a.j,c.b.a.m,java.lang.Runnable)>($r7, $r12, $r14);
+
+     label31:
+        goto label02;
+
+     label32:
+        $z0 = r0.<c.b.a.c: boolean f>;
+
+        if $z0 == 0 goto label02;
+
+        return;
+
+     label33:
+        $r2 := @caughtexception;
+
+        goto label32;
+
+        catch java.lang.InterruptedException from label03 to label04 with label33;
+        catch java.lang.InterruptedException from label05 to label06 with label33;
+        catch java.lang.InterruptedException from label07 to label08 with label33;
+        catch java.lang.InterruptedException from label10 to label11 with label33;
+        catch java.lang.InterruptedException from label12 to label13 with label33;
+        catch java.lang.InterruptedException from label14 to label15 with label33;
+        catch java.lang.InterruptedException from label16 to label17 with label33;
+        catch java.lang.InterruptedException from label18 to label19 with label33;
+        catch java.lang.InterruptedException from label20 to label21 with label33;
+        catch java.lang.InterruptedException from label22 to label23 with label33;
+        catch java.lang.InterruptedException from label24 to label25 with label33;
+        catch java.lang.InterruptedException from label26 to label27 with label33;
+        catch java.lang.InterruptedException from label28 to label29 with label33;
+        catch java.lang.InterruptedException from label30 to label31 with label33;
+    }
+}

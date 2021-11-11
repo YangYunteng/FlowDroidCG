@@ -1,0 +1,1748 @@
+public abstract class org.codehaus.jackson.map.deser.StdDeserializer extends org.codehaus.jackson.map.JsonDeserializer
+{
+    public final java.lang.Class _valueClass;
+
+    public void <init>(java.lang.Class)
+    {
+        java.lang.Class $r1;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r1 := @parameter0: java.lang.Class;
+
+        specialinvoke r0.<org.codehaus.jackson.map.JsonDeserializer: void <init>()>();
+
+        r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass> = $r1;
+
+        return;
+    }
+
+    public void <init>(org.codehaus.jackson.type.JavaType)
+    {
+        org.codehaus.jackson.type.JavaType $r2;
+        java.lang.Class $r1;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r2 := @parameter0: org.codehaus.jackson.type.JavaType;
+
+        specialinvoke r0.<org.codehaus.jackson.map.JsonDeserializer: void <init>()>();
+
+        if $r2 != null goto label1;
+
+        $r1 = null;
+
+        goto label2;
+
+     label1:
+        $r1 = virtualinvoke $r2.<org.codehaus.jackson.type.JavaType: java.lang.Class getRawClass()>();
+
+     label2:
+        r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass> = $r1;
+
+        return;
+    }
+
+    public static final double parseDouble(java.lang.String)
+    {
+        java.lang.String $r0, $r1;
+        boolean $z0;
+        double $d0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 = "2.2250738585072012e-308";
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>($r0);
+
+        if $z0 == 0 goto label1;
+
+        return 2.2250738585072014E-308;
+
+     label1:
+        $d0 = staticinvoke <java.lang.Double: double parseDouble(java.lang.String)>($r0);
+
+        return $d0;
+    }
+
+    public final java.lang.Boolean _parseBoolean(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        org.codehaus.jackson.JsonToken $r3, $r4;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.map.JsonMappingException $r8;
+        int $i0;
+        java.lang.Boolean r9;
+        java.lang.Class $r7;
+        java.lang.String $r5, $r6;
+        org.codehaus.jackson.JsonParser $r2;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r2 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r3 = virtualinvoke $r2.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken getCurrentToken()>();
+
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_TRUE>;
+
+        if $r3 != $r4 goto label1;
+
+        r9 = <java.lang.Boolean: java.lang.Boolean TRUE>;
+
+        return r9;
+
+     label1:
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_FALSE>;
+
+        if $r3 != $r4 goto label2;
+
+        r9 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+
+        return r9;
+
+     label2:
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NULL>;
+
+        if $r3 != $r4 goto label3;
+
+        return null;
+
+     label3:
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r3 != $r4 goto label5;
+
+        $i0 = virtualinvoke $r2.<org.codehaus.jackson.JsonParser: int getIntValue()>();
+
+        if $i0 != 0 goto label4;
+
+        r9 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+
+        return r9;
+
+     label4:
+        r9 = <java.lang.Boolean: java.lang.Boolean TRUE>;
+
+        return r9;
+
+     label5:
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_STRING>;
+
+        if $r3 != $r4 goto label9;
+
+        $r5 = virtualinvoke $r2.<org.codehaus.jackson.JsonParser: java.lang.String getText()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.String: java.lang.String trim()>();
+
+        $r6 = "true";
+
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>($r5);
+
+        if $z0 == 0 goto label6;
+
+        r9 = <java.lang.Boolean: java.lang.Boolean TRUE>;
+
+        return r9;
+
+     label6:
+        $r6 = "false";
+
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>($r5);
+
+        if $z0 != 0 goto label8;
+
+        $i0 = virtualinvoke $r5.<java.lang.String: int length()>();
+
+        if $i0 != 0 goto label7;
+
+        goto label8;
+
+     label7:
+        $r7 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r8 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdStringException(java.lang.Class,java.lang.String)>($r7, "only \"true\" or \"false\" recognized");
+
+        throw $r8;
+
+     label8:
+        r9 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+
+        return r9;
+
+     label9:
+        $r7 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r8 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException mappingException(java.lang.Class)>($r7);
+
+        throw $r8;
+    }
+
+    public final boolean _parseBooleanPrimitive(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        org.codehaus.jackson.JsonToken $r3, $r4;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.map.JsonMappingException $r8;
+        int $i0;
+        java.lang.Boolean $r9;
+        java.lang.Class $r7;
+        java.lang.String $r5, $r6;
+        org.codehaus.jackson.JsonParser $r2;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r2 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r3 = virtualinvoke $r2.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken getCurrentToken()>();
+
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_TRUE>;
+
+        if $r3 != $r4 goto label1;
+
+        return 1;
+
+     label1:
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_FALSE>;
+
+        if $r3 != $r4 goto label2;
+
+        return 0;
+
+     label2:
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NULL>;
+
+        if $r3 != $r4 goto label3;
+
+        return 0;
+
+     label3:
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r3 != $r4 goto label5;
+
+        $i0 = virtualinvoke $r2.<org.codehaus.jackson.JsonParser: int getIntValue()>();
+
+        if $i0 == 0 goto label4;
+
+        return 1;
+
+     label4:
+        return 0;
+
+     label5:
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_STRING>;
+
+        if $r3 != $r4 goto label9;
+
+        $r5 = virtualinvoke $r2.<org.codehaus.jackson.JsonParser: java.lang.String getText()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.String: java.lang.String trim()>();
+
+        $r6 = "true";
+
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>($r5);
+
+        if $z0 == 0 goto label6;
+
+        return 1;
+
+     label6:
+        $r6 = "false";
+
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>($r5);
+
+        if $z0 != 0 goto label8;
+
+        $i0 = virtualinvoke $r5.<java.lang.String: int length()>();
+
+        if $i0 != 0 goto label7;
+
+        goto label8;
+
+     label7:
+        $r7 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r8 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdStringException(java.lang.Class,java.lang.String)>($r7, "only \"true\" or \"false\" recognized");
+
+        throw $r8;
+
+     label8:
+        $r9 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+
+        $z0 = virtualinvoke $r9.<java.lang.Boolean: boolean booleanValue()>();
+
+        return $z0;
+
+     label9:
+        $r7 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r8 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException mappingException(java.lang.Class)>($r7);
+
+        throw $r8;
+    }
+
+    public java.util.Date _parseDate(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        org.codehaus.jackson.JsonToken $r3, $r4;
+        java.util.Date $r5;
+        long $l0;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        java.lang.IllegalArgumentException $r9;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.map.JsonMappingException $r8;
+        int $i1;
+        java.lang.Class $r7;
+        java.lang.StringBuilder $r10;
+        java.lang.String $r6;
+        org.codehaus.jackson.JsonParser $r2;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r2 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r3 = virtualinvoke $r2.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken getCurrentToken()>();
+
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r3 != $r4 goto label03;
+
+        $r5 = new java.util.Date;
+
+     label01:
+        $l0 = virtualinvoke $r2.<org.codehaus.jackson.JsonParser: long getLongValue()>();
+
+        specialinvoke $r5.<java.util.Date: void <init>(long)>($l0);
+
+     label02:
+        return $r5;
+
+     label03:
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_STRING>;
+
+        if $r3 != $r4 goto label08;
+
+     label04:
+        $r6 = virtualinvoke $r2.<org.codehaus.jackson.JsonParser: java.lang.String getText()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.String: java.lang.String trim()>();
+
+        $i1 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+     label05:
+        if $i1 != 0 goto label06;
+
+        return null;
+
+     label06:
+        $r5 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: java.util.Date parseDate(java.lang.String)>($r6);
+
+     label07:
+        return $r5;
+
+     label08:
+        $r7 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+     label09:
+        $r8 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException mappingException(java.lang.Class)>($r7);
+
+     label10:
+        throw $r8;
+
+     label11:
+        $r9 := @caughtexception;
+
+        $r7 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r10 = new java.lang.StringBuilder;
+
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("not a valid representation (error: ");
+
+        $r6 = virtualinvoke $r9.<java.lang.IllegalArgumentException: java.lang.String getMessage()>();
+
+        virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        virtualinvoke $r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r6 = virtualinvoke $r10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r8 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdStringException(java.lang.Class,java.lang.String)>($r7, $r6);
+
+        throw $r8;
+
+        catch java.lang.IllegalArgumentException from label01 to label02 with label11;
+        catch java.lang.IllegalArgumentException from label04 to label05 with label11;
+        catch java.lang.IllegalArgumentException from label06 to label07 with label11;
+        catch java.lang.IllegalArgumentException from label09 to label10 with label11;
+    }
+
+    public final java.lang.Double _parseDouble(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        org.codehaus.jackson.JsonToken $r4, $r5;
+        java.lang.Double $r8;
+        char $c1;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        java.lang.IllegalArgumentException $r2;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.map.JsonMappingException $r10;
+        int $i0;
+        java.lang.Class $r9;
+        java.lang.String $r6, $r7;
+        org.codehaus.jackson.JsonParser $r3;
+        boolean $z0;
+        double $d0;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r3 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r4 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken getCurrentToken()>();
+
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r4 == $r5 goto label13;
+
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_FLOAT>;
+
+        if $r4 != $r5 goto label01;
+
+        goto label13;
+
+     label01:
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_STRING>;
+
+        if $r4 != $r5 goto label11;
+
+        $r6 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: java.lang.String getText()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.String: java.lang.String trim()>();
+
+        $i0 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+        if $i0 != 0 goto label02;
+
+        return null;
+
+     label02:
+        $c1 = virtualinvoke $r6.<java.lang.String: char charAt(int)>(0);
+
+        $i0 = (int) $c1;
+
+        if $i0 == 45 goto label06;
+
+        $i0 = (int) $c1;
+
+        if $i0 == 73 goto label04;
+
+        $i0 = (int) $c1;
+
+        if $i0 == 78 goto label03;
+
+        goto label07;
+
+     label03:
+        $r7 = "NaN";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 == 0 goto label07;
+
+        $r8 = staticinvoke <java.lang.Double: java.lang.Double valueOf(double)>(#NaN);
+
+        return $r8;
+
+     label04:
+        $r7 = "Infinity";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 != 0 goto label05;
+
+        $r7 = "INF";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 == 0 goto label07;
+
+     label05:
+        $r8 = staticinvoke <java.lang.Double: java.lang.Double valueOf(double)>(#Infinity);
+
+        return $r8;
+
+     label06:
+        $r7 = "-Infinity";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 != 0 goto label10;
+
+        $r7 = "-INF";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 == 0 goto label07;
+
+        goto label10;
+
+     label07:
+        $d0 = staticinvoke <org.codehaus.jackson.map.deser.StdDeserializer: double parseDouble(java.lang.String)>($r6);
+
+        $r8 = staticinvoke <java.lang.Double: java.lang.Double valueOf(double)>($d0);
+
+     label08:
+        return $r8;
+
+     label09:
+        $r9 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r10 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdStringException(java.lang.Class,java.lang.String)>($r9, "not a valid Double value");
+
+        throw $r10;
+
+     label10:
+        $r8 = staticinvoke <java.lang.Double: java.lang.Double valueOf(double)>(#-Infinity);
+
+        return $r8;
+
+     label11:
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NULL>;
+
+        if $r4 != $r5 goto label12;
+
+        return null;
+
+     label12:
+        $r9 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r10 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException mappingException(java.lang.Class)>($r9);
+
+        throw $r10;
+
+     label13:
+        $d0 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: double getDoubleValue()>();
+
+        $r8 = staticinvoke <java.lang.Double: java.lang.Double valueOf(double)>($d0);
+
+        return $r8;
+
+     label14:
+        $r2 := @caughtexception;
+
+        goto label09;
+
+        catch java.lang.IllegalArgumentException from label07 to label08 with label14;
+    }
+
+    public final double _parseDoublePrimitive(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        org.codehaus.jackson.JsonToken $r4, $r5;
+        char $c1;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        java.lang.IllegalArgumentException $r2;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.map.JsonMappingException $r9;
+        int $i0;
+        java.lang.Class $r8;
+        java.lang.String $r6, $r7;
+        org.codehaus.jackson.JsonParser $r3;
+        boolean $z0;
+        double $d0;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r3 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r4 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken getCurrentToken()>();
+
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r4 == $r5 goto label13;
+
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_FLOAT>;
+
+        if $r4 != $r5 goto label01;
+
+        goto label13;
+
+     label01:
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_STRING>;
+
+        if $r4 != $r5 goto label11;
+
+        $r6 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: java.lang.String getText()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.String: java.lang.String trim()>();
+
+        $i0 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+        if $i0 != 0 goto label02;
+
+        return 0.0;
+
+     label02:
+        $c1 = virtualinvoke $r6.<java.lang.String: char charAt(int)>(0);
+
+        $i0 = (int) $c1;
+
+        if $i0 == 45 goto label06;
+
+        $i0 = (int) $c1;
+
+        if $i0 == 73 goto label04;
+
+        $i0 = (int) $c1;
+
+        if $i0 == 78 goto label03;
+
+        goto label07;
+
+     label03:
+        $r7 = "NaN";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 == 0 goto label07;
+
+        return #NaN;
+
+     label04:
+        $r7 = "Infinity";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 != 0 goto label05;
+
+        $r7 = "INF";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 == 0 goto label07;
+
+     label05:
+        return #Infinity;
+
+     label06:
+        $r7 = "-Infinity";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 != 0 goto label10;
+
+        $r7 = "-INF";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 == 0 goto label07;
+
+        goto label10;
+
+     label07:
+        $d0 = staticinvoke <org.codehaus.jackson.map.deser.StdDeserializer: double parseDouble(java.lang.String)>($r6);
+
+     label08:
+        return $d0;
+
+     label09:
+        $r8 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r9 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdStringException(java.lang.Class,java.lang.String)>($r8, "not a valid double value");
+
+        throw $r9;
+
+     label10:
+        return #-Infinity;
+
+     label11:
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NULL>;
+
+        if $r4 != $r5 goto label12;
+
+        return 0.0;
+
+     label12:
+        $r8 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r9 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException mappingException(java.lang.Class)>($r8);
+
+        throw $r9;
+
+     label13:
+        $d0 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: double getDoubleValue()>();
+
+        return $d0;
+
+     label14:
+        $r2 := @caughtexception;
+
+        goto label09;
+
+        catch java.lang.IllegalArgumentException from label07 to label08 with label14;
+    }
+
+    public final java.lang.Float _parseFloat(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        java.lang.Float $r8;
+        org.codehaus.jackson.JsonToken $r4, $r5;
+        char $c1;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        java.lang.IllegalArgumentException $r2;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.map.JsonMappingException $r10;
+        int $i0;
+        float $f0;
+        java.lang.Class $r9;
+        java.lang.String $r6, $r7;
+        org.codehaus.jackson.JsonParser $r3;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r3 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r4 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken getCurrentToken()>();
+
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r4 == $r5 goto label13;
+
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_FLOAT>;
+
+        if $r4 != $r5 goto label01;
+
+        goto label13;
+
+     label01:
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_STRING>;
+
+        if $r4 != $r5 goto label11;
+
+        $r6 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: java.lang.String getText()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.String: java.lang.String trim()>();
+
+        $i0 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+        if $i0 != 0 goto label02;
+
+        return null;
+
+     label02:
+        $c1 = virtualinvoke $r6.<java.lang.String: char charAt(int)>(0);
+
+        $i0 = (int) $c1;
+
+        if $i0 == 45 goto label06;
+
+        $i0 = (int) $c1;
+
+        if $i0 == 73 goto label04;
+
+        $i0 = (int) $c1;
+
+        if $i0 == 78 goto label03;
+
+        goto label07;
+
+     label03:
+        $r7 = "NaN";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 == 0 goto label07;
+
+        $r8 = staticinvoke <java.lang.Float: java.lang.Float valueOf(float)>(#NaNF);
+
+        return $r8;
+
+     label04:
+        $r7 = "Infinity";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 != 0 goto label05;
+
+        $r7 = "INF";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 == 0 goto label07;
+
+     label05:
+        $r8 = staticinvoke <java.lang.Float: java.lang.Float valueOf(float)>(#InfinityF);
+
+        return $r8;
+
+     label06:
+        $r7 = "-Infinity";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 != 0 goto label10;
+
+        $r7 = "-INF";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 == 0 goto label07;
+
+        goto label10;
+
+     label07:
+        $f0 = staticinvoke <java.lang.Float: float parseFloat(java.lang.String)>($r6);
+
+        $r8 = staticinvoke <java.lang.Float: java.lang.Float valueOf(float)>($f0);
+
+     label08:
+        return $r8;
+
+     label09:
+        $r9 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r10 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdStringException(java.lang.Class,java.lang.String)>($r9, "not a valid Float value");
+
+        throw $r10;
+
+     label10:
+        $r8 = staticinvoke <java.lang.Float: java.lang.Float valueOf(float)>(#-InfinityF);
+
+        return $r8;
+
+     label11:
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NULL>;
+
+        if $r4 != $r5 goto label12;
+
+        return null;
+
+     label12:
+        $r9 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r10 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException mappingException(java.lang.Class)>($r9);
+
+        throw $r10;
+
+     label13:
+        $f0 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: float getFloatValue()>();
+
+        $r8 = staticinvoke <java.lang.Float: java.lang.Float valueOf(float)>($f0);
+
+        return $r8;
+
+     label14:
+        $r2 := @caughtexception;
+
+        goto label09;
+
+        catch java.lang.IllegalArgumentException from label07 to label08 with label14;
+    }
+
+    public final float _parseFloatPrimitive(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        org.codehaus.jackson.JsonToken $r4, $r5;
+        char $c1;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        java.lang.IllegalArgumentException $r2;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.map.JsonMappingException $r9;
+        int $i0;
+        float $f0;
+        java.lang.Class $r8;
+        java.lang.String $r6, $r7;
+        org.codehaus.jackson.JsonParser $r3;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r3 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r4 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken getCurrentToken()>();
+
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r4 == $r5 goto label13;
+
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_FLOAT>;
+
+        if $r4 != $r5 goto label01;
+
+        goto label13;
+
+     label01:
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_STRING>;
+
+        if $r4 != $r5 goto label11;
+
+        $r6 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: java.lang.String getText()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.String: java.lang.String trim()>();
+
+        $i0 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+        if $i0 != 0 goto label02;
+
+        return 0.0F;
+
+     label02:
+        $c1 = virtualinvoke $r6.<java.lang.String: char charAt(int)>(0);
+
+        $i0 = (int) $c1;
+
+        if $i0 == 45 goto label06;
+
+        $i0 = (int) $c1;
+
+        if $i0 == 73 goto label04;
+
+        $i0 = (int) $c1;
+
+        if $i0 == 78 goto label03;
+
+        goto label07;
+
+     label03:
+        $r7 = "NaN";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 == 0 goto label07;
+
+        return #NaNF;
+
+     label04:
+        $r7 = "Infinity";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 != 0 goto label05;
+
+        $r7 = "INF";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 == 0 goto label07;
+
+     label05:
+        return #InfinityF;
+
+     label06:
+        $r7 = "-Infinity";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 != 0 goto label10;
+
+        $r7 = "-INF";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 == 0 goto label07;
+
+        goto label10;
+
+     label07:
+        $f0 = staticinvoke <java.lang.Float: float parseFloat(java.lang.String)>($r6);
+
+     label08:
+        return $f0;
+
+     label09:
+        $r8 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r9 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdStringException(java.lang.Class,java.lang.String)>($r8, "not a valid float value");
+
+        throw $r9;
+
+     label10:
+        return #-InfinityF;
+
+     label11:
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NULL>;
+
+        if $r4 != $r5 goto label12;
+
+        return 0.0F;
+
+     label12:
+        $r8 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r9 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException mappingException(java.lang.Class)>($r8);
+
+        throw $r9;
+
+     label13:
+        $f0 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: float getFloatValue()>();
+
+        return $f0;
+
+     label14:
+        $r2 := @caughtexception;
+
+        goto label09;
+
+        catch java.lang.IllegalArgumentException from label07 to label08 with label14;
+    }
+
+    public final int _parseIntPrimitive(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        org.codehaus.jackson.JsonToken $r4, $r5;
+        long $l1;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        java.lang.IllegalArgumentException $r2;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.map.JsonMappingException $r9;
+        byte $b2;
+        int $i0;
+        java.lang.Class $r7;
+        java.lang.StringBuilder $r8, $r10;
+        java.lang.String $r6;
+        org.codehaus.jackson.JsonParser $r3;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r3 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r4 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken getCurrentToken()>();
+
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r4 == $r5 goto label15;
+
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_FLOAT>;
+
+        if $r4 != $r5 goto label01;
+
+        goto label15;
+
+     label01:
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_STRING>;
+
+        if $r4 != $r5 goto label13;
+
+        $r6 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: java.lang.String getText()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.String: java.lang.String trim()>();
+
+     label02:
+        $i0 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+     label03:
+        if $i0 <= 9 goto label09;
+
+     label04:
+        $l1 = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>($r6);
+
+     label05:
+        $b2 = $l1 cmp -2147483648L;
+
+        $i0 = (int) $b2;
+
+        if $i0 < 0 goto label06;
+
+        $b2 = $l1 cmp 2147483647L;
+
+        $i0 = (int) $b2;
+
+        if $i0 > 0 goto label06;
+
+        $i0 = (int) $l1;
+
+        return $i0;
+
+     label06:
+        $r7 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r10 = new java.lang.StringBuilder;
+
+        $r8 = $r10;
+
+     label07:
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Overflow: numeric value (");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") out of range of int (");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(-2147483648);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" - ");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(2147483647);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r6 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r9 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdStringException(java.lang.Class,java.lang.String)>($r7, $r6);
+
+     label08:
+        throw $r9;
+
+     label09:
+        if $i0 != 0 goto label10;
+
+        return 0;
+
+     label10:
+        $i0 = staticinvoke <org.codehaus.jackson.io.NumberInput: int parseInt(java.lang.String)>($r6);
+
+     label11:
+        return $i0;
+
+     label12:
+        $r7 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r9 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdStringException(java.lang.Class,java.lang.String)>($r7, "not a valid int value");
+
+        throw $r9;
+
+     label13:
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NULL>;
+
+        if $r4 != $r5 goto label14;
+
+        return 0;
+
+     label14:
+        $r7 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r9 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException mappingException(java.lang.Class)>($r7);
+
+        throw $r9;
+
+     label15:
+        $i0 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: int getIntValue()>();
+
+        return $i0;
+
+     label16:
+        $r2 := @caughtexception;
+
+        goto label12;
+
+        catch java.lang.IllegalArgumentException from label02 to label03 with label16;
+        catch java.lang.IllegalArgumentException from label04 to label05 with label16;
+        catch java.lang.IllegalArgumentException from label07 to label08 with label16;
+        catch java.lang.IllegalArgumentException from label10 to label11 with label16;
+    }
+
+    public final java.lang.Integer _parseInteger(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        org.codehaus.jackson.JsonToken $r4, $r5;
+        long $l1;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        java.lang.IllegalArgumentException $r2;
+        java.lang.Integer $r7;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.map.JsonMappingException $r10;
+        byte $b2;
+        int $i0;
+        java.lang.Class $r8;
+        java.lang.StringBuilder $r9, $r11;
+        java.lang.String $r6;
+        org.codehaus.jackson.JsonParser $r3;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r3 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r4 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken getCurrentToken()>();
+
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r4 == $r5 goto label17;
+
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_FLOAT>;
+
+        if $r4 != $r5 goto label01;
+
+        goto label17;
+
+     label01:
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_STRING>;
+
+        if $r4 != $r5 goto label15;
+
+        $r6 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: java.lang.String getText()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.String: java.lang.String trim()>();
+
+     label02:
+        $i0 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+     label03:
+        if $i0 <= 9 goto label11;
+
+     label04:
+        $l1 = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>($r6);
+
+     label05:
+        $b2 = $l1 cmp -2147483648L;
+
+        $i0 = (int) $b2;
+
+        if $i0 < 0 goto label08;
+
+        $b2 = $l1 cmp 2147483647L;
+
+        $i0 = (int) $b2;
+
+        if $i0 > 0 goto label08;
+
+        $i0 = (int) $l1;
+
+     label06:
+        $r7 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+     label07:
+        return $r7;
+
+     label08:
+        $r8 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r11 = new java.lang.StringBuilder;
+
+        $r9 = $r11;
+
+     label09:
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Overflow: numeric value (");
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") out of range of Integer (");
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(-2147483648);
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" - ");
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(2147483647);
+
+        virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r6 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r10 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdStringException(java.lang.Class,java.lang.String)>($r8, $r6);
+
+     label10:
+        throw $r10;
+
+     label11:
+        if $i0 != 0 goto label12;
+
+        return null;
+
+     label12:
+        $i0 = staticinvoke <org.codehaus.jackson.io.NumberInput: int parseInt(java.lang.String)>($r6);
+
+        $r7 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+     label13:
+        return $r7;
+
+     label14:
+        $r8 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r10 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdStringException(java.lang.Class,java.lang.String)>($r8, "not a valid Integer value");
+
+        throw $r10;
+
+     label15:
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NULL>;
+
+        if $r4 != $r5 goto label16;
+
+        return null;
+
+     label16:
+        $r8 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r10 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException mappingException(java.lang.Class)>($r8);
+
+        throw $r10;
+
+     label17:
+        $i0 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: int getIntValue()>();
+
+        $r7 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        return $r7;
+
+     label18:
+        $r2 := @caughtexception;
+
+        goto label14;
+
+        catch java.lang.IllegalArgumentException from label02 to label03 with label18;
+        catch java.lang.IllegalArgumentException from label04 to label05 with label18;
+        catch java.lang.IllegalArgumentException from label06 to label07 with label18;
+        catch java.lang.IllegalArgumentException from label09 to label10 with label18;
+        catch java.lang.IllegalArgumentException from label12 to label13 with label18;
+    }
+
+    public final java.lang.Long _parseLong(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        org.codehaus.jackson.JsonToken $r4, $r5;
+        long $l1;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        java.lang.IllegalArgumentException $r2;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.map.JsonMappingException $r9;
+        java.lang.Long $r7;
+        int $i0;
+        java.lang.Class $r8;
+        java.lang.String $r6;
+        org.codehaus.jackson.JsonParser $r3;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r3 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r4 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken getCurrentToken()>();
+
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r4 == $r5 goto label7;
+
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_FLOAT>;
+
+        if $r4 != $r5 goto label1;
+
+        goto label7;
+
+     label1:
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_STRING>;
+
+        if $r4 != $r5 goto label5;
+
+        $r6 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: java.lang.String getText()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.String: java.lang.String trim()>();
+
+        $i0 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+        if $i0 != 0 goto label2;
+
+        return null;
+
+     label2:
+        $l1 = staticinvoke <org.codehaus.jackson.io.NumberInput: long parseLong(java.lang.String)>($r6);
+
+        $r7 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l1);
+
+     label3:
+        return $r7;
+
+     label4:
+        $r8 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r9 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdStringException(java.lang.Class,java.lang.String)>($r8, "not a valid Long value");
+
+        throw $r9;
+
+     label5:
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NULL>;
+
+        if $r4 != $r5 goto label6;
+
+        return null;
+
+     label6:
+        $r8 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r9 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException mappingException(java.lang.Class)>($r8);
+
+        throw $r9;
+
+     label7:
+        $l1 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: long getLongValue()>();
+
+        $r7 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l1);
+
+        return $r7;
+
+     label8:
+        $r2 := @caughtexception;
+
+        goto label4;
+
+        catch java.lang.IllegalArgumentException from label2 to label3 with label8;
+    }
+
+    public final long _parseLongPrimitive(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        org.codehaus.jackson.JsonToken $r4, $r5;
+        long $l1;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        java.lang.IllegalArgumentException $r2;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.map.JsonMappingException $r8;
+        int $i0;
+        java.lang.Class $r7;
+        java.lang.String $r6;
+        org.codehaus.jackson.JsonParser $r3;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r3 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r4 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken getCurrentToken()>();
+
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r4 == $r5 goto label7;
+
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_FLOAT>;
+
+        if $r4 != $r5 goto label1;
+
+        goto label7;
+
+     label1:
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_STRING>;
+
+        if $r4 != $r5 goto label5;
+
+        $r6 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: java.lang.String getText()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.String: java.lang.String trim()>();
+
+        $i0 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+        if $i0 != 0 goto label2;
+
+        return 0L;
+
+     label2:
+        $l1 = staticinvoke <org.codehaus.jackson.io.NumberInput: long parseLong(java.lang.String)>($r6);
+
+     label3:
+        return $l1;
+
+     label4:
+        $r7 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r8 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdStringException(java.lang.Class,java.lang.String)>($r7, "not a valid long value");
+
+        throw $r8;
+
+     label5:
+        $r5 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NULL>;
+
+        if $r4 != $r5 goto label6;
+
+        return 0L;
+
+     label6:
+        $r7 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r8 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException mappingException(java.lang.Class)>($r7);
+
+        throw $r8;
+
+     label7:
+        $l1 = virtualinvoke $r3.<org.codehaus.jackson.JsonParser: long getLongValue()>();
+
+        return $l1;
+
+     label8:
+        $r2 := @caughtexception;
+
+        goto label4;
+
+        catch java.lang.IllegalArgumentException from label2 to label3 with label8;
+    }
+
+    public final java.lang.Short _parseShort(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        org.codehaus.jackson.JsonToken $r3, $r4;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        short $s1;
+        org.codehaus.jackson.map.JsonMappingException $r7;
+        java.lang.Short $r5;
+        int $i0, $i2;
+        java.lang.Class $r6;
+        org.codehaus.jackson.JsonParser $r2;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r2 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r3 = virtualinvoke $r2.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken getCurrentToken()>();
+
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NULL>;
+
+        if $r3 != $r4 goto label1;
+
+        return null;
+
+     label1:
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_INT>;
+
+        if $r3 == $r4 goto label4;
+
+        $r4 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken VALUE_NUMBER_FLOAT>;
+
+        if $r3 != $r4 goto label2;
+
+        goto label4;
+
+     label2:
+        $i0 = virtualinvoke r0.<org.codehaus.jackson.map.deser.StdDeserializer: int _parseIntPrimitive(org.codehaus.jackson.JsonParser,org.codehaus.jackson.map.DeserializationContext)>($r2, $r1);
+
+        $i2 = -32768;
+
+        if $i0 < $i2 goto label3;
+
+        if $i0 > 32767 goto label3;
+
+        $s1 = (short) $i0;
+
+        $r5 = staticinvoke <java.lang.Short: java.lang.Short valueOf(short)>($s1);
+
+        return $r5;
+
+     label3:
+        $r6 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r7 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdStringException(java.lang.Class,java.lang.String)>($r6, "overflow, value can not be represented as 16-bit value");
+
+        throw $r7;
+
+     label4:
+        $s1 = virtualinvoke $r2.<org.codehaus.jackson.JsonParser: short getShortValue()>();
+
+        $r5 = staticinvoke <java.lang.Short: java.lang.Short valueOf(short)>($s1);
+
+        return $r5;
+    }
+
+    public final short _parseShortPrimitive(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        short $s1;
+        org.codehaus.jackson.map.JsonMappingException $r4;
+        int $i0, $i2;
+        java.lang.Class $r3;
+        org.codehaus.jackson.JsonParser $r2;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r2 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $i0 = virtualinvoke r0.<org.codehaus.jackson.map.deser.StdDeserializer: int _parseIntPrimitive(org.codehaus.jackson.JsonParser,org.codehaus.jackson.map.DeserializationContext)>($r2, $r1);
+
+        $i2 = -32768;
+
+        if $i0 < $i2 goto label1;
+
+        if $i0 > 32767 goto label1;
+
+        $s1 = (short) $i0;
+
+        return $s1;
+
+     label1:
+        $r3 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        $r4 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException weirdStringException(java.lang.Class,java.lang.String)>($r3, "overflow, value can not be represented as 16-bit value");
+
+        throw $r4;
+    }
+
+    public java.lang.Object deserializeWithType(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext, org.codehaus.jackson.map.TypeDeserializer)
+    {
+        org.codehaus.jackson.map.TypeDeserializer $r2;
+        java.lang.Object $r3;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.JsonParser $r4;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r4 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r2 := @parameter2: org.codehaus.jackson.map.TypeDeserializer;
+
+        $r3 = virtualinvoke $r2.<org.codehaus.jackson.map.TypeDeserializer: java.lang.Object deserializeTypedFromAny(org.codehaus.jackson.JsonParser,org.codehaus.jackson.map.DeserializationContext)>($r4, $r1);
+
+        return $r3;
+    }
+
+    public org.codehaus.jackson.map.JsonDeserializer findDeserializer(org.codehaus.jackson.map.DeserializationConfig, org.codehaus.jackson.map.DeserializerProvider, org.codehaus.jackson.type.JavaType, org.codehaus.jackson.map.BeanProperty)
+    {
+        org.codehaus.jackson.map.DeserializerProvider $r1;
+        org.codehaus.jackson.type.JavaType $r2;
+        org.codehaus.jackson.map.JsonDeserializer $r4;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        org.codehaus.jackson.map.DeserializationConfig $r5;
+        org.codehaus.jackson.map.BeanProperty $r3;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r5 := @parameter0: org.codehaus.jackson.map.DeserializationConfig;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializerProvider;
+
+        $r2 := @parameter2: org.codehaus.jackson.type.JavaType;
+
+        $r3 := @parameter3: org.codehaus.jackson.map.BeanProperty;
+
+        $r4 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializerProvider: org.codehaus.jackson.map.JsonDeserializer findValueDeserializer(org.codehaus.jackson.map.DeserializationConfig,org.codehaus.jackson.type.JavaType,org.codehaus.jackson.map.BeanProperty)>($r5, $r2, $r3);
+
+        return $r4;
+    }
+
+    public java.lang.Class getValueClass()
+    {
+        java.lang.Class r1;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        r1 = r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class _valueClass>;
+
+        return r1;
+    }
+
+    public org.codehaus.jackson.type.JavaType getValueType()
+    {
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        return null;
+    }
+
+    public void handleUnknownProperty(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext, java.lang.Object, java.lang.String)
+    {
+        java.lang.Object $r4;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        java.lang.String $r3;
+        org.codehaus.jackson.JsonParser $r1;
+        org.codehaus.jackson.map.DeserializationContext $r2;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r1 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r2 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r4 := @parameter2: java.lang.Object;
+
+        $r3 := @parameter3: java.lang.String;
+
+        if $r4 != null goto label1;
+
+        $r4 = virtualinvoke r0.<org.codehaus.jackson.map.deser.StdDeserializer: java.lang.Class getValueClass()>();
+
+     label1:
+        $z0 = virtualinvoke $r2.<org.codehaus.jackson.map.DeserializationContext: boolean handleUnknownProperty(org.codehaus.jackson.JsonParser,org.codehaus.jackson.map.JsonDeserializer,java.lang.Object,java.lang.String)>($r1, r0, $r4, $r3);
+
+        if $z0 == 0 goto label2;
+
+        return;
+
+     label2:
+        virtualinvoke r0.<org.codehaus.jackson.map.deser.StdDeserializer: void reportUnknownProperty(org.codehaus.jackson.map.DeserializationContext,java.lang.Object,java.lang.String)>($r2, $r4, $r3);
+
+        virtualinvoke $r1.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonParser skipChildren()>();
+
+        return;
+    }
+
+    public boolean isDefaultSerializer(org.codehaus.jackson.map.JsonDeserializer)
+    {
+        java.lang.'annotation'.Annotation $r3;
+        org.codehaus.jackson.map.JsonDeserializer $r1;
+        java.lang.Class $r2;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r1 := @parameter0: org.codehaus.jackson.map.JsonDeserializer;
+
+        if $r1 == null goto label1;
+
+        $r2 = virtualinvoke $r1.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r3 = virtualinvoke $r2.<java.lang.Class: java.lang.'annotation'.Annotation getAnnotation(java.lang.Class)>(class "Lorg/codehaus/jackson/map/annotate/JacksonStdImpl;");
+
+        if $r3 == null goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public void reportUnknownProperty(org.codehaus.jackson.map.DeserializationContext, java.lang.Object, java.lang.String)
+    {
+        org.codehaus.jackson.map.JsonMappingException $r5;
+        org.codehaus.jackson.map.DeserializationConfig$Feature $r4;
+        java.lang.Object $r1;
+        org.codehaus.jackson.map.deser.StdDeserializer r0;
+        java.lang.String $r2;
+        org.codehaus.jackson.map.DeserializationContext $r3;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.map.deser.StdDeserializer;
+
+        $r3 := @parameter0: org.codehaus.jackson.map.DeserializationContext;
+
+        $r1 := @parameter1: java.lang.Object;
+
+        $r2 := @parameter2: java.lang.String;
+
+        $r4 = <org.codehaus.jackson.map.DeserializationConfig$Feature: org.codehaus.jackson.map.DeserializationConfig$Feature FAIL_ON_UNKNOWN_PROPERTIES>;
+
+        $z0 = virtualinvoke $r3.<org.codehaus.jackson.map.DeserializationContext: boolean isEnabled(org.codehaus.jackson.map.DeserializationConfig$Feature)>($r4);
+
+        if $z0 != 0 goto label1;
+
+        return;
+
+     label1:
+        $r5 = virtualinvoke $r3.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException unknownFieldException(java.lang.Object,java.lang.String)>($r1, $r2);
+
+        throw $r5;
+    }
+}

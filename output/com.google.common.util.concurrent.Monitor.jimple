@@ -1,0 +1,1959 @@
+public final class com.google.common.util.concurrent.Monitor extends java.lang.Object
+{
+    public com.google.common.util.concurrent.Monitor$Guard activeGuards;
+    public final boolean fair;
+    public final java.util.concurrent.locks.ReentrantLock lock;
+
+    public void <init>()
+    {
+        com.google.common.util.concurrent.Monitor r0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void <init>(boolean)>(0);
+
+        return;
+    }
+
+    public void <init>(boolean)
+    {
+        com.google.common.util.concurrent.Monitor r0;
+        java.util.concurrent.locks.ReentrantLock $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $z0 := @parameter0: boolean;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.common.util.concurrent.Monitor: com.google.common.util.concurrent.Monitor$Guard activeGuards> = null;
+
+        r0.<com.google.common.util.concurrent.Monitor: boolean fair> = $z0;
+
+        $r1 = new java.util.concurrent.locks.ReentrantLock;
+
+        specialinvoke $r1.<java.util.concurrent.locks.ReentrantLock: void <init>(boolean)>($z0);
+
+        r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock> = $r1;
+
+        return;
+    }
+
+    public static java.util.concurrent.locks.ReentrantLock access$000(com.google.common.util.concurrent.Monitor)
+    {
+        com.google.common.util.concurrent.Monitor $r0;
+        java.util.concurrent.locks.ReentrantLock r1;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.Monitor;
+
+        r1 = $r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        return r1;
+    }
+
+    private void await(com.google.common.util.concurrent.Monitor$Guard, boolean)
+    {
+        java.lang.Throwable $r3;
+        com.google.common.util.concurrent.Monitor$Guard $r1;
+        java.util.concurrent.locks.Condition $r2;
+        com.google.common.util.concurrent.Monitor r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $z0 := @parameter1: boolean;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void signalNextWaiter()>();
+
+     label1:
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void beginWaitingFor(com.google.common.util.concurrent.Monitor$Guard)>($r1);
+
+     label2:
+        $r2 = $r1.<com.google.common.util.concurrent.Monitor$Guard: java.util.concurrent.locks.Condition condition>;
+
+        interfaceinvoke $r2.<java.util.concurrent.locks.Condition: void await()>();
+
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+     label3:
+        if $z0 == 0 goto label2;
+
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void endWaitingFor(com.google.common.util.concurrent.Monitor$Guard)>($r1);
+
+        return;
+
+     label4:
+        $r3 := @caughtexception;
+
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void endWaitingFor(com.google.common.util.concurrent.Monitor$Guard)>($r1);
+
+        goto label5;
+
+     label5:
+        throw $r3;
+
+        catch java.lang.Throwable from label2 to label3 with label4;
+    }
+
+    private boolean awaitNanos(com.google.common.util.concurrent.Monitor$Guard, long, boolean)
+    {
+        java.lang.Throwable $r3;
+        long $l1;
+        com.google.common.util.concurrent.Monitor$Guard $r1;
+        java.util.concurrent.locks.Condition $r2;
+        byte $b0;
+        int $i2;
+        com.google.common.util.concurrent.Monitor r0;
+        boolean $z0, $z1, $z2;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $l1 := @parameter1: long;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 = 1;
+
+     label01:
+        $b0 = $l1 cmp 0L;
+
+        $i2 = (int) $b0;
+
+        if $i2 > 0 goto label02;
+
+        if $z1 != 0 goto label12;
+
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void endWaitingFor(com.google.common.util.concurrent.Monitor$Guard)>($r1);
+
+        return 0;
+
+     label02:
+        if $z1 == 0 goto label06;
+
+        if $z0 == 0 goto label04;
+
+     label03:
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void signalNextWaiter()>();
+
+     label04:
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void beginWaitingFor(com.google.common.util.concurrent.Monitor$Guard)>($r1);
+
+     label05:
+        $z1 = 0;
+
+     label06:
+        $r2 = $r1.<com.google.common.util.concurrent.Monitor$Guard: java.util.concurrent.locks.Condition condition>;
+
+        $l1 = interfaceinvoke $r2.<java.util.concurrent.locks.Condition: long awaitNanos(long)>($l1);
+
+     label07:
+        $z2 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+     label08:
+        if $z2 == 0 goto label01;
+
+        if $z1 != 0 goto label13;
+
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void endWaitingFor(com.google.common.util.concurrent.Monitor$Guard)>($r1);
+
+        return 1;
+
+     label09:
+        $r3 := @caughtexception;
+
+        if $z1 != 0 goto label10;
+
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void endWaitingFor(com.google.common.util.concurrent.Monitor$Guard)>($r1);
+
+     label10:
+        goto label11;
+
+     label11:
+        throw $r3;
+
+     label12:
+        return 0;
+
+     label13:
+        return 1;
+
+        catch java.lang.Throwable from label03 to label05 with label09;
+        catch java.lang.Throwable from label06 to label07 with label09;
+        catch java.lang.Throwable from label07 to label08 with label09;
+    }
+
+    private void awaitUninterruptibly(com.google.common.util.concurrent.Monitor$Guard, boolean)
+    {
+        java.lang.Throwable $r3;
+        com.google.common.util.concurrent.Monitor$Guard $r1;
+        java.util.concurrent.locks.Condition $r2;
+        com.google.common.util.concurrent.Monitor r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $z0 := @parameter1: boolean;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void signalNextWaiter()>();
+
+     label1:
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void beginWaitingFor(com.google.common.util.concurrent.Monitor$Guard)>($r1);
+
+     label2:
+        $r2 = $r1.<com.google.common.util.concurrent.Monitor$Guard: java.util.concurrent.locks.Condition condition>;
+
+        interfaceinvoke $r2.<java.util.concurrent.locks.Condition: void awaitUninterruptibly()>();
+
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+     label3:
+        if $z0 == 0 goto label2;
+
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void endWaitingFor(com.google.common.util.concurrent.Monitor$Guard)>($r1);
+
+        return;
+
+     label4:
+        $r3 := @caughtexception;
+
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void endWaitingFor(com.google.common.util.concurrent.Monitor$Guard)>($r1);
+
+        goto label5;
+
+     label5:
+        throw $r3;
+
+        catch java.lang.Throwable from label2 to label3 with label4;
+    }
+
+    private void beginWaitingFor(com.google.common.util.concurrent.Monitor$Guard)
+    {
+        com.google.common.util.concurrent.Monitor$Guard $r1, $r2;
+        int $i0, $i1;
+        com.google.common.util.concurrent.Monitor r0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $i1 = $r1.<com.google.common.util.concurrent.Monitor$Guard: int waiterCount>;
+
+        $i0 = $i1 + 1;
+
+        $r1.<com.google.common.util.concurrent.Monitor$Guard: int waiterCount> = $i0;
+
+        if $i1 != 0 goto label1;
+
+        $r2 = r0.<com.google.common.util.concurrent.Monitor: com.google.common.util.concurrent.Monitor$Guard activeGuards>;
+
+        $r1.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor$Guard next> = $r2;
+
+        r0.<com.google.common.util.concurrent.Monitor: com.google.common.util.concurrent.Monitor$Guard activeGuards> = $r1;
+
+     label1:
+        return;
+    }
+
+    private void endWaitingFor(com.google.common.util.concurrent.Monitor$Guard)
+    {
+        com.google.common.util.concurrent.Monitor$Guard $r1, $r2, $r3;
+        int $i0, $i1;
+        com.google.common.util.concurrent.Monitor r0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $i0 = $r1.<com.google.common.util.concurrent.Monitor$Guard: int waiterCount>;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        $r1.<com.google.common.util.concurrent.Monitor$Guard: int waiterCount> = $i0;
+
+        if $i0 != 0 goto label5;
+
+        $r2 = r0.<com.google.common.util.concurrent.Monitor: com.google.common.util.concurrent.Monitor$Guard activeGuards>;
+
+        $r3 = null;
+
+     label1:
+        if $r2 != $r1 goto label4;
+
+        if $r3 != null goto label2;
+
+        $r1 = $r2.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor$Guard next>;
+
+        r0.<com.google.common.util.concurrent.Monitor: com.google.common.util.concurrent.Monitor$Guard activeGuards> = $r1;
+
+        goto label3;
+
+     label2:
+        $r1 = $r2.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor$Guard next>;
+
+        $r3.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor$Guard next> = $r1;
+
+     label3:
+        $r2.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor$Guard next> = null;
+
+        return;
+
+     label4:
+        $r3 = $r2;
+
+        $r2 = $r2.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor$Guard next>;
+
+        goto label1;
+
+     label5:
+        return;
+    }
+
+    public static long initNanoTime(long)
+    {
+        int $i2;
+        long $l0;
+        byte $b1;
+
+        $l0 := @parameter0: long;
+
+        $b1 = $l0 cmp 0L;
+
+        $i2 = (int) $b1;
+
+        if $i2 > 0 goto label1;
+
+        return 0L;
+
+     label1:
+        $l0 = staticinvoke <java.lang.System: long nanoTime()>();
+
+        $b1 = $l0 cmp 0L;
+
+        if $b1 != 0 goto label2;
+
+        return 1L;
+
+     label2:
+        return $l0;
+    }
+
+    private boolean isSatisfied(com.google.common.util.concurrent.Monitor$Guard)
+    {
+        java.lang.Throwable $r2;
+        com.google.common.util.concurrent.Monitor$Guard $r1;
+        com.google.common.util.concurrent.Monitor r0;
+        java.lang.NullPointerException r3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+     label1:
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+     label2:
+        return $z0;
+
+     label3:
+        $r2 := @caughtexception;
+
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void signalAllWaiters()>();
+
+        staticinvoke <com.google.common.base.Throwables: java.lang.RuntimeException propagate(java.lang.Throwable)>($r2);
+
+        r3 = new java.lang.NullPointerException;
+
+        specialinvoke r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw r3;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public static long remainingNanos(long, long)
+    {
+        byte $b2;
+        int $i4;
+        long $l0, $l1, $l3;
+
+        $l0 := @parameter0: long;
+
+        $l1 := @parameter1: long;
+
+        $b2 = $l1 cmp 0L;
+
+        $i4 = (int) $b2;
+
+        if $i4 > 0 goto label1;
+
+        return 0L;
+
+     label1:
+        $l3 = staticinvoke <java.lang.System: long nanoTime()>();
+
+        $l0 = $l3 - $l0;
+
+        $l0 = $l1 - $l0;
+
+        return $l0;
+    }
+
+    private void signalAllWaiters()
+    {
+        com.google.common.util.concurrent.Monitor r0;
+        java.util.concurrent.locks.Condition $r1;
+        com.google.common.util.concurrent.Monitor$Guard $r2;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r2 = r0.<com.google.common.util.concurrent.Monitor: com.google.common.util.concurrent.Monitor$Guard activeGuards>;
+
+     label1:
+        if $r2 == null goto label2;
+
+        $r1 = $r2.<com.google.common.util.concurrent.Monitor$Guard: java.util.concurrent.locks.Condition condition>;
+
+        interfaceinvoke $r1.<java.util.concurrent.locks.Condition: void signalAll()>();
+
+        $r2 = $r2.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor$Guard next>;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    private void signalNextWaiter()
+    {
+        com.google.common.util.concurrent.Monitor$Guard $r1;
+        java.util.concurrent.locks.Condition $r2;
+        com.google.common.util.concurrent.Monitor r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 = r0.<com.google.common.util.concurrent.Monitor: com.google.common.util.concurrent.Monitor$Guard activeGuards>;
+
+     label1:
+        if $r1 == null goto label3;
+
+        $z0 = specialinvoke r0.<com.google.common.util.concurrent.Monitor: boolean isSatisfied(com.google.common.util.concurrent.Monitor$Guard)>($r1);
+
+        if $z0 == 0 goto label2;
+
+        $r2 = $r1.<com.google.common.util.concurrent.Monitor$Guard: java.util.concurrent.locks.Condition condition>;
+
+        interfaceinvoke $r2.<java.util.concurrent.locks.Condition: void signal()>();
+
+        return;
+
+     label2:
+        $r1 = $r1.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor$Guard next>;
+
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    public static long toSafeNanos(long, java.util.concurrent.TimeUnit)
+    {
+        java.util.concurrent.TimeUnit $r0;
+        byte $b1;
+        int $i2;
+        long $l0;
+
+        $l0 := @parameter0: long;
+
+        $r0 := @parameter1: java.util.concurrent.TimeUnit;
+
+        $l0 = virtualinvoke $r0.<java.util.concurrent.TimeUnit: long toNanos(long)>($l0);
+
+        $b1 = $l0 cmp 0L;
+
+        $i2 = (int) $b1;
+
+        if $i2 > 0 goto label1;
+
+        return 0L;
+
+     label1:
+        $b1 = $l0 cmp 6917529027641081853L;
+
+        $i2 = (int) $b1;
+
+        if $i2 <= 0 goto label2;
+
+        return 6917529027641081853L;
+
+     label2:
+        return $l0;
+    }
+
+    public void enter()
+    {
+        com.google.common.util.concurrent.Monitor r0;
+        java.util.concurrent.locks.ReentrantLock $r1;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        virtualinvoke $r1.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+        return;
+    }
+
+    public boolean enter(long, java.util.concurrent.TimeUnit)
+    {
+        java.lang.Throwable $r5;
+        java.util.concurrent.locks.ReentrantLock $r3;
+        long $l0, $l1, $l2;
+        java.util.concurrent.TimeUnit $r1;
+        java.lang.InterruptedException $r2;
+        java.lang.Thread $r4;
+        com.google.common.util.concurrent.Monitor r0;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $l0 := @parameter0: long;
+
+        $r1 := @parameter1: java.util.concurrent.TimeUnit;
+
+        $l0 = staticinvoke <com.google.common.util.concurrent.Monitor: long toSafeNanos(long,java.util.concurrent.TimeUnit)>($l0, $r1);
+
+        $r3 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z0 = r0.<com.google.common.util.concurrent.Monitor: boolean fair>;
+
+        if $z0 != 0 goto label01;
+
+        $z0 = virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: boolean tryLock()>();
+
+        if $z0 == 0 goto label01;
+
+        return 1;
+
+     label01:
+        $z0 = staticinvoke <java.lang.Thread: boolean interrupted()>();
+
+     label02:
+        $l1 = staticinvoke <java.lang.System: long nanoTime()>();
+
+     label03:
+        $l2 = $l0;
+
+     label04:
+        $r1 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit NANOSECONDS>;
+
+     label05:
+        $z1 = virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: boolean tryLock(long,java.util.concurrent.TimeUnit)>($l2, $r1);
+
+     label06:
+        if $z0 == 0 goto label15;
+
+        $r4 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $r4.<java.lang.Thread: void interrupt()>();
+
+        return $z1;
+
+     label07:
+        $l2 = staticinvoke <com.google.common.util.concurrent.Monitor: long remainingNanos(long,long)>($l1, $l0);
+
+     label08:
+        $z0 = 1;
+
+        goto label04;
+
+     label09:
+        $r5 := @caughtexception;
+
+        $z0 = 1;
+
+        goto label11;
+
+     label10:
+        $r5 := @caughtexception;
+
+     label11:
+        if $z0 == 0 goto label12;
+
+        $r4 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $r4.<java.lang.Thread: void interrupt()>();
+
+     label12:
+        goto label13;
+
+     label13:
+        throw $r5;
+
+     label14:
+        $r2 := @caughtexception;
+
+        goto label07;
+
+     label15:
+        return $z1;
+
+        catch java.lang.Throwable from label02 to label03 with label10;
+        catch java.lang.InterruptedException from label05 to label06 with label14;
+        catch java.lang.Throwable from label04 to label06 with label10;
+        catch java.lang.Throwable from label07 to label08 with label09;
+    }
+
+    public boolean enterIf(com.google.common.util.concurrent.Monitor$Guard)
+    {
+        java.lang.Throwable $r4;
+        java.lang.IllegalMonitorStateException $r5;
+        com.google.common.util.concurrent.Monitor$Guard $r1;
+        java.util.concurrent.locks.ReentrantLock $r3;
+        com.google.common.util.concurrent.Monitor r0, $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $r2 = $r1.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor monitor>;
+
+        if $r2 != r0 goto label4;
+
+        $r3 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+     label1:
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+     label2:
+        if $z0 != 0 goto label5;
+
+        virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        return $z0;
+
+     label3:
+        $r4 := @caughtexception;
+
+        virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        throw $r4;
+
+     label4:
+        $r5 = new java.lang.IllegalMonitorStateException;
+
+        specialinvoke $r5.<java.lang.IllegalMonitorStateException: void <init>()>();
+
+        throw $r5;
+
+     label5:
+        return $z0;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public boolean enterIf(com.google.common.util.concurrent.Monitor$Guard, long, java.util.concurrent.TimeUnit)
+    {
+        java.lang.Throwable $r5;
+        java.util.concurrent.locks.ReentrantLock $r4;
+        long $l0;
+        java.util.concurrent.TimeUnit $r1;
+        java.lang.IllegalMonitorStateException $r6;
+        com.google.common.util.concurrent.Monitor$Guard $r3;
+        com.google.common.util.concurrent.Monitor r0, $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r3 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $l0 := @parameter1: long;
+
+        $r1 := @parameter2: java.util.concurrent.TimeUnit;
+
+        $r2 = $r3.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor monitor>;
+
+        if $r2 != r0 goto label4;
+
+        $z0 = virtualinvoke r0.<com.google.common.util.concurrent.Monitor: boolean enter(long,java.util.concurrent.TimeUnit)>($l0, $r1);
+
+        if $z0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $z0 = virtualinvoke $r3.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+     label2:
+        if $z0 != 0 goto label5;
+
+        $r4 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        virtualinvoke $r4.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        return $z0;
+
+     label3:
+        $r5 := @caughtexception;
+
+        $r4 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        virtualinvoke $r4.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        throw $r5;
+
+     label4:
+        $r6 = new java.lang.IllegalMonitorStateException;
+
+        specialinvoke $r6.<java.lang.IllegalMonitorStateException: void <init>()>();
+
+        throw $r6;
+
+     label5:
+        return $z0;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public boolean enterIfInterruptibly(com.google.common.util.concurrent.Monitor$Guard)
+    {
+        java.lang.Throwable $r4;
+        java.lang.IllegalMonitorStateException $r5;
+        com.google.common.util.concurrent.Monitor$Guard $r1;
+        java.util.concurrent.locks.ReentrantLock $r3;
+        com.google.common.util.concurrent.Monitor r0, $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $r2 = $r1.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor monitor>;
+
+        if $r2 != r0 goto label4;
+
+        $r3 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: void lockInterruptibly()>();
+
+     label1:
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+     label2:
+        if $z0 != 0 goto label5;
+
+        virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        return $z0;
+
+     label3:
+        $r4 := @caughtexception;
+
+        virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        throw $r4;
+
+     label4:
+        $r5 = new java.lang.IllegalMonitorStateException;
+
+        specialinvoke $r5.<java.lang.IllegalMonitorStateException: void <init>()>();
+
+        throw $r5;
+
+     label5:
+        return $z0;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public boolean enterIfInterruptibly(com.google.common.util.concurrent.Monitor$Guard, long, java.util.concurrent.TimeUnit)
+    {
+        java.lang.Throwable $r5;
+        java.util.concurrent.locks.ReentrantLock $r4;
+        long $l0;
+        java.util.concurrent.TimeUnit $r1;
+        java.lang.IllegalMonitorStateException $r6;
+        com.google.common.util.concurrent.Monitor$Guard $r2;
+        com.google.common.util.concurrent.Monitor r0, $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r2 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $l0 := @parameter1: long;
+
+        $r1 := @parameter2: java.util.concurrent.TimeUnit;
+
+        $r3 = $r2.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor monitor>;
+
+        if $r3 != r0 goto label4;
+
+        $r4 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z0 = virtualinvoke $r4.<java.util.concurrent.locks.ReentrantLock: boolean tryLock(long,java.util.concurrent.TimeUnit)>($l0, $r1);
+
+        if $z0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $z0 = virtualinvoke $r2.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+     label2:
+        if $z0 != 0 goto label5;
+
+        virtualinvoke $r4.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        return $z0;
+
+     label3:
+        $r5 := @caughtexception;
+
+        virtualinvoke $r4.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        throw $r5;
+
+     label4:
+        $r6 = new java.lang.IllegalMonitorStateException;
+
+        specialinvoke $r6.<java.lang.IllegalMonitorStateException: void <init>()>();
+
+        throw $r6;
+
+     label5:
+        return $z0;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public void enterInterruptibly()
+    {
+        com.google.common.util.concurrent.Monitor r0;
+        java.util.concurrent.locks.ReentrantLock $r1;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        virtualinvoke $r1.<java.util.concurrent.locks.ReentrantLock: void lockInterruptibly()>();
+
+        return;
+    }
+
+    public boolean enterInterruptibly(long, java.util.concurrent.TimeUnit)
+    {
+        java.util.concurrent.TimeUnit $r1;
+        java.util.concurrent.locks.ReentrantLock $r2;
+        com.google.common.util.concurrent.Monitor r0;
+        long $l0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $l0 := @parameter0: long;
+
+        $r1 := @parameter1: java.util.concurrent.TimeUnit;
+
+        $r2 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z0 = virtualinvoke $r2.<java.util.concurrent.locks.ReentrantLock: boolean tryLock(long,java.util.concurrent.TimeUnit)>($l0, $r1);
+
+        return $z0;
+    }
+
+    public void enterWhen(com.google.common.util.concurrent.Monitor$Guard)
+    {
+        java.lang.Throwable $r4;
+        java.util.concurrent.locks.ReentrantLock $r3;
+        java.lang.IllegalMonitorStateException $r5;
+        com.google.common.util.concurrent.Monitor$Guard $r1;
+        com.google.common.util.concurrent.Monitor r0, $r2;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $r2 = $r1.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor monitor>;
+
+        if $r2 != r0 goto label6;
+
+        $r3 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z0 = virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: boolean isHeldByCurrentThread()>();
+
+        virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: void lockInterruptibly()>();
+
+     label1:
+        $z1 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+     label2:
+        if $z1 != 0 goto label7;
+
+     label3:
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void await(com.google.common.util.concurrent.Monitor$Guard,boolean)>($r1, $z0);
+
+     label4:
+        return;
+
+     label5:
+        $r4 := @caughtexception;
+
+        virtualinvoke r0.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        throw $r4;
+
+     label6:
+        $r5 = new java.lang.IllegalMonitorStateException;
+
+        specialinvoke $r5.<java.lang.IllegalMonitorStateException: void <init>()>();
+
+        throw $r5;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+    }
+
+    public boolean enterWhen(com.google.common.util.concurrent.Monitor$Guard, long, java.util.concurrent.TimeUnit)
+    {
+        java.lang.Throwable $r6, $r7;
+        long $l0, $l1, $l2, $l3;
+        java.lang.IllegalMonitorStateException $r8;
+        byte $b4;
+        boolean $z0, $z1, $z2;
+        java.util.concurrent.locks.ReentrantLock $r4;
+        java.util.concurrent.TimeUnit $r1;
+        com.google.common.util.concurrent.Monitor$Guard $r2;
+        java.lang.InterruptedException $r5;
+        com.google.common.util.concurrent.Monitor r0, $r3;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r2 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $l0 := @parameter1: long;
+
+        $r1 := @parameter2: java.util.concurrent.TimeUnit;
+
+        $l1 = staticinvoke <com.google.common.util.concurrent.Monitor: long toSafeNanos(long,java.util.concurrent.TimeUnit)>($l0, $r1);
+
+        $l2 = $l1;
+
+        $r3 = $r2.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor monitor>;
+
+        if $r3 != r0 goto label16;
+
+        $r4 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z0 = virtualinvoke $r4.<java.util.concurrent.locks.ReentrantLock: boolean isHeldByCurrentThread()>();
+
+        $z1 = r0.<com.google.common.util.concurrent.Monitor: boolean fair>;
+
+        $z2 = 0;
+
+        if $z1 != 0 goto label02;
+
+        $z1 = staticinvoke <java.lang.Thread: boolean interrupted()>();
+
+        if $z1 != 0 goto label01;
+
+        $z1 = virtualinvoke $r4.<java.util.concurrent.locks.ReentrantLock: boolean tryLock()>();
+
+        if $z1 == 0 goto label02;
+
+        $l3 = 0L;
+
+        goto label03;
+
+     label01:
+        $r5 = new java.lang.InterruptedException;
+
+        specialinvoke $r5.<java.lang.InterruptedException: void <init>()>();
+
+        throw $r5;
+
+     label02:
+        $l3 = staticinvoke <com.google.common.util.concurrent.Monitor: long initNanoTime(long)>($l1);
+
+        $z1 = virtualinvoke $r4.<java.util.concurrent.locks.ReentrantLock: boolean tryLock(long,java.util.concurrent.TimeUnit)>($l0, $r1);
+
+        if $z1 != 0 goto label03;
+
+        return 0;
+
+     label03:
+        $z1 = virtualinvoke $r2.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+     label04:
+        if $z1 != 0 goto label09;
+
+        $b4 = $l3 cmp 0L;
+
+        if $b4 != 0 goto label05;
+
+        goto label07;
+
+     label05:
+        $l0 = staticinvoke <com.google.common.util.concurrent.Monitor: long remainingNanos(long,long)>($l3, $l1);
+
+     label06:
+        $l2 = $l0;
+
+     label07:
+        $z1 = specialinvoke r0.<com.google.common.util.concurrent.Monitor: boolean awaitNanos(com.google.common.util.concurrent.Monitor$Guard,long,boolean)>($r2, $l2, $z0);
+
+     label08:
+        if $z1 == 0 goto label10;
+
+     label09:
+        $z2 = 1;
+
+     label10:
+        if $z2 != 0 goto label17;
+
+        virtualinvoke $r4.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        return $z2;
+
+     label11:
+        $r6 := @caughtexception;
+
+        if $z0 != 0 goto label15;
+
+     label12:
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void signalNextWaiter()>();
+
+     label13:
+        goto label15;
+
+     label14:
+        $r7 := @caughtexception;
+
+        virtualinvoke $r4.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        throw $r7;
+
+     label15:
+        virtualinvoke $r4.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        throw $r6;
+
+     label16:
+        $r8 = new java.lang.IllegalMonitorStateException;
+
+        specialinvoke $r8.<java.lang.IllegalMonitorStateException: void <init>()>();
+
+        throw $r8;
+
+     label17:
+        return $z2;
+
+        catch java.lang.Throwable from label03 to label04 with label11;
+        catch java.lang.Throwable from label05 to label06 with label11;
+        catch java.lang.Throwable from label07 to label08 with label11;
+        catch java.lang.Throwable from label12 to label13 with label14;
+    }
+
+    public void enterWhenUninterruptibly(com.google.common.util.concurrent.Monitor$Guard)
+    {
+        java.lang.Throwable $r4;
+        java.util.concurrent.locks.ReentrantLock $r3;
+        java.lang.IllegalMonitorStateException $r5;
+        com.google.common.util.concurrent.Monitor$Guard $r1;
+        com.google.common.util.concurrent.Monitor r0, $r2;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $r2 = $r1.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor monitor>;
+
+        if $r2 != r0 goto label6;
+
+        $r3 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z0 = virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: boolean isHeldByCurrentThread()>();
+
+        virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+     label1:
+        $z1 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+     label2:
+        if $z1 != 0 goto label7;
+
+     label3:
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void awaitUninterruptibly(com.google.common.util.concurrent.Monitor$Guard,boolean)>($r1, $z0);
+
+     label4:
+        return;
+
+     label5:
+        $r4 := @caughtexception;
+
+        virtualinvoke r0.<com.google.common.util.concurrent.Monitor: void leave()>();
+
+        throw $r4;
+
+     label6:
+        $r5 = new java.lang.IllegalMonitorStateException;
+
+        specialinvoke $r5.<java.lang.IllegalMonitorStateException: void <init>()>();
+
+        throw $r5;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+    }
+
+    public boolean enterWhenUninterruptibly(com.google.common.util.concurrent.Monitor$Guard, long, java.util.concurrent.TimeUnit)
+    {
+        java.lang.Throwable $r8, $r9;
+        long $l0, $l1, $l2, $l3;
+        java.lang.IllegalMonitorStateException $r10;
+        byte $b4;
+        java.lang.Thread $r7;
+        boolean $z0, $z1, $z2, $z3;
+        java.util.concurrent.locks.ReentrantLock $r6;
+        java.util.concurrent.TimeUnit $r4;
+        com.google.common.util.concurrent.Monitor$Guard $r3;
+        java.lang.InterruptedException $r1, $r2;
+        com.google.common.util.concurrent.Monitor r0, $r5;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r3 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $l0 := @parameter1: long;
+
+        $r4 := @parameter2: java.util.concurrent.TimeUnit;
+
+        $l0 = staticinvoke <com.google.common.util.concurrent.Monitor: long toSafeNanos(long,java.util.concurrent.TimeUnit)>($l0, $r4);
+
+        $r5 = $r3.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor monitor>;
+
+        if $r5 != r0 goto label32;
+
+        $r6 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z0 = virtualinvoke $r6.<java.util.concurrent.locks.ReentrantLock: boolean isHeldByCurrentThread()>();
+
+        $z1 = staticinvoke <java.lang.Thread: boolean interrupted()>();
+
+        $z2 = 1;
+
+     label01:
+        $z3 = r0.<com.google.common.util.concurrent.Monitor: boolean fair>;
+
+     label02:
+        if $z3 != 0 goto label06;
+
+     label03:
+        $z3 = virtualinvoke $r6.<java.util.concurrent.locks.ReentrantLock: boolean tryLock()>();
+
+     label04:
+        if $z3 != 0 goto label05;
+
+        goto label06;
+
+     label05:
+        $l1 = 0L;
+
+        goto label11;
+
+     label06:
+        $l2 = staticinvoke <com.google.common.util.concurrent.Monitor: long initNanoTime(long)>($l0);
+
+     label07:
+        $l1 = $l2;
+
+        $l3 = $l0;
+
+     label08:
+        $r4 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit NANOSECONDS>;
+
+     label09:
+        $z3 = virtualinvoke $r6.<java.util.concurrent.locks.ReentrantLock: boolean tryLock(long,java.util.concurrent.TimeUnit)>($l3, $r4);
+
+     label10:
+        if $z3 == 0 goto label25;
+
+     label11:
+        $z3 = virtualinvoke $r3.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+     label12:
+        if $z3 == 0 goto label13;
+
+        goto label19;
+
+     label13:
+        $b4 = $l1 cmp 0L;
+
+        if $b4 != 0 goto label16;
+
+     label14:
+        $l2 = staticinvoke <com.google.common.util.concurrent.Monitor: long initNanoTime(long)>($l0);
+
+     label15:
+        $l1 = $l2;
+
+        $l2 = $l0;
+
+        goto label17;
+
+     label16:
+        $l2 = staticinvoke <com.google.common.util.concurrent.Monitor: long remainingNanos(long,long)>($l1, $l0);
+
+     label17:
+        $z0 = specialinvoke r0.<com.google.common.util.concurrent.Monitor: boolean awaitNanos(com.google.common.util.concurrent.Monitor$Guard,long,boolean)>($r3, $l2, $z0);
+
+     label18:
+        $z2 = $z0;
+
+     label19:
+        if $z2 != 0 goto label21;
+
+     label20:
+        virtualinvoke $r6.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+     label21:
+        if $z1 == 0 goto label36;
+
+        $r7 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $r7.<java.lang.Thread: void interrupt()>();
+
+        return $z2;
+
+     label22:
+        $r8 := @caughtexception;
+
+     label23:
+        virtualinvoke $r6.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        throw $r8;
+
+     label24:
+        $z0 = 0;
+
+        $z1 = 1;
+
+        goto label11;
+
+     label25:
+        if $z1 == 0 goto label37;
+
+        $r7 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $r7.<java.lang.Thread: void interrupt()>();
+
+        return 0;
+
+     label26:
+        $l3 = staticinvoke <com.google.common.util.concurrent.Monitor: long remainingNanos(long,long)>($l2, $l0);
+
+     label27:
+        $z1 = 1;
+
+        goto label08;
+
+     label28:
+        $r9 := @caughtexception;
+
+        $z1 = 1;
+
+        goto label30;
+
+     label29:
+        $r9 := @caughtexception;
+
+     label30:
+        if $z1 == 0 goto label31;
+
+        $r7 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $r7.<java.lang.Thread: void interrupt()>();
+
+     label31:
+        throw $r9;
+
+     label32:
+        $r10 = new java.lang.IllegalMonitorStateException;
+
+        specialinvoke $r10.<java.lang.IllegalMonitorStateException: void <init>()>();
+
+        goto label33;
+
+     label33:
+        throw $r10;
+
+     label34:
+        $r1 := @caughtexception;
+
+        goto label26;
+
+     label35:
+        $r2 := @caughtexception;
+
+        goto label24;
+
+     label36:
+        return $z2;
+
+     label37:
+        return 0;
+
+        catch java.lang.Throwable from label01 to label02 with label29;
+        catch java.lang.Throwable from label03 to label04 with label29;
+        catch java.lang.Throwable from label06 to label07 with label29;
+        catch java.lang.InterruptedException from label09 to label10 with label34;
+        catch java.lang.Throwable from label08 to label10 with label29;
+        catch java.lang.InterruptedException from label11 to label12 with label35;
+        catch java.lang.InterruptedException from label14 to label15 with label35;
+        catch java.lang.InterruptedException from label16 to label17 with label35;
+        catch java.lang.InterruptedException from label17 to label18 with label35;
+        catch java.lang.Throwable from label11 to label12 with label22;
+        catch java.lang.Throwable from label14 to label15 with label22;
+        catch java.lang.Throwable from label16 to label17 with label22;
+        catch java.lang.Throwable from label17 to label18 with label22;
+        catch java.lang.Throwable from label20 to label21 with label29;
+        catch java.lang.Throwable from label23 to label24 with label29;
+        catch java.lang.Throwable from label26 to label27 with label28;
+    }
+
+    public int getOccupiedDepth()
+    {
+        int $i0;
+        com.google.common.util.concurrent.Monitor r0;
+        java.util.concurrent.locks.ReentrantLock $r1;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $i0 = virtualinvoke $r1.<java.util.concurrent.locks.ReentrantLock: int getHoldCount()>();
+
+        return $i0;
+    }
+
+    public int getQueueLength()
+    {
+        int $i0;
+        com.google.common.util.concurrent.Monitor r0;
+        java.util.concurrent.locks.ReentrantLock $r1;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $i0 = virtualinvoke $r1.<java.util.concurrent.locks.ReentrantLock: int getQueueLength()>();
+
+        return $i0;
+    }
+
+    public int getWaitQueueLength(com.google.common.util.concurrent.Monitor$Guard)
+    {
+        java.lang.Throwable $r4;
+        java.lang.IllegalMonitorStateException $r5;
+        com.google.common.util.concurrent.Monitor$Guard $r1;
+        java.util.concurrent.locks.ReentrantLock $r3;
+        int i0;
+        com.google.common.util.concurrent.Monitor r0, $r2;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $r2 = $r1.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor monitor>;
+
+        if $r2 != r0 goto label4;
+
+        $r3 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: void lock()>();
+
+     label1:
+        i0 = $r1.<com.google.common.util.concurrent.Monitor$Guard: int waiterCount>;
+
+     label2:
+        $r3 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        return i0;
+
+     label3:
+        $r4 := @caughtexception;
+
+        $r3 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        throw $r4;
+
+     label4:
+        $r5 = new java.lang.IllegalMonitorStateException;
+
+        specialinvoke $r5.<java.lang.IllegalMonitorStateException: void <init>()>();
+
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public boolean hasQueuedThread(java.lang.Thread)
+    {
+        java.util.concurrent.locks.ReentrantLock $r1;
+        java.lang.Thread $r2;
+        com.google.common.util.concurrent.Monitor r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r2 := @parameter0: java.lang.Thread;
+
+        $r1 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z0 = virtualinvoke $r1.<java.util.concurrent.locks.ReentrantLock: boolean hasQueuedThread(java.lang.Thread)>($r2);
+
+        return $z0;
+    }
+
+    public boolean hasQueuedThreads()
+    {
+        com.google.common.util.concurrent.Monitor r0;
+        java.util.concurrent.locks.ReentrantLock $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z0 = virtualinvoke $r1.<java.util.concurrent.locks.ReentrantLock: boolean hasQueuedThreads()>();
+
+        return $z0;
+    }
+
+    public boolean hasWaiters(com.google.common.util.concurrent.Monitor$Guard)
+    {
+        int $i0;
+        com.google.common.util.concurrent.Monitor r0;
+        com.google.common.util.concurrent.Monitor$Guard $r1;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $i0 = virtualinvoke r0.<com.google.common.util.concurrent.Monitor: int getWaitQueueLength(com.google.common.util.concurrent.Monitor$Guard)>($r1);
+
+        if $i0 <= 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean isFair()
+    {
+        com.google.common.util.concurrent.Monitor r0;
+        boolean z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        z0 = r0.<com.google.common.util.concurrent.Monitor: boolean fair>;
+
+        return z0;
+    }
+
+    public boolean isOccupied()
+    {
+        com.google.common.util.concurrent.Monitor r0;
+        java.util.concurrent.locks.ReentrantLock $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z0 = virtualinvoke $r1.<java.util.concurrent.locks.ReentrantLock: boolean isLocked()>();
+
+        return $z0;
+    }
+
+    public boolean isOccupiedByCurrentThread()
+    {
+        com.google.common.util.concurrent.Monitor r0;
+        java.util.concurrent.locks.ReentrantLock $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z0 = virtualinvoke $r1.<java.util.concurrent.locks.ReentrantLock: boolean isHeldByCurrentThread()>();
+
+        return $z0;
+    }
+
+    public void leave()
+    {
+        java.lang.Throwable $r2;
+        java.util.concurrent.locks.ReentrantLock $r1;
+        int $i0;
+        com.google.common.util.concurrent.Monitor r0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+     label1:
+        $i0 = virtualinvoke $r1.<java.util.concurrent.locks.ReentrantLock: int getHoldCount()>();
+
+     label2:
+        if $i0 != 1 goto label4;
+
+     label3:
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void signalNextWaiter()>();
+
+     label4:
+        virtualinvoke $r1.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        return;
+
+     label5:
+        $r2 := @caughtexception;
+
+        virtualinvoke $r1.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+    }
+
+    public com.google.common.util.concurrent.Monitor$Guard newGuard(java.util.function.BooleanSupplier)
+    {
+        com.google.common.util.concurrent.Monitor r0;
+        com.google.common.util.concurrent.Monitor$1 $r2;
+        java.util.function.BooleanSupplier $r1;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: java.util.function.BooleanSupplier;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r1, "isSatisfied");
+
+        $r2 = new com.google.common.util.concurrent.Monitor$1;
+
+        specialinvoke $r2.<com.google.common.util.concurrent.Monitor$1: void <init>(com.google.common.util.concurrent.Monitor,com.google.common.util.concurrent.Monitor,java.util.function.BooleanSupplier)>(r0, r0, $r1);
+
+        return $r2;
+    }
+
+    public boolean tryEnter()
+    {
+        com.google.common.util.concurrent.Monitor r0;
+        java.util.concurrent.locks.ReentrantLock $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z0 = virtualinvoke $r1.<java.util.concurrent.locks.ReentrantLock: boolean tryLock()>();
+
+        return $z0;
+    }
+
+    public boolean tryEnterIf(com.google.common.util.concurrent.Monitor$Guard)
+    {
+        java.lang.Throwable $r4;
+        java.lang.IllegalMonitorStateException $r5;
+        com.google.common.util.concurrent.Monitor$Guard $r1;
+        java.util.concurrent.locks.ReentrantLock $r3;
+        com.google.common.util.concurrent.Monitor r0, $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $r2 = $r1.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor monitor>;
+
+        if $r2 != r0 goto label4;
+
+        $r3 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z0 = virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: boolean tryLock()>();
+
+        if $z0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+     label2:
+        if $z0 != 0 goto label5;
+
+        virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        return $z0;
+
+     label3:
+        $r4 := @caughtexception;
+
+        virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: void unlock()>();
+
+        throw $r4;
+
+     label4:
+        $r5 = new java.lang.IllegalMonitorStateException;
+
+        specialinvoke $r5.<java.lang.IllegalMonitorStateException: void <init>()>();
+
+        throw $r5;
+
+     label5:
+        return $z0;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public void waitFor(com.google.common.util.concurrent.Monitor$Guard)
+    {
+        java.lang.IllegalMonitorStateException $r4;
+        com.google.common.util.concurrent.Monitor$Guard $r1;
+        java.util.concurrent.locks.ReentrantLock $r3;
+        com.google.common.util.concurrent.Monitor r0, $r2;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $r2 = $r1.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor monitor>;
+
+        if $r2 != r0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        $r3 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z1 = virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: boolean isHeldByCurrentThread()>();
+
+        $z0 = $z0 & $z1;
+
+        if $z0 == 0 goto label3;
+
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+        if $z0 != 0 goto label4;
+
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void await(com.google.common.util.concurrent.Monitor$Guard,boolean)>($r1, 1);
+
+        return;
+
+     label3:
+        $r4 = new java.lang.IllegalMonitorStateException;
+
+        specialinvoke $r4.<java.lang.IllegalMonitorStateException: void <init>()>();
+
+        throw $r4;
+
+     label4:
+        return;
+    }
+
+    public boolean waitFor(com.google.common.util.concurrent.Monitor$Guard, long, java.util.concurrent.TimeUnit)
+    {
+        java.util.concurrent.locks.ReentrantLock $r4;
+        long $l0;
+        java.util.concurrent.TimeUnit $r2;
+        java.lang.IllegalMonitorStateException $r6;
+        com.google.common.util.concurrent.Monitor$Guard $r1;
+        java.lang.InterruptedException $r5;
+        com.google.common.util.concurrent.Monitor r0, $r3;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $l0 := @parameter1: long;
+
+        $r2 := @parameter2: java.util.concurrent.TimeUnit;
+
+        $l0 = staticinvoke <com.google.common.util.concurrent.Monitor: long toSafeNanos(long,java.util.concurrent.TimeUnit)>($l0, $r2);
+
+        $r3 = $r1.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor monitor>;
+
+        if $r3 != r0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        $r4 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z1 = virtualinvoke $r4.<java.util.concurrent.locks.ReentrantLock: boolean isHeldByCurrentThread()>();
+
+        $z0 = $z0 & $z1;
+
+        if $z0 == 0 goto label5;
+
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+        if $z0 == 0 goto label3;
+
+        return 1;
+
+     label3:
+        $z0 = staticinvoke <java.lang.Thread: boolean interrupted()>();
+
+        if $z0 != 0 goto label4;
+
+        $z0 = specialinvoke r0.<com.google.common.util.concurrent.Monitor: boolean awaitNanos(com.google.common.util.concurrent.Monitor$Guard,long,boolean)>($r1, $l0, 1);
+
+        return $z0;
+
+     label4:
+        $r5 = new java.lang.InterruptedException;
+
+        specialinvoke $r5.<java.lang.InterruptedException: void <init>()>();
+
+        throw $r5;
+
+     label5:
+        $r6 = new java.lang.IllegalMonitorStateException;
+
+        specialinvoke $r6.<java.lang.IllegalMonitorStateException: void <init>()>();
+
+        throw $r6;
+    }
+
+    public void waitForUninterruptibly(com.google.common.util.concurrent.Monitor$Guard)
+    {
+        java.lang.IllegalMonitorStateException $r4;
+        com.google.common.util.concurrent.Monitor$Guard $r1;
+        java.util.concurrent.locks.ReentrantLock $r3;
+        com.google.common.util.concurrent.Monitor r0, $r2;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $r2 = $r1.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor monitor>;
+
+        if $r2 != r0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        $r3 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z1 = virtualinvoke $r3.<java.util.concurrent.locks.ReentrantLock: boolean isHeldByCurrentThread()>();
+
+        $z0 = $z0 & $z1;
+
+        if $z0 == 0 goto label3;
+
+        $z0 = virtualinvoke $r1.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+        if $z0 != 0 goto label4;
+
+        specialinvoke r0.<com.google.common.util.concurrent.Monitor: void awaitUninterruptibly(com.google.common.util.concurrent.Monitor$Guard,boolean)>($r1, 1);
+
+        return;
+
+     label3:
+        $r4 = new java.lang.IllegalMonitorStateException;
+
+        specialinvoke $r4.<java.lang.IllegalMonitorStateException: void <init>()>();
+
+        throw $r4;
+
+     label4:
+        return;
+    }
+
+    public boolean waitForUninterruptibly(com.google.common.util.concurrent.Monitor$Guard, long, java.util.concurrent.TimeUnit)
+    {
+        java.lang.Throwable $r7;
+        java.util.concurrent.locks.ReentrantLock $r5;
+        long $l0, $l1, $l2;
+        java.util.concurrent.TimeUnit $r3;
+        java.lang.IllegalMonitorStateException $r8;
+        com.google.common.util.concurrent.Monitor$Guard $r2;
+        java.lang.InterruptedException $r1;
+        java.lang.Thread $r6;
+        com.google.common.util.concurrent.Monitor r0, $r4;
+        boolean $z0, $z1, $z2;
+
+        r0 := @this: com.google.common.util.concurrent.Monitor;
+
+        $r2 := @parameter0: com.google.common.util.concurrent.Monitor$Guard;
+
+        $l0 := @parameter1: long;
+
+        $r3 := @parameter2: java.util.concurrent.TimeUnit;
+
+        $l0 = staticinvoke <com.google.common.util.concurrent.Monitor: long toSafeNanos(long,java.util.concurrent.TimeUnit)>($l0, $r3);
+
+        $r4 = $r2.<com.google.common.util.concurrent.Monitor$Guard: com.google.common.util.concurrent.Monitor monitor>;
+
+        $z0 = 1;
+
+        if $r4 != r0 goto label01;
+
+        $z1 = 1;
+
+        goto label02;
+
+     label01:
+        $z1 = 0;
+
+     label02:
+        $r5 = r0.<com.google.common.util.concurrent.Monitor: java.util.concurrent.locks.ReentrantLock lock>;
+
+        $z2 = virtualinvoke $r5.<java.util.concurrent.locks.ReentrantLock: boolean isHeldByCurrentThread()>();
+
+        $z1 = $z1 & $z2;
+
+        if $z1 == 0 goto label14;
+
+        $z1 = virtualinvoke $r2.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+        if $z1 == 0 goto label03;
+
+        return 1;
+
+     label03:
+        $l1 = staticinvoke <com.google.common.util.concurrent.Monitor: long initNanoTime(long)>($l0);
+
+        $l2 = $l0;
+
+        $z1 = staticinvoke <java.lang.Thread: boolean interrupted()>();
+
+        $z2 = 1;
+
+     label04:
+        $z2 = specialinvoke r0.<com.google.common.util.concurrent.Monitor: boolean awaitNanos(com.google.common.util.concurrent.Monitor$Guard,long,boolean)>($r2, $l2, $z2);
+
+     label05:
+        if $z1 == 0 goto label17;
+
+        $r6 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $r6.<java.lang.Thread: void interrupt()>();
+
+        return $z2;
+
+     label06:
+        $r7 := @caughtexception;
+
+        $z0 = $z1;
+
+        goto label12;
+
+     label07:
+        $z1 = virtualinvoke $r2.<com.google.common.util.concurrent.Monitor$Guard: boolean isSatisfied()>();
+
+     label08:
+        if $z1 == 0 goto label09;
+
+        $r6 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $r6.<java.lang.Thread: void interrupt()>();
+
+        return 1;
+
+     label09:
+        $l2 = staticinvoke <com.google.common.util.concurrent.Monitor: long remainingNanos(long,long)>($l1, $l0);
+
+     label10:
+        $z2 = 0;
+
+        $z1 = 1;
+
+        goto label04;
+
+     label11:
+        $r7 := @caughtexception;
+
+     label12:
+        if $z0 == 0 goto label13;
+
+        $r6 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $r6.<java.lang.Thread: void interrupt()>();
+
+     label13:
+        throw $r7;
+
+     label14:
+        $r8 = new java.lang.IllegalMonitorStateException;
+
+        specialinvoke $r8.<java.lang.IllegalMonitorStateException: void <init>()>();
+
+        goto label15;
+
+     label15:
+        throw $r8;
+
+     label16:
+        $r1 := @caughtexception;
+
+        goto label07;
+
+     label17:
+        return $z2;
+
+        catch java.lang.InterruptedException from label04 to label05 with label16;
+        catch java.lang.Throwable from label04 to label05 with label06;
+        catch java.lang.Throwable from label07 to label08 with label11;
+        catch java.lang.Throwable from label09 to label10 with label11;
+    }
+}

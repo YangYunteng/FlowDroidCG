@@ -1,0 +1,915 @@
+public class androidx.fragment.app.DialogFragment extends androidx.fragment.app.Fragment implements android.content.DialogInterface$OnCancelListener, android.content.DialogInterface$OnDismissListener
+{
+    public static final java.lang.String SAVED_BACK_STACK_ID;
+    public static final java.lang.String SAVED_CANCELABLE;
+    public static final java.lang.String SAVED_DIALOG_STATE_TAG;
+    public static final java.lang.String SAVED_SHOWS_DIALOG;
+    public static final java.lang.String SAVED_STYLE;
+    public static final java.lang.String SAVED_THEME;
+    public static final int STYLE_NORMAL;
+    public static final int STYLE_NO_FRAME;
+    public static final int STYLE_NO_INPUT;
+    public static final int STYLE_NO_TITLE;
+    public int mBackStackId;
+    public boolean mCancelable;
+    public android.app.Dialog mDialog;
+    public java.lang.Runnable mDismissRunnable;
+    public boolean mDismissed;
+    public android.os.Handler mHandler;
+    public boolean mShownByMe;
+    public boolean mShowsDialog;
+    public int mStyle;
+    public int mTheme;
+    public boolean mViewDestroyed;
+
+    public void <init>()
+    {
+        int $i0;
+        b.m.a.c $r1;
+        androidx.fragment.app.DialogFragment r0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        specialinvoke r0.<androidx.fragment.app.Fragment: void <init>()>();
+
+        $r1 = new b.m.a.c;
+
+        specialinvoke $r1.<b.m.a.c: void <init>(androidx.fragment.app.DialogFragment)>(r0);
+
+        r0.<androidx.fragment.app.DialogFragment: java.lang.Runnable mDismissRunnable> = $r1;
+
+        r0.<androidx.fragment.app.DialogFragment: int mStyle> = 0;
+
+        r0.<androidx.fragment.app.DialogFragment: int mTheme> = 0;
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mCancelable> = 1;
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mShowsDialog> = 1;
+
+        $i0 = -1;
+
+        r0.<androidx.fragment.app.DialogFragment: int mBackStackId> = $i0;
+
+        return;
+    }
+
+    public void dismiss()
+    {
+        androidx.fragment.app.DialogFragment r0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        virtualinvoke r0.<androidx.fragment.app.DialogFragment: void dismissInternal(boolean,boolean)>(0, 0);
+
+        return;
+    }
+
+    public void dismissAllowingStateLoss()
+    {
+        androidx.fragment.app.DialogFragment r0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        virtualinvoke r0.<androidx.fragment.app.DialogFragment: void dismissInternal(boolean,boolean)>(1, 0);
+
+        return;
+    }
+
+    public void dismissInternal(boolean, boolean)
+    {
+        b.m.a.l $r6;
+        android.app.Dialog $r1;
+        java.lang.Runnable $r5;
+        android.os.Looper $r2, $r4;
+        android.os.Handler $r3;
+        b.m.a.z $r7;
+        int $i0;
+        androidx.fragment.app.DialogFragment r0;
+        boolean $z0, $z1, $z2;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $z0 := @parameter0: boolean;
+
+        $z1 := @parameter1: boolean;
+
+        $z2 = r0.<androidx.fragment.app.DialogFragment: boolean mDismissed>;
+
+        if $z2 == 0 goto label1;
+
+        return;
+
+     label1:
+        r0.<androidx.fragment.app.DialogFragment: boolean mDismissed> = 1;
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mShownByMe> = 0;
+
+        $r1 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        if $r1 == null goto label3;
+
+        virtualinvoke $r1.<android.app.Dialog: void setOnDismissListener(android.content.DialogInterface$OnDismissListener)>(null);
+
+        $r1 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        virtualinvoke $r1.<android.app.Dialog: void dismiss()>();
+
+        if $z1 != 0 goto label3;
+
+        $r2 = staticinvoke <android.os.Looper: android.os.Looper myLooper()>();
+
+        $r3 = r0.<androidx.fragment.app.DialogFragment: android.os.Handler mHandler>;
+
+        $r4 = virtualinvoke $r3.<android.os.Handler: android.os.Looper getLooper()>();
+
+        if $r2 != $r4 goto label2;
+
+        $r1 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        virtualinvoke r0.<androidx.fragment.app.DialogFragment: void onDismiss(android.content.DialogInterface)>($r1);
+
+        goto label3;
+
+     label2:
+        $r3 = r0.<androidx.fragment.app.DialogFragment: android.os.Handler mHandler>;
+
+        $r5 = r0.<androidx.fragment.app.DialogFragment: java.lang.Runnable mDismissRunnable>;
+
+        virtualinvoke $r3.<android.os.Handler: boolean post(java.lang.Runnable)>($r5);
+
+     label3:
+        r0.<androidx.fragment.app.DialogFragment: boolean mViewDestroyed> = 1;
+
+        $i0 = r0.<androidx.fragment.app.DialogFragment: int mBackStackId>;
+
+        if $i0 < 0 goto label4;
+
+        $r6 = virtualinvoke r0.<androidx.fragment.app.Fragment: b.m.a.l requireFragmentManager()>();
+
+        $i0 = r0.<androidx.fragment.app.DialogFragment: int mBackStackId>;
+
+        virtualinvoke $r6.<b.m.a.l: void a(int,int)>($i0, 1);
+
+        $i0 = -1;
+
+        r0.<androidx.fragment.app.DialogFragment: int mBackStackId> = $i0;
+
+        return;
+
+     label4:
+        $r6 = virtualinvoke r0.<androidx.fragment.app.Fragment: b.m.a.l requireFragmentManager()>();
+
+        $r7 = virtualinvoke $r6.<b.m.a.l: b.m.a.z a()>();
+
+        virtualinvoke $r7.<b.m.a.z: b.m.a.z c(androidx.fragment.app.Fragment)>(r0);
+
+        if $z0 == 0 goto label5;
+
+        virtualinvoke $r7.<b.m.a.z: int b()>();
+
+        return;
+
+     label5:
+        virtualinvoke $r7.<b.m.a.z: int a()>();
+
+        return;
+    }
+
+    public android.app.Dialog getDialog()
+    {
+        android.app.Dialog r1;
+        androidx.fragment.app.DialogFragment r0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        r1 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        return r1;
+    }
+
+    public boolean getShowsDialog()
+    {
+        androidx.fragment.app.DialogFragment r0;
+        boolean z0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        z0 = r0.<androidx.fragment.app.DialogFragment: boolean mShowsDialog>;
+
+        return z0;
+    }
+
+    public int getTheme()
+    {
+        int i0;
+        androidx.fragment.app.DialogFragment r0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        i0 = r0.<androidx.fragment.app.DialogFragment: int mTheme>;
+
+        return i0;
+    }
+
+    public boolean isCancelable()
+    {
+        androidx.fragment.app.DialogFragment r0;
+        boolean z0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        z0 = r0.<androidx.fragment.app.DialogFragment: boolean mCancelable>;
+
+        return z0;
+    }
+
+    public void onActivityCreated(android.os.Bundle)
+    {
+        java.lang.IllegalStateException $r5;
+        android.view.ViewParent $r3;
+        android.os.Bundle $r1;
+        android.app.Dialog $r4;
+        androidx.fragment.app.FragmentActivity $r6;
+        android.view.View $r2;
+        androidx.fragment.app.DialogFragment r0;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        specialinvoke r0.<androidx.fragment.app.Fragment: void onActivityCreated(android.os.Bundle)>($r1);
+
+        $z0 = r0.<androidx.fragment.app.DialogFragment: boolean mShowsDialog>;
+
+        if $z0 != 0 goto label1;
+
+        return;
+
+     label1:
+        $r2 = virtualinvoke r0.<androidx.fragment.app.Fragment: android.view.View getView()>();
+
+        if $r2 == null goto label3;
+
+        $r3 = virtualinvoke $r2.<android.view.View: android.view.ViewParent getParent()>();
+
+        if $r3 != null goto label2;
+
+        $r4 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        virtualinvoke $r4.<android.app.Dialog: void setContentView(android.view.View)>($r2);
+
+        goto label3;
+
+     label2:
+        $r5 = new java.lang.IllegalStateException;
+
+        specialinvoke $r5.<java.lang.IllegalStateException: void <init>(java.lang.String)>("DialogFragment can not be attached to a container view");
+
+        throw $r5;
+
+     label3:
+        $r6 = virtualinvoke r0.<androidx.fragment.app.Fragment: androidx.fragment.app.FragmentActivity getActivity()>();
+
+        if $r6 == null goto label4;
+
+        $r4 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        virtualinvoke $r4.<android.app.Dialog: void setOwnerActivity(android.app.Activity)>($r6);
+
+     label4:
+        $r4 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        $z0 = r0.<androidx.fragment.app.DialogFragment: boolean mCancelable>;
+
+        virtualinvoke $r4.<android.app.Dialog: void setCancelable(boolean)>($z0);
+
+        $r4 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        virtualinvoke $r4.<android.app.Dialog: void setOnCancelListener(android.content.DialogInterface$OnCancelListener)>(r0);
+
+        $r4 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        virtualinvoke $r4.<android.app.Dialog: void setOnDismissListener(android.content.DialogInterface$OnDismissListener)>(r0);
+
+        if $r1 == null goto label5;
+
+        $r1 = virtualinvoke $r1.<android.os.Bundle: android.os.Bundle getBundle(java.lang.String)>("android:savedDialogState");
+
+        if $r1 == null goto label5;
+
+        $r4 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        virtualinvoke $r4.<android.app.Dialog: void onRestoreInstanceState(android.os.Bundle)>($r1);
+
+     label5:
+        return;
+    }
+
+    public void onAttach(android.content.Context)
+    {
+        android.content.Context $r1;
+        androidx.fragment.app.DialogFragment r0;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $r1 := @parameter0: android.content.Context;
+
+        specialinvoke r0.<androidx.fragment.app.Fragment: void onAttach(android.content.Context)>($r1);
+
+        $z0 = r0.<androidx.fragment.app.DialogFragment: boolean mShownByMe>;
+
+        if $z0 != 0 goto label1;
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mDismissed> = 0;
+
+     label1:
+        return;
+    }
+
+    public void onCancel(android.content.DialogInterface)
+    {
+        androidx.fragment.app.DialogFragment r0;
+        android.content.DialogInterface $r1;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $r1 := @parameter0: android.content.DialogInterface;
+
+        return;
+    }
+
+    public void onCreate(android.os.Bundle)
+    {
+        android.os.Bundle $r1;
+        android.os.Handler $r2;
+        int $i0;
+        androidx.fragment.app.DialogFragment r0;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        specialinvoke r0.<androidx.fragment.app.Fragment: void onCreate(android.os.Bundle)>($r1);
+
+        $r2 = new android.os.Handler;
+
+        specialinvoke $r2.<android.os.Handler: void <init>()>();
+
+        r0.<androidx.fragment.app.DialogFragment: android.os.Handler mHandler> = $r2;
+
+        $i0 = r0.<androidx.fragment.app.Fragment: int mContainerId>;
+
+        if $i0 != 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        r0.<androidx.fragment.app.DialogFragment: boolean mShowsDialog> = $z0;
+
+        if $r1 == null goto label3;
+
+        $i0 = virtualinvoke $r1.<android.os.Bundle: int getInt(java.lang.String,int)>("android:style", 0);
+
+        r0.<androidx.fragment.app.DialogFragment: int mStyle> = $i0;
+
+        $i0 = virtualinvoke $r1.<android.os.Bundle: int getInt(java.lang.String,int)>("android:theme", 0);
+
+        r0.<androidx.fragment.app.DialogFragment: int mTheme> = $i0;
+
+        $z0 = virtualinvoke $r1.<android.os.Bundle: boolean getBoolean(java.lang.String,boolean)>("android:cancelable", 1);
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mCancelable> = $z0;
+
+        $z0 = r0.<androidx.fragment.app.DialogFragment: boolean mShowsDialog>;
+
+        $z0 = virtualinvoke $r1.<android.os.Bundle: boolean getBoolean(java.lang.String,boolean)>("android:showsDialog", $z0);
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mShowsDialog> = $z0;
+
+        $i0 = -1;
+
+        $i0 = virtualinvoke $r1.<android.os.Bundle: int getInt(java.lang.String,int)>("android:backStackId", $i0);
+
+        r0.<androidx.fragment.app.DialogFragment: int mBackStackId> = $i0;
+
+     label3:
+        return;
+    }
+
+    public android.app.Dialog onCreateDialog(android.os.Bundle)
+    {
+        android.content.Context $r3;
+        android.os.Bundle $r1;
+        int $i0;
+        android.app.Dialog $r2;
+        androidx.fragment.app.DialogFragment r0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        $r2 = new android.app.Dialog;
+
+        $r3 = virtualinvoke r0.<androidx.fragment.app.Fragment: android.content.Context requireContext()>();
+
+        $i0 = virtualinvoke r0.<androidx.fragment.app.DialogFragment: int getTheme()>();
+
+        specialinvoke $r2.<android.app.Dialog: void <init>(android.content.Context,int)>($r3, $i0);
+
+        return $r2;
+    }
+
+    public void onDestroyView()
+    {
+        android.app.Dialog $r1;
+        androidx.fragment.app.DialogFragment r0;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        specialinvoke r0.<androidx.fragment.app.Fragment: void onDestroyView()>();
+
+        $r1 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        if $r1 == null goto label2;
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mViewDestroyed> = 1;
+
+        virtualinvoke $r1.<android.app.Dialog: void setOnDismissListener(android.content.DialogInterface$OnDismissListener)>(null);
+
+        $r1 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        virtualinvoke $r1.<android.app.Dialog: void dismiss()>();
+
+        $z0 = r0.<androidx.fragment.app.DialogFragment: boolean mDismissed>;
+
+        if $z0 != 0 goto label1;
+
+        $r1 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        virtualinvoke r0.<androidx.fragment.app.DialogFragment: void onDismiss(android.content.DialogInterface)>($r1);
+
+     label1:
+        r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog> = null;
+
+     label2:
+        return;
+    }
+
+    public void onDetach()
+    {
+        androidx.fragment.app.DialogFragment r0;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        specialinvoke r0.<androidx.fragment.app.Fragment: void onDetach()>();
+
+        $z0 = r0.<androidx.fragment.app.DialogFragment: boolean mShownByMe>;
+
+        if $z0 != 0 goto label1;
+
+        $z0 = r0.<androidx.fragment.app.DialogFragment: boolean mDismissed>;
+
+        if $z0 != 0 goto label1;
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mDismissed> = 1;
+
+     label1:
+        return;
+    }
+
+    public void onDismiss(android.content.DialogInterface)
+    {
+        androidx.fragment.app.DialogFragment r0;
+        android.content.DialogInterface $r1;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $r1 := @parameter0: android.content.DialogInterface;
+
+        $z0 = r0.<androidx.fragment.app.DialogFragment: boolean mViewDestroyed>;
+
+        if $z0 != 0 goto label1;
+
+        virtualinvoke r0.<androidx.fragment.app.DialogFragment: void dismissInternal(boolean,boolean)>(1, 1);
+
+     label1:
+        return;
+    }
+
+    public android.view.LayoutInflater onGetLayoutInflater(android.os.Bundle)
+    {
+        android.content.Context $r4;
+        android.os.Bundle $r1;
+        android.view.LayoutInflater $r2;
+        b.m.a.k $r6;
+        android.app.Dialog $r3;
+        int $i0;
+        java.lang.Object $r5;
+        androidx.fragment.app.DialogFragment r0;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        $z0 = r0.<androidx.fragment.app.DialogFragment: boolean mShowsDialog>;
+
+        if $z0 != 0 goto label1;
+
+        $r2 = specialinvoke r0.<androidx.fragment.app.Fragment: android.view.LayoutInflater onGetLayoutInflater(android.os.Bundle)>($r1);
+
+        return $r2;
+
+     label1:
+        $r3 = virtualinvoke r0.<androidx.fragment.app.DialogFragment: android.app.Dialog onCreateDialog(android.os.Bundle)>($r1);
+
+        r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog> = $r3;
+
+        $r3 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        if $r3 == null goto label2;
+
+        $i0 = r0.<androidx.fragment.app.DialogFragment: int mStyle>;
+
+        virtualinvoke r0.<androidx.fragment.app.DialogFragment: void setupDialog(android.app.Dialog,int)>($r3, $i0);
+
+        $r3 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        $r4 = virtualinvoke $r3.<android.app.Dialog: android.content.Context getContext()>();
+
+        $r5 = virtualinvoke $r4.<android.content.Context: java.lang.Object getSystemService(java.lang.String)>("layout_inflater");
+
+        $r2 = (android.view.LayoutInflater) $r5;
+
+        return $r2;
+
+     label2:
+        $r6 = r0.<androidx.fragment.app.Fragment: b.m.a.k mHost>;
+
+        $r4 = virtualinvoke $r6.<b.m.a.k: android.content.Context c()>();
+
+        $r5 = virtualinvoke $r4.<android.content.Context: java.lang.Object getSystemService(java.lang.String)>("layout_inflater");
+
+        $r2 = (android.view.LayoutInflater) $r5;
+
+        return $r2;
+    }
+
+    public void onSaveInstanceState(android.os.Bundle)
+    {
+        android.os.Bundle $r1, $r2;
+        int $i0, $i1;
+        android.app.Dialog $r3;
+        androidx.fragment.app.DialogFragment r0;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        specialinvoke r0.<androidx.fragment.app.Fragment: void onSaveInstanceState(android.os.Bundle)>($r1);
+
+        $r3 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        if $r3 == null goto label1;
+
+        $r2 = virtualinvoke $r3.<android.app.Dialog: android.os.Bundle onSaveInstanceState()>();
+
+        if $r2 == null goto label1;
+
+        virtualinvoke $r1.<android.os.Bundle: void putBundle(java.lang.String,android.os.Bundle)>("android:savedDialogState", $r2);
+
+     label1:
+        $i0 = r0.<androidx.fragment.app.DialogFragment: int mStyle>;
+
+        if $i0 == 0 goto label2;
+
+        virtualinvoke $r1.<android.os.Bundle: void putInt(java.lang.String,int)>("android:style", $i0);
+
+     label2:
+        $i0 = r0.<androidx.fragment.app.DialogFragment: int mTheme>;
+
+        if $i0 == 0 goto label3;
+
+        virtualinvoke $r1.<android.os.Bundle: void putInt(java.lang.String,int)>("android:theme", $i0);
+
+     label3:
+        $z0 = r0.<androidx.fragment.app.DialogFragment: boolean mCancelable>;
+
+        if $z0 != 0 goto label4;
+
+        virtualinvoke $r1.<android.os.Bundle: void putBoolean(java.lang.String,boolean)>("android:cancelable", $z0);
+
+     label4:
+        $z0 = r0.<androidx.fragment.app.DialogFragment: boolean mShowsDialog>;
+
+        if $z0 != 0 goto label5;
+
+        virtualinvoke $r1.<android.os.Bundle: void putBoolean(java.lang.String,boolean)>("android:showsDialog", $z0);
+
+     label5:
+        $i0 = r0.<androidx.fragment.app.DialogFragment: int mBackStackId>;
+
+        $i1 = -1;
+
+        if $i0 == $i1 goto label6;
+
+        virtualinvoke $r1.<android.os.Bundle: void putInt(java.lang.String,int)>("android:backStackId", $i0);
+
+     label6:
+        return;
+    }
+
+    public void onStart()
+    {
+        android.app.Dialog $r1;
+        androidx.fragment.app.DialogFragment r0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        specialinvoke r0.<androidx.fragment.app.Fragment: void onStart()>();
+
+        $r1 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        if $r1 == null goto label1;
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mViewDestroyed> = 0;
+
+        virtualinvoke $r1.<android.app.Dialog: void show()>();
+
+     label1:
+        return;
+    }
+
+    public void onStop()
+    {
+        android.app.Dialog $r1;
+        androidx.fragment.app.DialogFragment r0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        specialinvoke r0.<androidx.fragment.app.Fragment: void onStop()>();
+
+        $r1 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        if $r1 == null goto label1;
+
+        virtualinvoke $r1.<android.app.Dialog: void hide()>();
+
+     label1:
+        return;
+    }
+
+    public final android.app.Dialog requireDialog()
+    {
+        java.lang.IllegalStateException $r2;
+        android.app.Dialog $r1;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r4;
+        androidx.fragment.app.DialogFragment r0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $r1 = virtualinvoke r0.<androidx.fragment.app.DialogFragment: android.app.Dialog getDialog()>();
+
+        if $r1 == null goto label1;
+
+        return $r1;
+
+     label1:
+        $r2 = new java.lang.IllegalStateException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("DialogFragment ");
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(r0);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" does not have a Dialog.");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r4);
+
+        throw $r2;
+    }
+
+    public void setCancelable(boolean)
+    {
+        android.app.Dialog $r1;
+        androidx.fragment.app.DialogFragment r0;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $z0 := @parameter0: boolean;
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mCancelable> = $z0;
+
+        $r1 = r0.<androidx.fragment.app.DialogFragment: android.app.Dialog mDialog>;
+
+        if $r1 == null goto label1;
+
+        virtualinvoke $r1.<android.app.Dialog: void setCancelable(boolean)>($z0);
+
+     label1:
+        return;
+    }
+
+    public void setShowsDialog(boolean)
+    {
+        androidx.fragment.app.DialogFragment r0;
+        boolean $z0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $z0 := @parameter0: boolean;
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mShowsDialog> = $z0;
+
+        return;
+    }
+
+    public void setStyle(int, int)
+    {
+        int $i0, $i1;
+        androidx.fragment.app.DialogFragment r0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $i1 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        r0.<androidx.fragment.app.DialogFragment: int mStyle> = $i1;
+
+        $i1 = r0.<androidx.fragment.app.DialogFragment: int mStyle>;
+
+        if $i1 == 2 goto label1;
+
+        if $i1 != 3 goto label2;
+
+     label1:
+        r0.<androidx.fragment.app.DialogFragment: int mTheme> = 16973913;
+
+     label2:
+        if $i0 == 0 goto label3;
+
+        r0.<androidx.fragment.app.DialogFragment: int mTheme> = $i0;
+
+     label3:
+        return;
+    }
+
+    public void setupDialog(android.app.Dialog, int)
+    {
+        int $i0;
+        android.app.Dialog $r1;
+        android.view.Window $r2;
+        androidx.fragment.app.DialogFragment r0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $r1 := @parameter0: android.app.Dialog;
+
+        $i0 := @parameter1: int;
+
+        if $i0 == 1 goto label2;
+
+        if $i0 == 2 goto label2;
+
+        if $i0 == 3 goto label1;
+
+        return;
+
+     label1:
+        $r2 = virtualinvoke $r1.<android.app.Dialog: android.view.Window getWindow()>();
+
+        virtualinvoke $r2.<android.view.Window: void addFlags(int)>(24);
+
+     label2:
+        virtualinvoke $r1.<android.app.Dialog: boolean requestWindowFeature(int)>(1);
+
+        return;
+    }
+
+    public int show(b.m.a.z, java.lang.String)
+    {
+        b.m.a.z $r2;
+        int $i0;
+        java.lang.String $r1;
+        androidx.fragment.app.DialogFragment r0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $r2 := @parameter0: b.m.a.z;
+
+        $r1 := @parameter1: java.lang.String;
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mDismissed> = 0;
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mShownByMe> = 1;
+
+        virtualinvoke $r2.<b.m.a.z: b.m.a.z a(androidx.fragment.app.Fragment,java.lang.String)>(r0, $r1);
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mViewDestroyed> = 0;
+
+        $i0 = virtualinvoke $r2.<b.m.a.z: int a()>();
+
+        r0.<androidx.fragment.app.DialogFragment: int mBackStackId> = $i0;
+
+        $i0 = r0.<androidx.fragment.app.DialogFragment: int mBackStackId>;
+
+        return $i0;
+    }
+
+    public void show(b.m.a.l, java.lang.String)
+    {
+        b.m.a.l $r3;
+        b.m.a.z $r2;
+        java.lang.String $r1;
+        androidx.fragment.app.DialogFragment r0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $r3 := @parameter0: b.m.a.l;
+
+        $r1 := @parameter1: java.lang.String;
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mDismissed> = 0;
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mShownByMe> = 1;
+
+        $r2 = virtualinvoke $r3.<b.m.a.l: b.m.a.z a()>();
+
+        virtualinvoke $r2.<b.m.a.z: b.m.a.z a(androidx.fragment.app.Fragment,java.lang.String)>(r0, $r1);
+
+        virtualinvoke $r2.<b.m.a.z: int a()>();
+
+        return;
+    }
+
+    public void showNow(b.m.a.l, java.lang.String)
+    {
+        b.m.a.l $r3;
+        b.m.a.z $r2;
+        java.lang.String $r1;
+        androidx.fragment.app.DialogFragment r0;
+
+        r0 := @this: androidx.fragment.app.DialogFragment;
+
+        $r3 := @parameter0: b.m.a.l;
+
+        $r1 := @parameter1: java.lang.String;
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mDismissed> = 0;
+
+        r0.<androidx.fragment.app.DialogFragment: boolean mShownByMe> = 1;
+
+        $r2 = virtualinvoke $r3.<b.m.a.l: b.m.a.z a()>();
+
+        virtualinvoke $r2.<b.m.a.z: b.m.a.z a(androidx.fragment.app.Fragment,java.lang.String)>(r0, $r1);
+
+        virtualinvoke $r2.<b.m.a.z: void c()>();
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <androidx.fragment.app.DialogFragment: int STYLE_NO_TITLE> = 1;
+
+        <androidx.fragment.app.DialogFragment: int STYLE_NO_INPUT> = 3;
+
+        <androidx.fragment.app.DialogFragment: int STYLE_NO_FRAME> = 2;
+
+        <androidx.fragment.app.DialogFragment: int STYLE_NORMAL> = 0;
+
+        <androidx.fragment.app.DialogFragment: java.lang.String SAVED_THEME> = "android:theme";
+
+        <androidx.fragment.app.DialogFragment: java.lang.String SAVED_STYLE> = "android:style";
+
+        <androidx.fragment.app.DialogFragment: java.lang.String SAVED_SHOWS_DIALOG> = "android:showsDialog";
+
+        <androidx.fragment.app.DialogFragment: java.lang.String SAVED_DIALOG_STATE_TAG> = "android:savedDialogState";
+
+        <androidx.fragment.app.DialogFragment: java.lang.String SAVED_CANCELABLE> = "android:cancelable";
+
+        <androidx.fragment.app.DialogFragment: java.lang.String SAVED_BACK_STACK_ID> = "android:backStackId";
+
+        return;
+    }
+}

@@ -1,0 +1,216 @@
+public abstract class com.google.common.util.concurrent.SmoothRateLimiter extends com.google.common.util.concurrent.RateLimiter
+{
+    public double maxPermits;
+    public long nextFreeTicketMicros;
+    public double stableIntervalMicros;
+    public double storedPermits;
+
+    public void <init>(com.google.common.util.concurrent.RateLimiter$SleepingStopwatch)
+    {
+        com.google.common.util.concurrent.RateLimiter$SleepingStopwatch $r1;
+        com.google.common.util.concurrent.SmoothRateLimiter r0;
+
+        r0 := @this: com.google.common.util.concurrent.SmoothRateLimiter;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.RateLimiter$SleepingStopwatch;
+
+        specialinvoke r0.<com.google.common.util.concurrent.RateLimiter: void <init>(com.google.common.util.concurrent.RateLimiter$SleepingStopwatch)>($r1);
+
+        r0.<com.google.common.util.concurrent.SmoothRateLimiter: long nextFreeTicketMicros> = 0L;
+
+        return;
+    }
+
+    public void <init>(com.google.common.util.concurrent.RateLimiter$SleepingStopwatch, com.google.common.util.concurrent.SmoothRateLimiter$1)
+    {
+        com.google.common.util.concurrent.RateLimiter$SleepingStopwatch $r1;
+        com.google.common.util.concurrent.SmoothRateLimiter r0;
+        com.google.common.util.concurrent.SmoothRateLimiter$1 $r2;
+
+        r0 := @this: com.google.common.util.concurrent.SmoothRateLimiter;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.RateLimiter$SleepingStopwatch;
+
+        $r2 := @parameter1: com.google.common.util.concurrent.SmoothRateLimiter$1;
+
+        specialinvoke r0.<com.google.common.util.concurrent.SmoothRateLimiter: void <init>(com.google.common.util.concurrent.RateLimiter$SleepingStopwatch)>($r1);
+
+        return;
+    }
+
+    public abstract double coolDownIntervalMicros();
+
+    public final double doGetRate()
+    {
+        java.util.concurrent.TimeUnit $r1;
+        long $l0;
+        com.google.common.util.concurrent.SmoothRateLimiter r0;
+        double $d0, $d1;
+
+        r0 := @this: com.google.common.util.concurrent.SmoothRateLimiter;
+
+        $r1 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit SECONDS>;
+
+        $l0 = virtualinvoke $r1.<java.util.concurrent.TimeUnit: long toMicros(long)>(1L);
+
+        $d1 = (double) $l0;
+
+        $d0 = r0.<com.google.common.util.concurrent.SmoothRateLimiter: double stableIntervalMicros>;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d1);
+
+        $d0 = $d1 / $d0;
+
+        return $d0;
+    }
+
+    public abstract void doSetRate(double, double);
+
+    public final void doSetRate(double, long)
+    {
+        java.util.concurrent.TimeUnit $r1;
+        long $l0;
+        com.google.common.util.concurrent.SmoothRateLimiter r0;
+        double $d0, $d1;
+
+        r0 := @this: com.google.common.util.concurrent.SmoothRateLimiter;
+
+        $d0 := @parameter0: double;
+
+        $l0 := @parameter1: long;
+
+        virtualinvoke r0.<com.google.common.util.concurrent.SmoothRateLimiter: void resync(long)>($l0);
+
+        $r1 = <java.util.concurrent.TimeUnit: java.util.concurrent.TimeUnit SECONDS>;
+
+        $l0 = virtualinvoke $r1.<java.util.concurrent.TimeUnit: long toMicros(long)>(1L);
+
+        $d1 = (double) $l0;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d1);
+
+        $d1 = $d1 / $d0;
+
+        r0.<com.google.common.util.concurrent.SmoothRateLimiter: double stableIntervalMicros> = $d1;
+
+        virtualinvoke r0.<com.google.common.util.concurrent.SmoothRateLimiter: void doSetRate(double,double)>($d0, $d1);
+
+        return;
+    }
+
+    public final long queryEarliestAvailable(long)
+    {
+        long $l0;
+        com.google.common.util.concurrent.SmoothRateLimiter r0;
+
+        r0 := @this: com.google.common.util.concurrent.SmoothRateLimiter;
+
+        $l0 := @parameter0: long;
+
+        $l0 = r0.<com.google.common.util.concurrent.SmoothRateLimiter: long nextFreeTicketMicros>;
+
+        return $l0;
+    }
+
+    public final long reserveEarliestAvailable(int, long)
+    {
+        long $l1, $l2, $l3;
+        com.google.common.util.concurrent.SmoothRateLimiter r0;
+        int $i0;
+        double $d0, $d1, $d2;
+
+        r0 := @this: com.google.common.util.concurrent.SmoothRateLimiter;
+
+        $i0 := @parameter0: int;
+
+        $l1 := @parameter1: long;
+
+        virtualinvoke r0.<com.google.common.util.concurrent.SmoothRateLimiter: void resync(long)>($l1);
+
+        $l1 = r0.<com.google.common.util.concurrent.SmoothRateLimiter: long nextFreeTicketMicros>;
+
+        $d1 = (double) $i0;
+
+        $d2 = r0.<com.google.common.util.concurrent.SmoothRateLimiter: double storedPermits>;
+
+        $d2 = staticinvoke <java.lang.Math: double min(double,double)>($d1, $d2);
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d1);
+
+        $d1 = $d1 - $d2;
+
+        $d0 = r0.<com.google.common.util.concurrent.SmoothRateLimiter: double storedPermits>;
+
+        $l2 = virtualinvoke r0.<com.google.common.util.concurrent.SmoothRateLimiter: long storedPermitsToWaitTime(double,double)>($d0, $d2);
+
+        $d0 = r0.<com.google.common.util.concurrent.SmoothRateLimiter: double stableIntervalMicros>;
+
+        $d1 = $d1 * $d0;
+
+        $l3 = (long) $d1;
+
+        $l2 = $l2 + $l3;
+
+        $l3 = r0.<com.google.common.util.concurrent.SmoothRateLimiter: long nextFreeTicketMicros>;
+
+        $l2 = staticinvoke <com.google.common.math.LongMath: long saturatedAdd(long,long)>($l3, $l2);
+
+        r0.<com.google.common.util.concurrent.SmoothRateLimiter: long nextFreeTicketMicros> = $l2;
+
+        $d1 = r0.<com.google.common.util.concurrent.SmoothRateLimiter: double storedPermits>;
+
+        $d2 = $d1 - $d2;
+
+        r0.<com.google.common.util.concurrent.SmoothRateLimiter: double storedPermits> = $d2;
+
+        return $l1;
+    }
+
+    public void resync(long)
+    {
+        long $l0, $l1;
+        com.google.common.util.concurrent.SmoothRateLimiter r0;
+        byte $b2;
+        int $i3;
+        double $d0, $d1, $d2;
+
+        r0 := @this: com.google.common.util.concurrent.SmoothRateLimiter;
+
+        $l0 := @parameter0: long;
+
+        $l1 = r0.<com.google.common.util.concurrent.SmoothRateLimiter: long nextFreeTicketMicros>;
+
+        $b2 = $l0 cmp $l1;
+
+        $i3 = (int) $b2;
+
+        if $i3 <= 0 goto label1;
+
+        $l1 = $l0 - $l1;
+
+        $d0 = (double) $l1;
+
+        $d1 = virtualinvoke r0.<com.google.common.util.concurrent.SmoothRateLimiter: double coolDownIntervalMicros()>();
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        $d1 = $d0 / $d1;
+
+        $d0 = r0.<com.google.common.util.concurrent.SmoothRateLimiter: double maxPermits>;
+
+        $d2 = r0.<com.google.common.util.concurrent.SmoothRateLimiter: double storedPermits>;
+
+        $d1 = $d2 + $d1;
+
+        $d0 = staticinvoke <java.lang.Math: double min(double,double)>($d0, $d1);
+
+        r0.<com.google.common.util.concurrent.SmoothRateLimiter: double storedPermits> = $d0;
+
+        r0.<com.google.common.util.concurrent.SmoothRateLimiter: long nextFreeTicketMicros> = $l0;
+
+     label1:
+        return;
+    }
+
+    public abstract long storedPermitsToWaitTime(double, double);
+}

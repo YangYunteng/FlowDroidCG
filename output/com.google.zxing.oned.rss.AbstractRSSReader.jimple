@@ -1,0 +1,393 @@
+public abstract class com.google.zxing.oned.rss.AbstractRSSReader extends com.google.zxing.oned.OneDReader
+{
+    public static final int MAX_AVG_VARIANCE;
+    public static final float MAX_FINDER_PATTERN_RATIO;
+    public static final int MAX_INDIVIDUAL_VARIANCE;
+    public static final float MIN_FINDER_PATTERN_RATIO;
+    public final int[] dataCharacterCounters;
+    public final int[] decodeFinderCounters;
+    public final int[] evenCounts;
+    public final float[] evenRoundingErrors;
+    public final int[] oddCounts;
+    public final float[] oddRoundingErrors;
+
+    public void <init>()
+    {
+        int[] $r1, $r3;
+        int $i0;
+        com.google.zxing.oned.rss.AbstractRSSReader r0;
+        float[] $r2;
+
+        r0 := @this: com.google.zxing.oned.rss.AbstractRSSReader;
+
+        specialinvoke r0.<com.google.zxing.oned.OneDReader: void <init>()>();
+
+        $r1 = newarray (int)[4];
+
+        r0.<com.google.zxing.oned.rss.AbstractRSSReader: int[] decodeFinderCounters> = $r1;
+
+        $r1 = newarray (int)[8];
+
+        r0.<com.google.zxing.oned.rss.AbstractRSSReader: int[] dataCharacterCounters> = $r1;
+
+        $r2 = newarray (float)[4];
+
+        r0.<com.google.zxing.oned.rss.AbstractRSSReader: float[] oddRoundingErrors> = $r2;
+
+        $r2 = newarray (float)[4];
+
+        r0.<com.google.zxing.oned.rss.AbstractRSSReader: float[] evenRoundingErrors> = $r2;
+
+        $r1 = r0.<com.google.zxing.oned.rss.AbstractRSSReader: int[] dataCharacterCounters>;
+
+        $i0 = lengthof $r1;
+
+        $i0 = $i0 / 2;
+
+        $r3 = newarray (int)[$i0];
+
+        r0.<com.google.zxing.oned.rss.AbstractRSSReader: int[] oddCounts> = $r3;
+
+        $i0 = lengthof $r1;
+
+        $i0 = $i0 / 2;
+
+        $r1 = newarray (int)[$i0];
+
+        r0.<com.google.zxing.oned.rss.AbstractRSSReader: int[] evenCounts> = $r1;
+
+        return;
+    }
+
+    public static int count(int[])
+    {
+        int[] $r0;
+        int $i0, $i1, $i2, $i3;
+
+        $r0 := @parameter0: int[];
+
+        $i0 = lengthof $r0;
+
+        $i2 = 0;
+
+        $i3 = 0;
+
+     label1:
+        if $i2 >= $i0 goto label2;
+
+        $i1 = $r0[$i2];
+
+        $i3 = $i3 + $i1;
+
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label2:
+        return $i3;
+    }
+
+    public static void decrement(int[], float[])
+    {
+        float[] $r1;
+        byte $b3;
+        int[] $r0;
+        int $i0, $i1, $i2;
+        float $f0, $f1;
+
+        $r0 := @parameter0: int[];
+
+        $r1 := @parameter1: float[];
+
+        $f0 = $r1[0];
+
+        $i0 = 1;
+
+        $i1 = 0;
+
+     label1:
+        $i2 = lengthof $r0;
+
+        if $i0 >= $i2 goto label3;
+
+        $f1 = $r1[$i0];
+
+        $b3 = $f1 cmpg $f0;
+
+        $i2 = (int) $b3;
+
+        if $i2 >= 0 goto label2;
+
+        $f0 = $r1[$i0];
+
+        $i1 = $i0;
+
+     label2:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label3:
+        $i0 = $r0[$i1];
+
+        $i0 = $i0 - 1;
+
+        $r0[$i1] = $i0;
+
+        return;
+    }
+
+    public static void increment(int[], float[])
+    {
+        float[] $r1;
+        byte $b3;
+        int[] $r0;
+        int $i0, $i1, $i2;
+        float $f0, $f1;
+
+        $r0 := @parameter0: int[];
+
+        $r1 := @parameter1: float[];
+
+        $f0 = $r1[0];
+
+        $i0 = 1;
+
+        $i1 = 0;
+
+     label1:
+        $i2 = lengthof $r0;
+
+        if $i0 >= $i2 goto label3;
+
+        $f1 = $r1[$i0];
+
+        $b3 = $f1 cmpl $f0;
+
+        $i2 = (int) $b3;
+
+        if $i2 <= 0 goto label2;
+
+        $f0 = $r1[$i0];
+
+        $i1 = $i0;
+
+     label2:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label3:
+        $i0 = $r0[$i1];
+
+        $i0 = $i0 + 1;
+
+        $r0[$i1] = $i0;
+
+        return;
+    }
+
+    public static boolean isFinderPattern(int[])
+    {
+        byte $b3;
+        int[] $r0;
+        int $i0, $i1, $i2, $i4, $i5;
+        float $f0, $f1;
+
+        $r0 := @parameter0: int[];
+
+        $i1 = $r0[0];
+
+        $i0 = $r0[1];
+
+        $i1 = $i1 + $i0;
+
+        $i0 = $r0[2];
+
+        $i0 = $i0 + $i1;
+
+        $i2 = $r0[3];
+
+        $i0 = $i0 + $i2;
+
+        $f0 = (float) $i1;
+
+        $f1 = (float) $i0;
+
+        $f0 = $f0 / $f1;
+
+        $b3 = $f0 cmpl 0.7916667F;
+
+        $i1 = (int) $b3;
+
+        if $i1 < 0 goto label5;
+
+        $b3 = $f0 cmpg 0.89285713F;
+
+        $i1 = (int) $b3;
+
+        if $i1 > 0 goto label5;
+
+        $i1 = -2147483648;
+
+        $i2 = lengthof $r0;
+
+        $i4 = 0;
+
+        $i5 = 2147483647;
+
+     label1:
+        if $i4 >= $i2 goto label4;
+
+        $i0 = $r0[$i4];
+
+        if $i0 <= $i1 goto label2;
+
+        $i1 = $i0;
+
+     label2:
+        if $i0 >= $i5 goto label3;
+
+        $i5 = $i0;
+
+     label3:
+        $i4 = $i4 + 1;
+
+        goto label1;
+
+     label4:
+        $i0 = $i5 * 10;
+
+        if $i1 >= $i0 goto label5;
+
+        return 1;
+
+     label5:
+        return 0;
+    }
+
+    public static int parseFinderValue(int[], int[][])
+    {
+        int[][] $r0;
+        int[] $r1, $r2;
+        com.google.zxing.NotFoundException $r3;
+        int $i0, $i1;
+
+        $r1 := @parameter0: int[];
+
+        $r0 := @parameter1: int[][];
+
+        $i0 = 0;
+
+     label1:
+        $i1 = lengthof $r0;
+
+        if $i0 >= $i1 goto label3;
+
+        $r2 = $r0[$i0];
+
+        $i1 = staticinvoke <com.google.zxing.oned.OneDReader: int patternMatchVariance(int[],int[],int)>($r1, $r2, 115);
+
+        if $i1 >= 51 goto label2;
+
+        return $i0;
+
+     label2:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label3:
+        $r3 = staticinvoke <com.google.zxing.NotFoundException: com.google.zxing.NotFoundException getNotFoundInstance()>();
+
+        goto label4;
+
+     label4:
+        throw $r3;
+    }
+
+    public final int[] getDataCharacterCounters()
+    {
+        com.google.zxing.oned.rss.AbstractRSSReader r0;
+        int[] r1;
+
+        r0 := @this: com.google.zxing.oned.rss.AbstractRSSReader;
+
+        r1 = r0.<com.google.zxing.oned.rss.AbstractRSSReader: int[] dataCharacterCounters>;
+
+        return r1;
+    }
+
+    public final int[] getDecodeFinderCounters()
+    {
+        com.google.zxing.oned.rss.AbstractRSSReader r0;
+        int[] r1;
+
+        r0 := @this: com.google.zxing.oned.rss.AbstractRSSReader;
+
+        r1 = r0.<com.google.zxing.oned.rss.AbstractRSSReader: int[] decodeFinderCounters>;
+
+        return r1;
+    }
+
+    public final int[] getEvenCounts()
+    {
+        com.google.zxing.oned.rss.AbstractRSSReader r0;
+        int[] r1;
+
+        r0 := @this: com.google.zxing.oned.rss.AbstractRSSReader;
+
+        r1 = r0.<com.google.zxing.oned.rss.AbstractRSSReader: int[] evenCounts>;
+
+        return r1;
+    }
+
+    public final float[] getEvenRoundingErrors()
+    {
+        com.google.zxing.oned.rss.AbstractRSSReader r0;
+        float[] r1;
+
+        r0 := @this: com.google.zxing.oned.rss.AbstractRSSReader;
+
+        r1 = r0.<com.google.zxing.oned.rss.AbstractRSSReader: float[] evenRoundingErrors>;
+
+        return r1;
+    }
+
+    public final int[] getOddCounts()
+    {
+        com.google.zxing.oned.rss.AbstractRSSReader r0;
+        int[] r1;
+
+        r0 := @this: com.google.zxing.oned.rss.AbstractRSSReader;
+
+        r1 = r0.<com.google.zxing.oned.rss.AbstractRSSReader: int[] oddCounts>;
+
+        return r1;
+    }
+
+    public final float[] getOddRoundingErrors()
+    {
+        com.google.zxing.oned.rss.AbstractRSSReader r0;
+        float[] r1;
+
+        r0 := @this: com.google.zxing.oned.rss.AbstractRSSReader;
+
+        r1 = r0.<com.google.zxing.oned.rss.AbstractRSSReader: float[] oddRoundingErrors>;
+
+        return r1;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.zxing.oned.rss.AbstractRSSReader: float MIN_FINDER_PATTERN_RATIO> = 0.7916667F;
+
+        <com.google.zxing.oned.rss.AbstractRSSReader: int MAX_INDIVIDUAL_VARIANCE> = 115;
+
+        <com.google.zxing.oned.rss.AbstractRSSReader: float MAX_FINDER_PATTERN_RATIO> = 0.89285713F;
+
+        <com.google.zxing.oned.rss.AbstractRSSReader: int MAX_AVG_VARIANCE> = 51;
+
+        return;
+    }
+}

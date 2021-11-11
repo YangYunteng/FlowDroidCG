@@ -1,0 +1,121 @@
+public class com.caremark.caremark.util.DeviceUuidFactory extends java.lang.Object
+{
+    public static final java.lang.String PREFS_DEVICE_ID;
+    public static final java.lang.String PREFS_FILE;
+    public static volatile java.util.UUID uuid;
+
+    public void <init>(android.content.Context)
+    {
+        android.content.SharedPreferences$Editor $r5;
+        java.lang.Throwable $r8;
+        android.content.Context $r1;
+        java.util.UUID $r2;
+        java.lang.RuntimeException $r7;
+        java.lang.Exception $r6;
+        com.caremark.caremark.util.DeviceUuidFactory r0;
+        android.content.SharedPreferences $r3;
+        java.lang.String $r4;
+
+        r0 := @this: com.caremark.caremark.util.DeviceUuidFactory;
+
+        $r1 := @parameter0: android.content.Context;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r2 = <com.caremark.caremark.util.DeviceUuidFactory: java.util.UUID uuid>;
+
+        if $r2 != null goto label11;
+
+        entermonitor class "Lcom/caremark/caremark/util/DeviceUuidFactory;";
+
+     label01:
+        $r2 = <com.caremark.caremark.util.DeviceUuidFactory: java.util.UUID uuid>;
+
+        if $r2 != null goto label07;
+
+        $r3 = virtualinvoke $r1.<android.content.Context: android.content.SharedPreferences getSharedPreferences(java.lang.String,int)>("device_id.xml", 0);
+
+        $r4 = interfaceinvoke $r3.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>("device_id", null);
+
+        if $r4 == null goto label03;
+
+        $r2 = staticinvoke <java.util.UUID: java.util.UUID fromString(java.lang.String)>($r4);
+
+        <com.caremark.caremark.util.DeviceUuidFactory: java.util.UUID uuid> = $r2;
+
+     label02:
+        goto label07;
+
+     label03:
+        $r2 = staticinvoke <java.util.UUID: java.util.UUID randomUUID()>();
+
+     label04:
+        <com.caremark.caremark.util.DeviceUuidFactory: java.util.UUID uuid> = $r2;
+
+     label05:
+        $r5 = interfaceinvoke $r3.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $r2 = <com.caremark.caremark.util.DeviceUuidFactory: java.util.UUID uuid>;
+
+        $r4 = virtualinvoke $r2.<java.util.UUID: java.lang.String toString()>();
+
+        $r5 = interfaceinvoke $r5.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putString(java.lang.String,java.lang.String)>("device_id", $r4);
+
+        interfaceinvoke $r5.<android.content.SharedPreferences$Editor: boolean commit()>();
+
+        goto label07;
+
+     label06:
+        $r6 := @caughtexception;
+
+        $r7 = new java.lang.RuntimeException;
+
+        specialinvoke $r7.<java.lang.RuntimeException: void <init>(java.lang.Throwable)>($r6);
+
+        throw $r7;
+
+     label07:
+        exitmonitor class "Lcom/caremark/caremark/util/DeviceUuidFactory;";
+
+     label08:
+        return;
+
+     label09:
+        $r8 := @caughtexception;
+
+        exitmonitor class "Lcom/caremark/caremark/util/DeviceUuidFactory;";
+
+     label10:
+        throw $r8;
+
+     label11:
+        return;
+
+        catch java.lang.Throwable from label01 to label02 with label09;
+        catch java.lang.Exception from label03 to label04 with label06;
+        catch java.lang.Throwable from label03 to label05 with label09;
+        catch java.lang.Throwable from label05 to label08 with label09;
+        catch java.lang.Throwable from label09 to label10 with label09;
+    }
+
+    public java.util.UUID getDeviceUuid()
+    {
+        com.caremark.caremark.util.DeviceUuidFactory r0;
+        java.util.UUID r1;
+
+        r0 := @this: com.caremark.caremark.util.DeviceUuidFactory;
+
+        r1 = <com.caremark.caremark.util.DeviceUuidFactory: java.util.UUID uuid>;
+
+        return r1;
+    }
+
+    public static void <clinit>()
+    {
+        <com.caremark.caremark.util.DeviceUuidFactory: java.lang.String PREFS_FILE> = "device_id.xml";
+
+        <com.caremark.caremark.util.DeviceUuidFactory: java.lang.String PREFS_DEVICE_ID> = "device_id";
+
+        return;
+    }
+}

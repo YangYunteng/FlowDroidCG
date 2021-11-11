@@ -1,0 +1,206 @@
+public abstract class org.codehaus.jackson.map.util.PrimitiveArrayBuilder extends java.lang.Object
+{
+    public static final int INITIAL_CHUNK_SIZE;
+    public static final int MAX_CHUNK_SIZE;
+    public static final int SMALL_CHUNK_SIZE;
+    public org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node _bufferHead;
+    public org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node _bufferTail;
+    public int _bufferedEntryCount;
+    public java.lang.Object _freeBuffer;
+
+    public void <init>()
+    {
+        org.codehaus.jackson.map.util.PrimitiveArrayBuilder r0;
+
+        r0 := @this: org.codehaus.jackson.map.util.PrimitiveArrayBuilder;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public abstract java.lang.Object _constructArray(int);
+
+    public void _reset()
+    {
+        java.lang.Object $r1;
+        org.codehaus.jackson.map.util.PrimitiveArrayBuilder r0;
+        org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node $r2;
+
+        r0 := @this: org.codehaus.jackson.map.util.PrimitiveArrayBuilder;
+
+        $r2 = r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node _bufferTail>;
+
+        if $r2 == null goto label1;
+
+        $r1 = virtualinvoke $r2.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node: java.lang.Object getData()>();
+
+        r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: java.lang.Object _freeBuffer> = $r1;
+
+     label1:
+        r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node _bufferTail> = null;
+
+        r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node _bufferHead> = null;
+
+        r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: int _bufferedEntryCount> = 0;
+
+        return;
+    }
+
+    public final java.lang.Object appendCompletedChunk(java.lang.Object, int)
+    {
+        org.codehaus.jackson.map.util.PrimitiveArrayBuilder r0;
+        org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node $r1, $r3;
+        int $i0, $i1;
+        java.lang.Object $r2;
+
+        r0 := @this: org.codehaus.jackson.map.util.PrimitiveArrayBuilder;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $r1 = new org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node;
+
+        specialinvoke $r1.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node: void <init>(java.lang.Object,int)>($r2, $i0);
+
+        $r3 = r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node _bufferHead>;
+
+        if $r3 != null goto label1;
+
+        r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node _bufferTail> = $r1;
+
+        r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node _bufferHead> = $r1;
+
+        goto label2;
+
+     label1:
+        $r3 = r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node _bufferTail>;
+
+        virtualinvoke $r3.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node: void linkNext(org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node)>($r1);
+
+        r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node _bufferTail> = $r1;
+
+     label2:
+        $i1 = r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: int _bufferedEntryCount>;
+
+        $i1 = $i1 + $i0;
+
+        r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: int _bufferedEntryCount> = $i1;
+
+        if $i0 >= 16384 goto label3;
+
+        $i0 = $i0 + $i0;
+
+        goto label4;
+
+     label3:
+        $i1 = $i0 >> 2;
+
+        $i0 = $i0 + $i1;
+
+     label4:
+        $r2 = virtualinvoke r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: java.lang.Object _constructArray(int)>($i0);
+
+        return $r2;
+    }
+
+    public java.lang.Object completeAndClearBuffer(java.lang.Object, int)
+    {
+        java.lang.IllegalStateException $r4;
+        org.codehaus.jackson.map.util.PrimitiveArrayBuilder r0;
+        org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node $r3;
+        int $i0, $i1, $i2;
+        java.lang.Object $r1, $r2;
+        java.lang.StringBuilder $r5;
+        java.lang.String $r6;
+
+        r0 := @this: org.codehaus.jackson.map.util.PrimitiveArrayBuilder;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $i0 := @parameter1: int;
+
+        $i1 = r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: int _bufferedEntryCount>;
+
+        $i1 = $i1 + $i0;
+
+        $r2 = virtualinvoke r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: java.lang.Object _constructArray(int)>($i1);
+
+        $r3 = r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node _bufferHead>;
+
+        $i2 = 0;
+
+     label1:
+        if $r3 == null goto label2;
+
+        $i2 = virtualinvoke $r3.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node: int copyData(java.lang.Object,int)>($r2, $i2);
+
+        $r3 = virtualinvoke $r3.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node: org.codehaus.jackson.map.util.PrimitiveArrayBuilder$Node next()>();
+
+        goto label1;
+
+     label2:
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, 0, $r2, $i2, $i0);
+
+        $i0 = $i2 + $i0;
+
+        if $i0 != $i1 goto label3;
+
+        return $r2;
+
+     label3:
+        $r4 = new java.lang.IllegalStateException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Should have gotten ");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" entries, got ");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r6);
+
+        goto label4;
+
+     label4:
+        throw $r4;
+    }
+
+    public java.lang.Object resetAndStart()
+    {
+        java.lang.Object $r1;
+        org.codehaus.jackson.map.util.PrimitiveArrayBuilder r0;
+
+        r0 := @this: org.codehaus.jackson.map.util.PrimitiveArrayBuilder;
+
+        virtualinvoke r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: void _reset()>();
+
+        $r1 = r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: java.lang.Object _freeBuffer>;
+
+        if $r1 != null goto label1;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.map.util.PrimitiveArrayBuilder: java.lang.Object _constructArray(int)>(12);
+
+     label1:
+        return $r1;
+    }
+
+    public static void <clinit>()
+    {
+        <org.codehaus.jackson.map.util.PrimitiveArrayBuilder: int SMALL_CHUNK_SIZE> = 16384;
+
+        <org.codehaus.jackson.map.util.PrimitiveArrayBuilder: int MAX_CHUNK_SIZE> = 262144;
+
+        <org.codehaus.jackson.map.util.PrimitiveArrayBuilder: int INITIAL_CHUNK_SIZE> = 12;
+
+        return;
+    }
+}

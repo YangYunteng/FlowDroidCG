@@ -1,0 +1,3382 @@
+public class com.google.android.material.shape.MaterialShapeDrawable extends android.graphics.drawable.Drawable implements b.i.c.a.b, com.google.android.material.shape.Shapeable
+{
+    public static final int SHADOW_COMPAT_MODE_ALWAYS;
+    public static final int SHADOW_COMPAT_MODE_DEFAULT;
+    public static final int SHADOW_COMPAT_MODE_NEVER;
+    public static final float SHADOW_OFFSET_MULTIPLIER;
+    public static final float SHADOW_RADIUS_MULTIPLIER;
+    public static final java.lang.String TAG;
+    public static final android.graphics.Paint clearPaint;
+    public final java.util.BitSet containsIncompatibleShadowOp;
+    public final com.google.android.material.shape.ShapePath$ShadowCompatOperation[] cornerShadowOperation;
+    public com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState;
+    public final com.google.android.material.shape.ShapePath$ShadowCompatOperation[] edgeShadowOperation;
+    public final android.graphics.Paint fillPaint;
+    public final android.graphics.RectF insetRectF;
+    public final android.graphics.Matrix matrix;
+    public final android.graphics.Path path;
+    public final android.graphics.RectF pathBounds;
+    public boolean pathDirty;
+    public final android.graphics.Path pathInsetByStroke;
+    public final com.google.android.material.shape.ShapeAppearancePathProvider pathProvider;
+    public final com.google.android.material.shape.ShapeAppearancePathProvider$PathListener pathShadowListener;
+    public final android.graphics.RectF rectF;
+    public final android.graphics.Region scratchRegion;
+    public boolean shadowBitmapDrawingEnable;
+    public final com.google.android.material.shadow.ShadowRenderer shadowRenderer;
+    public final android.graphics.Paint strokePaint;
+    public com.google.android.material.shape.ShapeAppearanceModel strokeShapeAppearance;
+    public android.graphics.PorterDuffColorFilter strokeTintFilter;
+    public android.graphics.PorterDuffColorFilter tintFilter;
+    public final android.graphics.Region transparentRegion;
+
+    static void <clinit>()
+    {
+        android.graphics.Paint $r0;
+
+        <com.google.android.material.shape.MaterialShapeDrawable: java.lang.String TAG> = "MaterialShapeDrawable";
+
+        <com.google.android.material.shape.MaterialShapeDrawable: float SHADOW_RADIUS_MULTIPLIER> = 0.75F;
+
+        <com.google.android.material.shape.MaterialShapeDrawable: float SHADOW_OFFSET_MULTIPLIER> = 0.25F;
+
+        <com.google.android.material.shape.MaterialShapeDrawable: int SHADOW_COMPAT_MODE_NEVER> = 1;
+
+        <com.google.android.material.shape.MaterialShapeDrawable: int SHADOW_COMPAT_MODE_DEFAULT> = 0;
+
+        <com.google.android.material.shape.MaterialShapeDrawable: int SHADOW_COMPAT_MODE_ALWAYS> = 2;
+
+        $r0 = new android.graphics.Paint;
+
+        specialinvoke $r0.<android.graphics.Paint: void <init>(int)>(1);
+
+        <com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint clearPaint> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.google.android.material.shape.ShapeAppearanceModel $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = new com.google.android.material.shape.ShapeAppearanceModel;
+
+        specialinvoke $r1.<com.google.android.material.shape.ShapeAppearanceModel: void <init>()>();
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void <init>(com.google.android.material.shape.ShapeAppearanceModel)>($r1);
+
+        return;
+    }
+
+    public void <init>(android.content.Context, android.util.AttributeSet, int, int)
+    {
+        android.content.Context $r2;
+        android.util.AttributeSet $r1;
+        int $i0, $i1;
+        com.google.android.material.shape.ShapeAppearanceModel $r4;
+        com.google.android.material.shape.ShapeAppearanceModel$Builder $r3;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r1 := @parameter1: android.util.AttributeSet;
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        $r3 = staticinvoke <com.google.android.material.shape.ShapeAppearanceModel: com.google.android.material.shape.ShapeAppearanceModel$Builder builder(android.content.Context,android.util.AttributeSet,int,int)>($r2, $r1, $i0, $i1);
+
+        $r4 = virtualinvoke $r3.<com.google.android.material.shape.ShapeAppearanceModel$Builder: com.google.android.material.shape.ShapeAppearanceModel build()>();
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void <init>(com.google.android.material.shape.ShapeAppearanceModel)>($r4);
+
+        return;
+    }
+
+    public void <init>(com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState)
+    {
+        android.graphics.Path $r9;
+        android.graphics.Paint$Style $r5;
+        int[] $r1;
+        int $i0;
+        android.graphics.Matrix $r8;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r2;
+        android.graphics.RectF $r10;
+        com.google.android.material.shape.ShapeAppearancePathProvider $r14;
+        android.graphics.Region $r11;
+        android.graphics.PorterDuff$Mode $r6;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        android.graphics.PorterDuffXfermode $r15;
+        com.google.android.material.shadow.ShadowRenderer $r13;
+        com.google.android.material.shape.ShapePath$ShadowCompatOperation[] $r3;
+        android.graphics.Paint $r4, $r12;
+        java.util.BitSet $r7;
+        com.google.android.material.shape.MaterialShapeDrawable$1 $r16;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r2 := @parameter0: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState;
+
+        specialinvoke r0.<android.graphics.drawable.Drawable: void <init>()>();
+
+        $r3 = newarray (com.google.android.material.shape.ShapePath$ShadowCompatOperation)[4];
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapePath$ShadowCompatOperation[] cornerShadowOperation> = $r3;
+
+        $r3 = newarray (com.google.android.material.shape.ShapePath$ShadowCompatOperation)[4];
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapePath$ShadowCompatOperation[] edgeShadowOperation> = $r3;
+
+        $r7 = new java.util.BitSet;
+
+        specialinvoke $r7.<java.util.BitSet: void <init>(int)>(8);
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: java.util.BitSet containsIncompatibleShadowOp> = $r7;
+
+        $r8 = new android.graphics.Matrix;
+
+        specialinvoke $r8.<android.graphics.Matrix: void <init>()>();
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Matrix matrix> = $r8;
+
+        $r9 = new android.graphics.Path;
+
+        specialinvoke $r9.<android.graphics.Path: void <init>()>();
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Path path> = $r9;
+
+        $r9 = new android.graphics.Path;
+
+        specialinvoke $r9.<android.graphics.Path: void <init>()>();
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Path pathInsetByStroke> = $r9;
+
+        $r10 = new android.graphics.RectF;
+
+        specialinvoke $r10.<android.graphics.RectF: void <init>()>();
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF rectF> = $r10;
+
+        $r10 = new android.graphics.RectF;
+
+        specialinvoke $r10.<android.graphics.RectF: void <init>()>();
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF insetRectF> = $r10;
+
+        $r11 = new android.graphics.Region;
+
+        specialinvoke $r11.<android.graphics.Region: void <init>()>();
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Region transparentRegion> = $r11;
+
+        $r11 = new android.graphics.Region;
+
+        specialinvoke $r11.<android.graphics.Region: void <init>()>();
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Region scratchRegion> = $r11;
+
+        $r12 = new android.graphics.Paint;
+
+        specialinvoke $r12.<android.graphics.Paint: void <init>(int)>(1);
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint fillPaint> = $r12;
+
+        $r12 = new android.graphics.Paint;
+
+        specialinvoke $r12.<android.graphics.Paint: void <init>(int)>(1);
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint strokePaint> = $r12;
+
+        $r13 = new com.google.android.material.shadow.ShadowRenderer;
+
+        specialinvoke $r13.<com.google.android.material.shadow.ShadowRenderer: void <init>()>();
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shadow.ShadowRenderer shadowRenderer> = $r13;
+
+        $r14 = new com.google.android.material.shape.ShapeAppearancePathProvider;
+
+        specialinvoke $r14.<com.google.android.material.shape.ShapeAppearancePathProvider: void <init>()>();
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapeAppearancePathProvider pathProvider> = $r14;
+
+        $r10 = new android.graphics.RectF;
+
+        specialinvoke $r10.<android.graphics.RectF: void <init>()>();
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF pathBounds> = $r10;
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean shadowBitmapDrawingEnable> = 1;
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState> = $r2;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint strokePaint>;
+
+        $r5 = <android.graphics.Paint$Style: android.graphics.Paint$Style STROKE>;
+
+        virtualinvoke $r4.<android.graphics.Paint: void setStyle(android.graphics.Paint$Style)>($r5);
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint fillPaint>;
+
+        $r5 = <android.graphics.Paint$Style: android.graphics.Paint$Style FILL>;
+
+        virtualinvoke $r4.<android.graphics.Paint: void setStyle(android.graphics.Paint$Style)>($r5);
+
+        $r4 = <com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint clearPaint>;
+
+        $i0 = -1;
+
+        virtualinvoke $r4.<android.graphics.Paint: void setColor(int)>($i0);
+
+        $r4 = <com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint clearPaint>;
+
+        $r15 = new android.graphics.PorterDuffXfermode;
+
+        $r6 = <android.graphics.PorterDuff$Mode: android.graphics.PorterDuff$Mode DST_OUT>;
+
+        specialinvoke $r15.<android.graphics.PorterDuffXfermode: void <init>(android.graphics.PorterDuff$Mode)>($r6);
+
+        virtualinvoke $r4.<android.graphics.Paint: android.graphics.Xfermode setXfermode(android.graphics.Xfermode)>($r15);
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean updateTintFilter()>();
+
+        $r1 = virtualinvoke r0.<android.graphics.drawable.Drawable: int[] getState()>();
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean updateColorsForState(int[])>($r1);
+
+        $r16 = new com.google.android.material.shape.MaterialShapeDrawable$1;
+
+        specialinvoke $r16.<com.google.android.material.shape.MaterialShapeDrawable$1: void <init>(com.google.android.material.shape.MaterialShapeDrawable)>(r0);
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapeAppearancePathProvider$PathListener pathShadowListener> = $r16;
+
+        return;
+    }
+
+    public void <init>(com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState, com.google.android.material.shape.MaterialShapeDrawable$1)
+    {
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+        com.google.android.material.shape.MaterialShapeDrawable$1 $r2;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState;
+
+        $r2 := @parameter1: com.google.android.material.shape.MaterialShapeDrawable$1;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void <init>(com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState)>($r1);
+
+        return;
+    }
+
+    public void <init>(com.google.android.material.shape.ShapeAppearanceModel)
+    {
+        com.google.android.material.shape.ShapeAppearanceModel $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r2;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: com.google.android.material.shape.ShapeAppearanceModel;
+
+        $r2 = new com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState;
+
+        specialinvoke $r2.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: void <init>(com.google.android.material.shape.ShapeAppearanceModel,com.google.android.material.elevation.ElevationOverlayProvider)>($r1, null);
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void <init>(com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState)>($r2);
+
+        return;
+    }
+
+    public void <init>(com.google.android.material.shape.ShapePathModel)
+    {
+        com.google.android.material.shape.ShapePathModel $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: com.google.android.material.shape.ShapePathModel;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void <init>(com.google.android.material.shape.ShapeAppearanceModel)>($r1);
+
+        return;
+    }
+
+    public static java.util.BitSet access$000(com.google.android.material.shape.MaterialShapeDrawable)
+    {
+        java.util.BitSet r1;
+        com.google.android.material.shape.MaterialShapeDrawable $r0;
+
+        $r0 := @parameter0: com.google.android.material.shape.MaterialShapeDrawable;
+
+        r1 = $r0.<com.google.android.material.shape.MaterialShapeDrawable: java.util.BitSet containsIncompatibleShadowOp>;
+
+        return r1;
+    }
+
+    public static com.google.android.material.shape.ShapePath$ShadowCompatOperation[] access$100(com.google.android.material.shape.MaterialShapeDrawable)
+    {
+        com.google.android.material.shape.ShapePath$ShadowCompatOperation[] r1;
+        com.google.android.material.shape.MaterialShapeDrawable $r0;
+
+        $r0 := @parameter0: com.google.android.material.shape.MaterialShapeDrawable;
+
+        r1 = $r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapePath$ShadowCompatOperation[] cornerShadowOperation>;
+
+        return r1;
+    }
+
+    public static com.google.android.material.shape.ShapePath$ShadowCompatOperation[] access$200(com.google.android.material.shape.MaterialShapeDrawable)
+    {
+        com.google.android.material.shape.ShapePath$ShadowCompatOperation[] r1;
+        com.google.android.material.shape.MaterialShapeDrawable $r0;
+
+        $r0 := @parameter0: com.google.android.material.shape.MaterialShapeDrawable;
+
+        r1 = $r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapePath$ShadowCompatOperation[] edgeShadowOperation>;
+
+        return r1;
+    }
+
+    public static boolean access$402(com.google.android.material.shape.MaterialShapeDrawable, boolean)
+    {
+        com.google.android.material.shape.MaterialShapeDrawable $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $z0 := @parameter1: boolean;
+
+        $r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean pathDirty> = $z0;
+
+        return $z0;
+    }
+
+    private android.graphics.PorterDuffColorFilter calculatePaintColorTintFilter(android.graphics.Paint, boolean)
+    {
+        int $i0, $i1;
+        android.graphics.PorterDuffColorFilter $r3;
+        android.graphics.Paint $r2;
+        android.graphics.PorterDuff$Mode $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r2 := @parameter0: android.graphics.Paint;
+
+        $z0 := @parameter1: boolean;
+
+        if $z0 == 0 goto label1;
+
+        $i0 = virtualinvoke $r2.<android.graphics.Paint: int getColor()>();
+
+        $i1 = specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: int compositeElevationOverlayIfNeeded(int)>($i0);
+
+        if $i1 == $i0 goto label1;
+
+        $r3 = new android.graphics.PorterDuffColorFilter;
+
+        $r1 = <android.graphics.PorterDuff$Mode: android.graphics.PorterDuff$Mode SRC_IN>;
+
+        specialinvoke $r3.<android.graphics.PorterDuffColorFilter: void <init>(int,android.graphics.PorterDuff$Mode)>($i1, $r1);
+
+        return $r3;
+
+     label1:
+        return null;
+    }
+
+    private void calculatePath(android.graphics.RectF, android.graphics.Path)
+    {
+        android.graphics.RectF $r2;
+        android.graphics.Path $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        byte $b0;
+        float $f0, $f1, $f2;
+        android.graphics.Matrix $r4;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r3;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r2 := @parameter0: android.graphics.RectF;
+
+        $r1 := @parameter1: android.graphics.Path;
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void calculatePathForSize(android.graphics.RectF,android.graphics.Path)>($r2, $r1);
+
+        $r3 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $f0 = $r3.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float scale>;
+
+        $b0 = $f0 cmpl 1.0F;
+
+        if $b0 == 0 goto label1;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Matrix matrix>;
+
+        virtualinvoke $r4.<android.graphics.Matrix: void reset()>();
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Matrix matrix>;
+
+        $r3 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $f0 = $r3.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float scale>;
+
+        $f1 = virtualinvoke $r2.<android.graphics.RectF: float width()>();
+
+        $f1 = $f1 / 2.0F;
+
+        $f2 = virtualinvoke $r2.<android.graphics.RectF: float height()>();
+
+        $f2 = $f2 / 2.0F;
+
+        virtualinvoke $r4.<android.graphics.Matrix: void setScale(float,float,float,float)>($f0, $f0, $f1, $f2);
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Matrix matrix>;
+
+        virtualinvoke $r1.<android.graphics.Path: void transform(android.graphics.Matrix)>($r4);
+
+     label1:
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF pathBounds>;
+
+        virtualinvoke $r1.<android.graphics.Path: void computeBounds(android.graphics.RectF,boolean)>($r2, 1);
+
+        return;
+    }
+
+    private void calculateStrokePath()
+    {
+        android.graphics.RectF $r6;
+        android.graphics.Path $r1;
+        com.google.android.material.shape.ShapeAppearancePathProvider $r4;
+        com.google.android.material.shape.ShapeAppearanceModel $r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        float $f0;
+        com.google.android.material.shape.MaterialShapeDrawable$2 $r3;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r5;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $f0 = specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: float getStrokeInsetLength()>();
+
+        $f0 = neg $f0;
+
+        $r2 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapeAppearanceModel getShapeAppearanceModel()>();
+
+        $r3 = new com.google.android.material.shape.MaterialShapeDrawable$2;
+
+        specialinvoke $r3.<com.google.android.material.shape.MaterialShapeDrawable$2: void <init>(com.google.android.material.shape.MaterialShapeDrawable,float)>(r0, $f0);
+
+        $r2 = virtualinvoke $r2.<com.google.android.material.shape.ShapeAppearanceModel: com.google.android.material.shape.ShapeAppearanceModel withTransformedCornerSizes(com.google.android.material.shape.ShapeAppearanceModel$CornerSizeUnaryOperator)>($r3);
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapeAppearanceModel strokeShapeAppearance> = $r2;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapeAppearancePathProvider pathProvider>;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapeAppearanceModel strokeShapeAppearance>;
+
+        $r5 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $f0 = $r5.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float interpolation>;
+
+        $r6 = specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF getBoundsInsetByStroke()>();
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Path pathInsetByStroke>;
+
+        virtualinvoke $r4.<com.google.android.material.shape.ShapeAppearancePathProvider: void calculatePath(com.google.android.material.shape.ShapeAppearanceModel,float,android.graphics.RectF,android.graphics.Path)>($r2, $f0, $r6, $r1);
+
+        return;
+    }
+
+    private android.graphics.PorterDuffColorFilter calculateTintColorTintFilter(android.content.res.ColorStateList, android.graphics.PorterDuff$Mode, boolean)
+    {
+        android.graphics.PorterDuff$Mode $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        android.content.res.ColorStateList $r2;
+        int[] $r3;
+        int $i0, $i1;
+        android.graphics.PorterDuffColorFilter $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r2 := @parameter0: android.content.res.ColorStateList;
+
+        $r1 := @parameter1: android.graphics.PorterDuff$Mode;
+
+        $z0 := @parameter2: boolean;
+
+        $r3 = virtualinvoke r0.<android.graphics.drawable.Drawable: int[] getState()>();
+
+        $i0 = virtualinvoke $r2.<android.content.res.ColorStateList: int getColorForState(int[],int)>($r3, 0);
+
+        $i1 = $i0;
+
+        if $z0 == 0 goto label1;
+
+        $i1 = specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: int compositeElevationOverlayIfNeeded(int)>($i0);
+
+     label1:
+        $r4 = new android.graphics.PorterDuffColorFilter;
+
+        specialinvoke $r4.<android.graphics.PorterDuffColorFilter: void <init>(int,android.graphics.PorterDuff$Mode)>($i1, $r1);
+
+        return $r4;
+    }
+
+    private android.graphics.PorterDuffColorFilter calculateTintFilter(android.content.res.ColorStateList, android.graphics.PorterDuff$Mode, android.graphics.Paint, boolean)
+    {
+        android.content.res.ColorStateList $r3;
+        android.graphics.PorterDuffColorFilter $r4;
+        android.graphics.Paint $r2;
+        android.graphics.PorterDuff$Mode $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r3 := @parameter0: android.content.res.ColorStateList;
+
+        $r1 := @parameter1: android.graphics.PorterDuff$Mode;
+
+        $r2 := @parameter2: android.graphics.Paint;
+
+        $z0 := @parameter3: boolean;
+
+        if $r3 == null goto label2;
+
+        if $r1 != null goto label1;
+
+        goto label2;
+
+     label1:
+        $r4 = specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.PorterDuffColorFilter calculateTintColorTintFilter(android.content.res.ColorStateList,android.graphics.PorterDuff$Mode,boolean)>($r3, $r1, $z0);
+
+        return $r4;
+
+     label2:
+        $r4 = specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.PorterDuffColorFilter calculatePaintColorTintFilter(android.graphics.Paint,boolean)>($r2, $z0);
+
+        return $r4;
+    }
+
+    private int compositeElevationOverlayIfNeeded(int)
+    {
+        int $i0;
+        com.google.android.material.elevation.ElevationOverlayProvider $r2;
+        float $f0, $f1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $i0 := @parameter0: int;
+
+        $f0 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: float getZ()>();
+
+        $f1 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: float getParentAbsoluteElevation()>();
+
+        $f0 = $f0 + $f1;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: com.google.android.material.elevation.ElevationOverlayProvider elevationOverlayProvider>;
+
+        if $r2 == null goto label1;
+
+        $i0 = virtualinvoke $r2.<com.google.android.material.elevation.ElevationOverlayProvider: int compositeOverlayIfNeeded(int,float)>($i0, $f0);
+
+     label1:
+        return $i0;
+    }
+
+    public static com.google.android.material.shape.MaterialShapeDrawable createWithElevationOverlay(android.content.Context)
+    {
+        android.content.Context $r1;
+        com.google.android.material.shape.MaterialShapeDrawable $r0;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r0 = staticinvoke <com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable createWithElevationOverlay(android.content.Context,float)>($r1, 0.0F);
+
+        return $r0;
+    }
+
+    public static com.google.android.material.shape.MaterialShapeDrawable createWithElevationOverlay(android.content.Context, float)
+    {
+        android.content.res.ColorStateList $r4;
+        android.content.Context $r0;
+        int $i0;
+        float $f0;
+        java.lang.Class $r1;
+        java.lang.String $r2;
+        com.google.android.material.shape.MaterialShapeDrawable $r3;
+
+        $r0 := @parameter0: android.content.Context;
+
+        $f0 := @parameter1: float;
+
+        $i0 = <com.google.android.material.R$attr: int colorSurface>;
+
+        $r1 = class "Lcom/google/android/material/shape/MaterialShapeDrawable;";
+
+        $r2 = virtualinvoke $r1.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        $i0 = staticinvoke <com.google.android.material.color.MaterialColors: int getColor(android.content.Context,int,java.lang.String)>($r0, $i0, $r2);
+
+        $r3 = new com.google.android.material.shape.MaterialShapeDrawable;
+
+        specialinvoke $r3.<com.google.android.material.shape.MaterialShapeDrawable: void <init>()>();
+
+        virtualinvoke $r3.<com.google.android.material.shape.MaterialShapeDrawable: void initializeElevationOverlay(android.content.Context)>($r0);
+
+        $r4 = staticinvoke <android.content.res.ColorStateList: android.content.res.ColorStateList valueOf(int)>($i0);
+
+        virtualinvoke $r3.<com.google.android.material.shape.MaterialShapeDrawable: void setFillColor(android.content.res.ColorStateList)>($r4);
+
+        virtualinvoke $r3.<com.google.android.material.shape.MaterialShapeDrawable: void setElevation(float)>($f0);
+
+        return $r3;
+    }
+
+    private void drawCompatShadow(android.graphics.Canvas)
+    {
+        android.graphics.Path $r5;
+        int $i0, $i1, $i2;
+        android.graphics.Canvas $r1;
+        java.lang.String $r3;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r4;
+        boolean $z0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.ShapePath$ShadowCompatOperation $r9;
+        com.google.android.material.shadow.ShadowRenderer $r6;
+        com.google.android.material.shape.ShapePath$ShadowCompatOperation[] $r8;
+        float $f0, $f1;
+        android.graphics.Paint $r7;
+        java.util.BitSet $r2;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.graphics.Canvas;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: java.util.BitSet containsIncompatibleShadowOp>;
+
+        $i0 = virtualinvoke $r2.<java.util.BitSet: int cardinality()>();
+
+        if $i0 <= 0 goto label1;
+
+        $r3 = <com.google.android.material.shape.MaterialShapeDrawable: java.lang.String TAG>;
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>($r3, "Compatibility shadow requested but can\'t be drawn for all operations in this shape.");
+
+     label1:
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i0 = $r4.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatOffset>;
+
+        if $i0 == 0 goto label2;
+
+        $r5 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Path path>;
+
+        $r6 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shadow.ShadowRenderer shadowRenderer>;
+
+        $r7 = virtualinvoke $r6.<com.google.android.material.shadow.ShadowRenderer: android.graphics.Paint getShadowPaint()>();
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawPath(android.graphics.Path,android.graphics.Paint)>($r5, $r7);
+
+     label2:
+        $i0 = 0;
+
+     label3:
+        if $i0 >= 4 goto label4;
+
+        $r8 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapePath$ShadowCompatOperation[] cornerShadowOperation>;
+
+        $r9 = $r8[$i0];
+
+        $r6 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shadow.ShadowRenderer shadowRenderer>;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i1 = $r4.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatRadius>;
+
+        virtualinvoke $r9.<com.google.android.material.shape.ShapePath$ShadowCompatOperation: void draw(com.google.android.material.shadow.ShadowRenderer,int,android.graphics.Canvas)>($r6, $i1, $r1);
+
+        $r8 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapePath$ShadowCompatOperation[] edgeShadowOperation>;
+
+        $r9 = $r8[$i0];
+
+        $r6 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shadow.ShadowRenderer shadowRenderer>;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i1 = $r4.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatRadius>;
+
+        virtualinvoke $r9.<com.google.android.material.shape.ShapePath$ShadowCompatOperation: void draw(com.google.android.material.shadow.ShadowRenderer,int,android.graphics.Canvas)>($r6, $i1, $r1);
+
+        $i0 = $i0 + 1;
+
+        goto label3;
+
+     label4:
+        $z0 = r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean shadowBitmapDrawingEnable>;
+
+        if $z0 == 0 goto label5;
+
+        $i0 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: int getShadowOffsetX()>();
+
+        $i1 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: int getShadowOffsetY()>();
+
+        $i2 = neg $i0;
+
+        $f0 = (float) $i2;
+
+        $i2 = neg $i1;
+
+        $f1 = (float) $i2;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void translate(float,float)>($f0, $f1);
+
+        $r5 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Path path>;
+
+        $r7 = <com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint clearPaint>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawPath(android.graphics.Path,android.graphics.Paint)>($r5, $r7);
+
+        $f0 = (float) $i0;
+
+        $f1 = (float) $i1;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void translate(float,float)>($f0, $f1);
+
+     label5:
+        return;
+    }
+
+    private void drawFillShape(android.graphics.Canvas)
+    {
+        android.graphics.RectF $r5;
+        android.graphics.Path $r3;
+        android.graphics.Canvas $r1;
+        android.graphics.Paint $r2;
+        com.google.android.material.shape.ShapeAppearanceModel $r4;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r6;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.graphics.Canvas;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint fillPaint>;
+
+        $r3 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Path path>;
+
+        $r6 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r4 = $r6.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: com.google.android.material.shape.ShapeAppearanceModel shapeAppearanceModel>;
+
+        $r5 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF getBoundsAsRectF()>();
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void drawShape(android.graphics.Canvas,android.graphics.Paint,android.graphics.Path,com.google.android.material.shape.ShapeAppearanceModel,android.graphics.RectF)>($r1, $r2, $r3, $r4, $r5);
+
+        return;
+    }
+
+    private void drawShape(android.graphics.Canvas, android.graphics.Paint, android.graphics.Path, com.google.android.material.shape.ShapeAppearanceModel, android.graphics.RectF)
+    {
+        android.graphics.RectF $r3;
+        android.graphics.Path $r4;
+        com.google.android.material.shape.ShapeAppearanceModel $r5;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        float $f0, $f1;
+        android.graphics.Canvas $r1;
+        android.graphics.Paint $r2;
+        com.google.android.material.shape.CornerSize $r6;
+        boolean $z0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r7;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.graphics.Canvas;
+
+        $r2 := @parameter1: android.graphics.Paint;
+
+        $r4 := @parameter2: android.graphics.Path;
+
+        $r5 := @parameter3: com.google.android.material.shape.ShapeAppearanceModel;
+
+        $r3 := @parameter4: android.graphics.RectF;
+
+        $z0 = virtualinvoke $r5.<com.google.android.material.shape.ShapeAppearanceModel: boolean isRoundRect(android.graphics.RectF)>($r3);
+
+        if $z0 == 0 goto label1;
+
+        $r6 = virtualinvoke $r5.<com.google.android.material.shape.ShapeAppearanceModel: com.google.android.material.shape.CornerSize getTopRightCornerSize()>();
+
+        $f0 = interfaceinvoke $r6.<com.google.android.material.shape.CornerSize: float getCornerSize(android.graphics.RectF)>($r3);
+
+        $r7 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $f1 = $r7.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float interpolation>;
+
+        $f0 = $f0 * $f1;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawRoundRect(android.graphics.RectF,float,float,android.graphics.Paint)>($r3, $f0, $f0, $r2);
+
+        return;
+
+     label1:
+        virtualinvoke $r1.<android.graphics.Canvas: void drawPath(android.graphics.Path,android.graphics.Paint)>($r4, $r2);
+
+        return;
+    }
+
+    private void drawStrokeShape(android.graphics.Canvas)
+    {
+        android.graphics.RectF $r5;
+        android.graphics.Path $r3;
+        android.graphics.Canvas $r1;
+        android.graphics.Paint $r2;
+        com.google.android.material.shape.ShapeAppearanceModel $r4;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.graphics.Canvas;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint strokePaint>;
+
+        $r3 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Path pathInsetByStroke>;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapeAppearanceModel strokeShapeAppearance>;
+
+        $r5 = specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF getBoundsInsetByStroke()>();
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void drawShape(android.graphics.Canvas,android.graphics.Paint,android.graphics.Path,com.google.android.material.shape.ShapeAppearanceModel,android.graphics.RectF)>($r1, $r2, $r3, $r4, $r5);
+
+        return;
+    }
+
+    private android.graphics.RectF getBoundsInsetByStroke()
+    {
+        android.graphics.RectF $r1, $r2;
+        float $f0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF insetRectF>;
+
+        $r2 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF getBoundsAsRectF()>();
+
+        virtualinvoke $r1.<android.graphics.RectF: void set(android.graphics.RectF)>($r2);
+
+        $f0 = specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: float getStrokeInsetLength()>();
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF insetRectF>;
+
+        virtualinvoke $r1.<android.graphics.RectF: void inset(float,float)>($f0, $f0);
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF insetRectF>;
+
+        return $r1;
+    }
+
+    private float getStrokeInsetLength()
+    {
+        float $f0;
+        android.graphics.Paint $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $z0 = specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean hasStroke()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint strokePaint>;
+
+        $f0 = virtualinvoke $r1.<android.graphics.Paint: float getStrokeWidth()>();
+
+        $f0 = $f0 / 2.0F;
+
+        return $f0;
+
+     label1:
+        return 0.0F;
+    }
+
+    private boolean hasCompatShadow()
+    {
+        int $i0, $i1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        boolean $z0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i0 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatMode>;
+
+        if $i0 == 1 goto label1;
+
+        $i1 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatRadius>;
+
+        if $i1 <= 0 goto label1;
+
+        if $i0 == 2 goto label2;
+
+        $z0 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean requiresCompatShadow()>();
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    private boolean hasFill()
+    {
+        android.graphics.Paint$Style $r2, $r3;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.graphics.Paint$Style paintStyle>;
+
+        $r3 = <android.graphics.Paint$Style: android.graphics.Paint$Style FILL_AND_STROKE>;
+
+        if $r2 == $r3 goto label2;
+
+        $r3 = <android.graphics.Paint$Style: android.graphics.Paint$Style FILL>;
+
+        if $r2 != $r3 goto label1;
+
+        goto label2;
+
+     label1:
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    private boolean hasStroke()
+    {
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        android.graphics.Paint$Style $r2, $r3;
+        byte $b0;
+        int $i1;
+        float $f0;
+        android.graphics.Paint $r4;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.graphics.Paint$Style paintStyle>;
+
+        $r3 = <android.graphics.Paint$Style: android.graphics.Paint$Style FILL_AND_STROKE>;
+
+        if $r2 == $r3 goto label1;
+
+        $r3 = <android.graphics.Paint$Style: android.graphics.Paint$Style STROKE>;
+
+        if $r2 != $r3 goto label2;
+
+     label1:
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint strokePaint>;
+
+        $f0 = virtualinvoke $r4.<android.graphics.Paint: float getStrokeWidth()>();
+
+        $b0 = $f0 cmpl 0.0F;
+
+        $i1 = (int) $b0;
+
+        if $i1 <= 0 goto label2;
+
+        return 1;
+
+     label2:
+        return 0;
+    }
+
+    private void invalidateSelfIgnoreShape()
+    {
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        specialinvoke r0.<android.graphics.drawable.Drawable: void invalidateSelf()>();
+
+        return;
+    }
+
+    private void maybeDrawCompatShadow(android.graphics.Canvas)
+    {
+        android.graphics.Rect $r3;
+        java.lang.IllegalStateException $r8;
+        android.graphics.Bitmap$Config $r5;
+        int $i0, $i1, $i2, $i3, $i4;
+        android.graphics.Canvas $r1, $r7;
+        boolean $z0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r4;
+        android.graphics.RectF $r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        android.graphics.Bitmap $r6;
+        float $f0, $f1, $f2, $f3;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.graphics.Canvas;
+
+        $z0 = specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean hasCompatShadow()>();
+
+        if $z0 != 0 goto label1;
+
+        return;
+
+     label1:
+        virtualinvoke $r1.<android.graphics.Canvas: int save()>();
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void prepareCanvasForShadow(android.graphics.Canvas)>($r1);
+
+        $z0 = r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean shadowBitmapDrawingEnable>;
+
+        if $z0 != 0 goto label2;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void drawCompatShadow(android.graphics.Canvas)>($r1);
+
+        virtualinvoke $r1.<android.graphics.Canvas: void restore()>();
+
+        return;
+
+     label2:
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF pathBounds>;
+
+        $f0 = virtualinvoke $r2.<android.graphics.RectF: float width()>();
+
+        $r3 = virtualinvoke r0.<android.graphics.drawable.Drawable: android.graphics.Rect getBounds()>();
+
+        $i0 = virtualinvoke $r3.<android.graphics.Rect: int width()>();
+
+        $f1 = (float) $i0;
+
+        $f0 = $f0 - $f1;
+
+        $i1 = (int) $f0;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF pathBounds>;
+
+        $f0 = virtualinvoke $r2.<android.graphics.RectF: float height()>();
+
+        $r3 = virtualinvoke r0.<android.graphics.drawable.Drawable: android.graphics.Rect getBounds()>();
+
+        $i0 = virtualinvoke $r3.<android.graphics.Rect: int height()>();
+
+        $f1 = (float) $i0;
+
+        $f0 = $f0 - $f1;
+
+        $i0 = (int) $f0;
+
+        if $i1 < 0 goto label3;
+
+        if $i0 < 0 goto label3;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF pathBounds>;
+
+        $f0 = virtualinvoke $r2.<android.graphics.RectF: float width()>();
+
+        $i2 = (int) $f0;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i3 = $r4.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatRadius>;
+
+        $i3 = $i3 * 2;
+
+        $i2 = $i2 + $i3;
+
+        $i2 = $i2 + $i1;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF pathBounds>;
+
+        $f0 = virtualinvoke $r2.<android.graphics.RectF: float height()>();
+
+        $i3 = (int) $f0;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i4 = $r4.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatRadius>;
+
+        $i4 = $i4 * 2;
+
+        $i3 = $i3 + $i4;
+
+        $i3 = $i3 + $i0;
+
+        $r5 = <android.graphics.Bitmap$Config: android.graphics.Bitmap$Config ARGB_8888>;
+
+        $r6 = staticinvoke <android.graphics.Bitmap: android.graphics.Bitmap createBitmap(int,int,android.graphics.Bitmap$Config)>($i2, $i3, $r5);
+
+        $r7 = new android.graphics.Canvas;
+
+        specialinvoke $r7.<android.graphics.Canvas: void <init>(android.graphics.Bitmap)>($r6);
+
+        $r3 = virtualinvoke r0.<android.graphics.drawable.Drawable: android.graphics.Rect getBounds()>();
+
+        $i2 = $r3.<android.graphics.Rect: int left>;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i3 = $r4.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatRadius>;
+
+        $i2 = $i2 - $i3;
+
+        $i1 = $i2 - $i1;
+
+        $f0 = (float) $i1;
+
+        $r3 = virtualinvoke r0.<android.graphics.drawable.Drawable: android.graphics.Rect getBounds()>();
+
+        $i1 = $r3.<android.graphics.Rect: int top>;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i2 = $r4.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatRadius>;
+
+        $i1 = $i1 - $i2;
+
+        $i0 = $i1 - $i0;
+
+        $f1 = (float) $i0;
+
+        $f2 = neg $f0;
+
+        $f3 = neg $f1;
+
+        virtualinvoke $r7.<android.graphics.Canvas: void translate(float,float)>($f2, $f3);
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void drawCompatShadow(android.graphics.Canvas)>($r7);
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawBitmap(android.graphics.Bitmap,float,float,android.graphics.Paint)>($r6, $f0, $f1, null);
+
+        virtualinvoke $r6.<android.graphics.Bitmap: void recycle()>();
+
+        virtualinvoke $r1.<android.graphics.Canvas: void restore()>();
+
+        return;
+
+     label3:
+        $r8 = new java.lang.IllegalStateException;
+
+        specialinvoke $r8.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Invalid shadow bounds. Check that the treatments result in a valid path.");
+
+        throw $r8;
+    }
+
+    public static int modulateAlpha(int, int)
+    {
+        int $i0, $i1, $i2;
+
+        $i1 := @parameter0: int;
+
+        $i2 := @parameter1: int;
+
+        $i0 = $i2 >>> 7;
+
+        $i2 = $i2 + $i0;
+
+        $i1 = $i1 * $i2;
+
+        $i1 = $i1 >>> 8;
+
+        return $i1;
+    }
+
+    private void prepareCanvasForShadow(android.graphics.Canvas)
+    {
+        android.graphics.Rect $r2;
+        android.graphics.Region$Op $r4;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        int $i0, $i1, $i2, $i3;
+        float $f0, $f1;
+        android.graphics.Canvas $r1;
+        boolean $z0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r3;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.graphics.Canvas;
+
+        $i1 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: int getShadowOffsetX()>();
+
+        $i2 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: int getShadowOffsetY()>();
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 >= 21 goto label1;
+
+        $z0 = r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean shadowBitmapDrawingEnable>;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = virtualinvoke $r1.<android.graphics.Canvas: android.graphics.Rect getClipBounds()>();
+
+        $r3 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i3 = $r3.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatRadius>;
+
+        $i0 = neg $i3;
+
+        $i3 = neg $i3;
+
+        virtualinvoke $r2.<android.graphics.Rect: void inset(int,int)>($i0, $i3);
+
+        virtualinvoke $r2.<android.graphics.Rect: void offset(int,int)>($i1, $i2);
+
+        $r4 = <android.graphics.Region$Op: android.graphics.Region$Op REPLACE>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: boolean clipRect(android.graphics.Rect,android.graphics.Region$Op)>($r2, $r4);
+
+     label1:
+        $f0 = (float) $i1;
+
+        $f1 = (float) $i2;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void translate(float,float)>($f0, $f1);
+
+        return;
+    }
+
+    private boolean updateColorsForState(int[])
+    {
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        android.content.res.ColorStateList $r3;
+        int[] $r1;
+        int $i0, $i1;
+        android.graphics.Paint $r4;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: int[];
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r3 = $r2.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList fillColor>;
+
+        if $r3 == null goto label1;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint fillPaint>;
+
+        $i0 = virtualinvoke $r4.<android.graphics.Paint: int getColor()>();
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r3 = $r2.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList fillColor>;
+
+        $i1 = virtualinvoke $r3.<android.content.res.ColorStateList: int getColorForState(int[],int)>($r1, $i0);
+
+        if $i0 == $i1 goto label1;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint fillPaint>;
+
+        virtualinvoke $r4.<android.graphics.Paint: void setColor(int)>($i1);
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r3 = $r2.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList strokeColor>;
+
+        if $r3 == null goto label3;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint strokePaint>;
+
+        $i0 = virtualinvoke $r4.<android.graphics.Paint: int getColor()>();
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r3 = $r2.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList strokeColor>;
+
+        $i1 = virtualinvoke $r3.<android.content.res.ColorStateList: int getColorForState(int[],int)>($r1, $i0);
+
+        if $i0 == $i1 goto label3;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint strokePaint>;
+
+        virtualinvoke $r4.<android.graphics.Paint: void setColor(int)>($i1);
+
+        return 1;
+
+     label3:
+        return $z0;
+    }
+
+    private boolean updateTintFilter()
+    {
+        android.graphics.PorterDuff$Mode $r5;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        android.content.res.ColorStateList $r4;
+        com.google.android.material.shadow.ShadowRenderer $r8;
+        int[] $r9;
+        int $i0;
+        android.graphics.PorterDuffColorFilter $r1, $r2, $r7;
+        android.graphics.Paint $r6;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.PorterDuffColorFilter tintFilter>;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.PorterDuffColorFilter strokeTintFilter>;
+
+        $r3 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r4 = $r3.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList tintList>;
+
+        $r5 = $r3.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.graphics.PorterDuff$Mode tintMode>;
+
+        $r6 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint fillPaint>;
+
+        $r7 = specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.PorterDuffColorFilter calculateTintFilter(android.content.res.ColorStateList,android.graphics.PorterDuff$Mode,android.graphics.Paint,boolean)>($r4, $r5, $r6, 1);
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.PorterDuffColorFilter tintFilter> = $r7;
+
+        $r3 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r4 = $r3.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList strokeTintList>;
+
+        $r5 = $r3.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.graphics.PorterDuff$Mode tintMode>;
+
+        $r6 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint strokePaint>;
+
+        $r7 = specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.PorterDuffColorFilter calculateTintFilter(android.content.res.ColorStateList,android.graphics.PorterDuff$Mode,android.graphics.Paint,boolean)>($r4, $r5, $r6, 0);
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.PorterDuffColorFilter strokeTintFilter> = $r7;
+
+        $r3 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $z0 = $r3.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: boolean useTintColorForShadow>;
+
+        if $z0 == 0 goto label1;
+
+        $r8 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shadow.ShadowRenderer shadowRenderer>;
+
+        $r4 = $r3.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList tintList>;
+
+        $r9 = virtualinvoke r0.<android.graphics.drawable.Drawable: int[] getState()>();
+
+        $i0 = virtualinvoke $r4.<android.content.res.ColorStateList: int getColorForState(int[],int)>($r9, 0);
+
+        virtualinvoke $r8.<com.google.android.material.shadow.ShadowRenderer: void setShadowColor(int)>($i0);
+
+     label1:
+        $r7 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.PorterDuffColorFilter tintFilter>;
+
+        $z0 = staticinvoke <b.i.h.c: boolean a(java.lang.Object,java.lang.Object)>($r2, $r7);
+
+        if $z0 == 0 goto label3;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.PorterDuffColorFilter strokeTintFilter>;
+
+        $z0 = staticinvoke <b.i.h.c: boolean a(java.lang.Object,java.lang.Object)>($r1, $r2);
+
+        if $z0 != 0 goto label2;
+
+        return 1;
+
+     label2:
+        return 0;
+
+     label3:
+        return 1;
+    }
+
+    private void updateZ()
+    {
+        int $i0;
+        float $f0, $f1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+        double $d0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $f0 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: float getZ()>();
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $f1 = 0.75F * $f0;
+
+        $d0 = (double) $f1;
+
+        $d0 = staticinvoke <java.lang.Math: double ceil(double)>($d0);
+
+        $i0 = (int) $d0;
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatRadius> = $i0;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $f0 = $f0 * 0.25F;
+
+        $d0 = (double) $f0;
+
+        $d0 = staticinvoke <java.lang.Math: double ceil(double)>($d0);
+
+        $i0 = (int) $d0;
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatOffset> = $i0;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean updateTintFilter()>();
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelfIgnoreShape()>();
+
+        return;
+    }
+
+    public final void calculatePathForSize(android.graphics.RectF, android.graphics.Path)
+    {
+        android.graphics.RectF $r1;
+        android.graphics.Path $r2;
+        com.google.android.material.shape.ShapeAppearancePathProvider $r3;
+        com.google.android.material.shape.ShapeAppearanceModel $r6;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.ShapeAppearancePathProvider$PathListener $r4;
+        float $f0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r5;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.graphics.RectF;
+
+        $r2 := @parameter1: android.graphics.Path;
+
+        $r3 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapeAppearancePathProvider pathProvider>;
+
+        $r5 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r6 = $r5.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: com.google.android.material.shape.ShapeAppearanceModel shapeAppearanceModel>;
+
+        $f0 = $r5.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float interpolation>;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapeAppearancePathProvider$PathListener pathShadowListener>;
+
+        virtualinvoke $r3.<com.google.android.material.shape.ShapeAppearancePathProvider: void calculatePath(com.google.android.material.shape.ShapeAppearanceModel,float,android.graphics.RectF,com.google.android.material.shape.ShapeAppearancePathProvider$PathListener,android.graphics.Path)>($r6, $f0, $r1, $r4, $r2);
+
+        return;
+    }
+
+    public void draw(android.graphics.Canvas)
+    {
+        android.graphics.RectF $r5;
+        android.graphics.Path $r6;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        int $i0, $i1, $i2;
+        android.graphics.PorterDuffColorFilter $r3;
+        float $f0;
+        android.graphics.Canvas $r1;
+        android.graphics.Paint $r2;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.graphics.Canvas;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint fillPaint>;
+
+        $r3 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.PorterDuffColorFilter tintFilter>;
+
+        virtualinvoke $r2.<android.graphics.Paint: android.graphics.ColorFilter setColorFilter(android.graphics.ColorFilter)>($r3);
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint fillPaint>;
+
+        $i0 = virtualinvoke $r2.<android.graphics.Paint: int getAlpha()>();
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint fillPaint>;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i1 = $r4.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int alpha>;
+
+        $i1 = staticinvoke <com.google.android.material.shape.MaterialShapeDrawable: int modulateAlpha(int,int)>($i0, $i1);
+
+        virtualinvoke $r2.<android.graphics.Paint: void setAlpha(int)>($i1);
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint strokePaint>;
+
+        $r3 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.PorterDuffColorFilter strokeTintFilter>;
+
+        virtualinvoke $r2.<android.graphics.Paint: android.graphics.ColorFilter setColorFilter(android.graphics.ColorFilter)>($r3);
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint strokePaint>;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $f0 = $r4.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float strokeWidth>;
+
+        virtualinvoke $r2.<android.graphics.Paint: void setStrokeWidth(float)>($f0);
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint strokePaint>;
+
+        $i1 = virtualinvoke $r2.<android.graphics.Paint: int getAlpha()>();
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint strokePaint>;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i2 = $r4.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int alpha>;
+
+        $i2 = staticinvoke <com.google.android.material.shape.MaterialShapeDrawable: int modulateAlpha(int,int)>($i1, $i2);
+
+        virtualinvoke $r2.<android.graphics.Paint: void setAlpha(int)>($i2);
+
+        $z0 = r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean pathDirty>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void calculateStrokePath()>();
+
+        $r5 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF getBoundsAsRectF()>();
+
+        $r6 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Path path>;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void calculatePath(android.graphics.RectF,android.graphics.Path)>($r5, $r6);
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean pathDirty> = 0;
+
+     label1:
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void maybeDrawCompatShadow(android.graphics.Canvas)>($r1);
+
+        $z0 = specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean hasFill()>();
+
+        if $z0 == 0 goto label2;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void drawFillShape(android.graphics.Canvas)>($r1);
+
+     label2:
+        $z0 = specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean hasStroke()>();
+
+        if $z0 == 0 goto label3;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void drawStrokeShape(android.graphics.Canvas)>($r1);
+
+     label3:
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint fillPaint>;
+
+        virtualinvoke $r2.<android.graphics.Paint: void setAlpha(int)>($i0);
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Paint strokePaint>;
+
+        virtualinvoke $r2.<android.graphics.Paint: void setAlpha(int)>($i1);
+
+        return;
+    }
+
+    public void drawShape(android.graphics.Canvas, android.graphics.Paint, android.graphics.Path, android.graphics.RectF)
+    {
+        android.graphics.RectF $r4;
+        android.graphics.Path $r3;
+        android.graphics.Canvas $r1;
+        android.graphics.Paint $r2;
+        com.google.android.material.shape.ShapeAppearanceModel $r6;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r5;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.graphics.Canvas;
+
+        $r2 := @parameter1: android.graphics.Paint;
+
+        $r3 := @parameter2: android.graphics.Path;
+
+        $r4 := @parameter3: android.graphics.RectF;
+
+        $r5 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r6 = $r5.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: com.google.android.material.shape.ShapeAppearanceModel shapeAppearanceModel>;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void drawShape(android.graphics.Canvas,android.graphics.Paint,android.graphics.Path,com.google.android.material.shape.ShapeAppearanceModel,android.graphics.RectF)>($r1, $r2, $r3, $r6, $r4);
+
+        return;
+    }
+
+    public float getBottomLeftCornerResolvedSize()
+    {
+        android.graphics.RectF $r4;
+        float $f0;
+        com.google.android.material.shape.CornerSize $r3;
+        com.google.android.material.shape.ShapeAppearanceModel $r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: com.google.android.material.shape.ShapeAppearanceModel shapeAppearanceModel>;
+
+        $r3 = virtualinvoke $r2.<com.google.android.material.shape.ShapeAppearanceModel: com.google.android.material.shape.CornerSize getBottomLeftCornerSize()>();
+
+        $r4 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF getBoundsAsRectF()>();
+
+        $f0 = interfaceinvoke $r3.<com.google.android.material.shape.CornerSize: float getCornerSize(android.graphics.RectF)>($r4);
+
+        return $f0;
+    }
+
+    public float getBottomRightCornerResolvedSize()
+    {
+        android.graphics.RectF $r4;
+        float $f0;
+        com.google.android.material.shape.CornerSize $r3;
+        com.google.android.material.shape.ShapeAppearanceModel $r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: com.google.android.material.shape.ShapeAppearanceModel shapeAppearanceModel>;
+
+        $r3 = virtualinvoke $r2.<com.google.android.material.shape.ShapeAppearanceModel: com.google.android.material.shape.CornerSize getBottomRightCornerSize()>();
+
+        $r4 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF getBoundsAsRectF()>();
+
+        $f0 = interfaceinvoke $r3.<com.google.android.material.shape.CornerSize: float getCornerSize(android.graphics.RectF)>($r4);
+
+        return $f0;
+    }
+
+    public android.graphics.RectF getBoundsAsRectF()
+    {
+        android.graphics.RectF $r2;
+        android.graphics.Rect $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF rectF>;
+
+        $r1 = virtualinvoke r0.<android.graphics.drawable.Drawable: android.graphics.Rect getBounds()>();
+
+        virtualinvoke $r2.<android.graphics.RectF: void set(android.graphics.Rect)>($r1);
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF rectF>;
+
+        return $r2;
+    }
+
+    public android.graphics.drawable.Drawable$ConstantState getConstantState()
+    {
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        return r1;
+    }
+
+    public float getElevation()
+    {
+        float f0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        f0 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float elevation>;
+
+        return f0;
+    }
+
+    public android.content.res.ColorStateList getFillColor()
+    {
+        android.content.res.ColorStateList r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList fillColor>;
+
+        return r2;
+    }
+
+    public float getInterpolation()
+    {
+        float f0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        f0 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float interpolation>;
+
+        return f0;
+    }
+
+    public int getOpacity()
+    {
+        int $i0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $i0 = -3;
+
+        return $i0;
+    }
+
+    public void getOutline(android.graphics.Outline)
+    {
+        android.graphics.RectF $r5;
+        android.graphics.Rect $r4;
+        android.graphics.Path $r6;
+        java.lang.IllegalArgumentException $r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        android.graphics.Outline $r1;
+        int $i0;
+        float $f0, $f1;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.graphics.Outline;
+
+        $r3 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i0 = $r3.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatMode>;
+
+        if $i0 != 2 goto label1;
+
+        return;
+
+     label1:
+        $z0 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean isRoundRect()>();
+
+        if $z0 == 0 goto label2;
+
+        $f0 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: float getTopLeftCornerResolvedSize()>();
+
+        $r3 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $f1 = $r3.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float interpolation>;
+
+        $f0 = $f0 * $f1;
+
+        $r4 = virtualinvoke r0.<android.graphics.drawable.Drawable: android.graphics.Rect getBounds()>();
+
+        virtualinvoke $r1.<android.graphics.Outline: void setRoundRect(android.graphics.Rect,float)>($r4, $f0);
+
+        return;
+
+     label2:
+        $r5 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF getBoundsAsRectF()>();
+
+        $r6 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Path path>;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void calculatePath(android.graphics.RectF,android.graphics.Path)>($r5, $r6);
+
+        $r6 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Path path>;
+
+        $z0 = virtualinvoke $r6.<android.graphics.Path: boolean isConvex()>();
+
+        if $z0 != 0 goto label3;
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 < 29 goto label7;
+
+     label3:
+        $r6 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Path path>;
+
+     label4:
+        virtualinvoke $r1.<android.graphics.Outline: void setConvexPath(android.graphics.Path)>($r6);
+
+     label5:
+        return;
+
+     label6:
+        $r2 := @caughtexception;
+
+     label7:
+        return;
+
+        catch java.lang.IllegalArgumentException from label4 to label5 with label6;
+    }
+
+    public boolean getPadding(android.graphics.Rect)
+    {
+        android.graphics.Rect $r1, $r3;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        boolean $z0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r2;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.graphics.Rect;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r3 = $r2.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.graphics.Rect padding>;
+
+        if $r3 == null goto label1;
+
+        virtualinvoke $r1.<android.graphics.Rect: void set(android.graphics.Rect)>($r3);
+
+        return 1;
+
+     label1:
+        $z0 = specialinvoke r0.<android.graphics.drawable.Drawable: boolean getPadding(android.graphics.Rect)>($r1);
+
+        return $z0;
+    }
+
+    public android.graphics.Paint$Style getPaintStyle()
+    {
+        android.graphics.Paint$Style r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.graphics.Paint$Style paintStyle>;
+
+        return r2;
+    }
+
+    public float getParentAbsoluteElevation()
+    {
+        float f0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        f0 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float parentAbsoluteElevation>;
+
+        return f0;
+    }
+
+    public void getPathForSize(int, int, android.graphics.Path)
+    {
+        android.graphics.RectF $r2;
+        android.graphics.Path $r1;
+        int $i0, $i1;
+        float $f0, $f1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $r1 := @parameter2: android.graphics.Path;
+
+        $r2 = new android.graphics.RectF;
+
+        $f0 = (float) $i0;
+
+        $f1 = (float) $i1;
+
+        specialinvoke $r2.<android.graphics.RectF: void <init>(float,float,float,float)>(0.0F, 0.0F, $f0, $f1);
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void calculatePathForSize(android.graphics.RectF,android.graphics.Path)>($r2, $r1);
+
+        return;
+    }
+
+    public float getScale()
+    {
+        float f0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        f0 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float scale>;
+
+        return f0;
+    }
+
+    public int getShadowCompatRotation()
+    {
+        int i0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        i0 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatRotation>;
+
+        return i0;
+    }
+
+    public int getShadowCompatibilityMode()
+    {
+        int i0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        i0 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatMode>;
+
+        return i0;
+    }
+
+    public int getShadowElevation()
+    {
+        int $i0;
+        float $f0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $f0 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: float getElevation()>();
+
+        $i0 = (int) $f0;
+
+        return $i0;
+    }
+
+    public int getShadowOffsetX()
+    {
+        int $i0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+        double $d0, $d1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i0 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatOffset>;
+
+        $d0 = (double) $i0;
+
+        $i0 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatRotation>;
+
+        $d1 = (double) $i0;
+
+        $d1 = staticinvoke <java.lang.Math: double toRadians(double)>($d1);
+
+        $d1 = staticinvoke <java.lang.Math: double sin(double)>($d1);
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        $d0 = $d0 * $d1;
+
+        $i0 = (int) $d0;
+
+        return $i0;
+    }
+
+    public int getShadowOffsetY()
+    {
+        int $i0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+        double $d0, $d1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i0 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatOffset>;
+
+        $d0 = (double) $i0;
+
+        $i0 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatRotation>;
+
+        $d1 = (double) $i0;
+
+        $d1 = staticinvoke <java.lang.Math: double toRadians(double)>($d1);
+
+        $d1 = staticinvoke <java.lang.Math: double cos(double)>($d1);
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        $d0 = $d0 * $d1;
+
+        $i0 = (int) $d0;
+
+        return $i0;
+    }
+
+    public int getShadowRadius()
+    {
+        int i0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        i0 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatRadius>;
+
+        return i0;
+    }
+
+    public int getShadowVerticalOffset()
+    {
+        int i0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        i0 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatOffset>;
+
+        return i0;
+    }
+
+    public com.google.android.material.shape.ShapeAppearanceModel getShapeAppearanceModel()
+    {
+        com.google.android.material.shape.ShapeAppearanceModel r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: com.google.android.material.shape.ShapeAppearanceModel shapeAppearanceModel>;
+
+        return r2;
+    }
+
+    public com.google.android.material.shape.ShapePathModel getShapedViewModel()
+    {
+        com.google.android.material.shape.ShapePathModel $r2;
+        com.google.android.material.shape.ShapeAppearanceModel $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapeAppearanceModel getShapeAppearanceModel()>();
+
+        $z0 = $r1 instanceof com.google.android.material.shape.ShapePathModel;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = (com.google.android.material.shape.ShapePathModel) $r1;
+
+        return $r2;
+
+     label1:
+        return null;
+    }
+
+    public android.content.res.ColorStateList getStrokeColor()
+    {
+        android.content.res.ColorStateList r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList strokeColor>;
+
+        return r2;
+    }
+
+    public android.content.res.ColorStateList getStrokeTintList()
+    {
+        android.content.res.ColorStateList r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList strokeTintList>;
+
+        return r2;
+    }
+
+    public float getStrokeWidth()
+    {
+        float f0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        f0 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float strokeWidth>;
+
+        return f0;
+    }
+
+    public android.content.res.ColorStateList getTintList()
+    {
+        android.content.res.ColorStateList r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList tintList>;
+
+        return r2;
+    }
+
+    public float getTopLeftCornerResolvedSize()
+    {
+        android.graphics.RectF $r4;
+        float $f0;
+        com.google.android.material.shape.CornerSize $r3;
+        com.google.android.material.shape.ShapeAppearanceModel $r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: com.google.android.material.shape.ShapeAppearanceModel shapeAppearanceModel>;
+
+        $r3 = virtualinvoke $r2.<com.google.android.material.shape.ShapeAppearanceModel: com.google.android.material.shape.CornerSize getTopLeftCornerSize()>();
+
+        $r4 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF getBoundsAsRectF()>();
+
+        $f0 = interfaceinvoke $r3.<com.google.android.material.shape.CornerSize: float getCornerSize(android.graphics.RectF)>($r4);
+
+        return $f0;
+    }
+
+    public float getTopRightCornerResolvedSize()
+    {
+        android.graphics.RectF $r4;
+        float $f0;
+        com.google.android.material.shape.CornerSize $r3;
+        com.google.android.material.shape.ShapeAppearanceModel $r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: com.google.android.material.shape.ShapeAppearanceModel shapeAppearanceModel>;
+
+        $r3 = virtualinvoke $r2.<com.google.android.material.shape.ShapeAppearanceModel: com.google.android.material.shape.CornerSize getTopRightCornerSize()>();
+
+        $r4 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF getBoundsAsRectF()>();
+
+        $f0 = interfaceinvoke $r3.<com.google.android.material.shape.CornerSize: float getCornerSize(android.graphics.RectF)>($r4);
+
+        return $f0;
+    }
+
+    public float getTranslationZ()
+    {
+        float f0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        f0 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float translationZ>;
+
+        return f0;
+    }
+
+    public android.graphics.Region getTransparentRegion()
+    {
+        android.graphics.RectF $r3;
+        android.graphics.Rect $r1;
+        android.graphics.Path $r4;
+        android.graphics.Region$Op $r6;
+        android.graphics.Region $r2, $r5;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = virtualinvoke r0.<android.graphics.drawable.Drawable: android.graphics.Rect getBounds()>();
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Region transparentRegion>;
+
+        virtualinvoke $r2.<android.graphics.Region: boolean set(android.graphics.Rect)>($r1);
+
+        $r3 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF getBoundsAsRectF()>();
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Path path>;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void calculatePath(android.graphics.RectF,android.graphics.Path)>($r3, $r4);
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Region scratchRegion>;
+
+        $r4 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Path path>;
+
+        $r5 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Region transparentRegion>;
+
+        virtualinvoke $r2.<android.graphics.Region: boolean setPath(android.graphics.Path,android.graphics.Region)>($r4, $r5);
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Region transparentRegion>;
+
+        $r5 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Region scratchRegion>;
+
+        $r6 = <android.graphics.Region$Op: android.graphics.Region$Op DIFFERENCE>;
+
+        virtualinvoke $r2.<android.graphics.Region: boolean op(android.graphics.Region,android.graphics.Region$Op)>($r5, $r6);
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Region transparentRegion>;
+
+        return $r2;
+    }
+
+    public float getZ()
+    {
+        float $f0, $f1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $f0 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: float getElevation()>();
+
+        $f1 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: float getTranslationZ()>();
+
+        $f0 = $f0 + $f1;
+
+        return $f0;
+    }
+
+    public void initializeElevationOverlay(android.content.Context)
+    {
+        android.content.Context $r1;
+        com.google.android.material.elevation.ElevationOverlayProvider $r3;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r2;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r3 = new com.google.android.material.elevation.ElevationOverlayProvider;
+
+        specialinvoke $r3.<com.google.android.material.elevation.ElevationOverlayProvider: void <init>(android.content.Context)>($r1);
+
+        $r2.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: com.google.android.material.elevation.ElevationOverlayProvider elevationOverlayProvider> = $r3;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void updateZ()>();
+
+        return;
+    }
+
+    public void invalidateSelf()
+    {
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean pathDirty> = 1;
+
+        specialinvoke r0.<android.graphics.drawable.Drawable: void invalidateSelf()>();
+
+        return;
+    }
+
+    public boolean isElevationOverlayEnabled()
+    {
+        com.google.android.material.elevation.ElevationOverlayProvider $r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        boolean $z0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: com.google.android.material.elevation.ElevationOverlayProvider elevationOverlayProvider>;
+
+        if $r2 == null goto label1;
+
+        $z0 = virtualinvoke $r2.<com.google.android.material.elevation.ElevationOverlayProvider: boolean isThemeElevationOverlayEnabled()>();
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean isElevationOverlayInitialized()
+    {
+        com.google.android.material.elevation.ElevationOverlayProvider $r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: com.google.android.material.elevation.ElevationOverlayProvider elevationOverlayProvider>;
+
+        if $r2 == null goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean isPointInTransparentRegion(int, int)
+    {
+        int $i0, $i1;
+        android.graphics.Region $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $i1 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $r1 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Region getTransparentRegion()>();
+
+        $z0 = virtualinvoke $r1.<android.graphics.Region: boolean contains(int,int)>($i1, $i0);
+
+        return $z0;
+    }
+
+    public boolean isRoundRect()
+    {
+        android.graphics.RectF $r3;
+        com.google.android.material.shape.ShapeAppearanceModel $r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: com.google.android.material.shape.ShapeAppearanceModel shapeAppearanceModel>;
+
+        $r3 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.RectF getBoundsAsRectF()>();
+
+        $z0 = virtualinvoke $r2.<com.google.android.material.shape.ShapeAppearanceModel: boolean isRoundRect(android.graphics.RectF)>($r3);
+
+        return $z0;
+    }
+
+    public boolean isShadowEnabled()
+    {
+        int $i0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i0 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatMode>;
+
+        if $i0 == 0 goto label2;
+
+        if $i0 != 2 goto label1;
+
+        goto label2;
+
+     label1:
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    public boolean isStateful()
+    {
+        android.content.res.ColorStateList $r2;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        boolean $z0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $z0 = specialinvoke r0.<android.graphics.drawable.Drawable: boolean isStateful()>();
+
+        if $z0 != 0 goto label5;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList tintList>;
+
+        if $r2 == null goto label1;
+
+        $z0 = virtualinvoke $r2.<android.content.res.ColorStateList: boolean isStateful()>();
+
+        if $z0 != 0 goto label5;
+
+     label1:
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList strokeTintList>;
+
+        if $r2 == null goto label2;
+
+        $z0 = virtualinvoke $r2.<android.content.res.ColorStateList: boolean isStateful()>();
+
+        if $z0 != 0 goto label5;
+
+     label2:
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList strokeColor>;
+
+        if $r2 == null goto label3;
+
+        $z0 = virtualinvoke $r2.<android.content.res.ColorStateList: boolean isStateful()>();
+
+        if $z0 != 0 goto label5;
+
+     label3:
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList fillColor>;
+
+        if $r2 == null goto label4;
+
+        $z0 = virtualinvoke $r2.<android.content.res.ColorStateList: boolean isStateful()>();
+
+        if $z0 == 0 goto label4;
+
+        goto label5;
+
+     label4:
+        return 0;
+
+     label5:
+        return 1;
+    }
+
+    public android.graphics.drawable.Drawable mutate()
+    {
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1, $r2;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 = new com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        specialinvoke $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: void <init>(com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState)>($r2);
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState> = $r1;
+
+        return r0;
+    }
+
+    public void onBoundsChange(android.graphics.Rect)
+    {
+        android.graphics.Rect $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.graphics.Rect;
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean pathDirty> = 1;
+
+        specialinvoke r0.<android.graphics.drawable.Drawable: void onBoundsChange(android.graphics.Rect)>($r1);
+
+        return;
+    }
+
+    public boolean onStateChange(int[])
+    {
+        int[] $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: int[];
+
+        $z0 = specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean updateColorsForState(int[])>($r1);
+
+        $z1 = specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean updateTintFilter()>();
+
+        if $z0 != 0 goto label2;
+
+        if $z1 == 0 goto label1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+        goto label3;
+
+     label2:
+        $z0 = 1;
+
+     label3:
+        if $z0 == 0 goto label4;
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelf()>();
+
+     label4:
+        return $z0;
+    }
+
+    public boolean requiresCompatShadow()
+    {
+        android.graphics.Path $r1;
+        int $i0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 < 21 goto label2;
+
+        $z0 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean isRoundRect()>();
+
+        if $z0 != 0 goto label1;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: android.graphics.Path path>;
+
+        $z0 = virtualinvoke $r1.<android.graphics.Path: boolean isConvex()>();
+
+        if $z0 != 0 goto label1;
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 >= 29 goto label1;
+
+        goto label2;
+
+     label1:
+        return 0;
+
+     label2:
+        return 1;
+    }
+
+    public void setAlpha(int)
+    {
+        int $i0, $i1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i1 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int alpha>;
+
+        if $i1 == $i0 goto label1;
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int alpha> = $i0;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelfIgnoreShape()>();
+
+     label1:
+        return;
+    }
+
+    public void setColorFilter(android.graphics.ColorFilter)
+    {
+        android.graphics.ColorFilter $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r2;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.graphics.ColorFilter;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.graphics.ColorFilter colorFilter> = $r1;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelfIgnoreShape()>();
+
+        return;
+    }
+
+    public void setCornerSize(float)
+    {
+        float $f0;
+        com.google.android.material.shape.ShapeAppearanceModel $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r2;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $f0 := @parameter0: float;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r1 = $r2.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: com.google.android.material.shape.ShapeAppearanceModel shapeAppearanceModel>;
+
+        $r1 = virtualinvoke $r1.<com.google.android.material.shape.ShapeAppearanceModel: com.google.android.material.shape.ShapeAppearanceModel withCornerSize(float)>($f0);
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void setShapeAppearanceModel(com.google.android.material.shape.ShapeAppearanceModel)>($r1);
+
+        return;
+    }
+
+    public void setCornerSize(com.google.android.material.shape.CornerSize)
+    {
+        com.google.android.material.shape.CornerSize $r2;
+        com.google.android.material.shape.ShapeAppearanceModel $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r3;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r2 := @parameter0: com.google.android.material.shape.CornerSize;
+
+        $r3 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r1 = $r3.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: com.google.android.material.shape.ShapeAppearanceModel shapeAppearanceModel>;
+
+        $r1 = virtualinvoke $r1.<com.google.android.material.shape.ShapeAppearanceModel: com.google.android.material.shape.ShapeAppearanceModel withCornerSize(com.google.android.material.shape.CornerSize)>($r2);
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void setShapeAppearanceModel(com.google.android.material.shape.ShapeAppearanceModel)>($r1);
+
+        return;
+    }
+
+    public void setEdgeIntersectionCheckEnable(boolean)
+    {
+        com.google.android.material.shape.ShapeAppearancePathProvider $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.ShapeAppearancePathProvider pathProvider>;
+
+        virtualinvoke $r1.<com.google.android.material.shape.ShapeAppearancePathProvider: void setEdgeIntersectionCheckEnable(boolean)>($z0);
+
+        return;
+    }
+
+    public void setElevation(float)
+    {
+        byte $b0;
+        float $f0, $f1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $f0 := @parameter0: float;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $f1 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float elevation>;
+
+        $b0 = $f1 cmpl $f0;
+
+        if $b0 == 0 goto label1;
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float elevation> = $f0;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void updateZ()>();
+
+     label1:
+        return;
+    }
+
+    public void setFillColor(android.content.res.ColorStateList)
+    {
+        android.content.res.ColorStateList $r2, $r4;
+        int[] $r3;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r4 := @parameter0: android.content.res.ColorStateList;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList fillColor>;
+
+        if $r2 == $r4 goto label1;
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList fillColor> = $r4;
+
+        $r3 = virtualinvoke r0.<android.graphics.drawable.Drawable: int[] getState()>();
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean onStateChange(int[])>($r3);
+
+     label1:
+        return;
+    }
+
+    public void setInterpolation(float)
+    {
+        byte $b0;
+        float $f0, $f1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $f0 := @parameter0: float;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $f1 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float interpolation>;
+
+        $b0 = $f1 cmpl $f0;
+
+        if $b0 == 0 goto label1;
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float interpolation> = $f0;
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean pathDirty> = 1;
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelf()>();
+
+     label1:
+        return;
+    }
+
+    public void setPadding(int, int, int, int)
+    {
+        android.graphics.Rect $r2;
+        int $i0, $i1, $i2, $i3;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $i3 := @parameter3: int;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.graphics.Rect padding>;
+
+        if $r2 != null goto label1;
+
+        $r2 = new android.graphics.Rect;
+
+        specialinvoke $r2.<android.graphics.Rect: void <init>()>();
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.graphics.Rect padding> = $r2;
+
+     label1:
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.graphics.Rect padding>;
+
+        virtualinvoke $r2.<android.graphics.Rect: void set(int,int,int,int)>($i0, $i1, $i2, $i3);
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelf()>();
+
+        return;
+    }
+
+    public void setPaintStyle(android.graphics.Paint$Style)
+    {
+        android.graphics.Paint$Style $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r2;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.graphics.Paint$Style;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.graphics.Paint$Style paintStyle> = $r1;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelfIgnoreShape()>();
+
+        return;
+    }
+
+    public void setParentAbsoluteElevation(float)
+    {
+        byte $b0;
+        float $f0, $f1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $f0 := @parameter0: float;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $f1 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float parentAbsoluteElevation>;
+
+        $b0 = $f1 cmpl $f0;
+
+        if $b0 == 0 goto label1;
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float parentAbsoluteElevation> = $f0;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void updateZ()>();
+
+     label1:
+        return;
+    }
+
+    public void setScale(float)
+    {
+        byte $b0;
+        float $f0, $f1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $f0 := @parameter0: float;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $f1 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float scale>;
+
+        $b0 = $f1 cmpl $f0;
+
+        if $b0 == 0 goto label1;
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float scale> = $f0;
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelf()>();
+
+     label1:
+        return;
+    }
+
+    public void setShadowBitmapDrawingEnable(boolean)
+    {
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $z0 := @parameter0: boolean;
+
+        r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean shadowBitmapDrawingEnable> = $z0;
+
+        return;
+    }
+
+    public void setShadowColor(int)
+    {
+        com.google.android.material.shadow.ShadowRenderer $r1;
+        int $i0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r2;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shadow.ShadowRenderer shadowRenderer>;
+
+        virtualinvoke $r1.<com.google.android.material.shadow.ShadowRenderer: void setShadowColor(int)>($i0);
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: boolean useTintColorForShadow> = 0;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelfIgnoreShape()>();
+
+        return;
+    }
+
+    public void setShadowCompatRotation(int)
+    {
+        int $i0, $i1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i1 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatRotation>;
+
+        if $i1 == $i0 goto label1;
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatRotation> = $i0;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelfIgnoreShape()>();
+
+     label1:
+        return;
+    }
+
+    public void setShadowCompatibilityMode(int)
+    {
+        int $i0, $i1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i1 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatMode>;
+
+        if $i1 == $i0 goto label1;
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatMode> = $i0;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelfIgnoreShape()>();
+
+     label1:
+        return;
+    }
+
+    public void setShadowElevation(int)
+    {
+        int $i0;
+        float $f0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $i0 := @parameter0: int;
+
+        $f0 = (float) $i0;
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void setElevation(float)>($f0);
+
+        return;
+    }
+
+    public void setShadowEnabled(boolean)
+    {
+        byte $b0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $z0 := @parameter0: boolean;
+
+        $b0 = $z0 ^ 1;
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void setShadowCompatibilityMode(int)>($b0);
+
+        return;
+    }
+
+    public void setShadowRadius(int)
+    {
+        int $i0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatRadius> = $i0;
+
+        return;
+    }
+
+    public void setShadowVerticalOffset(int)
+    {
+        int $i0, $i1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $i1 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatOffset>;
+
+        if $i1 == $i0 goto label1;
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: int shadowCompatOffset> = $i0;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelfIgnoreShape()>();
+
+     label1:
+        return;
+    }
+
+    public void setShapeAppearanceModel(com.google.android.material.shape.ShapeAppearanceModel)
+    {
+        com.google.android.material.shape.ShapeAppearanceModel $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r2;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: com.google.android.material.shape.ShapeAppearanceModel;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: com.google.android.material.shape.ShapeAppearanceModel shapeAppearanceModel> = $r1;
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelf()>();
+
+        return;
+    }
+
+    public void setShapedViewModel(com.google.android.material.shape.ShapePathModel)
+    {
+        com.google.android.material.shape.ShapePathModel $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: com.google.android.material.shape.ShapePathModel;
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void setShapeAppearanceModel(com.google.android.material.shape.ShapeAppearanceModel)>($r1);
+
+        return;
+    }
+
+    public void setStroke(float, int)
+    {
+        android.content.res.ColorStateList $r1;
+        int $i0;
+        float $f0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $f0 := @parameter0: float;
+
+        $i0 := @parameter1: int;
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void setStrokeWidth(float)>($f0);
+
+        $r1 = staticinvoke <android.content.res.ColorStateList: android.content.res.ColorStateList valueOf(int)>($i0);
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void setStrokeColor(android.content.res.ColorStateList)>($r1);
+
+        return;
+    }
+
+    public void setStroke(float, android.content.res.ColorStateList)
+    {
+        android.content.res.ColorStateList $r1;
+        float $f0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $f0 := @parameter0: float;
+
+        $r1 := @parameter1: android.content.res.ColorStateList;
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void setStrokeWidth(float)>($f0);
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void setStrokeColor(android.content.res.ColorStateList)>($r1);
+
+        return;
+    }
+
+    public void setStrokeColor(android.content.res.ColorStateList)
+    {
+        android.content.res.ColorStateList $r2, $r4;
+        int[] $r3;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r4 := @parameter0: android.content.res.ColorStateList;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList strokeColor>;
+
+        if $r2 == $r4 goto label1;
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList strokeColor> = $r4;
+
+        $r3 = virtualinvoke r0.<android.graphics.drawable.Drawable: int[] getState()>();
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean onStateChange(int[])>($r3);
+
+     label1:
+        return;
+    }
+
+    public void setStrokeTint(int)
+    {
+        android.content.res.ColorStateList $r1;
+        int $i0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $i0 := @parameter0: int;
+
+        $r1 = staticinvoke <android.content.res.ColorStateList: android.content.res.ColorStateList valueOf(int)>($i0);
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void setStrokeTint(android.content.res.ColorStateList)>($r1);
+
+        return;
+    }
+
+    public void setStrokeTint(android.content.res.ColorStateList)
+    {
+        android.content.res.ColorStateList $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r2;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.content.res.ColorStateList;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList strokeTintList> = $r1;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean updateTintFilter()>();
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelfIgnoreShape()>();
+
+        return;
+    }
+
+    public void setStrokeWidth(float)
+    {
+        float $f0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $f0 := @parameter0: float;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float strokeWidth> = $f0;
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelf()>();
+
+        return;
+    }
+
+    public void setTint(int)
+    {
+        android.content.res.ColorStateList $r1;
+        int $i0;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $i0 := @parameter0: int;
+
+        $r1 = staticinvoke <android.content.res.ColorStateList: android.content.res.ColorStateList valueOf(int)>($i0);
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void setTintList(android.content.res.ColorStateList)>($r1);
+
+        return;
+    }
+
+    public void setTintList(android.content.res.ColorStateList)
+    {
+        android.content.res.ColorStateList $r1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r2;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.content.res.ColorStateList;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r2.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.content.res.ColorStateList tintList> = $r1;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean updateTintFilter()>();
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelfIgnoreShape()>();
+
+        return;
+    }
+
+    public void setTintMode(android.graphics.PorterDuff$Mode)
+    {
+        android.graphics.PorterDuff$Mode $r1, $r3;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r2;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $r1 := @parameter0: android.graphics.PorterDuff$Mode;
+
+        $r2 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $r3 = $r2.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.graphics.PorterDuff$Mode tintMode>;
+
+        if $r3 == $r1 goto label1;
+
+        $r2.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: android.graphics.PorterDuff$Mode tintMode> = $r1;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: boolean updateTintFilter()>();
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelfIgnoreShape()>();
+
+     label1:
+        return;
+    }
+
+    public void setTranslationZ(float)
+    {
+        byte $b0;
+        float $f0, $f1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $f0 := @parameter0: float;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $f1 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float translationZ>;
+
+        $b0 = $f1 cmpl $f0;
+
+        if $b0 == 0 goto label1;
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: float translationZ> = $f0;
+
+        specialinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void updateZ()>();
+
+     label1:
+        return;
+    }
+
+    public void setUseTintColorForShadow(boolean)
+    {
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+        boolean $z0, $z1;
+        com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState $r1;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 = r0.<com.google.android.material.shape.MaterialShapeDrawable: com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState drawableState>;
+
+        $z1 = $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: boolean useTintColorForShadow>;
+
+        if $z1 == $z0 goto label1;
+
+        $r1.<com.google.android.material.shape.MaterialShapeDrawable$MaterialShapeDrawableState: boolean useTintColorForShadow> = $z0;
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void invalidateSelf()>();
+
+     label1:
+        return;
+    }
+
+    public void setZ(float)
+    {
+        float $f0, $f1;
+        com.google.android.material.shape.MaterialShapeDrawable r0;
+
+        r0 := @this: com.google.android.material.shape.MaterialShapeDrawable;
+
+        $f1 := @parameter0: float;
+
+        $f0 = virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: float getElevation()>();
+
+        $f1 = $f1 - $f0;
+
+        virtualinvoke r0.<com.google.android.material.shape.MaterialShapeDrawable: void setTranslationZ(float)>($f1);
+
+        return;
+    }
+}

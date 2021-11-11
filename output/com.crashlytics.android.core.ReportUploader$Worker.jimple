@@ -1,0 +1,337 @@
+public class com.crashlytics.android.core.ReportUploader$Worker extends f.a.a.a.a.b.j
+{
+    public final float delay;
+    public final com.crashlytics.android.core.ReportUploader$SendCheck sendCheck;
+    public final com.crashlytics.android.core.ReportUploader this$0;
+
+    public void <init>(com.crashlytics.android.core.ReportUploader, float, com.crashlytics.android.core.ReportUploader$SendCheck)
+    {
+        com.crashlytics.android.core.ReportUploader$SendCheck $r2;
+        float $f0;
+        com.crashlytics.android.core.ReportUploader $r1;
+        com.crashlytics.android.core.ReportUploader$Worker r0;
+
+        r0 := @this: com.crashlytics.android.core.ReportUploader$Worker;
+
+        $r1 := @parameter0: com.crashlytics.android.core.ReportUploader;
+
+        $f0 := @parameter1: float;
+
+        $r2 := @parameter2: com.crashlytics.android.core.ReportUploader$SendCheck;
+
+        r0.<com.crashlytics.android.core.ReportUploader$Worker: com.crashlytics.android.core.ReportUploader this$0> = $r1;
+
+        specialinvoke r0.<f.a.a.a.a.b.j: void <init>()>();
+
+        r0.<com.crashlytics.android.core.ReportUploader$Worker: float delay> = $f0;
+
+        r0.<com.crashlytics.android.core.ReportUploader$Worker: com.crashlytics.android.core.ReportUploader$SendCheck sendCheck> = $r2;
+
+        return;
+    }
+
+    private void attemptUploadWithRetry()
+    {
+        long $l1;
+        short $s5;
+        byte $b0;
+        com.crashlytics.android.core.ReportUploader$HandlingExceptionCheck $r10;
+        java.lang.Thread $r6;
+        int $i2, $i3, $i4, $i6;
+        com.crashlytics.android.core.ReportUploader$Worker r0;
+        java.lang.String $r5;
+        boolean $z0;
+        f.a.a.a.o $r3;
+        com.crashlytics.android.core.Report $r14;
+        java.util.Iterator $r12;
+        java.util.List $r8, $r9;
+        java.lang.InterruptedException $r1, $r2;
+        com.crashlytics.android.core.ReportUploader$SendCheck $r11;
+        float $f0;
+        java.lang.StringBuilder $r4, $r17;
+        com.crashlytics.android.core.ReportUploader $r7;
+        java.lang.Object $r13;
+        short[] $r15, $r16;
+
+        r0 := @this: com.crashlytics.android.core.ReportUploader$Worker;
+
+        $r3 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        $r17 = new java.lang.StringBuilder;
+
+        $r4 = $r17;
+
+        specialinvoke $r17.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Starting report processing in ");
+
+        $f0 = r0.<com.crashlytics.android.core.ReportUploader$Worker: float delay>;
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(float)>($f0);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" second(s)...");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r3.<f.a.a.a.o: void d(java.lang.String,java.lang.String)>("CrashlyticsCore", $r5);
+
+        $f0 = r0.<com.crashlytics.android.core.ReportUploader$Worker: float delay>;
+
+        $b0 = $f0 cmpl 0.0F;
+
+        $i2 = (int) $b0;
+
+        if $i2 <= 0 goto label04;
+
+        $f0 = $f0 * 1000.0F;
+
+        $l1 = (long) $f0;
+
+     label01:
+        staticinvoke <java.lang.Thread: void sleep(long)>($l1);
+
+     label02:
+        goto label04;
+
+     label03:
+        $r6 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $r6.<java.lang.Thread: void interrupt()>();
+
+        return;
+
+     label04:
+        $r7 = r0.<com.crashlytics.android.core.ReportUploader$Worker: com.crashlytics.android.core.ReportUploader this$0>;
+
+        $r8 = virtualinvoke $r7.<com.crashlytics.android.core.ReportUploader: java.util.List findReports()>();
+
+        $r9 = $r8;
+
+        $r7 = r0.<com.crashlytics.android.core.ReportUploader$Worker: com.crashlytics.android.core.ReportUploader this$0>;
+
+        $r10 = staticinvoke <com.crashlytics.android.core.ReportUploader: com.crashlytics.android.core.ReportUploader$HandlingExceptionCheck access$100(com.crashlytics.android.core.ReportUploader)>($r7);
+
+        $z0 = interfaceinvoke $r10.<com.crashlytics.android.core.ReportUploader$HandlingExceptionCheck: boolean isHandlingException()>();
+
+        if $z0 == 0 goto label05;
+
+        return;
+
+     label05:
+        $z0 = interfaceinvoke $r8.<java.util.List: boolean isEmpty()>();
+
+        if $z0 != 0 goto label08;
+
+        $r11 = r0.<com.crashlytics.android.core.ReportUploader$Worker: com.crashlytics.android.core.ReportUploader$SendCheck sendCheck>;
+
+        $z0 = interfaceinvoke $r11.<com.crashlytics.android.core.ReportUploader$SendCheck: boolean canSendReports()>();
+
+        if $z0 != 0 goto label08;
+
+        $r3 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        $r17 = new java.lang.StringBuilder;
+
+        $r4 = $r17;
+
+        specialinvoke $r17.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("User declined to send. Removing ");
+
+        $i2 = interfaceinvoke $r8.<java.util.List: int size()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" Report(s).");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r3.<f.a.a.a.o: void d(java.lang.String,java.lang.String)>("CrashlyticsCore", $r5);
+
+        $r12 = interfaceinvoke $r8.<java.util.List: java.util.Iterator iterator()>();
+
+     label06:
+        $z0 = interfaceinvoke $r12.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label07;
+
+        $r13 = interfaceinvoke $r12.<java.util.Iterator: java.lang.Object next()>();
+
+        $r14 = (com.crashlytics.android.core.Report) $r13;
+
+        interfaceinvoke $r14.<com.crashlytics.android.core.Report: void remove()>();
+
+        goto label06;
+
+     label07:
+        return;
+
+     label08:
+        $i2 = 0;
+
+     label09:
+        $z0 = interfaceinvoke $r9.<java.util.List: boolean isEmpty()>();
+
+        if $z0 != 0 goto label18;
+
+        $r7 = r0.<com.crashlytics.android.core.ReportUploader$Worker: com.crashlytics.android.core.ReportUploader this$0>;
+
+        $r10 = staticinvoke <com.crashlytics.android.core.ReportUploader: com.crashlytics.android.core.ReportUploader$HandlingExceptionCheck access$100(com.crashlytics.android.core.ReportUploader)>($r7);
+
+        $z0 = interfaceinvoke $r10.<com.crashlytics.android.core.ReportUploader$HandlingExceptionCheck: boolean isHandlingException()>();
+
+        if $z0 == 0 goto label10;
+
+        return;
+
+     label10:
+        $r3 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        $r17 = new java.lang.StringBuilder;
+
+        $r4 = $r17;
+
+        specialinvoke $r17.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Attempting to send ");
+
+        $i3 = interfaceinvoke $r9.<java.util.List: int size()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" report(s)");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r3.<f.a.a.a.o: void d(java.lang.String,java.lang.String)>("CrashlyticsCore", $r5);
+
+        $r12 = interfaceinvoke $r9.<java.util.List: java.util.Iterator iterator()>();
+
+     label11:
+        $z0 = interfaceinvoke $r12.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label12;
+
+        $r13 = interfaceinvoke $r12.<java.util.Iterator: java.lang.Object next()>();
+
+        $r14 = (com.crashlytics.android.core.Report) $r13;
+
+        $r7 = r0.<com.crashlytics.android.core.ReportUploader$Worker: com.crashlytics.android.core.ReportUploader this$0>;
+
+        virtualinvoke $r7.<com.crashlytics.android.core.ReportUploader: boolean forceUpload(com.crashlytics.android.core.Report)>($r14);
+
+        goto label11;
+
+     label12:
+        $r7 = r0.<com.crashlytics.android.core.ReportUploader$Worker: com.crashlytics.android.core.ReportUploader this$0>;
+
+        $r8 = virtualinvoke $r7.<com.crashlytics.android.core.ReportUploader: java.util.List findReports()>();
+
+        $r9 = $r8;
+
+        $z0 = interfaceinvoke $r8.<java.util.List: boolean isEmpty()>();
+
+        if $z0 != 0 goto label09;
+
+        $r15 = staticinvoke <com.crashlytics.android.core.ReportUploader: short[] access$200()>();
+
+        $i3 = $i2 + 1;
+
+        $r16 = staticinvoke <com.crashlytics.android.core.ReportUploader: short[] access$200()>();
+
+        $i4 = lengthof $r16;
+
+        $i6 = -1;
+
+        $i4 = $i4 + $i6;
+
+        $i2 = staticinvoke <java.lang.Math: int min(int,int)>($i2, $i4);
+
+        $s5 = $r15[$i2];
+
+        $l1 = (long) $s5;
+
+        $r3 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        $r17 = new java.lang.StringBuilder;
+
+        $r4 = $r17;
+
+        specialinvoke $r17.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Report submisson: scheduling delayed retry in ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l1);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" seconds");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r3.<f.a.a.a.o: void d(java.lang.String,java.lang.String)>("CrashlyticsCore", $r5);
+
+        $l1 = $l1 * 1000L;
+
+     label13:
+        staticinvoke <java.lang.Thread: void sleep(long)>($l1);
+
+     label14:
+        $i2 = $i3;
+
+        goto label09;
+
+     label15:
+        $r6 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        virtualinvoke $r6.<java.lang.Thread: void interrupt()>();
+
+        return;
+
+     label16:
+        $r1 := @caughtexception;
+
+        goto label03;
+
+     label17:
+        $r2 := @caughtexception;
+
+        goto label15;
+
+     label18:
+        return;
+
+        catch java.lang.InterruptedException from label01 to label02 with label16;
+        catch java.lang.InterruptedException from label13 to label14 with label17;
+    }
+
+    public void onRun()
+    {
+        f.a.a.a.o $r1;
+        com.crashlytics.android.core.ReportUploader $r3;
+        com.crashlytics.android.core.ReportUploader$Worker r0;
+        java.lang.Exception $r2;
+
+        r0 := @this: com.crashlytics.android.core.ReportUploader$Worker;
+
+     label1:
+        specialinvoke r0.<com.crashlytics.android.core.ReportUploader$Worker: void attemptUploadWithRetry()>();
+
+     label2:
+        goto label4;
+
+     label3:
+        $r2 := @caughtexception;
+
+        $r1 = staticinvoke <f.a.a.a.f: f.a.a.a.o e()>();
+
+        interfaceinvoke $r1.<f.a.a.a.o: void c(java.lang.String,java.lang.String,java.lang.Throwable)>("CrashlyticsCore", "An unexpected error occurred while attempting to upload crash reports.", $r2);
+
+     label4:
+        $r3 = r0.<com.crashlytics.android.core.ReportUploader$Worker: com.crashlytics.android.core.ReportUploader this$0>;
+
+        staticinvoke <com.crashlytics.android.core.ReportUploader: java.lang.Thread access$002(com.crashlytics.android.core.ReportUploader,java.lang.Thread)>($r3, null);
+
+        return;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+}

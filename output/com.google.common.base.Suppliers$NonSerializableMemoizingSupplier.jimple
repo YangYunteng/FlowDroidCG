@@ -1,0 +1,110 @@
+public class com.google.common.base.Suppliers$NonSerializableMemoizingSupplier extends java.lang.Object implements com.google.common.base.Supplier
+{
+    public volatile com.google.common.base.Supplier delegate;
+    public volatile boolean initialized;
+    public java.lang.Object value;
+
+    public void <init>(com.google.common.base.Supplier)
+    {
+        com.google.common.base.Supplier $r1;
+        com.google.common.base.Suppliers$NonSerializableMemoizingSupplier r0;
+
+        r0 := @this: com.google.common.base.Suppliers$NonSerializableMemoizingSupplier;
+
+        $r1 := @parameter0: com.google.common.base.Supplier;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        r0.<com.google.common.base.Suppliers$NonSerializableMemoizingSupplier: com.google.common.base.Supplier delegate> = $r1;
+
+        return;
+    }
+
+    public java.lang.Object get()
+    {
+        java.lang.Throwable $r3;
+        com.google.common.base.Suppliers$NonSerializableMemoizingSupplier r0;
+        com.google.common.base.Supplier $r2;
+        java.lang.Object $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.base.Suppliers$NonSerializableMemoizingSupplier;
+
+        $z0 = r0.<com.google.common.base.Suppliers$NonSerializableMemoizingSupplier: boolean initialized>;
+
+        if $z0 != 0 goto label7;
+
+        entermonitor r0;
+
+     label1:
+        $z0 = r0.<com.google.common.base.Suppliers$NonSerializableMemoizingSupplier: boolean initialized>;
+
+        if $z0 != 0 goto label3;
+
+        $r2 = r0.<com.google.common.base.Suppliers$NonSerializableMemoizingSupplier: com.google.common.base.Supplier delegate>;
+
+        $r1 = interfaceinvoke $r2.<com.google.common.base.Supplier: java.lang.Object get()>();
+
+        r0.<com.google.common.base.Suppliers$NonSerializableMemoizingSupplier: java.lang.Object value> = $r1;
+
+        r0.<com.google.common.base.Suppliers$NonSerializableMemoizingSupplier: boolean initialized> = 1;
+
+        r0.<com.google.common.base.Suppliers$NonSerializableMemoizingSupplier: com.google.common.base.Supplier delegate> = null;
+
+        exitmonitor r0;
+
+     label2:
+        return $r1;
+
+     label3:
+        exitmonitor r0;
+
+     label4:
+        goto label7;
+
+     label5:
+        $r3 := @caughtexception;
+
+        exitmonitor r0;
+
+     label6:
+        throw $r3;
+
+     label7:
+        $r1 = r0.<com.google.common.base.Suppliers$NonSerializableMemoizingSupplier: java.lang.Object value>;
+
+        return $r1;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public java.lang.String toString()
+    {
+        com.google.common.base.Suppliers$NonSerializableMemoizingSupplier r0;
+        com.google.common.base.Supplier $r3;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.common.base.Suppliers$NonSerializableMemoizingSupplier;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Suppliers.memoize(");
+
+        $r3 = r0.<com.google.common.base.Suppliers$NonSerializableMemoizingSupplier: com.google.common.base.Supplier delegate>;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+}

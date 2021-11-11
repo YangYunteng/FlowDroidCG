@@ -1,0 +1,128 @@
+public abstract class androidx.lifecycle.AbstractSavedStateViewModelFactory extends androidx.lifecycle.ViewModelProvider$KeyedFactory
+{
+    public static final java.lang.String TAG_SAVED_STATE_HANDLE_CONTROLLER;
+    public final android.os.Bundle mDefaultArgs;
+    public final androidx.lifecycle.Lifecycle mLifecycle;
+    public final b.t.a mSavedStateRegistry;
+
+    public void <init>(b.t.c, android.os.Bundle)
+    {
+        b.t.a $r3;
+        androidx.lifecycle.Lifecycle $r4;
+        android.os.Bundle $r1;
+        b.t.c $r2;
+        androidx.lifecycle.AbstractSavedStateViewModelFactory r0;
+
+        r0 := @this: androidx.lifecycle.AbstractSavedStateViewModelFactory;
+
+        $r2 := @parameter0: b.t.c;
+
+        $r1 := @parameter1: android.os.Bundle;
+
+        specialinvoke r0.<androidx.lifecycle.ViewModelProvider$KeyedFactory: void <init>()>();
+
+        $r3 = interfaceinvoke $r2.<b.t.c: b.t.a getSavedStateRegistry()>();
+
+        r0.<androidx.lifecycle.AbstractSavedStateViewModelFactory: b.t.a mSavedStateRegistry> = $r3;
+
+        $r4 = interfaceinvoke $r2.<androidx.lifecycle.LifecycleOwner: androidx.lifecycle.Lifecycle getLifecycle()>();
+
+        r0.<androidx.lifecycle.AbstractSavedStateViewModelFactory: androidx.lifecycle.Lifecycle mLifecycle> = $r4;
+
+        r0.<androidx.lifecycle.AbstractSavedStateViewModelFactory: android.os.Bundle mDefaultArgs> = $r1;
+
+        return;
+    }
+
+    public final androidx.lifecycle.ViewModel create(java.lang.Class)
+    {
+        androidx.lifecycle.ViewModel $r3;
+        androidx.lifecycle.AbstractSavedStateViewModelFactory r0;
+        java.lang.Class $r1;
+        java.lang.String $r2;
+        java.lang.IllegalArgumentException $r4;
+
+        r0 := @this: androidx.lifecycle.AbstractSavedStateViewModelFactory;
+
+        $r1 := @parameter0: java.lang.Class;
+
+        $r2 = virtualinvoke $r1.<java.lang.Class: java.lang.String getCanonicalName()>();
+
+        if $r2 == null goto label1;
+
+        $r3 = virtualinvoke r0.<androidx.lifecycle.AbstractSavedStateViewModelFactory: androidx.lifecycle.ViewModel create(java.lang.String,java.lang.Class)>($r2, $r1);
+
+        return $r3;
+
+     label1:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Local and anonymous classes can not be ViewModels");
+
+        throw $r4;
+    }
+
+    public final androidx.lifecycle.ViewModel create(java.lang.String, java.lang.Class)
+    {
+        b.t.a $r4;
+        android.os.Bundle $r1;
+        androidx.lifecycle.ViewModel $r8;
+        androidx.lifecycle.Lifecycle $r5;
+        androidx.lifecycle.SavedStateHandle $r7;
+        androidx.lifecycle.AbstractSavedStateViewModelFactory r0;
+        java.lang.Class $r3;
+        java.lang.String $r2;
+        androidx.lifecycle.SavedStateHandleController $r6;
+
+        r0 := @this: androidx.lifecycle.AbstractSavedStateViewModelFactory;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r3 := @parameter1: java.lang.Class;
+
+        $r4 = r0.<androidx.lifecycle.AbstractSavedStateViewModelFactory: b.t.a mSavedStateRegistry>;
+
+        $r5 = r0.<androidx.lifecycle.AbstractSavedStateViewModelFactory: androidx.lifecycle.Lifecycle mLifecycle>;
+
+        $r1 = r0.<androidx.lifecycle.AbstractSavedStateViewModelFactory: android.os.Bundle mDefaultArgs>;
+
+        $r6 = staticinvoke <androidx.lifecycle.SavedStateHandleController: androidx.lifecycle.SavedStateHandleController create(b.t.a,androidx.lifecycle.Lifecycle,java.lang.String,android.os.Bundle)>($r4, $r5, $r2, $r1);
+
+        $r7 = virtualinvoke $r6.<androidx.lifecycle.SavedStateHandleController: androidx.lifecycle.SavedStateHandle getHandle()>();
+
+        $r8 = virtualinvoke r0.<androidx.lifecycle.AbstractSavedStateViewModelFactory: androidx.lifecycle.ViewModel create(java.lang.String,java.lang.Class,androidx.lifecycle.SavedStateHandle)>($r2, $r3, $r7);
+
+        virtualinvoke $r8.<androidx.lifecycle.ViewModel: java.lang.Object setTagIfAbsent(java.lang.String,java.lang.Object)>("androidx.lifecycle.savedstate.vm.tag", $r6);
+
+        return $r8;
+    }
+
+    public abstract androidx.lifecycle.ViewModel create(java.lang.String, java.lang.Class, androidx.lifecycle.SavedStateHandle);
+
+    public void onRequery(androidx.lifecycle.ViewModel)
+    {
+        b.t.a $r2;
+        androidx.lifecycle.Lifecycle $r3;
+        androidx.lifecycle.ViewModel $r1;
+        androidx.lifecycle.AbstractSavedStateViewModelFactory r0;
+
+        r0 := @this: androidx.lifecycle.AbstractSavedStateViewModelFactory;
+
+        $r1 := @parameter0: androidx.lifecycle.ViewModel;
+
+        $r2 = r0.<androidx.lifecycle.AbstractSavedStateViewModelFactory: b.t.a mSavedStateRegistry>;
+
+        $r3 = r0.<androidx.lifecycle.AbstractSavedStateViewModelFactory: androidx.lifecycle.Lifecycle mLifecycle>;
+
+        staticinvoke <androidx.lifecycle.SavedStateHandleController: void attachHandleIfNeeded(androidx.lifecycle.ViewModel,b.t.a,androidx.lifecycle.Lifecycle)>($r1, $r2, $r3);
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <androidx.lifecycle.AbstractSavedStateViewModelFactory: java.lang.String TAG_SAVED_STATE_HANDLE_CONTROLLER> = "androidx.lifecycle.savedstate.vm.tag";
+
+        return;
+    }
+}

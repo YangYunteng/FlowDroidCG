@@ -1,0 +1,155 @@
+public class org.apache.james.mime4j.message.StringTextBody extends org.apache.james.mime4j.message.TextBody
+{
+    public final java.nio.charset.Charset charset;
+    public final java.lang.String text;
+
+    public void <init>(java.lang.String, java.nio.charset.Charset)
+    {
+        org.apache.james.mime4j.message.StringTextBody r0;
+        java.lang.String $r1;
+        java.nio.charset.Charset $r2;
+
+        r0 := @this: org.apache.james.mime4j.message.StringTextBody;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.nio.charset.Charset;
+
+        specialinvoke r0.<org.apache.james.mime4j.message.TextBody: void <init>()>();
+
+        r0.<org.apache.james.mime4j.message.StringTextBody: java.lang.String text> = $r1;
+
+        r0.<org.apache.james.mime4j.message.StringTextBody: java.nio.charset.Charset charset> = $r2;
+
+        return;
+    }
+
+    public volatile org.apache.james.mime4j.message.SingleBody copy()
+    {
+        org.apache.james.mime4j.message.StringTextBody r0;
+
+        r0 := @this: org.apache.james.mime4j.message.StringTextBody;
+
+        r0 = virtualinvoke r0.<org.apache.james.mime4j.message.StringTextBody: org.apache.james.mime4j.message.StringTextBody copy()>();
+
+        return r0;
+    }
+
+    public org.apache.james.mime4j.message.StringTextBody copy()
+    {
+        java.nio.charset.Charset $r3;
+        org.apache.james.mime4j.message.StringTextBody r0, $r1;
+        java.lang.String $r2;
+
+        r0 := @this: org.apache.james.mime4j.message.StringTextBody;
+
+        $r1 = new org.apache.james.mime4j.message.StringTextBody;
+
+        $r2 = r0.<org.apache.james.mime4j.message.StringTextBody: java.lang.String text>;
+
+        $r3 = r0.<org.apache.james.mime4j.message.StringTextBody: java.nio.charset.Charset charset>;
+
+        specialinvoke $r1.<org.apache.james.mime4j.message.StringTextBody: void <init>(java.lang.String,java.nio.charset.Charset)>($r2, $r3);
+
+        return $r1;
+    }
+
+    public java.lang.String getMimeCharset()
+    {
+        org.apache.james.mime4j.message.StringTextBody r0;
+        java.lang.String $r2;
+        java.nio.charset.Charset $r1;
+
+        r0 := @this: org.apache.james.mime4j.message.StringTextBody;
+
+        $r1 = r0.<org.apache.james.mime4j.message.StringTextBody: java.nio.charset.Charset charset>;
+
+        $r2 = virtualinvoke $r1.<java.nio.charset.Charset: java.lang.String name()>();
+
+        $r2 = staticinvoke <org.apache.james.mime4j.util.CharsetUtil: java.lang.String toMimeCharset(java.lang.String)>($r2);
+
+        return $r2;
+    }
+
+    public java.io.Reader getReader()
+    {
+        org.apache.james.mime4j.message.StringTextBody r0;
+        java.lang.String $r2;
+        java.io.StringReader $r1;
+
+        r0 := @this: org.apache.james.mime4j.message.StringTextBody;
+
+        $r1 = new java.io.StringReader;
+
+        $r2 = r0.<org.apache.james.mime4j.message.StringTextBody: java.lang.String text>;
+
+        specialinvoke $r1.<java.io.StringReader: void <init>(java.lang.String)>($r2);
+
+        return $r1;
+    }
+
+    public void writeTo(java.io.OutputStream)
+    {
+        java.io.OutputStream $r2;
+        org.apache.james.mime4j.message.StringTextBody r0;
+        java.lang.IllegalArgumentException $r9;
+        java.io.StringReader $r1, $r7;
+        java.nio.charset.Charset $r5;
+        int $i0, $i1;
+        java.io.OutputStreamWriter $r4, $r8;
+        char[] $r6;
+        java.lang.String $r3;
+
+        r0 := @this: org.apache.james.mime4j.message.StringTextBody;
+
+        $r2 := @parameter0: java.io.OutputStream;
+
+        if $r2 == null goto label3;
+
+        $r7 = new java.io.StringReader;
+
+        $r1 = $r7;
+
+        $r3 = r0.<org.apache.james.mime4j.message.StringTextBody: java.lang.String text>;
+
+        specialinvoke $r7.<java.io.StringReader: void <init>(java.lang.String)>($r3);
+
+        $r8 = new java.io.OutputStreamWriter;
+
+        $r4 = $r8;
+
+        $r5 = r0.<org.apache.james.mime4j.message.StringTextBody: java.nio.charset.Charset charset>;
+
+        specialinvoke $r8.<java.io.OutputStreamWriter: void <init>(java.io.OutputStream,java.nio.charset.Charset)>($r2, $r5);
+
+        $r6 = newarray (char)[1024];
+
+     label1:
+        $i0 = virtualinvoke $r1.<java.io.Reader: int read(char[])>($r6);
+
+        $i1 = -1;
+
+        if $i0 != $i1 goto label2;
+
+        virtualinvoke $r1.<java.io.StringReader: void close()>();
+
+        virtualinvoke $r4.<java.io.OutputStreamWriter: void flush()>();
+
+        return;
+
+     label2:
+        virtualinvoke $r4.<java.io.OutputStreamWriter: void write(char[],int,int)>($r6, 0, $i0);
+
+        goto label1;
+
+     label3:
+        $r9 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r9.<java.lang.IllegalArgumentException: void <init>()>();
+
+        goto label4;
+
+     label4:
+        throw $r9;
+    }
+}

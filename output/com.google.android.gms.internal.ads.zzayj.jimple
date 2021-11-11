@@ -1,0 +1,94 @@
+public final class com.google.android.gms.internal.ads.zzayj extends java.lang.Object implements com.google.android.gms.internal.ads.zzatz
+{
+    public final javax.crypto.SecretKey zzdna;
+
+    public void <init>(byte[])
+    {
+        com.google.android.gms.internal.ads.zzayj r0;
+        byte[] $r1;
+        javax.crypto.spec.SecretKeySpec $r2;
+
+        r0 := @this: com.google.android.gms.internal.ads.zzayj;
+
+        $r1 := @parameter0: byte[];
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r2 = new javax.crypto.spec.SecretKeySpec;
+
+        specialinvoke $r2.<javax.crypto.spec.SecretKeySpec: void <init>(byte[],java.lang.String)>($r1, "AES");
+
+        r0.<com.google.android.gms.internal.ads.zzayj: javax.crypto.SecretKey zzdna> = $r2;
+
+        return;
+    }
+
+    public final byte[] zzc(byte[], byte[])
+    {
+        byte[] $r1, $r2, $r3, $r4;
+        com.google.android.gms.internal.ads.zzayy $r5;
+        javax.crypto.Cipher $r7;
+        com.google.android.gms.internal.ads.zzayj r0;
+        java.security.GeneralSecurityException $r10;
+        int $i0;
+        java.lang.Object $r6;
+        javax.crypto.SecretKey $r9;
+        javax.crypto.spec.GCMParameterSpec $r8;
+
+        r0 := @this: com.google.android.gms.internal.ads.zzayj;
+
+        $r1 := @parameter0: byte[];
+
+        $r2 := @parameter1: byte[];
+
+        $i0 = lengthof $r1;
+
+        if $i0 > 2147483619 goto label2;
+
+        $i0 = lengthof $r1;
+
+        $i0 = $i0 + 12;
+
+        $i0 = $i0 + 16;
+
+        $r3 = newarray (byte)[$i0];
+
+        $r4 = staticinvoke <com.google.android.gms.internal.ads.zzazl: byte[] zzbh(int)>(12);
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r4, 0, $r3, 0, 12);
+
+        $r5 = <com.google.android.gms.internal.ads.zzayy: com.google.android.gms.internal.ads.zzayy zzdnz>;
+
+        $r6 = virtualinvoke $r5.<com.google.android.gms.internal.ads.zzayy: java.lang.Object zzek(java.lang.String)>("AES/GCM/NoPadding");
+
+        $r7 = (javax.crypto.Cipher) $r6;
+
+        $r8 = new javax.crypto.spec.GCMParameterSpec;
+
+        specialinvoke $r8.<javax.crypto.spec.GCMParameterSpec: void <init>(int,byte[])>(128, $r4);
+
+        $r9 = r0.<com.google.android.gms.internal.ads.zzayj: javax.crypto.SecretKey zzdna>;
+
+        virtualinvoke $r7.<javax.crypto.Cipher: void init(int,java.security.Key,java.security.spec.AlgorithmParameterSpec)>(1, $r9, $r8);
+
+        if $r2 != null goto label1;
+
+        $r2 = newarray (byte)[0];
+
+     label1:
+        virtualinvoke $r7.<javax.crypto.Cipher: void updateAAD(byte[])>($r2);
+
+        $i0 = lengthof $r1;
+
+        virtualinvoke $r7.<javax.crypto.Cipher: int doFinal(byte[],int,int,byte[],int)>($r1, 0, $i0, $r3, 12);
+
+        return $r3;
+
+     label2:
+        $r10 = new java.security.GeneralSecurityException;
+
+        specialinvoke $r10.<java.security.GeneralSecurityException: void <init>(java.lang.String)>("plaintext too long");
+
+        throw $r10;
+    }
+}

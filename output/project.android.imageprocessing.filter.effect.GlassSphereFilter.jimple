@@ -1,0 +1,33 @@
+public class project.android.imageprocessing.filter.effect.GlassSphereFilter extends project.android.imageprocessing.filter.effect.SphereRefractionFilter
+{
+
+    public void <init>(android.graphics.PointF, float, float, float)
+    {
+        android.graphics.PointF $r1;
+        project.android.imageprocessing.filter.effect.GlassSphereFilter r0;
+        float $f0, $f1, $f2;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.GlassSphereFilter;
+
+        $r1 := @parameter0: android.graphics.PointF;
+
+        $f0 := @parameter1: float;
+
+        $f1 := @parameter2: float;
+
+        $f2 := @parameter3: float;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.effect.SphereRefractionFilter: void <init>(android.graphics.PointF,float,float,float)>($r1, $f0, $f1, $f2);
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.effect.GlassSphereFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.GlassSphereFilter;
+
+        return "precision highp float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nuniform vec2 u_Center;\nuniform float u_Radius;\nuniform float u_DistortionAmount;\nuniform float u_AspectRatio;\nconst highp vec3 lightPosition = vec3(-0.5, 0.5, 1.0);\nconst highp vec3 ambientLightPosition = vec3(0.0, 0.0, 1.0);\nvoid main(){\n\tvec2 textureCoordinateToUse = vec2(v_TexCoord.x, (v_TexCoord.y * u_AspectRatio + 0.5 - 0.5 * u_AspectRatio));\n\tfloat distanceFromCenter = distance(u_Center, textureCoordinateToUse);\n \tfloat checkForPresenceWithinSphere = step(distanceFromCenter, u_Radius);\n \tdistanceFromCenter = distanceFromCenter / u_Radius;\n \tfloat normalizedDepth = u_Radius * sqrt(1.0 - distanceFromCenter * distanceFromCenter);\n \tvec3 sphereNormal = normalize(vec3(textureCoordinateToUse - u_Center, normalizedDepth));\n \tvec3 refractedVector = 2.0 * refract(vec3(0.0, 0.0, -1.0), sphereNormal, u_DistortionAmount);\n\trefractedVector.xy = -refractedVector.xy;\n \tvec3 finalSphereColor = texture2D(u_Texture0, (refractedVector.xy + 1.0) * 0.5).rgb;\n\tfloat lightingIntensity = 2.5 * (1.0 - pow(clamp(dot(ambientLightPosition, sphereNormal), 0.0, 1.0), 0.25));\n\tfinalSphereColor += lightingIntensity;\n\tlightingIntensity  = clamp(dot(normalize(lightPosition), sphereNormal), 0.0, 1.0);\n\tlightingIntensity  = pow(lightingIntensity, 15.0);\n\tfinalSphereColor += vec3(0.8, 0.8, 0.8) * lightingIntensity;\n\tgl_FragColor = vec4(finalSphereColor, 1.0) * checkForPresenceWithinSphere;\n}\n";
+    }
+}

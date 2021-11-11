@@ -1,0 +1,461 @@
+public final class com.google.common.io.BaseEncoding$SeparatedBaseEncoding extends com.google.common.io.BaseEncoding
+{
+    public final int afterEveryChars;
+    public final com.google.common.io.BaseEncoding delegate;
+    public final java.lang.String separator;
+
+    public void <init>(com.google.common.io.BaseEncoding, java.lang.String, int)
+    {
+        com.google.common.io.BaseEncoding $r1;
+        int $i0;
+        com.google.common.io.BaseEncoding$SeparatedBaseEncoding r0;
+        java.lang.String $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.common.io.BaseEncoding$SeparatedBaseEncoding;
+
+        $r1 := @parameter0: com.google.common.io.BaseEncoding;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $i0 := @parameter2: int;
+
+        specialinvoke r0.<com.google.common.io.BaseEncoding: void <init>()>();
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: com.google.common.io.BaseEncoding delegate> = $r1;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: java.lang.String separator> = $r2;
+
+        r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: int afterEveryChars> = $i0;
+
+        if $i0 <= 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.String,int)>($z0, "Cannot add a separator after every %s chars", $i0);
+
+        return;
+    }
+
+    public boolean canDecode(java.lang.CharSequence)
+    {
+        java.lang.CharSequence $r2;
+        com.google.common.io.BaseEncoding $r4;
+        char $c2;
+        int $i0, $i1;
+        com.google.common.io.BaseEncoding$SeparatedBaseEncoding r0;
+        java.lang.StringBuilder $r1, $r5;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.io.BaseEncoding$SeparatedBaseEncoding;
+
+        $r2 := @parameter0: java.lang.CharSequence;
+
+        $r5 = new java.lang.StringBuilder;
+
+        $r1 = $r5;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $i0 = 0;
+
+     label1:
+        $i1 = interfaceinvoke $r2.<java.lang.CharSequence: int length()>();
+
+        if $i0 >= $i1 goto label3;
+
+        $c2 = interfaceinvoke $r2.<java.lang.CharSequence: char charAt(int)>($i0);
+
+        $r3 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: java.lang.String separator>;
+
+        $i1 = (int) $c2;
+
+        $i1 = virtualinvoke $r3.<java.lang.String: int indexOf(int)>($i1);
+
+        if $i1 >= 0 goto label2;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c2);
+
+     label2:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label3:
+        $r4 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: com.google.common.io.BaseEncoding delegate>;
+
+        $z0 = virtualinvoke $r4.<com.google.common.io.BaseEncoding: boolean canDecode(java.lang.CharSequence)>($r1);
+
+        return $z0;
+    }
+
+    public int decodeTo(byte[], java.lang.CharSequence)
+    {
+        byte[] $r2;
+        java.lang.CharSequence $r3;
+        com.google.common.io.BaseEncoding $r5;
+        char $c2;
+        int $i0, $i1;
+        com.google.common.io.BaseEncoding$SeparatedBaseEncoding r0;
+        java.lang.StringBuilder $r1, $r6;
+        java.lang.String $r4;
+
+        r0 := @this: com.google.common.io.BaseEncoding$SeparatedBaseEncoding;
+
+        $r2 := @parameter0: byte[];
+
+        $r3 := @parameter1: java.lang.CharSequence;
+
+        $r6 = new java.lang.StringBuilder;
+
+        $r1 = $r6;
+
+        $i0 = interfaceinvoke $r3.<java.lang.CharSequence: int length()>();
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>(int)>($i0);
+
+        $i0 = 0;
+
+     label1:
+        $i1 = interfaceinvoke $r3.<java.lang.CharSequence: int length()>();
+
+        if $i0 >= $i1 goto label3;
+
+        $c2 = interfaceinvoke $r3.<java.lang.CharSequence: char charAt(int)>($i0);
+
+        $r4 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: java.lang.String separator>;
+
+        $i1 = (int) $c2;
+
+        $i1 = virtualinvoke $r4.<java.lang.String: int indexOf(int)>($i1);
+
+        if $i1 >= 0 goto label2;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c2);
+
+     label2:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label3:
+        $r5 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: com.google.common.io.BaseEncoding delegate>;
+
+        $i0 = virtualinvoke $r5.<com.google.common.io.BaseEncoding: int decodeTo(byte[],java.lang.CharSequence)>($r2, $r1);
+
+        return $i0;
+    }
+
+    public java.io.InputStream decodingStream(java.io.Reader)
+    {
+        com.google.common.io.BaseEncoding $r1;
+        com.google.common.io.BaseEncoding$SeparatedBaseEncoding r0;
+        java.lang.String $r2;
+        java.io.Reader $r3;
+        java.io.InputStream $r4;
+
+        r0 := @this: com.google.common.io.BaseEncoding$SeparatedBaseEncoding;
+
+        $r3 := @parameter0: java.io.Reader;
+
+        $r1 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: com.google.common.io.BaseEncoding delegate>;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: java.lang.String separator>;
+
+        $r3 = staticinvoke <com.google.common.io.BaseEncoding: java.io.Reader ignoringReader(java.io.Reader,java.lang.String)>($r3, $r2);
+
+        $r4 = virtualinvoke $r1.<com.google.common.io.BaseEncoding: java.io.InputStream decodingStream(java.io.Reader)>($r3);
+
+        return $r4;
+    }
+
+    public void encodeTo(java.lang.Appendable, byte[], int, int)
+    {
+        byte[] $r1;
+        com.google.common.io.BaseEncoding $r2;
+        java.lang.Appendable $r4;
+        int $i0, $i1, $i2;
+        com.google.common.io.BaseEncoding$SeparatedBaseEncoding r0;
+        java.lang.String $r3;
+
+        r0 := @this: com.google.common.io.BaseEncoding$SeparatedBaseEncoding;
+
+        $r4 := @parameter0: java.lang.Appendable;
+
+        $r1 := @parameter1: byte[];
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: com.google.common.io.BaseEncoding delegate>;
+
+        $r3 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: java.lang.String separator>;
+
+        $i2 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: int afterEveryChars>;
+
+        $r4 = staticinvoke <com.google.common.io.BaseEncoding: java.lang.Appendable separatingAppendable(java.lang.Appendable,java.lang.String,int)>($r4, $r3, $i2);
+
+        virtualinvoke $r2.<com.google.common.io.BaseEncoding: void encodeTo(java.lang.Appendable,byte[],int,int)>($r4, $r1, $i0, $i1);
+
+        return;
+    }
+
+    public java.io.OutputStream encodingStream(java.io.Writer)
+    {
+        java.io.OutputStream $r4;
+        com.google.common.io.BaseEncoding $r1;
+        int $i0;
+        java.io.Writer $r3;
+        com.google.common.io.BaseEncoding$SeparatedBaseEncoding r0;
+        java.lang.String $r2;
+
+        r0 := @this: com.google.common.io.BaseEncoding$SeparatedBaseEncoding;
+
+        $r3 := @parameter0: java.io.Writer;
+
+        $r1 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: com.google.common.io.BaseEncoding delegate>;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: java.lang.String separator>;
+
+        $i0 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: int afterEveryChars>;
+
+        $r3 = staticinvoke <com.google.common.io.BaseEncoding: java.io.Writer separatingWriter(java.io.Writer,java.lang.String,int)>($r3, $r2, $i0);
+
+        $r4 = virtualinvoke $r1.<com.google.common.io.BaseEncoding: java.io.OutputStream encodingStream(java.io.Writer)>($r3);
+
+        return $r4;
+    }
+
+    public com.google.common.io.BaseEncoding lowerCase()
+    {
+        com.google.common.io.BaseEncoding $r2;
+        int $i0;
+        com.google.common.io.BaseEncoding$SeparatedBaseEncoding r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.common.io.BaseEncoding$SeparatedBaseEncoding;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: com.google.common.io.BaseEncoding delegate>;
+
+        $r2 = virtualinvoke $r2.<com.google.common.io.BaseEncoding: com.google.common.io.BaseEncoding lowerCase()>();
+
+        $r1 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: java.lang.String separator>;
+
+        $i0 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: int afterEveryChars>;
+
+        $r2 = virtualinvoke $r2.<com.google.common.io.BaseEncoding: com.google.common.io.BaseEncoding withSeparator(java.lang.String,int)>($r1, $i0);
+
+        return $r2;
+    }
+
+    public int maxDecodedSize(int)
+    {
+        int $i0;
+        com.google.common.io.BaseEncoding$SeparatedBaseEncoding r0;
+        com.google.common.io.BaseEncoding $r1;
+
+        r0 := @this: com.google.common.io.BaseEncoding$SeparatedBaseEncoding;
+
+        $i0 := @parameter0: int;
+
+        $r1 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: com.google.common.io.BaseEncoding delegate>;
+
+        $i0 = virtualinvoke $r1.<com.google.common.io.BaseEncoding: int maxDecodedSize(int)>($i0);
+
+        return $i0;
+    }
+
+    public int maxEncodedSize(int)
+    {
+        com.google.common.io.BaseEncoding $r2;
+        int $i0, $i1, $i2, $i3;
+        com.google.common.io.BaseEncoding$SeparatedBaseEncoding r0;
+        java.lang.String $r3;
+        java.math.RoundingMode $r1;
+
+        r0 := @this: com.google.common.io.BaseEncoding$SeparatedBaseEncoding;
+
+        $i0 := @parameter0: int;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: com.google.common.io.BaseEncoding delegate>;
+
+        $i0 = virtualinvoke $r2.<com.google.common.io.BaseEncoding: int maxEncodedSize(int)>($i0);
+
+        $r3 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: java.lang.String separator>;
+
+        $i1 = virtualinvoke $r3.<java.lang.String: int length()>();
+
+        $i2 = -1;
+
+        $i2 = $i0 + $i2;
+
+        $i2 = staticinvoke <java.lang.Math: int max(int,int)>(0, $i2);
+
+        $i3 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: int afterEveryChars>;
+
+        $r1 = <java.math.RoundingMode: java.math.RoundingMode FLOOR>;
+
+        $i2 = staticinvoke <com.google.common.math.IntMath: int divide(int,int,java.math.RoundingMode)>($i2, $i3, $r1);
+
+        $i1 = $i1 * $i2;
+
+        $i0 = $i0 + $i1;
+
+        return $i0;
+    }
+
+    public com.google.common.io.BaseEncoding omitPadding()
+    {
+        com.google.common.io.BaseEncoding $r2;
+        int $i0;
+        com.google.common.io.BaseEncoding$SeparatedBaseEncoding r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.common.io.BaseEncoding$SeparatedBaseEncoding;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: com.google.common.io.BaseEncoding delegate>;
+
+        $r2 = virtualinvoke $r2.<com.google.common.io.BaseEncoding: com.google.common.io.BaseEncoding omitPadding()>();
+
+        $r1 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: java.lang.String separator>;
+
+        $i0 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: int afterEveryChars>;
+
+        $r2 = virtualinvoke $r2.<com.google.common.io.BaseEncoding: com.google.common.io.BaseEncoding withSeparator(java.lang.String,int)>($r1, $i0);
+
+        return $r2;
+    }
+
+    public java.lang.String toString()
+    {
+        com.google.common.io.BaseEncoding $r3;
+        int $i0;
+        com.google.common.io.BaseEncoding$SeparatedBaseEncoding r0;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.common.io.BaseEncoding$SeparatedBaseEncoding;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: com.google.common.io.BaseEncoding delegate>;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".withSeparator(\"");
+
+        $r1 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: java.lang.String separator>;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\", ");
+
+        $i0 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: int afterEveryChars>;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+
+    public java.lang.CharSequence trimTrailingPadding(java.lang.CharSequence)
+    {
+        com.google.common.io.BaseEncoding$SeparatedBaseEncoding r0;
+        java.lang.CharSequence $r2;
+        com.google.common.io.BaseEncoding $r1;
+
+        r0 := @this: com.google.common.io.BaseEncoding$SeparatedBaseEncoding;
+
+        $r2 := @parameter0: java.lang.CharSequence;
+
+        $r1 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: com.google.common.io.BaseEncoding delegate>;
+
+        $r2 = virtualinvoke $r1.<com.google.common.io.BaseEncoding: java.lang.CharSequence trimTrailingPadding(java.lang.CharSequence)>($r2);
+
+        return $r2;
+    }
+
+    public com.google.common.io.BaseEncoding upperCase()
+    {
+        com.google.common.io.BaseEncoding $r2;
+        int $i0;
+        com.google.common.io.BaseEncoding$SeparatedBaseEncoding r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.common.io.BaseEncoding$SeparatedBaseEncoding;
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: com.google.common.io.BaseEncoding delegate>;
+
+        $r2 = virtualinvoke $r2.<com.google.common.io.BaseEncoding: com.google.common.io.BaseEncoding upperCase()>();
+
+        $r1 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: java.lang.String separator>;
+
+        $i0 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: int afterEveryChars>;
+
+        $r2 = virtualinvoke $r2.<com.google.common.io.BaseEncoding: com.google.common.io.BaseEncoding withSeparator(java.lang.String,int)>($r1, $i0);
+
+        return $r2;
+    }
+
+    public com.google.common.io.BaseEncoding withPadChar(char)
+    {
+        com.google.common.io.BaseEncoding $r1;
+        int $i0;
+        com.google.common.io.BaseEncoding$SeparatedBaseEncoding r0;
+        char $c1;
+        java.lang.String $r2;
+
+        r0 := @this: com.google.common.io.BaseEncoding$SeparatedBaseEncoding;
+
+        $c1 := @parameter0: char;
+
+        $r1 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: com.google.common.io.BaseEncoding delegate>;
+
+        $r1 = virtualinvoke $r1.<com.google.common.io.BaseEncoding: com.google.common.io.BaseEncoding withPadChar(char)>($c1);
+
+        $r2 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: java.lang.String separator>;
+
+        $i0 = r0.<com.google.common.io.BaseEncoding$SeparatedBaseEncoding: int afterEveryChars>;
+
+        $r1 = virtualinvoke $r1.<com.google.common.io.BaseEncoding: com.google.common.io.BaseEncoding withSeparator(java.lang.String,int)>($r2, $i0);
+
+        return $r1;
+    }
+
+    public com.google.common.io.BaseEncoding withSeparator(java.lang.String, int)
+    {
+        java.lang.UnsupportedOperationException $r2;
+        int $i0;
+        com.google.common.io.BaseEncoding$SeparatedBaseEncoding r0;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.common.io.BaseEncoding$SeparatedBaseEncoding;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        $r2 = new java.lang.UnsupportedOperationException;
+
+        specialinvoke $r2.<java.lang.UnsupportedOperationException: void <init>(java.lang.String)>("Already have a separator");
+
+        throw $r2;
+    }
+}

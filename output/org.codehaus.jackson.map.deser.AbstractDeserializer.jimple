@@ -1,0 +1,163 @@
+public class org.codehaus.jackson.map.deser.AbstractDeserializer extends org.codehaus.jackson.map.JsonDeserializer
+{
+    public final org.codehaus.jackson.type.JavaType _baseType;
+
+    public void <init>(org.codehaus.jackson.type.JavaType)
+    {
+        org.codehaus.jackson.type.JavaType $r1;
+        org.codehaus.jackson.map.deser.AbstractDeserializer r0;
+
+        r0 := @this: org.codehaus.jackson.map.deser.AbstractDeserializer;
+
+        $r1 := @parameter0: org.codehaus.jackson.type.JavaType;
+
+        specialinvoke r0.<org.codehaus.jackson.map.JsonDeserializer: void <init>()>();
+
+        r0.<org.codehaus.jackson.map.deser.AbstractDeserializer: org.codehaus.jackson.type.JavaType _baseType> = $r1;
+
+        return;
+    }
+
+    public java.lang.Object deserialize(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext)
+    {
+        org.codehaus.jackson.map.deser.AbstractDeserializer r0;
+        org.codehaus.jackson.map.JsonMappingException $r5;
+        org.codehaus.jackson.type.JavaType $r3;
+        java.lang.Class $r4;
+        org.codehaus.jackson.map.DeserializationContext $r1;
+        org.codehaus.jackson.JsonParser $r2;
+
+        r0 := @this: org.codehaus.jackson.map.deser.AbstractDeserializer;
+
+        $r2 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r1 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r3 = r0.<org.codehaus.jackson.map.deser.AbstractDeserializer: org.codehaus.jackson.type.JavaType _baseType>;
+
+        $r4 = virtualinvoke $r3.<org.codehaus.jackson.type.JavaType: java.lang.Class getRawClass()>();
+
+        $r5 = virtualinvoke $r1.<org.codehaus.jackson.map.DeserializationContext: org.codehaus.jackson.map.JsonMappingException instantiationException(java.lang.Class,java.lang.String)>($r4, "abstract types can only be instantiated with additional type information");
+
+        throw $r5;
+    }
+
+    public java.lang.Object deserializeWithType(org.codehaus.jackson.JsonParser, org.codehaus.jackson.map.DeserializationContext, org.codehaus.jackson.map.TypeDeserializer)
+    {
+        org.codehaus.jackson.JsonToken $r5;
+        java.lang.Double $r9;
+        java.lang.Integer $r11;
+        org.codehaus.jackson.map.DeserializationContext $r2;
+        java.math.BigDecimal $r8;
+        org.codehaus.jackson.map.deser.AbstractDeserializer r0;
+        int[] $r4;
+        int $i0;
+        java.lang.Boolean r13;
+        java.math.BigInteger $r10;
+        java.lang.String $r12;
+        org.codehaus.jackson.JsonParser $r1;
+        boolean $z0;
+        double $d0;
+        org.codehaus.jackson.map.DeserializationConfig$Feature $r7;
+        org.codehaus.jackson.map.TypeDeserializer $r3;
+        java.lang.Object $r6;
+
+        r0 := @this: org.codehaus.jackson.map.deser.AbstractDeserializer;
+
+        $r1 := @parameter0: org.codehaus.jackson.JsonParser;
+
+        $r2 := @parameter1: org.codehaus.jackson.map.DeserializationContext;
+
+        $r3 := @parameter2: org.codehaus.jackson.map.TypeDeserializer;
+
+        $r4 = <org.codehaus.jackson.map.deser.AbstractDeserializer$1: int[] $SwitchMap$org$codehaus$jackson$JsonToken>;
+
+        $r5 = virtualinvoke $r1.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken getCurrentToken()>();
+
+        $i0 = virtualinvoke $r5.<java.lang.Enum: int ordinal()>();
+
+        $i0 = $r4[$i0];
+
+        lookupswitch($i0)
+        {
+            case 1: goto label11;
+            case 2: goto label09;
+            case 3: goto label07;
+            case 4: goto label06;
+            case 5: goto label05;
+            case 6: goto label04;
+            case 7: goto label03;
+            case 8: goto label02;
+            default: goto label01;
+        };
+
+     label01:
+        $r6 = virtualinvoke $r3.<org.codehaus.jackson.map.TypeDeserializer: java.lang.Object deserializeTypedFromObject(org.codehaus.jackson.JsonParser,org.codehaus.jackson.map.DeserializationContext)>($r1, $r2);
+
+        return $r6;
+
+     label02:
+        $r6 = virtualinvoke $r3.<org.codehaus.jackson.map.TypeDeserializer: java.lang.Object deserializeTypedFromAny(org.codehaus.jackson.JsonParser,org.codehaus.jackson.map.DeserializationContext)>($r1, $r2);
+
+        return $r6;
+
+     label03:
+        return null;
+
+     label04:
+        $r6 = virtualinvoke $r1.<org.codehaus.jackson.JsonParser: java.lang.Object getEmbeddedObject()>();
+
+        return $r6;
+
+     label05:
+        r13 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+
+        return r13;
+
+     label06:
+        r13 = <java.lang.Boolean: java.lang.Boolean TRUE>;
+
+        return r13;
+
+     label07:
+        $r7 = <org.codehaus.jackson.map.DeserializationConfig$Feature: org.codehaus.jackson.map.DeserializationConfig$Feature USE_BIG_DECIMAL_FOR_FLOATS>;
+
+        $z0 = virtualinvoke $r2.<org.codehaus.jackson.map.DeserializationContext: boolean isEnabled(org.codehaus.jackson.map.DeserializationConfig$Feature)>($r7);
+
+        if $z0 == 0 goto label08;
+
+        $r8 = virtualinvoke $r1.<org.codehaus.jackson.JsonParser: java.math.BigDecimal getDecimalValue()>();
+
+        return $r8;
+
+     label08:
+        $d0 = virtualinvoke $r1.<org.codehaus.jackson.JsonParser: double getDoubleValue()>();
+
+        $r9 = staticinvoke <java.lang.Double: java.lang.Double valueOf(double)>($d0);
+
+        return $r9;
+
+     label09:
+        $r7 = <org.codehaus.jackson.map.DeserializationConfig$Feature: org.codehaus.jackson.map.DeserializationConfig$Feature USE_BIG_INTEGER_FOR_INTS>;
+
+        $z0 = virtualinvoke $r2.<org.codehaus.jackson.map.DeserializationContext: boolean isEnabled(org.codehaus.jackson.map.DeserializationConfig$Feature)>($r7);
+
+        if $z0 == 0 goto label10;
+
+        $r10 = virtualinvoke $r1.<org.codehaus.jackson.JsonParser: java.math.BigInteger getBigIntegerValue()>();
+
+        return $r10;
+
+     label10:
+        $i0 = virtualinvoke $r1.<org.codehaus.jackson.JsonParser: int getIntValue()>();
+
+        $r11 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        return $r11;
+
+     label11:
+        $r12 = virtualinvoke $r1.<org.codehaus.jackson.JsonParser: java.lang.String getText()>();
+
+        return $r12;
+    }
+}

@@ -1,0 +1,260 @@
+public abstract class com.google.common.graph.AbstractBaseGraph extends java.lang.Object implements com.google.common.graph.BaseGraph
+{
+
+    public void <init>()
+    {
+        com.google.common.graph.AbstractBaseGraph r0;
+
+        r0 := @this: com.google.common.graph.AbstractBaseGraph;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public int degree(java.lang.Object)
+    {
+        byte $b2;
+        int $i0, $i1;
+        com.google.common.graph.AbstractBaseGraph r0;
+        java.util.Set $r2;
+        java.lang.Object $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.AbstractBaseGraph;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $z0 = interfaceinvoke r0.<com.google.common.graph.BaseGraph: boolean isDirected()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = interfaceinvoke r0.<com.google.common.graph.BaseGraph: java.util.Set predecessors(java.lang.Object)>($r1);
+
+        $i0 = interfaceinvoke $r2.<java.util.Set: int size()>();
+
+        $r2 = interfaceinvoke r0.<com.google.common.graph.BaseGraph: java.util.Set successors(java.lang.Object)>($r1);
+
+        $i1 = interfaceinvoke $r2.<java.util.Set: int size()>();
+
+        $i0 = staticinvoke <com.google.common.math.IntMath: int saturatedAdd(int,int)>($i0, $i1);
+
+        return $i0;
+
+     label1:
+        $r2 = interfaceinvoke r0.<com.google.common.graph.BaseGraph: java.util.Set adjacentNodes(java.lang.Object)>($r1);
+
+        $z0 = interfaceinvoke r0.<com.google.common.graph.BaseGraph: boolean allowsSelfLoops()>();
+
+        if $z0 == 0 goto label2;
+
+        $z0 = interfaceinvoke $r2.<java.util.Set: boolean contains(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label2;
+
+        $b2 = 1;
+
+        goto label3;
+
+     label2:
+        $b2 = 0;
+
+     label3:
+        $i0 = interfaceinvoke $r2.<java.util.Set: int size()>();
+
+        $i0 = staticinvoke <com.google.common.math.IntMath: int saturatedAdd(int,int)>($i0, $b2);
+
+        return $i0;
+    }
+
+    public long edgeCount()
+    {
+        java.util.Iterator $r2;
+        com.google.common.graph.AbstractBaseGraph r0;
+        java.util.Set $r1;
+        long $l1, $l3;
+        byte $b0;
+        int $i2;
+        java.lang.Object $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.AbstractBaseGraph;
+
+        $r1 = interfaceinvoke r0.<com.google.common.graph.BaseGraph: java.util.Set nodes()>();
+
+        $r2 = interfaceinvoke $r1.<java.util.Set: java.util.Iterator iterator()>();
+
+        $l1 = 0L;
+
+     label1:
+        $z0 = interfaceinvoke $r2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r3 = interfaceinvoke $r2.<java.util.Iterator: java.lang.Object next()>();
+
+        $i2 = virtualinvoke r0.<com.google.common.graph.AbstractBaseGraph: int degree(java.lang.Object)>($r3);
+
+        $l3 = (long) $i2;
+
+        $l1 = $l1 + $l3;
+
+        goto label1;
+
+     label2:
+        $l3 = 1L & $l1;
+
+        $b0 = $l3 cmp 0L;
+
+        if $b0 != 0 goto label3;
+
+        $z0 = 1;
+
+        goto label4;
+
+     label3:
+        $z0 = 0;
+
+     label4:
+        staticinvoke <com.google.common.base.Preconditions: void checkState(boolean)>($z0);
+
+        $l1 = $l1 >>> 1;
+
+        return $l1;
+    }
+
+    public java.util.Set edges()
+    {
+        com.google.common.graph.AbstractBaseGraph$1 $r1;
+        com.google.common.graph.AbstractBaseGraph r0;
+
+        r0 := @this: com.google.common.graph.AbstractBaseGraph;
+
+        $r1 = new com.google.common.graph.AbstractBaseGraph$1;
+
+        specialinvoke $r1.<com.google.common.graph.AbstractBaseGraph$1: void <init>(com.google.common.graph.AbstractBaseGraph)>(r0);
+
+        return $r1;
+    }
+
+    public boolean hasEdgeConnecting(java.lang.Object, java.lang.Object)
+    {
+        com.google.common.graph.AbstractBaseGraph r0;
+        java.util.Set $r3;
+        java.lang.Object $r1, $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.AbstractBaseGraph;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 := @parameter1: java.lang.Object;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        $r3 = interfaceinvoke r0.<com.google.common.graph.BaseGraph: java.util.Set nodes()>();
+
+        $z0 = interfaceinvoke $r3.<java.util.Set: boolean contains(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label1;
+
+        $r3 = interfaceinvoke r0.<com.google.common.graph.BaseGraph: java.util.Set successors(java.lang.Object)>($r2);
+
+        $z0 = interfaceinvoke $r3.<java.util.Set: boolean contains(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public int inDegree(java.lang.Object)
+    {
+        int $i0;
+        com.google.common.graph.AbstractBaseGraph r0;
+        java.util.Set $r2;
+        java.lang.Object $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.AbstractBaseGraph;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $z0 = interfaceinvoke r0.<com.google.common.graph.BaseGraph: boolean isDirected()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = interfaceinvoke r0.<com.google.common.graph.BaseGraph: java.util.Set predecessors(java.lang.Object)>($r1);
+
+        $i0 = interfaceinvoke $r2.<java.util.Set: int size()>();
+
+        return $i0;
+
+     label1:
+        $i0 = virtualinvoke r0.<com.google.common.graph.AbstractBaseGraph: int degree(java.lang.Object)>($r1);
+
+        return $i0;
+    }
+
+    public int outDegree(java.lang.Object)
+    {
+        int $i0;
+        com.google.common.graph.AbstractBaseGraph r0;
+        java.util.Set $r2;
+        java.lang.Object $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.AbstractBaseGraph;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $z0 = interfaceinvoke r0.<com.google.common.graph.BaseGraph: boolean isDirected()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = interfaceinvoke r0.<com.google.common.graph.BaseGraph: java.util.Set successors(java.lang.Object)>($r1);
+
+        $i0 = interfaceinvoke $r2.<java.util.Set: int size()>();
+
+        return $i0;
+
+     label1:
+        $i0 = virtualinvoke r0.<com.google.common.graph.AbstractBaseGraph: int degree(java.lang.Object)>($r1);
+
+        return $i0;
+    }
+
+    public volatile java.lang.Iterable predecessors(java.lang.Object)
+    {
+        com.google.common.graph.AbstractBaseGraph r0;
+        java.lang.Object $r2;
+        java.lang.Iterable $r1;
+
+        r0 := @this: com.google.common.graph.AbstractBaseGraph;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 = staticinvoke <c.i.b.d.a: java.lang.Iterable a(com.google.common.graph.BaseGraph,java.lang.Object)>(r0, $r2);
+
+        return $r1;
+    }
+
+    public volatile java.lang.Iterable successors(java.lang.Object)
+    {
+        com.google.common.graph.AbstractBaseGraph r0;
+        java.lang.Object $r2;
+        java.lang.Iterable $r1;
+
+        r0 := @this: com.google.common.graph.AbstractBaseGraph;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 = staticinvoke <c.i.b.d.a: java.lang.Iterable b(com.google.common.graph.BaseGraph,java.lang.Object)>(r0, $r2);
+
+        return $r1;
+    }
+}

@@ -1,0 +1,255 @@
+public final class com.google.zxing.oned.UPCEANExtension2Support extends java.lang.Object
+{
+    public final int[] decodeMiddleCounters;
+    public final java.lang.StringBuilder decodeRowStringBuffer;
+
+    public void <init>()
+    {
+        java.lang.StringBuilder $r2;
+        int[] $r1;
+        com.google.zxing.oned.UPCEANExtension2Support r0;
+
+        r0 := @this: com.google.zxing.oned.UPCEANExtension2Support;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r1 = newarray (int)[4];
+
+        r0.<com.google.zxing.oned.UPCEANExtension2Support: int[] decodeMiddleCounters> = $r1;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        r0.<com.google.zxing.oned.UPCEANExtension2Support: java.lang.StringBuilder decodeRowStringBuffer> = $r2;
+
+        return;
+    }
+
+    public static java.util.Map parseExtensionString(java.lang.String)
+    {
+        java.util.EnumMap $r1;
+        com.google.zxing.ResultMetadataType $r2;
+        int $i0;
+        java.lang.String $r0;
+        java.lang.Integer $r3;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if $i0 == 2 goto label1;
+
+        return null;
+
+     label1:
+        $r1 = new java.util.EnumMap;
+
+        specialinvoke $r1.<java.util.EnumMap: void <init>(java.lang.Class)>(class "Lcom/google/zxing/ResultMetadataType;");
+
+        $r2 = <com.google.zxing.ResultMetadataType: com.google.zxing.ResultMetadataType ISSUE_NUMBER>;
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(java.lang.String)>($r0);
+
+        interfaceinvoke $r1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r2, $r3);
+
+        return $r1;
+    }
+
+    public int decodeMiddle(com.google.zxing.common.BitArray, int[], java.lang.StringBuilder)
+    {
+        int[][] $r5;
+        int[] $r2, $r4;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i8;
+        java.lang.String $r6;
+        char $c7;
+        com.google.zxing.common.BitArray $r3;
+        com.google.zxing.NotFoundException $r7;
+        com.google.zxing.oned.UPCEANExtension2Support r0;
+        java.lang.StringBuilder $r1;
+
+        r0 := @this: com.google.zxing.oned.UPCEANExtension2Support;
+
+        $r3 := @parameter0: com.google.zxing.common.BitArray;
+
+        $r4 := @parameter1: int[];
+
+        $r1 := @parameter2: java.lang.StringBuilder;
+
+        $r2 = r0.<com.google.zxing.oned.UPCEANExtension2Support: int[] decodeMiddleCounters>;
+
+        $r2[0] = 0;
+
+        $r2[1] = 0;
+
+        $r2[2] = 0;
+
+        $r2[3] = 0;
+
+        $i1 = virtualinvoke $r3.<com.google.zxing.common.BitArray: int getSize()>();
+
+        $i3 = $r4[1];
+
+        $i4 = 0;
+
+        $i2 = 0;
+
+     label1:
+        if $i4 >= 2 goto label6;
+
+        if $i3 >= $i1 goto label6;
+
+        $r5 = <com.google.zxing.oned.UPCEANReader: int[][] L_AND_G_PATTERNS>;
+
+        $i5 = staticinvoke <com.google.zxing.oned.UPCEANReader: int decodeDigit(com.google.zxing.common.BitArray,int[],int,int[][])>($r3, $r2, $i3, $r5);
+
+        $i6 = $i5 % 10;
+
+        $i6 = $i6 + 48;
+
+        $c7 = (char) $i6;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c7);
+
+        $i6 = lengthof $r2;
+
+        $i8 = 0;
+
+     label2:
+        if $i8 >= $i6 goto label3;
+
+        $i0 = $r2[$i8];
+
+        $i3 = $i3 + $i0;
+
+        $i8 = $i8 + 1;
+
+        goto label2;
+
+     label3:
+        if $i5 < 10 goto label4;
+
+        $i5 = 1 - $i4;
+
+        $i5 = 1 << $i5;
+
+        $i2 = $i5 | $i2;
+
+     label4:
+        if $i4 == 1 goto label5;
+
+        $i3 = virtualinvoke $r3.<com.google.zxing.common.BitArray: int getNextSet(int)>($i3);
+
+        $i3 = virtualinvoke $r3.<com.google.zxing.common.BitArray: int getNextUnset(int)>($i3);
+
+        goto label5;
+
+     label5:
+        $i4 = $i4 + 1;
+
+        goto label1;
+
+     label6:
+        $i1 = virtualinvoke $r1.<java.lang.StringBuilder: int length()>();
+
+        if $i1 != 2 goto label8;
+
+        $r6 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i1 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r6);
+
+        $i1 = $i1 % 4;
+
+        if $i1 != $i2 goto label7;
+
+        return $i3;
+
+     label7:
+        $r7 = staticinvoke <com.google.zxing.NotFoundException: com.google.zxing.NotFoundException getNotFoundInstance()>();
+
+        throw $r7;
+
+     label8:
+        $r7 = staticinvoke <com.google.zxing.NotFoundException: com.google.zxing.NotFoundException getNotFoundInstance()>();
+
+        goto label9;
+
+     label9:
+        throw $r7;
+    }
+
+    public com.google.zxing.Result decodeRow(int, com.google.zxing.common.BitArray, int[])
+    {
+        com.google.zxing.Result $r1;
+        com.google.zxing.ResultPoint $r2;
+        int[] $r4;
+        java.util.Map $r7;
+        int $i0, $i1, $i2, $i3;
+        java.lang.String $r6;
+        com.google.zxing.common.BitArray $r3;
+        com.google.zxing.ResultPoint[] $r8;
+        com.google.zxing.oned.UPCEANExtension2Support r0;
+        float $f0, $f1;
+        java.lang.StringBuilder $r5;
+        com.google.zxing.BarcodeFormat $r9;
+
+        r0 := @this: com.google.zxing.oned.UPCEANExtension2Support;
+
+        $i0 := @parameter0: int;
+
+        $r3 := @parameter1: com.google.zxing.common.BitArray;
+
+        $r4 := @parameter2: int[];
+
+        $r5 = r0.<com.google.zxing.oned.UPCEANExtension2Support: java.lang.StringBuilder decodeRowStringBuffer>;
+
+        virtualinvoke $r5.<java.lang.StringBuilder: void setLength(int)>(0);
+
+        $i1 = virtualinvoke r0.<com.google.zxing.oned.UPCEANExtension2Support: int decodeMiddle(com.google.zxing.common.BitArray,int[],java.lang.StringBuilder)>($r3, $r4, $r5);
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r7 = staticinvoke <com.google.zxing.oned.UPCEANExtension2Support: java.util.Map parseExtensionString(java.lang.String)>($r6);
+
+        $r1 = new com.google.zxing.Result;
+
+        $r8 = newarray (com.google.zxing.ResultPoint)[2];
+
+        $r2 = new com.google.zxing.ResultPoint;
+
+        $i2 = $r4[0];
+
+        $i3 = $r4[1];
+
+        $i2 = $i2 + $i3;
+
+        $f0 = (float) $i2;
+
+        $f1 = $f0 / 2.0F;
+
+        $f0 = (float) $i0;
+
+        specialinvoke $r2.<com.google.zxing.ResultPoint: void <init>(float,float)>($f1, $f0);
+
+        $r8[0] = $r2;
+
+        $r2 = new com.google.zxing.ResultPoint;
+
+        $f1 = (float) $i1;
+
+        specialinvoke $r2.<com.google.zxing.ResultPoint: void <init>(float,float)>($f1, $f0);
+
+        $r8[1] = $r2;
+
+        $r9 = <com.google.zxing.BarcodeFormat: com.google.zxing.BarcodeFormat UPC_EAN_EXTENSION>;
+
+        specialinvoke $r1.<com.google.zxing.Result: void <init>(java.lang.String,byte[],com.google.zxing.ResultPoint[],com.google.zxing.BarcodeFormat)>($r6, null, $r8, $r9);
+
+        if $r7 == null goto label1;
+
+        virtualinvoke $r1.<com.google.zxing.Result: void putAllMetadata(java.util.Map)>($r7);
+
+     label1:
+        return $r1;
+    }
+}

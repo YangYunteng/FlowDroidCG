@@ -1,0 +1,470 @@
+public final class com.google.zxing.oned.Code128Writer extends com.google.zxing.oned.OneDimensionalCodeWriter
+{
+    public static final int CODE_CODE_B;
+    public static final int CODE_CODE_C;
+    public static final int CODE_FNC_1;
+    public static final int CODE_FNC_2;
+    public static final int CODE_FNC_3;
+    public static final int CODE_FNC_4_B;
+    public static final int CODE_START_B;
+    public static final int CODE_START_C;
+    public static final int CODE_STOP;
+    public static final char ESCAPE_FNC_1;
+    public static final char ESCAPE_FNC_2;
+    public static final char ESCAPE_FNC_3;
+    public static final char ESCAPE_FNC_4;
+
+    public void <init>()
+    {
+        com.google.zxing.oned.Code128Writer r0;
+
+        r0 := @this: com.google.zxing.oned.Code128Writer;
+
+        specialinvoke r0.<com.google.zxing.oned.OneDimensionalCodeWriter: void <init>()>();
+
+        return;
+    }
+
+    public static boolean isDigits(java.lang.CharSequence, int, int)
+    {
+        java.lang.CharSequence $r0;
+        int $i0, $i1, $i2, $i4;
+        char $c3;
+
+        $r0 := @parameter0: java.lang.CharSequence;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i1 = $i1 + $i0;
+
+        $i2 = interfaceinvoke $r0.<java.lang.CharSequence: int length()>();
+
+     label1:
+        if $i0 >= $i1 goto label5;
+
+        if $i0 >= $i2 goto label5;
+
+        $c3 = interfaceinvoke $r0.<java.lang.CharSequence: char charAt(int)>($i0);
+
+        $i4 = (int) $c3;
+
+        if $i4 < 48 goto label2;
+
+        $i4 = (int) $c3;
+
+        if $i4 <= 57 goto label4;
+
+     label2:
+        $i4 = (int) $c3;
+
+        if $i4 == 241 goto label3;
+
+        return 0;
+
+     label3:
+        $i1 = $i1 + 1;
+
+     label4:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label5:
+        if $i1 > $i2 goto label6;
+
+        return 1;
+
+     label6:
+        return 0;
+    }
+
+    public com.google.zxing.common.BitMatrix encode(java.lang.String, com.google.zxing.BarcodeFormat, int, int, java.util.Map)
+    {
+        java.lang.IllegalArgumentException $r6;
+        com.google.zxing.oned.Code128Writer r0;
+        java.util.Map $r1;
+        int $i0, $i1;
+        com.google.zxing.common.BitMatrix $r5;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r3;
+        com.google.zxing.BarcodeFormat $r2, $r4;
+
+        r0 := @this: com.google.zxing.oned.Code128Writer;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r4 := @parameter1: com.google.zxing.BarcodeFormat;
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        $r1 := @parameter4: java.util.Map;
+
+        $r2 = <com.google.zxing.BarcodeFormat: com.google.zxing.BarcodeFormat CODE_128>;
+
+        if $r4 != $r2 goto label1;
+
+        $r5 = specialinvoke r0.<com.google.zxing.oned.OneDimensionalCodeWriter: com.google.zxing.common.BitMatrix encode(java.lang.String,com.google.zxing.BarcodeFormat,int,int,java.util.Map)>($r3, $r4, $i0, $i1, $r1);
+
+        return $r5;
+
+     label1:
+        $r6 = new java.lang.IllegalArgumentException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Can only encode CODE_128, but got ");
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        $r3 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r3);
+
+        throw $r6;
+    }
+
+    public boolean[] encode(java.lang.String)
+    {
+        int[][] $r5;
+        java.util.ArrayList $r3, $r12;
+        byte $b5, $b7, $b8;
+        int[] $r6;
+        int $i0, $i1, $i2, $i4, $i6, $i9, $i10;
+        java.lang.String $r1, $r4;
+        boolean $z0;
+        java.util.Iterator $r7;
+        boolean[] $r9;
+        char $c3;
+        java.lang.IllegalArgumentException $r11;
+        com.google.zxing.oned.Code128Writer r0;
+        java.lang.StringBuilder $r2, $r10;
+        java.lang.Object $r8;
+
+        r0 := @this: com.google.zxing.oned.Code128Writer;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i0 < 1 goto label29;
+
+        if $i0 > 80 goto label29;
+
+        $i1 = 0;
+
+        $i2 = 0;
+
+     label01:
+        if $i2 >= $i0 goto label05;
+
+        $c3 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i2);
+
+        $i6 = (int) $c3;
+
+        if $i6 < 32 goto label02;
+
+        $i6 = (int) $c3;
+
+        if $i6 <= 126 goto label04;
+
+     label02:
+        $i6 = (int) $c3;
+
+        lookupswitch($i6)
+        {
+            case 241: goto label04;
+            case 242: goto label04;
+            case 243: goto label04;
+            case 244: goto label04;
+            default: goto label03;
+        };
+
+     label03:
+        $r11 = new java.lang.IllegalArgumentException;
+
+        $r10 = new java.lang.StringBuilder;
+
+        $r2 = $r10;
+
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Bad character in input: ");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c3);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r11.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r1);
+
+        throw $r11;
+
+     label04:
+        $i2 = $i2 + 1;
+
+        goto label01;
+
+     label05:
+        $r12 = new java.util.ArrayList;
+
+        $r3 = $r12;
+
+        specialinvoke $r12.<java.util.ArrayList: void <init>()>();
+
+        $i4 = 0;
+
+        $i2 = 0;
+
+        $b5 = 0;
+
+        $i6 = 1;
+
+     label06:
+        if $i4 >= $i0 goto label22;
+
+        $b7 = 99;
+
+        if $b5 != 99 goto label07;
+
+        $b8 = 2;
+
+        goto label08;
+
+     label07:
+        $b8 = 4;
+
+     label08:
+        $z0 = staticinvoke <com.google.zxing.oned.Code128Writer: boolean isDigits(java.lang.CharSequence,int,int)>($r1, $i4, $b8);
+
+        $i9 = 100;
+
+        if $z0 == 0 goto label09;
+
+        goto label10;
+
+     label09:
+        $b7 = 100;
+
+     label10:
+        if $b7 != $b5 goto label17;
+
+        if $b5 != 100 goto label12;
+
+        $c3 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i4);
+
+        $i9 = (int) $c3;
+
+        $i10 = -32;
+
+        $i9 = $i9 + $i10;
+
+     label11:
+        $i4 = $i4 + 1;
+
+        goto label21;
+
+     label12:
+        $c3 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i4);
+
+        $i10 = (int) $c3;
+
+        lookupswitch($i10)
+        {
+            case 241: goto label16;
+            case 242: goto label15;
+            case 243: goto label14;
+            case 244: goto label11;
+            default: goto label13;
+        };
+
+     label13:
+        $i10 = $i4 + 2;
+
+        $r4 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int,int)>($i4, $i10);
+
+        $i9 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r4);
+
+        $i4 = $i10;
+
+        goto label21;
+
+     label14:
+        $i9 = 96;
+
+        goto label11;
+
+     label15:
+        $i9 = 97;
+
+        goto label11;
+
+     label16:
+        $i9 = 102;
+
+        goto label11;
+
+     label17:
+        if $b5 != 0 goto label19;
+
+        if $b7 != 100 goto label18;
+
+        $i9 = 104;
+
+        goto label20;
+
+     label18:
+        $i9 = 105;
+
+        goto label20;
+
+     label19:
+        $i9 = $b7;
+
+     label20:
+        $b5 = $b7;
+
+     label21:
+        $r5 = <com.google.zxing.oned.Code128Reader: int[][] CODE_PATTERNS>;
+
+        $r6 = $r5[$i9];
+
+        interfaceinvoke $r3.<java.util.Collection: boolean add(java.lang.Object)>($r6);
+
+        $i9 = $i9 * $i6;
+
+        $i2 = $i2 + $i9;
+
+        if $i4 == 0 goto label06;
+
+        $i6 = $i6 + 1;
+
+        goto label06;
+
+     label22:
+        $i0 = $i2 % 103;
+
+        $r5 = <com.google.zxing.oned.Code128Reader: int[][] CODE_PATTERNS>;
+
+        $r6 = $r5[$i0];
+
+        interfaceinvoke $r3.<java.util.Collection: boolean add(java.lang.Object)>($r6);
+
+        $r5 = <com.google.zxing.oned.Code128Reader: int[][] CODE_PATTERNS>;
+
+        $r6 = $r5[106];
+
+        interfaceinvoke $r3.<java.util.Collection: boolean add(java.lang.Object)>($r6);
+
+        $r7 = interfaceinvoke $r3.<java.util.Collection: java.util.Iterator iterator()>();
+
+        $i2 = 0;
+
+     label23:
+        $z0 = interfaceinvoke $r7.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label26;
+
+        $r8 = interfaceinvoke $r7.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (int[]) $r8;
+
+        $i0 = lengthof $r6;
+
+        $i6 = 0;
+
+     label24:
+        if $i6 >= $i0 goto label25;
+
+        $i4 = $r6[$i6];
+
+        $i2 = $i2 + $i4;
+
+        $i6 = $i6 + 1;
+
+        goto label24;
+
+     label25:
+        goto label23;
+
+     label26:
+        $r9 = newarray (boolean)[$i2];
+
+        $r7 = interfaceinvoke $r3.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label27:
+        $z0 = interfaceinvoke $r7.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label28;
+
+        $r8 = interfaceinvoke $r7.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (int[]) $r8;
+
+        $i0 = staticinvoke <com.google.zxing.oned.OneDimensionalCodeWriter: int appendPattern(boolean[],int,int[],boolean)>($r9, $i1, $r6, 1);
+
+        $i1 = $i1 + $i0;
+
+        goto label27;
+
+     label28:
+        return $r9;
+
+     label29:
+        $r11 = new java.lang.IllegalArgumentException;
+
+        $r10 = new java.lang.StringBuilder;
+
+        $r2 = $r10;
+
+        specialinvoke $r10.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Contents length should be between 1 and 80 characters, but got ");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r11.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r1);
+
+        goto label30;
+
+     label30:
+        throw $r11;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.zxing.oned.Code128Writer: char ESCAPE_FNC_4> = 244;
+
+        <com.google.zxing.oned.Code128Writer: char ESCAPE_FNC_3> = 243;
+
+        <com.google.zxing.oned.Code128Writer: char ESCAPE_FNC_2> = 242;
+
+        <com.google.zxing.oned.Code128Writer: char ESCAPE_FNC_1> = 241;
+
+        <com.google.zxing.oned.Code128Writer: int CODE_STOP> = 106;
+
+        <com.google.zxing.oned.Code128Writer: int CODE_START_C> = 105;
+
+        <com.google.zxing.oned.Code128Writer: int CODE_START_B> = 104;
+
+        <com.google.zxing.oned.Code128Writer: int CODE_FNC_4_B> = 100;
+
+        <com.google.zxing.oned.Code128Writer: int CODE_FNC_3> = 96;
+
+        <com.google.zxing.oned.Code128Writer: int CODE_FNC_2> = 97;
+
+        <com.google.zxing.oned.Code128Writer: int CODE_FNC_1> = 102;
+
+        <com.google.zxing.oned.Code128Writer: int CODE_CODE_C> = 99;
+
+        <com.google.zxing.oned.Code128Writer: int CODE_CODE_B> = 100;
+
+        return;
+    }
+}

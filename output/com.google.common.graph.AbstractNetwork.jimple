@@ -1,0 +1,485 @@
+public abstract class com.google.common.graph.AbstractNetwork extends java.lang.Object implements com.google.common.graph.Network
+{
+
+    public void <init>()
+    {
+        com.google.common.graph.AbstractNetwork r0;
+
+        r0 := @this: com.google.common.graph.AbstractNetwork;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    private com.google.common.base.Predicate connectedPredicate(java.lang.Object, java.lang.Object)
+    {
+        java.lang.Object $r1, $r2;
+        com.google.common.graph.AbstractNetwork$2 $r3;
+        com.google.common.graph.AbstractNetwork r0;
+
+        r0 := @this: com.google.common.graph.AbstractNetwork;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $r2 := @parameter1: java.lang.Object;
+
+        $r3 = new com.google.common.graph.AbstractNetwork$2;
+
+        specialinvoke $r3.<com.google.common.graph.AbstractNetwork$2: void <init>(com.google.common.graph.AbstractNetwork,java.lang.Object,java.lang.Object)>(r0, $r1, $r2);
+
+        return $r3;
+    }
+
+    public static java.util.Map edgeIncidentNodesMap(com.google.common.graph.Network)
+    {
+        com.google.common.graph.AbstractNetwork$3 $r0;
+        java.util.Map $r3;
+        java.util.Set $r2;
+        com.google.common.graph.Network $r1;
+
+        $r1 := @parameter0: com.google.common.graph.Network;
+
+        $r0 = new com.google.common.graph.AbstractNetwork$3;
+
+        specialinvoke $r0.<com.google.common.graph.AbstractNetwork$3: void <init>(com.google.common.graph.Network)>($r1);
+
+        $r2 = interfaceinvoke $r1.<com.google.common.graph.Network: java.util.Set edges()>();
+
+        $r3 = staticinvoke <com.google.common.collect.Maps: java.util.Map asMap(java.util.Set,com.google.common.base.Function)>($r2, $r0);
+
+        return $r3;
+    }
+
+    public java.util.Set adjacentEdges(java.lang.Object)
+    {
+        com.google.common.collect.ImmutableSet $r7;
+        com.google.common.collect.Sets$SetView $r6;
+        java.util.Set $r4, $r5;
+        com.google.common.graph.EndpointPair $r2;
+        java.lang.Object $r1, $r3;
+        com.google.common.graph.AbstractNetwork r0;
+
+        r0 := @this: com.google.common.graph.AbstractNetwork;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $r2 = interfaceinvoke r0.<com.google.common.graph.Network: com.google.common.graph.EndpointPair incidentNodes(java.lang.Object)>($r1);
+
+        $r3 = virtualinvoke $r2.<com.google.common.graph.EndpointPair: java.lang.Object nodeU()>();
+
+        $r4 = interfaceinvoke r0.<com.google.common.graph.Network: java.util.Set incidentEdges(java.lang.Object)>($r3);
+
+        $r3 = virtualinvoke $r2.<com.google.common.graph.EndpointPair: java.lang.Object nodeV()>();
+
+        $r5 = interfaceinvoke r0.<com.google.common.graph.Network: java.util.Set incidentEdges(java.lang.Object)>($r3);
+
+        $r6 = staticinvoke <com.google.common.collect.Sets: com.google.common.collect.Sets$SetView union(java.util.Set,java.util.Set)>($r4, $r5);
+
+        $r7 = staticinvoke <com.google.common.collect.ImmutableSet: com.google.common.collect.ImmutableSet of(java.lang.Object)>($r1);
+
+        $r6 = staticinvoke <com.google.common.collect.Sets: com.google.common.collect.Sets$SetView difference(java.util.Set,java.util.Set)>($r6, $r7);
+
+        return $r6;
+    }
+
+    public com.google.common.graph.Graph asGraph()
+    {
+        com.google.common.graph.AbstractNetwork$1 $r1;
+        com.google.common.graph.AbstractNetwork r0;
+
+        r0 := @this: com.google.common.graph.AbstractNetwork;
+
+        $r1 = new com.google.common.graph.AbstractNetwork$1;
+
+        specialinvoke $r1.<com.google.common.graph.AbstractNetwork$1: void <init>(com.google.common.graph.AbstractNetwork)>(r0);
+
+        return $r1;
+    }
+
+    public int degree(java.lang.Object)
+    {
+        int $i0, $i1;
+        java.util.Set $r2;
+        java.lang.Object $r1;
+        com.google.common.graph.AbstractNetwork r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.AbstractNetwork;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $z0 = interfaceinvoke r0.<com.google.common.graph.Network: boolean isDirected()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = interfaceinvoke r0.<com.google.common.graph.Network: java.util.Set inEdges(java.lang.Object)>($r1);
+
+        $i0 = interfaceinvoke $r2.<java.util.Set: int size()>();
+
+        $r2 = interfaceinvoke r0.<com.google.common.graph.Network: java.util.Set outEdges(java.lang.Object)>($r1);
+
+        $i1 = interfaceinvoke $r2.<java.util.Set: int size()>();
+
+        $i0 = staticinvoke <com.google.common.math.IntMath: int saturatedAdd(int,int)>($i0, $i1);
+
+        return $i0;
+
+     label1:
+        $r2 = interfaceinvoke r0.<com.google.common.graph.Network: java.util.Set incidentEdges(java.lang.Object)>($r1);
+
+        $i0 = interfaceinvoke $r2.<java.util.Set: int size()>();
+
+        $r2 = virtualinvoke r0.<com.google.common.graph.AbstractNetwork: java.util.Set edgesConnecting(java.lang.Object,java.lang.Object)>($r1, $r1);
+
+        $i1 = interfaceinvoke $r2.<java.util.Set: int size()>();
+
+        $i0 = staticinvoke <com.google.common.math.IntMath: int saturatedAdd(int,int)>($i0, $i1);
+
+        return $i0;
+    }
+
+    public java.util.Optional edgeConnecting(java.lang.Object, java.lang.Object)
+    {
+        java.lang.Object[] $r7;
+        java.util.Iterator $r4;
+        java.util.Set $r3;
+        java.lang.IllegalArgumentException $r6;
+        int $i0;
+        java.util.Optional $r5;
+        java.lang.Object $r1, $r2;
+        java.lang.String $r8;
+        com.google.common.graph.AbstractNetwork r0;
+
+        r0 := @this: com.google.common.graph.AbstractNetwork;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 := @parameter1: java.lang.Object;
+
+        $r3 = virtualinvoke r0.<com.google.common.graph.AbstractNetwork: java.util.Set edgesConnecting(java.lang.Object,java.lang.Object)>($r2, $r1);
+
+        $i0 = interfaceinvoke $r3.<java.util.Set: int size()>();
+
+        if $i0 == 0 goto label2;
+
+        if $i0 != 1 goto label1;
+
+        $r4 = interfaceinvoke $r3.<java.util.Set: java.util.Iterator iterator()>();
+
+        $r2 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = staticinvoke <java.util.Optional: java.util.Optional of(java.lang.Object)>($r2);
+
+        return $r5;
+
+     label1:
+        $r6 = new java.lang.IllegalArgumentException;
+
+        $r7 = newarray (java.lang.Object)[2];
+
+        $r7[0] = $r2;
+
+        $r7[1] = $r1;
+
+        $r8 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Cannot call edgeConnecting() when parallel edges exist between %s and %s. Consider calling edgesConnecting() instead.", $r7);
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r8);
+
+        throw $r6;
+
+     label2:
+        $r5 = staticinvoke <java.util.Optional: java.util.Optional empty()>();
+
+        return $r5;
+    }
+
+    public java.lang.Object edgeConnectingOrNull(java.lang.Object, java.lang.Object)
+    {
+        java.util.Optional $r3;
+        java.lang.Object $r1, $r2;
+        com.google.common.graph.AbstractNetwork r0;
+
+        r0 := @this: com.google.common.graph.AbstractNetwork;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $r2 := @parameter1: java.lang.Object;
+
+        $r3 = virtualinvoke r0.<com.google.common.graph.AbstractNetwork: java.util.Optional edgeConnecting(java.lang.Object,java.lang.Object)>($r1, $r2);
+
+        $r1 = virtualinvoke $r3.<java.util.Optional: java.lang.Object orElse(java.lang.Object)>(null);
+
+        return $r1;
+    }
+
+    public java.util.Set edgesConnecting(java.lang.Object, java.lang.Object)
+    {
+        java.util.Set $r3, $r4;
+        com.google.common.base.Predicate $r5;
+        int $i0, $i1;
+        java.lang.Object $r1, $r2;
+        com.google.common.graph.AbstractNetwork r0;
+
+        r0 := @this: com.google.common.graph.AbstractNetwork;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 := @parameter1: java.lang.Object;
+
+        $r3 = interfaceinvoke r0.<com.google.common.graph.Network: java.util.Set outEdges(java.lang.Object)>($r2);
+
+        $r4 = interfaceinvoke r0.<com.google.common.graph.Network: java.util.Set inEdges(java.lang.Object)>($r1);
+
+        $i0 = interfaceinvoke $r3.<java.util.Set: int size()>();
+
+        $i1 = interfaceinvoke $r4.<java.util.Set: int size()>();
+
+        if $i0 > $i1 goto label1;
+
+        $r5 = specialinvoke r0.<com.google.common.graph.AbstractNetwork: com.google.common.base.Predicate connectedPredicate(java.lang.Object,java.lang.Object)>($r2, $r1);
+
+        $r3 = staticinvoke <com.google.common.collect.Sets: java.util.Set filter(java.util.Set,com.google.common.base.Predicate)>($r3, $r5);
+
+        $r3 = staticinvoke <java.util.Collections: java.util.Set unmodifiableSet(java.util.Set)>($r3);
+
+        return $r3;
+
+     label1:
+        $r5 = specialinvoke r0.<com.google.common.graph.AbstractNetwork: com.google.common.base.Predicate connectedPredicate(java.lang.Object,java.lang.Object)>($r1, $r2);
+
+        $r3 = staticinvoke <com.google.common.collect.Sets: java.util.Set filter(java.util.Set,com.google.common.base.Predicate)>($r4, $r5);
+
+        $r3 = staticinvoke <java.util.Collections: java.util.Set unmodifiableSet(java.util.Set)>($r3);
+
+        return $r3;
+    }
+
+    public final boolean equals(java.lang.Object)
+    {
+        java.util.Set $r3, $r4;
+        java.util.Map $r5, $r6;
+        java.lang.Object $r1;
+        com.google.common.graph.AbstractNetwork r0;
+        com.google.common.graph.Network $r2;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.common.graph.AbstractNetwork;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        if $r1 != r0 goto label1;
+
+        return 1;
+
+     label1:
+        $z0 = $r1 instanceof com.google.common.graph.Network;
+
+        if $z0 != 0 goto label2;
+
+        return 0;
+
+     label2:
+        $r2 = (com.google.common.graph.Network) $r1;
+
+        $z0 = interfaceinvoke r0.<com.google.common.graph.Network: boolean isDirected()>();
+
+        $z1 = interfaceinvoke $r2.<com.google.common.graph.Network: boolean isDirected()>();
+
+        if $z0 != $z1 goto label3;
+
+        $r3 = interfaceinvoke r0.<com.google.common.graph.Network: java.util.Set nodes()>();
+
+        $r4 = interfaceinvoke $r2.<com.google.common.graph.Network: java.util.Set nodes()>();
+
+        $z0 = interfaceinvoke $r3.<java.util.Set: boolean equals(java.lang.Object)>($r4);
+
+        if $z0 == 0 goto label3;
+
+        $r5 = staticinvoke <com.google.common.graph.AbstractNetwork: java.util.Map edgeIncidentNodesMap(com.google.common.graph.Network)>(r0);
+
+        $r6 = staticinvoke <com.google.common.graph.AbstractNetwork: java.util.Map edgeIncidentNodesMap(com.google.common.graph.Network)>($r2);
+
+        $z0 = interfaceinvoke $r5.<java.util.Map: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 == 0 goto label3;
+
+        return 1;
+
+     label3:
+        return 0;
+    }
+
+    public boolean hasEdgeConnecting(java.lang.Object, java.lang.Object)
+    {
+        java.util.Set $r3;
+        java.lang.Object $r1, $r2;
+        com.google.common.graph.AbstractNetwork r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.AbstractNetwork;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 := @parameter1: java.lang.Object;
+
+        $r3 = virtualinvoke r0.<com.google.common.graph.AbstractNetwork: java.util.Set edgesConnecting(java.lang.Object,java.lang.Object)>($r2, $r1);
+
+        $z0 = interfaceinvoke $r3.<java.util.Set: boolean isEmpty()>();
+
+        $z0 = $z0 ^ 1;
+
+        return $z0;
+    }
+
+    public final int hashCode()
+    {
+        int $i0;
+        com.google.common.graph.AbstractNetwork r0;
+        java.util.Map $r1;
+
+        r0 := @this: com.google.common.graph.AbstractNetwork;
+
+        $r1 = staticinvoke <com.google.common.graph.AbstractNetwork: java.util.Map edgeIncidentNodesMap(com.google.common.graph.Network)>(r0);
+
+        $i0 = interfaceinvoke $r1.<java.util.Map: int hashCode()>();
+
+        return $i0;
+    }
+
+    public int inDegree(java.lang.Object)
+    {
+        int $i0;
+        java.util.Set $r2;
+        java.lang.Object $r1;
+        com.google.common.graph.AbstractNetwork r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.AbstractNetwork;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $z0 = interfaceinvoke r0.<com.google.common.graph.Network: boolean isDirected()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = interfaceinvoke r0.<com.google.common.graph.Network: java.util.Set inEdges(java.lang.Object)>($r1);
+
+        $i0 = interfaceinvoke $r2.<java.util.Set: int size()>();
+
+        return $i0;
+
+     label1:
+        $i0 = virtualinvoke r0.<com.google.common.graph.AbstractNetwork: int degree(java.lang.Object)>($r1);
+
+        return $i0;
+    }
+
+    public int outDegree(java.lang.Object)
+    {
+        int $i0;
+        java.util.Set $r2;
+        java.lang.Object $r1;
+        com.google.common.graph.AbstractNetwork r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.AbstractNetwork;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $z0 = interfaceinvoke r0.<com.google.common.graph.Network: boolean isDirected()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = interfaceinvoke r0.<com.google.common.graph.Network: java.util.Set outEdges(java.lang.Object)>($r1);
+
+        $i0 = interfaceinvoke $r2.<java.util.Set: int size()>();
+
+        return $i0;
+
+     label1:
+        $i0 = virtualinvoke r0.<com.google.common.graph.AbstractNetwork: int degree(java.lang.Object)>($r1);
+
+        return $i0;
+    }
+
+    public volatile java.lang.Iterable predecessors(java.lang.Object)
+    {
+        java.lang.Object $r2;
+        com.google.common.graph.AbstractNetwork r0;
+        java.lang.Iterable $r1;
+
+        r0 := @this: com.google.common.graph.AbstractNetwork;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 = staticinvoke <c.i.b.d.c: java.lang.Iterable a(com.google.common.graph.Network,java.lang.Object)>(r0, $r2);
+
+        return $r1;
+    }
+
+    public volatile java.lang.Iterable successors(java.lang.Object)
+    {
+        java.lang.Object $r2;
+        com.google.common.graph.AbstractNetwork r0;
+        java.lang.Iterable $r1;
+
+        r0 := @this: com.google.common.graph.AbstractNetwork;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r1 = staticinvoke <c.i.b.d.c: java.lang.Iterable b(com.google.common.graph.Network,java.lang.Object)>(r0, $r2);
+
+        return $r1;
+    }
+
+    public java.lang.String toString()
+    {
+        java.util.Map $r3;
+        java.util.Set $r2;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r4;
+        com.google.common.graph.AbstractNetwork r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.AbstractNetwork;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("isDirected: ");
+
+        $z0 = interfaceinvoke r0.<com.google.common.graph.Network: boolean isDirected()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>($z0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", allowsParallelEdges: ");
+
+        $z0 = interfaceinvoke r0.<com.google.common.graph.Network: boolean allowsParallelEdges()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>($z0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", allowsSelfLoops: ");
+
+        $z0 = interfaceinvoke r0.<com.google.common.graph.Network: boolean allowsSelfLoops()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>($z0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", nodes: ");
+
+        $r2 = interfaceinvoke r0.<com.google.common.graph.Network: java.util.Set nodes()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", edges: ");
+
+        $r3 = staticinvoke <com.google.common.graph.AbstractNetwork: java.util.Map edgeIncidentNodesMap(com.google.common.graph.Network)>(r0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        $r4 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r4;
+    }
+}

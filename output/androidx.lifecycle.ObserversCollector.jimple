@@ -1,0 +1,503 @@
+public final class androidx.lifecycle.ObserversCollector extends java.lang.Object
+{
+    public final javax.lang.model.util.Elements elementUtils;
+    public final javax.lang.model.type.TypeMirror lifecycleObserverTypeMirror;
+    public final java.util.Map observers;
+    public final javax.lang.model.util.Types typeUtils;
+    public final androidx.lifecycle.Validator validator;
+
+    public void <init>(javax.'annotation'.processing.ProcessingEnvironment)
+    {
+        androidx.lifecycle.Validator $r8;
+        javax.lang.model.element.TypeElement $r6;
+        javax.lang.model.util.Types $r2;
+        javax.lang.model.util.Elements $r3;
+        java.util.LinkedHashMap $r9;
+        javax.lang.model.type.TypeMirror $r7;
+        javax.'annotation'.processing.ProcessingEnvironment $r1;
+        androidx.lifecycle.ObserversCollector r0;
+        java.lang.Class $r4;
+        java.lang.String $r5;
+
+        r0 := @this: androidx.lifecycle.ObserversCollector;
+
+        $r1 := @parameter0: javax.'annotation'.processing.ProcessingEnvironment;
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r1, "processingEnv");
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r2 = interfaceinvoke $r1.<javax.'annotation'.processing.ProcessingEnvironment: javax.lang.model.util.Types getTypeUtils()>();
+
+        staticinvoke <i.f.b.i: void a(java.lang.Object,java.lang.String)>($r2, "processingEnv.typeUtils");
+
+        r0.<androidx.lifecycle.ObserversCollector: javax.lang.model.util.Types typeUtils> = $r2;
+
+        $r3 = interfaceinvoke $r1.<javax.'annotation'.processing.ProcessingEnvironment: javax.lang.model.util.Elements getElementUtils()>();
+
+        staticinvoke <i.f.b.i: void a(java.lang.Object,java.lang.String)>($r3, "processingEnv.elementUtils");
+
+        r0.<androidx.lifecycle.ObserversCollector: javax.lang.model.util.Elements elementUtils> = $r3;
+
+        $r3 = r0.<androidx.lifecycle.ObserversCollector: javax.lang.model.util.Elements elementUtils>;
+
+        $r4 = class "Landroidx/lifecycle/LifecycleObserver;";
+
+        $r5 = virtualinvoke $r4.<java.lang.Class: java.lang.String getCanonicalName()>();
+
+        $r6 = interfaceinvoke $r3.<javax.lang.model.util.Elements: javax.lang.model.element.TypeElement getTypeElement(java.lang.CharSequence)>($r5);
+
+        $r7 = interfaceinvoke $r6.<javax.lang.model.element.TypeElement: javax.lang.model.type.TypeMirror asType()>();
+
+        staticinvoke <i.f.b.i: void a(java.lang.Object,java.lang.String)>($r7, "elementUtils.getTypeElem\u2026a.canonicalName).asType()");
+
+        r0.<androidx.lifecycle.ObserversCollector: javax.lang.model.type.TypeMirror lifecycleObserverTypeMirror> = $r7;
+
+        $r8 = new androidx.lifecycle.Validator;
+
+        specialinvoke $r8.<androidx.lifecycle.Validator: void <init>(javax.'annotation'.processing.ProcessingEnvironment)>($r1);
+
+        r0.<androidx.lifecycle.ObserversCollector: androidx.lifecycle.Validator validator> = $r8;
+
+        $r9 = new java.util.LinkedHashMap;
+
+        specialinvoke $r9.<java.util.LinkedHashMap: void <init>()>();
+
+        r0.<androidx.lifecycle.ObserversCollector: java.util.Map observers> = $r9;
+
+        return;
+    }
+
+    private final androidx.lifecycle.model.LifecycleObserverInfo createObserverInfo(javax.lang.model.element.TypeElement, java.util.List)
+    {
+        androidx.lifecycle.Validator $r3;
+        javax.lang.model.element.TypeElement $r1;
+        java.util.ArrayList $r6, $r10;
+        int $i0;
+        androidx.lifecycle.ObserversCollector r0;
+        boolean $z0;
+        java.util.Iterator $r7;
+        androidx.lifecycle.OnLifecycleEvent $r12;
+        javax.lang.model.element.ExecutableElement $r9;
+        javax.lang.model.element.Element $r4;
+        androidx.lifecycle.model.LifecycleObserverInfo $r15;
+        androidx.lifecycle.Lifecycle$Event $r13;
+        java.util.List $r2, $r5;
+        java.lang.'annotation'.Annotation $r11;
+        java.lang.Object $r8;
+        androidx.lifecycle.model.EventMethod $r14;
+
+        r0 := @this: androidx.lifecycle.ObserversCollector;
+
+        $r1 := @parameter0: javax.lang.model.element.TypeElement;
+
+        $r2 := @parameter1: java.util.List;
+
+        $r3 = r0.<androidx.lifecycle.ObserversCollector: androidx.lifecycle.Validator validator>;
+
+        $r4 = (javax.lang.model.element.Element) $r1;
+
+        $z0 = virtualinvoke $r3.<androidx.lifecycle.Validator: boolean validateClass(javax.lang.model.element.Element)>($r4);
+
+        if $z0 != 0 goto label1;
+
+        return null;
+
+     label1:
+        $r5 = staticinvoke <androidx.lifecycle.Elements_extKt: java.util.List methods(javax.lang.model.element.TypeElement)>($r1);
+
+        $r6 = new java.util.ArrayList;
+
+        specialinvoke $r6.<java.util.ArrayList: void <init>()>();
+
+        $r7 = interfaceinvoke $r5.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r7.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r8 = interfaceinvoke $r7.<java.util.Iterator: java.lang.Object next()>();
+
+        $r9 = (javax.lang.model.element.ExecutableElement) $r8;
+
+        $r4 = (javax.lang.model.element.Element) $r9;
+
+        $z0 = staticinvoke <com.google.auto.common.MoreElements: boolean isAnnotationPresent(javax.lang.model.element.Element,java.lang.Class)>($r4, class "Landroidx/lifecycle/OnLifecycleEvent;");
+
+        if $z0 == 0 goto label2;
+
+        interfaceinvoke $r6.<java.util.Collection: boolean add(java.lang.Object)>($r8);
+
+        goto label2;
+
+     label3:
+        $r10 = new java.util.ArrayList;
+
+        $i0 = staticinvoke <i.a.i: int a(java.lang.Iterable,int)>($r6, 10);
+
+        specialinvoke $r10.<java.util.ArrayList: void <init>(int)>($i0);
+
+        $r7 = interfaceinvoke $r6.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label4:
+        $z0 = interfaceinvoke $r7.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label7;
+
+        $r8 = interfaceinvoke $r7.<java.util.Iterator: java.lang.Object next()>();
+
+        $r9 = (javax.lang.model.element.ExecutableElement) $r8;
+
+        $r11 = interfaceinvoke $r9.<javax.lang.model.element.ExecutableElement: java.lang.'annotation'.Annotation getAnnotation(java.lang.Class)>(class "Landroidx/lifecycle/OnLifecycleEvent;");
+
+        $r12 = (androidx.lifecycle.OnLifecycleEvent) $r11;
+
+        $r3 = r0.<androidx.lifecycle.ObserversCollector: androidx.lifecycle.Validator validator>;
+
+        $r13 = interfaceinvoke $r12.<androidx.lifecycle.OnLifecycleEvent: androidx.lifecycle.Lifecycle$Event value()>();
+
+        $z0 = virtualinvoke $r3.<androidx.lifecycle.Validator: boolean validateMethod(javax.lang.model.element.ExecutableElement,androidx.lifecycle.Lifecycle$Event)>($r9, $r13);
+
+        if $z0 == 0 goto label5;
+
+        $r14 = new androidx.lifecycle.model.EventMethod;
+
+        staticinvoke <i.f.b.i: void a(java.lang.Object,java.lang.String)>($r12, "onState");
+
+        specialinvoke $r14.<androidx.lifecycle.model.EventMethod: void <init>(javax.lang.model.element.ExecutableElement,androidx.lifecycle.OnLifecycleEvent,javax.lang.model.element.TypeElement)>($r9, $r12, $r1);
+
+        goto label6;
+
+     label5:
+        $r14 = null;
+
+     label6:
+        interfaceinvoke $r10.<java.util.Collection: boolean add(java.lang.Object)>($r14);
+
+        goto label4;
+
+     label7:
+        $r5 = staticinvoke <i.a.p: java.util.List a(java.lang.Iterable)>($r10);
+
+        $r15 = new androidx.lifecycle.model.LifecycleObserverInfo;
+
+        specialinvoke $r15.<androidx.lifecycle.model.LifecycleObserverInfo: void <init>(javax.lang.model.element.TypeElement,java.util.List,java.util.List)>($r1, $r5, $r2);
+
+        return $r15;
+    }
+
+    public final androidx.lifecycle.model.LifecycleObserverInfo collect(javax.lang.model.element.TypeElement)
+    {
+        javax.lang.model.element.TypeElement $r1, $r13;
+        java.util.ArrayList $r8, $r12;
+        java.util.Map $r2;
+        int $i0;
+        androidx.lifecycle.ObserversCollector r0;
+        boolean $z0;
+        java.util.Iterator $r9;
+        androidx.lifecycle.model.LifecycleObserverInfo $r4;
+        javax.lang.model.util.Types $r10;
+        javax.lang.model.type.TypeMirror $r5, $r11;
+        java.util.List $r6, $r7;
+        java.lang.Object $r3;
+
+        r0 := @this: androidx.lifecycle.ObserversCollector;
+
+        $r1 := @parameter0: javax.lang.model.element.TypeElement;
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r1, "type");
+
+        $r2 = r0.<androidx.lifecycle.ObserversCollector: java.util.Map observers>;
+
+        $z0 = interfaceinvoke $r2.<java.util.Map: boolean containsKey(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        $r2 = r0.<androidx.lifecycle.ObserversCollector: java.util.Map observers>;
+
+        $r3 = interfaceinvoke $r2.<java.util.Map: java.lang.Object get(java.lang.Object)>($r1);
+
+        $r4 = (androidx.lifecycle.model.LifecycleObserverInfo) $r3;
+
+        return $r4;
+
+     label1:
+        $r5 = interfaceinvoke $r1.<javax.lang.model.element.TypeElement: javax.lang.model.type.TypeMirror getSuperclass()>();
+
+        $r6 = staticinvoke <i.a.g: java.util.List a(java.lang.Object)>($r5);
+
+        $r7 = interfaceinvoke $r1.<javax.lang.model.element.TypeElement: java.util.List getInterfaces()>();
+
+        staticinvoke <i.f.b.i: void a(java.lang.Object,java.lang.String)>($r7, "type.interfaces");
+
+        $r6 = staticinvoke <i.a.p: java.util.List b(java.util.Collection,java.lang.Iterable)>($r6, $r7);
+
+        $r8 = new java.util.ArrayList;
+
+        specialinvoke $r8.<java.util.ArrayList: void <init>()>();
+
+        $r9 = interfaceinvoke $r6.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r9.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r3 = interfaceinvoke $r9.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (javax.lang.model.type.TypeMirror) $r3;
+
+        $r10 = r0.<androidx.lifecycle.ObserversCollector: javax.lang.model.util.Types typeUtils>;
+
+        $r11 = r0.<androidx.lifecycle.ObserversCollector: javax.lang.model.type.TypeMirror lifecycleObserverTypeMirror>;
+
+        $z0 = interfaceinvoke $r10.<javax.lang.model.util.Types: boolean isAssignable(javax.lang.model.type.TypeMirror,javax.lang.model.type.TypeMirror)>($r5, $r11);
+
+        if $z0 == 0 goto label2;
+
+        interfaceinvoke $r8.<java.util.Collection: boolean add(java.lang.Object)>($r3);
+
+        goto label2;
+
+     label3:
+        $r12 = new java.util.ArrayList;
+
+        specialinvoke $r12.<java.util.ArrayList: void <init>()>();
+
+        $r9 = interfaceinvoke $r8.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label4:
+        $z0 = interfaceinvoke $r9.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label5;
+
+        $r3 = interfaceinvoke $r9.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (javax.lang.model.type.TypeMirror) $r3;
+
+        $r10 = r0.<androidx.lifecycle.ObserversCollector: javax.lang.model.util.Types typeUtils>;
+
+        $r11 = r0.<androidx.lifecycle.ObserversCollector: javax.lang.model.type.TypeMirror lifecycleObserverTypeMirror>;
+
+        $z0 = interfaceinvoke $r10.<javax.lang.model.util.Types: boolean isSameType(javax.lang.model.type.TypeMirror,javax.lang.model.type.TypeMirror)>($r5, $r11);
+
+        if $z0 != 0 goto label4;
+
+        interfaceinvoke $r12.<java.util.Collection: boolean add(java.lang.Object)>($r3);
+
+        goto label4;
+
+     label5:
+        $r8 = new java.util.ArrayList;
+
+        $i0 = staticinvoke <i.a.i: int a(java.lang.Iterable,int)>($r12, 10);
+
+        specialinvoke $r8.<java.util.ArrayList: void <init>(int)>($i0);
+
+        $r9 = interfaceinvoke $r12.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label6:
+        $z0 = interfaceinvoke $r9.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label7;
+
+        $r3 = interfaceinvoke $r9.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (javax.lang.model.type.TypeMirror) $r3;
+
+        $r13 = staticinvoke <com.google.auto.common.MoreTypes: javax.lang.model.element.TypeElement asTypeElement(javax.lang.model.type.TypeMirror)>($r5);
+
+        staticinvoke <i.f.b.i: void a(java.lang.Object,java.lang.String)>($r13, "MoreTypes.asTypeElement(it)");
+
+        $r4 = virtualinvoke r0.<androidx.lifecycle.ObserversCollector: androidx.lifecycle.model.LifecycleObserverInfo collect(javax.lang.model.element.TypeElement)>($r13);
+
+        interfaceinvoke $r8.<java.util.Collection: boolean add(java.lang.Object)>($r4);
+
+        goto label6;
+
+     label7:
+        $r6 = staticinvoke <i.a.p: java.util.List a(java.lang.Iterable)>($r8);
+
+        $r4 = specialinvoke r0.<androidx.lifecycle.ObserversCollector: androidx.lifecycle.model.LifecycleObserverInfo createObserverInfo(javax.lang.model.element.TypeElement,java.util.List)>($r1, $r6);
+
+        if $r4 == null goto label8;
+
+        $r2 = r0.<androidx.lifecycle.ObserversCollector: java.util.Map observers>;
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r1, $r4);
+
+     label8:
+        return $r4;
+    }
+
+    public final java.util.List generatedAdapterInfoFor(javax.lang.model.element.TypeElement)
+    {
+        java.util.Iterator $r8;
+        javax.lang.model.element.ExecutableElement $r10;
+        javax.lang.model.element.TypeElement $r1;
+        javax.lang.model.element.Element $r2;
+        javax.lang.model.util.Elements $r5;
+        java.util.ArrayList $r7;
+        java.util.List $r6;
+        int $i0;
+        androidx.lifecycle.ObserversCollector r0;
+        java.lang.StringBuilder $r4;
+        java.lang.Object $r9;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: androidx.lifecycle.ObserversCollector;
+
+        $r1 := @parameter0: javax.lang.model.element.TypeElement;
+
+        staticinvoke <i.f.b.i: void b(java.lang.Object,java.lang.String)>($r1, "type");
+
+        $r2 = (javax.lang.model.element.Element) $r1;
+
+        $r3 = staticinvoke <androidx.lifecycle.Elements_extKt: java.lang.String getPackageQName(javax.lang.model.element.Element)>($r2);
+
+        $i0 = interfaceinvoke $r3.<java.lang.CharSequence: int length()>();
+
+        if $i0 != 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        if $z0 == 0 goto label3;
+
+        $r3 = "";
+
+        goto label4;
+
+     label3:
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = staticinvoke <androidx.lifecycle.Elements_extKt: java.lang.String getPackageQName(javax.lang.model.element.Element)>($r2);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(46);
+
+        $r3 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label4:
+        $r5 = r0.<androidx.lifecycle.ObserversCollector: javax.lang.model.util.Elements elementUtils>;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = staticinvoke <androidx.lifecycle.model.AdapterClassKt: java.lang.String getAdapterName(javax.lang.model.element.TypeElement)>($r1);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r1 = interfaceinvoke $r5.<javax.lang.model.util.Elements: javax.lang.model.element.TypeElement getTypeElement(java.lang.CharSequence)>($r3);
+
+        if $r1 == null goto label6;
+
+        $r6 = staticinvoke <androidx.lifecycle.Elements_extKt: java.util.List methods(javax.lang.model.element.TypeElement)>($r1);
+
+        if $r6 == null goto label6;
+
+        $r7 = new java.util.ArrayList;
+
+        specialinvoke $r7.<java.util.ArrayList: void <init>()>();
+
+        $r8 = interfaceinvoke $r6.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label5:
+        $z0 = interfaceinvoke $r8.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label7;
+
+        $r9 = interfaceinvoke $r8.<java.util.Iterator: java.lang.Object next()>();
+
+        $r10 = (javax.lang.model.element.ExecutableElement) $r9;
+
+        $z0 = staticinvoke <androidx.lifecycle.Elements_extKt: boolean isSyntheticMethod(javax.lang.model.element.ExecutableElement)>($r10);
+
+        if $z0 == 0 goto label5;
+
+        interfaceinvoke $r7.<java.util.Collection: boolean add(java.lang.Object)>($r9);
+
+        goto label5;
+
+     label6:
+        return null;
+
+     label7:
+        return $r7;
+    }
+
+    public final javax.lang.model.util.Elements getElementUtils()
+    {
+        androidx.lifecycle.ObserversCollector r0;
+        javax.lang.model.util.Elements r1;
+
+        r0 := @this: androidx.lifecycle.ObserversCollector;
+
+        r1 = r0.<androidx.lifecycle.ObserversCollector: javax.lang.model.util.Elements elementUtils>;
+
+        return r1;
+    }
+
+    public final javax.lang.model.type.TypeMirror getLifecycleObserverTypeMirror()
+    {
+        androidx.lifecycle.ObserversCollector r0;
+        javax.lang.model.type.TypeMirror r1;
+
+        r0 := @this: androidx.lifecycle.ObserversCollector;
+
+        r1 = r0.<androidx.lifecycle.ObserversCollector: javax.lang.model.type.TypeMirror lifecycleObserverTypeMirror>;
+
+        return r1;
+    }
+
+    public final java.util.Map getObservers()
+    {
+        androidx.lifecycle.ObserversCollector r0;
+        java.util.Map r1;
+
+        r0 := @this: androidx.lifecycle.ObserversCollector;
+
+        r1 = r0.<androidx.lifecycle.ObserversCollector: java.util.Map observers>;
+
+        return r1;
+    }
+
+    public final javax.lang.model.util.Types getTypeUtils()
+    {
+        androidx.lifecycle.ObserversCollector r0;
+        javax.lang.model.util.Types r1;
+
+        r0 := @this: androidx.lifecycle.ObserversCollector;
+
+        r1 = r0.<androidx.lifecycle.ObserversCollector: javax.lang.model.util.Types typeUtils>;
+
+        return r1;
+    }
+
+    public final androidx.lifecycle.Validator getValidator()
+    {
+        androidx.lifecycle.ObserversCollector r0;
+        androidx.lifecycle.Validator r1;
+
+        r0 := @this: androidx.lifecycle.ObserversCollector;
+
+        r1 = r0.<androidx.lifecycle.ObserversCollector: androidx.lifecycle.Validator validator>;
+
+        return r1;
+    }
+}

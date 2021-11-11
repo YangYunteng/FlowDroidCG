@@ -1,0 +1,80 @@
+public final class com.caremark.caremark.util.AccessibilityTextReader$1 extends java.lang.Object implements java.lang.Runnable
+{
+    public final android.content.Context val$mContext;
+    public final java.lang.String val$text;
+
+    public void <init>(android.content.Context, java.lang.String)
+    {
+        android.content.Context $r1;
+        com.caremark.caremark.util.AccessibilityTextReader$1 r0;
+        java.lang.String $r2;
+
+        r0 := @this: com.caremark.caremark.util.AccessibilityTextReader$1;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 := @parameter1: java.lang.String;
+
+        r0.<com.caremark.caremark.util.AccessibilityTextReader$1: android.content.Context val$mContext> = $r1;
+
+        r0.<com.caremark.caremark.util.AccessibilityTextReader$1: java.lang.String val$text> = $r2;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        android.content.Context $r2;
+        java.lang.Exception $r5;
+        android.view.accessibility.AccessibilityManager $r4;
+        java.util.List $r7;
+        com.caremark.caremark.util.AccessibilityTextReader$1 r0;
+        java.lang.Object $r3;
+        java.lang.String $r1;
+        android.view.accessibility.AccessibilityEvent $r6;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.util.AccessibilityTextReader$1;
+
+        $r2 = r0.<com.caremark.caremark.util.AccessibilityTextReader$1: android.content.Context val$mContext>;
+
+        $r3 = virtualinvoke $r2.<android.content.Context: java.lang.Object getSystemService(java.lang.String)>("accessibility");
+
+        $r4 = (android.view.accessibility.AccessibilityManager) $r3;
+
+        $z0 = virtualinvoke $r4.<android.view.accessibility.AccessibilityManager: boolean isEnabled()>();
+
+        if $z0 == 0 goto label5;
+
+     label1:
+        virtualinvoke $r4.<android.view.accessibility.AccessibilityManager: void interrupt()>();
+
+     label2:
+        goto label4;
+
+     label3:
+        $r5 := @caughtexception;
+
+        virtualinvoke $r5.<java.lang.Exception: void printStackTrace()>();
+
+     label4:
+        $r6 = staticinvoke <android.view.accessibility.AccessibilityEvent: android.view.accessibility.AccessibilityEvent obtain()>();
+
+        virtualinvoke $r6.<android.view.accessibility.AccessibilityEvent: void setEventType(int)>(16384);
+
+        $r7 = virtualinvoke $r6.<android.view.accessibility.AccessibilityEvent: java.util.List getText()>();
+
+        $r1 = r0.<com.caremark.caremark.util.AccessibilityTextReader$1: java.lang.String val$text>;
+
+        interfaceinvoke $r7.<java.util.List: boolean add(java.lang.Object)>($r1);
+
+        virtualinvoke $r4.<android.view.accessibility.AccessibilityManager: void sendAccessibilityEvent(android.view.accessibility.AccessibilityEvent)>($r6);
+
+     label5:
+        return;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+}

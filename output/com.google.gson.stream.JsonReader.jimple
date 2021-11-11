@@ -1,0 +1,4399 @@
+public class com.google.gson.stream.JsonReader extends java.lang.Object implements java.io.Closeable
+{
+    public static final long MIN_INCOMPLETE_INTEGER;
+    public static final char[] NON_EXECUTE_PREFIX;
+    public static final int NUMBER_CHAR_DECIMAL;
+    public static final int NUMBER_CHAR_DIGIT;
+    public static final int NUMBER_CHAR_EXP_DIGIT;
+    public static final int NUMBER_CHAR_EXP_E;
+    public static final int NUMBER_CHAR_EXP_SIGN;
+    public static final int NUMBER_CHAR_FRACTION_DIGIT;
+    public static final int NUMBER_CHAR_NONE;
+    public static final int NUMBER_CHAR_SIGN;
+    public static final int PEEKED_BEGIN_ARRAY;
+    public static final int PEEKED_BEGIN_OBJECT;
+    public static final int PEEKED_BUFFERED;
+    public static final int PEEKED_DOUBLE_QUOTED;
+    public static final int PEEKED_DOUBLE_QUOTED_NAME;
+    public static final int PEEKED_END_ARRAY;
+    public static final int PEEKED_END_OBJECT;
+    public static final int PEEKED_EOF;
+    public static final int PEEKED_FALSE;
+    public static final int PEEKED_LONG;
+    public static final int PEEKED_NONE;
+    public static final int PEEKED_NULL;
+    public static final int PEEKED_NUMBER;
+    public static final int PEEKED_SINGLE_QUOTED;
+    public static final int PEEKED_SINGLE_QUOTED_NAME;
+    public static final int PEEKED_TRUE;
+    public static final int PEEKED_UNQUOTED;
+    public static final int PEEKED_UNQUOTED_NAME;
+    public final char[] buffer;
+    public final java.io.Reader in;
+    public boolean lenient;
+    public int limit;
+    public int lineNumber;
+    public int lineStart;
+    public int[] pathIndices;
+    public java.lang.String[] pathNames;
+    public int peeked;
+    public long peekedLong;
+    public int peekedNumberLength;
+    public java.lang.String peekedString;
+    public int pos;
+    public int[] stack;
+    public int stackSize;
+
+    static void <clinit>()
+    {
+        char[] $r0;
+        com.google.gson.stream.JsonReader$1 $r2;
+        java.lang.String $r1;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_UNQUOTED_NAME> = 14;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_UNQUOTED> = 10;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_TRUE> = 5;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_SINGLE_QUOTED_NAME> = 12;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_SINGLE_QUOTED> = 8;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_NUMBER> = 16;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_NULL> = 7;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_NONE> = 0;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_LONG> = 15;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_FALSE> = 6;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_EOF> = 17;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_END_OBJECT> = 2;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_END_ARRAY> = 4;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_DOUBLE_QUOTED_NAME> = 13;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_DOUBLE_QUOTED> = 9;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_BUFFERED> = 11;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_BEGIN_OBJECT> = 1;
+
+        <com.google.gson.stream.JsonReader: int PEEKED_BEGIN_ARRAY> = 3;
+
+        <com.google.gson.stream.JsonReader: int NUMBER_CHAR_SIGN> = 1;
+
+        <com.google.gson.stream.JsonReader: int NUMBER_CHAR_NONE> = 0;
+
+        <com.google.gson.stream.JsonReader: int NUMBER_CHAR_FRACTION_DIGIT> = 4;
+
+        <com.google.gson.stream.JsonReader: int NUMBER_CHAR_EXP_SIGN> = 6;
+
+        <com.google.gson.stream.JsonReader: int NUMBER_CHAR_EXP_E> = 5;
+
+        <com.google.gson.stream.JsonReader: int NUMBER_CHAR_EXP_DIGIT> = 7;
+
+        <com.google.gson.stream.JsonReader: int NUMBER_CHAR_DIGIT> = 2;
+
+        <com.google.gson.stream.JsonReader: int NUMBER_CHAR_DECIMAL> = 3;
+
+        <com.google.gson.stream.JsonReader: long MIN_INCOMPLETE_INTEGER> = -922337203685477580L;
+
+        $r1 = ")]}\'\n";
+
+        $r0 = virtualinvoke $r1.<java.lang.String: char[] toCharArray()>();
+
+        <com.google.gson.stream.JsonReader: char[] NON_EXECUTE_PREFIX> = $r0;
+
+        $r2 = new com.google.gson.stream.JsonReader$1;
+
+        specialinvoke $r2.<com.google.gson.stream.JsonReader$1: void <init>()>();
+
+        <com.google.gson.internal.JsonReaderInternalAccess: com.google.gson.internal.JsonReaderInternalAccess INSTANCE> = $r2;
+
+        return;
+    }
+
+    public void <init>(java.io.Reader)
+    {
+        java.lang.String[] $r4;
+        java.io.Reader $r1;
+        com.google.gson.stream.JsonReader r0;
+        java.lang.NullPointerException $r5;
+        int[] $r3;
+        int $i0, $i1;
+        char[] $r2;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $r1 := @parameter0: java.io.Reader;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.gson.stream.JsonReader: boolean lenient> = 0;
+
+        $r2 = newarray (char)[1024];
+
+        r0.<com.google.gson.stream.JsonReader: char[] buffer> = $r2;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = 0;
+
+        r0.<com.google.gson.stream.JsonReader: int limit> = 0;
+
+        r0.<com.google.gson.stream.JsonReader: int lineNumber> = 0;
+
+        r0.<com.google.gson.stream.JsonReader: int lineStart> = 0;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        $r3 = newarray (int)[32];
+
+        r0.<com.google.gson.stream.JsonReader: int[] stack> = $r3;
+
+        r0.<com.google.gson.stream.JsonReader: int stackSize> = 0;
+
+        $r3 = r0.<com.google.gson.stream.JsonReader: int[] stack>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i1 = $i0 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int stackSize> = $i1;
+
+        $r3[$i0] = 6;
+
+        $r4 = newarray (java.lang.String)[32];
+
+        r0.<com.google.gson.stream.JsonReader: java.lang.String[] pathNames> = $r4;
+
+        $r3 = newarray (int)[32];
+
+        r0.<com.google.gson.stream.JsonReader: int[] pathIndices> = $r3;
+
+        if $r1 == null goto label1;
+
+        r0.<com.google.gson.stream.JsonReader: java.io.Reader in> = $r1;
+
+        return;
+
+     label1:
+        $r5 = new java.lang.NullPointerException;
+
+        specialinvoke $r5.<java.lang.NullPointerException: void <init>(java.lang.String)>("in == null");
+
+        throw $r5;
+    }
+
+    private void checkLenient()
+    {
+        com.google.gson.stream.JsonReader r0;
+        java.lang.NullPointerException r1;
+        boolean $z0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $z0 = r0.<com.google.gson.stream.JsonReader: boolean lenient>;
+
+        if $z0 == 0 goto label1;
+
+        return;
+
+     label1:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: java.io.IOException syntaxError(java.lang.String)>("Use JsonReader.setLenient(true) to accept malformed JSON");
+
+        r1 = new java.lang.NullPointerException;
+
+        specialinvoke r1.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw r1;
+    }
+
+    private void consumeNonExecutePrefix()
+    {
+        char $c2, $c3;
+        com.google.gson.stream.JsonReader r0;
+        int $i0, $i1, $i4;
+        char[] $r1, $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        specialinvoke r0.<com.google.gson.stream.JsonReader: int nextNonWhitespace(boolean)>(1);
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i0 = $i0 - 1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i0;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $r1 = <com.google.gson.stream.JsonReader: char[] NON_EXECUTE_PREFIX>;
+
+        $i1 = lengthof $r1;
+
+        $i0 = $i0 + $i1;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        if $i0 <= $i1 goto label1;
+
+        $i0 = lengthof $r1;
+
+        $z0 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean fillBuffer(int)>($i0);
+
+        if $z0 != 0 goto label1;
+
+        return;
+
+     label1:
+        $i0 = 0;
+
+     label2:
+        $r1 = <com.google.gson.stream.JsonReader: char[] NON_EXECUTE_PREFIX>;
+
+        $i1 = lengthof $r1;
+
+        if $i0 >= $i1 goto label4;
+
+        $r2 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = $i1 + $i0;
+
+        $c2 = $r2[$i1];
+
+        $c3 = $r1[$i0];
+
+        $i1 = (int) $c2;
+
+        $i4 = (int) $c3;
+
+        if $i1 == $i4 goto label3;
+
+        return;
+
+     label3:
+        $i0 = $i0 + 1;
+
+        goto label2;
+
+     label4:
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = lengthof $r1;
+
+        $i0 = $i0 + $i1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i0;
+
+        return;
+    }
+
+    private boolean fillBuffer(int)
+    {
+        char $c3;
+        java.io.Reader $r2;
+        com.google.gson.stream.JsonReader r0;
+        int $i0, $i1, $i2, $i4;
+        char[] $r1;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i1 := @parameter0: int;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int lineStart>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i2 = $i2 - $i0;
+
+        r0.<com.google.gson.stream.JsonReader: int lineStart> = $i2;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        if $i2 == $i0 goto label1;
+
+        $i2 = $i2 - $i0;
+
+        r0.<com.google.gson.stream.JsonReader: int limit> = $i2;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, $i0, $r1, 0, $i2);
+
+        goto label2;
+
+     label1:
+        r0.<com.google.gson.stream.JsonReader: int limit> = 0;
+
+     label2:
+        r0.<com.google.gson.stream.JsonReader: int pos> = 0;
+
+     label3:
+        $r2 = r0.<com.google.gson.stream.JsonReader: java.io.Reader in>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        $i2 = lengthof $r1;
+
+        $i2 = $i2 - $i0;
+
+        $i0 = virtualinvoke $r2.<java.io.Reader: int read(char[],int,int)>($r1, $i0, $i2);
+
+        $i2 = -1;
+
+        if $i0 == $i2 goto label5;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        $i0 = $i2 + $i0;
+
+        r0.<com.google.gson.stream.JsonReader: int limit> = $i0;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int lineNumber>;
+
+        if $i0 != 0 goto label4;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int lineStart>;
+
+        if $i0 != 0 goto label4;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        if $i2 <= 0 goto label4;
+
+        $c3 = $r1[0];
+
+        $i2 = (int) $c3;
+
+        $i4 = 65279;
+
+        if $i2 != $i4 goto label4;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i2 = $i2 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i2;
+
+        $i0 = $i0 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int lineStart> = $i0;
+
+        $i1 = $i1 + 1;
+
+     label4:
+        $i0 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        if $i0 < $i1 goto label3;
+
+        return 1;
+
+     label5:
+        return 0;
+    }
+
+    private boolean isLiteral(char)
+    {
+        int $i1;
+        char $c0;
+        com.google.gson.stream.JsonReader r0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $c0 := @parameter0: char;
+
+        $i1 = (int) $c0;
+
+        if $i1 == 9 goto label3;
+
+        $i1 = (int) $c0;
+
+        if $i1 == 10 goto label3;
+
+        $i1 = (int) $c0;
+
+        if $i1 == 12 goto label3;
+
+        $i1 = (int) $c0;
+
+        if $i1 == 13 goto label3;
+
+        $i1 = (int) $c0;
+
+        if $i1 == 32 goto label3;
+
+        $i1 = (int) $c0;
+
+        if $i1 == 35 goto label2;
+
+        $i1 = (int) $c0;
+
+        if $i1 == 44 goto label3;
+
+        $i1 = (int) $c0;
+
+        if $i1 == 47 goto label2;
+
+        $i1 = (int) $c0;
+
+        if $i1 == 61 goto label2;
+
+        $i1 = (int) $c0;
+
+        if $i1 == 123 goto label3;
+
+        $i1 = (int) $c0;
+
+        if $i1 == 125 goto label3;
+
+        $i1 = (int) $c0;
+
+        if $i1 == 58 goto label3;
+
+        $i1 = (int) $c0;
+
+        if $i1 == 59 goto label2;
+
+        $i1 = (int) $c0;
+
+        lookupswitch($i1)
+        {
+            case 91: goto label3;
+            case 92: goto label2;
+            case 93: goto label3;
+            default: goto label1;
+        };
+
+     label1:
+        return 1;
+
+     label2:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void checkLenient()>();
+
+     label3:
+        return 0;
+    }
+
+    private int nextNonWhitespace(boolean)
+    {
+        char $c3, $c4;
+        java.io.EOFException $r5;
+        com.google.gson.stream.JsonReader r0;
+        java.lang.NullPointerException $r6;
+        int $i0, $i1, $i2;
+        char[] $r1;
+        java.lang.StringBuilder $r2, $r4;
+        java.lang.String $r3;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+     label01:
+        if $i0 != $i1 goto label04;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i0;
+
+        $z1 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean fillBuffer(int)>(1);
+
+        if $z1 != 0 goto label03;
+
+        if $z0 != 0 goto label02;
+
+        $i2 = -1;
+
+        return $i2;
+
+     label02:
+        $r5 = new java.io.EOFException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        $r2 = $r4;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("End of input");
+
+        $r3 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.io.EOFException: void <init>(java.lang.String)>($r3);
+
+        throw $r5;
+
+     label03:
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+     label04:
+        $i2 = $i0 + 1;
+
+        $c3 = $r1[$i0];
+
+        $i0 = (int) $c3;
+
+        if $i0 != 10 goto label05;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int lineNumber>;
+
+        $i0 = $i0 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int lineNumber> = $i0;
+
+        r0.<com.google.gson.stream.JsonReader: int lineStart> = $i2;
+
+        goto label13;
+
+     label05:
+        $i0 = (int) $c3;
+
+        if $i0 == 32 goto label13;
+
+        $i0 = (int) $c3;
+
+        if $i0 == 13 goto label13;
+
+        $i0 = (int) $c3;
+
+        if $i0 != 9 goto label06;
+
+        goto label13;
+
+     label06:
+        $i0 = (int) $c3;
+
+        if $i0 != 47 goto label11;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i2;
+
+        if $i2 != $i1 goto label07;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i2 = $i2 - 1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i2;
+
+        $z1 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean fillBuffer(int)>(2);
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i2 = $i2 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i2;
+
+        if $z1 != 0 goto label07;
+
+        $i2 = (int) $c3;
+
+        return $i2;
+
+     label07:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void checkLenient()>();
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $c4 = $r1[$i2];
+
+        $i1 = (int) $c4;
+
+        if $i1 == 42 goto label09;
+
+        $i1 = (int) $c4;
+
+        if $i1 == 47 goto label08;
+
+        $i2 = (int) $c3;
+
+        return $i2;
+
+     label08:
+        $i2 = $i2 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i2;
+
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void skipToEndOfLine()>();
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        goto label01;
+
+     label09:
+        $i2 = $i2 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i2;
+
+        $z1 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean skipTo(java.lang.String)>("*/");
+
+        if $z1 == 0 goto label10;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i0 = $i2 + 2;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        goto label01;
+
+     label10:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: java.io.IOException syntaxError(java.lang.String)>("Unterminated comment");
+
+        $r6 = new java.lang.NullPointerException;
+
+        specialinvoke $r6.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r6;
+
+     label11:
+        $i1 = (int) $c3;
+
+        if $i1 != 35 goto label12;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i2;
+
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void checkLenient()>();
+
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void skipToEndOfLine()>();
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        goto label01;
+
+     label12:
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i2;
+
+        $i2 = (int) $c3;
+
+        return $i2;
+
+     label13:
+        $i0 = $i2;
+
+        goto label01;
+    }
+
+    private java.lang.String nextQuotedValue(char)
+    {
+        char $c1, $c5;
+        com.google.gson.stream.JsonReader r0;
+        java.lang.NullPointerException $r6;
+        int $i0, $i2, $i3, $i4, $i6;
+        char[] $r1;
+        java.lang.StringBuilder $r2, $r5;
+        java.lang.String $r3, $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $c1 := @parameter0: char;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $r2 = null;
+
+     label01:
+        $i2 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i3 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+     label02:
+        $i0 = $i2;
+
+     label03:
+        if $i2 >= $i3 goto label09;
+
+        $i4 = $i2 + 1;
+
+        $c5 = $r1[$i2];
+
+        $i2 = (int) $c5;
+
+        $i6 = (int) $c1;
+
+        if $i2 != $i6 goto label05;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i4;
+
+        $i3 = $i4 - $i0;
+
+        $i3 = $i3 - 1;
+
+        if $r2 != null goto label04;
+
+        $r4 = new java.lang.String;
+
+        specialinvoke $r4.<java.lang.String: void <init>(char[],int,int)>($r1, $i0, $i3);
+
+        return $r4;
+
+     label04:
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char[],int,int)>($r1, $i0, $i3);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r3;
+
+     label05:
+        $i2 = (int) $c5;
+
+        if $i2 != 92 goto label07;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i4;
+
+        $i3 = $i4 - $i0;
+
+        $i3 = $i3 - 1;
+
+        if $r2 != null goto label06;
+
+        $i4 = $i3 + 1;
+
+        $i4 = $i4 * 2;
+
+        $r5 = new java.lang.StringBuilder;
+
+        $i4 = staticinvoke <java.lang.Math: int max(int,int)>($i4, 16);
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>(int)>($i4);
+
+        $r2 = $r5;
+
+     label06:
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char[],int,int)>($r1, $i0, $i3);
+
+        $c5 = specialinvoke r0.<com.google.gson.stream.JsonReader: char readEscapeCharacter()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c5);
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i3 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        goto label02;
+
+     label07:
+        $i2 = (int) $c5;
+
+        if $i2 != 10 goto label08;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int lineNumber>;
+
+        $i2 = $i2 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int lineNumber> = $i2;
+
+        r0.<com.google.gson.stream.JsonReader: int lineStart> = $i4;
+
+     label08:
+        $i2 = $i4;
+
+        goto label03;
+
+     label09:
+        if $r2 != null goto label10;
+
+        $i3 = $i2 - $i0;
+
+        $i3 = $i3 * 2;
+
+        $r5 = new java.lang.StringBuilder;
+
+        $i3 = staticinvoke <java.lang.Math: int max(int,int)>($i3, 16);
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>(int)>($i3);
+
+        $r2 = $r5;
+
+     label10:
+        $i3 = $i2 - $i0;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char[],int,int)>($r1, $i0, $i3);
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i2;
+
+        $z0 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean fillBuffer(int)>(1);
+
+        if $z0 == 0 goto label11;
+
+        goto label01;
+
+     label11:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: java.io.IOException syntaxError(java.lang.String)>("Unterminated string");
+
+        goto label12;
+
+     label12:
+        $r6 = new java.lang.NullPointerException;
+
+        specialinvoke $r6.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r6;
+    }
+
+    private java.lang.String nextUnquotedValue()
+    {
+        char $c5;
+        com.google.gson.stream.JsonReader r0;
+        int $i0, $i1, $i2, $i3, $i4;
+        char[] $r2;
+        java.lang.StringBuilder $r1, $r4;
+        java.lang.String $r3, $r5;
+        boolean $z0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i1 = 0;
+
+        $r1 = null;
+
+     label01:
+        $i2 = 0;
+
+     label02:
+        $i3 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i4 = $i3 + $i2;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        if $i4 >= $i0 goto label05;
+
+        $r2 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i0 = $i3 + $i2;
+
+        $c5 = $r2[$i0];
+
+        $i0 = (int) $c5;
+
+        if $i0 == 9 goto label06;
+
+        $i0 = (int) $c5;
+
+        if $i0 == 10 goto label06;
+
+        $i0 = (int) $c5;
+
+        if $i0 == 12 goto label06;
+
+        $i0 = (int) $c5;
+
+        if $i0 == 13 goto label06;
+
+        $i0 = (int) $c5;
+
+        if $i0 == 32 goto label06;
+
+        $i0 = (int) $c5;
+
+        if $i0 == 35 goto label04;
+
+        $i0 = (int) $c5;
+
+        if $i0 == 44 goto label06;
+
+        $i0 = (int) $c5;
+
+        if $i0 == 47 goto label04;
+
+        $i0 = (int) $c5;
+
+        if $i0 == 61 goto label04;
+
+        $i0 = (int) $c5;
+
+        if $i0 == 123 goto label06;
+
+        $i0 = (int) $c5;
+
+        if $i0 == 125 goto label06;
+
+        $i0 = (int) $c5;
+
+        if $i0 == 58 goto label06;
+
+        $i0 = (int) $c5;
+
+        if $i0 == 59 goto label04;
+
+        $i0 = (int) $c5;
+
+        lookupswitch($i0)
+        {
+            case 91: goto label06;
+            case 92: goto label04;
+            case 93: goto label06;
+            default: goto label03;
+        };
+
+     label03:
+        $i2 = $i2 + 1;
+
+        goto label02;
+
+     label04:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void checkLenient()>();
+
+        goto label06;
+
+     label05:
+        $r2 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i0 = lengthof $r2;
+
+        if $i2 >= $i0 goto label07;
+
+        $i0 = $i2 + 1;
+
+        $z0 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean fillBuffer(int)>($i0);
+
+        if $z0 == 0 goto label06;
+
+        goto label02;
+
+     label06:
+        $i1 = $i2;
+
+        goto label09;
+
+     label07:
+        if $r1 != null goto label08;
+
+        $r4 = new java.lang.StringBuilder;
+
+        $r1 = $r4;
+
+        $i0 = staticinvoke <java.lang.Math: int max(int,int)>($i2, 16);
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>(int)>($i0);
+
+     label08:
+        $r2 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char[],int,int)>($r2, $i0, $i2);
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i2 = $i0 + $i2;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i2;
+
+        $z0 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean fillBuffer(int)>(1);
+
+        if $z0 != 0 goto label01;
+
+     label09:
+        if $r1 != null goto label10;
+
+        $r5 = new java.lang.String;
+
+        $r3 = $r5;
+
+        $r2 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        specialinvoke $r5.<java.lang.String: void <init>(char[],int,int)>($r2, $i2, $i1);
+
+        goto label11;
+
+     label10:
+        $r2 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char[],int,int)>($r2, $i2, $i1);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label11:
+        $i2 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = $i2 + $i1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i1;
+
+        return $r3;
+    }
+
+    private int peekKeyword()
+    {
+        char $c1, $c6;
+        com.google.gson.stream.JsonReader r0;
+        byte $b2;
+        int $i0, $i3, $i4, $i5;
+        char[] $r1;
+        java.lang.String $r2, $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $c1 = $r1[$i0];
+
+        $i0 = (int) $c1;
+
+        if $i0 == 116 goto label06;
+
+        $i0 = (int) $c1;
+
+        if $i0 != 84 goto label01;
+
+        goto label06;
+
+     label01:
+        $i0 = (int) $c1;
+
+        if $i0 == 102 goto label05;
+
+        $i0 = (int) $c1;
+
+        if $i0 != 70 goto label02;
+
+        goto label05;
+
+     label02:
+        $i0 = (int) $c1;
+
+        if $i0 == 110 goto label04;
+
+        $i0 = (int) $c1;
+
+        if $i0 != 78 goto label03;
+
+        goto label04;
+
+     label03:
+        return 0;
+
+     label04:
+        $b2 = 7;
+
+        $r2 = "null";
+
+        $r3 = "NULL";
+
+        goto label07;
+
+     label05:
+        $b2 = 6;
+
+        $r2 = "false";
+
+        $r3 = "FALSE";
+
+        goto label07;
+
+     label06:
+        $b2 = 5;
+
+        $r2 = "true";
+
+        $r3 = "TRUE";
+
+     label07:
+        $i0 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        $i3 = 1;
+
+     label08:
+        if $i3 >= $i0 goto label11;
+
+        $i4 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i4 = $i4 + $i3;
+
+        $i5 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        if $i4 < $i5 goto label09;
+
+        $i4 = $i3 + 1;
+
+        $z0 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean fillBuffer(int)>($i4);
+
+        if $z0 != 0 goto label09;
+
+        return 0;
+
+     label09:
+        $r1 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i4 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i4 = $i4 + $i3;
+
+        $c1 = $r1[$i4];
+
+        $c6 = virtualinvoke $r2.<java.lang.String: char charAt(int)>($i3);
+
+        $i4 = (int) $c1;
+
+        $i5 = (int) $c6;
+
+        if $i4 == $i5 goto label10;
+
+        $c6 = virtualinvoke $r3.<java.lang.String: char charAt(int)>($i3);
+
+        $i4 = (int) $c1;
+
+        $i5 = (int) $c6;
+
+        if $i4 == $i5 goto label10;
+
+        return 0;
+
+     label10:
+        $i3 = $i3 + 1;
+
+        goto label08;
+
+     label11:
+        $i3 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i3 = $i3 + $i0;
+
+        $i4 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        if $i3 < $i4 goto label12;
+
+        $i3 = $i0 + 1;
+
+        $z0 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean fillBuffer(int)>($i3);
+
+        if $z0 == 0 goto label13;
+
+     label12:
+        $r1 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i3 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i3 = $i3 + $i0;
+
+        $c1 = $r1[$i3];
+
+        $z0 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean isLiteral(char)>($c1);
+
+        if $z0 == 0 goto label13;
+
+        return 0;
+
+     label13:
+        $i3 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i0 = $i3 + $i0;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i0;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = $b2;
+
+        return $b2;
+    }
+
+    private int peekNumber()
+    {
+        long $l4, $l8, $l9;
+        com.google.gson.stream.JsonReader r0;
+        byte $b3, $b7;
+        int $i0, $i1, $i2, $i5, $i10;
+        boolean $z0, $z1, $z2;
+        char $c6;
+        char[] $r1;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        $i1 = 0;
+
+        $b3 = 0;
+
+        $z0 = 1;
+
+        $l4 = 0L;
+
+        $z1 = 0;
+
+     label01:
+        $i5 = $i0 + $i1;
+
+        if $i5 != $i2 goto label04;
+
+        $i0 = lengthof $r1;
+
+        if $i1 != $i0 goto label02;
+
+        return 0;
+
+     label02:
+        $i0 = $i1 + 1;
+
+        $z2 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean fillBuffer(int)>($i0);
+
+        if $z2 != 0 goto label03;
+
+        goto label18;
+
+     label03:
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+     label04:
+        $i5 = $i0 + $i1;
+
+        $c6 = $r1[$i5];
+
+        $i5 = (int) $c6;
+
+        if $i5 == 43 goto label35;
+
+        $i5 = (int) $c6;
+
+        if $i5 == 69 goto label32;
+
+        $i5 = (int) $c6;
+
+        if $i5 == 101 goto label32;
+
+        $i5 = (int) $c6;
+
+        if $i5 == 45 goto label29;
+
+        $i5 = (int) $c6;
+
+        if $i5 == 46 goto label27;
+
+        $i5 = (int) $c6;
+
+        if $i5 < 48 goto label17;
+
+        $i5 = (int) $c6;
+
+        if $i5 <= 57 goto label05;
+
+        goto label17;
+
+     label05:
+        if $b3 == 1 goto label15;
+
+        if $b3 != 0 goto label06;
+
+        goto label15;
+
+     label06:
+        if $b3 != 2 goto label11;
+
+        $b7 = $l4 cmp 0L;
+
+        if $b7 != 0 goto label07;
+
+        return 0;
+
+     label07:
+        $l8 = 10L * $l4;
+
+        $i5 = (int) $c6;
+
+        $i10 = -48;
+
+        $i5 = $i5 + $i10;
+
+        $l9 = (long) $i5;
+
+        $l8 = $l8 - $l9;
+
+        $b7 = $l4 cmp -922337203685477580L;
+
+        $i5 = (int) $b7;
+
+        if $i5 > 0 goto label09;
+
+        $b7 = $l4 cmp -922337203685477580L;
+
+        if $b7 != 0 goto label08;
+
+        $b7 = $l8 cmp $l4;
+
+        $i5 = (int) $b7;
+
+        if $i5 >= 0 goto label08;
+
+        goto label09;
+
+     label08:
+        $z2 = 0;
+
+        goto label10;
+
+     label09:
+        $z2 = 1;
+
+     label10:
+        $l4 = $l8;
+
+        $z0 = $z2 & $z0;
+
+        goto label13;
+
+     label11:
+        if $b3 != 3 goto label12;
+
+        $b3 = 4;
+
+        goto label16;
+
+     label12:
+        if $b3 == 5 goto label14;
+
+        if $b3 != 6 goto label13;
+
+        goto label14;
+
+     label13:
+        goto label16;
+
+     label14:
+        $b3 = 7;
+
+        goto label16;
+
+     label15:
+        $i5 = (int) $c6;
+
+        $i10 = -48;
+
+        $i5 = $i5 + $i10;
+
+        $i5 = neg $i5;
+
+        $l4 = (long) $i5;
+
+        $b3 = 2;
+
+     label16:
+        goto label37;
+
+     label17:
+        $z2 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean isLiteral(char)>($c6);
+
+        if $z2 != 0 goto label26;
+
+     label18:
+        if $b3 != 2 goto label23;
+
+        if $z0 == 0 goto label23;
+
+        $b7 = $l4 cmp -9223372036854775808L;
+
+        if $b7 != 0 goto label19;
+
+        if $z1 == 0 goto label23;
+
+     label19:
+        $b7 = $l4 cmp 0L;
+
+        if $b7 != 0 goto label20;
+
+        if $z1 != 0 goto label23;
+
+     label20:
+        if $z1 == 0 goto label21;
+
+        goto label22;
+
+     label21:
+        $l4 = neg $l4;
+
+     label22:
+        r0.<com.google.gson.stream.JsonReader: long peekedLong> = $l4;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = $i0 + $i1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i1;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 15;
+
+        return 15;
+
+     label23:
+        if $b3 == 2 goto label25;
+
+        if $b3 == 4 goto label25;
+
+        if $b3 != 7 goto label24;
+
+        goto label25;
+
+     label24:
+        return 0;
+
+     label25:
+        r0.<com.google.gson.stream.JsonReader: int peekedNumberLength> = $i1;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 16;
+
+        return 16;
+
+     label26:
+        return 0;
+
+     label27:
+        if $b3 != 2 goto label28;
+
+        $b3 = 3;
+
+        goto label37;
+
+     label28:
+        return 0;
+
+     label29:
+        if $b3 != 0 goto label30;
+
+        $b3 = 1;
+
+        $z1 = 1;
+
+        goto label37;
+
+     label30:
+        if $b3 != 5 goto label31;
+
+        goto label36;
+
+     label31:
+        return 0;
+
+     label32:
+        if $b3 == 2 goto label34;
+
+        if $b3 != 4 goto label33;
+
+        goto label34;
+
+     label33:
+        return 0;
+
+     label34:
+        $b3 = 5;
+
+        goto label37;
+
+     label35:
+        if $b3 != 5 goto label38;
+
+     label36:
+        $b3 = 6;
+
+     label37:
+        $i1 = $i1 + 1;
+
+        goto label01;
+
+     label38:
+        return 0;
+    }
+
+    private void push(int)
+    {
+        java.lang.String[] $r4, $r5;
+        com.google.gson.stream.JsonReader r0;
+        int[] $r1, $r2, $r3;
+        int $i0, $i1, $i2;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i0 := @parameter0: int;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: int[] stack>;
+
+        $i2 = lengthof $r1;
+
+        if $i1 != $i2 goto label1;
+
+        $i2 = $i1 * 2;
+
+        $r2 = newarray (int)[$i2];
+
+        $i2 = $i1 * 2;
+
+        $r3 = newarray (int)[$i2];
+
+        $i2 = $i1 * 2;
+
+        $r4 = newarray (java.lang.String)[$i2];
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, 0, $r2, 0, $i1);
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, 0, $r3, 0, $i1);
+
+        $r5 = r0.<com.google.gson.stream.JsonReader: java.lang.String[] pathNames>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r5, 0, $r4, 0, $i1);
+
+        r0.<com.google.gson.stream.JsonReader: int[] stack> = $r2;
+
+        r0.<com.google.gson.stream.JsonReader: int[] pathIndices> = $r3;
+
+        r0.<com.google.gson.stream.JsonReader: java.lang.String[] pathNames> = $r4;
+
+     label1:
+        $r2 = r0.<com.google.gson.stream.JsonReader: int[] stack>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i2 = $i1 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int stackSize> = $i2;
+
+        $r2[$i1] = $i0;
+
+        return;
+    }
+
+    private char readEscapeCharacter()
+    {
+        char $c2, $c3;
+        java.lang.NumberFormatException $r7;
+        com.google.gson.stream.JsonReader r0;
+        java.lang.NullPointerException $r4;
+        int $i0, $i1, $i4, $i5;
+        char[] $r1;
+        java.lang.StringBuilder $r2, $r5;
+        java.lang.String $r3, $r6;
+        boolean $z0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        if $i0 != $i1 goto label02;
+
+        $z0 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean fillBuffer(int)>(1);
+
+        if $z0 == 0 goto label01;
+
+        goto label02;
+
+     label01:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: java.io.IOException syntaxError(java.lang.String)>("Unterminated escape sequence");
+
+        $r4 = new java.lang.NullPointerException;
+
+        specialinvoke $r4.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r4;
+
+     label02:
+        $r1 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = $i0 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i1;
+
+        $c2 = $r1[$i0];
+
+        $i0 = (int) $c2;
+
+        if $i0 == 10 goto label19;
+
+        $i0 = (int) $c2;
+
+        if $i0 == 34 goto label20;
+
+        $i0 = (int) $c2;
+
+        if $i0 == 39 goto label20;
+
+        $i0 = (int) $c2;
+
+        if $i0 == 47 goto label20;
+
+        $i0 = (int) $c2;
+
+        if $i0 == 92 goto label20;
+
+        $i0 = (int) $c2;
+
+        if $i0 == 98 goto label18;
+
+        $i0 = (int) $c2;
+
+        if $i0 == 102 goto label17;
+
+        $i0 = (int) $c2;
+
+        if $i0 == 110 goto label16;
+
+        $i0 = (int) $c2;
+
+        if $i0 == 114 goto label15;
+
+        $i0 = (int) $c2;
+
+        if $i0 == 116 goto label14;
+
+        $i0 = (int) $c2;
+
+        if $i0 != 117 goto label13;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i0 = $i0 + 4;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        if $i0 <= $i1 goto label04;
+
+        $z0 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean fillBuffer(int)>(4);
+
+        if $z0 == 0 goto label03;
+
+        goto label04;
+
+     label03:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: java.io.IOException syntaxError(java.lang.String)>("Unterminated escape sequence");
+
+        $r4 = new java.lang.NullPointerException;
+
+        specialinvoke $r4.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r4;
+
+     label04:
+        $c3 = 0;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = $i0 + 4;
+
+     label05:
+        if $i0 >= $i1 goto label12;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $c2 = $r1[$i0];
+
+        $i4 = $c3 << 4;
+
+        $c3 = (char) $i4;
+
+        $i4 = (int) $c2;
+
+        if $i4 < 48 goto label07;
+
+        $i4 = (int) $c2;
+
+        if $i4 > 57 goto label07;
+
+        $i4 = (int) $c2;
+
+        $i5 = -48;
+
+        $i4 = $i4 + $i5;
+
+     label06:
+        $i5 = (int) $c3;
+
+        $i4 = $i5 + $i4;
+
+        $c3 = (char) $i4;
+
+        goto label10;
+
+     label07:
+        $i4 = (int) $c2;
+
+        if $i4 < 97 goto label09;
+
+        $i4 = (int) $c2;
+
+        if $i4 > 102 goto label09;
+
+        $i4 = (int) $c2;
+
+        $i5 = -97;
+
+        $i4 = $i4 + $i5;
+
+     label08:
+        $i4 = $i4 + 10;
+
+        goto label06;
+
+     label09:
+        $i4 = (int) $c2;
+
+        if $i4 < 65 goto label11;
+
+        $i4 = (int) $c2;
+
+        if $i4 > 70 goto label11;
+
+        $i4 = (int) $c2;
+
+        $i5 = -65;
+
+        $i4 = $i4 + $i5;
+
+        goto label08;
+
+     label10:
+        $i0 = $i0 + 1;
+
+        goto label05;
+
+     label11:
+        $r7 = new java.lang.NumberFormatException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        $r2 = $r5;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\\u");
+
+        $r6 = new java.lang.String;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        specialinvoke $r6.<java.lang.String: void <init>(char[],int,int)>($r1, $i0, 4);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r7.<java.lang.NumberFormatException: void <init>(java.lang.String)>($r3);
+
+        throw $r7;
+
+     label12:
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i0 = $i0 + 4;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i0;
+
+        return $c3;
+
+     label13:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: java.io.IOException syntaxError(java.lang.String)>("Invalid escape sequence");
+
+        $r4 = new java.lang.NullPointerException;
+
+        specialinvoke $r4.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r4;
+
+     label14:
+        return 9;
+
+     label15:
+        return 13;
+
+     label16:
+        return 10;
+
+     label17:
+        return 12;
+
+     label18:
+        return 8;
+
+     label19:
+        $i0 = r0.<com.google.gson.stream.JsonReader: int lineNumber>;
+
+        $i0 = $i0 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int lineNumber> = $i0;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        r0.<com.google.gson.stream.JsonReader: int lineStart> = $i0;
+
+     label20:
+        return $c2;
+    }
+
+    private void skipQuotedValue(char)
+    {
+        char $c1, $c4;
+        com.google.gson.stream.JsonReader r0;
+        java.lang.NullPointerException $r2;
+        int $i0, $i2, $i3, $i5;
+        char[] $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $c1 := @parameter0: char;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+     label1:
+        $i2 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i3 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+     label2:
+        if $i2 >= $i3 goto label6;
+
+        $i0 = $i2 + 1;
+
+        $c4 = $r1[$i2];
+
+        $i2 = (int) $c4;
+
+        $i5 = (int) $c1;
+
+        if $i2 != $i5 goto label3;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i0;
+
+        return;
+
+     label3:
+        $i2 = (int) $c4;
+
+        if $i2 != 92 goto label4;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i0;
+
+        specialinvoke r0.<com.google.gson.stream.JsonReader: char readEscapeCharacter()>();
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i3 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        goto label2;
+
+     label4:
+        $i2 = (int) $c4;
+
+        if $i2 != 10 goto label5;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int lineNumber>;
+
+        $i2 = $i2 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int lineNumber> = $i2;
+
+        r0.<com.google.gson.stream.JsonReader: int lineStart> = $i0;
+
+     label5:
+        $i2 = $i0;
+
+        goto label2;
+
+     label6:
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i2;
+
+        $z0 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean fillBuffer(int)>(1);
+
+        if $z0 == 0 goto label7;
+
+        goto label1;
+
+     label7:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: java.io.IOException syntaxError(java.lang.String)>("Unterminated string");
+
+        goto label8;
+
+     label8:
+        $r2 = new java.lang.NullPointerException;
+
+        specialinvoke $r2.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r2;
+    }
+
+    private boolean skipTo(java.lang.String)
+    {
+        char $c4, $c5;
+        com.google.gson.stream.JsonReader r0;
+        int $i0, $i1, $i2, $i3;
+        char[] $r2;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+     label1:
+        $i1 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i2 = $i1 + $i0;
+
+        $i3 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        $i1 = 0;
+
+        if $i2 <= $i3 goto label3;
+
+        $z0 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean fillBuffer(int)>($i0);
+
+        if $z0 == 0 goto label2;
+
+        goto label3;
+
+     label2:
+        return 0;
+
+     label3:
+        $r2 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $c4 = $r2[$i2];
+
+        $i3 = (int) $c4;
+
+        if $i3 != 10 goto label4;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int lineNumber>;
+
+        $i1 = $i1 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int lineNumber> = $i1;
+
+        $i1 = $i2 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int lineStart> = $i1;
+
+        goto label5;
+
+     label4:
+        if $i1 >= $i0 goto label7;
+
+        $r2 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i2 = $i2 + $i1;
+
+        $c4 = $r2[$i2];
+
+        $c5 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i1);
+
+        $i2 = (int) $c4;
+
+        $i3 = (int) $c5;
+
+        if $i2 == $i3 goto label6;
+
+     label5:
+        $i1 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = $i1 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i1;
+
+        goto label1;
+
+     label6:
+        $i1 = $i1 + 1;
+
+        goto label4;
+
+     label7:
+        return 1;
+    }
+
+    private void skipToEndOfLine()
+    {
+        int $i0, $i1;
+        char[] $r1;
+        char $c2;
+        com.google.gson.stream.JsonReader r0;
+        boolean $z0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+     label1:
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        if $i0 < $i1 goto label2;
+
+        $z0 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean fillBuffer(int)>(1);
+
+        if $z0 == 0 goto label4;
+
+     label2:
+        $r1 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i0 = $i1 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i0;
+
+        $c2 = $r1[$i1];
+
+        $i0 = (int) $c2;
+
+        if $i0 != 10 goto label3;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int lineNumber>;
+
+        $i0 = $i0 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int lineNumber> = $i0;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        r0.<com.google.gson.stream.JsonReader: int lineStart> = $i0;
+
+        return;
+
+     label3:
+        $i0 = (int) $c2;
+
+        if $i0 != 13 goto label1;
+
+     label4:
+        return;
+    }
+
+    private void skipUnquotedValue()
+    {
+        char $c4;
+        com.google.gson.stream.JsonReader r0;
+        int $i0, $i1, $i2, $i3;
+        char[] $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+     label1:
+        $i1 = 0;
+
+     label2:
+        $i2 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i3 = $i2 + $i1;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        if $i3 >= $i0 goto label6;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i0 = $i2 + $i1;
+
+        $c4 = $r1[$i0];
+
+        $i0 = (int) $c4;
+
+        if $i0 == 9 goto label5;
+
+        $i0 = (int) $c4;
+
+        if $i0 == 10 goto label5;
+
+        $i0 = (int) $c4;
+
+        if $i0 == 12 goto label5;
+
+        $i0 = (int) $c4;
+
+        if $i0 == 13 goto label5;
+
+        $i0 = (int) $c4;
+
+        if $i0 == 32 goto label5;
+
+        $i0 = (int) $c4;
+
+        if $i0 == 35 goto label4;
+
+        $i0 = (int) $c4;
+
+        if $i0 == 44 goto label5;
+
+        $i0 = (int) $c4;
+
+        if $i0 == 47 goto label4;
+
+        $i0 = (int) $c4;
+
+        if $i0 == 61 goto label4;
+
+        $i0 = (int) $c4;
+
+        if $i0 == 123 goto label5;
+
+        $i0 = (int) $c4;
+
+        if $i0 == 125 goto label5;
+
+        $i0 = (int) $c4;
+
+        if $i0 == 58 goto label5;
+
+        $i0 = (int) $c4;
+
+        if $i0 == 59 goto label4;
+
+        $i0 = (int) $c4;
+
+        lookupswitch($i0)
+        {
+            case 91: goto label5;
+            case 92: goto label4;
+            case 93: goto label5;
+            default: goto label3;
+        };
+
+     label3:
+        $i1 = $i1 + 1;
+
+        goto label2;
+
+     label4:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void checkLenient()>();
+
+     label5:
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = $i0 + $i1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i1;
+
+        return;
+
+     label6:
+        $i1 = $i2 + $i1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i1;
+
+        $z0 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean fillBuffer(int)>(1);
+
+        if $z0 != 0 goto label1;
+
+        return;
+    }
+
+    private java.io.IOException syntaxError(java.lang.String)
+    {
+        com.google.gson.stream.MalformedJsonException $r1;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r3;
+        com.google.gson.stream.JsonReader r0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r1 = new com.google.gson.stream.MalformedJsonException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r1.<com.google.gson.stream.MalformedJsonException: void <init>(java.lang.String)>($r3);
+
+        throw $r1;
+    }
+
+    public void beginArray()
+    {
+        java.lang.IllegalStateException $r2;
+        com.google.gson.stream.JsonToken $r4;
+        int[] $r1;
+        int $i0;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r5;
+        com.google.gson.stream.JsonReader r0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int peeked>;
+
+        if $i0 != 0 goto label1;
+
+        $i0 = virtualinvoke r0.<com.google.gson.stream.JsonReader: int doPeek()>();
+
+     label1:
+        if $i0 != 3 goto label2;
+
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void push(int)>(1);
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i0 = $i0 - 1;
+
+        $r1[$i0] = 0;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        return;
+
+     label2:
+        $r2 = new java.lang.IllegalStateException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected BEGIN_ARRAY but was ");
+
+        $r4 = virtualinvoke r0.<com.google.gson.stream.JsonReader: com.google.gson.stream.JsonToken peek()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        $r5 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r5);
+
+        throw $r2;
+    }
+
+    public void beginObject()
+    {
+        java.lang.IllegalStateException $r1;
+        com.google.gson.stream.JsonToken $r3;
+        int $i0;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r4;
+        com.google.gson.stream.JsonReader r0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int peeked>;
+
+        if $i0 != 0 goto label1;
+
+        $i0 = virtualinvoke r0.<com.google.gson.stream.JsonReader: int doPeek()>();
+
+     label1:
+        if $i0 != 1 goto label2;
+
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void push(int)>(3);
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        return;
+
+     label2:
+        $r1 = new java.lang.IllegalStateException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected BEGIN_OBJECT but was ");
+
+        $r3 = virtualinvoke r0.<com.google.gson.stream.JsonReader: com.google.gson.stream.JsonToken peek()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        $r4 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r1.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r4);
+
+        throw $r1;
+    }
+
+    public void close()
+    {
+        java.io.Reader $r2;
+        int[] $r1;
+        com.google.gson.stream.JsonReader r0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: int[] stack>;
+
+        $r1[0] = 8;
+
+        r0.<com.google.gson.stream.JsonReader: int stackSize> = 1;
+
+        $r2 = r0.<com.google.gson.stream.JsonReader: java.io.Reader in>;
+
+        virtualinvoke $r2.<java.io.Reader: void close()>();
+
+        return;
+    }
+
+    public int doPeek()
+    {
+        java.lang.IllegalStateException $r4;
+        char $c3;
+        com.google.gson.stream.JsonReader r0;
+        java.lang.NullPointerException $r3;
+        int[] $r1;
+        int $i0, $i1, $i2;
+        char[] $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: int[] stack>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i1 = -1;
+
+        $i1 = $i0 + $i1;
+
+        $i1 = $r1[$i1];
+
+        if $i1 != 1 goto label01;
+
+        $i0 = $i0 - 1;
+
+        $r1[$i0] = 2;
+
+        goto label13;
+
+     label01:
+        if $i1 != 2 goto label04;
+
+        $i0 = specialinvoke r0.<com.google.gson.stream.JsonReader: int nextNonWhitespace(boolean)>(1);
+
+        if $i0 == 44 goto label13;
+
+        if $i0 == 59 goto label03;
+
+        if $i0 != 93 goto label02;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 4;
+
+        return 4;
+
+     label02:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: java.io.IOException syntaxError(java.lang.String)>("Unterminated array");
+
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r3;
+
+     label03:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void checkLenient()>();
+
+        goto label13;
+
+     label04:
+        if $i1 == 3 goto label26;
+
+        if $i1 != 5 goto label05;
+
+        goto label26;
+
+     label05:
+        if $i1 != 4 goto label08;
+
+        $i0 = $i0 - 1;
+
+        $r1[$i0] = 5;
+
+        $i0 = specialinvoke r0.<com.google.gson.stream.JsonReader: int nextNonWhitespace(boolean)>(1);
+
+        if $i0 == 58 goto label13;
+
+        if $i0 != 61 goto label07;
+
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void checkLenient()>();
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int limit>;
+
+        if $i0 < $i2 goto label06;
+
+        $z0 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean fillBuffer(int)>(1);
+
+        if $z0 == 0 goto label13;
+
+     label06:
+        $r2 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $c3 = $r2[$i0];
+
+        $i2 = (int) $c3;
+
+        if $i2 != 62 goto label13;
+
+        $i0 = $i0 + 1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i0;
+
+        goto label13;
+
+     label07:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: java.io.IOException syntaxError(java.lang.String)>("Expected \':\'");
+
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r3;
+
+     label08:
+        if $i1 != 6 goto label10;
+
+        $z0 = r0.<com.google.gson.stream.JsonReader: boolean lenient>;
+
+        if $z0 == 0 goto label09;
+
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void consumeNonExecutePrefix()>();
+
+     label09:
+        $r1 = r0.<com.google.gson.stream.JsonReader: int[] stack>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i0 = $i0 - 1;
+
+        $r1[$i0] = 7;
+
+        goto label13;
+
+     label10:
+        if $i1 != 7 goto label12;
+
+        $i0 = specialinvoke r0.<com.google.gson.stream.JsonReader: int nextNonWhitespace(boolean)>(0);
+
+        $i2 = -1;
+
+        if $i0 != $i2 goto label11;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 17;
+
+        return 17;
+
+     label11:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void checkLenient()>();
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i0 = $i0 - 1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i0;
+
+        goto label13;
+
+     label12:
+        if $i1 == 8 goto label25;
+
+     label13:
+        $i0 = specialinvoke r0.<com.google.gson.stream.JsonReader: int nextNonWhitespace(boolean)>(1);
+
+        if $i0 == 34 goto label24;
+
+        if $i0 == 39 goto label23;
+
+        if $i0 == 44 goto label20;
+
+        if $i0 == 59 goto label20;
+
+        if $i0 == 91 goto label19;
+
+        if $i0 == 93 goto label18;
+
+        if $i0 == 123 goto label17;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = $i1 - 1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i1;
+
+        $i1 = specialinvoke r0.<com.google.gson.stream.JsonReader: int peekKeyword()>();
+
+        if $i1 == 0 goto label14;
+
+        return $i1;
+
+     label14:
+        $i1 = specialinvoke r0.<com.google.gson.stream.JsonReader: int peekNumber()>();
+
+        if $i1 == 0 goto label15;
+
+        return $i1;
+
+     label15:
+        $r2 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $c3 = $r2[$i1];
+
+        $z0 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean isLiteral(char)>($c3);
+
+        if $z0 == 0 goto label16;
+
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void checkLenient()>();
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 10;
+
+        return 10;
+
+     label16:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: java.io.IOException syntaxError(java.lang.String)>("Expected value");
+
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r3;
+
+     label17:
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 1;
+
+        return 1;
+
+     label18:
+        if $i1 != 1 goto label20;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 4;
+
+        return 4;
+
+     label19:
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 3;
+
+        return 3;
+
+     label20:
+        if $i1 == 1 goto label22;
+
+        if $i1 != 2 goto label21;
+
+        goto label22;
+
+     label21:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: java.io.IOException syntaxError(java.lang.String)>("Unexpected value");
+
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r3;
+
+     label22:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void checkLenient()>();
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = $i1 - 1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i1;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 7;
+
+        return 7;
+
+     label23:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void checkLenient()>();
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 8;
+
+        return 8;
+
+     label24:
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 9;
+
+        return 9;
+
+     label25:
+        $r4 = new java.lang.IllegalStateException;
+
+        specialinvoke $r4.<java.lang.IllegalStateException: void <init>(java.lang.String)>("JsonReader is closed");
+
+        throw $r4;
+
+     label26:
+        $r1 = r0.<com.google.gson.stream.JsonReader: int[] stack>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i0 = $i0 - 1;
+
+        $r1[$i0] = 4;
+
+        if $i1 != 5 goto label29;
+
+        $i0 = specialinvoke r0.<com.google.gson.stream.JsonReader: int nextNonWhitespace(boolean)>(1);
+
+        if $i0 == 44 goto label29;
+
+        if $i0 == 59 goto label28;
+
+        if $i0 != 125 goto label27;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 2;
+
+        return 2;
+
+     label27:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: java.io.IOException syntaxError(java.lang.String)>("Unterminated object");
+
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r3;
+
+     label28:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void checkLenient()>();
+
+     label29:
+        $i0 = specialinvoke r0.<com.google.gson.stream.JsonReader: int nextNonWhitespace(boolean)>(1);
+
+        if $i0 == 34 goto label34;
+
+        if $i0 == 39 goto label33;
+
+        if $i0 == 125 goto label31;
+
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void checkLenient()>();
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = $i1 - 1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i1;
+
+        $c3 = (char) $i0;
+
+        $z0 = specialinvoke r0.<com.google.gson.stream.JsonReader: boolean isLiteral(char)>($c3);
+
+        if $z0 == 0 goto label30;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 14;
+
+        return 14;
+
+     label30:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: java.io.IOException syntaxError(java.lang.String)>("Expected name");
+
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r3;
+
+     label31:
+        if $i1 == 5 goto label32;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 2;
+
+        return 2;
+
+     label32:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: java.io.IOException syntaxError(java.lang.String)>("Expected name");
+
+        $r3 = new java.lang.NullPointerException;
+
+        specialinvoke $r3.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r3;
+
+     label33:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void checkLenient()>();
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 12;
+
+        return 12;
+
+     label34:
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 13;
+
+        return 13;
+    }
+
+    public void endArray()
+    {
+        java.lang.IllegalStateException $r6;
+        com.google.gson.stream.JsonReader r0;
+        com.google.gson.stream.JsonToken $r3;
+        int[] $r1;
+        int $i0, $i1;
+        java.lang.StringBuilder $r2, $r5;
+        java.lang.String $r4;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int peeked>;
+
+        if $i0 != 0 goto label1;
+
+        $i0 = virtualinvoke r0.<com.google.gson.stream.JsonReader: int doPeek()>();
+
+     label1:
+        if $i0 != 4 goto label2;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        r0.<com.google.gson.stream.JsonReader: int stackSize> = $i0;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        $i1 = $r1[$i0];
+
+        $i1 = $i1 + 1;
+
+        $r1[$i0] = $i1;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        return;
+
+     label2:
+        $r6 = new java.lang.IllegalStateException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        $r2 = $r5;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected END_ARRAY but was ");
+
+        $r3 = virtualinvoke r0.<com.google.gson.stream.JsonReader: com.google.gson.stream.JsonToken peek()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        $r4 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r4);
+
+        throw $r6;
+    }
+
+    public void endObject()
+    {
+        java.lang.IllegalStateException $r7;
+        java.lang.String[] $r1;
+        com.google.gson.stream.JsonReader r0;
+        com.google.gson.stream.JsonToken $r4;
+        int[] $r2;
+        int $i0, $i1;
+        java.lang.StringBuilder $r3, $r6;
+        java.lang.String $r5;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int peeked>;
+
+        if $i0 != 0 goto label1;
+
+        $i0 = virtualinvoke r0.<com.google.gson.stream.JsonReader: int doPeek()>();
+
+     label1:
+        if $i0 != 2 goto label2;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        r0.<com.google.gson.stream.JsonReader: int stackSize> = $i0;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: java.lang.String[] pathNames>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $r1[$i0] = null;
+
+        $r2 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        $i1 = $r2[$i0];
+
+        $i1 = $i1 + 1;
+
+        $r2[$i0] = $i1;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        return;
+
+     label2:
+        $r7 = new java.lang.IllegalStateException;
+
+        $r6 = new java.lang.StringBuilder;
+
+        $r3 = $r6;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected END_OBJECT but was ");
+
+        $r4 = virtualinvoke r0.<com.google.gson.stream.JsonReader: com.google.gson.stream.JsonToken peek()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        $r5 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r7.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r5);
+
+        throw $r7;
+    }
+
+    public java.lang.String getPath()
+    {
+        java.lang.String[] $r4;
+        com.google.gson.stream.JsonReader r0;
+        int[] $r3;
+        int $i0, $i1, $i2;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(36);
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label5;
+
+        $r3 = r0.<com.google.gson.stream.JsonReader: int[] stack>;
+
+        $i2 = $r3[$i1];
+
+        if $i2 == 1 goto label3;
+
+        if $i2 == 2 goto label3;
+
+        if $i2 == 3 goto label2;
+
+        if $i2 == 4 goto label2;
+
+        if $i2 == 5 goto label2;
+
+        goto label4;
+
+     label2:
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(46);
+
+        $r4 = r0.<com.google.gson.stream.JsonReader: java.lang.String[] pathNames>;
+
+        $r1 = $r4[$i1];
+
+        if $r1 == null goto label4;
+
+        $r1 = $r4[$i1];
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        goto label4;
+
+     label3:
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(91);
+
+        $r3 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i2 = $r3[$i1];
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(93);
+
+     label4:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label5:
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r1;
+    }
+
+    public boolean hasNext()
+    {
+        int $i0;
+        com.google.gson.stream.JsonReader r0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int peeked>;
+
+        if $i0 != 0 goto label1;
+
+        $i0 = virtualinvoke r0.<com.google.gson.stream.JsonReader: int doPeek()>();
+
+     label1:
+        if $i0 == 2 goto label2;
+
+        if $i0 == 4 goto label2;
+
+        return 1;
+
+     label2:
+        return 0;
+    }
+
+    public final boolean isLenient()
+    {
+        com.google.gson.stream.JsonReader r0;
+        boolean z0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        z0 = r0.<com.google.gson.stream.JsonReader: boolean lenient>;
+
+        return z0;
+    }
+
+    public java.lang.String locationString()
+    {
+        int $i0, $i1, $i2;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2;
+        com.google.gson.stream.JsonReader r0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int lineNumber>;
+
+        $i0 = $i0 + 1;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int lineStart>;
+
+        $i1 = $i1 - $i2;
+
+        $i1 = $i1 + 1;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" at line ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" column ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" path ");
+
+        $r2 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String getPath()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r2;
+    }
+
+    public boolean nextBoolean()
+    {
+        java.lang.IllegalStateException $r2;
+        com.google.gson.stream.JsonReader r0;
+        com.google.gson.stream.JsonToken $r4;
+        int[] $r1;
+        int $i0, $i1;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r5;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int peeked>;
+
+        if $i0 != 0 goto label1;
+
+        $i0 = virtualinvoke r0.<com.google.gson.stream.JsonReader: int doPeek()>();
+
+     label1:
+        if $i0 != 5 goto label2;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i0 = $i0 - 1;
+
+        $i1 = $r1[$i0];
+
+        $i1 = $i1 + 1;
+
+        $r1[$i0] = $i1;
+
+        return 1;
+
+     label2:
+        if $i0 != 6 goto label3;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i0 = $i0 - 1;
+
+        $i1 = $r1[$i0];
+
+        $i1 = $i1 + 1;
+
+        $r1[$i0] = $i1;
+
+        return 0;
+
+     label3:
+        $r2 = new java.lang.IllegalStateException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected a boolean but was ");
+
+        $r4 = virtualinvoke r0.<com.google.gson.stream.JsonReader: com.google.gson.stream.JsonToken peek()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        $r5 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r5);
+
+        throw $r2;
+    }
+
+    public double nextDouble()
+    {
+        java.lang.IllegalStateException $r8;
+        long $l2;
+        com.google.gson.stream.JsonReader r0;
+        int[] $r1;
+        int $i0, $i1;
+        java.lang.String $r2, $r6;
+        double $d0;
+        boolean $z0;
+        char $c3;
+        com.google.gson.stream.MalformedJsonException $r9;
+        com.google.gson.stream.JsonToken $r5;
+        char[] $r3;
+        java.lang.StringBuilder $r4, $r7;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int peeked>;
+
+        if $i0 != 0 goto label01;
+
+        $i0 = virtualinvoke r0.<com.google.gson.stream.JsonReader: int doPeek()>();
+
+     label01:
+        if $i0 != 15 goto label02;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        $i1 = $r1[$i0];
+
+        $i1 = $i1 + 1;
+
+        $r1[$i0] = $i1;
+
+        $l2 = r0.<com.google.gson.stream.JsonReader: long peekedLong>;
+
+        $d0 = (double) $l2;
+
+        return $d0;
+
+     label02:
+        if $i0 != 16 goto label03;
+
+        $r6 = new java.lang.String;
+
+        $r3 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int peekedNumberLength>;
+
+        specialinvoke $r6.<java.lang.String: void <init>(char[],int,int)>($r3, $i1, $i0);
+
+        r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString> = $r6;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int peekedNumberLength>;
+
+        $i0 = $i0 + $i1;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i0;
+
+        goto label10;
+
+     label03:
+        if $i0 == 8 goto label07;
+
+        if $i0 != 9 goto label04;
+
+        goto label07;
+
+     label04:
+        if $i0 != 10 goto label05;
+
+        $r2 = specialinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String nextUnquotedValue()>();
+
+        r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString> = $r2;
+
+        goto label10;
+
+     label05:
+        if $i0 != 11 goto label06;
+
+        goto label10;
+
+     label06:
+        $r8 = new java.lang.IllegalStateException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        $r4 = $r7;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected a double but was ");
+
+        $r5 = virtualinvoke r0.<com.google.gson.stream.JsonReader: com.google.gson.stream.JsonToken peek()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r5);
+
+        $r2 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r8.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r2);
+
+        throw $r8;
+
+     label07:
+        if $i0 != 8 goto label08;
+
+        $c3 = 39;
+
+        goto label09;
+
+     label08:
+        $c3 = 34;
+
+     label09:
+        $r2 = specialinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String nextQuotedValue(char)>($c3);
+
+        r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString> = $r2;
+
+     label10:
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 11;
+
+        $r2 = r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString>;
+
+        $d0 = staticinvoke <java.lang.Double: double parseDouble(java.lang.String)>($r2);
+
+        $z0 = r0.<com.google.gson.stream.JsonReader: boolean lenient>;
+
+        if $z0 != 0 goto label12;
+
+        $z0 = staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        if $z0 != 0 goto label11;
+
+        $z0 = staticinvoke <java.lang.Double: boolean isInfinite(double)>($d0);
+
+        if $z0 != 0 goto label11;
+
+        goto label12;
+
+     label11:
+        $r9 = new com.google.gson.stream.MalformedJsonException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        $r4 = $r7;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("JSON forbids NaN and infinities: ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(double)>($d0);
+
+        $r2 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r9.<com.google.gson.stream.MalformedJsonException: void <init>(java.lang.String)>($r2);
+
+        throw $r9;
+
+     label12:
+        r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString> = null;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        $i1 = $r1[$i0];
+
+        $i1 = $i1 + 1;
+
+        $r1[$i0] = $i1;
+
+        return $d0;
+    }
+
+    public int nextInt()
+    {
+        java.lang.IllegalStateException $r10;
+        long $l1, $l2;
+        com.google.gson.stream.JsonReader r0;
+        byte $b3;
+        int[] $r2;
+        int $i0, $i4, $i5;
+        java.lang.String $r4, $r9;
+        double $d0, $d1;
+        java.lang.NumberFormatException $r1, $r8;
+        char $c6;
+        com.google.gson.stream.JsonToken $r6;
+        char[] $r5;
+        java.lang.StringBuilder $r3, $r7;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int peeked>;
+
+        if $i0 != 0 goto label01;
+
+        $i0 = virtualinvoke r0.<com.google.gson.stream.JsonReader: int doPeek()>();
+
+     label01:
+        if $i0 != 15 goto label03;
+
+        $l1 = r0.<com.google.gson.stream.JsonReader: long peekedLong>;
+
+        $i0 = (int) $l1;
+
+        $l2 = (long) $i0;
+
+        $b3 = $l1 cmp $l2;
+
+        if $b3 != 0 goto label02;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        $r2 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i4 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i5 = -1;
+
+        $i4 = $i4 + $i5;
+
+        $i5 = $r2[$i4];
+
+        $i5 = $i5 + 1;
+
+        $r2[$i4] = $i5;
+
+        return $i0;
+
+     label02:
+        $r8 = new java.lang.NumberFormatException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        $r3 = $r7;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected an int but was ");
+
+        $l1 = r0.<com.google.gson.stream.JsonReader: long peekedLong>;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l1);
+
+        $r4 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r8.<java.lang.NumberFormatException: void <init>(java.lang.String)>($r4);
+
+        throw $r8;
+
+     label03:
+        if $i0 != 16 goto label04;
+
+        $r9 = new java.lang.String;
+
+        $r5 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i4 = r0.<com.google.gson.stream.JsonReader: int peekedNumberLength>;
+
+        specialinvoke $r9.<java.lang.String: void <init>(char[],int,int)>($r5, $i0, $i4);
+
+        r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString> = $r9;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i4 = r0.<com.google.gson.stream.JsonReader: int peekedNumberLength>;
+
+        $i0 = $i0 + $i4;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i0;
+
+        goto label13;
+
+     label04:
+        if $i0 == 8 goto label06;
+
+        if $i0 == 9 goto label06;
+
+        if $i0 != 10 goto label05;
+
+        goto label06;
+
+     label05:
+        $r10 = new java.lang.IllegalStateException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        $r3 = $r7;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected an int but was ");
+
+        $r6 = virtualinvoke r0.<com.google.gson.stream.JsonReader: com.google.gson.stream.JsonToken peek()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r6);
+
+        $r4 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r10.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r4);
+
+        throw $r10;
+
+     label06:
+        if $i0 != 10 goto label07;
+
+        $r4 = specialinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String nextUnquotedValue()>();
+
+        r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString> = $r4;
+
+        goto label10;
+
+     label07:
+        if $i0 != 8 goto label08;
+
+        $c6 = 39;
+
+        goto label09;
+
+     label08:
+        $c6 = 34;
+
+     label09:
+        $r4 = specialinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String nextQuotedValue(char)>($c6);
+
+        r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString> = $r4;
+
+     label10:
+        $r4 = r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString>;
+
+     label11:
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r4);
+
+     label12:
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        $r2 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i4 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i5 = -1;
+
+        $i4 = $i4 + $i5;
+
+        $i5 = $r2[$i4];
+
+        $i5 = $i5 + 1;
+
+        $r2[$i4] = $i5;
+
+        return $i0;
+
+     label13:
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 11;
+
+        $r4 = r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString>;
+
+        $d0 = staticinvoke <java.lang.Double: double parseDouble(java.lang.String)>($r4);
+
+        $i0 = (int) $d0;
+
+        $d1 = (double) $i0;
+
+        $b3 = $d1 cmpl $d0;
+
+        if $b3 != 0 goto label14;
+
+        r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString> = null;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        $r2 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i4 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i5 = -1;
+
+        $i4 = $i4 + $i5;
+
+        $i5 = $r2[$i4];
+
+        $i5 = $i5 + 1;
+
+        $r2[$i4] = $i5;
+
+        return $i0;
+
+     label14:
+        $r8 = new java.lang.NumberFormatException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        $r3 = $r7;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected an int but was ");
+
+        $r4 = r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString>;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r4 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r8.<java.lang.NumberFormatException: void <init>(java.lang.String)>($r4);
+
+        throw $r8;
+
+     label15:
+        $r1 := @caughtexception;
+
+        goto label13;
+
+        catch java.lang.NumberFormatException from label11 to label12 with label15;
+    }
+
+    public long nextLong()
+    {
+        java.lang.IllegalStateException $r9;
+        long $l4;
+        com.google.gson.stream.JsonReader r0;
+        byte $b0;
+        int[] $r2;
+        int $i1, $i2;
+        java.lang.String $r3, $r7;
+        double $d0, $d1;
+        java.lang.NumberFormatException $r1, $r10;
+        char $c3;
+        com.google.gson.stream.JsonToken $r6;
+        char[] $r4;
+        java.lang.StringBuilder $r5, $r8;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int peeked>;
+
+        if $i1 != 0 goto label01;
+
+        $i1 = virtualinvoke r0.<com.google.gson.stream.JsonReader: int doPeek()>();
+
+     label01:
+        if $i1 != 15 goto label02;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        $r2 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        $i2 = $r2[$i1];
+
+        $i2 = $i2 + 1;
+
+        $r2[$i1] = $i2;
+
+        $l4 = r0.<com.google.gson.stream.JsonReader: long peekedLong>;
+
+        return $l4;
+
+     label02:
+        if $i1 != 16 goto label03;
+
+        $r7 = new java.lang.String;
+
+        $r4 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int peekedNumberLength>;
+
+        specialinvoke $r7.<java.lang.String: void <init>(char[],int,int)>($r4, $i1, $i2);
+
+        r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString> = $r7;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int peekedNumberLength>;
+
+        $i1 = $i1 + $i2;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i1;
+
+        goto label12;
+
+     label03:
+        if $i1 == 8 goto label05;
+
+        if $i1 == 9 goto label05;
+
+        if $i1 != 10 goto label04;
+
+        goto label05;
+
+     label04:
+        $r9 = new java.lang.IllegalStateException;
+
+        $r8 = new java.lang.StringBuilder;
+
+        $r5 = $r8;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected a long but was ");
+
+        $r6 = virtualinvoke r0.<com.google.gson.stream.JsonReader: com.google.gson.stream.JsonToken peek()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r6);
+
+        $r3 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r9.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r3);
+
+        throw $r9;
+
+     label05:
+        if $i1 != 10 goto label06;
+
+        $r3 = specialinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String nextUnquotedValue()>();
+
+        r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString> = $r3;
+
+        goto label09;
+
+     label06:
+        if $i1 != 8 goto label07;
+
+        $c3 = 39;
+
+        goto label08;
+
+     label07:
+        $c3 = 34;
+
+     label08:
+        $r3 = specialinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String nextQuotedValue(char)>($c3);
+
+        r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString> = $r3;
+
+     label09:
+        $r3 = r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString>;
+
+     label10:
+        $l4 = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>($r3);
+
+     label11:
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        $r2 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        $i2 = $r2[$i1];
+
+        $i2 = $i2 + 1;
+
+        $r2[$i1] = $i2;
+
+        return $l4;
+
+     label12:
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 11;
+
+        $r3 = r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString>;
+
+        $d0 = staticinvoke <java.lang.Double: double parseDouble(java.lang.String)>($r3);
+
+        $l4 = (long) $d0;
+
+        $d1 = (double) $l4;
+
+        $b0 = $d1 cmpl $d0;
+
+        if $b0 != 0 goto label13;
+
+        r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString> = null;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        $r2 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        $i2 = $r2[$i1];
+
+        $i2 = $i2 + 1;
+
+        $r2[$i1] = $i2;
+
+        return $l4;
+
+     label13:
+        $r10 = new java.lang.NumberFormatException;
+
+        $r8 = new java.lang.StringBuilder;
+
+        $r5 = $r8;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected a long but was ");
+
+        $r3 = r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString>;
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r10.<java.lang.NumberFormatException: void <init>(java.lang.String)>($r3);
+
+        throw $r10;
+
+     label14:
+        $r1 := @caughtexception;
+
+        goto label12;
+
+        catch java.lang.NumberFormatException from label10 to label11 with label14;
+    }
+
+    public java.lang.String nextName()
+    {
+        java.lang.IllegalStateException $r6;
+        java.lang.String[] $r2;
+        com.google.gson.stream.JsonReader r0;
+        com.google.gson.stream.JsonToken $r4;
+        int $i0, $i1;
+        java.lang.StringBuilder $r3, $r5;
+        java.lang.String $r1;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int peeked>;
+
+        if $i0 != 0 goto label1;
+
+        $i0 = virtualinvoke r0.<com.google.gson.stream.JsonReader: int doPeek()>();
+
+     label1:
+        if $i0 != 14 goto label2;
+
+        $r1 = specialinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String nextUnquotedValue()>();
+
+        goto label4;
+
+     label2:
+        if $i0 != 12 goto label3;
+
+        $r1 = specialinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String nextQuotedValue(char)>(39);
+
+        goto label4;
+
+     label3:
+        if $i0 != 13 goto label5;
+
+        $r1 = specialinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String nextQuotedValue(char)>(34);
+
+     label4:
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        $r2 = r0.<com.google.gson.stream.JsonReader: java.lang.String[] pathNames>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        $r2[$i0] = $r1;
+
+        return $r1;
+
+     label5:
+        $r6 = new java.lang.IllegalStateException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        $r3 = $r5;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected a name but was ");
+
+        $r4 = virtualinvoke r0.<com.google.gson.stream.JsonReader: com.google.gson.stream.JsonToken peek()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r4);
+
+        $r1 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r1);
+
+        throw $r6;
+    }
+
+    public void nextNull()
+    {
+        java.lang.IllegalStateException $r6;
+        com.google.gson.stream.JsonReader r0;
+        com.google.gson.stream.JsonToken $r3;
+        int[] $r1;
+        int $i0, $i1;
+        java.lang.StringBuilder $r2, $r5;
+        java.lang.String $r4;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int peeked>;
+
+        if $i0 != 0 goto label1;
+
+        $i0 = virtualinvoke r0.<com.google.gson.stream.JsonReader: int doPeek()>();
+
+     label1:
+        if $i0 != 7 goto label2;
+
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        $i1 = $r1[$i0];
+
+        $i1 = $i1 + 1;
+
+        $r1[$i0] = $i1;
+
+        return;
+
+     label2:
+        $r6 = new java.lang.IllegalStateException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        $r2 = $r5;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected null but was ");
+
+        $r3 = virtualinvoke r0.<com.google.gson.stream.JsonReader: com.google.gson.stream.JsonToken peek()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        $r4 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r4);
+
+        throw $r6;
+    }
+
+    public java.lang.String nextString()
+    {
+        java.lang.IllegalStateException $r8;
+        long $l1;
+        com.google.gson.stream.JsonReader r0;
+        com.google.gson.stream.JsonToken $r5;
+        int[] $r3;
+        int $i0, $i2;
+        char[] $r2;
+        java.lang.StringBuilder $r4, $r7;
+        java.lang.String $r1, $r6;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int peeked>;
+
+        if $i0 != 0 goto label1;
+
+        $i0 = virtualinvoke r0.<com.google.gson.stream.JsonReader: int doPeek()>();
+
+     label1:
+        if $i0 != 10 goto label2;
+
+        $r1 = specialinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String nextUnquotedValue()>();
+
+        goto label7;
+
+     label2:
+        if $i0 != 8 goto label3;
+
+        $r1 = specialinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String nextQuotedValue(char)>(39);
+
+        goto label7;
+
+     label3:
+        if $i0 != 9 goto label4;
+
+        $r1 = specialinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String nextQuotedValue(char)>(34);
+
+        goto label7;
+
+     label4:
+        if $i0 != 11 goto label5;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString>;
+
+        r0.<com.google.gson.stream.JsonReader: java.lang.String peekedString> = null;
+
+        goto label7;
+
+     label5:
+        if $i0 != 15 goto label6;
+
+        $l1 = r0.<com.google.gson.stream.JsonReader: long peekedLong>;
+
+        $r1 = staticinvoke <java.lang.Long: java.lang.String toString(long)>($l1);
+
+        goto label7;
+
+     label6:
+        if $i0 != 16 goto label8;
+
+        $r6 = new java.lang.String;
+
+        $r1 = $r6;
+
+        $r2 = r0.<com.google.gson.stream.JsonReader: char[] buffer>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int peekedNumberLength>;
+
+        specialinvoke $r6.<java.lang.String: void <init>(char[],int,int)>($r2, $i0, $i2);
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int peekedNumberLength>;
+
+        $i0 = $i0 + $i2;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i0;
+
+     label7:
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        $r3 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i2 = -1;
+
+        $i0 = $i0 + $i2;
+
+        $i2 = $r3[$i0];
+
+        $i2 = $i2 + 1;
+
+        $r3[$i0] = $i2;
+
+        return $r1;
+
+     label8:
+        $r8 = new java.lang.IllegalStateException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        $r4 = $r7;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected a string but was ");
+
+        $r5 = virtualinvoke r0.<com.google.gson.stream.JsonReader: com.google.gson.stream.JsonToken peek()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r5);
+
+        $r1 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r8.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r1);
+
+        throw $r8;
+    }
+
+    public com.google.gson.stream.JsonToken peek()
+    {
+        com.google.gson.stream.JsonToken r2;
+        int $i0;
+        java.lang.AssertionError $r1;
+        com.google.gson.stream.JsonReader r0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int peeked>;
+
+        if $i0 != 0 goto label01;
+
+        $i0 = virtualinvoke r0.<com.google.gson.stream.JsonReader: int doPeek()>();
+
+     label01:
+        lookupswitch($i0)
+        {
+            case 1: goto label12;
+            case 2: goto label11;
+            case 3: goto label10;
+            case 4: goto label09;
+            case 5: goto label08;
+            case 6: goto label08;
+            case 7: goto label07;
+            case 8: goto label06;
+            case 9: goto label06;
+            case 10: goto label06;
+            case 11: goto label06;
+            case 12: goto label05;
+            case 13: goto label05;
+            case 14: goto label05;
+            case 15: goto label04;
+            case 16: goto label04;
+            case 17: goto label03;
+            default: goto label02;
+        };
+
+     label02:
+        $r1 = new java.lang.AssertionError;
+
+        specialinvoke $r1.<java.lang.AssertionError: void <init>()>();
+
+        throw $r1;
+
+     label03:
+        r2 = <com.google.gson.stream.JsonToken: com.google.gson.stream.JsonToken END_DOCUMENT>;
+
+        return r2;
+
+     label04:
+        r2 = <com.google.gson.stream.JsonToken: com.google.gson.stream.JsonToken NUMBER>;
+
+        return r2;
+
+     label05:
+        r2 = <com.google.gson.stream.JsonToken: com.google.gson.stream.JsonToken NAME>;
+
+        return r2;
+
+     label06:
+        r2 = <com.google.gson.stream.JsonToken: com.google.gson.stream.JsonToken STRING>;
+
+        return r2;
+
+     label07:
+        r2 = <com.google.gson.stream.JsonToken: com.google.gson.stream.JsonToken NULL>;
+
+        return r2;
+
+     label08:
+        r2 = <com.google.gson.stream.JsonToken: com.google.gson.stream.JsonToken BOOLEAN>;
+
+        return r2;
+
+     label09:
+        r2 = <com.google.gson.stream.JsonToken: com.google.gson.stream.JsonToken END_ARRAY>;
+
+        return r2;
+
+     label10:
+        r2 = <com.google.gson.stream.JsonToken: com.google.gson.stream.JsonToken BEGIN_ARRAY>;
+
+        return r2;
+
+     label11:
+        r2 = <com.google.gson.stream.JsonToken: com.google.gson.stream.JsonToken END_OBJECT>;
+
+        return r2;
+
+     label12:
+        r2 = <com.google.gson.stream.JsonToken: com.google.gson.stream.JsonToken BEGIN_OBJECT>;
+
+        return r2;
+    }
+
+    public final void setLenient(boolean)
+    {
+        com.google.gson.stream.JsonReader r0;
+        boolean $z0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $z0 := @parameter0: boolean;
+
+        r0.<com.google.gson.stream.JsonReader: boolean lenient> = $z0;
+
+        return;
+    }
+
+    public void skipValue()
+    {
+        int[] $r1;
+        int $i0, $i1, $i2;
+        java.lang.String[] $r2;
+        com.google.gson.stream.JsonReader r0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $i1 = 0;
+
+     label01:
+        $i0 = r0.<com.google.gson.stream.JsonReader: int peeked>;
+
+        if $i0 != 0 goto label02;
+
+        $i0 = virtualinvoke r0.<com.google.gson.stream.JsonReader: int doPeek()>();
+
+     label02:
+        if $i0 != 3 goto label04;
+
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void push(int)>(1);
+
+     label03:
+        $i1 = $i1 + 1;
+
+        goto label15;
+
+     label04:
+        if $i0 != 1 goto label05;
+
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void push(int)>(3);
+
+        goto label03;
+
+     label05:
+        if $i0 != 4 goto label07;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i0 = $i0 - 1;
+
+        r0.<com.google.gson.stream.JsonReader: int stackSize> = $i0;
+
+     label06:
+        $i0 = -1;
+
+        $i1 = $i1 + $i0;
+
+        goto label15;
+
+     label07:
+        if $i0 != 2 goto label08;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i0 = $i0 - 1;
+
+        r0.<com.google.gson.stream.JsonReader: int stackSize> = $i0;
+
+        goto label06;
+
+     label08:
+        if $i0 == 14 goto label14;
+
+        if $i0 != 10 goto label09;
+
+        goto label14;
+
+     label09:
+        if $i0 == 8 goto label13;
+
+        if $i0 != 12 goto label10;
+
+        goto label13;
+
+     label10:
+        if $i0 == 9 goto label12;
+
+        if $i0 != 13 goto label11;
+
+        goto label12;
+
+     label11:
+        if $i0 != 16 goto label15;
+
+        $i0 = r0.<com.google.gson.stream.JsonReader: int pos>;
+
+        $i2 = r0.<com.google.gson.stream.JsonReader: int peekedNumberLength>;
+
+        $i0 = $i0 + $i2;
+
+        r0.<com.google.gson.stream.JsonReader: int pos> = $i0;
+
+        goto label15;
+
+     label12:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void skipQuotedValue(char)>(34);
+
+        goto label15;
+
+     label13:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void skipQuotedValue(char)>(39);
+
+        goto label15;
+
+     label14:
+        specialinvoke r0.<com.google.gson.stream.JsonReader: void skipUnquotedValue()>();
+
+     label15:
+        r0.<com.google.gson.stream.JsonReader: int peeked> = 0;
+
+        if $i1 != 0 goto label01;
+
+        $r1 = r0.<com.google.gson.stream.JsonReader: int[] pathIndices>;
+
+        $i1 = r0.<com.google.gson.stream.JsonReader: int stackSize>;
+
+        $i0 = -1;
+
+        $i0 = $i1 + $i0;
+
+        $i2 = $r1[$i0];
+
+        $i2 = $i2 + 1;
+
+        $r1[$i0] = $i2;
+
+        $r2 = r0.<com.google.gson.stream.JsonReader: java.lang.String[] pathNames>;
+
+        $i1 = $i1 - 1;
+
+        $r2[$i1] = "null";
+
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        java.lang.StringBuilder $r1;
+        java.lang.Class $r2;
+        java.lang.String $r3;
+        com.google.gson.stream.JsonReader r0;
+
+        r0 := @this: com.google.gson.stream.JsonReader;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke r0.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r3 = virtualinvoke $r2.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke r0.<com.google.gson.stream.JsonReader: java.lang.String locationString()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r3;
+    }
+}

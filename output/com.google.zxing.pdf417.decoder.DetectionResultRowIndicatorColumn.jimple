@@ -1,0 +1,801 @@
+public final class com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn extends com.google.zxing.pdf417.decoder.DetectionResultColumn
+{
+    public final boolean isLeft;
+
+    public void <init>(com.google.zxing.pdf417.decoder.BoundingBox, boolean)
+    {
+        com.google.zxing.pdf417.decoder.BoundingBox $r1;
+        com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn r0;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn;
+
+        $r1 := @parameter0: com.google.zxing.pdf417.decoder.BoundingBox;
+
+        $z0 := @parameter1: boolean;
+
+        specialinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultColumn: void <init>(com.google.zxing.pdf417.decoder.BoundingBox)>($r1);
+
+        r0.<com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn: boolean isLeft> = $z0;
+
+        return;
+    }
+
+    private void removeIncorrectCodewords(com.google.zxing.pdf417.decoder.Codeword[], com.google.zxing.pdf417.decoder.BarcodeMetadata)
+    {
+        com.google.zxing.pdf417.decoder.Codeword $r3, $r4;
+        com.google.zxing.pdf417.decoder.BarcodeMetadata $r2;
+        int $i0, $i1, $i2, $i3, $i4;
+        com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn r0;
+        com.google.zxing.pdf417.decoder.Codeword[] $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn;
+
+        $r1 := @parameter0: com.google.zxing.pdf417.decoder.Codeword[];
+
+        $r2 := @parameter1: com.google.zxing.pdf417.decoder.BarcodeMetadata;
+
+        $i0 = 0;
+
+     label01:
+        $i1 = lengthof $r1;
+
+        if $i0 >= $i1 goto label10;
+
+        $r3 = $r1[$i0];
+
+        $r4 = $r1[$i0];
+
+        if $r4 != null goto label02;
+
+        goto label09;
+
+     label02:
+        $i1 = virtualinvoke $r3.<com.google.zxing.pdf417.decoder.Codeword: int getValue()>();
+
+        $i1 = $i1 % 30;
+
+        $i2 = virtualinvoke $r3.<com.google.zxing.pdf417.decoder.Codeword: int getRowNumber()>();
+
+        $i3 = $i2;
+
+        $i4 = virtualinvoke $r2.<com.google.zxing.pdf417.decoder.BarcodeMetadata: int getRowCount()>();
+
+        if $i2 <= $i4 goto label03;
+
+        $r1[$i0] = null;
+
+        goto label09;
+
+     label03:
+        $z0 = r0.<com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn: boolean isLeft>;
+
+        if $z0 != 0 goto label04;
+
+        $i3 = $i2 + 2;
+
+     label04:
+        $i2 = $i3 % 3;
+
+        if $i2 == 0 goto label08;
+
+        if $i2 == 1 goto label06;
+
+        if $i2 == 2 goto label05;
+
+        goto label09;
+
+     label05:
+        $i1 = $i1 + 1;
+
+        $i2 = virtualinvoke $r2.<com.google.zxing.pdf417.decoder.BarcodeMetadata: int getColumnCount()>();
+
+        if $i1 == $i2 goto label09;
+
+        $r1[$i0] = null;
+
+        goto label09;
+
+     label06:
+        $i2 = $i1 / 3;
+
+        $i3 = virtualinvoke $r2.<com.google.zxing.pdf417.decoder.BarcodeMetadata: int getErrorCorrectionLevel()>();
+
+        if $i2 != $i3 goto label07;
+
+        $i1 = $i1 % 3;
+
+        $i2 = virtualinvoke $r2.<com.google.zxing.pdf417.decoder.BarcodeMetadata: int getRowCountLowerPart()>();
+
+        if $i1 == $i2 goto label09;
+
+     label07:
+        $r1[$i0] = null;
+
+        goto label09;
+
+     label08:
+        $i1 = $i1 * 3;
+
+        $i1 = $i1 + 1;
+
+        $i2 = virtualinvoke $r2.<com.google.zxing.pdf417.decoder.BarcodeMetadata: int getRowCountUpperPart()>();
+
+        if $i1 == $i2 goto label09;
+
+        $r1[$i0] = null;
+
+     label09:
+        $i0 = $i0 + 1;
+
+        goto label01;
+
+     label10:
+        return;
+    }
+
+    public int adjustCompleteIndicatorColumnRowNumbers(com.google.zxing.pdf417.decoder.BarcodeMetadata)
+    {
+        com.google.zxing.ResultPoint $r4, $r5;
+        com.google.zxing.pdf417.decoder.Codeword $r6, $r7;
+        com.google.zxing.pdf417.decoder.BoundingBox $r3;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7;
+        com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn r0;
+        com.google.zxing.pdf417.decoder.Codeword[] $r2;
+        boolean $z0;
+        double $d0;
+        com.google.zxing.pdf417.decoder.BarcodeMetadata $r1;
+        float $f0, $f1;
+
+        r0 := @this: com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn;
+
+        $r1 := @parameter0: com.google.zxing.pdf417.decoder.BarcodeMetadata;
+
+        $r2 = virtualinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultColumn: com.google.zxing.pdf417.decoder.Codeword[] getCodewords()>();
+
+        virtualinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn: void setRowNumbers()>();
+
+        specialinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn: void removeIncorrectCodewords(com.google.zxing.pdf417.decoder.Codeword[],com.google.zxing.pdf417.decoder.BarcodeMetadata)>($r2, $r1);
+
+        $r3 = virtualinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultColumn: com.google.zxing.pdf417.decoder.BoundingBox getBoundingBox()>();
+
+        $z0 = r0.<com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn: boolean isLeft>;
+
+        if $z0 == 0 goto label01;
+
+        $r4 = virtualinvoke $r3.<com.google.zxing.pdf417.decoder.BoundingBox: com.google.zxing.ResultPoint getTopLeft()>();
+
+        goto label02;
+
+     label01:
+        $r4 = virtualinvoke $r3.<com.google.zxing.pdf417.decoder.BoundingBox: com.google.zxing.ResultPoint getTopRight()>();
+
+     label02:
+        $z0 = r0.<com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn: boolean isLeft>;
+
+        if $z0 == 0 goto label03;
+
+        $r5 = virtualinvoke $r3.<com.google.zxing.pdf417.decoder.BoundingBox: com.google.zxing.ResultPoint getBottomLeft()>();
+
+        goto label04;
+
+     label03:
+        $r5 = virtualinvoke $r3.<com.google.zxing.pdf417.decoder.BoundingBox: com.google.zxing.ResultPoint getBottomRight()>();
+
+     label04:
+        $f0 = virtualinvoke $r4.<com.google.zxing.ResultPoint: float getY()>();
+
+        $i0 = (int) $f0;
+
+        $i1 = virtualinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultColumn: int imageRowToCodewordIndex(int)>($i0);
+
+        $i0 = $i1;
+
+        $f0 = virtualinvoke $r5.<com.google.zxing.ResultPoint: float getY()>();
+
+        $i2 = (int) $f0;
+
+        $i2 = virtualinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultColumn: int imageRowToCodewordIndex(int)>($i2);
+
+        $i1 = $i2 - $i1;
+
+        $f0 = (float) $i1;
+
+        $i1 = virtualinvoke $r1.<com.google.zxing.pdf417.decoder.BarcodeMetadata: int getRowCount()>();
+
+        $f1 = (float) $i1;
+
+        $f0 = $f0 / $f1;
+
+        $i3 = -1;
+
+        $i4 = 0;
+
+        $i1 = 1;
+
+     label05:
+        if $i0 >= $i2 goto label21;
+
+        $r6 = $r2[$i0];
+
+        if $r6 != null goto label06;
+
+        goto label20;
+
+     label06:
+        $r6 = $r2[$i0];
+
+        $i5 = virtualinvoke $r6.<com.google.zxing.pdf417.decoder.Codeword: int getRowNumber()>();
+
+        $i5 = $i5 - $i3;
+
+        if $i5 != 0 goto label07;
+
+        $i4 = $i4 + 1;
+
+        goto label20;
+
+     label07:
+        if $i5 != 1 goto label09;
+
+        $i1 = staticinvoke <java.lang.Math: int max(int,int)>($i1, $i4);
+
+        $i3 = virtualinvoke $r6.<com.google.zxing.pdf417.decoder.Codeword: int getRowNumber()>();
+
+     label08:
+        $i4 = 1;
+
+        goto label20;
+
+     label09:
+        if $i5 < 0 goto label19;
+
+        $i6 = virtualinvoke $r6.<com.google.zxing.pdf417.decoder.Codeword: int getRowNumber()>();
+
+        $i7 = virtualinvoke $r1.<com.google.zxing.pdf417.decoder.BarcodeMetadata: int getRowCount()>();
+
+        if $i6 >= $i7 goto label19;
+
+        if $i5 <= $i0 goto label10;
+
+        goto label19;
+
+     label10:
+        if $i1 <= 2 goto label11;
+
+        $i6 = -2;
+
+        $i6 = $i1 + $i6;
+
+        $i5 = $i5 * $i6;
+
+     label11:
+        if $i5 < $i0 goto label12;
+
+        $z0 = 1;
+
+        goto label13;
+
+     label12:
+        $z0 = 0;
+
+     label13:
+        $i6 = 1;
+
+     label14:
+        if $i6 > $i5 goto label17;
+
+        if $z0 != 0 goto label17;
+
+        $i7 = $i0 - $i6;
+
+        $r7 = $r2[$i7];
+
+        if $r7 == null goto label15;
+
+        $z0 = 1;
+
+        goto label16;
+
+     label15:
+        $z0 = 0;
+
+     label16:
+        $i6 = $i6 + 1;
+
+        goto label14;
+
+     label17:
+        if $z0 == 0 goto label18;
+
+        $r2[$i0] = null;
+
+        goto label20;
+
+     label18:
+        $i3 = virtualinvoke $r6.<com.google.zxing.pdf417.decoder.Codeword: int getRowNumber()>();
+
+        goto label08;
+
+     label19:
+        $r2[$i0] = null;
+
+     label20:
+        $i0 = $i0 + 1;
+
+        goto label05;
+
+     label21:
+        $d0 = (double) $f0;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        $d0 = $d0 + 0.5;
+
+        $i0 = (int) $d0;
+
+        return $i0;
+    }
+
+    public int adjustIncompleteIndicatorColumnRowNumbers(com.google.zxing.pdf417.decoder.BarcodeMetadata)
+    {
+        com.google.zxing.ResultPoint $r3, $r4;
+        com.google.zxing.pdf417.decoder.Codeword $r6;
+        com.google.zxing.pdf417.decoder.BoundingBox $r2;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6;
+        com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn r0;
+        com.google.zxing.pdf417.decoder.Codeword[] $r5;
+        boolean $z0;
+        double $d0;
+        com.google.zxing.pdf417.decoder.BarcodeMetadata $r1;
+        float $f0, $f1;
+
+        r0 := @this: com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn;
+
+        $r1 := @parameter0: com.google.zxing.pdf417.decoder.BarcodeMetadata;
+
+        $r2 = virtualinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultColumn: com.google.zxing.pdf417.decoder.BoundingBox getBoundingBox()>();
+
+        $z0 = r0.<com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn: boolean isLeft>;
+
+        if $z0 == 0 goto label01;
+
+        $r3 = virtualinvoke $r2.<com.google.zxing.pdf417.decoder.BoundingBox: com.google.zxing.ResultPoint getTopLeft()>();
+
+        goto label02;
+
+     label01:
+        $r3 = virtualinvoke $r2.<com.google.zxing.pdf417.decoder.BoundingBox: com.google.zxing.ResultPoint getTopRight()>();
+
+     label02:
+        $z0 = r0.<com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn: boolean isLeft>;
+
+        if $z0 == 0 goto label03;
+
+        $r4 = virtualinvoke $r2.<com.google.zxing.pdf417.decoder.BoundingBox: com.google.zxing.ResultPoint getBottomLeft()>();
+
+        goto label04;
+
+     label03:
+        $r4 = virtualinvoke $r2.<com.google.zxing.pdf417.decoder.BoundingBox: com.google.zxing.ResultPoint getBottomRight()>();
+
+     label04:
+        $f0 = virtualinvoke $r3.<com.google.zxing.ResultPoint: float getY()>();
+
+        $i0 = (int) $f0;
+
+        $i1 = virtualinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultColumn: int imageRowToCodewordIndex(int)>($i0);
+
+        $i0 = $i1;
+
+        $f0 = virtualinvoke $r4.<com.google.zxing.ResultPoint: float getY()>();
+
+        $i2 = (int) $f0;
+
+        $i2 = virtualinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultColumn: int imageRowToCodewordIndex(int)>($i2);
+
+        $i1 = $i2 - $i1;
+
+        $f0 = (float) $i1;
+
+        $i1 = virtualinvoke $r1.<com.google.zxing.pdf417.decoder.BarcodeMetadata: int getRowCount()>();
+
+        $f1 = (float) $i1;
+
+        $f0 = $f0 / $f1;
+
+        $r5 = virtualinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultColumn: com.google.zxing.pdf417.decoder.Codeword[] getCodewords()>();
+
+        $i3 = -1;
+
+        $i4 = 0;
+
+        $i1 = 1;
+
+     label05:
+        if $i0 >= $i2 goto label12;
+
+        $r6 = $r5[$i0];
+
+        if $r6 != null goto label06;
+
+        goto label11;
+
+     label06:
+        $r6 = $r5[$i0];
+
+        virtualinvoke $r6.<com.google.zxing.pdf417.decoder.Codeword: void setRowNumberAsRowIndicatorColumn()>();
+
+        $i5 = virtualinvoke $r6.<com.google.zxing.pdf417.decoder.Codeword: int getRowNumber()>();
+
+        $i5 = $i5 - $i3;
+
+        if $i5 != 0 goto label07;
+
+        $i4 = $i4 + 1;
+
+        goto label11;
+
+     label07:
+        if $i5 != 1 goto label09;
+
+        $i1 = staticinvoke <java.lang.Math: int max(int,int)>($i1, $i4);
+
+        $i3 = virtualinvoke $r6.<com.google.zxing.pdf417.decoder.Codeword: int getRowNumber()>();
+
+     label08:
+        $i4 = 1;
+
+        goto label11;
+
+     label09:
+        $i5 = virtualinvoke $r6.<com.google.zxing.pdf417.decoder.Codeword: int getRowNumber()>();
+
+        $i6 = virtualinvoke $r1.<com.google.zxing.pdf417.decoder.BarcodeMetadata: int getRowCount()>();
+
+        if $i5 < $i6 goto label10;
+
+        $r5[$i0] = null;
+
+        goto label11;
+
+     label10:
+        $i3 = virtualinvoke $r6.<com.google.zxing.pdf417.decoder.Codeword: int getRowNumber()>();
+
+        goto label08;
+
+     label11:
+        $i0 = $i0 + 1;
+
+        goto label05;
+
+     label12:
+        $d0 = (double) $f0;
+
+        staticinvoke <java.lang.Double: boolean isNaN(double)>($d0);
+
+        $d0 = $d0 + 0.5;
+
+        $i0 = (int) $d0;
+
+        return $i0;
+    }
+
+    public com.google.zxing.pdf417.decoder.BarcodeMetadata getBarcodeMetadata()
+    {
+        com.google.zxing.pdf417.decoder.Codeword $r6;
+        com.google.zxing.pdf417.decoder.BarcodeValue $r2, $r3, $r4, $r5;
+        int[] $r7;
+        com.google.zxing.pdf417.decoder.BarcodeMetadata $r8;
+        int $i0, $i1, $i2, $i3, $i4;
+        com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn r0;
+        com.google.zxing.pdf417.decoder.Codeword[] $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn;
+
+        $r1 = virtualinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultColumn: com.google.zxing.pdf417.decoder.Codeword[] getCodewords()>();
+
+        $r2 = new com.google.zxing.pdf417.decoder.BarcodeValue;
+
+        specialinvoke $r2.<com.google.zxing.pdf417.decoder.BarcodeValue: void <init>()>();
+
+        $r3 = new com.google.zxing.pdf417.decoder.BarcodeValue;
+
+        specialinvoke $r3.<com.google.zxing.pdf417.decoder.BarcodeValue: void <init>()>();
+
+        $r4 = new com.google.zxing.pdf417.decoder.BarcodeValue;
+
+        specialinvoke $r4.<com.google.zxing.pdf417.decoder.BarcodeValue: void <init>()>();
+
+        $r5 = new com.google.zxing.pdf417.decoder.BarcodeValue;
+
+        specialinvoke $r5.<com.google.zxing.pdf417.decoder.BarcodeValue: void <init>()>();
+
+        $i0 = lengthof $r1;
+
+        $i1 = 0;
+
+     label01:
+        if $i1 >= $i0 goto label08;
+
+        $r6 = $r1[$i1];
+
+        if $r6 != null goto label02;
+
+        goto label07;
+
+     label02:
+        virtualinvoke $r6.<com.google.zxing.pdf417.decoder.Codeword: void setRowNumberAsRowIndicatorColumn()>();
+
+        $i2 = virtualinvoke $r6.<com.google.zxing.pdf417.decoder.Codeword: int getValue()>();
+
+        $i2 = $i2 % 30;
+
+        $i3 = virtualinvoke $r6.<com.google.zxing.pdf417.decoder.Codeword: int getRowNumber()>();
+
+        $i4 = $i3;
+
+        $z0 = r0.<com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn: boolean isLeft>;
+
+        if $z0 != 0 goto label03;
+
+        $i4 = $i3 + 2;
+
+     label03:
+        $i3 = $i4 % 3;
+
+        if $i3 == 0 goto label06;
+
+        if $i3 == 1 goto label05;
+
+        if $i3 == 2 goto label04;
+
+        goto label07;
+
+     label04:
+        $i2 = $i2 + 1;
+
+        virtualinvoke $r2.<com.google.zxing.pdf417.decoder.BarcodeValue: void setValue(int)>($i2);
+
+        goto label07;
+
+     label05:
+        $i3 = $i2 / 3;
+
+        virtualinvoke $r5.<com.google.zxing.pdf417.decoder.BarcodeValue: void setValue(int)>($i3);
+
+        $i2 = $i2 % 3;
+
+        virtualinvoke $r4.<com.google.zxing.pdf417.decoder.BarcodeValue: void setValue(int)>($i2);
+
+        goto label07;
+
+     label06:
+        $i2 = $i2 * 3;
+
+        $i2 = $i2 + 1;
+
+        virtualinvoke $r3.<com.google.zxing.pdf417.decoder.BarcodeValue: void setValue(int)>($i2);
+
+     label07:
+        $i1 = $i1 + 1;
+
+        goto label01;
+
+     label08:
+        $r7 = virtualinvoke $r2.<com.google.zxing.pdf417.decoder.BarcodeValue: int[] getValue()>();
+
+        $i0 = lengthof $r7;
+
+        if $i0 == 0 goto label10;
+
+        $r7 = virtualinvoke $r3.<com.google.zxing.pdf417.decoder.BarcodeValue: int[] getValue()>();
+
+        $i0 = lengthof $r7;
+
+        if $i0 == 0 goto label10;
+
+        $r7 = virtualinvoke $r4.<com.google.zxing.pdf417.decoder.BarcodeValue: int[] getValue()>();
+
+        $i0 = lengthof $r7;
+
+        if $i0 == 0 goto label10;
+
+        $r7 = virtualinvoke $r5.<com.google.zxing.pdf417.decoder.BarcodeValue: int[] getValue()>();
+
+        $i0 = lengthof $r7;
+
+        if $i0 == 0 goto label10;
+
+        $r7 = virtualinvoke $r2.<com.google.zxing.pdf417.decoder.BarcodeValue: int[] getValue()>();
+
+        $i0 = $r7[0];
+
+        if $i0 < 1 goto label10;
+
+        $r7 = virtualinvoke $r3.<com.google.zxing.pdf417.decoder.BarcodeValue: int[] getValue()>();
+
+        $i0 = $r7[0];
+
+        $r7 = virtualinvoke $r4.<com.google.zxing.pdf417.decoder.BarcodeValue: int[] getValue()>();
+
+        $i1 = $r7[0];
+
+        $i0 = $i0 + $i1;
+
+        if $i0 < 3 goto label10;
+
+        $r7 = virtualinvoke $r3.<com.google.zxing.pdf417.decoder.BarcodeValue: int[] getValue()>();
+
+        $i0 = $r7[0];
+
+        $r7 = virtualinvoke $r4.<com.google.zxing.pdf417.decoder.BarcodeValue: int[] getValue()>();
+
+        $i1 = $r7[0];
+
+        $i0 = $i0 + $i1;
+
+        if $i0 <= 90 goto label09;
+
+        goto label10;
+
+     label09:
+        $r8 = new com.google.zxing.pdf417.decoder.BarcodeMetadata;
+
+        $r7 = virtualinvoke $r2.<com.google.zxing.pdf417.decoder.BarcodeValue: int[] getValue()>();
+
+        $i0 = $r7[0];
+
+        $r7 = virtualinvoke $r3.<com.google.zxing.pdf417.decoder.BarcodeValue: int[] getValue()>();
+
+        $i1 = $r7[0];
+
+        $r7 = virtualinvoke $r4.<com.google.zxing.pdf417.decoder.BarcodeValue: int[] getValue()>();
+
+        $i2 = $r7[0];
+
+        $r7 = virtualinvoke $r5.<com.google.zxing.pdf417.decoder.BarcodeValue: int[] getValue()>();
+
+        $i3 = $r7[0];
+
+        specialinvoke $r8.<com.google.zxing.pdf417.decoder.BarcodeMetadata: void <init>(int,int,int,int)>($i0, $i1, $i2, $i3);
+
+        specialinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn: void removeIncorrectCodewords(com.google.zxing.pdf417.decoder.Codeword[],com.google.zxing.pdf417.decoder.BarcodeMetadata)>($r1, $r8);
+
+        return $r8;
+
+     label10:
+        return null;
+    }
+
+    public int[] getRowHeights()
+    {
+        com.google.zxing.pdf417.decoder.Codeword $r4;
+        int[] $r2;
+        com.google.zxing.pdf417.decoder.BarcodeMetadata $r1;
+        int $i0, $i1, $i2, $i3;
+        com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn r0;
+        com.google.zxing.pdf417.decoder.Codeword[] $r3;
+
+        r0 := @this: com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn;
+
+        $r1 = virtualinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn: com.google.zxing.pdf417.decoder.BarcodeMetadata getBarcodeMetadata()>();
+
+        if $r1 != null goto label1;
+
+        return null;
+
+     label1:
+        virtualinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn: int adjustIncompleteIndicatorColumnRowNumbers(com.google.zxing.pdf417.decoder.BarcodeMetadata)>($r1);
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.pdf417.decoder.BarcodeMetadata: int getRowCount()>();
+
+        $r2 = newarray (int)[$i0];
+
+        $r3 = virtualinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultColumn: com.google.zxing.pdf417.decoder.Codeword[] getCodewords()>();
+
+        $i0 = lengthof $r3;
+
+        $i1 = 0;
+
+     label2:
+        if $i1 >= $i0 goto label4;
+
+        $r4 = $r3[$i1];
+
+        if $r4 == null goto label3;
+
+        $i2 = virtualinvoke $r4.<com.google.zxing.pdf417.decoder.Codeword: int getRowNumber()>();
+
+        $i3 = $r2[$i2];
+
+        $i3 = $i3 + 1;
+
+        $r2[$i2] = $i3;
+
+     label3:
+        $i1 = $i1 + 1;
+
+        goto label2;
+
+     label4:
+        return $r2;
+    }
+
+    public boolean isLeft()
+    {
+        com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn r0;
+        boolean z0;
+
+        r0 := @this: com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn;
+
+        z0 = r0.<com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn: boolean isLeft>;
+
+        return z0;
+    }
+
+    public void setRowNumbers()
+    {
+        int $i0, $i1;
+        com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn r0;
+        com.google.zxing.pdf417.decoder.Codeword[] $r2;
+        com.google.zxing.pdf417.decoder.Codeword $r1;
+
+        r0 := @this: com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn;
+
+        $r2 = virtualinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultColumn: com.google.zxing.pdf417.decoder.Codeword[] getCodewords()>();
+
+        $i0 = lengthof $r2;
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label3;
+
+        $r1 = $r2[$i1];
+
+        if $r1 == null goto label2;
+
+        virtualinvoke $r1.<com.google.zxing.pdf417.decoder.Codeword: void setRowNumberAsRowIndicatorColumn()>();
+
+     label2:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2;
+        com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn r0;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("IsLeft: ");
+
+        $z0 = r0.<com.google.zxing.pdf417.decoder.DetectionResultRowIndicatorColumn: boolean isLeft>;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>($z0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(10);
+
+        $r2 = specialinvoke r0.<com.google.zxing.pdf417.decoder.DetectionResultColumn: java.lang.String toString()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r2;
+    }
+}

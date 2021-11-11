@@ -1,0 +1,3045 @@
+public final class com.google.android.material.internal.CollapsingTextHelper extends java.lang.Object
+{
+    public static final boolean DEBUG_DRAW;
+    public static final android.graphics.Paint DEBUG_DRAW_PAINT;
+    public static final java.lang.String ELLIPSIS_NORMAL;
+    public static final java.lang.String TAG;
+    public static final boolean USE_SCALING_TEXTURE;
+    public boolean boundsChanged;
+    public final android.graphics.Rect collapsedBounds;
+    public float collapsedDrawX;
+    public float collapsedDrawY;
+    public com.google.android.material.resources.CancelableFontCallback collapsedFontCallback;
+    public android.content.res.ColorStateList collapsedShadowColor;
+    public float collapsedShadowDx;
+    public float collapsedShadowDy;
+    public float collapsedShadowRadius;
+    public float collapsedTextBlend;
+    public android.content.res.ColorStateList collapsedTextColor;
+    public int collapsedTextGravity;
+    public float collapsedTextSize;
+    public android.graphics.Typeface collapsedTypeface;
+    public final android.graphics.RectF currentBounds;
+    public float currentDrawX;
+    public float currentDrawY;
+    public float currentTextSize;
+    public android.graphics.Typeface currentTypeface;
+    public boolean drawTitle;
+    public final android.graphics.Rect expandedBounds;
+    public float expandedDrawX;
+    public float expandedDrawY;
+    public float expandedFirstLineDrawX;
+    public com.google.android.material.resources.CancelableFontCallback expandedFontCallback;
+    public float expandedFraction;
+    public android.content.res.ColorStateList expandedShadowColor;
+    public float expandedShadowDx;
+    public float expandedShadowDy;
+    public float expandedShadowRadius;
+    public float expandedTextBlend;
+    public android.content.res.ColorStateList expandedTextColor;
+    public int expandedTextGravity;
+    public float expandedTextSize;
+    public android.graphics.Bitmap expandedTitleTexture;
+    public android.graphics.Typeface expandedTypeface;
+    public boolean isRtl;
+    public int maxLines;
+    public android.animation.TimeInterpolator positionInterpolator;
+    public float scale;
+    public int[] state;
+    public java.lang.CharSequence text;
+    public android.text.StaticLayout textLayout;
+    public final android.text.TextPaint textPaint;
+    public android.animation.TimeInterpolator textSizeInterpolator;
+    public java.lang.CharSequence textToDraw;
+    public java.lang.CharSequence textToDrawCollapsed;
+    public android.graphics.Paint texturePaint;
+    public final android.text.TextPaint tmpPaint;
+    public boolean useTexture;
+    public final android.view.View view;
+
+    static void <clinit>()
+    {
+        int $i0;
+        android.graphics.Paint $r0;
+        boolean $z0;
+
+        <com.google.android.material.internal.CollapsingTextHelper: java.lang.String TAG> = "CollapsingTextHelper";
+
+        <com.google.android.material.internal.CollapsingTextHelper: java.lang.String ELLIPSIS_NORMAL> = "\u2026";
+
+        <com.google.android.material.internal.CollapsingTextHelper: boolean DEBUG_DRAW> = 0;
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 >= 18 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        <com.google.android.material.internal.CollapsingTextHelper: boolean USE_SCALING_TEXTURE> = $z0;
+
+        <com.google.android.material.internal.CollapsingTextHelper: android.graphics.Paint DEBUG_DRAW_PAINT> = null;
+
+        $r0 = <com.google.android.material.internal.CollapsingTextHelper: android.graphics.Paint DEBUG_DRAW_PAINT>;
+
+        if $r0 == null goto label3;
+
+        virtualinvoke $r0.<android.graphics.Paint: void setAntiAlias(boolean)>(1);
+
+        $r0 = <com.google.android.material.internal.CollapsingTextHelper: android.graphics.Paint DEBUG_DRAW_PAINT>;
+
+        virtualinvoke $r0.<android.graphics.Paint: void setColor(int)>(-65281);
+
+     label3:
+        return;
+    }
+
+    public void <init>(android.view.View)
+    {
+        android.graphics.RectF $r5;
+        android.graphics.Rect $r4;
+        android.text.TextPaint $r2, $r3;
+        android.view.View $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.view.View;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: int expandedTextGravity> = 16;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: int collapsedTextGravity> = 16;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedTextSize> = 15.0F;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedTextSize> = 15.0F;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: int maxLines> = 1;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.view.View view> = $r1;
+
+        $r2 = new android.text.TextPaint;
+
+        specialinvoke $r2.<android.text.TextPaint: void <init>(int)>(129);
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint> = $r2;
+
+        $r2 = new android.text.TextPaint;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        specialinvoke $r2.<android.text.TextPaint: void <init>(android.graphics.Paint)>($r3);
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint tmpPaint> = $r2;
+
+        $r4 = new android.graphics.Rect;
+
+        specialinvoke $r4.<android.graphics.Rect: void <init>()>();
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds> = $r4;
+
+        $r4 = new android.graphics.Rect;
+
+        specialinvoke $r4.<android.graphics.Rect: void <init>()>();
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect expandedBounds> = $r4;
+
+        $r5 = new android.graphics.RectF;
+
+        specialinvoke $r5.<android.graphics.RectF: void <init>()>();
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.RectF currentBounds> = $r5;
+
+        return;
+    }
+
+    public static int blendColors(int, int, float)
+    {
+        int $i0, $i1, $i2, $i3;
+        float $f0, $f1, $f2, $f3, $f4, $f5;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $f0 := @parameter2: float;
+
+        $f1 = 1.0F - $f0;
+
+        $i2 = staticinvoke <android.graphics.Color: int alpha(int)>($i0);
+
+        $f2 = (float) $i2;
+
+        $f2 = $f2 * $f1;
+
+        $i2 = staticinvoke <android.graphics.Color: int alpha(int)>($i1);
+
+        $f3 = (float) $i2;
+
+        $f3 = $f3 * $f0;
+
+        $f2 = $f2 + $f3;
+
+        $i2 = staticinvoke <android.graphics.Color: int red(int)>($i0);
+
+        $f3 = (float) $i2;
+
+        $f3 = $f3 * $f1;
+
+        $i2 = staticinvoke <android.graphics.Color: int red(int)>($i1);
+
+        $f4 = (float) $i2;
+
+        $f4 = $f4 * $f0;
+
+        $f3 = $f3 + $f4;
+
+        $i2 = staticinvoke <android.graphics.Color: int green(int)>($i0);
+
+        $f4 = (float) $i2;
+
+        $f4 = $f4 * $f1;
+
+        $i2 = staticinvoke <android.graphics.Color: int green(int)>($i1);
+
+        $f5 = (float) $i2;
+
+        $f5 = $f5 * $f0;
+
+        $f4 = $f4 + $f5;
+
+        $i0 = staticinvoke <android.graphics.Color: int blue(int)>($i0);
+
+        $f5 = (float) $i0;
+
+        $f1 = $f5 * $f1;
+
+        $i0 = staticinvoke <android.graphics.Color: int blue(int)>($i1);
+
+        $f5 = (float) $i0;
+
+        $f0 = $f5 * $f0;
+
+        $f0 = $f1 + $f0;
+
+        $i0 = (int) $f2;
+
+        $i1 = (int) $f3;
+
+        $i2 = (int) $f4;
+
+        $i3 = (int) $f0;
+
+        $i0 = staticinvoke <android.graphics.Color: int argb(int,int,int,int)>($i0, $i1, $i2, $i3);
+
+        return $i0;
+    }
+
+    private void calculateBaseOffsets()
+    {
+        android.text.StaticLayout $r2;
+        android.graphics.Rect $r5;
+        java.lang.CharSequence $r1;
+        android.text.TextUtils$TruncateAt $r4;
+        android.text.TextPaint $r3;
+        int $i0, $i1;
+        float $f0, $f1, $f2, $f3, $f4;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $f0 = r0.<com.google.android.material.internal.CollapsingTextHelper: float currentTextSize>;
+
+        $f1 = r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedTextSize>;
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void calculateUsingTextSize(float)>($f1);
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence textToDraw>;
+
+        if $r1 == null goto label01;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.StaticLayout textLayout>;
+
+        if $r2 == null goto label01;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $i0 = virtualinvoke $r2.<android.text.StaticLayout: int getWidth()>();
+
+        $f1 = (float) $i0;
+
+        $r4 = <android.text.TextUtils$TruncateAt: android.text.TextUtils$TruncateAt END>;
+
+        $r1 = staticinvoke <android.text.TextUtils: java.lang.CharSequence ellipsize(java.lang.CharSequence,android.text.TextPaint,float,android.text.TextUtils$TruncateAt)>($r1, $r3, $f1, $r4);
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence textToDrawCollapsed> = $r1;
+
+     label01:
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence textToDrawCollapsed>;
+
+        $f1 = 0.0F;
+
+        if $r1 == null goto label02;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $i0 = interfaceinvoke $r1.<java.lang.CharSequence: int length()>();
+
+        $f2 = virtualinvoke $r3.<android.text.TextPaint: float measureText(java.lang.CharSequence,int,int)>($r1, 0, $i0);
+
+        goto label03;
+
+     label02:
+        $f2 = 0.0F;
+
+     label03:
+        $i0 = r0.<com.google.android.material.internal.CollapsingTextHelper: int collapsedTextGravity>;
+
+        $z0 = r0.<com.google.android.material.internal.CollapsingTextHelper: boolean isRtl>;
+
+        $i1 = (int) $z0;
+
+        $i0 = staticinvoke <b.i.i.c: int a(int,int)>($i0, $i1);
+
+        $i1 = $i0 & 112;
+
+        if $i1 == 48 goto label05;
+
+        if $i1 == 80 goto label04;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $f3 = virtualinvoke $r3.<android.text.TextPaint: float descent()>();
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $f4 = virtualinvoke $r3.<android.text.TextPaint: float ascent()>();
+
+        $f3 = $f3 - $f4;
+
+        $f3 = $f3 / 2.0F;
+
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i1 = virtualinvoke $r5.<android.graphics.Rect: int centerY()>();
+
+        $f4 = (float) $i1;
+
+        $f3 = $f4 - $f3;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedDrawY> = $f3;
+
+        goto label06;
+
+     label04:
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i1 = $r5.<android.graphics.Rect: int bottom>;
+
+        $f3 = (float) $i1;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $f4 = virtualinvoke $r3.<android.text.TextPaint: float ascent()>();
+
+        $f3 = $f3 + $f4;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedDrawY> = $f3;
+
+        goto label06;
+
+     label05:
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i1 = $r5.<android.graphics.Rect: int top>;
+
+        $f3 = (float) $i1;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedDrawY> = $f3;
+
+     label06:
+        $i0 = $i0 & 8388615;
+
+        if $i0 == 1 goto label08;
+
+        if $i0 == 5 goto label07;
+
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i0 = $r5.<android.graphics.Rect: int left>;
+
+        $f2 = (float) $i0;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedDrawX> = $f2;
+
+        goto label09;
+
+     label07:
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i0 = $r5.<android.graphics.Rect: int right>;
+
+        $f3 = (float) $i0;
+
+        $f2 = $f3 - $f2;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedDrawX> = $f2;
+
+        goto label09;
+
+     label08:
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i0 = virtualinvoke $r5.<android.graphics.Rect: int centerX()>();
+
+        $f3 = (float) $i0;
+
+        $f2 = $f2 / 2.0F;
+
+        $f2 = $f3 - $f2;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedDrawX> = $f2;
+
+     label09:
+        $f2 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedTextSize>;
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void calculateUsingTextSize(float)>($f2);
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.StaticLayout textLayout>;
+
+        if $r2 == null goto label10;
+
+        $i0 = virtualinvoke $r2.<android.text.StaticLayout: int getHeight()>();
+
+        $f3 = (float) $i0;
+
+        goto label11;
+
+     label10:
+        $f3 = 0.0F;
+
+     label11:
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence textToDraw>;
+
+        if $r1 == null goto label12;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $i0 = interfaceinvoke $r1.<java.lang.CharSequence: int length()>();
+
+        $f2 = virtualinvoke $r3.<android.text.TextPaint: float measureText(java.lang.CharSequence,int,int)>($r1, 0, $i0);
+
+        goto label13;
+
+     label12:
+        $f2 = 0.0F;
+
+     label13:
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.StaticLayout textLayout>;
+
+        if $r2 == null goto label14;
+
+        $i0 = r0.<com.google.android.material.internal.CollapsingTextHelper: int maxLines>;
+
+        if $i0 <= 1 goto label14;
+
+        $z0 = r0.<com.google.android.material.internal.CollapsingTextHelper: boolean isRtl>;
+
+        if $z0 != 0 goto label14;
+
+        $i0 = virtualinvoke $r2.<android.text.StaticLayout: int getWidth()>();
+
+        $f2 = (float) $i0;
+
+     label14:
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.StaticLayout textLayout>;
+
+        if $r2 == null goto label15;
+
+        $f1 = virtualinvoke $r2.<android.text.StaticLayout: float getLineLeft(int)>(0);
+
+     label15:
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedFirstLineDrawX> = $f1;
+
+        $i0 = r0.<com.google.android.material.internal.CollapsingTextHelper: int expandedTextGravity>;
+
+        $z0 = r0.<com.google.android.material.internal.CollapsingTextHelper: boolean isRtl>;
+
+        $i1 = (int) $z0;
+
+        $i0 = staticinvoke <b.i.i.c: int a(int,int)>($i0, $i1);
+
+        $i1 = $i0 & 112;
+
+        if $i1 == 48 goto label17;
+
+        if $i1 == 80 goto label16;
+
+        $f1 = $f3 / 2.0F;
+
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect expandedBounds>;
+
+        $i1 = virtualinvoke $r5.<android.graphics.Rect: int centerY()>();
+
+        $f3 = (float) $i1;
+
+        $f1 = $f3 - $f1;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedDrawY> = $f1;
+
+        goto label18;
+
+     label16:
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect expandedBounds>;
+
+        $i1 = $r5.<android.graphics.Rect: int bottom>;
+
+        $f1 = (float) $i1;
+
+        $f1 = $f1 - $f3;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $f3 = virtualinvoke $r3.<android.text.TextPaint: float descent()>();
+
+        $f1 = $f1 + $f3;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedDrawY> = $f1;
+
+        goto label18;
+
+     label17:
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect expandedBounds>;
+
+        $i1 = $r5.<android.graphics.Rect: int top>;
+
+        $f1 = (float) $i1;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedDrawY> = $f1;
+
+     label18:
+        $i0 = $i0 & 8388615;
+
+        if $i0 == 1 goto label20;
+
+        if $i0 == 5 goto label19;
+
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect expandedBounds>;
+
+        $i0 = $r5.<android.graphics.Rect: int left>;
+
+        $f1 = (float) $i0;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedDrawX> = $f1;
+
+        goto label21;
+
+     label19:
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect expandedBounds>;
+
+        $i0 = $r5.<android.graphics.Rect: int right>;
+
+        $f1 = (float) $i0;
+
+        $f1 = $f1 - $f2;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedDrawX> = $f1;
+
+        goto label21;
+
+     label20:
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect expandedBounds>;
+
+        $i0 = virtualinvoke $r5.<android.graphics.Rect: int centerX()>();
+
+        $f1 = (float) $i0;
+
+        $f2 = $f2 / 2.0F;
+
+        $f1 = $f1 - $f2;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedDrawX> = $f1;
+
+     label21:
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void clearTexture()>();
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void setInterpolatedTextSize(float)>($f0);
+
+        return;
+    }
+
+    private void calculateCurrentOffsets()
+    {
+        float $f0;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $f0 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedFraction>;
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void calculateOffsets(float)>($f0);
+
+        return;
+    }
+
+    private boolean calculateIsRtl(java.lang.CharSequence)
+    {
+        java.lang.CharSequence $r1;
+        b.i.g.c $r2;
+        int $i0;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: java.lang.CharSequence;
+
+        $z0 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: boolean isDefaultIsRtl()>();
+
+        if $z0 == 0 goto label1;
+
+        $r2 = <b.i.g.d: b.i.g.c d>;
+
+        goto label2;
+
+     label1:
+        $r2 = <b.i.g.d: b.i.g.c c>;
+
+     label2:
+        $i0 = interfaceinvoke $r1.<java.lang.CharSequence: int length()>();
+
+        $z0 = interfaceinvoke $r2.<b.i.g.c: boolean isRtl(java.lang.CharSequence,int,int)>($r1, 0, $i0);
+
+        return $z0;
+    }
+
+    private void calculateOffsets(float)
+    {
+        android.animation.TimeInterpolator $r1;
+        android.content.res.ColorStateList $r2, $r3;
+        android.text.TextPaint $r4;
+        int $i0, $i1;
+        float $f0, $f1, $f2, $f3, $f4;
+        android.view.View $r5;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $f0 := @parameter0: float;
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void interpolateBounds(float)>($f0);
+
+        $f1 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedDrawX>;
+
+        $f2 = r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedDrawX>;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.animation.TimeInterpolator positionInterpolator>;
+
+        $f1 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: float lerp(float,float,float,android.animation.TimeInterpolator)>($f1, $f2, $f0, $r1);
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float currentDrawX> = $f1;
+
+        $f1 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedDrawY>;
+
+        $f2 = r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedDrawY>;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.animation.TimeInterpolator positionInterpolator>;
+
+        $f1 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: float lerp(float,float,float,android.animation.TimeInterpolator)>($f1, $f2, $f0, $r1);
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float currentDrawY> = $f1;
+
+        $f1 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedTextSize>;
+
+        $f2 = r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedTextSize>;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.animation.TimeInterpolator textSizeInterpolator>;
+
+        $f1 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: float lerp(float,float,float,android.animation.TimeInterpolator)>($f1, $f2, $f0, $r1);
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void setInterpolatedTextSize(float)>($f1);
+
+        $f1 = 1.0F - $f0;
+
+        $r1 = <com.google.android.material.animation.AnimationUtils: android.animation.TimeInterpolator FAST_OUT_SLOW_IN_INTERPOLATOR>;
+
+        $f1 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: float lerp(float,float,float,android.animation.TimeInterpolator)>(0.0F, 1.0F, $f1, $r1);
+
+        $f1 = 1.0F - $f1;
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void setCollapsedTextBlend(float)>($f1);
+
+        $r1 = <com.google.android.material.animation.AnimationUtils: android.animation.TimeInterpolator FAST_OUT_SLOW_IN_INTERPOLATOR>;
+
+        $f1 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: float lerp(float,float,float,android.animation.TimeInterpolator)>(1.0F, 0.0F, $f0, $r1);
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void setExpandedTextBlend(float)>($f1);
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList collapsedTextColor>;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList expandedTextColor>;
+
+        if $r2 == $r3 goto label1;
+
+        $r4 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $i0 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: int getCurrentExpandedTextColor()>();
+
+        $i1 = virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: int getCurrentCollapsedTextColor()>();
+
+        $i0 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: int blendColors(int,int,float)>($i0, $i1, $f0);
+
+        virtualinvoke $r4.<android.text.TextPaint: void setColor(int)>($i0);
+
+        goto label2;
+
+     label1:
+        $r4 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $i0 = virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: int getCurrentCollapsedTextColor()>();
+
+        virtualinvoke $r4.<android.text.TextPaint: void setColor(int)>($i0);
+
+     label2:
+        $r4 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $f1 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedShadowRadius>;
+
+        $f2 = r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedShadowRadius>;
+
+        $f1 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: float lerp(float,float,float,android.animation.TimeInterpolator)>($f1, $f2, $f0, null);
+
+        $f2 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedShadowDx>;
+
+        $f3 = r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedShadowDx>;
+
+        $f2 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: float lerp(float,float,float,android.animation.TimeInterpolator)>($f2, $f3, $f0, null);
+
+        $f3 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedShadowDy>;
+
+        $f4 = r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedShadowDy>;
+
+        $f3 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: float lerp(float,float,float,android.animation.TimeInterpolator)>($f3, $f4, $f0, null);
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList expandedShadowColor>;
+
+        $i0 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: int getCurrentColor(android.content.res.ColorStateList)>($r2);
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList collapsedShadowColor>;
+
+        $i1 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: int getCurrentColor(android.content.res.ColorStateList)>($r2);
+
+        $i0 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: int blendColors(int,int,float)>($i0, $i1, $f0);
+
+        virtualinvoke $r4.<android.text.TextPaint: void setShadowLayer(float,float,float,int)>($f1, $f2, $f3, $i0);
+
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.view.View view>;
+
+        staticinvoke <b.i.i.y: void I(android.view.View)>($r5);
+
+        return;
+    }
+
+    private void calculateUsingTextSize(float)
+    {
+        android.graphics.Typeface $r3, $r4;
+        android.graphics.Rect $r2;
+        android.text.StaticLayout $r6;
+        byte $b1;
+        int $i0, $i2;
+        boolean $z0, $z1, $z2;
+        java.lang.CharSequence $r1;
+        android.text.TextPaint $r5;
+        float $f0, $f1, $f2, $f3, $f4;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $f0 := @parameter0: float;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence text>;
+
+        if $r1 != null goto label01;
+
+        return;
+
+     label01:
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i0 = virtualinvoke $r2.<android.graphics.Rect: int width()>();
+
+        $f1 = (float) $i0;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect expandedBounds>;
+
+        $i0 = virtualinvoke $r2.<android.graphics.Rect: int width()>();
+
+        $f2 = (float) $i0;
+
+        $f3 = r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedTextSize>;
+
+        $z0 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: boolean isClose(float,float)>($f0, $f3);
+
+        $z1 = 0;
+
+        $i0 = 1;
+
+        if $z0 == 0 goto label03;
+
+        $f0 = r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedTextSize>;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float scale> = 1.0F;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Typeface currentTypeface>;
+
+        $r4 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Typeface collapsedTypeface>;
+
+        if $r3 == $r4 goto label02;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Typeface currentTypeface> = $r4;
+
+        $z0 = 1;
+
+        goto label10;
+
+     label02:
+        $z0 = 0;
+
+        goto label10;
+
+     label03:
+        $f3 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedTextSize>;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Typeface currentTypeface>;
+
+        $r4 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Typeface expandedTypeface>;
+
+        if $r3 == $r4 goto label04;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Typeface currentTypeface> = $r4;
+
+        $z0 = 1;
+
+        goto label05;
+
+     label04:
+        $z0 = 0;
+
+     label05:
+        $f4 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedTextSize>;
+
+        $z2 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: boolean isClose(float,float)>($f0, $f4);
+
+        if $z2 == 0 goto label06;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float scale> = 1.0F;
+
+        goto label07;
+
+     label06:
+        $f4 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedTextSize>;
+
+        $f0 = $f0 / $f4;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float scale> = $f0;
+
+     label07:
+        $f0 = r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedTextSize>;
+
+        $f4 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedTextSize>;
+
+        $f0 = $f0 / $f4;
+
+        $f4 = $f2 * $f0;
+
+        $b1 = $f4 cmpl $f1;
+
+        $i2 = (int) $b1;
+
+        if $i2 <= 0 goto label08;
+
+        $f0 = $f1 / $f0;
+
+        $f1 = staticinvoke <java.lang.Math: float min(float,float)>($f0, $f2);
+
+        goto label09;
+
+     label08:
+        $f1 = $f2;
+
+     label09:
+        $f0 = $f3;
+
+     label10:
+        $b1 = $f1 cmpl 0.0F;
+
+        $i2 = (int) $b1;
+
+        if $i2 <= 0 goto label14;
+
+        $f2 = r0.<com.google.android.material.internal.CollapsingTextHelper: float currentTextSize>;
+
+        $b1 = $f2 cmpl $f0;
+
+        if $b1 != 0 goto label12;
+
+        $z2 = r0.<com.google.android.material.internal.CollapsingTextHelper: boolean boundsChanged>;
+
+        if $z2 != 0 goto label12;
+
+        if $z0 == 0 goto label11;
+
+        goto label12;
+
+     label11:
+        $z0 = 0;
+
+        goto label13;
+
+     label12:
+        $z0 = 1;
+
+     label13:
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float currentTextSize> = $f0;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: boolean boundsChanged> = 0;
+
+     label14:
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence textToDraw>;
+
+        if $r1 == null goto label15;
+
+        if $z0 == 0 goto label18;
+
+     label15:
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $f0 = r0.<com.google.android.material.internal.CollapsingTextHelper: float currentTextSize>;
+
+        virtualinvoke $r5.<android.text.TextPaint: void setTextSize(float)>($f0);
+
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Typeface currentTypeface>;
+
+        virtualinvoke $r5.<android.text.TextPaint: android.graphics.Typeface setTypeface(android.graphics.Typeface)>($r3);
+
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $f0 = r0.<com.google.android.material.internal.CollapsingTextHelper: float scale>;
+
+        $b1 = $f0 cmpl 1.0F;
+
+        if $b1 == 0 goto label16;
+
+        $z1 = 1;
+
+     label16:
+        virtualinvoke $r5.<android.text.TextPaint: void setLinearText(boolean)>($z1);
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence text>;
+
+        $z1 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: boolean calculateIsRtl(java.lang.CharSequence)>($r1);
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: boolean isRtl> = $z1;
+
+        $z1 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: boolean shouldDrawMultiline()>();
+
+        if $z1 == 0 goto label17;
+
+        $i0 = r0.<com.google.android.material.internal.CollapsingTextHelper: int maxLines>;
+
+     label17:
+        $z1 = r0.<com.google.android.material.internal.CollapsingTextHelper: boolean isRtl>;
+
+        $r6 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.StaticLayout createStaticLayout(int,float,boolean)>($i0, $f1, $z1);
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.StaticLayout textLayout> = $r6;
+
+        $r6 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.StaticLayout textLayout>;
+
+        $r1 = virtualinvoke $r6.<android.text.StaticLayout: java.lang.CharSequence getText()>();
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence textToDraw> = $r1;
+
+     label18:
+        return;
+    }
+
+    private void clearTexture()
+    {
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        android.graphics.Bitmap $r1;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Bitmap expandedTitleTexture>;
+
+        if $r1 == null goto label1;
+
+        virtualinvoke $r1.<android.graphics.Bitmap: void recycle()>();
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Bitmap expandedTitleTexture> = null;
+
+     label1:
+        return;
+    }
+
+    private android.text.StaticLayout createStaticLayout(int, float, boolean)
+    {
+        java.lang.Throwable $r8;
+        android.text.StaticLayout $r6;
+        java.lang.CharSequence $r2;
+        android.text.TextUtils$TruncateAt $r4;
+        android.text.Layout$Alignment $r5;
+        com.google.android.material.internal.StaticLayoutBuilderCompat $r3;
+        android.text.TextPaint $r1;
+        int $i0, $i1;
+        float $f0;
+        java.lang.String $r9;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+        com.google.android.material.internal.StaticLayoutBuilderCompat$StaticLayoutBuilderCompatException $r7;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $i0 := @parameter0: int;
+
+        $f0 := @parameter1: float;
+
+        $z0 := @parameter2: boolean;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence text>;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $i1 = (int) $f0;
+
+     label1:
+        $r3 = staticinvoke <com.google.android.material.internal.StaticLayoutBuilderCompat: com.google.android.material.internal.StaticLayoutBuilderCompat obtain(java.lang.CharSequence,android.text.TextPaint,int)>($r2, $r1, $i1);
+
+     label2:
+        $r4 = <android.text.TextUtils$TruncateAt: android.text.TextUtils$TruncateAt END>;
+
+     label3:
+        $r3 = virtualinvoke $r3.<com.google.android.material.internal.StaticLayoutBuilderCompat: com.google.android.material.internal.StaticLayoutBuilderCompat setEllipsize(android.text.TextUtils$TruncateAt)>($r4);
+
+        $r3 = virtualinvoke $r3.<com.google.android.material.internal.StaticLayoutBuilderCompat: com.google.android.material.internal.StaticLayoutBuilderCompat setIsRtl(boolean)>($z0);
+
+     label4:
+        $r5 = <android.text.Layout$Alignment: android.text.Layout$Alignment ALIGN_NORMAL>;
+
+     label5:
+        $r3 = virtualinvoke $r3.<com.google.android.material.internal.StaticLayoutBuilderCompat: com.google.android.material.internal.StaticLayoutBuilderCompat setAlignment(android.text.Layout$Alignment)>($r5);
+
+        $r3 = virtualinvoke $r3.<com.google.android.material.internal.StaticLayoutBuilderCompat: com.google.android.material.internal.StaticLayoutBuilderCompat setIncludePad(boolean)>(0);
+
+        $r3 = virtualinvoke $r3.<com.google.android.material.internal.StaticLayoutBuilderCompat: com.google.android.material.internal.StaticLayoutBuilderCompat setMaxLines(int)>($i0);
+
+        $r6 = virtualinvoke $r3.<com.google.android.material.internal.StaticLayoutBuilderCompat: android.text.StaticLayout build()>();
+
+     label6:
+        goto label8;
+
+     label7:
+        $r7 := @caughtexception;
+
+        $r8 = virtualinvoke $r7.<java.lang.Exception: java.lang.Throwable getCause()>();
+
+        $r9 = virtualinvoke $r8.<java.lang.Throwable: java.lang.String getMessage()>();
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CollapsingTextHelper", $r9, $r7);
+
+        $r6 = null;
+
+     label8:
+        staticinvoke <b.i.h.h: java.lang.Object a(java.lang.Object)>($r6);
+
+        return $r6;
+
+        catch com.google.android.material.internal.StaticLayoutBuilderCompat$StaticLayoutBuilderCompatException from label1 to label2 with label7;
+        catch com.google.android.material.internal.StaticLayoutBuilderCompat$StaticLayoutBuilderCompatException from label3 to label4 with label7;
+        catch com.google.android.material.internal.StaticLayoutBuilderCompat$StaticLayoutBuilderCompatException from label5 to label6 with label7;
+    }
+
+    private void drawMultinlineTransition(android.graphics.Canvas, float, float)
+    {
+        android.text.StaticLayout $r4;
+        java.lang.CharSequence $r2;
+        android.text.TextPaint $r3;
+        int $i0, $i1, $i2;
+        float $f0, $f1;
+        android.graphics.Canvas $r1;
+        java.lang.String $r5, $r6;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.graphics.Canvas;
+
+        $f0 := @parameter1: float;
+
+        $f1 := @parameter2: float;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $i0 = virtualinvoke $r3.<android.text.TextPaint: int getAlpha()>();
+
+        virtualinvoke $r1.<android.graphics.Canvas: void translate(float,float)>($f0, $f1);
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $f1 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedTextBlend>;
+
+        $f0 = (float) $i0;
+
+        $f1 = $f1 * $f0;
+
+        $i1 = (int) $f1;
+
+        virtualinvoke $r3.<android.text.TextPaint: void setAlpha(int)>($i1);
+
+        $r4 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.StaticLayout textLayout>;
+
+        virtualinvoke $r4.<android.text.StaticLayout: void draw(android.graphics.Canvas)>($r1);
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $f1 = r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedTextBlend>;
+
+        $f0 = $f1 * $f0;
+
+        $i1 = (int) $f0;
+
+        virtualinvoke $r3.<android.text.TextPaint: void setAlpha(int)>($i1);
+
+        $r4 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.StaticLayout textLayout>;
+
+        $i1 = virtualinvoke $r4.<android.text.StaticLayout: int getLineBaseline(int)>(0);
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence textToDrawCollapsed>;
+
+        $i2 = interfaceinvoke $r2.<java.lang.CharSequence: int length()>();
+
+        $f0 = (float) $i1;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawText(java.lang.CharSequence,int,int,float,float,android.graphics.Paint)>($r2, 0, $i2, 0.0F, $f0, $r3);
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence textToDrawCollapsed>;
+
+        $r5 = interfaceinvoke $r2.<java.lang.CharSequence: java.lang.String toString()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.String: java.lang.String trim()>();
+
+        $r6 = $r5;
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean endsWith(java.lang.String)>("\u2026");
+
+        if $z0 == 0 goto label1;
+
+        $i1 = virtualinvoke $r5.<java.lang.String: int length()>();
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        $r6 = virtualinvoke $r5.<java.lang.String: java.lang.String substring(int,int)>(0, $i1);
+
+     label1:
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        virtualinvoke $r3.<android.text.TextPaint: void setAlpha(int)>($i0);
+
+        $r4 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.StaticLayout textLayout>;
+
+        $i0 = virtualinvoke $r4.<android.text.StaticLayout: int getLineEnd(int)>(0);
+
+        $i1 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+        $i0 = staticinvoke <java.lang.Math: int min(int,int)>($i0, $i1);
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawText(java.lang.String,int,int,float,float,android.graphics.Paint)>($r6, 0, $i0, 0.0F, $f0, $r3);
+
+        return;
+    }
+
+    private void ensureExpandedTexture()
+    {
+        android.graphics.Rect $r3;
+        android.text.StaticLayout $r5;
+        java.lang.CharSequence $r4;
+        android.graphics.Bitmap$Config $r1;
+        android.graphics.Bitmap $r2;
+        int $i0, $i1;
+        android.graphics.Canvas $r6;
+        android.graphics.Paint $r7;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Bitmap expandedTitleTexture>;
+
+        if $r2 != null goto label3;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect expandedBounds>;
+
+        $z0 = virtualinvoke $r3.<android.graphics.Rect: boolean isEmpty()>();
+
+        if $z0 != 0 goto label3;
+
+        $r4 = r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence textToDraw>;
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r4);
+
+        if $z0 == 0 goto label1;
+
+        return;
+
+     label1:
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void calculateOffsets(float)>(0.0F);
+
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.StaticLayout textLayout>;
+
+        $i0 = virtualinvoke $r5.<android.text.StaticLayout: int getWidth()>();
+
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.StaticLayout textLayout>;
+
+        $i1 = virtualinvoke $r5.<android.text.StaticLayout: int getHeight()>();
+
+        if $i0 <= 0 goto label3;
+
+        if $i1 > 0 goto label2;
+
+        return;
+
+     label2:
+        $r1 = <android.graphics.Bitmap$Config: android.graphics.Bitmap$Config ARGB_8888>;
+
+        $r2 = staticinvoke <android.graphics.Bitmap: android.graphics.Bitmap createBitmap(int,int,android.graphics.Bitmap$Config)>($i0, $i1, $r1);
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Bitmap expandedTitleTexture> = $r2;
+
+        $r6 = new android.graphics.Canvas;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Bitmap expandedTitleTexture>;
+
+        specialinvoke $r6.<android.graphics.Canvas: void <init>(android.graphics.Bitmap)>($r2);
+
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.StaticLayout textLayout>;
+
+        virtualinvoke $r5.<android.text.StaticLayout: void draw(android.graphics.Canvas)>($r6);
+
+        $r7 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Paint texturePaint>;
+
+        if $r7 != null goto label3;
+
+        $r7 = new android.graphics.Paint;
+
+        specialinvoke $r7.<android.graphics.Paint: void <init>(int)>(3);
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Paint texturePaint> = $r7;
+
+     label3:
+        return;
+    }
+
+    private float getCollapsedTextLeftBound(int, int)
+    {
+        android.graphics.Rect $r1;
+        int $i0, $i1, $i2;
+        float $f0, $f1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        if $i1 == 17 goto label6;
+
+        $i2 = $i1 & 7;
+
+        if $i2 != 1 goto label1;
+
+        goto label6;
+
+     label1:
+        $i0 = $i1 & 8388613;
+
+        if $i0 == 8388613 goto label4;
+
+        $i0 = $i1 & 5;
+
+        if $i0 != 5 goto label2;
+
+        goto label4;
+
+     label2:
+        $z0 = r0.<com.google.android.material.internal.CollapsingTextHelper: boolean isRtl>;
+
+        if $z0 == 0 goto label3;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i0 = $r1.<android.graphics.Rect: int right>;
+
+        $f0 = (float) $i0;
+
+        $f1 = virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: float calculateCollapsedTextWidth()>();
+
+        $f0 = $f0 - $f1;
+
+        return $f0;
+
+     label3:
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i0 = $r1.<android.graphics.Rect: int left>;
+
+        $f0 = (float) $i0;
+
+        return $f0;
+
+     label4:
+        $z0 = r0.<com.google.android.material.internal.CollapsingTextHelper: boolean isRtl>;
+
+        if $z0 == 0 goto label5;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i0 = $r1.<android.graphics.Rect: int left>;
+
+        $f0 = (float) $i0;
+
+        return $f0;
+
+     label5:
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i0 = $r1.<android.graphics.Rect: int right>;
+
+        $f0 = (float) $i0;
+
+        $f1 = virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: float calculateCollapsedTextWidth()>();
+
+        $f0 = $f0 - $f1;
+
+        return $f0;
+
+     label6:
+        $f0 = (float) $i0;
+
+        $f0 = $f0 / 2.0F;
+
+        $f1 = virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: float calculateCollapsedTextWidth()>();
+
+        $f1 = $f1 / 2.0F;
+
+        $f0 = $f0 - $f1;
+
+        return $f0;
+    }
+
+    private float getCollapsedTextRightBound(android.graphics.RectF, int, int)
+    {
+        android.graphics.RectF $r1;
+        android.graphics.Rect $r2;
+        int $i0, $i1, $i2;
+        float $f0, $f1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.graphics.RectF;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        if $i1 == 17 goto label6;
+
+        $i2 = $i1 & 7;
+
+        if $i2 != 1 goto label1;
+
+        goto label6;
+
+     label1:
+        $i0 = $i1 & 8388613;
+
+        if $i0 == 8388613 goto label4;
+
+        $i0 = $i1 & 5;
+
+        if $i0 != 5 goto label2;
+
+        goto label4;
+
+     label2:
+        $z0 = r0.<com.google.android.material.internal.CollapsingTextHelper: boolean isRtl>;
+
+        if $z0 == 0 goto label3;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i0 = $r2.<android.graphics.Rect: int right>;
+
+        $f0 = (float) $i0;
+
+        return $f0;
+
+     label3:
+        $f0 = $r1.<android.graphics.RectF: float left>;
+
+        $f1 = virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: float calculateCollapsedTextWidth()>();
+
+        $f0 = $f0 + $f1;
+
+        return $f0;
+
+     label4:
+        $z0 = r0.<com.google.android.material.internal.CollapsingTextHelper: boolean isRtl>;
+
+        if $z0 == 0 goto label5;
+
+        $f0 = $r1.<android.graphics.RectF: float left>;
+
+        $f1 = virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: float calculateCollapsedTextWidth()>();
+
+        $f0 = $f0 + $f1;
+
+        return $f0;
+
+     label5:
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i0 = $r2.<android.graphics.Rect: int right>;
+
+        $f0 = (float) $i0;
+
+        return $f0;
+
+     label6:
+        $f0 = (float) $i0;
+
+        $f0 = $f0 / 2.0F;
+
+        $f1 = virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: float calculateCollapsedTextWidth()>();
+
+        $f1 = $f1 / 2.0F;
+
+        $f0 = $f0 + $f1;
+
+        return $f0;
+    }
+
+    private int getCurrentColor(android.content.res.ColorStateList)
+    {
+        android.content.res.ColorStateList $r2;
+        int[] $r1;
+        int $i0;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r2 := @parameter0: android.content.res.ColorStateList;
+
+        if $r2 != null goto label1;
+
+        return 0;
+
+     label1:
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: int[] state>;
+
+        if $r1 == null goto label2;
+
+        $i0 = virtualinvoke $r2.<android.content.res.ColorStateList: int getColorForState(int[],int)>($r1, 0);
+
+        return $i0;
+
+     label2:
+        $i0 = virtualinvoke $r2.<android.content.res.ColorStateList: int getDefaultColor()>();
+
+        return $i0;
+    }
+
+    private int getCurrentExpandedTextColor()
+    {
+        int $i0;
+        android.content.res.ColorStateList $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList expandedTextColor>;
+
+        $i0 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: int getCurrentColor(android.content.res.ColorStateList)>($r1);
+
+        return $i0;
+    }
+
+    private void getTextPaintCollapsed(android.text.TextPaint)
+    {
+        android.graphics.Typeface $r2;
+        android.text.TextPaint $r1;
+        float $f0;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.text.TextPaint;
+
+        $f0 = r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedTextSize>;
+
+        virtualinvoke $r1.<android.text.TextPaint: void setTextSize(float)>($f0);
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Typeface collapsedTypeface>;
+
+        virtualinvoke $r1.<android.text.TextPaint: android.graphics.Typeface setTypeface(android.graphics.Typeface)>($r2);
+
+        return;
+    }
+
+    private void getTextPaintExpanded(android.text.TextPaint)
+    {
+        android.graphics.Typeface $r2;
+        android.text.TextPaint $r1;
+        float $f0;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.text.TextPaint;
+
+        $f0 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedTextSize>;
+
+        virtualinvoke $r1.<android.text.TextPaint: void setTextSize(float)>($f0);
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Typeface expandedTypeface>;
+
+        virtualinvoke $r1.<android.text.TextPaint: android.graphics.Typeface setTypeface(android.graphics.Typeface)>($r2);
+
+        return;
+    }
+
+    private void interpolateBounds(float)
+    {
+        android.graphics.RectF $r1;
+        android.graphics.Rect $r2;
+        android.animation.TimeInterpolator $r3;
+        int $i0;
+        float $f0, $f1, $f2;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $f0 := @parameter0: float;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.RectF currentBounds>;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect expandedBounds>;
+
+        $i0 = $r2.<android.graphics.Rect: int left>;
+
+        $f1 = (float) $i0;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i0 = $r2.<android.graphics.Rect: int left>;
+
+        $f2 = (float) $i0;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.animation.TimeInterpolator positionInterpolator>;
+
+        $f1 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: float lerp(float,float,float,android.animation.TimeInterpolator)>($f1, $f2, $f0, $r3);
+
+        $r1.<android.graphics.RectF: float left> = $f1;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.RectF currentBounds>;
+
+        $f1 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedDrawY>;
+
+        $f2 = r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedDrawY>;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.animation.TimeInterpolator positionInterpolator>;
+
+        $f1 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: float lerp(float,float,float,android.animation.TimeInterpolator)>($f1, $f2, $f0, $r3);
+
+        $r1.<android.graphics.RectF: float top> = $f1;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.RectF currentBounds>;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect expandedBounds>;
+
+        $i0 = $r2.<android.graphics.Rect: int right>;
+
+        $f1 = (float) $i0;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i0 = $r2.<android.graphics.Rect: int right>;
+
+        $f2 = (float) $i0;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.animation.TimeInterpolator positionInterpolator>;
+
+        $f1 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: float lerp(float,float,float,android.animation.TimeInterpolator)>($f1, $f2, $f0, $r3);
+
+        $r1.<android.graphics.RectF: float right> = $f1;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.RectF currentBounds>;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect expandedBounds>;
+
+        $i0 = $r2.<android.graphics.Rect: int bottom>;
+
+        $f1 = (float) $i0;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i0 = $r2.<android.graphics.Rect: int bottom>;
+
+        $f2 = (float) $i0;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.animation.TimeInterpolator positionInterpolator>;
+
+        $f0 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: float lerp(float,float,float,android.animation.TimeInterpolator)>($f1, $f2, $f0, $r3);
+
+        $r1.<android.graphics.RectF: float bottom> = $f0;
+
+        return;
+    }
+
+    public static boolean isClose(float, float)
+    {
+        byte $b0;
+        int $i1;
+        float $f0, $f1;
+
+        $f0 := @parameter0: float;
+
+        $f1 := @parameter1: float;
+
+        $f0 = $f0 - $f1;
+
+        $f0 = staticinvoke <java.lang.Math: float abs(float)>($f0);
+
+        $b0 = $f0 cmpg 0.001F;
+
+        $i1 = (int) $b0;
+
+        if $i1 >= 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    private boolean isDefaultIsRtl()
+    {
+        int $i0;
+        android.view.View $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.view.View view>;
+
+        $i0 = staticinvoke <b.i.i.y: int p(android.view.View)>($r1);
+
+        if $i0 != 1 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static float lerp(float, float, float, android.animation.TimeInterpolator)
+    {
+        android.animation.TimeInterpolator $r0;
+        float $f0, $f1, $f2;
+
+        $f1 := @parameter0: float;
+
+        $f0 := @parameter1: float;
+
+        $f2 := @parameter2: float;
+
+        $r0 := @parameter3: android.animation.TimeInterpolator;
+
+        if $r0 == null goto label1;
+
+        $f2 = interfaceinvoke $r0.<android.animation.TimeInterpolator: float getInterpolation(float)>($f2);
+
+     label1:
+        $f1 = staticinvoke <com.google.android.material.animation.AnimationUtils: float lerp(float,float,float)>($f1, $f0, $f2);
+
+        return $f1;
+    }
+
+    public static boolean rectEquals(android.graphics.Rect, int, int, int, int)
+    {
+        android.graphics.Rect $r0;
+        int $i0, $i1, $i2, $i3, $i4;
+
+        $r0 := @parameter0: android.graphics.Rect;
+
+        $i4 := @parameter1: int;
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        $i2 := @parameter4: int;
+
+        $i3 = $r0.<android.graphics.Rect: int left>;
+
+        if $i3 != $i4 goto label1;
+
+        $i4 = $r0.<android.graphics.Rect: int top>;
+
+        if $i4 != $i0 goto label1;
+
+        $i4 = $r0.<android.graphics.Rect: int right>;
+
+        if $i4 != $i1 goto label1;
+
+        $i4 = $r0.<android.graphics.Rect: int bottom>;
+
+        if $i4 != $i2 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    private void setCollapsedTextBlend(float)
+    {
+        float $f0;
+        android.view.View $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $f0 := @parameter0: float;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedTextBlend> = $f0;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.view.View view>;
+
+        staticinvoke <b.i.i.y: void I(android.view.View)>($r1);
+
+        return;
+    }
+
+    private boolean setCollapsedTypefaceInternal(android.graphics.Typeface)
+    {
+        android.graphics.Typeface $r1, $r3;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        com.google.android.material.resources.CancelableFontCallback $r2;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.graphics.Typeface;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: com.google.android.material.resources.CancelableFontCallback collapsedFontCallback>;
+
+        if $r2 == null goto label1;
+
+        virtualinvoke $r2.<com.google.android.material.resources.CancelableFontCallback: void cancel()>();
+
+     label1:
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Typeface collapsedTypeface>;
+
+        if $r3 == $r1 goto label2;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Typeface collapsedTypeface> = $r1;
+
+        return 1;
+
+     label2:
+        return 0;
+    }
+
+    private void setExpandedTextBlend(float)
+    {
+        float $f0;
+        android.view.View $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $f0 := @parameter0: float;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedTextBlend> = $f0;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.view.View view>;
+
+        staticinvoke <b.i.i.y: void I(android.view.View)>($r1);
+
+        return;
+    }
+
+    private boolean setExpandedTypefaceInternal(android.graphics.Typeface)
+    {
+        android.graphics.Typeface $r1, $r3;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        com.google.android.material.resources.CancelableFontCallback $r2;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.graphics.Typeface;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: com.google.android.material.resources.CancelableFontCallback expandedFontCallback>;
+
+        if $r2 == null goto label1;
+
+        virtualinvoke $r2.<com.google.android.material.resources.CancelableFontCallback: void cancel()>();
+
+     label1:
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Typeface expandedTypeface>;
+
+        if $r3 == $r1 goto label2;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Typeface expandedTypeface> = $r1;
+
+        return 1;
+
+     label2:
+        return 0;
+    }
+
+    private void setInterpolatedTextSize(float)
+    {
+        byte $b0;
+        float $f0;
+        android.view.View $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $f0 := @parameter0: float;
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void calculateUsingTextSize(float)>($f0);
+
+        $z0 = <com.google.android.material.internal.CollapsingTextHelper: boolean USE_SCALING_TEXTURE>;
+
+        if $z0 == 0 goto label1;
+
+        $f0 = r0.<com.google.android.material.internal.CollapsingTextHelper: float scale>;
+
+        $b0 = $f0 cmpl 1.0F;
+
+        if $b0 == 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        r0.<com.google.android.material.internal.CollapsingTextHelper: boolean useTexture> = $z0;
+
+        $z0 = r0.<com.google.android.material.internal.CollapsingTextHelper: boolean useTexture>;
+
+        if $z0 == 0 goto label3;
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void ensureExpandedTexture()>();
+
+     label3:
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.view.View view>;
+
+        staticinvoke <b.i.i.y: void I(android.view.View)>($r1);
+
+        return;
+    }
+
+    private boolean shouldDrawMultiline()
+    {
+        int $i0;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $i0 = r0.<com.google.android.material.internal.CollapsingTextHelper: int maxLines>;
+
+        if $i0 <= 1 goto label1;
+
+        $z0 = r0.<com.google.android.material.internal.CollapsingTextHelper: boolean isRtl>;
+
+        if $z0 != 0 goto label1;
+
+        $z0 = r0.<com.google.android.material.internal.CollapsingTextHelper: boolean useTexture>;
+
+        if $z0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public float calculateCollapsedTextWidth()
+    {
+        java.lang.CharSequence $r1;
+        android.text.TextPaint $r2;
+        int $i0;
+        float $f0;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence text>;
+
+        if $r1 != null goto label1;
+
+        return 0.0F;
+
+     label1:
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint tmpPaint>;
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void getTextPaintCollapsed(android.text.TextPaint)>($r2);
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint tmpPaint>;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence text>;
+
+        $i0 = interfaceinvoke $r1.<java.lang.CharSequence: int length()>();
+
+        $f0 = virtualinvoke $r2.<android.text.TextPaint: float measureText(java.lang.CharSequence,int,int)>($r1, 0, $i0);
+
+        return $f0;
+    }
+
+    public void draw(android.graphics.Canvas)
+    {
+        android.text.StaticLayout $r3;
+        java.lang.CharSequence $r2;
+        byte $b1;
+        android.text.TextPaint $r4;
+        android.graphics.Bitmap $r5;
+        int $i0;
+        float $f0, $f1, $f2, $f3;
+        android.graphics.Canvas $r1;
+        android.graphics.Paint $r6;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.graphics.Canvas;
+
+        $i0 = virtualinvoke $r1.<android.graphics.Canvas: int save()>();
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence textToDraw>;
+
+        if $r2 == null goto label6;
+
+        $z0 = r0.<com.google.android.material.internal.CollapsingTextHelper: boolean drawTitle>;
+
+        if $z0 == 0 goto label6;
+
+        $f0 = r0.<com.google.android.material.internal.CollapsingTextHelper: float currentDrawX>;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.StaticLayout textLayout>;
+
+        $z0 = 0;
+
+        $f1 = virtualinvoke $r3.<android.text.StaticLayout: float getLineLeft(int)>(0);
+
+        $f0 = $f0 + $f1;
+
+        $f1 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedFirstLineDrawX>;
+
+        $f1 = $f1 * 2.0F;
+
+        $f0 = $f0 - $f1;
+
+        $r4 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint textPaint>;
+
+        $f1 = r0.<com.google.android.material.internal.CollapsingTextHelper: float currentTextSize>;
+
+        virtualinvoke $r4.<android.text.TextPaint: void setTextSize(float)>($f1);
+
+        $f1 = r0.<com.google.android.material.internal.CollapsingTextHelper: float currentDrawX>;
+
+        $f2 = r0.<com.google.android.material.internal.CollapsingTextHelper: float currentDrawY>;
+
+        $z1 = r0.<com.google.android.material.internal.CollapsingTextHelper: boolean useTexture>;
+
+        if $z1 == 0 goto label1;
+
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Bitmap expandedTitleTexture>;
+
+        if $r5 == null goto label1;
+
+        $z0 = 1;
+
+     label1:
+        $f3 = r0.<com.google.android.material.internal.CollapsingTextHelper: float scale>;
+
+        $b1 = $f3 cmpl 1.0F;
+
+        if $b1 == 0 goto label2;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void scale(float,float,float,float)>($f3, $f3, $f1, $f2);
+
+     label2:
+        if $z0 == 0 goto label3;
+
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Bitmap expandedTitleTexture>;
+
+        $r6 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Paint texturePaint>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawBitmap(android.graphics.Bitmap,float,float,android.graphics.Paint)>($r5, $f1, $f2, $r6);
+
+        virtualinvoke $r1.<android.graphics.Canvas: void restoreToCount(int)>($i0);
+
+        return;
+
+     label3:
+        $z0 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: boolean shouldDrawMultiline()>();
+
+        if $z0 == 0 goto label4;
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void drawMultinlineTransition(android.graphics.Canvas,float,float)>($r1, $f0, $f2);
+
+        goto label5;
+
+     label4:
+        virtualinvoke $r1.<android.graphics.Canvas: void translate(float,float)>($f1, $f2);
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.StaticLayout textLayout>;
+
+        virtualinvoke $r3.<android.text.StaticLayout: void draw(android.graphics.Canvas)>($r1);
+
+     label5:
+        virtualinvoke $r1.<android.graphics.Canvas: void restoreToCount(int)>($i0);
+
+     label6:
+        return;
+    }
+
+    public void getCollapsedTextActualBounds(android.graphics.RectF, int, int)
+    {
+        android.graphics.RectF $r1;
+        android.graphics.Rect $r3;
+        java.lang.CharSequence $r2;
+        int $i0, $i1, $i2;
+        float $f0, $f1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.graphics.RectF;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence text>;
+
+        $z0 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: boolean calculateIsRtl(java.lang.CharSequence)>($r2);
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: boolean isRtl> = $z0;
+
+        $f0 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: float getCollapsedTextLeftBound(int,int)>($i0, $i1);
+
+        $r1.<android.graphics.RectF: float left> = $f0;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i2 = $r3.<android.graphics.Rect: int top>;
+
+        $f0 = (float) $i2;
+
+        $r1.<android.graphics.RectF: float top> = $f0;
+
+        $f0 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: float getCollapsedTextRightBound(android.graphics.RectF,int,int)>($r1, $i0, $i1);
+
+        $r1.<android.graphics.RectF: float right> = $f0;
+
+        $r3 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i0 = $r3.<android.graphics.Rect: int top>;
+
+        $f0 = (float) $i0;
+
+        $f1 = virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: float getCollapsedTextHeight()>();
+
+        $f0 = $f0 + $f1;
+
+        $r1.<android.graphics.RectF: float bottom> = $f0;
+
+        return;
+    }
+
+    public android.content.res.ColorStateList getCollapsedTextColor()
+    {
+        android.content.res.ColorStateList r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList collapsedTextColor>;
+
+        return r1;
+    }
+
+    public int getCollapsedTextGravity()
+    {
+        int i0;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        i0 = r0.<com.google.android.material.internal.CollapsingTextHelper: int collapsedTextGravity>;
+
+        return i0;
+    }
+
+    public float getCollapsedTextHeight()
+    {
+        float $f0;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        android.text.TextPaint $r1;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint tmpPaint>;
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void getTextPaintCollapsed(android.text.TextPaint)>($r1);
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint tmpPaint>;
+
+        $f0 = virtualinvoke $r1.<android.text.TextPaint: float ascent()>();
+
+        $f0 = neg $f0;
+
+        return $f0;
+    }
+
+    public float getCollapsedTextSize()
+    {
+        float f0;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        f0 = r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedTextSize>;
+
+        return f0;
+    }
+
+    public android.graphics.Typeface getCollapsedTypeface()
+    {
+        android.graphics.Typeface $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Typeface collapsedTypeface>;
+
+        if $r1 == null goto label1;
+
+        return $r1;
+
+     label1:
+        $r1 = <android.graphics.Typeface: android.graphics.Typeface DEFAULT>;
+
+        return $r1;
+    }
+
+    public int getCurrentCollapsedTextColor()
+    {
+        int $i0;
+        android.content.res.ColorStateList $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList collapsedTextColor>;
+
+        $i0 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: int getCurrentColor(android.content.res.ColorStateList)>($r1);
+
+        return $i0;
+    }
+
+    public android.content.res.ColorStateList getExpandedTextColor()
+    {
+        android.content.res.ColorStateList r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList expandedTextColor>;
+
+        return r1;
+    }
+
+    public int getExpandedTextGravity()
+    {
+        int i0;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        i0 = r0.<com.google.android.material.internal.CollapsingTextHelper: int expandedTextGravity>;
+
+        return i0;
+    }
+
+    public float getExpandedTextHeight()
+    {
+        float $f0;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        android.text.TextPaint $r1;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint tmpPaint>;
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void getTextPaintExpanded(android.text.TextPaint)>($r1);
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.text.TextPaint tmpPaint>;
+
+        $f0 = virtualinvoke $r1.<android.text.TextPaint: float ascent()>();
+
+        $f0 = neg $f0;
+
+        return $f0;
+    }
+
+    public float getExpandedTextSize()
+    {
+        float f0;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        f0 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedTextSize>;
+
+        return f0;
+    }
+
+    public android.graphics.Typeface getExpandedTypeface()
+    {
+        android.graphics.Typeface $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Typeface expandedTypeface>;
+
+        if $r1 == null goto label1;
+
+        return $r1;
+
+     label1:
+        $r1 = <android.graphics.Typeface: android.graphics.Typeface DEFAULT>;
+
+        return $r1;
+    }
+
+    public float getExpansionFraction()
+    {
+        float f0;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        f0 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedFraction>;
+
+        return f0;
+    }
+
+    public int getMaxLines()
+    {
+        int i0;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        i0 = r0.<com.google.android.material.internal.CollapsingTextHelper: int maxLines>;
+
+        return i0;
+    }
+
+    public java.lang.CharSequence getText()
+    {
+        java.lang.CharSequence r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence text>;
+
+        return r1;
+    }
+
+    public final boolean isStateful()
+    {
+        android.content.res.ColorStateList $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList collapsedTextColor>;
+
+        if $r1 == null goto label1;
+
+        $z0 = virtualinvoke $r1.<android.content.res.ColorStateList: boolean isStateful()>();
+
+        if $z0 != 0 goto label2;
+
+     label1:
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList expandedTextColor>;
+
+        if $r1 == null goto label3;
+
+        $z0 = virtualinvoke $r1.<android.content.res.ColorStateList: boolean isStateful()>();
+
+        if $z0 == 0 goto label3;
+
+     label2:
+        return 1;
+
+     label3:
+        return 0;
+    }
+
+    public void onBoundsChanged()
+    {
+        android.graphics.Rect $r1;
+        int $i0;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i0 = virtualinvoke $r1.<android.graphics.Rect: int width()>();
+
+        if $i0 <= 0 goto label1;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $i0 = virtualinvoke $r1.<android.graphics.Rect: int height()>();
+
+        if $i0 <= 0 goto label1;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect expandedBounds>;
+
+        $i0 = virtualinvoke $r1.<android.graphics.Rect: int width()>();
+
+        if $i0 <= 0 goto label1;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect expandedBounds>;
+
+        $i0 = virtualinvoke $r1.<android.graphics.Rect: int height()>();
+
+        if $i0 <= 0 goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        r0.<com.google.android.material.internal.CollapsingTextHelper: boolean drawTitle> = $z0;
+
+        return;
+    }
+
+    public void recalculate()
+    {
+        int $i0;
+        android.view.View $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.view.View view>;
+
+        $i0 = virtualinvoke $r1.<android.view.View: int getHeight()>();
+
+        if $i0 <= 0 goto label1;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.view.View view>;
+
+        $i0 = virtualinvoke $r1.<android.view.View: int getWidth()>();
+
+        if $i0 <= 0 goto label1;
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void calculateBaseOffsets()>();
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void calculateCurrentOffsets()>();
+
+     label1:
+        return;
+    }
+
+    public void setCollapsedBounds(int, int, int, int)
+    {
+        android.graphics.Rect $r1;
+        int $i0, $i1, $i2, $i3;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $i3 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        $z0 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: boolean rectEquals(android.graphics.Rect,int,int,int,int)>($r1, $i3, $i0, $i1, $i2);
+
+        if $z0 != 0 goto label1;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect collapsedBounds>;
+
+        virtualinvoke $r1.<android.graphics.Rect: void set(int,int,int,int)>($i3, $i0, $i1, $i2);
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: boolean boundsChanged> = 1;
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void onBoundsChanged()>();
+
+     label1:
+        return;
+    }
+
+    public void setCollapsedBounds(android.graphics.Rect)
+    {
+        android.graphics.Rect $r1;
+        int $i0, $i1, $i2, $i3;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.graphics.Rect;
+
+        $i0 = $r1.<android.graphics.Rect: int left>;
+
+        $i1 = $r1.<android.graphics.Rect: int top>;
+
+        $i2 = $r1.<android.graphics.Rect: int right>;
+
+        $i3 = $r1.<android.graphics.Rect: int bottom>;
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void setCollapsedBounds(int,int,int,int)>($i0, $i1, $i2, $i3);
+
+        return;
+    }
+
+    public void setCollapsedTextAppearance(int)
+    {
+        android.graphics.Typeface $r7;
+        android.content.Context $r3;
+        com.google.android.material.internal.CollapsingTextHelper$1 $r6;
+        android.content.res.ColorStateList $r4;
+        byte $b1;
+        int $i0;
+        android.view.View $r2;
+        float $f0;
+        com.google.android.material.resources.TextAppearance $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        com.google.android.material.resources.CancelableFontCallback $r5;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $i0 := @parameter0: int;
+
+        $r1 = new com.google.android.material.resources.TextAppearance;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.view.View view>;
+
+        $r3 = virtualinvoke $r2.<android.view.View: android.content.Context getContext()>();
+
+        specialinvoke $r1.<com.google.android.material.resources.TextAppearance: void <init>(android.content.Context,int)>($r3, $i0);
+
+        $r4 = $r1.<com.google.android.material.resources.TextAppearance: android.content.res.ColorStateList textColor>;
+
+        if $r4 == null goto label1;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList collapsedTextColor> = $r4;
+
+     label1:
+        $f0 = $r1.<com.google.android.material.resources.TextAppearance: float textSize>;
+
+        $b1 = $f0 cmpl 0.0F;
+
+        if $b1 == 0 goto label2;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedTextSize> = $f0;
+
+     label2:
+        $r4 = $r1.<com.google.android.material.resources.TextAppearance: android.content.res.ColorStateList shadowColor>;
+
+        if $r4 == null goto label3;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList collapsedShadowColor> = $r4;
+
+     label3:
+        $f0 = $r1.<com.google.android.material.resources.TextAppearance: float shadowDx>;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedShadowDx> = $f0;
+
+        $f0 = $r1.<com.google.android.material.resources.TextAppearance: float shadowDy>;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedShadowDy> = $f0;
+
+        $f0 = $r1.<com.google.android.material.resources.TextAppearance: float shadowRadius>;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedShadowRadius> = $f0;
+
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: com.google.android.material.resources.CancelableFontCallback collapsedFontCallback>;
+
+        if $r5 == null goto label4;
+
+        virtualinvoke $r5.<com.google.android.material.resources.CancelableFontCallback: void cancel()>();
+
+     label4:
+        $r5 = new com.google.android.material.resources.CancelableFontCallback;
+
+        $r6 = new com.google.android.material.internal.CollapsingTextHelper$1;
+
+        specialinvoke $r6.<com.google.android.material.internal.CollapsingTextHelper$1: void <init>(com.google.android.material.internal.CollapsingTextHelper)>(r0);
+
+        $r7 = virtualinvoke $r1.<com.google.android.material.resources.TextAppearance: android.graphics.Typeface getFallbackFont()>();
+
+        specialinvoke $r5.<com.google.android.material.resources.CancelableFontCallback: void <init>(com.google.android.material.resources.CancelableFontCallback$ApplyFont,android.graphics.Typeface)>($r6, $r7);
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: com.google.android.material.resources.CancelableFontCallback collapsedFontCallback> = $r5;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.view.View view>;
+
+        $r3 = virtualinvoke $r2.<android.view.View: android.content.Context getContext()>();
+
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: com.google.android.material.resources.CancelableFontCallback collapsedFontCallback>;
+
+        virtualinvoke $r1.<com.google.android.material.resources.TextAppearance: void getFontAsync(android.content.Context,com.google.android.material.resources.TextAppearanceFontCallback)>($r3, $r5);
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void recalculate()>();
+
+        return;
+    }
+
+    public void setCollapsedTextColor(android.content.res.ColorStateList)
+    {
+        android.content.res.ColorStateList $r1, $r2;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.content.res.ColorStateList;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList collapsedTextColor>;
+
+        if $r2 == $r1 goto label1;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList collapsedTextColor> = $r1;
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void recalculate()>();
+
+     label1:
+        return;
+    }
+
+    public void setCollapsedTextGravity(int)
+    {
+        int $i0, $i1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $i0 := @parameter0: int;
+
+        $i1 = r0.<com.google.android.material.internal.CollapsingTextHelper: int collapsedTextGravity>;
+
+        if $i1 == $i0 goto label1;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: int collapsedTextGravity> = $i0;
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void recalculate()>();
+
+     label1:
+        return;
+    }
+
+    public void setCollapsedTextSize(float)
+    {
+        byte $b0;
+        float $f0, $f1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $f0 := @parameter0: float;
+
+        $f1 = r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedTextSize>;
+
+        $b0 = $f1 cmpl $f0;
+
+        if $b0 == 0 goto label1;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float collapsedTextSize> = $f0;
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void recalculate()>();
+
+     label1:
+        return;
+    }
+
+    public void setCollapsedTypeface(android.graphics.Typeface)
+    {
+        android.graphics.Typeface $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.graphics.Typeface;
+
+        $z0 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: boolean setCollapsedTypefaceInternal(android.graphics.Typeface)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void recalculate()>();
+
+     label1:
+        return;
+    }
+
+    public void setExpandedBounds(int, int, int, int)
+    {
+        android.graphics.Rect $r1;
+        int $i0, $i1, $i2, $i3;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $i3 := @parameter0: int;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect expandedBounds>;
+
+        $z0 = staticinvoke <com.google.android.material.internal.CollapsingTextHelper: boolean rectEquals(android.graphics.Rect,int,int,int,int)>($r1, $i3, $i0, $i1, $i2);
+
+        if $z0 != 0 goto label1;
+
+        $r1 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.graphics.Rect expandedBounds>;
+
+        virtualinvoke $r1.<android.graphics.Rect: void set(int,int,int,int)>($i3, $i0, $i1, $i2);
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: boolean boundsChanged> = 1;
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void onBoundsChanged()>();
+
+     label1:
+        return;
+    }
+
+    public void setExpandedBounds(android.graphics.Rect)
+    {
+        android.graphics.Rect $r1;
+        int $i0, $i1, $i2, $i3;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.graphics.Rect;
+
+        $i0 = $r1.<android.graphics.Rect: int left>;
+
+        $i1 = $r1.<android.graphics.Rect: int top>;
+
+        $i2 = $r1.<android.graphics.Rect: int right>;
+
+        $i3 = $r1.<android.graphics.Rect: int bottom>;
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void setExpandedBounds(int,int,int,int)>($i0, $i1, $i2, $i3);
+
+        return;
+    }
+
+    public void setExpandedTextAppearance(int)
+    {
+        android.graphics.Typeface $r7;
+        android.content.Context $r3;
+        com.google.android.material.internal.CollapsingTextHelper$2 $r6;
+        android.content.res.ColorStateList $r4;
+        byte $b1;
+        int $i0;
+        android.view.View $r2;
+        float $f0;
+        com.google.android.material.resources.TextAppearance $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        com.google.android.material.resources.CancelableFontCallback $r5;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $i0 := @parameter0: int;
+
+        $r1 = new com.google.android.material.resources.TextAppearance;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.view.View view>;
+
+        $r3 = virtualinvoke $r2.<android.view.View: android.content.Context getContext()>();
+
+        specialinvoke $r1.<com.google.android.material.resources.TextAppearance: void <init>(android.content.Context,int)>($r3, $i0);
+
+        $r4 = $r1.<com.google.android.material.resources.TextAppearance: android.content.res.ColorStateList textColor>;
+
+        if $r4 == null goto label1;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList expandedTextColor> = $r4;
+
+     label1:
+        $f0 = $r1.<com.google.android.material.resources.TextAppearance: float textSize>;
+
+        $b1 = $f0 cmpl 0.0F;
+
+        if $b1 == 0 goto label2;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedTextSize> = $f0;
+
+     label2:
+        $r4 = $r1.<com.google.android.material.resources.TextAppearance: android.content.res.ColorStateList shadowColor>;
+
+        if $r4 == null goto label3;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList expandedShadowColor> = $r4;
+
+     label3:
+        $f0 = $r1.<com.google.android.material.resources.TextAppearance: float shadowDx>;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedShadowDx> = $f0;
+
+        $f0 = $r1.<com.google.android.material.resources.TextAppearance: float shadowDy>;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedShadowDy> = $f0;
+
+        $f0 = $r1.<com.google.android.material.resources.TextAppearance: float shadowRadius>;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedShadowRadius> = $f0;
+
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: com.google.android.material.resources.CancelableFontCallback expandedFontCallback>;
+
+        if $r5 == null goto label4;
+
+        virtualinvoke $r5.<com.google.android.material.resources.CancelableFontCallback: void cancel()>();
+
+     label4:
+        $r5 = new com.google.android.material.resources.CancelableFontCallback;
+
+        $r6 = new com.google.android.material.internal.CollapsingTextHelper$2;
+
+        specialinvoke $r6.<com.google.android.material.internal.CollapsingTextHelper$2: void <init>(com.google.android.material.internal.CollapsingTextHelper)>(r0);
+
+        $r7 = virtualinvoke $r1.<com.google.android.material.resources.TextAppearance: android.graphics.Typeface getFallbackFont()>();
+
+        specialinvoke $r5.<com.google.android.material.resources.CancelableFontCallback: void <init>(com.google.android.material.resources.CancelableFontCallback$ApplyFont,android.graphics.Typeface)>($r6, $r7);
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: com.google.android.material.resources.CancelableFontCallback expandedFontCallback> = $r5;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.view.View view>;
+
+        $r3 = virtualinvoke $r2.<android.view.View: android.content.Context getContext()>();
+
+        $r5 = r0.<com.google.android.material.internal.CollapsingTextHelper: com.google.android.material.resources.CancelableFontCallback expandedFontCallback>;
+
+        virtualinvoke $r1.<com.google.android.material.resources.TextAppearance: void getFontAsync(android.content.Context,com.google.android.material.resources.TextAppearanceFontCallback)>($r3, $r5);
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void recalculate()>();
+
+        return;
+    }
+
+    public void setExpandedTextColor(android.content.res.ColorStateList)
+    {
+        android.content.res.ColorStateList $r1, $r2;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.content.res.ColorStateList;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList expandedTextColor>;
+
+        if $r2 == $r1 goto label1;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.content.res.ColorStateList expandedTextColor> = $r1;
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void recalculate()>();
+
+     label1:
+        return;
+    }
+
+    public void setExpandedTextGravity(int)
+    {
+        int $i0, $i1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $i0 := @parameter0: int;
+
+        $i1 = r0.<com.google.android.material.internal.CollapsingTextHelper: int expandedTextGravity>;
+
+        if $i1 == $i0 goto label1;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: int expandedTextGravity> = $i0;
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void recalculate()>();
+
+     label1:
+        return;
+    }
+
+    public void setExpandedTextSize(float)
+    {
+        byte $b0;
+        float $f0, $f1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $f0 := @parameter0: float;
+
+        $f1 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedTextSize>;
+
+        $b0 = $f1 cmpl $f0;
+
+        if $b0 == 0 goto label1;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedTextSize> = $f0;
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void recalculate()>();
+
+     label1:
+        return;
+    }
+
+    public void setExpandedTypeface(android.graphics.Typeface)
+    {
+        android.graphics.Typeface $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.graphics.Typeface;
+
+        $z0 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: boolean setExpandedTypefaceInternal(android.graphics.Typeface)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void recalculate()>();
+
+     label1:
+        return;
+    }
+
+    public void setExpansionFraction(float)
+    {
+        byte $b0;
+        float $f0, $f1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $f0 := @parameter0: float;
+
+        $f0 = staticinvoke <b.i.d.a: float a(float,float,float)>($f0, 0.0F, 1.0F);
+
+        $f1 = r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedFraction>;
+
+        $b0 = $f0 cmpl $f1;
+
+        if $b0 == 0 goto label1;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: float expandedFraction> = $f0;
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void calculateCurrentOffsets()>();
+
+     label1:
+        return;
+    }
+
+    public void setMaxLines(int)
+    {
+        int $i0, $i1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $i0 := @parameter0: int;
+
+        $i1 = r0.<com.google.android.material.internal.CollapsingTextHelper: int maxLines>;
+
+        if $i0 == $i1 goto label1;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: int maxLines> = $i0;
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void clearTexture()>();
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void recalculate()>();
+
+     label1:
+        return;
+    }
+
+    public void setPositionInterpolator(android.animation.TimeInterpolator)
+    {
+        android.animation.TimeInterpolator $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.animation.TimeInterpolator;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.animation.TimeInterpolator positionInterpolator> = $r1;
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void recalculate()>();
+
+        return;
+    }
+
+    public final boolean setState(int[])
+    {
+        int[] $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: int[];
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: int[] state> = $r1;
+
+        $z0 = virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: boolean isStateful()>();
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void recalculate()>();
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public void setText(java.lang.CharSequence)
+    {
+        java.lang.CharSequence $r1, $r2;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: java.lang.CharSequence;
+
+        if $r1 == null goto label1;
+
+        $r2 = r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence text>;
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean equals(java.lang.CharSequence,java.lang.CharSequence)>($r2, $r1);
+
+        if $z0 != 0 goto label2;
+
+     label1:
+        r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence text> = $r1;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: java.lang.CharSequence textToDraw> = null;
+
+        specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void clearTexture()>();
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void recalculate()>();
+
+     label2:
+        return;
+    }
+
+    public void setTextSizeInterpolator(android.animation.TimeInterpolator)
+    {
+        android.animation.TimeInterpolator $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.animation.TimeInterpolator;
+
+        r0.<com.google.android.material.internal.CollapsingTextHelper: android.animation.TimeInterpolator textSizeInterpolator> = $r1;
+
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void recalculate()>();
+
+        return;
+    }
+
+    public void setTypefaces(android.graphics.Typeface)
+    {
+        android.graphics.Typeface $r1;
+        com.google.android.material.internal.CollapsingTextHelper r0;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.android.material.internal.CollapsingTextHelper;
+
+        $r1 := @parameter0: android.graphics.Typeface;
+
+        $z0 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: boolean setCollapsedTypefaceInternal(android.graphics.Typeface)>($r1);
+
+        $z1 = specialinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: boolean setExpandedTypefaceInternal(android.graphics.Typeface)>($r1);
+
+        if $z0 != 0 goto label1;
+
+        if $z1 == 0 goto label2;
+
+     label1:
+        virtualinvoke r0.<com.google.android.material.internal.CollapsingTextHelper: void recalculate()>();
+
+     label2:
+        return;
+    }
+}

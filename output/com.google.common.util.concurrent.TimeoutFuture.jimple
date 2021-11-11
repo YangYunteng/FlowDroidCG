@@ -1,0 +1,130 @@
+public final class com.google.common.util.concurrent.TimeoutFuture extends com.google.common.util.concurrent.AbstractFuture$TrustedFuture
+{
+    public com.google.common.util.concurrent.ListenableFuture delegateRef;
+    public java.util.concurrent.Future timer;
+
+    public void <init>(com.google.common.util.concurrent.ListenableFuture)
+    {
+        com.google.common.util.concurrent.TimeoutFuture r0;
+        com.google.common.util.concurrent.ListenableFuture $r1;
+
+        r0 := @this: com.google.common.util.concurrent.TimeoutFuture;
+
+        $r1 := @parameter0: com.google.common.util.concurrent.ListenableFuture;
+
+        specialinvoke r0.<com.google.common.util.concurrent.AbstractFuture$TrustedFuture: void <init>()>();
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        r0.<com.google.common.util.concurrent.TimeoutFuture: com.google.common.util.concurrent.ListenableFuture delegateRef> = $r1;
+
+        return;
+    }
+
+    public static com.google.common.util.concurrent.ListenableFuture access$000(com.google.common.util.concurrent.TimeoutFuture)
+    {
+        com.google.common.util.concurrent.TimeoutFuture $r0;
+        com.google.common.util.concurrent.ListenableFuture r1;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.TimeoutFuture;
+
+        r1 = $r0.<com.google.common.util.concurrent.TimeoutFuture: com.google.common.util.concurrent.ListenableFuture delegateRef>;
+
+        return r1;
+    }
+
+    public static com.google.common.util.concurrent.ListenableFuture create(com.google.common.util.concurrent.ListenableFuture, long, java.util.concurrent.TimeUnit, java.util.concurrent.ScheduledExecutorService)
+    {
+        java.util.concurrent.ScheduledFuture $r5;
+        com.google.common.util.concurrent.ListenableFuture $r0;
+        java.util.concurrent.Executor $r6;
+        long $l0;
+        com.google.common.util.concurrent.TimeoutFuture $r3;
+        java.util.concurrent.TimeUnit $r1;
+        com.google.common.util.concurrent.TimeoutFuture$Fire $r4;
+        java.util.concurrent.ScheduledExecutorService $r2;
+
+        $r0 := @parameter0: com.google.common.util.concurrent.ListenableFuture;
+
+        $l0 := @parameter1: long;
+
+        $r1 := @parameter2: java.util.concurrent.TimeUnit;
+
+        $r2 := @parameter3: java.util.concurrent.ScheduledExecutorService;
+
+        $r3 = new com.google.common.util.concurrent.TimeoutFuture;
+
+        specialinvoke $r3.<com.google.common.util.concurrent.TimeoutFuture: void <init>(com.google.common.util.concurrent.ListenableFuture)>($r0);
+
+        $r4 = new com.google.common.util.concurrent.TimeoutFuture$Fire;
+
+        specialinvoke $r4.<com.google.common.util.concurrent.TimeoutFuture$Fire: void <init>(com.google.common.util.concurrent.TimeoutFuture)>($r3);
+
+        $r5 = interfaceinvoke $r2.<java.util.concurrent.ScheduledExecutorService: java.util.concurrent.ScheduledFuture schedule(java.lang.Runnable,long,java.util.concurrent.TimeUnit)>($r4, $l0, $r1);
+
+        $r3.<com.google.common.util.concurrent.TimeoutFuture: java.util.concurrent.Future timer> = $r5;
+
+        $r6 = staticinvoke <com.google.common.util.concurrent.MoreExecutors: java.util.concurrent.Executor directExecutor()>();
+
+        interfaceinvoke $r0.<com.google.common.util.concurrent.ListenableFuture: void addListener(java.lang.Runnable,java.util.concurrent.Executor)>($r4, $r6);
+
+        return $r3;
+    }
+
+    public void afterDone()
+    {
+        java.util.concurrent.Future $r2;
+        com.google.common.util.concurrent.TimeoutFuture r0;
+        com.google.common.util.concurrent.ListenableFuture $r1;
+
+        r0 := @this: com.google.common.util.concurrent.TimeoutFuture;
+
+        $r1 = r0.<com.google.common.util.concurrent.TimeoutFuture: com.google.common.util.concurrent.ListenableFuture delegateRef>;
+
+        virtualinvoke r0.<com.google.common.util.concurrent.AbstractFuture: void maybePropagateCancellationTo(java.util.concurrent.Future)>($r1);
+
+        $r2 = r0.<com.google.common.util.concurrent.TimeoutFuture: java.util.concurrent.Future timer>;
+
+        if $r2 == null goto label1;
+
+        interfaceinvoke $r2.<java.util.concurrent.Future: boolean cancel(boolean)>(0);
+
+     label1:
+        r0.<com.google.common.util.concurrent.TimeoutFuture: com.google.common.util.concurrent.ListenableFuture delegateRef> = null;
+
+        r0.<com.google.common.util.concurrent.TimeoutFuture: java.util.concurrent.Future timer> = null;
+
+        return;
+    }
+
+    public java.lang.String pendingToString()
+    {
+        com.google.common.util.concurrent.ListenableFuture $r3;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2;
+        com.google.common.util.concurrent.TimeoutFuture r0;
+
+        r0 := @this: com.google.common.util.concurrent.TimeoutFuture;
+
+        $r3 = r0.<com.google.common.util.concurrent.TimeoutFuture: com.google.common.util.concurrent.ListenableFuture delegateRef>;
+
+        if $r3 == null goto label1;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("inputFuture=[");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r3);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r2;
+
+     label1:
+        return null;
+    }
+}

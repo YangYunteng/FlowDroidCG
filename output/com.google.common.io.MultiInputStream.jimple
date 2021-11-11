@@ -1,0 +1,248 @@
+public final class com.google.common.io.MultiInputStream extends java.io.InputStream
+{
+    public java.io.InputStream in;
+    public java.util.Iterator it;
+
+    public void <init>(java.util.Iterator)
+    {
+        com.google.common.io.MultiInputStream r0;
+        java.util.Iterator $r1;
+
+        r0 := @this: com.google.common.io.MultiInputStream;
+
+        $r1 := @parameter0: java.util.Iterator;
+
+        specialinvoke r0.<java.io.InputStream: void <init>()>();
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        r0.<com.google.common.io.MultiInputStream: java.util.Iterator it> = $r1;
+
+        specialinvoke r0.<com.google.common.io.MultiInputStream: void advance()>();
+
+        return;
+    }
+
+    private void advance()
+    {
+        java.util.Iterator $r1;
+        java.lang.Object $r2;
+        com.google.common.io.MultiInputStream r0;
+        com.google.common.io.ByteSource $r3;
+        boolean $z0;
+        java.io.InputStream $r4;
+
+        r0 := @this: com.google.common.io.MultiInputStream;
+
+        virtualinvoke r0.<com.google.common.io.MultiInputStream: void close()>();
+
+        $r1 = r0.<com.google.common.io.MultiInputStream: java.util.Iterator it>;
+
+        $z0 = interfaceinvoke $r1.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = r0.<com.google.common.io.MultiInputStream: java.util.Iterator it>;
+
+        $r2 = interfaceinvoke $r1.<java.util.Iterator: java.lang.Object next()>();
+
+        $r3 = (com.google.common.io.ByteSource) $r2;
+
+        $r4 = virtualinvoke $r3.<com.google.common.io.ByteSource: java.io.InputStream openStream()>();
+
+        r0.<com.google.common.io.MultiInputStream: java.io.InputStream in> = $r4;
+
+     label1:
+        return;
+    }
+
+    public int available()
+    {
+        int $i0;
+        com.google.common.io.MultiInputStream r0;
+        java.io.InputStream $r1;
+
+        r0 := @this: com.google.common.io.MultiInputStream;
+
+        $r1 = r0.<com.google.common.io.MultiInputStream: java.io.InputStream in>;
+
+        if $r1 != null goto label1;
+
+        return 0;
+
+     label1:
+        $i0 = virtualinvoke $r1.<java.io.InputStream: int available()>();
+
+        return $i0;
+    }
+
+    public void close()
+    {
+        java.lang.Throwable $r2;
+        com.google.common.io.MultiInputStream r0;
+        java.io.InputStream $r1;
+
+        r0 := @this: com.google.common.io.MultiInputStream;
+
+        $r1 = r0.<com.google.common.io.MultiInputStream: java.io.InputStream in>;
+
+        if $r1 == null goto label4;
+
+     label1:
+        virtualinvoke $r1.<java.io.InputStream: void close()>();
+
+     label2:
+        r0.<com.google.common.io.MultiInputStream: java.io.InputStream in> = null;
+
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        r0.<com.google.common.io.MultiInputStream: java.io.InputStream in> = null;
+
+        throw $r2;
+
+     label4:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public boolean markSupported()
+    {
+        com.google.common.io.MultiInputStream r0;
+
+        r0 := @this: com.google.common.io.MultiInputStream;
+
+        return 0;
+    }
+
+    public int read()
+    {
+        int $i0, $i1;
+        com.google.common.io.MultiInputStream r0;
+        java.io.InputStream $r1;
+
+        r0 := @this: com.google.common.io.MultiInputStream;
+
+        $r1 = r0.<com.google.common.io.MultiInputStream: java.io.InputStream in>;
+
+        if $r1 != null goto label1;
+
+        $i0 = -1;
+
+        return $i0;
+
+     label1:
+        $i0 = virtualinvoke $r1.<java.io.InputStream: int read()>();
+
+        $i1 = -1;
+
+        if $i0 != $i1 goto label2;
+
+        specialinvoke r0.<com.google.common.io.MultiInputStream: void advance()>();
+
+        $i0 = virtualinvoke r0.<com.google.common.io.MultiInputStream: int read()>();
+
+     label2:
+        return $i0;
+    }
+
+    public int read(byte[], int, int)
+    {
+        byte[] $r1;
+        int $i0, $i1, $i2, $i3;
+        com.google.common.io.MultiInputStream r0;
+        java.io.InputStream $r2;
+
+        r0 := @this: com.google.common.io.MultiInputStream;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 = r0.<com.google.common.io.MultiInputStream: java.io.InputStream in>;
+
+        if $r2 != null goto label1;
+
+        $i0 = -1;
+
+        return $i0;
+
+     label1:
+        $i2 = virtualinvoke $r2.<java.io.InputStream: int read(byte[],int,int)>($r1, $i0, $i1);
+
+        $i3 = -1;
+
+        if $i2 != $i3 goto label2;
+
+        specialinvoke r0.<com.google.common.io.MultiInputStream: void advance()>();
+
+        $i0 = virtualinvoke r0.<com.google.common.io.MultiInputStream: int read(byte[],int,int)>($r1, $i0, $i1);
+
+        return $i0;
+
+     label2:
+        return $i2;
+    }
+
+    public long skip(long)
+    {
+        byte $b1;
+        int $i3, $i4;
+        long $l0, $l2;
+        com.google.common.io.MultiInputStream r0;
+        java.io.InputStream $r1;
+
+        r0 := @this: com.google.common.io.MultiInputStream;
+
+        $l0 := @parameter0: long;
+
+        $r1 = r0.<com.google.common.io.MultiInputStream: java.io.InputStream in>;
+
+        if $r1 == null goto label4;
+
+        $b1 = $l0 cmp 0L;
+
+        $i3 = (int) $b1;
+
+        if $i3 > 0 goto label1;
+
+        return 0L;
+
+     label1:
+        $l2 = virtualinvoke $r1.<java.io.InputStream: long skip(long)>($l0);
+
+        $b1 = $l2 cmp 0L;
+
+        if $b1 == 0 goto label2;
+
+        return $l2;
+
+     label2:
+        $i3 = virtualinvoke r0.<com.google.common.io.MultiInputStream: int read()>();
+
+        $i4 = -1;
+
+        if $i3 != $i4 goto label3;
+
+        return 0L;
+
+     label3:
+        $r1 = r0.<com.google.common.io.MultiInputStream: java.io.InputStream in>;
+
+        $l0 = $l0 - 1L;
+
+        $l0 = virtualinvoke $r1.<java.io.InputStream: long skip(long)>($l0);
+
+        $l0 = $l0 + 1L;
+
+        return $l0;
+
+     label4:
+        return 0L;
+    }
+}

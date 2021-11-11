@@ -1,0 +1,401 @@
+public class androidx.appcompat.widget.ButtonBarLayout extends android.widget.LinearLayout
+{
+    public static final int PEEK_BUTTON_DP;
+    public boolean mAllowStacking;
+    public int mLastWidthSize;
+    public int mMinimumHeight;
+
+    public void <init>(android.content.Context, android.util.AttributeSet)
+    {
+        android.content.Context $r2;
+        android.util.AttributeSet $r3;
+        int[] $r1;
+        int $i0;
+        androidx.appcompat.widget.ButtonBarLayout r0;
+        android.content.res.TypedArray $r4;
+        boolean $z0;
+
+        r0 := @this: androidx.appcompat.widget.ButtonBarLayout;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r3 := @parameter1: android.util.AttributeSet;
+
+        specialinvoke r0.<android.widget.LinearLayout: void <init>(android.content.Context,android.util.AttributeSet)>($r2, $r3);
+
+        $i0 = -1;
+
+        r0.<androidx.appcompat.widget.ButtonBarLayout: int mLastWidthSize> = $i0;
+
+        r0.<androidx.appcompat.widget.ButtonBarLayout: int mMinimumHeight> = 0;
+
+        $r1 = <b.b.j: int[] ButtonBarLayout>;
+
+        $r4 = virtualinvoke $r2.<android.content.Context: android.content.res.TypedArray obtainStyledAttributes(android.util.AttributeSet,int[])>($r3, $r1);
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 < 29 goto label1;
+
+        $r1 = <b.b.j: int[] ButtonBarLayout>;
+
+        virtualinvoke r0.<android.widget.LinearLayout: void saveAttributeDataForStyleable(android.content.Context,int[],android.util.AttributeSet,android.content.res.TypedArray,int,int)>($r2, $r1, $r3, $r4, 0, 0);
+
+     label1:
+        $i0 = <b.b.j: int ButtonBarLayout_allowStacking>;
+
+        $z0 = virtualinvoke $r4.<android.content.res.TypedArray: boolean getBoolean(int,boolean)>($i0, 1);
+
+        r0.<androidx.appcompat.widget.ButtonBarLayout: boolean mAllowStacking> = $z0;
+
+        virtualinvoke $r4.<android.content.res.TypedArray: void recycle()>();
+
+        return;
+    }
+
+    private int getNextVisibleChildIndex(int)
+    {
+        int $i0, $i1, $i2;
+        android.view.View $r1;
+        androidx.appcompat.widget.ButtonBarLayout r0;
+
+        r0 := @this: androidx.appcompat.widget.ButtonBarLayout;
+
+        $i0 := @parameter0: int;
+
+        $i1 = virtualinvoke r0.<android.widget.LinearLayout: int getChildCount()>();
+
+     label1:
+        if $i0 >= $i1 goto label3;
+
+        $r1 = virtualinvoke r0.<android.widget.LinearLayout: android.view.View getChildAt(int)>($i0);
+
+        $i2 = virtualinvoke $r1.<android.view.View: int getVisibility()>();
+
+        if $i2 != 0 goto label2;
+
+        return $i0;
+
+     label2:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label3:
+        $i0 = -1;
+
+        return $i0;
+    }
+
+    private boolean isStacked()
+    {
+        int $i0;
+        androidx.appcompat.widget.ButtonBarLayout r0;
+
+        r0 := @this: androidx.appcompat.widget.ButtonBarLayout;
+
+        $i0 = virtualinvoke r0.<android.widget.LinearLayout: int getOrientation()>();
+
+        if $i0 != 1 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    private void setStacked(boolean)
+    {
+        byte $b0;
+        int $i1, $i2;
+        android.view.View $r1;
+        androidx.appcompat.widget.ButtonBarLayout r0;
+        boolean $z0;
+
+        r0 := @this: androidx.appcompat.widget.ButtonBarLayout;
+
+        $z0 := @parameter0: boolean;
+
+        $i1 = (int) $z0;
+
+        virtualinvoke r0.<android.widget.LinearLayout: void setOrientation(int)>($i1);
+
+        if $z0 == 0 goto label1;
+
+        $b0 = 5;
+
+        goto label2;
+
+     label1:
+        $b0 = 80;
+
+     label2:
+        virtualinvoke r0.<android.widget.LinearLayout: void setGravity(int)>($b0);
+
+        $i1 = <b.b.f: int spacer>;
+
+        $r1 = virtualinvoke r0.<android.widget.LinearLayout: android.view.View findViewById(int)>($i1);
+
+        if $r1 == null goto label5;
+
+        if $z0 == 0 goto label3;
+
+        $b0 = 8;
+
+        goto label4;
+
+     label3:
+        $b0 = 4;
+
+     label4:
+        virtualinvoke $r1.<android.view.View: void setVisibility(int)>($b0);
+
+     label5:
+        $i1 = virtualinvoke r0.<android.widget.LinearLayout: int getChildCount()>();
+
+        $i2 = -2;
+
+        $i1 = $i1 + $i2;
+
+     label6:
+        if $i1 < 0 goto label7;
+
+        $r1 = virtualinvoke r0.<android.widget.LinearLayout: android.view.View getChildAt(int)>($i1);
+
+        virtualinvoke r0.<android.widget.LinearLayout: void bringChildToFront(android.view.View)>($r1);
+
+        $i2 = -1;
+
+        $i1 = $i1 + $i2;
+
+        goto label6;
+
+     label7:
+        return;
+    }
+
+    public int getMinimumHeight()
+    {
+        int $i0, $i1;
+        androidx.appcompat.widget.ButtonBarLayout r0;
+
+        r0 := @this: androidx.appcompat.widget.ButtonBarLayout;
+
+        $i0 = r0.<androidx.appcompat.widget.ButtonBarLayout: int mMinimumHeight>;
+
+        $i1 = specialinvoke r0.<android.widget.LinearLayout: int getMinimumHeight()>();
+
+        $i0 = staticinvoke <java.lang.Math: int max(int,int)>($i0, $i1);
+
+        return $i0;
+    }
+
+    public void onMeasure(int, int)
+    {
+        android.view.ViewGroup$LayoutParams $r2;
+        androidx.appcompat.widget.ButtonBarLayout r0;
+        android.util.DisplayMetrics $r5;
+        int $i0, $i1, $i2, $i3, $i4;
+        android.view.View $r1;
+        float $f0;
+        android.widget.LinearLayout$LayoutParams $r3;
+        boolean $z0, $z1;
+        android.content.res.Resources $r4;
+
+        r0 := @this: androidx.appcompat.widget.ButtonBarLayout;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 = staticinvoke <android.view.View$MeasureSpec: int getSize(int)>($i0);
+
+        $z0 = r0.<androidx.appcompat.widget.ButtonBarLayout: boolean mAllowStacking>;
+
+        $i3 = 0;
+
+        if $z0 == 0 goto label02;
+
+        $i4 = r0.<androidx.appcompat.widget.ButtonBarLayout: int mLastWidthSize>;
+
+        if $i2 <= $i4 goto label01;
+
+        $z0 = specialinvoke r0.<androidx.appcompat.widget.ButtonBarLayout: boolean isStacked()>();
+
+        if $z0 == 0 goto label01;
+
+        specialinvoke r0.<androidx.appcompat.widget.ButtonBarLayout: void setStacked(boolean)>(0);
+
+     label01:
+        r0.<androidx.appcompat.widget.ButtonBarLayout: int mLastWidthSize> = $i2;
+
+     label02:
+        $z0 = specialinvoke r0.<androidx.appcompat.widget.ButtonBarLayout: boolean isStacked()>();
+
+        if $z0 != 0 goto label03;
+
+        $i4 = staticinvoke <android.view.View$MeasureSpec: int getMode(int)>($i0);
+
+        if $i4 != 1073741824 goto label03;
+
+        $i2 = staticinvoke <android.view.View$MeasureSpec: int makeMeasureSpec(int,int)>($i2, -2147483648);
+
+        $z0 = 1;
+
+        goto label04;
+
+     label03:
+        $i2 = $i0;
+
+        $z0 = 0;
+
+     label04:
+        specialinvoke r0.<android.widget.LinearLayout: void onMeasure(int,int)>($i2, $i1);
+
+        $z1 = r0.<androidx.appcompat.widget.ButtonBarLayout: boolean mAllowStacking>;
+
+        if $z1 == 0 goto label07;
+
+        $z1 = specialinvoke r0.<androidx.appcompat.widget.ButtonBarLayout: boolean isStacked()>();
+
+        if $z1 != 0 goto label07;
+
+        $i2 = virtualinvoke r0.<android.widget.LinearLayout: int getMeasuredWidthAndState()>();
+
+        $i2 = $i2 & -16777216;
+
+        if $i2 != 16777216 goto label05;
+
+        $z1 = 1;
+
+        goto label06;
+
+     label05:
+        $z1 = 0;
+
+     label06:
+        if $z1 == 0 goto label07;
+
+        specialinvoke r0.<androidx.appcompat.widget.ButtonBarLayout: void setStacked(boolean)>(1);
+
+        $z0 = 1;
+
+     label07:
+        if $z0 == 0 goto label08;
+
+        specialinvoke r0.<android.widget.LinearLayout: void onMeasure(int,int)>($i0, $i1);
+
+     label08:
+        $i0 = specialinvoke r0.<androidx.appcompat.widget.ButtonBarLayout: int getNextVisibleChildIndex(int)>(0);
+
+        if $i0 < 0 goto label11;
+
+        $r1 = virtualinvoke r0.<android.widget.LinearLayout: android.view.View getChildAt(int)>($i0);
+
+        $r2 = virtualinvoke $r1.<android.view.View: android.view.ViewGroup$LayoutParams getLayoutParams()>();
+
+        $r3 = (android.widget.LinearLayout$LayoutParams) $r2;
+
+        $i1 = virtualinvoke r0.<android.widget.LinearLayout: int getPaddingTop()>();
+
+        $i3 = virtualinvoke $r1.<android.view.View: int getMeasuredHeight()>();
+
+        $i1 = $i1 + $i3;
+
+        $i3 = $r3.<android.widget.LinearLayout$LayoutParams: int topMargin>;
+
+        $i1 = $i1 + $i3;
+
+        $i3 = $r3.<android.widget.LinearLayout$LayoutParams: int bottomMargin>;
+
+        $i1 = $i1 + $i3;
+
+        $z0 = specialinvoke r0.<androidx.appcompat.widget.ButtonBarLayout: boolean isStacked()>();
+
+        if $z0 == 0 goto label10;
+
+        $i0 = $i0 + 1;
+
+        $i0 = specialinvoke r0.<androidx.appcompat.widget.ButtonBarLayout: int getNextVisibleChildIndex(int)>($i0);
+
+        if $i0 < 0 goto label09;
+
+        $r1 = virtualinvoke r0.<android.widget.LinearLayout: android.view.View getChildAt(int)>($i0);
+
+        $i0 = virtualinvoke $r1.<android.view.View: int getPaddingTop()>();
+
+        $r4 = virtualinvoke r0.<android.widget.LinearLayout: android.content.res.Resources getResources()>();
+
+        $r5 = virtualinvoke $r4.<android.content.res.Resources: android.util.DisplayMetrics getDisplayMetrics()>();
+
+        $f0 = $r5.<android.util.DisplayMetrics: float density>;
+
+        $f0 = $f0 * 16.0F;
+
+        $i3 = (int) $f0;
+
+        $i0 = $i0 + $i3;
+
+        $i1 = $i1 + $i0;
+
+     label09:
+        $i3 = $i1;
+
+        goto label11;
+
+     label10:
+        $i0 = virtualinvoke r0.<android.widget.LinearLayout: int getPaddingBottom()>();
+
+        $i3 = $i1 + $i0;
+
+     label11:
+        $i0 = staticinvoke <b.i.i.y: int q(android.view.View)>(r0);
+
+        if $i0 == $i3 goto label12;
+
+        virtualinvoke r0.<android.widget.LinearLayout: void setMinimumHeight(int)>($i3);
+
+     label12:
+        return;
+    }
+
+    public void setAllowStacking(boolean)
+    {
+        int $i0;
+        androidx.appcompat.widget.ButtonBarLayout r0;
+        boolean $z0, $z1;
+
+        r0 := @this: androidx.appcompat.widget.ButtonBarLayout;
+
+        $z0 := @parameter0: boolean;
+
+        $z1 = r0.<androidx.appcompat.widget.ButtonBarLayout: boolean mAllowStacking>;
+
+        if $z1 == $z0 goto label2;
+
+        r0.<androidx.appcompat.widget.ButtonBarLayout: boolean mAllowStacking> = $z0;
+
+        $z0 = r0.<androidx.appcompat.widget.ButtonBarLayout: boolean mAllowStacking>;
+
+        if $z0 != 0 goto label1;
+
+        $i0 = virtualinvoke r0.<android.widget.LinearLayout: int getOrientation()>();
+
+        if $i0 != 1 goto label1;
+
+        specialinvoke r0.<androidx.appcompat.widget.ButtonBarLayout: void setStacked(boolean)>(0);
+
+     label1:
+        virtualinvoke r0.<android.widget.LinearLayout: void requestLayout()>();
+
+     label2:
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <androidx.appcompat.widget.ButtonBarLayout: int PEEK_BUTTON_DP> = 16;
+
+        return;
+    }
+}

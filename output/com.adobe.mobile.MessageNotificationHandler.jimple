@@ -1,0 +1,936 @@
+public class com.adobe.mobile.MessageNotificationHandler extends android.content.BroadcastReceiver
+{
+
+    public void <init>()
+    {
+        com.adobe.mobile.MessageNotificationHandler r0;
+
+        r0 := @this: com.adobe.mobile.MessageNotificationHandler;
+
+        specialinvoke r0.<android.content.BroadcastReceiver: void <init>()>();
+
+        return;
+    }
+
+    private java.lang.String getAppName()
+    {
+        android.content.Context $r1;
+        java.lang.Object[] $r7;
+        java.lang.CharSequence $r5;
+        android.content.pm.PackageManager $r2;
+        android.content.pm.PackageManager$NameNotFoundException $r8;
+        com.adobe.mobile.MessageNotificationHandler r0;
+        java.lang.String $r3;
+        com.adobe.mobile.StaticMethods$NullContextException $r6;
+        android.content.pm.ApplicationInfo $r4;
+
+        r0 := @this: com.adobe.mobile.MessageNotificationHandler;
+
+     label01:
+        $r1 = staticinvoke <com.adobe.mobile.StaticMethods: android.content.Context A()>();
+
+        $r2 = virtualinvoke $r1.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+     label02:
+        if $r2 == null goto label11;
+
+     label03:
+        $r1 = staticinvoke <com.adobe.mobile.StaticMethods: android.content.Context A()>();
+
+        $r3 = virtualinvoke $r1.<android.content.Context: java.lang.String getPackageName()>();
+
+        $r4 = virtualinvoke $r2.<android.content.pm.PackageManager: android.content.pm.ApplicationInfo getApplicationInfo(java.lang.String,int)>($r3, 0);
+
+     label04:
+        if $r4 == null goto label11;
+
+     label05:
+        $r5 = virtualinvoke $r2.<android.content.pm.PackageManager: java.lang.CharSequence getApplicationLabel(android.content.pm.ApplicationInfo)>($r4);
+
+     label06:
+        if $r5 == null goto label11;
+
+     label07:
+        $r5 = virtualinvoke $r2.<android.content.pm.PackageManager: java.lang.CharSequence getApplicationLabel(android.content.pm.ApplicationInfo)>($r4);
+
+     label08:
+        $r3 = (java.lang.String) $r5;
+
+        return $r3;
+
+     label09:
+        $r6 := @caughtexception;
+
+        $r7 = newarray (java.lang.Object)[1];
+
+        $r3 = virtualinvoke $r6.<java.lang.Exception: java.lang.String getMessage()>();
+
+        $r7[0] = $r3;
+
+        staticinvoke <com.adobe.mobile.StaticMethods: void a(java.lang.String,java.lang.Object[])>("Messages - unable to get app name (%s)", $r7);
+
+        return "";
+
+     label10:
+        $r8 := @caughtexception;
+
+        $r7 = newarray (java.lang.Object)[1];
+
+        $r3 = virtualinvoke $r8.<android.content.pm.PackageManager$NameNotFoundException: java.lang.String getMessage()>();
+
+        $r7[0] = $r3;
+
+        staticinvoke <com.adobe.mobile.StaticMethods: void a(java.lang.String,java.lang.Object[])>("Messages - unable to retrieve app name for local notification (%s)", $r7);
+
+     label11:
+        return "";
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label01 to label02 with label10;
+        catch android.content.pm.PackageManager$NameNotFoundException from label03 to label04 with label10;
+        catch android.content.pm.PackageManager$NameNotFoundException from label05 to label06 with label10;
+        catch android.content.pm.PackageManager$NameNotFoundException from label07 to label08 with label10;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label01 to label02 with label09;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label03 to label04 with label09;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label05 to label06 with label09;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label07 to label08 with label09;
+    }
+
+    private android.graphics.Bitmap getBitmapFromDrawable(android.graphics.drawable.Drawable)
+    {
+        com.adobe.mobile.MessageNotificationHandler r0;
+        android.graphics.Bitmap $r3;
+        int $i0, $i1;
+        android.graphics.Canvas $r4;
+        android.graphics.drawable.Drawable $r1;
+        android.graphics.Bitmap$Config $r2;
+
+        r0 := @this: com.adobe.mobile.MessageNotificationHandler;
+
+        $r1 := @parameter0: android.graphics.drawable.Drawable;
+
+        $i0 = virtualinvoke $r1.<android.graphics.drawable.Drawable: int getIntrinsicWidth()>();
+
+        $i1 = virtualinvoke $r1.<android.graphics.drawable.Drawable: int getIntrinsicHeight()>();
+
+        $r2 = <android.graphics.Bitmap$Config: android.graphics.Bitmap$Config ARGB_8888>;
+
+        $r3 = staticinvoke <android.graphics.Bitmap: android.graphics.Bitmap createBitmap(int,int,android.graphics.Bitmap$Config)>($i0, $i1, $r2);
+
+        $r4 = new android.graphics.Canvas;
+
+        specialinvoke $r4.<android.graphics.Canvas: void <init>(android.graphics.Bitmap)>($r3);
+
+        $i0 = virtualinvoke $r4.<android.graphics.Canvas: int getWidth()>();
+
+        $i1 = virtualinvoke $r4.<android.graphics.Canvas: int getHeight()>();
+
+        virtualinvoke $r1.<android.graphics.drawable.Drawable: void setBounds(int,int,int,int)>(0, 0, $i0, $i1);
+
+        virtualinvoke $r1.<android.graphics.drawable.Drawable: void draw(android.graphics.Canvas)>($r4);
+
+        return $r3;
+    }
+
+    private android.graphics.Bitmap getLargeIcon()
+    {
+        android.content.Context $r1;
+        java.lang.Object[] $r7;
+        android.content.pm.PackageManager $r13;
+        java.lang.Integer $r8;
+        android.graphics.drawable.Drawable $r11;
+        com.adobe.mobile.MessageNotificationHandler r0;
+        int $i0, $i1;
+        java.lang.reflect.Method $r5;
+        android.content.res.Resources$Theme $r9;
+        boolean $z0;
+        java.lang.Class[] $r3;
+        android.graphics.drawable.BitmapDrawable $r14;
+        android.graphics.Bitmap $r15;
+        java.lang.Class $r2, $r4;
+        java.lang.Object $r10;
+        android.content.pm.ApplicationInfo $r12;
+        android.content.res.Resources $r6;
+
+        r0 := @this: com.adobe.mobile.MessageNotificationHandler;
+
+        $i0 = staticinvoke <c.a.a.la: int d()>();
+
+        $i1 = -1;
+
+        if $i0 == $i1 goto label2;
+
+        $r1 = staticinvoke <com.adobe.mobile.StaticMethods: android.content.Context A()>();
+
+        $i1 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i1 <= 20 goto label1;
+
+        $r2 = class "Landroid/content/res/Resources;";
+
+        $r3 = newarray (java.lang.Class)[2];
+
+        $r4 = <java.lang.Integer: java.lang.Class TYPE>;
+
+        $r3[0] = $r4;
+
+        $r3[1] = class "Landroid/content/res/Resources$Theme;";
+
+        $r5 = virtualinvoke $r2.<java.lang.Class: java.lang.reflect.Method getDeclaredMethod(java.lang.String,java.lang.Class[])>("getDrawable", $r3);
+
+        $r6 = virtualinvoke $r1.<android.content.Context: android.content.res.Resources getResources()>();
+
+        $r7 = newarray (java.lang.Object)[2];
+
+        $r8 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r7[0] = $r8;
+
+        $r9 = virtualinvoke $r1.<android.content.Context: android.content.res.Resources$Theme getTheme()>();
+
+        $r7[1] = $r9;
+
+        $r10 = virtualinvoke $r5.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>($r6, $r7);
+
+        $r11 = (android.graphics.drawable.Drawable) $r10;
+
+        goto label4;
+
+     label1:
+        $r2 = class "Landroid/content/res/Resources;";
+
+        $r3 = newarray (java.lang.Class)[1];
+
+        $r4 = <java.lang.Integer: java.lang.Class TYPE>;
+
+        $r3[0] = $r4;
+
+        $r5 = virtualinvoke $r2.<java.lang.Class: java.lang.reflect.Method getDeclaredMethod(java.lang.String,java.lang.Class[])>("getDrawable", $r3);
+
+        $r6 = virtualinvoke $r1.<android.content.Context: android.content.res.Resources getResources()>();
+
+        $r7 = newarray (java.lang.Object)[1];
+
+        $r8 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r7[0] = $r8;
+
+        $r10 = virtualinvoke $r5.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>($r6, $r7);
+
+        $r11 = (android.graphics.drawable.Drawable) $r10;
+
+        goto label4;
+
+     label2:
+        $r1 = staticinvoke <com.adobe.mobile.StaticMethods: android.content.Context A()>();
+
+        $r12 = virtualinvoke $r1.<android.content.Context: android.content.pm.ApplicationInfo getApplicationInfo()>();
+
+        if $r12 == null goto label3;
+
+        $r1 = staticinvoke <com.adobe.mobile.StaticMethods: android.content.Context A()>();
+
+        $r13 = virtualinvoke $r1.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+        if $r13 == null goto label3;
+
+        $r11 = virtualinvoke $r13.<android.content.pm.PackageManager: android.graphics.drawable.Drawable getApplicationIcon(android.content.pm.ApplicationInfo)>($r12);
+
+        goto label4;
+
+     label3:
+        $r11 = null;
+
+     label4:
+        if $r11 == null goto label6;
+
+        $z0 = $r11 instanceof android.graphics.drawable.BitmapDrawable;
+
+        if $z0 == 0 goto label5;
+
+        $r14 = (android.graphics.drawable.BitmapDrawable) $r11;
+
+        $r15 = virtualinvoke $r14.<android.graphics.drawable.BitmapDrawable: android.graphics.Bitmap getBitmap()>();
+
+        return $r15;
+
+     label5:
+        $r15 = specialinvoke r0.<com.adobe.mobile.MessageNotificationHandler: android.graphics.Bitmap getBitmapFromDrawable(android.graphics.drawable.Drawable)>($r11);
+
+        return $r15;
+
+     label6:
+        return null;
+    }
+
+    private int getSmallIcon()
+    {
+        int $i0, $i1;
+        com.adobe.mobile.MessageNotificationHandler r0;
+
+        r0 := @this: com.adobe.mobile.MessageNotificationHandler;
+
+        $i0 = staticinvoke <c.a.a.la: int e()>();
+
+        $i1 = -1;
+
+        if $i0 == $i1 goto label1;
+
+        $i0 = staticinvoke <c.a.a.la: int e()>();
+
+        return $i0;
+
+     label1:
+        return 17301651;
+    }
+
+    public void onReceive(android.content.Context, android.content.Intent)
+    {
+        android.os.Bundle $r4;
+        java.lang.NoSuchMethodException $r32;
+        android.net.Uri $r14;
+        android.app.PendingIntent $r15;
+        java.lang.Integer $r10;
+        java.security.SecureRandom $r28, $r38;
+        com.adobe.mobile.MessageNotificationHandler r0;
+        java.lang.reflect.Method $r22;
+        boolean $z0;
+        com.adobe.mobile.StaticMethods$NullActivityException $r1, $r35;
+        android.app.NotificationManager $r27;
+        java.lang.Exception $r30, $r36;
+        android.app.Notification $r29;
+        java.lang.ClassLoader $r17;
+        android.content.Context $r2;
+        java.lang.Object[] $r5;
+        android.content.Intent $r3, $r37;
+        java.lang.reflect.Constructor $r19;
+        int $i0, $i1, $i2;
+        java.lang.Boolean $r24;
+        java.lang.String $r6, $r7, $r8, $r9;
+        com.adobe.mobile.StaticMethods$NullContextException $r31, $r34;
+        java.lang.Class[] $r18;
+        java.lang.reflect.Field $r25;
+        android.graphics.Bitmap $r23;
+        java.lang.Class $r16, $r21;
+        java.lang.Object $r20, $r26;
+        java.lang.ClassNotFoundException $r33;
+        android.app.Activity $r11, $r12, $r13;
+
+        r0 := @this: com.adobe.mobile.MessageNotificationHandler;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r3 := @parameter1: android.content.Intent;
+
+        $r4 = virtualinvoke $r3.<android.content.Intent: android.os.Bundle getExtras()>();
+
+        if $r4 != null goto label001;
+
+        $r5 = newarray (java.lang.Object)[0];
+
+        staticinvoke <com.adobe.mobile.StaticMethods: void a(java.lang.String,java.lang.Object[])>("Messages - unable to load extras from local notification intent", $r5);
+
+        return;
+
+     label001:
+        $r6 = virtualinvoke $r4.<android.os.Bundle: java.lang.String getString(java.lang.String)>("alarm_message");
+
+        $i0 = virtualinvoke $r4.<android.os.Bundle: int getInt(java.lang.String)>("adbMessageCode");
+
+        $i1 = virtualinvoke $r4.<android.os.Bundle: int getInt(java.lang.String)>("requestCode");
+
+        $r7 = virtualinvoke $r4.<android.os.Bundle: java.lang.String getString(java.lang.String)>("adb_m_l_id");
+
+        $r8 = virtualinvoke $r4.<android.os.Bundle: java.lang.String getString(java.lang.String)>("adb_deeplink");
+
+        $r9 = virtualinvoke $r4.<android.os.Bundle: java.lang.String getString(java.lang.String)>("userData");
+
+     label002:
+        $r10 = <c.a.a.la: java.lang.Integer a>;
+
+        $i2 = virtualinvoke $r10.<java.lang.Integer: int intValue()>();
+
+        if $i0 == $i2 goto label003;
+
+        return;
+
+     label003:
+        if $r6 != null goto label004;
+
+        $r5 = newarray (java.lang.Object)[0];
+
+        staticinvoke <com.adobe.mobile.StaticMethods: void a(java.lang.String,java.lang.Object[])>("Messages - local notification message was empty ", $r5);
+
+        return;
+
+     label004:
+        $r11 = staticinvoke <com.adobe.mobile.StaticMethods: android.app.Activity m()>();
+
+     label005:
+        $r2 = staticinvoke <com.adobe.mobile.StaticMethods: android.content.Context A()>();
+
+     label006:
+        $r12 = null;
+
+     label007:
+        $r13 = staticinvoke <com.adobe.mobile.StaticMethods: android.app.Activity m()>();
+
+     label008:
+        $r12 = $r13;
+
+        goto label010;
+
+     label009:
+        $r5 = newarray (java.lang.Object)[0];
+
+        staticinvoke <com.adobe.mobile.StaticMethods: void b(java.lang.String,java.lang.Object[])>("Messages - unable to find activity for your notification, using default", $r5);
+
+     label010:
+        if $r8 == null goto label011;
+
+        $z0 = virtualinvoke $r8.<java.lang.String: boolean isEmpty()>();
+
+        if $z0 != 0 goto label011;
+
+        $r37 = new android.content.Intent;
+
+        $r3 = $r37;
+
+        specialinvoke $r37.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.VIEW");
+
+        $r14 = staticinvoke <android.net.Uri: android.net.Uri parse(java.lang.String)>($r8);
+
+        virtualinvoke $r3.<android.content.Intent: android.content.Intent setData(android.net.Uri)>($r14);
+
+        goto label012;
+
+     label011:
+        if $r12 == null goto label012;
+
+        $r3 = virtualinvoke $r12.<android.app.Activity: android.content.Intent getIntent()>();
+
+     label012:
+        virtualinvoke $r3.<android.content.Intent: android.content.Intent setFlags(int)>(603979776);
+
+        virtualinvoke $r3.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("adb_m_l_id", $r7);
+
+        virtualinvoke $r3.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("userData", $r9);
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+     label013:
+        $r15 = staticinvoke <android.app.PendingIntent: android.app.PendingIntent getActivity(android.content.Context,int,android.content.Intent,int)>($r2, $i1, $r3, 134217728);
+
+     label014:
+        if $r15 != null goto label017;
+
+        $r5 = newarray (java.lang.Object)[0];
+
+     label015:
+        staticinvoke <com.adobe.mobile.StaticMethods: void a(java.lang.String,java.lang.Object[])>("Messages - could not retrieve sender from broadcast, unable to post notification", $r5);
+
+     label016:
+        return;
+
+     label017:
+        if $i0 < 11 goto label075;
+
+        $r16 = class "Landroid/content/BroadcastReceiver;";
+
+     label018:
+        $r17 = virtualinvoke $r16.<java.lang.Class: java.lang.ClassLoader getClassLoader()>();
+
+        $r16 = virtualinvoke $r17.<java.lang.ClassLoader: java.lang.Class loadClass(java.lang.String)>("android.app.Notification$Builder");
+
+     label019:
+        $r18 = newarray (java.lang.Class)[1];
+
+     label020:
+        $r18[0] = class "Landroid/content/Context;";
+
+     label021:
+        $r19 = virtualinvoke $r16.<java.lang.Class: java.lang.reflect.Constructor getConstructor(java.lang.Class[])>($r18);
+
+        virtualinvoke $r19.<java.lang.reflect.Constructor: void setAccessible(boolean)>(1);
+
+     label022:
+        $r5 = newarray (java.lang.Object)[1];
+
+     label023:
+        $r2 = staticinvoke <com.adobe.mobile.StaticMethods: android.content.Context A()>();
+
+     label024:
+        $r5[0] = $r2;
+
+     label025:
+        $r20 = virtualinvoke $r19.<java.lang.reflect.Constructor: java.lang.Object newInstance(java.lang.Object[])>($r5);
+
+     label026:
+        $r18 = newarray (java.lang.Class)[1];
+
+        $r21 = <java.lang.Integer: java.lang.Class TYPE>;
+
+     label027:
+        $r18[0] = $r21;
+
+     label028:
+        $r22 = virtualinvoke $r16.<java.lang.Class: java.lang.reflect.Method getDeclaredMethod(java.lang.String,java.lang.Class[])>("setSmallIcon", $r18);
+
+     label029:
+        $r5 = newarray (java.lang.Object)[1];
+
+     label030:
+        $i1 = specialinvoke r0.<com.adobe.mobile.MessageNotificationHandler: int getSmallIcon()>();
+
+        $r10 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i1);
+
+     label031:
+        $r5[0] = $r10;
+
+     label032:
+        virtualinvoke $r22.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>($r20, $r5);
+
+        $r23 = specialinvoke r0.<com.adobe.mobile.MessageNotificationHandler: android.graphics.Bitmap getLargeIcon()>();
+
+     label033:
+        if $r23 == null goto label039;
+
+        $r18 = newarray (java.lang.Class)[1];
+
+     label034:
+        $r18[0] = class "Landroid/graphics/Bitmap;";
+
+     label035:
+        $r22 = virtualinvoke $r16.<java.lang.Class: java.lang.reflect.Method getDeclaredMethod(java.lang.String,java.lang.Class[])>("setLargeIcon", $r18);
+
+     label036:
+        $r5 = newarray (java.lang.Object)[1];
+
+     label037:
+        $r5[0] = $r23;
+
+     label038:
+        virtualinvoke $r22.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>($r20, $r5);
+
+     label039:
+        $r18 = newarray (java.lang.Class)[1];
+
+     label040:
+        $r18[0] = class "Ljava/lang/CharSequence;";
+
+     label041:
+        $r22 = virtualinvoke $r16.<java.lang.Class: java.lang.reflect.Method getDeclaredMethod(java.lang.String,java.lang.Class[])>("setContentTitle", $r18);
+
+     label042:
+        $r5 = newarray (java.lang.Object)[1];
+
+     label043:
+        $r7 = specialinvoke r0.<com.adobe.mobile.MessageNotificationHandler: java.lang.String getAppName()>();
+
+     label044:
+        $r5[0] = $r7;
+
+     label045:
+        virtualinvoke $r22.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>($r20, $r5);
+
+     label046:
+        $r18 = newarray (java.lang.Class)[1];
+
+     label047:
+        $r18[0] = class "Ljava/lang/CharSequence;";
+
+     label048:
+        $r22 = virtualinvoke $r16.<java.lang.Class: java.lang.reflect.Method getDeclaredMethod(java.lang.String,java.lang.Class[])>("setContentText", $r18);
+
+     label049:
+        $r5 = newarray (java.lang.Object)[1];
+
+     label050:
+        $r5[0] = $r6;
+
+     label051:
+        virtualinvoke $r22.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>($r20, $r5);
+
+     label052:
+        $r18 = newarray (java.lang.Class)[1];
+
+     label053:
+        $r18[0] = class "Landroid/app/PendingIntent;";
+
+     label054:
+        $r22 = virtualinvoke $r16.<java.lang.Class: java.lang.reflect.Method getDeclaredMethod(java.lang.String,java.lang.Class[])>("setContentIntent", $r18);
+
+     label055:
+        $r5 = newarray (java.lang.Object)[1];
+
+     label056:
+        $r5[0] = $r15;
+
+     label057:
+        virtualinvoke $r22.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>($r20, $r5);
+
+     label058:
+        $r18 = newarray (java.lang.Class)[1];
+
+        $r21 = <java.lang.Boolean: java.lang.Class TYPE>;
+
+     label059:
+        $r18[0] = $r21;
+
+     label060:
+        $r22 = virtualinvoke $r16.<java.lang.Class: java.lang.reflect.Method getDeclaredMethod(java.lang.String,java.lang.Class[])>("setAutoCancel", $r18);
+
+     label061:
+        $r5 = newarray (java.lang.Object)[1];
+
+     label062:
+        $r24 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(1);
+
+     label063:
+        $r5[0] = $r24;
+
+     label064:
+        virtualinvoke $r22.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>($r20, $r5);
+
+     label065:
+        if $i0 < 16 goto label070;
+
+        $r18 = newarray (java.lang.Class)[0];
+
+     label066:
+        $r22 = virtualinvoke $r16.<java.lang.Class: java.lang.reflect.Method getDeclaredMethod(java.lang.String,java.lang.Class[])>("build", $r18);
+
+     label067:
+        $r5 = newarray (java.lang.Object)[0];
+
+     label068:
+        $r20 = virtualinvoke $r22.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>($r20, $r5);
+
+     label069:
+        goto label074;
+
+     label070:
+        $r18 = newarray (java.lang.Class)[0];
+
+     label071:
+        $r22 = virtualinvoke $r16.<java.lang.Class: java.lang.reflect.Method getDeclaredMethod(java.lang.String,java.lang.Class[])>("getNotification", $r18);
+
+     label072:
+        $r5 = newarray (java.lang.Object)[0];
+
+     label073:
+        $r20 = virtualinvoke $r22.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>($r20, $r5);
+
+     label074:
+        if $r20 != null goto label088;
+
+        return;
+
+     label075:
+        $r29 = new android.app.Notification;
+
+        $r20 = $r29;
+
+     label076:
+        specialinvoke $r29.<android.app.Notification: void <init>()>();
+
+     label077:
+        $r16 = class "Landroid/app/Notification;";
+
+        $r18 = newarray (java.lang.Class)[4];
+
+     label078:
+        $r18[0] = class "Landroid/content/Context;";
+
+        $r18[1] = class "Ljava/lang/String;";
+
+        $r18[2] = class "Ljava/lang/String;";
+
+        $r18[3] = class "Landroid/app/PendingIntent;";
+
+     label079:
+        $r22 = virtualinvoke $r16.<java.lang.Class: java.lang.reflect.Method getDeclaredMethod(java.lang.String,java.lang.Class[])>("setLatestEventInfo", $r18);
+
+     label080:
+        $r5 = newarray (java.lang.Object)[4];
+
+     label081:
+        $r5[0] = $r2;
+
+     label082:
+        $r7 = specialinvoke r0.<com.adobe.mobile.MessageNotificationHandler: java.lang.String getAppName()>();
+
+     label083:
+        $r5[1] = $r7;
+
+        $r5[2] = $r6;
+
+        $r5[3] = $r15;
+
+     label084:
+        virtualinvoke $r22.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>($r20, $r5);
+
+     label085:
+        $r16 = class "Landroid/app/Notification;";
+
+     label086:
+        $r25 = virtualinvoke $r16.<java.lang.Class: java.lang.reflect.Field getField(java.lang.String)>("icon");
+
+        $i1 = specialinvoke r0.<com.adobe.mobile.MessageNotificationHandler: int getSmallIcon()>();
+
+        $r10 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i1);
+
+        virtualinvoke $r25.<java.lang.reflect.Field: void set(java.lang.Object,java.lang.Object)>($r20, $r10);
+
+     label087:
+        $r29 = (android.app.Notification) $r20;
+
+        $r29.<android.app.Notification: int flags> = 16;
+
+     label088:
+        $r26 = virtualinvoke $r11.<android.app.Activity: java.lang.Object getSystemService(java.lang.String)>("notification");
+
+     label089:
+        $r27 = (android.app.NotificationManager) $r26;
+
+     label090:
+        $r38 = new java.security.SecureRandom;
+
+        $r28 = $r38;
+
+     label091:
+        specialinvoke $r38.<java.security.SecureRandom: void <init>()>();
+
+        $i1 = virtualinvoke $r28.<java.security.SecureRandom: int nextInt()>();
+
+     label092:
+        $r29 = (android.app.Notification) $r20;
+
+     label093:
+        virtualinvoke $r27.<android.app.NotificationManager: void notify(int,android.app.Notification)>($i1, $r29);
+
+     label094:
+        return;
+
+     label095:
+        $r30 := @caughtexception;
+
+        $r5 = newarray (java.lang.Object)[1];
+
+        $r6 = virtualinvoke $r30.<java.lang.Exception: java.lang.String getMessage()>();
+
+        $r5[0] = $r6;
+
+        staticinvoke <com.adobe.mobile.StaticMethods: void b(java.lang.String,java.lang.Object[])>("Messages - unexpected error posting notification (%s)", $r5);
+
+        return;
+
+     label096:
+        $r31 := @caughtexception;
+
+        $r5 = newarray (java.lang.Object)[1];
+
+        $r6 = virtualinvoke $r31.<java.lang.Exception: java.lang.String getMessage()>();
+
+        $r5[0] = $r6;
+
+        staticinvoke <com.adobe.mobile.StaticMethods: void b(java.lang.String,java.lang.Object[])>("Messages - error posting notification (%s)", $r5);
+
+        return;
+
+     label097:
+        $r32 := @caughtexception;
+
+        $r5 = newarray (java.lang.Object)[1];
+
+        $r6 = virtualinvoke $r32.<java.lang.NoSuchMethodException: java.lang.String getMessage()>();
+
+        $r5[0] = $r6;
+
+        staticinvoke <com.adobe.mobile.StaticMethods: void b(java.lang.String,java.lang.Object[])>("Messages - error posting notification, method not found (%s)", $r5);
+
+        return;
+
+     label098:
+        $r33 := @caughtexception;
+
+        $r5 = newarray (java.lang.Object)[1];
+
+        $r6 = virtualinvoke $r33.<java.lang.ClassNotFoundException: java.lang.String getMessage()>();
+
+        $r5[0] = $r6;
+
+        staticinvoke <com.adobe.mobile.StaticMethods: void b(java.lang.String,java.lang.Object[])>("Messages - error posting notification, class not found (%s)", $r5);
+
+        return;
+
+     label099:
+        $r34 := @caughtexception;
+
+        $r6 = virtualinvoke $r34.<java.lang.Exception: java.lang.String getMessage()>();
+
+        $r5 = newarray (java.lang.Object)[0];
+
+        staticinvoke <com.adobe.mobile.StaticMethods: void b(java.lang.String,java.lang.Object[])>($r6, $r5);
+
+        return;
+
+     label100:
+        $r35 := @caughtexception;
+
+        $r6 = virtualinvoke $r35.<java.lang.Exception: java.lang.String getMessage()>();
+
+        $r5 = newarray (java.lang.Object)[0];
+
+        staticinvoke <com.adobe.mobile.StaticMethods: void b(java.lang.String,java.lang.Object[])>($r6, $r5);
+
+        return;
+
+     label101:
+        $r36 := @caughtexception;
+
+        $r5 = newarray (java.lang.Object)[1];
+
+        $r6 = virtualinvoke $r36.<java.lang.Exception: java.lang.String getMessage()>();
+
+        $r5[0] = $r6;
+
+        staticinvoke <com.adobe.mobile.StaticMethods: void a(java.lang.String,java.lang.Object[])>("Messages - unable to load message from local notification (%s)", $r5);
+
+        return;
+
+     label102:
+        $r1 := @caughtexception;
+
+        goto label009;
+
+        catch java.lang.Exception from label001 to label002 with label101;
+        catch com.adobe.mobile.StaticMethods$NullActivityException from label004 to label005 with label100;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label005 to label006 with label099;
+        catch com.adobe.mobile.StaticMethods$NullActivityException from label007 to label008 with label102;
+        catch java.lang.ClassNotFoundException from label013 to label014 with label098;
+        catch java.lang.ClassNotFoundException from label015 to label016 with label098;
+        catch java.lang.ClassNotFoundException from label018 to label019 with label098;
+        catch java.lang.ClassNotFoundException from label021 to label022 with label098;
+        catch java.lang.ClassNotFoundException from label023 to label024 with label098;
+        catch java.lang.ClassNotFoundException from label025 to label026 with label098;
+        catch java.lang.ClassNotFoundException from label028 to label029 with label098;
+        catch java.lang.ClassNotFoundException from label030 to label031 with label098;
+        catch java.lang.ClassNotFoundException from label032 to label033 with label098;
+        catch java.lang.ClassNotFoundException from label035 to label036 with label098;
+        catch java.lang.ClassNotFoundException from label038 to label039 with label098;
+        catch java.lang.ClassNotFoundException from label041 to label042 with label098;
+        catch java.lang.ClassNotFoundException from label043 to label044 with label098;
+        catch java.lang.ClassNotFoundException from label045 to label046 with label098;
+        catch java.lang.ClassNotFoundException from label048 to label049 with label098;
+        catch java.lang.ClassNotFoundException from label051 to label052 with label098;
+        catch java.lang.ClassNotFoundException from label054 to label055 with label098;
+        catch java.lang.ClassNotFoundException from label057 to label058 with label098;
+        catch java.lang.ClassNotFoundException from label060 to label061 with label098;
+        catch java.lang.ClassNotFoundException from label062 to label063 with label098;
+        catch java.lang.ClassNotFoundException from label064 to label065 with label098;
+        catch java.lang.ClassNotFoundException from label066 to label067 with label098;
+        catch java.lang.ClassNotFoundException from label068 to label069 with label098;
+        catch java.lang.ClassNotFoundException from label071 to label072 with label098;
+        catch java.lang.ClassNotFoundException from label073 to label074 with label098;
+        catch java.lang.ClassNotFoundException from label076 to label077 with label098;
+        catch java.lang.ClassNotFoundException from label079 to label080 with label098;
+        catch java.lang.ClassNotFoundException from label082 to label083 with label098;
+        catch java.lang.ClassNotFoundException from label084 to label085 with label098;
+        catch java.lang.NoSuchMethodException from label013 to label014 with label097;
+        catch java.lang.NoSuchMethodException from label015 to label016 with label097;
+        catch java.lang.NoSuchMethodException from label018 to label019 with label097;
+        catch java.lang.NoSuchMethodException from label021 to label022 with label097;
+        catch java.lang.NoSuchMethodException from label023 to label024 with label097;
+        catch java.lang.NoSuchMethodException from label025 to label026 with label097;
+        catch java.lang.NoSuchMethodException from label028 to label029 with label097;
+        catch java.lang.NoSuchMethodException from label030 to label031 with label097;
+        catch java.lang.NoSuchMethodException from label032 to label033 with label097;
+        catch java.lang.NoSuchMethodException from label035 to label036 with label097;
+        catch java.lang.NoSuchMethodException from label038 to label039 with label097;
+        catch java.lang.NoSuchMethodException from label041 to label042 with label097;
+        catch java.lang.NoSuchMethodException from label043 to label044 with label097;
+        catch java.lang.NoSuchMethodException from label045 to label046 with label097;
+        catch java.lang.NoSuchMethodException from label048 to label049 with label097;
+        catch java.lang.NoSuchMethodException from label051 to label052 with label097;
+        catch java.lang.NoSuchMethodException from label054 to label055 with label097;
+        catch java.lang.NoSuchMethodException from label057 to label058 with label097;
+        catch java.lang.NoSuchMethodException from label060 to label061 with label097;
+        catch java.lang.NoSuchMethodException from label062 to label063 with label097;
+        catch java.lang.NoSuchMethodException from label064 to label065 with label097;
+        catch java.lang.NoSuchMethodException from label066 to label067 with label097;
+        catch java.lang.NoSuchMethodException from label068 to label069 with label097;
+        catch java.lang.NoSuchMethodException from label071 to label072 with label097;
+        catch java.lang.NoSuchMethodException from label073 to label074 with label097;
+        catch java.lang.NoSuchMethodException from label076 to label077 with label097;
+        catch java.lang.NoSuchMethodException from label079 to label080 with label097;
+        catch java.lang.NoSuchMethodException from label082 to label083 with label097;
+        catch java.lang.NoSuchMethodException from label084 to label085 with label097;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label013 to label014 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label015 to label016 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label018 to label019 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label021 to label022 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label023 to label024 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label025 to label026 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label028 to label029 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label030 to label031 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label032 to label033 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label035 to label036 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label038 to label039 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label041 to label042 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label043 to label044 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label045 to label046 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label048 to label049 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label051 to label052 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label054 to label055 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label057 to label058 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label060 to label061 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label062 to label063 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label064 to label065 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label066 to label067 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label068 to label069 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label071 to label072 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label073 to label074 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label076 to label077 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label079 to label080 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label082 to label083 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label084 to label085 with label096;
+        catch java.lang.Exception from label013 to label014 with label095;
+        catch java.lang.Exception from label015 to label016 with label095;
+        catch java.lang.Exception from label018 to label019 with label095;
+        catch java.lang.Exception from label020 to label022 with label095;
+        catch java.lang.Exception from label023 to label026 with label095;
+        catch java.lang.Exception from label027 to label029 with label095;
+        catch java.lang.Exception from label030 to label033 with label095;
+        catch java.lang.Exception from label034 to label036 with label095;
+        catch java.lang.Exception from label037 to label039 with label095;
+        catch java.lang.Exception from label040 to label042 with label095;
+        catch java.lang.Exception from label043 to label046 with label095;
+        catch java.lang.Exception from label047 to label049 with label095;
+        catch java.lang.Exception from label050 to label052 with label095;
+        catch java.lang.Exception from label053 to label055 with label095;
+        catch java.lang.Exception from label056 to label058 with label095;
+        catch java.lang.Exception from label059 to label061 with label095;
+        catch java.lang.Exception from label062 to label065 with label095;
+        catch java.lang.Exception from label066 to label067 with label095;
+        catch java.lang.Exception from label068 to label069 with label095;
+        catch java.lang.Exception from label071 to label072 with label095;
+        catch java.lang.Exception from label073 to label074 with label095;
+        catch java.lang.Exception from label076 to label077 with label095;
+        catch java.lang.Exception from label078 to label080 with label095;
+        catch java.lang.Exception from label081 to label085 with label095;
+        catch java.lang.ClassNotFoundException from label086 to label087 with label098;
+        catch java.lang.ClassNotFoundException from label088 to label089 with label098;
+        catch java.lang.ClassNotFoundException from label091 to label092 with label098;
+        catch java.lang.ClassNotFoundException from label093 to label094 with label098;
+        catch java.lang.NoSuchMethodException from label086 to label087 with label097;
+        catch java.lang.NoSuchMethodException from label088 to label089 with label097;
+        catch java.lang.NoSuchMethodException from label091 to label092 with label097;
+        catch java.lang.NoSuchMethodException from label093 to label094 with label097;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label086 to label087 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label088 to label089 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label091 to label092 with label096;
+        catch com.adobe.mobile.StaticMethods$NullContextException from label093 to label094 with label096;
+        catch java.lang.Exception from label086 to label090 with label095;
+        catch java.lang.Exception from label091 to label094 with label095;
+    }
+}

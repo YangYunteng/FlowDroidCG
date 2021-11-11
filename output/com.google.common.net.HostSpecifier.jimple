@@ -1,0 +1,227 @@
+public final class com.google.common.net.HostSpecifier extends java.lang.Object
+{
+    public final java.lang.String canonicalForm;
+
+    public void <init>(java.lang.String)
+    {
+        java.lang.String $r1;
+        com.google.common.net.HostSpecifier r0;
+
+        r0 := @this: com.google.common.net.HostSpecifier;
+
+        $r1 := @parameter0: java.lang.String;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.common.net.HostSpecifier: java.lang.String canonicalForm> = $r1;
+
+        return;
+    }
+
+    public static com.google.common.net.HostSpecifier 'from'(java.lang.String)
+    {
+        com.google.common.net.HostSpecifier $r3;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r2;
+        java.lang.IllegalArgumentException $r0;
+        java.text.ParseException $r1;
+
+        $r2 := @parameter0: java.lang.String;
+
+     label1:
+        $r3 = staticinvoke <com.google.common.net.HostSpecifier: com.google.common.net.HostSpecifier fromValid(java.lang.String)>($r2);
+
+     label2:
+        return $r3;
+
+     label3:
+        $r0 := @caughtexception;
+
+        $r1 = new java.text.ParseException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid host specifier: ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r1.<java.text.ParseException: void <init>(java.lang.String,int)>($r2, 0);
+
+        virtualinvoke $r1.<java.text.ParseException: java.lang.Throwable initCause(java.lang.Throwable)>($r0);
+
+        throw $r1;
+
+        catch java.lang.IllegalArgumentException from label1 to label2 with label3;
+    }
+
+    public static com.google.common.net.HostSpecifier fromValid(java.lang.String)
+    {
+        com.google.common.net.InternetDomainName $r6;
+        com.google.common.net.HostSpecifier $r5;
+        java.lang.IllegalArgumentException $r0;
+        com.google.common.net.HostAndPort $r2;
+        java.net.InetAddress $r3, $r4;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = staticinvoke <com.google.common.net.HostAndPort: com.google.common.net.HostAndPort fromString(java.lang.String)>($r1);
+
+        $z0 = virtualinvoke $r2.<com.google.common.net.HostAndPort: boolean hasPort()>();
+
+        $z0 = $z0 ^ 1;
+
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean)>($z0);
+
+        $r1 = virtualinvoke $r2.<com.google.common.net.HostAndPort: java.lang.String getHost()>();
+
+        $r3 = null;
+
+     label1:
+        $r4 = staticinvoke <com.google.common.net.InetAddresses: java.net.InetAddress forString(java.lang.String)>($r1);
+
+     label2:
+        $r3 = $r4;
+
+     label3:
+        if $r3 == null goto label4;
+
+        $r5 = new com.google.common.net.HostSpecifier;
+
+        $r1 = staticinvoke <com.google.common.net.InetAddresses: java.lang.String toUriString(java.net.InetAddress)>($r3);
+
+        specialinvoke $r5.<com.google.common.net.HostSpecifier: void <init>(java.lang.String)>($r1);
+
+        return $r5;
+
+     label4:
+        $r6 = staticinvoke <com.google.common.net.InternetDomainName: com.google.common.net.InternetDomainName 'from'(java.lang.String)>($r1);
+
+        $z0 = virtualinvoke $r6.<com.google.common.net.InternetDomainName: boolean hasPublicSuffix()>();
+
+        if $z0 == 0 goto label5;
+
+        $r5 = new com.google.common.net.HostSpecifier;
+
+        $r1 = virtualinvoke $r6.<com.google.common.net.InternetDomainName: java.lang.String toString()>();
+
+        specialinvoke $r5.<com.google.common.net.HostSpecifier: void <init>(java.lang.String)>($r1);
+
+        return $r5;
+
+     label5:
+        $r0 = new java.lang.IllegalArgumentException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Domain name does not have a recognized public suffix: ");
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r1);
+
+        throw $r0;
+
+     label6:
+        $r0 := @caughtexception;
+
+        goto label3;
+
+        catch java.lang.IllegalArgumentException from label1 to label2 with label6;
+    }
+
+    public static boolean isValid(java.lang.String)
+    {
+        java.lang.String $r1;
+        java.lang.IllegalArgumentException $r0;
+
+        $r1 := @parameter0: java.lang.String;
+
+     label1:
+        staticinvoke <com.google.common.net.HostSpecifier: com.google.common.net.HostSpecifier fromValid(java.lang.String)>($r1);
+
+     label2:
+        return 1;
+
+     label3:
+        return 0;
+
+     label4:
+        $r0 := @caughtexception;
+
+        goto label3;
+
+        catch java.lang.IllegalArgumentException from label1 to label2 with label4;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        com.google.common.net.HostSpecifier r0, $r2;
+        java.lang.Object $r1;
+        java.lang.String $r3, $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.common.net.HostSpecifier;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        if r0 != $r1 goto label1;
+
+        return 1;
+
+     label1:
+        $z0 = $r1 instanceof com.google.common.net.HostSpecifier;
+
+        if $z0 == 0 goto label2;
+
+        $r2 = (com.google.common.net.HostSpecifier) $r1;
+
+        $r3 = r0.<com.google.common.net.HostSpecifier: java.lang.String canonicalForm>;
+
+        $r4 = $r2.<com.google.common.net.HostSpecifier: java.lang.String canonicalForm>;
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r4);
+
+        return $z0;
+
+     label2:
+        return 0;
+    }
+
+    public int hashCode()
+    {
+        int $i0;
+        java.lang.String $r1;
+        com.google.common.net.HostSpecifier r0;
+
+        r0 := @this: com.google.common.net.HostSpecifier;
+
+        $r1 = r0.<com.google.common.net.HostSpecifier: java.lang.String canonicalForm>;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int hashCode()>();
+
+        return $i0;
+    }
+
+    public java.lang.String toString()
+    {
+        java.lang.String r1;
+        com.google.common.net.HostSpecifier r0;
+
+        r0 := @this: com.google.common.net.HostSpecifier;
+
+        r1 = r0.<com.google.common.net.HostSpecifier: java.lang.String canonicalForm>;
+
+        return r1;
+    }
+}

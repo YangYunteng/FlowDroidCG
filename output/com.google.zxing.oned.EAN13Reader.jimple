@@ -1,0 +1,241 @@
+public final class com.google.zxing.oned.EAN13Reader extends com.google.zxing.oned.UPCEANReader
+{
+    public static final int[] FIRST_DIGIT_ENCODINGS;
+    public final int[] decodeMiddleCounters;
+
+    static void <clinit>()
+    {
+        int[] $r0;
+
+        $r0 = newarray (int)[10];
+
+        $r0[0] = 0;
+
+        $r0[1] = 11;
+
+        $r0[2] = 13;
+
+        $r0[3] = 14;
+
+        $r0[4] = 19;
+
+        $r0[5] = 25;
+
+        $r0[6] = 28;
+
+        $r0[7] = 21;
+
+        $r0[8] = 22;
+
+        $r0[9] = 26;
+
+        <com.google.zxing.oned.EAN13Reader: int[] FIRST_DIGIT_ENCODINGS> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        int[] $r1;
+        com.google.zxing.oned.EAN13Reader r0;
+
+        r0 := @this: com.google.zxing.oned.EAN13Reader;
+
+        specialinvoke r0.<com.google.zxing.oned.UPCEANReader: void <init>()>();
+
+        $r1 = newarray (int)[4];
+
+        r0.<com.google.zxing.oned.EAN13Reader: int[] decodeMiddleCounters> = $r1;
+
+        return;
+    }
+
+    public static void determineFirstDigit(java.lang.StringBuilder, int)
+    {
+        com.google.zxing.NotFoundException $r0;
+        int[] $r2;
+        int $i0, $i1, $i2;
+        java.lang.StringBuilder $r1;
+        char $c3;
+
+        $r1 := @parameter0: java.lang.StringBuilder;
+
+        $i0 := @parameter1: int;
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= 10 goto label3;
+
+        $r2 = <com.google.zxing.oned.EAN13Reader: int[] FIRST_DIGIT_ENCODINGS>;
+
+        $i2 = $r2[$i1];
+
+        if $i0 != $i2 goto label2;
+
+        $i0 = $i1 + 48;
+
+        $c3 = (char) $i0;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder insert(int,char)>(0, $c3);
+
+        return;
+
+     label2:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label3:
+        $r0 = staticinvoke <com.google.zxing.NotFoundException: com.google.zxing.NotFoundException getNotFoundInstance()>();
+
+        goto label4;
+
+     label4:
+        throw $r0;
+    }
+
+    public int decodeMiddle(com.google.zxing.common.BitArray, int[], java.lang.StringBuilder)
+    {
+        int[][] $r5;
+        char $c7;
+        com.google.zxing.common.BitArray $r1;
+        int[] $r3, $r4;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i8;
+        java.lang.StringBuilder $r2;
+        com.google.zxing.oned.EAN13Reader r0;
+
+        r0 := @this: com.google.zxing.oned.EAN13Reader;
+
+        $r1 := @parameter0: com.google.zxing.common.BitArray;
+
+        $r4 := @parameter1: int[];
+
+        $r2 := @parameter2: java.lang.StringBuilder;
+
+        $r3 = r0.<com.google.zxing.oned.EAN13Reader: int[] decodeMiddleCounters>;
+
+        $r3[0] = 0;
+
+        $r3[1] = 0;
+
+        $r3[2] = 0;
+
+        $r3[3] = 0;
+
+        $i1 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        $i3 = $r4[1];
+
+        $i2 = 0;
+
+        $i4 = 0;
+
+     label1:
+        if $i2 >= 6 goto label5;
+
+        if $i3 >= $i1 goto label5;
+
+        $r5 = <com.google.zxing.oned.UPCEANReader: int[][] L_AND_G_PATTERNS>;
+
+        $i5 = staticinvoke <com.google.zxing.oned.UPCEANReader: int decodeDigit(com.google.zxing.common.BitArray,int[],int,int[][])>($r1, $r3, $i3, $r5);
+
+        $i6 = $i5 % 10;
+
+        $i6 = $i6 + 48;
+
+        $c7 = (char) $i6;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c7);
+
+        $i6 = lengthof $r3;
+
+        $i8 = 0;
+
+     label2:
+        if $i8 >= $i6 goto label3;
+
+        $i0 = $r3[$i8];
+
+        $i3 = $i3 + $i0;
+
+        $i8 = $i8 + 1;
+
+        goto label2;
+
+     label3:
+        if $i5 < 10 goto label4;
+
+        $i5 = 5 - $i2;
+
+        $i5 = 1 << $i5;
+
+        $i4 = $i5 | $i4;
+
+     label4:
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label5:
+        staticinvoke <com.google.zxing.oned.EAN13Reader: void determineFirstDigit(java.lang.StringBuilder,int)>($r2, $i4);
+
+        $r4 = <com.google.zxing.oned.UPCEANReader: int[] MIDDLE_PATTERN>;
+
+        $r4 = staticinvoke <com.google.zxing.oned.UPCEANReader: int[] findGuardPattern(com.google.zxing.common.BitArray,int,boolean,int[])>($r1, $i3, 1, $r4);
+
+        $i5 = $r4[1];
+
+        $i2 = 0;
+
+     label6:
+        if $i2 >= 6 goto label9;
+
+        if $i5 >= $i1 goto label9;
+
+        $r5 = <com.google.zxing.oned.UPCEANReader: int[][] L_PATTERNS>;
+
+        $i4 = staticinvoke <com.google.zxing.oned.UPCEANReader: int decodeDigit(com.google.zxing.common.BitArray,int[],int,int[][])>($r1, $r3, $i5, $r5);
+
+        $i4 = $i4 + 48;
+
+        $c7 = (char) $i4;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c7);
+
+        $i4 = lengthof $r3;
+
+        $i3 = 0;
+
+     label7:
+        if $i3 >= $i4 goto label8;
+
+        $i6 = $r3[$i3];
+
+        $i5 = $i5 + $i6;
+
+        $i3 = $i3 + 1;
+
+        goto label7;
+
+     label8:
+        $i2 = $i2 + 1;
+
+        goto label6;
+
+     label9:
+        return $i5;
+    }
+
+    public com.google.zxing.BarcodeFormat getBarcodeFormat()
+    {
+        com.google.zxing.BarcodeFormat r1;
+        com.google.zxing.oned.EAN13Reader r0;
+
+        r0 := @this: com.google.zxing.oned.EAN13Reader;
+
+        r1 = <com.google.zxing.BarcodeFormat: com.google.zxing.BarcodeFormat EAN_13>;
+
+        return r1;
+    }
+}

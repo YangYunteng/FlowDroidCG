@@ -1,0 +1,672 @@
+public class org.apache.james.mime4j.field.ContentDispositionField extends org.apache.james.mime4j.field.AbstractField
+{
+    public static final java.lang.String DISPOSITION_TYPE_ATTACHMENT;
+    public static final java.lang.String DISPOSITION_TYPE_INLINE;
+    public static final java.lang.String PARAM_CREATION_DATE;
+    public static final java.lang.String PARAM_FILENAME;
+    public static final java.lang.String PARAM_MODIFICATION_DATE;
+    public static final java.lang.String PARAM_READ_DATE;
+    public static final java.lang.String PARAM_SIZE;
+    public static final org.apache.james.mime4j.field.FieldParser PARSER;
+    public static org.apache.commons.logging.Log log;
+    public java.util.Date creationDate;
+    public boolean creationDateParsed;
+    public java.lang.String dispositionType;
+    public java.util.Date modificationDate;
+    public boolean modificationDateParsed;
+    public java.util.Map parameters;
+    public org.apache.james.mime4j.field.ParseException parseException;
+    public boolean parsed;
+    public java.util.Date readDate;
+    public boolean readDateParsed;
+
+    static void <clinit>()
+    {
+        org.apache.commons.logging.Log $r0;
+        org.apache.james.mime4j.field.ContentDispositionField$1 $r1;
+
+        <org.apache.james.mime4j.field.ContentDispositionField: java.lang.String PARAM_SIZE> = "size";
+
+        <org.apache.james.mime4j.field.ContentDispositionField: java.lang.String PARAM_READ_DATE> = "read-date";
+
+        <org.apache.james.mime4j.field.ContentDispositionField: java.lang.String PARAM_MODIFICATION_DATE> = "modification-date";
+
+        <org.apache.james.mime4j.field.ContentDispositionField: java.lang.String PARAM_FILENAME> = "filename";
+
+        <org.apache.james.mime4j.field.ContentDispositionField: java.lang.String PARAM_CREATION_DATE> = "creation-date";
+
+        <org.apache.james.mime4j.field.ContentDispositionField: java.lang.String DISPOSITION_TYPE_INLINE> = "inline";
+
+        <org.apache.james.mime4j.field.ContentDispositionField: java.lang.String DISPOSITION_TYPE_ATTACHMENT> = "attachment";
+
+        $r0 = staticinvoke <org.apache.commons.logging.LogFactory: org.apache.commons.logging.Log getLog(java.lang.Class)>(class "Lorg/apache/james/mime4j/field/ContentDispositionField;");
+
+        <org.apache.james.mime4j.field.ContentDispositionField: org.apache.commons.logging.Log log> = $r0;
+
+        $r1 = new org.apache.james.mime4j.field.ContentDispositionField$1;
+
+        specialinvoke $r1.<org.apache.james.mime4j.field.ContentDispositionField$1: void <init>()>();
+
+        <org.apache.james.mime4j.field.ContentDispositionField: org.apache.james.mime4j.field.FieldParser PARSER> = $r1;
+
+        return;
+    }
+
+    public void <init>(java.lang.String, java.lang.String, org.apache.james.mime4j.util.ByteSequence)
+    {
+        org.apache.james.mime4j.util.ByteSequence $r2;
+        java.util.HashMap $r4;
+        java.lang.String $r1, $r3;
+        org.apache.james.mime4j.field.ContentDispositionField r0;
+
+        r0 := @this: org.apache.james.mime4j.field.ContentDispositionField;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 := @parameter2: org.apache.james.mime4j.util.ByteSequence;
+
+        specialinvoke r0.<org.apache.james.mime4j.field.AbstractField: void <init>(java.lang.String,java.lang.String,org.apache.james.mime4j.util.ByteSequence)>($r3, $r1, $r2);
+
+        r0.<org.apache.james.mime4j.field.ContentDispositionField: boolean parsed> = 0;
+
+        r0.<org.apache.james.mime4j.field.ContentDispositionField: java.lang.String dispositionType> = "";
+
+        $r4 = new java.util.HashMap;
+
+        specialinvoke $r4.<java.util.HashMap: void <init>()>();
+
+        r0.<org.apache.james.mime4j.field.ContentDispositionField: java.util.Map parameters> = $r4;
+
+        return;
+    }
+
+    private void parse()
+    {
+        java.util.Locale $r8;
+        org.apache.james.mime4j.field.contentdisposition.parser.TokenMgrError $r4;
+        java.util.Map $r13;
+        int $i0, $i1;
+        java.lang.String $r1, $r12;
+        boolean $z0;
+        org.apache.james.mime4j.field.contentdisposition.parser.ContentDispositionParser $r2;
+        org.apache.james.mime4j.field.ParseException $r7;
+        java.util.List $r9, $r10;
+        java.io.StringReader $r3;
+        org.apache.commons.logging.Log $r5;
+        java.lang.StringBuilder $r6;
+        java.lang.Object $r11;
+        org.apache.james.mime4j.field.ContentDispositionField r0;
+
+        r0 := @this: org.apache.james.mime4j.field.ContentDispositionField;
+
+        $r1 = virtualinvoke r0.<org.apache.james.mime4j.field.AbstractField: java.lang.String getBody()>();
+
+        $r2 = new org.apache.james.mime4j.field.contentdisposition.parser.ContentDispositionParser;
+
+        $r3 = new java.io.StringReader;
+
+        specialinvoke $r3.<java.io.StringReader: void <init>(java.lang.String)>($r1);
+
+        specialinvoke $r2.<org.apache.james.mime4j.field.contentdisposition.parser.ContentDispositionParser: void <init>(java.io.Reader)>($r3);
+
+     label1:
+        virtualinvoke $r2.<org.apache.james.mime4j.field.contentdisposition.parser.ContentDispositionParser: void parseAll()>();
+
+     label2:
+        goto label7;
+
+     label3:
+        $r4 := @caughtexception;
+
+        $r5 = <org.apache.james.mime4j.field.ContentDispositionField: org.apache.commons.logging.Log log>;
+
+        $z0 = interfaceinvoke $r5.<org.apache.commons.logging.Log: boolean isDebugEnabled()>();
+
+        if $z0 == 0 goto label4;
+
+        $r5 = <org.apache.james.mime4j.field.ContentDispositionField: org.apache.commons.logging.Log log>;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parsing value \'");
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\': ");
+
+        $r1 = virtualinvoke $r4.<org.apache.james.mime4j.field.contentdisposition.parser.TokenMgrError: java.lang.String getMessage()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r5.<org.apache.commons.logging.Log: void debug(java.lang.Object)>($r1);
+
+     label4:
+        $r7 = new org.apache.james.mime4j.field.ParseException;
+
+        $r1 = virtualinvoke $r4.<org.apache.james.mime4j.field.contentdisposition.parser.TokenMgrError: java.lang.String getMessage()>();
+
+        specialinvoke $r7.<org.apache.james.mime4j.field.ParseException: void <init>(java.lang.String)>($r1);
+
+        r0.<org.apache.james.mime4j.field.ContentDispositionField: org.apache.james.mime4j.field.ParseException parseException> = $r7;
+
+        goto label7;
+
+     label5:
+        $r7 := @caughtexception;
+
+        $r5 = <org.apache.james.mime4j.field.ContentDispositionField: org.apache.commons.logging.Log log>;
+
+        $z0 = interfaceinvoke $r5.<org.apache.commons.logging.Log: boolean isDebugEnabled()>();
+
+        if $z0 == 0 goto label6;
+
+        $r5 = <org.apache.james.mime4j.field.ContentDispositionField: org.apache.commons.logging.Log log>;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parsing value \'");
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\': ");
+
+        $r1 = virtualinvoke $r7.<java.lang.Exception: java.lang.String getMessage()>();
+
+        virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r5.<org.apache.commons.logging.Log: void debug(java.lang.Object)>($r1);
+
+     label6:
+        r0.<org.apache.james.mime4j.field.ContentDispositionField: org.apache.james.mime4j.field.ParseException parseException> = $r7;
+
+     label7:
+        $r1 = virtualinvoke $r2.<org.apache.james.mime4j.field.contentdisposition.parser.ContentDispositionParser: java.lang.String getDispositionType()>();
+
+        if $r1 == null goto label9;
+
+        $r8 = <java.util.Locale: java.util.Locale US>;
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String toLowerCase(java.util.Locale)>($r8);
+
+        r0.<org.apache.james.mime4j.field.ContentDispositionField: java.lang.String dispositionType> = $r1;
+
+        $r9 = virtualinvoke $r2.<org.apache.james.mime4j.field.contentdisposition.parser.ContentDispositionParser: java.util.List getParamNames()>();
+
+        $r10 = virtualinvoke $r2.<org.apache.james.mime4j.field.contentdisposition.parser.ContentDispositionParser: java.util.List getParamValues()>();
+
+        if $r9 == null goto label9;
+
+        if $r10 == null goto label9;
+
+        $i0 = interfaceinvoke $r9.<java.util.List: int size()>();
+
+        $i1 = interfaceinvoke $r10.<java.util.List: int size()>();
+
+        $i0 = staticinvoke <java.lang.Math: int min(int,int)>($i0, $i1);
+
+        $i1 = 0;
+
+     label8:
+        if $i1 >= $i0 goto label9;
+
+        $r11 = interfaceinvoke $r9.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r1 = (java.lang.String) $r11;
+
+        $r8 = <java.util.Locale: java.util.Locale US>;
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String toLowerCase(java.util.Locale)>($r8);
+
+        $r11 = interfaceinvoke $r10.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r12 = (java.lang.String) $r11;
+
+        $r13 = r0.<org.apache.james.mime4j.field.ContentDispositionField: java.util.Map parameters>;
+
+        interfaceinvoke $r13.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r1, $r12);
+
+        $i1 = $i1 + 1;
+
+        goto label8;
+
+     label9:
+        r0.<org.apache.james.mime4j.field.ContentDispositionField: boolean parsed> = 1;
+
+        return;
+
+        catch org.apache.james.mime4j.field.ParseException from label1 to label2 with label5;
+        catch org.apache.james.mime4j.field.contentdisposition.parser.TokenMgrError from label1 to label2 with label3;
+    }
+
+    private java.util.Date parseDate(java.lang.String)
+    {
+        org.apache.james.mime4j.field.datetime.parser.DateTimeParser $r5;
+        java.util.Date $r8;
+        org.apache.james.mime4j.field.ParseException $r10;
+        java.io.StringReader $r6;
+        org.apache.james.mime4j.field.datetime.parser.TokenMgrError $r9;
+        org.apache.james.mime4j.field.datetime.DateTime $r7;
+        org.apache.commons.logging.Log $r3;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r1, $r2;
+        org.apache.james.mime4j.field.ContentDispositionField r0;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.field.ContentDispositionField;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = virtualinvoke r0.<org.apache.james.mime4j.field.ContentDispositionField: java.lang.String getParameter(java.lang.String)>($r1);
+
+        if $r2 != null goto label1;
+
+        $r3 = <org.apache.james.mime4j.field.ContentDispositionField: org.apache.commons.logging.Log log>;
+
+        $z0 = interfaceinvoke $r3.<org.apache.commons.logging.Log: boolean isDebugEnabled()>();
+
+        if $z0 == 0 goto label6;
+
+        $r3 = <org.apache.james.mime4j.field.ContentDispositionField: org.apache.commons.logging.Log log>;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parsing ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" null");
+
+        $r1 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r3.<org.apache.commons.logging.Log: void debug(java.lang.Object)>($r1);
+
+        return null;
+
+     label1:
+        $r5 = new org.apache.james.mime4j.field.datetime.parser.DateTimeParser;
+
+        $r6 = new java.io.StringReader;
+
+     label2:
+        specialinvoke $r6.<java.io.StringReader: void <init>(java.lang.String)>($r2);
+
+        specialinvoke $r5.<org.apache.james.mime4j.field.datetime.parser.DateTimeParser: void <init>(java.io.Reader)>($r6);
+
+        $r7 = virtualinvoke $r5.<org.apache.james.mime4j.field.datetime.parser.DateTimeParser: org.apache.james.mime4j.field.datetime.DateTime parseAll()>();
+
+        $r8 = virtualinvoke $r7.<org.apache.james.mime4j.field.datetime.DateTime: java.util.Date getDate()>();
+
+     label3:
+        return $r8;
+
+     label4:
+        $r9 := @caughtexception;
+
+        $r3 = <org.apache.james.mime4j.field.ContentDispositionField: org.apache.commons.logging.Log log>;
+
+        $z0 = interfaceinvoke $r3.<org.apache.commons.logging.Log: boolean isDebugEnabled()>();
+
+        if $z0 == 0 goto label6;
+
+        $r3 = <org.apache.james.mime4j.field.ContentDispositionField: org.apache.commons.logging.Log log>;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parsing ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" \'");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\': ");
+
+        $r1 = virtualinvoke $r9.<org.apache.james.mime4j.field.datetime.parser.TokenMgrError: java.lang.String getMessage()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r3.<org.apache.commons.logging.Log: void debug(java.lang.Object)>($r1);
+
+        return null;
+
+     label5:
+        $r10 := @caughtexception;
+
+        $r3 = <org.apache.james.mime4j.field.ContentDispositionField: org.apache.commons.logging.Log log>;
+
+        $z0 = interfaceinvoke $r3.<org.apache.commons.logging.Log: boolean isDebugEnabled()>();
+
+        if $z0 == 0 goto label6;
+
+        $r3 = <org.apache.james.mime4j.field.ContentDispositionField: org.apache.commons.logging.Log log>;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Parsing ");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" \'");
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\': ");
+
+        $r1 = virtualinvoke $r10.<java.lang.Exception: java.lang.String getMessage()>();
+
+        virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $r3.<org.apache.commons.logging.Log: void debug(java.lang.Object)>($r1);
+
+     label6:
+        return null;
+
+        catch org.apache.james.mime4j.field.ParseException from label2 to label3 with label5;
+        catch org.apache.james.mime4j.field.datetime.parser.TokenMgrError from label1 to label3 with label4;
+    }
+
+    public java.util.Date getCreationDate()
+    {
+        org.apache.james.mime4j.field.ContentDispositionField r0;
+        java.util.Date $r1;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.field.ContentDispositionField;
+
+        $z0 = r0.<org.apache.james.mime4j.field.ContentDispositionField: boolean creationDateParsed>;
+
+        if $z0 != 0 goto label1;
+
+        $r1 = specialinvoke r0.<org.apache.james.mime4j.field.ContentDispositionField: java.util.Date parseDate(java.lang.String)>("creation-date");
+
+        r0.<org.apache.james.mime4j.field.ContentDispositionField: java.util.Date creationDate> = $r1;
+
+        r0.<org.apache.james.mime4j.field.ContentDispositionField: boolean creationDateParsed> = 1;
+
+     label1:
+        $r1 = r0.<org.apache.james.mime4j.field.ContentDispositionField: java.util.Date creationDate>;
+
+        return $r1;
+    }
+
+    public java.lang.String getDispositionType()
+    {
+        java.lang.String r1;
+        org.apache.james.mime4j.field.ContentDispositionField r0;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.field.ContentDispositionField;
+
+        $z0 = r0.<org.apache.james.mime4j.field.ContentDispositionField: boolean parsed>;
+
+        if $z0 != 0 goto label1;
+
+        specialinvoke r0.<org.apache.james.mime4j.field.ContentDispositionField: void parse()>();
+
+     label1:
+        r1 = r0.<org.apache.james.mime4j.field.ContentDispositionField: java.lang.String dispositionType>;
+
+        return r1;
+    }
+
+    public java.lang.String getFilename()
+    {
+        java.lang.String $r1;
+        org.apache.james.mime4j.field.ContentDispositionField r0;
+
+        r0 := @this: org.apache.james.mime4j.field.ContentDispositionField;
+
+        $r1 = virtualinvoke r0.<org.apache.james.mime4j.field.ContentDispositionField: java.lang.String getParameter(java.lang.String)>("filename");
+
+        return $r1;
+    }
+
+    public java.util.Date getModificationDate()
+    {
+        org.apache.james.mime4j.field.ContentDispositionField r0;
+        java.util.Date $r1;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.field.ContentDispositionField;
+
+        $z0 = r0.<org.apache.james.mime4j.field.ContentDispositionField: boolean modificationDateParsed>;
+
+        if $z0 != 0 goto label1;
+
+        $r1 = specialinvoke r0.<org.apache.james.mime4j.field.ContentDispositionField: java.util.Date parseDate(java.lang.String)>("modification-date");
+
+        r0.<org.apache.james.mime4j.field.ContentDispositionField: java.util.Date modificationDate> = $r1;
+
+        r0.<org.apache.james.mime4j.field.ContentDispositionField: boolean modificationDateParsed> = 1;
+
+     label1:
+        $r1 = r0.<org.apache.james.mime4j.field.ContentDispositionField: java.util.Date modificationDate>;
+
+        return $r1;
+    }
+
+    public java.lang.String getParameter(java.lang.String)
+    {
+        java.util.Map $r2;
+        java.lang.Object $r3;
+        java.lang.String $r1;
+        org.apache.james.mime4j.field.ContentDispositionField r0;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.field.ContentDispositionField;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $z0 = r0.<org.apache.james.mime4j.field.ContentDispositionField: boolean parsed>;
+
+        if $z0 != 0 goto label1;
+
+        specialinvoke r0.<org.apache.james.mime4j.field.ContentDispositionField: void parse()>();
+
+     label1:
+        $r2 = r0.<org.apache.james.mime4j.field.ContentDispositionField: java.util.Map parameters>;
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String toLowerCase()>();
+
+        $r3 = interfaceinvoke $r2.<java.util.Map: java.lang.Object get(java.lang.Object)>($r1);
+
+        $r1 = (java.lang.String) $r3;
+
+        return $r1;
+    }
+
+    public java.util.Map getParameters()
+    {
+        org.apache.james.mime4j.field.ContentDispositionField r0;
+        java.util.Map $r1;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.field.ContentDispositionField;
+
+        $z0 = r0.<org.apache.james.mime4j.field.ContentDispositionField: boolean parsed>;
+
+        if $z0 != 0 goto label1;
+
+        specialinvoke r0.<org.apache.james.mime4j.field.ContentDispositionField: void parse()>();
+
+     label1:
+        $r1 = r0.<org.apache.james.mime4j.field.ContentDispositionField: java.util.Map parameters>;
+
+        $r1 = staticinvoke <java.util.Collections: java.util.Map unmodifiableMap(java.util.Map)>($r1);
+
+        return $r1;
+    }
+
+    public org.apache.james.mime4j.field.ParseException getParseException()
+    {
+        org.apache.james.mime4j.field.ContentDispositionField r0;
+        org.apache.james.mime4j.field.ParseException r1;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.field.ContentDispositionField;
+
+        $z0 = r0.<org.apache.james.mime4j.field.ContentDispositionField: boolean parsed>;
+
+        if $z0 != 0 goto label1;
+
+        specialinvoke r0.<org.apache.james.mime4j.field.ContentDispositionField: void parse()>();
+
+     label1:
+        r1 = r0.<org.apache.james.mime4j.field.ContentDispositionField: org.apache.james.mime4j.field.ParseException parseException>;
+
+        return r1;
+    }
+
+    public java.util.Date getReadDate()
+    {
+        org.apache.james.mime4j.field.ContentDispositionField r0;
+        java.util.Date $r1;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.field.ContentDispositionField;
+
+        $z0 = r0.<org.apache.james.mime4j.field.ContentDispositionField: boolean readDateParsed>;
+
+        if $z0 != 0 goto label1;
+
+        $r1 = specialinvoke r0.<org.apache.james.mime4j.field.ContentDispositionField: java.util.Date parseDate(java.lang.String)>("read-date");
+
+        r0.<org.apache.james.mime4j.field.ContentDispositionField: java.util.Date readDate> = $r1;
+
+        r0.<org.apache.james.mime4j.field.ContentDispositionField: boolean readDateParsed> = 1;
+
+     label1:
+        $r1 = r0.<org.apache.james.mime4j.field.ContentDispositionField: java.util.Date readDate>;
+
+        return $r1;
+    }
+
+    public long getSize()
+    {
+        byte $b1;
+        int $i2;
+        java.lang.NumberFormatException $r1;
+        long $l0;
+        java.lang.String $r2;
+        org.apache.james.mime4j.field.ContentDispositionField r0;
+
+        r0 := @this: org.apache.james.mime4j.field.ContentDispositionField;
+
+        $r2 = virtualinvoke r0.<org.apache.james.mime4j.field.ContentDispositionField: java.lang.String getParameter(java.lang.String)>("size");
+
+        if $r2 != null goto label1;
+
+        return -1L;
+
+     label1:
+        $l0 = staticinvoke <java.lang.Long: long parseLong(java.lang.String)>($r2);
+
+     label2:
+        $b1 = $l0 cmp 0L;
+
+        $i2 = (int) $b1;
+
+        if $i2 >= 0 goto label3;
+
+        return -1L;
+
+     label3:
+        return $l0;
+
+     label4:
+        $r1 := @caughtexception;
+
+        return -1L;
+
+        catch java.lang.NumberFormatException from label1 to label2 with label4;
+    }
+
+    public boolean isAttachment()
+    {
+        java.lang.String $r1;
+        org.apache.james.mime4j.field.ContentDispositionField r0;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.field.ContentDispositionField;
+
+        $z0 = r0.<org.apache.james.mime4j.field.ContentDispositionField: boolean parsed>;
+
+        if $z0 != 0 goto label1;
+
+        specialinvoke r0.<org.apache.james.mime4j.field.ContentDispositionField: void parse()>();
+
+     label1:
+        $r1 = r0.<org.apache.james.mime4j.field.ContentDispositionField: java.lang.String dispositionType>;
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>("attachment");
+
+        return $z0;
+    }
+
+    public boolean isDispositionType(java.lang.String)
+    {
+        java.lang.String $r1, $r2;
+        org.apache.james.mime4j.field.ContentDispositionField r0;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.field.ContentDispositionField;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $z0 = r0.<org.apache.james.mime4j.field.ContentDispositionField: boolean parsed>;
+
+        if $z0 != 0 goto label1;
+
+        specialinvoke r0.<org.apache.james.mime4j.field.ContentDispositionField: void parse()>();
+
+     label1:
+        $r2 = r0.<org.apache.james.mime4j.field.ContentDispositionField: java.lang.String dispositionType>;
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r1);
+
+        return $z0;
+    }
+
+    public boolean isInline()
+    {
+        java.lang.String $r1;
+        org.apache.james.mime4j.field.ContentDispositionField r0;
+        boolean $z0;
+
+        r0 := @this: org.apache.james.mime4j.field.ContentDispositionField;
+
+        $z0 = r0.<org.apache.james.mime4j.field.ContentDispositionField: boolean parsed>;
+
+        if $z0 != 0 goto label1;
+
+        specialinvoke r0.<org.apache.james.mime4j.field.ContentDispositionField: void parse()>();
+
+     label1:
+        $r1 = r0.<org.apache.james.mime4j.field.ContentDispositionField: java.lang.String dispositionType>;
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>("inline");
+
+        return $z0;
+    }
+}

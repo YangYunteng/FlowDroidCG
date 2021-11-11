@@ -1,0 +1,587 @@
+public class b.i.c.q extends java.lang.Object
+{
+
+    public static java.io.File a(android.content.Context)
+    {
+        android.content.Context $r1;
+        java.io.IOException $r0;
+        java.io.File $r2, $r5;
+        int $i0;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r4, $r6;
+        boolean $z0;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 = virtualinvoke $r1.<android.content.Context: java.io.File getCacheDir()>();
+
+        if $r2 != null goto label1;
+
+        return null;
+
+     label1:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".font");
+
+        $i0 = staticinvoke <android.os.Process: int myPid()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("-");
+
+        $i0 = staticinvoke <android.os.Process: int myTid()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("-");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i0 = 0;
+
+     label2:
+        if $i0 >= 100 goto label6;
+
+        $r5 = new java.io.File;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.io.File: void <init>(java.io.File,java.lang.String)>($r2, $r6);
+
+     label3:
+        $z0 = virtualinvoke $r5.<java.io.File: boolean createNewFile()>();
+
+     label4:
+        if $z0 == 0 goto label5;
+
+        return $r5;
+
+     label5:
+        $i0 = $i0 + 1;
+
+        goto label2;
+
+     label6:
+        return null;
+
+     label7:
+        $r0 := @caughtexception;
+
+        goto label5;
+
+        catch java.io.IOException from label3 to label4 with label7;
+    }
+
+    public static java.nio.ByteBuffer a(android.content.Context, android.content.res.Resources, int)
+    {
+        java.lang.Throwable $r4;
+        android.content.Context $r0;
+        int $i0;
+        java.io.File $r2;
+        java.nio.ByteBuffer $r3;
+        android.content.res.Resources $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: android.content.Context;
+
+        $r1 := @parameter1: android.content.res.Resources;
+
+        $i0 := @parameter2: int;
+
+        $r2 = staticinvoke <b.i.c.q: java.io.File a(android.content.Context)>($r0);
+
+        if $r2 != null goto label1;
+
+        return null;
+
+     label1:
+        $z0 = staticinvoke <b.i.c.q: boolean a(java.io.File,android.content.res.Resources,int)>($r2, $r1, $i0);
+
+     label2:
+        if $z0 != 0 goto label3;
+
+        virtualinvoke $r2.<java.io.File: boolean delete()>();
+
+        return null;
+
+     label3:
+        $r3 = staticinvoke <b.i.c.q: java.nio.ByteBuffer a(java.io.File)>($r2);
+
+     label4:
+        virtualinvoke $r2.<java.io.File: boolean delete()>();
+
+        return $r3;
+
+     label5:
+        $r4 := @caughtexception;
+
+        virtualinvoke $r2.<java.io.File: boolean delete()>();
+
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+    }
+
+    public static java.nio.ByteBuffer a(android.content.Context, android.os.CancellationSignal, android.net.Uri)
+    {
+        java.lang.Throwable $r13, $r14, $r15, $r16, $r17, $r18;
+        android.content.Context $r4;
+        android.os.ParcelFileDescriptor $r8;
+        android.net.Uri $r6;
+        long $l0;
+        java.nio.channels.FileChannel$MapMode $r0;
+        android.content.ContentResolver $r7;
+        android.os.CancellationSignal $r5;
+        java.io.IOException $r1, $r2, $r3;
+        java.io.FileInputStream $r9;
+        java.io.FileDescriptor $r10;
+        java.nio.channels.FileChannel $r11;
+        java.nio.MappedByteBuffer $r12;
+
+        $r4 := @parameter0: android.content.Context;
+
+        $r5 := @parameter1: android.os.CancellationSignal;
+
+        $r6 := @parameter2: android.net.Uri;
+
+        $r7 = virtualinvoke $r4.<android.content.Context: android.content.ContentResolver getContentResolver()>();
+
+     label01:
+        $r8 = virtualinvoke $r7.<android.content.ContentResolver: android.os.ParcelFileDescriptor openFileDescriptor(android.net.Uri,java.lang.String,android.os.CancellationSignal)>($r6, "r", $r5);
+
+     label02:
+        if $r8 != null goto label05;
+
+        if $r8 == null goto label34;
+
+     label03:
+        virtualinvoke $r8.<android.os.ParcelFileDescriptor: void close()>();
+
+     label04:
+        return null;
+
+     label05:
+        $r9 = new java.io.FileInputStream;
+
+        $r10 = virtualinvoke $r8.<android.os.ParcelFileDescriptor: java.io.FileDescriptor getFileDescriptor()>();
+
+        specialinvoke $r9.<java.io.FileInputStream: void <init>(java.io.FileDescriptor)>($r10);
+
+     label06:
+        $r11 = virtualinvoke $r9.<java.io.FileInputStream: java.nio.channels.FileChannel getChannel()>();
+
+        $l0 = virtualinvoke $r11.<java.nio.channels.FileChannel: long size()>();
+
+        $r0 = <java.nio.channels.FileChannel$MapMode: java.nio.channels.FileChannel$MapMode READ_ONLY>;
+
+        $r12 = virtualinvoke $r11.<java.nio.channels.FileChannel: java.nio.MappedByteBuffer map(java.nio.channels.FileChannel$MapMode,long,long)>($r0, 0L, $l0);
+
+     label07:
+        virtualinvoke $r9.<java.io.FileInputStream: void close()>();
+
+     label08:
+        if $r8 == null goto label35;
+
+     label09:
+        virtualinvoke $r8.<android.os.ParcelFileDescriptor: void close()>();
+
+     label10:
+        return $r12;
+
+     label11:
+        $r13 := @caughtexception;
+
+     label12:
+        throw $r13;
+
+     label13:
+        $r14 := @caughtexception;
+
+        if $r13 == null goto label19;
+
+     label14:
+        virtualinvoke $r9.<java.io.FileInputStream: void close()>();
+
+     label15:
+        goto label20;
+
+     label16:
+        $r15 := @caughtexception;
+
+     label17:
+        virtualinvoke $r13.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($r15);
+
+     label18:
+        goto label20;
+
+     label19:
+        virtualinvoke $r9.<java.io.FileInputStream: void close()>();
+
+     label20:
+        throw $r14;
+
+     label21:
+        $r16 := @caughtexception;
+
+     label22:
+        throw $r16;
+
+     label23:
+        $r17 := @caughtexception;
+
+        if $r8 == null goto label30;
+
+        if $r16 == null goto label29;
+
+     label24:
+        virtualinvoke $r8.<android.os.ParcelFileDescriptor: void close()>();
+
+     label25:
+        goto label30;
+
+     label26:
+        $r18 := @caughtexception;
+
+     label27:
+        virtualinvoke $r16.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($r18);
+
+     label28:
+        goto label30;
+
+     label29:
+        virtualinvoke $r8.<android.os.ParcelFileDescriptor: void close()>();
+
+     label30:
+        throw $r17;
+
+     label31:
+        $r1 := @caughtexception;
+
+        return null;
+
+     label32:
+        $r2 := @caughtexception;
+
+        return null;
+
+     label33:
+        $r3 := @caughtexception;
+
+     label34:
+        return null;
+
+     label35:
+        return $r12;
+
+        catch java.io.IOException from label01 to label02 with label31;
+        catch java.io.IOException from label03 to label04 with label31;
+        catch java.lang.Throwable from label05 to label06 with label21;
+        catch java.lang.Throwable from label06 to label07 with label11;
+        catch java.lang.Throwable from label07 to label08 with label21;
+        catch java.io.IOException from label09 to label10 with label32;
+        catch java.lang.Throwable from label12 to label13 with label13;
+        catch java.lang.Throwable from label14 to label15 with label16;
+        catch java.lang.Throwable from label17 to label18 with label21;
+        catch java.lang.Throwable from label19 to label21 with label21;
+        catch java.lang.Throwable from label22 to label23 with label23;
+        catch java.lang.Throwable from label24 to label25 with label26;
+        catch java.io.IOException from label27 to label28 with label33;
+        catch java.io.IOException from label29 to label31 with label33;
+    }
+
+    public static java.nio.ByteBuffer a(java.io.File)
+    {
+        java.lang.Throwable $r8, $r9, $r10;
+        java.io.IOException $r1, $r2, $r3;
+        long $l0;
+        java.io.FileInputStream $r5;
+        java.nio.channels.FileChannel$MapMode $r0;
+        java.io.File $r4;
+        java.nio.channels.FileChannel $r6;
+        java.nio.MappedByteBuffer $r7;
+
+        $r4 := @parameter0: java.io.File;
+
+        $r5 = new java.io.FileInputStream;
+
+     label01:
+        specialinvoke $r5.<java.io.FileInputStream: void <init>(java.io.File)>($r4);
+
+     label02:
+        $r6 = virtualinvoke $r5.<java.io.FileInputStream: java.nio.channels.FileChannel getChannel()>();
+
+        $l0 = virtualinvoke $r6.<java.nio.channels.FileChannel: long size()>();
+
+        $r0 = <java.nio.channels.FileChannel$MapMode: java.nio.channels.FileChannel$MapMode READ_ONLY>;
+
+        $r7 = virtualinvoke $r6.<java.nio.channels.FileChannel: java.nio.MappedByteBuffer map(java.nio.channels.FileChannel$MapMode,long,long)>($r0, 0L, $l0);
+
+     label03:
+        virtualinvoke $r5.<java.io.FileInputStream: void close()>();
+
+     label04:
+        return $r7;
+
+     label05:
+        $r8 := @caughtexception;
+
+     label06:
+        throw $r8;
+
+     label07:
+        $r9 := @caughtexception;
+
+        if $r8 == null goto label13;
+
+     label08:
+        virtualinvoke $r5.<java.io.FileInputStream: void close()>();
+
+     label09:
+        goto label14;
+
+     label10:
+        $r10 := @caughtexception;
+
+     label11:
+        virtualinvoke $r8.<java.lang.Throwable: void addSuppressed(java.lang.Throwable)>($r10);
+
+     label12:
+        goto label14;
+
+     label13:
+        virtualinvoke $r5.<java.io.FileInputStream: void close()>();
+
+     label14:
+        throw $r9;
+
+     label15:
+        $r1 := @caughtexception;
+
+        return null;
+
+     label16:
+        $r2 := @caughtexception;
+
+        return null;
+
+     label17:
+        $r3 := @caughtexception;
+
+        return null;
+
+        catch java.io.IOException from label01 to label02 with label15;
+        catch java.lang.Throwable from label02 to label03 with label05;
+        catch java.io.IOException from label03 to label04 with label16;
+        catch java.lang.Throwable from label06 to label07 with label07;
+        catch java.lang.Throwable from label08 to label09 with label10;
+        catch java.io.IOException from label11 to label12 with label17;
+        catch java.io.IOException from label13 to label15 with label17;
+    }
+
+    public static void a(java.io.Closeable)
+    {
+        java.io.IOException $r1;
+        java.io.Closeable $r0;
+
+        $r0 := @parameter0: java.io.Closeable;
+
+        if $r0 == null goto label4;
+
+     label1:
+        interfaceinvoke $r0.<java.io.Closeable: void close()>();
+
+     label2:
+        return;
+
+     label3:
+        $r1 := @caughtexception;
+
+     label4:
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    public static boolean a(java.io.File, android.content.res.Resources, int)
+    {
+        java.lang.Throwable $r4;
+        int $i0;
+        java.io.File $r0;
+        android.content.res.Resources $r1;
+        java.io.InputStream $r2, $r3;
+        boolean $z0;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r1 := @parameter1: android.content.res.Resources;
+
+        $i0 := @parameter2: int;
+
+     label1:
+        $r2 = virtualinvoke $r1.<android.content.res.Resources: java.io.InputStream openRawResource(int)>($i0);
+
+     label2:
+        $r3 = $r2;
+
+     label3:
+        $z0 = staticinvoke <b.i.c.q: boolean a(java.io.File,java.io.InputStream)>($r0, $r2);
+
+     label4:
+        staticinvoke <b.i.c.q: void a(java.io.Closeable)>($r2);
+
+        return $z0;
+
+     label5:
+        $r4 := @caughtexception;
+
+        goto label7;
+
+     label6:
+        $r4 := @caughtexception;
+
+        $r3 = null;
+
+     label7:
+        staticinvoke <b.i.c.q: void a(java.io.Closeable)>($r3);
+
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label6;
+        catch java.lang.Throwable from label3 to label4 with label5;
+    }
+
+    public static boolean a(java.io.File, java.io.InputStream)
+    {
+        java.lang.Throwable $r6;
+        byte[] $r5;
+        android.os.StrictMode$ThreadPolicy $r2;
+        java.io.FileOutputStream $r3, $r4, $r10;
+        java.io.IOException $r7;
+        java.io.File $r0;
+        int $i0, $i1;
+        java.lang.StringBuilder $r8, $r11;
+        java.lang.String $r9;
+        java.io.InputStream $r1;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r1 := @parameter1: java.io.InputStream;
+
+        $r2 = staticinvoke <android.os.StrictMode: android.os.StrictMode$ThreadPolicy allowThreadDiskWrites()>();
+
+        $r3 = null;
+
+     label01:
+        $r10 = new java.io.FileOutputStream;
+
+     label02:
+        $r4 = $r10;
+
+     label03:
+        specialinvoke $r10.<java.io.FileOutputStream: void <init>(java.io.File,boolean)>($r0, 0);
+
+     label04:
+        $r5 = newarray (byte)[1024];
+
+     label05:
+        $i0 = virtualinvoke $r1.<java.io.InputStream: int read(byte[])>($r5);
+
+     label06:
+        $i1 = -1;
+
+        if $i0 == $i1 goto label09;
+
+     label07:
+        virtualinvoke $r4.<java.io.FileOutputStream: void write(byte[],int,int)>($r5, 0, $i0);
+
+     label08:
+        goto label05;
+
+     label09:
+        staticinvoke <b.i.c.q: void a(java.io.Closeable)>($r4);
+
+        staticinvoke <android.os.StrictMode: void setThreadPolicy(android.os.StrictMode$ThreadPolicy)>($r2);
+
+        return 1;
+
+     label10:
+        $r6 := @caughtexception;
+
+        $r3 = $r4;
+
+        goto label18;
+
+     label11:
+        $r7 := @caughtexception;
+
+        $r3 = $r4;
+
+        goto label14;
+
+     label12:
+        $r6 := @caughtexception;
+
+        goto label18;
+
+     label13:
+        $r7 := @caughtexception;
+
+     label14:
+        $r11 = new java.lang.StringBuilder;
+
+     label15:
+        $r8 = $r11;
+
+     label16:
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Error copying resource contents to temp file: ");
+
+        $r9 = virtualinvoke $r7.<java.io.IOException: java.lang.String getMessage()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r9);
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("TypefaceCompatUtil", $r9);
+
+     label17:
+        staticinvoke <b.i.c.q: void a(java.io.Closeable)>($r3);
+
+        staticinvoke <android.os.StrictMode: void setThreadPolicy(android.os.StrictMode$ThreadPolicy)>($r2);
+
+        return 0;
+
+     label18:
+        staticinvoke <b.i.c.q: void a(java.io.Closeable)>($r3);
+
+        staticinvoke <android.os.StrictMode: void setThreadPolicy(android.os.StrictMode$ThreadPolicy)>($r2);
+
+        goto label19;
+
+     label19:
+        throw $r6;
+
+        catch java.io.IOException from label03 to label04 with label13;
+        catch java.lang.Throwable from label01 to label02 with label12;
+        catch java.lang.Throwable from label03 to label04 with label12;
+        catch java.io.IOException from label05 to label06 with label11;
+        catch java.io.IOException from label07 to label08 with label11;
+        catch java.lang.Throwable from label05 to label06 with label10;
+        catch java.lang.Throwable from label07 to label08 with label10;
+        catch java.lang.Throwable from label14 to label15 with label12;
+        catch java.lang.Throwable from label16 to label17 with label12;
+    }
+}

@@ -1,0 +1,551 @@
+public abstract class org.codehaus.jackson.impl.JsonParserBase extends org.codehaus.jackson.impl.JsonParserMinimalBase
+{
+    public byte[] _binaryValue;
+    public org.codehaus.jackson.util.ByteArrayBuilder _byteArrayBuilder;
+    public boolean _closed;
+    public long _currInputProcessed;
+    public int _currInputRow;
+    public int _currInputRowStart;
+    public int _inputEnd;
+    public int _inputPtr;
+    public final org.codehaus.jackson.io.IOContext _ioContext;
+    public boolean _nameCopied;
+    public char[] _nameCopyBuffer;
+    public org.codehaus.jackson.JsonToken _nextToken;
+    public org.codehaus.jackson.impl.JsonReadContext _parsingContext;
+    public final org.codehaus.jackson.util.TextBuffer _textBuffer;
+    public int _tokenInputCol;
+    public int _tokenInputRow;
+    public long _tokenInputTotal;
+
+    public void <init>(org.codehaus.jackson.io.IOContext, int)
+    {
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        org.codehaus.jackson.io.IOContext $r1;
+        org.codehaus.jackson.impl.JsonReadContext $r3;
+        int $i0, $i1;
+        org.codehaus.jackson.util.TextBuffer $r2;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        $r1 := @parameter0: org.codehaus.jackson.io.IOContext;
+
+        $i0 := @parameter1: int;
+
+        specialinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void <init>()>();
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: int _inputPtr> = 0;
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: int _inputEnd> = 0;
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: long _currInputProcessed> = 0L;
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: int _currInputRow> = 1;
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: int _currInputRowStart> = 0;
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: long _tokenInputTotal> = 0L;
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: int _tokenInputRow> = 1;
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: int _tokenInputCol> = 0;
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: char[] _nameCopyBuffer> = null;
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: boolean _nameCopied> = 0;
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.util.ByteArrayBuilder _byteArrayBuilder> = null;
+
+        r0.<org.codehaus.jackson.JsonParser: int _features> = $i0;
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.io.IOContext _ioContext> = $r1;
+
+        $r2 = virtualinvoke $r1.<org.codehaus.jackson.io.IOContext: org.codehaus.jackson.util.TextBuffer constructTextBuffer()>();
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.util.TextBuffer _textBuffer> = $r2;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonParserBase: int _tokenInputRow>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.JsonParserBase: int _tokenInputCol>;
+
+        $r3 = staticinvoke <org.codehaus.jackson.impl.JsonReadContext: org.codehaus.jackson.impl.JsonReadContext createRootContext(int,int)>($i0, $i1);
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.impl.JsonReadContext _parsingContext> = $r3;
+
+        return;
+    }
+
+    public abstract void _closeInput();
+
+    public abstract byte[] _decodeBase64(org.codehaus.jackson.Base64Variant);
+
+    public abstract void _finishString();
+
+    public org.codehaus.jackson.util.ByteArrayBuilder _getByteArrayBuilder()
+    {
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        org.codehaus.jackson.util.ByteArrayBuilder $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.util.ByteArrayBuilder _byteArrayBuilder>;
+
+        if $r1 != null goto label1;
+
+        $r1 = new org.codehaus.jackson.util.ByteArrayBuilder;
+
+        specialinvoke $r1.<org.codehaus.jackson.util.ByteArrayBuilder: void <init>()>();
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.util.ByteArrayBuilder _byteArrayBuilder> = $r1;
+
+        goto label2;
+
+     label1:
+        virtualinvoke $r1.<org.codehaus.jackson.util.ByteArrayBuilder: void reset()>();
+
+     label2:
+        $r1 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.util.ByteArrayBuilder _byteArrayBuilder>;
+
+        return $r1;
+    }
+
+    public void _handleEOF()
+    {
+        org.codehaus.jackson.io.IOContext $r4;
+        org.codehaus.jackson.JsonLocation $r6;
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        org.codehaus.jackson.impl.JsonReadContext $r1;
+        java.lang.StringBuilder $r2;
+        java.lang.Object $r5;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.impl.JsonReadContext _parsingContext>;
+
+        $z0 = virtualinvoke $r1.<org.codehaus.jackson.JsonStreamContext: boolean inRoot()>();
+
+        if $z0 != 0 goto label1;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": expected close marker for ");
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.impl.JsonReadContext _parsingContext>;
+
+        $r3 = virtualinvoke $r1.<org.codehaus.jackson.JsonStreamContext: java.lang.String getTypeDesc()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (from ");
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.impl.JsonReadContext _parsingContext>;
+
+        $r4 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.io.IOContext _ioContext>;
+
+        $r5 = virtualinvoke $r4.<org.codehaus.jackson.io.IOContext: java.lang.Object getSourceReference()>();
+
+        $r6 = virtualinvoke $r1.<org.codehaus.jackson.impl.JsonReadContext: org.codehaus.jackson.JsonLocation getStartLocation(java.lang.Object)>($r5);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r6);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _reportInvalidEOF(java.lang.String)>($r3);
+
+     label1:
+        return;
+    }
+
+    public void _releaseBuffers()
+    {
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        org.codehaus.jackson.io.IOContext $r3;
+        char[] $r2;
+        org.codehaus.jackson.util.TextBuffer $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        $r1 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.util.TextBuffer _textBuffer>;
+
+        virtualinvoke $r1.<org.codehaus.jackson.util.TextBuffer: void releaseBuffers()>();
+
+        $r2 = r0.<org.codehaus.jackson.impl.JsonParserBase: char[] _nameCopyBuffer>;
+
+        if $r2 == null goto label1;
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: char[] _nameCopyBuffer> = null;
+
+        $r3 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.io.IOContext _ioContext>;
+
+        virtualinvoke $r3.<org.codehaus.jackson.io.IOContext: void releaseNameCopyBuffer(char[])>($r2);
+
+     label1:
+        return;
+    }
+
+    public void _reportMismatchedEndMarker(int, char)
+    {
+        org.codehaus.jackson.io.IOContext $r3;
+        char $c0, $c2;
+        org.codehaus.jackson.JsonLocation $r5;
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        org.codehaus.jackson.impl.JsonReadContext $r2;
+        int $i1;
+        java.lang.StringBuilder $r1;
+        java.lang.Object $r4;
+        java.lang.String $r6, $r7;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        $i1 := @parameter0: int;
+
+        $c0 := @parameter1: char;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("");
+
+        $r2 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.impl.JsonReadContext _parsingContext>;
+
+        $r3 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.io.IOContext _ioContext>;
+
+        $r4 = virtualinvoke $r3.<org.codehaus.jackson.io.IOContext: java.lang.Object getSourceReference()>();
+
+        $r5 = virtualinvoke $r2.<org.codehaus.jackson.impl.JsonReadContext: org.codehaus.jackson.JsonLocation getStartLocation(java.lang.Object)>($r4);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r5);
+
+        $r6 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected close marker \'");
+
+        $c2 = (char) $i1;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\': expected \'");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' (for ");
+
+        $r2 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.impl.JsonReadContext _parsingContext>;
+
+        $r7 = virtualinvoke $r2.<org.codehaus.jackson.JsonStreamContext: java.lang.String getTypeDesc()>();
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" starting at ");
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r6 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _reportError(java.lang.String)>($r6);
+
+        return;
+    }
+
+    public void close()
+    {
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        java.lang.Throwable $r1;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        $z0 = r0.<org.codehaus.jackson.impl.JsonParserBase: boolean _closed>;
+
+        if $z0 != 0 goto label4;
+
+        r0.<org.codehaus.jackson.impl.JsonParserBase: boolean _closed> = 1;
+
+     label1:
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserBase: void _closeInput()>();
+
+     label2:
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserBase: void _releaseBuffers()>();
+
+        return;
+
+     label3:
+        $r1 := @caughtexception;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserBase: void _releaseBuffers()>();
+
+        throw $r1;
+
+     label4:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public org.codehaus.jackson.JsonLocation getCurrentLocation()
+    {
+        org.codehaus.jackson.io.IOContext $r3;
+        long $l2, $l3;
+        org.codehaus.jackson.JsonLocation $r2;
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        int $i0, $i1;
+        java.lang.Object $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        $i1 = r0.<org.codehaus.jackson.impl.JsonParserBase: int _inputPtr>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonParserBase: int _currInputRowStart>;
+
+        $i1 = $i1 - $i0;
+
+        $i1 = $i1 + 1;
+
+        $r2 = new org.codehaus.jackson.JsonLocation;
+
+        $r3 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.io.IOContext _ioContext>;
+
+        $r1 = virtualinvoke $r3.<org.codehaus.jackson.io.IOContext: java.lang.Object getSourceReference()>();
+
+        $l2 = r0.<org.codehaus.jackson.impl.JsonParserBase: long _currInputProcessed>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonParserBase: int _inputPtr>;
+
+        $l3 = (long) $i0;
+
+        $l2 = $l2 + $l3;
+
+        $l2 = $l2 - 1L;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonParserBase: int _currInputRow>;
+
+        specialinvoke $r2.<org.codehaus.jackson.JsonLocation: void <init>(java.lang.Object,long,int,int)>($r1, $l2, $i0, $i1);
+
+        return $r2;
+    }
+
+    public java.lang.String getCurrentName()
+    {
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        org.codehaus.jackson.JsonToken $r1, $r2;
+        org.codehaus.jackson.impl.JsonReadContext $r3;
+        java.lang.String $r4;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        $r2 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken START_OBJECT>;
+
+        if $r1 == $r2 goto label2;
+
+        $r2 = <org.codehaus.jackson.JsonToken: org.codehaus.jackson.JsonToken START_ARRAY>;
+
+        if $r1 != $r2 goto label1;
+
+        goto label2;
+
+     label1:
+        $r3 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.impl.JsonReadContext _parsingContext>;
+
+        $r4 = virtualinvoke $r3.<org.codehaus.jackson.impl.JsonReadContext: java.lang.String getCurrentName()>();
+
+        return $r4;
+
+     label2:
+        $r3 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.impl.JsonReadContext _parsingContext>;
+
+        $r3 = virtualinvoke $r3.<org.codehaus.jackson.impl.JsonReadContext: org.codehaus.jackson.impl.JsonReadContext getParent()>();
+
+        $r4 = virtualinvoke $r3.<org.codehaus.jackson.impl.JsonReadContext: java.lang.String getCurrentName()>();
+
+        return $r4;
+    }
+
+    public volatile org.codehaus.jackson.JsonStreamContext getParsingContext()
+    {
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        org.codehaus.jackson.impl.JsonReadContext $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        $r1 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.impl.JsonReadContext getParsingContext()>();
+
+        return $r1;
+    }
+
+    public org.codehaus.jackson.impl.JsonReadContext getParsingContext()
+    {
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        org.codehaus.jackson.impl.JsonReadContext r1;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        r1 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.impl.JsonReadContext _parsingContext>;
+
+        return r1;
+    }
+
+    public final long getTokenCharacterOffset()
+    {
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        long l0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        l0 = r0.<org.codehaus.jackson.impl.JsonParserBase: long _tokenInputTotal>;
+
+        return l0;
+    }
+
+    public final int getTokenColumnNr()
+    {
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        int $i0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        $i0 = r0.<org.codehaus.jackson.impl.JsonParserBase: int _tokenInputCol>;
+
+        $i0 = $i0 + 1;
+
+        return $i0;
+    }
+
+    public final int getTokenLineNr()
+    {
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        int i0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        i0 = r0.<org.codehaus.jackson.impl.JsonParserBase: int _tokenInputRow>;
+
+        return i0;
+    }
+
+    public org.codehaus.jackson.JsonLocation getTokenLocation()
+    {
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        org.codehaus.jackson.io.IOContext $r2;
+        int $i1, $i2;
+        java.lang.Object $r3;
+        long $l0;
+        org.codehaus.jackson.JsonLocation $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        $r1 = new org.codehaus.jackson.JsonLocation;
+
+        $r2 = r0.<org.codehaus.jackson.impl.JsonParserBase: org.codehaus.jackson.io.IOContext _ioContext>;
+
+        $r3 = virtualinvoke $r2.<org.codehaus.jackson.io.IOContext: java.lang.Object getSourceReference()>();
+
+        $l0 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserBase: long getTokenCharacterOffset()>();
+
+        $i1 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserBase: int getTokenLineNr()>();
+
+        $i2 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserBase: int getTokenColumnNr()>();
+
+        specialinvoke $r1.<org.codehaus.jackson.JsonLocation: void <init>(java.lang.Object,long,int,int)>($r3, $l0, $i1, $i2);
+
+        return $r1;
+    }
+
+    public boolean hasTextCharacters()
+    {
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        org.codehaus.jackson.JsonToken $r1;
+        int[] $r2;
+        int $i0;
+        boolean z0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        $r1 = r0.<org.codehaus.jackson.JsonParser: org.codehaus.jackson.JsonToken _currToken>;
+
+        if $r1 == null goto label3;
+
+        $r2 = <org.codehaus.jackson.impl.JsonParserBase$1: int[] $SwitchMap$org$codehaus$jackson$JsonToken>;
+
+        $i0 = virtualinvoke $r1.<java.lang.Enum: int ordinal()>();
+
+        $i0 = $r2[$i0];
+
+        if $i0 == 1 goto label2;
+
+        if $i0 == 2 goto label1;
+
+        goto label3;
+
+     label1:
+        return 1;
+
+     label2:
+        z0 = r0.<org.codehaus.jackson.impl.JsonParserBase: boolean _nameCopied>;
+
+        return z0;
+
+     label3:
+        return 0;
+    }
+
+    public boolean isClosed()
+    {
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        boolean z0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        z0 = r0.<org.codehaus.jackson.impl.JsonParserBase: boolean _closed>;
+
+        return z0;
+    }
+
+    public abstract boolean loadMore();
+
+    public final void loadMoreGuaranteed()
+    {
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserBase: boolean loadMore()>();
+
+        if $z0 != 0 goto label1;
+
+        virtualinvoke r0.<org.codehaus.jackson.impl.JsonParserMinimalBase: void _reportInvalidEOF()>();
+
+     label1:
+        return;
+    }
+
+    public org.codehaus.jackson.Version version()
+    {
+        org.codehaus.jackson.impl.JsonParserBase r0;
+        java.lang.Class $r1;
+        org.codehaus.jackson.Version $r2;
+
+        r0 := @this: org.codehaus.jackson.impl.JsonParserBase;
+
+        $r1 = virtualinvoke r0.<java.lang.Object: java.lang.Class getClass()>();
+
+        $r2 = staticinvoke <org.codehaus.jackson.util.VersionUtil: org.codehaus.jackson.Version versionFor(java.lang.Class)>($r1);
+
+        return $r2;
+    }
+}

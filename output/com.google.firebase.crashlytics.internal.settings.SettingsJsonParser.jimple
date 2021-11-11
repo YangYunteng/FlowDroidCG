@@ -1,0 +1,68 @@
+public class com.google.firebase.crashlytics.internal.settings.SettingsJsonParser extends java.lang.Object
+{
+    public final com.google.firebase.crashlytics.internal.common.CurrentTimeProvider currentTimeProvider;
+
+    public void <init>(com.google.firebase.crashlytics.internal.common.CurrentTimeProvider)
+    {
+        com.google.firebase.crashlytics.internal.settings.SettingsJsonParser r0;
+        com.google.firebase.crashlytics.internal.common.CurrentTimeProvider $r1;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.settings.SettingsJsonParser;
+
+        $r1 := @parameter0: com.google.firebase.crashlytics.internal.common.CurrentTimeProvider;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.crashlytics.internal.settings.SettingsJsonParser: com.google.firebase.crashlytics.internal.common.CurrentTimeProvider currentTimeProvider> = $r1;
+
+        return;
+    }
+
+    public static com.google.firebase.crashlytics.internal.settings.SettingsJsonTransform getJsonTransformForVersion(int)
+    {
+        int $i0;
+        com.google.firebase.crashlytics.internal.settings.DefaultSettingsJsonTransform $r0;
+        com.google.firebase.crashlytics.internal.settings.SettingsV3JsonTransform $r1;
+
+        $i0 := @parameter0: int;
+
+        if $i0 == 3 goto label1;
+
+        $r0 = new com.google.firebase.crashlytics.internal.settings.DefaultSettingsJsonTransform;
+
+        specialinvoke $r0.<com.google.firebase.crashlytics.internal.settings.DefaultSettingsJsonTransform: void <init>()>();
+
+        return $r0;
+
+     label1:
+        $r1 = new com.google.firebase.crashlytics.internal.settings.SettingsV3JsonTransform;
+
+        specialinvoke $r1.<com.google.firebase.crashlytics.internal.settings.SettingsV3JsonTransform: void <init>()>();
+
+        return $r1;
+    }
+
+    public com.google.firebase.crashlytics.internal.settings.model.SettingsData parseSettingsJson(org.json.JSONObject)
+    {
+        org.json.JSONObject $r2;
+        com.google.firebase.crashlytics.internal.settings.SettingsJsonParser r0;
+        com.google.firebase.crashlytics.internal.common.CurrentTimeProvider $r1;
+        int $i0;
+        com.google.firebase.crashlytics.internal.settings.SettingsJsonTransform $r3;
+        com.google.firebase.crashlytics.internal.settings.model.SettingsData $r4;
+
+        r0 := @this: com.google.firebase.crashlytics.internal.settings.SettingsJsonParser;
+
+        $r2 := @parameter0: org.json.JSONObject;
+
+        $i0 = virtualinvoke $r2.<org.json.JSONObject: int getInt(java.lang.String)>("settings_version");
+
+        $r3 = staticinvoke <com.google.firebase.crashlytics.internal.settings.SettingsJsonParser: com.google.firebase.crashlytics.internal.settings.SettingsJsonTransform getJsonTransformForVersion(int)>($i0);
+
+        $r1 = r0.<com.google.firebase.crashlytics.internal.settings.SettingsJsonParser: com.google.firebase.crashlytics.internal.common.CurrentTimeProvider currentTimeProvider>;
+
+        $r4 = interfaceinvoke $r3.<com.google.firebase.crashlytics.internal.settings.SettingsJsonTransform: com.google.firebase.crashlytics.internal.settings.model.SettingsData buildFromJson(com.google.firebase.crashlytics.internal.common.CurrentTimeProvider,org.json.JSONObject)>($r1, $r2);
+
+        return $r4;
+    }
+}

@@ -1,0 +1,337 @@
+public abstract class project.android.imageprocessing.filter.TwoPassFilter extends project.android.imageprocessing.filter.BasicFilter
+{
+    public int currentPass;
+    public int[] firstPassDepthRenderBuffer;
+    public int[] firstPassFrameBuffer;
+    public int[] firstPassTextureOut;
+
+    public void <init>()
+    {
+        project.android.imageprocessing.filter.TwoPassFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.TwoPassFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.BasicFilter: void <init>()>();
+
+        return;
+    }
+
+    private void initFBO()
+    {
+        java.lang.RuntimeException $r5;
+        int[] $r1;
+        int $i0, $i1, $i2, $i3;
+        java.lang.StringBuilder $r2, $r4;
+        java.lang.String $r3;
+        project.android.imageprocessing.filter.TwoPassFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.TwoPassFilter;
+
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassFrameBuffer>;
+
+        if $r1 == null goto label1;
+
+        staticinvoke <android.opengl.GLES20: void glDeleteFramebuffers(int,int[],int)>(1, $r1, 0);
+
+        r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassFrameBuffer> = null;
+
+     label1:
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassTextureOut>;
+
+        if $r1 == null goto label2;
+
+        staticinvoke <android.opengl.GLES20: void glDeleteTextures(int,int[],int)>(1, $r1, 0);
+
+        r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassTextureOut> = null;
+
+     label2:
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassDepthRenderBuffer>;
+
+        if $r1 == null goto label3;
+
+        staticinvoke <android.opengl.GLES20: void glDeleteRenderbuffers(int,int[],int)>(1, $r1, 0);
+
+        r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassDepthRenderBuffer> = null;
+
+     label3:
+        $r1 = newarray (int)[1];
+
+        r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassFrameBuffer> = $r1;
+
+        $r1 = newarray (int)[1];
+
+        r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassTextureOut> = $r1;
+
+        $r1 = newarray (int)[1];
+
+        r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassDepthRenderBuffer> = $r1;
+
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassFrameBuffer>;
+
+        staticinvoke <android.opengl.GLES20: void glGenFramebuffers(int,int[],int)>(1, $r1, 0);
+
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassDepthRenderBuffer>;
+
+        staticinvoke <android.opengl.GLES20: void glGenRenderbuffers(int,int[],int)>(1, $r1, 0);
+
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassTextureOut>;
+
+        staticinvoke <android.opengl.GLES20: void glGenTextures(int,int[],int)>(1, $r1, 0);
+
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassFrameBuffer>;
+
+        $i0 = $r1[0];
+
+        $i1 = 36160;
+
+        staticinvoke <android.opengl.GLES20: void glBindFramebuffer(int,int)>($i1, $i0);
+
+        $i0 = 33984;
+
+        staticinvoke <android.opengl.GLES20: void glActiveTexture(int)>($i0);
+
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassTextureOut>;
+
+        $i0 = $r1[0];
+
+        staticinvoke <android.opengl.GLES20: void glBindTexture(int,int)>(3553, $i0);
+
+        $i0 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getWidth()>();
+
+        $i1 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getHeight()>();
+
+        $i2 = 33635;
+
+        staticinvoke <android.opengl.GLES20: void glTexImage2D(int,int,int,int,int,int,int,int,java.nio.Buffer)>(3553, 0, 6407, $i0, $i1, 0, 6407, $i2, null);
+
+        $i0 = 33071;
+
+        staticinvoke <android.opengl.GLES20: void glTexParameteri(int,int,int)>(3553, 10242, $i0);
+
+        $i0 = 33071;
+
+        staticinvoke <android.opengl.GLES20: void glTexParameteri(int,int,int)>(3553, 10243, $i0);
+
+        staticinvoke <android.opengl.GLES20: void glTexParameteri(int,int,int)>(3553, 10240, 9729);
+
+        staticinvoke <android.opengl.GLES20: void glTexParameteri(int,int,int)>(3553, 10241, 9729);
+
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassTextureOut>;
+
+        $i0 = $r1[0];
+
+        $i1 = 36160;
+
+        $i2 = 36064;
+
+        staticinvoke <android.opengl.GLES20: void glFramebufferTexture2D(int,int,int,int,int)>($i1, $i2, 3553, $i0, 0);
+
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassDepthRenderBuffer>;
+
+        $i0 = $r1[0];
+
+        $i1 = 36161;
+
+        staticinvoke <android.opengl.GLES20: void glBindRenderbuffer(int,int)>($i1, $i0);
+
+        $i0 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getWidth()>();
+
+        $i1 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getHeight()>();
+
+        $i2 = 36161;
+
+        $i3 = 33189;
+
+        staticinvoke <android.opengl.GLES20: void glRenderbufferStorage(int,int,int,int)>($i2, $i3, $i0, $i1);
+
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassDepthRenderBuffer>;
+
+        $i0 = $r1[0];
+
+        $i1 = 36160;
+
+        $i2 = 36096;
+
+        $i3 = 36161;
+
+        staticinvoke <android.opengl.GLES20: void glFramebufferRenderbuffer(int,int,int,int)>($i1, $i2, $i3, $i0);
+
+        $i0 = 36160;
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glCheckFramebufferStatus(int)>($i0);
+
+        $i1 = 36053;
+
+        if $i0 != $i1 goto label4;
+
+        return;
+
+     label4:
+        $r5 = new java.lang.RuntimeException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        $r2 = $r4;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(r0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": Failed to set up render buffer with status ");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" and error ");
+
+        $i0 = staticinvoke <android.opengl.GLES20: int glGetError()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.lang.RuntimeException: void <init>(java.lang.String)>($r3);
+
+        throw $r5;
+    }
+
+    public void destroy()
+    {
+        int[] $r1;
+        project.android.imageprocessing.filter.TwoPassFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.TwoPassFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.input.GLTextureOutputRenderer: void destroy()>();
+
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassFrameBuffer>;
+
+        if $r1 == null goto label1;
+
+        staticinvoke <android.opengl.GLES20: void glDeleteFramebuffers(int,int[],int)>(1, $r1, 0);
+
+        r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassFrameBuffer> = null;
+
+     label1:
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassTextureOut>;
+
+        if $r1 == null goto label2;
+
+        staticinvoke <android.opengl.GLES20: void glDeleteTextures(int,int[],int)>(1, $r1, 0);
+
+        r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassTextureOut> = null;
+
+     label2:
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassDepthRenderBuffer>;
+
+        if $r1 == null goto label3;
+
+        staticinvoke <android.opengl.GLES20: void glDeleteRenderbuffers(int,int[],int)>(1, $r1, 0);
+
+        r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassDepthRenderBuffer> = null;
+
+     label3:
+        return;
+    }
+
+    public void drawFrame()
+    {
+        int[] $r1;
+        int $i0, $i1;
+        float $f0, $f1, $f2, $f3;
+        project.android.imageprocessing.filter.TwoPassFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.TwoPassFilter;
+
+        r0.<project.android.imageprocessing.filter.TwoPassFilter: int currentPass> = 1;
+
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassFrameBuffer>;
+
+        if $r1 != null goto label2;
+
+        $i0 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getWidth()>();
+
+        if $i0 == 0 goto label1;
+
+        $i0 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getHeight()>();
+
+        if $i0 == 0 goto label4;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.TwoPassFilter: void initFBO()>();
+
+        goto label2;
+
+     label1:
+        return;
+
+     label2:
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassFrameBuffer>;
+
+        $i0 = $r1[0];
+
+        $i1 = 36160;
+
+        staticinvoke <android.opengl.GLES20: void glBindFramebuffer(int,int)>($i1, $i0);
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int texture_in>;
+
+        if $i0 != 0 goto label3;
+
+        return;
+
+     label3:
+        $i0 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getWidth()>();
+
+        $i1 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: int getHeight()>();
+
+        staticinvoke <android.opengl.GLES20: void glViewport(int,int,int,int)>(0, 0, $i0, $i1);
+
+        $i0 = r0.<project.android.imageprocessing.GLRenderer: int programHandle>;
+
+        staticinvoke <android.opengl.GLES20: void glUseProgram(int)>($i0);
+
+        staticinvoke <android.opengl.GLES20: void glClear(int)>(16640);
+
+        $f0 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: float getBackgroundRed()>();
+
+        $f1 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: float getBackgroundGreen()>();
+
+        $f2 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: float getBackgroundBlue()>();
+
+        $f3 = virtualinvoke r0.<project.android.imageprocessing.GLRenderer: float getBackgroundAlpha()>();
+
+        staticinvoke <android.opengl.GLES20: void glClearColor(float,float,float,float)>($f0, $f1, $f2, $f3);
+
+        virtualinvoke r0.<project.android.imageprocessing.GLRenderer: void passShaderValues()>();
+
+        staticinvoke <android.opengl.GLES20: void glDrawArrays(int,int,int)>(5, 0, 4);
+
+        $r1 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int[] firstPassTextureOut>;
+
+        $i0 = $r1[0];
+
+        r0.<project.android.imageprocessing.GLRenderer: int texture_in> = $i0;
+
+        $i0 = 36160;
+
+        staticinvoke <android.opengl.GLES20: void glBindFramebuffer(int,int)>($i0, 0);
+
+        r0.<project.android.imageprocessing.filter.TwoPassFilter: int currentPass> = 2;
+
+        specialinvoke r0.<project.android.imageprocessing.input.GLTextureOutputRenderer: void drawFrame()>();
+
+     label4:
+        return;
+    }
+
+    public int getCurrentPass()
+    {
+        int i0;
+        project.android.imageprocessing.filter.TwoPassFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.TwoPassFilter;
+
+        i0 = r0.<project.android.imageprocessing.filter.TwoPassFilter: int currentPass>;
+
+        return i0;
+    }
+}

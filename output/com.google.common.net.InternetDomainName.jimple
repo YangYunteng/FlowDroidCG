@@ -1,0 +1,886 @@
+public final class com.google.common.net.InternetDomainName extends java.lang.Object
+{
+    public static final com.google.common.base.CharMatcher DASH_MATCHER;
+    public static final com.google.common.base.CharMatcher DOTS_MATCHER;
+    public static final com.google.common.base.Joiner DOT_JOINER;
+    public static final java.lang.String DOT_REGEX;
+    public static final com.google.common.base.Splitter DOT_SPLITTER;
+    public static final int MAX_DOMAIN_PART_LENGTH;
+    public static final int MAX_LENGTH;
+    public static final int MAX_PARTS;
+    public static final int NO_SUFFIX_FOUND;
+    public static final com.google.common.base.CharMatcher PART_CHAR_MATCHER;
+    public final java.lang.String name;
+    public final com.google.common.collect.ImmutableList parts;
+    public final int publicSuffixIndex;
+    public final int registrySuffixIndex;
+
+    static void <clinit>()
+    {
+        com.google.common.base.CharMatcher $r0, $r3;
+        com.google.common.base.Splitter $r1;
+        com.google.common.base.Joiner $r2;
+
+        <com.google.common.net.InternetDomainName: int NO_SUFFIX_FOUND> = -1;
+
+        <com.google.common.net.InternetDomainName: int MAX_PARTS> = 127;
+
+        <com.google.common.net.InternetDomainName: int MAX_LENGTH> = 253;
+
+        <com.google.common.net.InternetDomainName: int MAX_DOMAIN_PART_LENGTH> = 63;
+
+        <com.google.common.net.InternetDomainName: java.lang.String DOT_REGEX> = "\\.";
+
+        $r0 = staticinvoke <com.google.common.base.CharMatcher: com.google.common.base.CharMatcher anyOf(java.lang.CharSequence)>(".\u3002\uff0e\uff61");
+
+        <com.google.common.net.InternetDomainName: com.google.common.base.CharMatcher DOTS_MATCHER> = $r0;
+
+        $r1 = staticinvoke <com.google.common.base.Splitter: com.google.common.base.Splitter on(char)>(46);
+
+        <com.google.common.net.InternetDomainName: com.google.common.base.Splitter DOT_SPLITTER> = $r1;
+
+        $r2 = staticinvoke <com.google.common.base.Joiner: com.google.common.base.Joiner on(char)>(46);
+
+        <com.google.common.net.InternetDomainName: com.google.common.base.Joiner DOT_JOINER> = $r2;
+
+        $r0 = staticinvoke <com.google.common.base.CharMatcher: com.google.common.base.CharMatcher anyOf(java.lang.CharSequence)>("-_");
+
+        <com.google.common.net.InternetDomainName: com.google.common.base.CharMatcher DASH_MATCHER> = $r0;
+
+        $r0 = staticinvoke <com.google.common.base.CharMatcher: com.google.common.base.CharMatcher javaLetterOrDigit()>();
+
+        $r3 = <com.google.common.net.InternetDomainName: com.google.common.base.CharMatcher DASH_MATCHER>;
+
+        $r0 = virtualinvoke $r0.<com.google.common.base.CharMatcher: com.google.common.base.CharMatcher or(com.google.common.base.CharMatcher)>($r3);
+
+        <com.google.common.net.InternetDomainName: com.google.common.base.CharMatcher PART_CHAR_MATCHER> = $r0;
+
+        return;
+    }
+
+    public void <init>(java.lang.String)
+    {
+        com.google.common.net.InternetDomainName r0;
+        com.google.thirdparty.publicsuffix.PublicSuffixType $r8;
+        com.google.common.base.CharMatcher $r2;
+        java.lang.Iterable $r5;
+        com.google.common.collect.ImmutableList $r6;
+        com.google.common.base.Optional $r7;
+        int $i0;
+        java.lang.String $r1, $r3;
+        com.google.common.base.Splitter $r4;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $r1 := @parameter0: java.lang.String;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r2 = <com.google.common.net.InternetDomainName: com.google.common.base.CharMatcher DOTS_MATCHER>;
+
+        $r1 = virtualinvoke $r2.<com.google.common.base.CharMatcher: java.lang.String replaceFrom(java.lang.CharSequence,char)>($r1, 46);
+
+        $r1 = staticinvoke <com.google.common.base.Ascii: java.lang.String toLowerCase(java.lang.String)>($r1);
+
+        $r3 = $r1;
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean endsWith(java.lang.String)>(".");
+
+        $z1 = 1;
+
+        if $z0 == 0 goto label1;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $i0 = $i0 - 1;
+
+        $r3 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int,int)>(0, $i0);
+
+     label1:
+        $i0 = virtualinvoke $r3.<java.lang.String: int length()>();
+
+        if $i0 > 253 goto label2;
+
+        $z0 = 1;
+
+        goto label3;
+
+     label2:
+        $z0 = 0;
+
+     label3:
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.String,java.lang.Object)>($z0, "Domain name too long: \'%s\':", $r3);
+
+        r0.<com.google.common.net.InternetDomainName: java.lang.String name> = $r3;
+
+        $r4 = <com.google.common.net.InternetDomainName: com.google.common.base.Splitter DOT_SPLITTER>;
+
+        $r5 = virtualinvoke $r4.<com.google.common.base.Splitter: java.lang.Iterable split(java.lang.CharSequence)>($r3);
+
+        $r6 = staticinvoke <com.google.common.collect.ImmutableList: com.google.common.collect.ImmutableList copyOf(java.lang.Iterable)>($r5);
+
+        r0.<com.google.common.net.InternetDomainName: com.google.common.collect.ImmutableList parts> = $r6;
+
+        $r6 = r0.<com.google.common.net.InternetDomainName: com.google.common.collect.ImmutableList parts>;
+
+        $i0 = virtualinvoke $r6.<java.util.AbstractCollection: int size()>();
+
+        if $i0 > 127 goto label4;
+
+        goto label5;
+
+     label4:
+        $z1 = 0;
+
+     label5:
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.String,java.lang.Object)>($z1, "Domain has too many parts: \'%s\'", $r3);
+
+        $r6 = r0.<com.google.common.net.InternetDomainName: com.google.common.collect.ImmutableList parts>;
+
+        $z1 = staticinvoke <com.google.common.net.InternetDomainName: boolean validateSyntax(java.util.List)>($r6);
+
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.String,java.lang.Object)>($z1, "Not a valid domain name: \'%s\'", $r3);
+
+        $r7 = staticinvoke <com.google.common.base.Optional: com.google.common.base.Optional absent()>();
+
+        $i0 = specialinvoke r0.<com.google.common.net.InternetDomainName: int findSuffixOfType(com.google.common.base.Optional)>($r7);
+
+        r0.<com.google.common.net.InternetDomainName: int publicSuffixIndex> = $i0;
+
+        $r8 = <com.google.thirdparty.publicsuffix.PublicSuffixType: com.google.thirdparty.publicsuffix.PublicSuffixType REGISTRY>;
+
+        $r7 = staticinvoke <com.google.common.base.Optional: com.google.common.base.Optional of(java.lang.Object)>($r8);
+
+        $i0 = specialinvoke r0.<com.google.common.net.InternetDomainName: int findSuffixOfType(com.google.common.base.Optional)>($r7);
+
+        r0.<com.google.common.net.InternetDomainName: int registrySuffixIndex> = $i0;
+
+        return;
+    }
+
+    private com.google.common.net.InternetDomainName ancestor(int)
+    {
+        com.google.common.collect.ImmutableList $r2;
+        com.google.common.net.InternetDomainName r0;
+        int $i0, $i1;
+        java.lang.String $r3;
+        com.google.common.base.Joiner $r1;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $i0 := @parameter0: int;
+
+        $r1 = <com.google.common.net.InternetDomainName: com.google.common.base.Joiner DOT_JOINER>;
+
+        $r2 = r0.<com.google.common.net.InternetDomainName: com.google.common.collect.ImmutableList parts>;
+
+        $i1 = virtualinvoke $r2.<java.util.AbstractCollection: int size()>();
+
+        $r2 = virtualinvoke $r2.<com.google.common.collect.ImmutableList: com.google.common.collect.ImmutableList subList(int,int)>($i0, $i1);
+
+        $r3 = virtualinvoke $r1.<com.google.common.base.Joiner: java.lang.String join(java.lang.Iterable)>($r2);
+
+        r0 = staticinvoke <com.google.common.net.InternetDomainName: com.google.common.net.InternetDomainName 'from'(java.lang.String)>($r3);
+
+        return r0;
+    }
+
+    private int findSuffixOfType(com.google.common.base.Optional)
+    {
+        com.google.common.net.InternetDomainName r0;
+        com.google.common.collect.ImmutableMap $r5;
+        com.google.common.collect.ImmutableList $r2;
+        com.google.common.base.Optional $r1, $r7;
+        int $i0, $i1;
+        java.lang.Object $r6;
+        java.lang.String $r4;
+        com.google.common.base.Joiner $r3;
+        boolean $z0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $r1 := @parameter0: com.google.common.base.Optional;
+
+        $r2 = r0.<com.google.common.net.InternetDomainName: com.google.common.collect.ImmutableList parts>;
+
+        $i0 = virtualinvoke $r2.<java.util.AbstractCollection: int size()>();
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label5;
+
+        $r3 = <com.google.common.net.InternetDomainName: com.google.common.base.Joiner DOT_JOINER>;
+
+        $r2 = r0.<com.google.common.net.InternetDomainName: com.google.common.collect.ImmutableList parts>;
+
+        $r2 = virtualinvoke $r2.<com.google.common.collect.ImmutableList: com.google.common.collect.ImmutableList subList(int,int)>($i1, $i0);
+
+        $r4 = virtualinvoke $r3.<com.google.common.base.Joiner: java.lang.String join(java.lang.Iterable)>($r2);
+
+        $r5 = <com.google.thirdparty.publicsuffix.PublicSuffixPatterns: com.google.common.collect.ImmutableMap EXACT>;
+
+        $r6 = virtualinvoke $r5.<com.google.common.collect.ImmutableMap: java.lang.Object get(java.lang.Object)>($r4);
+
+        $r7 = staticinvoke <com.google.common.base.Optional: com.google.common.base.Optional fromNullable(java.lang.Object)>($r6);
+
+        $z0 = staticinvoke <com.google.common.net.InternetDomainName: boolean matchesType(com.google.common.base.Optional,com.google.common.base.Optional)>($r1, $r7);
+
+        if $z0 == 0 goto label2;
+
+        return $i1;
+
+     label2:
+        $r5 = <com.google.thirdparty.publicsuffix.PublicSuffixPatterns: com.google.common.collect.ImmutableMap EXCLUDED>;
+
+        $z0 = virtualinvoke $r5.<com.google.common.collect.ImmutableMap: boolean containsKey(java.lang.Object)>($r4);
+
+        if $z0 == 0 goto label3;
+
+        $i0 = $i1 + 1;
+
+        return $i0;
+
+     label3:
+        $z0 = staticinvoke <com.google.common.net.InternetDomainName: boolean matchesWildcardSuffixType(com.google.common.base.Optional,java.lang.String)>($r1, $r4);
+
+        if $z0 == 0 goto label4;
+
+        return $i1;
+
+     label4:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label5:
+        $i0 = -1;
+
+        return $i0;
+    }
+
+    public static com.google.common.net.InternetDomainName 'from'(java.lang.String)
+    {
+        java.lang.String $r1;
+        com.google.common.net.InternetDomainName $r0;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0 = new com.google.common.net.InternetDomainName;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r1);
+
+        specialinvoke $r0.<com.google.common.net.InternetDomainName: void <init>(java.lang.String)>($r1);
+
+        return $r0;
+    }
+
+    public static boolean isValid(java.lang.String)
+    {
+        java.lang.String $r1;
+        java.lang.IllegalArgumentException $r0;
+
+        $r1 := @parameter0: java.lang.String;
+
+     label1:
+        staticinvoke <com.google.common.net.InternetDomainName: com.google.common.net.InternetDomainName 'from'(java.lang.String)>($r1);
+
+     label2:
+        return 1;
+
+     label3:
+        return 0;
+
+     label4:
+        $r0 := @caughtexception;
+
+        goto label3;
+
+        catch java.lang.IllegalArgumentException from label1 to label2 with label4;
+    }
+
+    public static boolean matchesType(com.google.common.base.Optional, com.google.common.base.Optional)
+    {
+        com.google.common.base.Optional $r0, $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: com.google.common.base.Optional;
+
+        $r0 := @parameter1: com.google.common.base.Optional;
+
+        $z0 = virtualinvoke $r1.<com.google.common.base.Optional: boolean isPresent()>();
+
+        if $z0 == 0 goto label1;
+
+        $z0 = virtualinvoke $r1.<com.google.common.base.Optional: boolean equals(java.lang.Object)>($r0);
+
+        return $z0;
+
+     label1:
+        $z0 = virtualinvoke $r0.<com.google.common.base.Optional: boolean isPresent()>();
+
+        return $z0;
+    }
+
+    public static boolean matchesWildcardSuffixType(com.google.common.base.Optional, java.lang.String)
+    {
+        com.google.common.collect.ImmutableMap $r3;
+        java.lang.String[] $r2;
+        com.google.common.base.Optional $r0, $r5;
+        int $i0;
+        java.lang.Object $r4;
+        java.lang.String $r1;
+        boolean $z0;
+
+        $r0 := @parameter0: com.google.common.base.Optional;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = virtualinvoke $r1.<java.lang.String: java.lang.String[] split(java.lang.String,int)>("\\.", 2);
+
+        $i0 = lengthof $r2;
+
+        if $i0 != 2 goto label1;
+
+        $r3 = <com.google.thirdparty.publicsuffix.PublicSuffixPatterns: com.google.common.collect.ImmutableMap UNDER>;
+
+        $r1 = $r2[1];
+
+        $r4 = virtualinvoke $r3.<com.google.common.collect.ImmutableMap: java.lang.Object get(java.lang.Object)>($r1);
+
+        $r5 = staticinvoke <com.google.common.base.Optional: com.google.common.base.Optional fromNullable(java.lang.Object)>($r4);
+
+        $z0 = staticinvoke <com.google.common.net.InternetDomainName: boolean matchesType(com.google.common.base.Optional,com.google.common.base.Optional)>($r0, $r5);
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public static boolean validatePart(java.lang.String, boolean)
+    {
+        int $i0;
+        com.google.common.base.CharMatcher $r1;
+        char $c1;
+        java.lang.String $r0, $r2;
+        boolean $z0, $z1;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $z0 := @parameter1: boolean;
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if $i0 < 1 goto label5;
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if $i0 <= 63 goto label1;
+
+        return 0;
+
+     label1:
+        $r1 = staticinvoke <com.google.common.base.CharMatcher: com.google.common.base.CharMatcher ascii()>();
+
+        $r2 = virtualinvoke $r1.<com.google.common.base.CharMatcher: java.lang.String retainFrom(java.lang.CharSequence)>($r0);
+
+        $r1 = <com.google.common.net.InternetDomainName: com.google.common.base.CharMatcher PART_CHAR_MATCHER>;
+
+        $z1 = virtualinvoke $r1.<com.google.common.base.CharMatcher: boolean matchesAllOf(java.lang.CharSequence)>($r2);
+
+        if $z1 != 0 goto label2;
+
+        return 0;
+
+     label2:
+        $r1 = <com.google.common.net.InternetDomainName: com.google.common.base.CharMatcher DASH_MATCHER>;
+
+        $c1 = virtualinvoke $r0.<java.lang.String: char charAt(int)>(0);
+
+        $z1 = virtualinvoke $r1.<com.google.common.base.CharMatcher: boolean matches(char)>($c1);
+
+        if $z1 != 0 goto label5;
+
+        $r1 = <com.google.common.net.InternetDomainName: com.google.common.base.CharMatcher DASH_MATCHER>;
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        $i0 = $i0 - 1;
+
+        $c1 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i0);
+
+        $z1 = virtualinvoke $r1.<com.google.common.base.CharMatcher: boolean matches(char)>($c1);
+
+        if $z1 == 0 goto label3;
+
+        return 0;
+
+     label3:
+        if $z0 == 0 goto label4;
+
+        $r1 = staticinvoke <com.google.common.base.CharMatcher: com.google.common.base.CharMatcher digit()>();
+
+        $c1 = virtualinvoke $r0.<java.lang.String: char charAt(int)>(0);
+
+        $z0 = virtualinvoke $r1.<com.google.common.base.CharMatcher: boolean matches(char)>($c1);
+
+        if $z0 == 0 goto label6;
+
+        return 0;
+
+     label4:
+        return 1;
+
+     label5:
+        return 0;
+
+     label6:
+        return 1;
+    }
+
+    public static boolean validateSyntax(java.util.List)
+    {
+        java.util.List $r0;
+        int $i0, $i1;
+        java.lang.Object $r1;
+        java.lang.String $r2;
+        boolean $z0;
+
+        $r0 := @parameter0: java.util.List;
+
+        $i0 = interfaceinvoke $r0.<java.util.List: int size()>();
+
+        $i0 = $i0 - 1;
+
+        $r1 = interfaceinvoke $r0.<java.util.List: java.lang.Object get(int)>($i0);
+
+        $r2 = (java.lang.String) $r1;
+
+        $z0 = staticinvoke <com.google.common.net.InternetDomainName: boolean validatePart(java.lang.String,boolean)>($r2, 1);
+
+        if $z0 != 0 goto label1;
+
+        return 0;
+
+     label1:
+        $i1 = 0;
+
+     label2:
+        if $i1 >= $i0 goto label4;
+
+        $r1 = interfaceinvoke $r0.<java.util.List: java.lang.Object get(int)>($i1);
+
+        $r2 = (java.lang.String) $r1;
+
+        $z0 = staticinvoke <com.google.common.net.InternetDomainName: boolean validatePart(java.lang.String,boolean)>($r2, 0);
+
+        if $z0 != 0 goto label3;
+
+        return 0;
+
+     label3:
+        $i1 = $i1 + 1;
+
+        goto label2;
+
+     label4:
+        return 1;
+    }
+
+    public com.google.common.net.InternetDomainName child(java.lang.String)
+    {
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2;
+        com.google.common.net.InternetDomainName r0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".");
+
+        $r2 = r0.<com.google.common.net.InternetDomainName: java.lang.String name>;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        r0 = staticinvoke <com.google.common.net.InternetDomainName: com.google.common.net.InternetDomainName 'from'(java.lang.String)>($r2);
+
+        return r0;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        com.google.common.net.InternetDomainName r0, $r2;
+        java.lang.Object $r1;
+        java.lang.String $r3, $r4;
+        boolean $z0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        if $r1 != r0 goto label1;
+
+        return 1;
+
+     label1:
+        $z0 = $r1 instanceof com.google.common.net.InternetDomainName;
+
+        if $z0 == 0 goto label2;
+
+        $r2 = (com.google.common.net.InternetDomainName) $r1;
+
+        $r3 = r0.<com.google.common.net.InternetDomainName: java.lang.String name>;
+
+        $r4 = $r2.<com.google.common.net.InternetDomainName: java.lang.String name>;
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r4);
+
+        return $z0;
+
+     label2:
+        return 0;
+    }
+
+    public boolean hasParent()
+    {
+        int $i0;
+        com.google.common.collect.ImmutableList $r1;
+        com.google.common.net.InternetDomainName r0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $r1 = r0.<com.google.common.net.InternetDomainName: com.google.common.collect.ImmutableList parts>;
+
+        $i0 = virtualinvoke $r1.<java.util.AbstractCollection: int size()>();
+
+        if $i0 <= 1 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean hasPublicSuffix()
+    {
+        int $i0, $i1;
+        com.google.common.net.InternetDomainName r0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $i0 = r0.<com.google.common.net.InternetDomainName: int publicSuffixIndex>;
+
+        $i1 = -1;
+
+        if $i0 == $i1 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean hasRegistrySuffix()
+    {
+        int $i0, $i1;
+        com.google.common.net.InternetDomainName r0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $i0 = r0.<com.google.common.net.InternetDomainName: int registrySuffixIndex>;
+
+        $i1 = -1;
+
+        if $i0 == $i1 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public int hashCode()
+    {
+        int $i0;
+        java.lang.String $r1;
+        com.google.common.net.InternetDomainName r0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $r1 = r0.<com.google.common.net.InternetDomainName: java.lang.String name>;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int hashCode()>();
+
+        return $i0;
+    }
+
+    public boolean isPublicSuffix()
+    {
+        int $i0;
+        com.google.common.net.InternetDomainName r0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $i0 = r0.<com.google.common.net.InternetDomainName: int publicSuffixIndex>;
+
+        if $i0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean isRegistrySuffix()
+    {
+        int $i0;
+        com.google.common.net.InternetDomainName r0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $i0 = r0.<com.google.common.net.InternetDomainName: int registrySuffixIndex>;
+
+        if $i0 != 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean isTopDomainUnderRegistrySuffix()
+    {
+        int $i0;
+        com.google.common.net.InternetDomainName r0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $i0 = r0.<com.google.common.net.InternetDomainName: int registrySuffixIndex>;
+
+        if $i0 != 1 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean isTopPrivateDomain()
+    {
+        int $i0;
+        com.google.common.net.InternetDomainName r0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $i0 = r0.<com.google.common.net.InternetDomainName: int publicSuffixIndex>;
+
+        if $i0 != 1 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean isUnderPublicSuffix()
+    {
+        int $i0;
+        com.google.common.net.InternetDomainName r0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $i0 = r0.<com.google.common.net.InternetDomainName: int publicSuffixIndex>;
+
+        if $i0 <= 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean isUnderRegistrySuffix()
+    {
+        int $i0;
+        com.google.common.net.InternetDomainName r0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $i0 = r0.<com.google.common.net.InternetDomainName: int registrySuffixIndex>;
+
+        if $i0 <= 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public com.google.common.net.InternetDomainName parent()
+    {
+        java.lang.String $r1;
+        com.google.common.net.InternetDomainName r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $z0 = virtualinvoke r0.<com.google.common.net.InternetDomainName: boolean hasParent()>();
+
+        $r1 = r0.<com.google.common.net.InternetDomainName: java.lang.String name>;
+
+        staticinvoke <com.google.common.base.Preconditions: void checkState(boolean,java.lang.String,java.lang.Object)>($z0, "Domain \'%s\' has no parent", $r1);
+
+        r0 = specialinvoke r0.<com.google.common.net.InternetDomainName: com.google.common.net.InternetDomainName ancestor(int)>(1);
+
+        return r0;
+    }
+
+    public com.google.common.collect.ImmutableList parts()
+    {
+        com.google.common.collect.ImmutableList r1;
+        com.google.common.net.InternetDomainName r0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        r1 = r0.<com.google.common.net.InternetDomainName: com.google.common.collect.ImmutableList parts>;
+
+        return r1;
+    }
+
+    public com.google.common.net.InternetDomainName publicSuffix()
+    {
+        int $i0;
+        com.google.common.net.InternetDomainName r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $z0 = virtualinvoke r0.<com.google.common.net.InternetDomainName: boolean hasPublicSuffix()>();
+
+        if $z0 == 0 goto label1;
+
+        $i0 = r0.<com.google.common.net.InternetDomainName: int publicSuffixIndex>;
+
+        r0 = specialinvoke r0.<com.google.common.net.InternetDomainName: com.google.common.net.InternetDomainName ancestor(int)>($i0);
+
+        return r0;
+
+     label1:
+        return null;
+    }
+
+    public com.google.common.net.InternetDomainName registrySuffix()
+    {
+        int $i0;
+        com.google.common.net.InternetDomainName r0;
+        boolean $z0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $z0 = virtualinvoke r0.<com.google.common.net.InternetDomainName: boolean hasRegistrySuffix()>();
+
+        if $z0 == 0 goto label1;
+
+        $i0 = r0.<com.google.common.net.InternetDomainName: int registrySuffixIndex>;
+
+        r0 = specialinvoke r0.<com.google.common.net.InternetDomainName: com.google.common.net.InternetDomainName ancestor(int)>($i0);
+
+        return r0;
+
+     label1:
+        return null;
+    }
+
+    public java.lang.String toString()
+    {
+        java.lang.String r1;
+        com.google.common.net.InternetDomainName r0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        r1 = r0.<com.google.common.net.InternetDomainName: java.lang.String name>;
+
+        return r1;
+    }
+
+    public com.google.common.net.InternetDomainName topDomainUnderRegistrySuffix()
+    {
+        com.google.common.net.InternetDomainName r0;
+        int $i0, $i1;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $z0 = virtualinvoke r0.<com.google.common.net.InternetDomainName: boolean isTopDomainUnderRegistrySuffix()>();
+
+        if $z0 == 0 goto label1;
+
+        return r0;
+
+     label1:
+        $z0 = virtualinvoke r0.<com.google.common.net.InternetDomainName: boolean isUnderRegistrySuffix()>();
+
+        $r1 = r0.<com.google.common.net.InternetDomainName: java.lang.String name>;
+
+        staticinvoke <com.google.common.base.Preconditions: void checkState(boolean,java.lang.String,java.lang.Object)>($z0, "Not under a registry suffix: %s", $r1);
+
+        $i0 = r0.<com.google.common.net.InternetDomainName: int registrySuffixIndex>;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        r0 = specialinvoke r0.<com.google.common.net.InternetDomainName: com.google.common.net.InternetDomainName ancestor(int)>($i0);
+
+        return r0;
+    }
+
+    public com.google.common.net.InternetDomainName topPrivateDomain()
+    {
+        com.google.common.net.InternetDomainName r0;
+        int $i0, $i1;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.net.InternetDomainName;
+
+        $z0 = virtualinvoke r0.<com.google.common.net.InternetDomainName: boolean isTopPrivateDomain()>();
+
+        if $z0 == 0 goto label1;
+
+        return r0;
+
+     label1:
+        $z0 = virtualinvoke r0.<com.google.common.net.InternetDomainName: boolean isUnderPublicSuffix()>();
+
+        $r1 = r0.<com.google.common.net.InternetDomainName: java.lang.String name>;
+
+        staticinvoke <com.google.common.base.Preconditions: void checkState(boolean,java.lang.String,java.lang.Object)>($z0, "Not under a public suffix: %s", $r1);
+
+        $i0 = r0.<com.google.common.net.InternetDomainName: int publicSuffixIndex>;
+
+        $i1 = -1;
+
+        $i0 = $i0 + $i1;
+
+        r0 = specialinvoke r0.<com.google.common.net.InternetDomainName: com.google.common.net.InternetDomainName ancestor(int)>($i0);
+
+        return r0;
+    }
+}

@@ -1,0 +1,383 @@
+public final class com.crashlytics.android.core.NativeFileUtils extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        com.crashlytics.android.core.NativeFileUtils r0;
+
+        r0 := @this: com.crashlytics.android.core.NativeFileUtils;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static byte[] binaryImagesJsonFromBinaryLibsFile(java.io.File, android.content.Context)
+    {
+        android.content.Context $r0;
+        byte[] $r2;
+        int $i0;
+        java.lang.String $r3;
+        java.io.File $r1;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: android.content.Context;
+
+        $r2 = staticinvoke <com.crashlytics.android.core.NativeFileUtils: byte[] readFile(java.io.File)>($r1);
+
+        if $r2 == null goto label2;
+
+        $i0 = lengthof $r2;
+
+        if $i0 != 0 goto label1;
+
+        goto label2;
+
+     label1:
+        $r3 = new java.lang.String;
+
+        specialinvoke $r3.<java.lang.String: void <init>(byte[])>($r2);
+
+        $r2 = staticinvoke <com.crashlytics.android.core.NativeFileUtils: byte[] processBinaryImages(android.content.Context,java.lang.String)>($r0, $r3);
+
+        return $r2;
+
+     label2:
+        return null;
+    }
+
+    public static byte[] binaryImagesJsonFromDirectory(java.io.File, android.content.Context)
+    {
+        android.content.Context $r0;
+        byte[] $r3;
+        java.io.File $r1, $r2;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: android.content.Context;
+
+        $r2 = staticinvoke <com.crashlytics.android.core.NativeFileUtils: java.io.File filter(java.io.File,java.lang.String)>($r1, ".maps");
+
+        if $r2 == null goto label1;
+
+        $r3 = staticinvoke <com.crashlytics.android.core.NativeFileUtils: byte[] binaryImagesJsonFromMapsFile(java.io.File,android.content.Context)>($r2, $r0);
+
+        return $r3;
+
+     label1:
+        $r1 = staticinvoke <com.crashlytics.android.core.NativeFileUtils: java.io.File filter(java.io.File,java.lang.String)>($r1, ".binary_libs");
+
+        if $r1 == null goto label2;
+
+        $r3 = staticinvoke <com.crashlytics.android.core.NativeFileUtils: byte[] binaryImagesJsonFromBinaryLibsFile(java.io.File,android.content.Context)>($r1, $r0);
+
+        return $r3;
+
+     label2:
+        return null;
+    }
+
+    public static byte[] binaryImagesJsonFromMapsFile(java.io.File, android.content.Context)
+    {
+        java.lang.Throwable $r7;
+        android.content.Context $r0;
+        byte[] $r6;
+        com.crashlytics.android.core.Sha1FileIdStrategy $r5;
+        java.io.File $r2;
+        java.io.FileReader $r1;
+        java.io.BufferedReader $r3;
+        com.crashlytics.android.core.BinaryImagesConverter $r4;
+        boolean $z0;
+
+        $r2 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: android.content.Context;
+
+        $z0 = virtualinvoke $r2.<java.io.File: boolean exists()>();
+
+        if $z0 != 0 goto label1;
+
+        return null;
+
+     label1:
+        $r3 = new java.io.BufferedReader;
+
+        $r1 = new java.io.FileReader;
+
+        specialinvoke $r1.<java.io.FileReader: void <init>(java.io.File)>($r2);
+
+        specialinvoke $r3.<java.io.BufferedReader: void <init>(java.io.Reader)>($r1);
+
+     label2:
+        $r4 = new com.crashlytics.android.core.BinaryImagesConverter;
+
+        $r5 = new com.crashlytics.android.core.Sha1FileIdStrategy;
+
+        specialinvoke $r5.<com.crashlytics.android.core.Sha1FileIdStrategy: void <init>()>();
+
+        specialinvoke $r4.<com.crashlytics.android.core.BinaryImagesConverter: void <init>(android.content.Context,com.crashlytics.android.core.BinaryImagesConverter$FileIdStrategy)>($r0, $r5);
+
+        $r6 = virtualinvoke $r4.<com.crashlytics.android.core.BinaryImagesConverter: byte[] convert(java.io.BufferedReader)>($r3);
+
+     label3:
+        staticinvoke <f.a.a.a.a.b.l: void a(java.io.Closeable)>($r3);
+
+        return $r6;
+
+     label4:
+        $r7 := @caughtexception;
+
+        goto label6;
+
+     label5:
+        $r7 := @caughtexception;
+
+        $r3 = null;
+
+     label6:
+        staticinvoke <f.a.a.a.a.b.l: void a(java.io.Closeable)>($r3);
+
+        throw $r7;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label2 to label3 with label4;
+    }
+
+    public static java.io.File filter(java.io.File, java.lang.String)
+    {
+        int $i0, $i1;
+        java.lang.String $r0, $r3;
+        java.io.File[] $r2;
+        java.io.File $r1;
+        boolean $z0;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $r2 = virtualinvoke $r1.<java.io.File: java.io.File[] listFiles()>();
+
+        $i0 = lengthof $r2;
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label3;
+
+        $r1 = $r2[$i1];
+
+        $r3 = virtualinvoke $r1.<java.io.File: java.lang.String getName()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean endsWith(java.lang.String)>($r0);
+
+        if $z0 == 0 goto label2;
+
+        return $r1;
+
+     label2:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label3:
+        return null;
+    }
+
+    public static byte[] metadataJsonFromDirectory(java.io.File)
+    {
+        byte[] $r1;
+        java.io.File $r0;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r0 = staticinvoke <com.crashlytics.android.core.NativeFileUtils: java.io.File filter(java.io.File,java.lang.String)>($r0, ".device_info");
+
+        if $r0 != null goto label1;
+
+        return null;
+
+     label1:
+        $r1 = staticinvoke <com.crashlytics.android.core.NativeFileUtils: byte[] readFile(java.io.File)>($r0);
+
+        return $r1;
+    }
+
+    public static byte[] minidumpFromDirectory(java.io.File)
+    {
+        byte[] $r1;
+        java.io.File $r0;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r0 = staticinvoke <com.crashlytics.android.core.NativeFileUtils: java.io.File filter(java.io.File,java.lang.String)>($r0, ".dmp");
+
+        if $r0 != null goto label1;
+
+        $r1 = newarray (byte)[0];
+
+        return $r1;
+
+     label1:
+        $r1 = staticinvoke <com.crashlytics.android.core.NativeFileUtils: byte[] minidumpFromFile(java.io.File)>($r0);
+
+        return $r1;
+    }
+
+    public static byte[] minidumpFromFile(java.io.File)
+    {
+        byte[] $r0;
+        java.io.File $r1;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r0 = staticinvoke <com.crashlytics.android.core.NativeFileUtils: byte[] readFile(java.io.File)>($r1);
+
+        return $r0;
+    }
+
+    public static byte[] processBinaryImages(android.content.Context, java.lang.String)
+    {
+        byte[] $r3;
+        android.content.Context $r4;
+        com.crashlytics.android.core.Sha1FileIdStrategy $r2;
+        java.lang.String $r0;
+        com.crashlytics.android.core.BinaryImagesConverter $r1;
+
+        $r4 := @parameter0: android.content.Context;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $r1 = new com.crashlytics.android.core.BinaryImagesConverter;
+
+        $r2 = new com.crashlytics.android.core.Sha1FileIdStrategy;
+
+        specialinvoke $r2.<com.crashlytics.android.core.Sha1FileIdStrategy: void <init>()>();
+
+        specialinvoke $r1.<com.crashlytics.android.core.BinaryImagesConverter: void <init>(android.content.Context,com.crashlytics.android.core.BinaryImagesConverter$FileIdStrategy)>($r4, $r2);
+
+        $r3 = virtualinvoke $r1.<com.crashlytics.android.core.BinaryImagesConverter: byte[] convert(java.lang.String)>($r0);
+
+        return $r3;
+    }
+
+    public static byte[] readBytes(java.io.InputStream)
+    {
+        byte[] $r2;
+        java.io.ByteArrayOutputStream $r0, $r3;
+        int $i0, $i1;
+        java.io.InputStream $r1;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        $r2 = newarray (byte)[1024];
+
+        $r3 = new java.io.ByteArrayOutputStream;
+
+        $r0 = $r3;
+
+        specialinvoke $r3.<java.io.ByteArrayOutputStream: void <init>()>();
+
+     label1:
+        $i0 = virtualinvoke $r1.<java.io.InputStream: int read(byte[])>($r2);
+
+        $i1 = -1;
+
+        if $i0 == $i1 goto label2;
+
+        virtualinvoke $r0.<java.io.ByteArrayOutputStream: void write(byte[],int,int)>($r2, 0, $i0);
+
+        goto label1;
+
+     label2:
+        $r2 = virtualinvoke $r0.<java.io.ByteArrayOutputStream: byte[] toByteArray()>();
+
+        return $r2;
+    }
+
+    public static byte[] readFile(java.io.File)
+    {
+        java.lang.Throwable $r8;
+        byte[] $r0;
+        java.io.IOException $r2, $r4;
+        java.io.FileInputStream $r6, $r7;
+        java.io.FileNotFoundException $r1, $r3;
+        java.io.File $r5;
+
+        $r5 := @parameter0: java.io.File;
+
+        $r6 = null;
+
+     label01:
+        $r7 = new java.io.FileInputStream;
+
+     label02:
+        specialinvoke $r7.<java.io.FileInputStream: void <init>(java.io.File)>($r5);
+
+     label03:
+        $r0 = staticinvoke <com.crashlytics.android.core.NativeFileUtils: byte[] readBytes(java.io.InputStream)>($r7);
+
+     label04:
+        staticinvoke <f.a.a.a.a.b.l: void a(java.io.Closeable)>($r7);
+
+        return $r0;
+
+     label05:
+        $r8 := @caughtexception;
+
+        $r6 = $r7;
+
+        goto label07;
+
+     label06:
+        $r8 := @caughtexception;
+
+     label07:
+        staticinvoke <f.a.a.a.a.b.l: void a(java.io.Closeable)>($r6);
+
+        throw $r8;
+
+     label08:
+        $r7 = null;
+
+     label09:
+        staticinvoke <f.a.a.a.a.b.l: void a(java.io.Closeable)>($r7);
+
+        return null;
+
+     label10:
+        $r7 = null;
+
+     label11:
+        staticinvoke <f.a.a.a.a.b.l: void a(java.io.Closeable)>($r7);
+
+        return null;
+
+     label12:
+        $r1 := @caughtexception;
+
+        goto label10;
+
+     label13:
+        $r2 := @caughtexception;
+
+        goto label08;
+
+     label14:
+        $r3 := @caughtexception;
+
+        goto label11;
+
+     label15:
+        $r4 := @caughtexception;
+
+        goto label09;
+
+        catch java.io.FileNotFoundException from label02 to label03 with label12;
+        catch java.io.IOException from label02 to label03 with label13;
+        catch java.lang.Throwable from label01 to label03 with label06;
+        catch java.io.FileNotFoundException from label03 to label04 with label14;
+        catch java.io.IOException from label03 to label04 with label15;
+        catch java.lang.Throwable from label03 to label04 with label05;
+    }
+}

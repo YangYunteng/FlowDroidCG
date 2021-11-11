@@ -1,0 +1,822 @@
+public class com.google.firebase.remoteconfig.internal.LegacyConfigsHandler extends java.lang.Object
+{
+    public static final java.lang.String ACTIVATE_FILE_NAME;
+    public static final java.lang.String DEFAULTS_FILE_NAME;
+    public static final java.lang.String EXPERIMENT_ID_KEY;
+    public static final java.lang.String EXPERIMENT_START_TIME_KEY;
+    public static final java.lang.String EXPERIMENT_TIME_TO_LIVE_KEY;
+    public static final java.lang.String EXPERIMENT_TRIGGER_EVENT_KEY;
+    public static final java.lang.String EXPERIMENT_TRIGGER_TIMEOUT_KEY;
+    public static final java.lang.String EXPERIMENT_VARIANT_ID_KEY;
+    public static final java.lang.String FETCH_FILE_NAME;
+    public static final java.lang.String FRC_3P_NAMESPACE;
+    public static final java.lang.String LEGACY_CONFIGS_FILE_NAME;
+    public static final java.lang.String LEGACY_FRC_NAMESPACE_PREFIX;
+    public static final java.lang.String LEGACY_SETTINGS_FILE_NAME;
+    public static final java.nio.charset.Charset PROTO_BYTE_ARRAY_ENCODING;
+    public static final java.lang.String SAVE_LEGACY_CONFIGS_FLAG_NAME;
+    public static final java.lang.ThreadLocal protoTimestampStringParser;
+    public final java.lang.String appId;
+    public final android.content.Context context;
+    public final android.content.SharedPreferences legacySettings;
+
+    static void <clinit>()
+    {
+        com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$1 $r1;
+        java.nio.charset.Charset $r0;
+
+        <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.String SAVE_LEGACY_CONFIGS_FLAG_NAME> = "save_legacy_configs";
+
+        <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.String LEGACY_SETTINGS_FILE_NAME> = "com.google.firebase.remoteconfig_legacy_settings";
+
+        <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.String LEGACY_FRC_NAMESPACE_PREFIX> = "configns:";
+
+        <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.String LEGACY_CONFIGS_FILE_NAME> = "persisted_config";
+
+        <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.String FRC_3P_NAMESPACE> = "firebase";
+
+        <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.String FETCH_FILE_NAME> = "fetch";
+
+        <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.String EXPERIMENT_VARIANT_ID_KEY> = "variantId";
+
+        <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.String EXPERIMENT_TRIGGER_TIMEOUT_KEY> = "triggerTimeoutMillis";
+
+        <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.String EXPERIMENT_TRIGGER_EVENT_KEY> = "triggerEvent";
+
+        <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.String EXPERIMENT_TIME_TO_LIVE_KEY> = "timeToLiveMillis";
+
+        <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.String EXPERIMENT_START_TIME_KEY> = "experimentStartTime";
+
+        <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.String EXPERIMENT_ID_KEY> = "experimentId";
+
+        <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.String DEFAULTS_FILE_NAME> = "defaults";
+
+        <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.String ACTIVATE_FILE_NAME> = "activate";
+
+        $r0 = staticinvoke <java.nio.charset.Charset: java.nio.charset.Charset forName(java.lang.String)>("UTF-8");
+
+        <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.nio.charset.Charset PROTO_BYTE_ARRAY_ENCODING> = $r0;
+
+        $r1 = new com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$1;
+
+        specialinvoke $r1.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$1: void <init>()>();
+
+        <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.ThreadLocal protoTimestampStringParser> = $r1;
+
+        return;
+    }
+
+    public void <init>(android.content.Context, java.lang.String)
+    {
+        android.content.Context $r2;
+        com.google.firebase.remoteconfig.internal.LegacyConfigsHandler r0;
+        android.content.SharedPreferences $r1;
+        java.lang.String $r3;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.LegacyConfigsHandler;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r3 := @parameter1: java.lang.String;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: android.content.Context context> = $r2;
+
+        r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.String appId> = $r3;
+
+        $r1 = virtualinvoke $r2.<android.content.Context: android.content.SharedPreferences getSharedPreferences(java.lang.String,int)>("com.google.firebase.remoteconfig_legacy_settings", 0);
+
+        r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: android.content.SharedPreferences legacySettings> = $r1;
+
+        return;
+    }
+
+    private java.util.Map convertConfigHolder(com.google.firebase.remoteconfig.proto.ConfigPersistence$ConfigHolder)
+    {
+        java.util.Date $r2;
+        java.util.HashMap $r1;
+        long $l0;
+        org.json.JSONException $r3;
+        com.google.firebase.remoteconfig.proto.ConfigPersistence$ConfigHolder $r4;
+        com.google.firebase.remoteconfig.internal.ConfigContainer$Builder $r12;
+        java.util.Map $r13;
+        java.lang.String $r10, $r11;
+        com.google.firebase.remoteconfig.internal.ConfigContainer $r14;
+        boolean $z0;
+        com.google.firebase.remoteconfig.proto.ConfigPersistence$NamespaceKeyValue $r9;
+        com.google.firebase.remoteconfig.internal.LegacyConfigsHandler r0;
+        java.util.Iterator $r7;
+        java.util.List $r5;
+        java.lang.Object $r8;
+        org.json.JSONArray $r6;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.LegacyConfigsHandler;
+
+        $r4 := @parameter0: com.google.firebase.remoteconfig.proto.ConfigPersistence$ConfigHolder;
+
+        $r1 = new java.util.HashMap;
+
+        specialinvoke $r1.<java.util.HashMap: void <init>()>();
+
+        $r2 = new java.util.Date;
+
+        $l0 = virtualinvoke $r4.<com.google.firebase.remoteconfig.proto.ConfigPersistence$ConfigHolder: long getTimestamp()>();
+
+        specialinvoke $r2.<java.util.Date: void <init>(long)>($l0);
+
+        $r5 = virtualinvoke $r4.<com.google.firebase.remoteconfig.proto.ConfigPersistence$ConfigHolder: java.util.List getExperimentPayloadList()>();
+
+        $r6 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: org.json.JSONArray convertLegacyAbtExperiments(java.util.List)>($r5);
+
+        $r5 = virtualinvoke $r4.<com.google.firebase.remoteconfig.proto.ConfigPersistence$ConfigHolder: java.util.List getNamespaceKeyValueList()>();
+
+        $r7 = interfaceinvoke $r5.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r7.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label6;
+
+        $r8 = interfaceinvoke $r7.<java.util.Iterator: java.lang.Object next()>();
+
+        $r9 = (com.google.firebase.remoteconfig.proto.ConfigPersistence$NamespaceKeyValue) $r8;
+
+        $r10 = virtualinvoke $r9.<com.google.firebase.remoteconfig.proto.ConfigPersistence$NamespaceKeyValue: java.lang.String getNamespace()>();
+
+        $r11 = $r10;
+
+        $z0 = virtualinvoke $r10.<java.lang.String: boolean startsWith(java.lang.String)>("configns:");
+
+        if $z0 == 0 goto label2;
+
+        $r11 = virtualinvoke $r10.<java.lang.String: java.lang.String substring(int)>(9);
+
+     label2:
+        $r12 = staticinvoke <com.google.firebase.remoteconfig.internal.ConfigContainer: com.google.firebase.remoteconfig.internal.ConfigContainer$Builder newBuilder()>();
+
+        $r5 = virtualinvoke $r9.<com.google.firebase.remoteconfig.proto.ConfigPersistence$NamespaceKeyValue: java.util.List getKeyValueList()>();
+
+        $r13 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.util.Map convertKeyValueList(java.util.List)>($r5);
+
+        $r12 = virtualinvoke $r12.<com.google.firebase.remoteconfig.internal.ConfigContainer$Builder: com.google.firebase.remoteconfig.internal.ConfigContainer$Builder replaceConfigsWith(java.util.Map)>($r13);
+
+        $r12 = virtualinvoke $r12.<com.google.firebase.remoteconfig.internal.ConfigContainer$Builder: com.google.firebase.remoteconfig.internal.ConfigContainer$Builder withFetchTime(java.util.Date)>($r2);
+
+        $z0 = virtualinvoke $r11.<java.lang.String: boolean equals(java.lang.Object)>("firebase");
+
+        if $z0 == 0 goto label3;
+
+        virtualinvoke $r12.<com.google.firebase.remoteconfig.internal.ConfigContainer$Builder: com.google.firebase.remoteconfig.internal.ConfigContainer$Builder withAbtExperiments(org.json.JSONArray)>($r6);
+
+     label3:
+        $r14 = virtualinvoke $r12.<com.google.firebase.remoteconfig.internal.ConfigContainer$Builder: com.google.firebase.remoteconfig.internal.ConfigContainer build()>();
+
+        interfaceinvoke $r1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r11, $r14);
+
+     label4:
+        goto label1;
+
+     label5:
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("FirebaseRemoteConfig", "A set of legacy configs could not be converted.");
+
+        goto label1;
+
+     label6:
+        return $r1;
+
+     label7:
+        $r3 := @caughtexception;
+
+        goto label5;
+
+        catch org.json.JSONException from label3 to label4 with label7;
+    }
+
+    private java.util.Map convertKeyValueList(java.util.List)
+    {
+        com.google.firebase.remoteconfig.proto.ConfigPersistence$KeyValue $r6;
+        com.google.firebase.remoteconfig.internal.LegacyConfigsHandler r0;
+        java.util.Iterator $r4;
+        java.util.HashMap $r1;
+        com.google.protobuf.ByteString $r8;
+        java.util.List $r3;
+        java.nio.charset.Charset $r2;
+        java.lang.Object $r5;
+        java.lang.String $r7, $r9;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.LegacyConfigsHandler;
+
+        $r3 := @parameter0: java.util.List;
+
+        $r1 = new java.util.HashMap;
+
+        specialinvoke $r1.<java.util.HashMap: void <init>()>();
+
+        $r4 = interfaceinvoke $r3.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (com.google.firebase.remoteconfig.proto.ConfigPersistence$KeyValue) $r5;
+
+        $r7 = virtualinvoke $r6.<com.google.firebase.remoteconfig.proto.ConfigPersistence$KeyValue: java.lang.String getKey()>();
+
+        $r8 = virtualinvoke $r6.<com.google.firebase.remoteconfig.proto.ConfigPersistence$KeyValue: com.google.protobuf.ByteString getValue()>();
+
+        $r2 = <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.nio.charset.Charset PROTO_BYTE_ARRAY_ENCODING>;
+
+        $r9 = virtualinvoke $r8.<com.google.protobuf.ByteString: java.lang.String toString(java.nio.charset.Charset)>($r2);
+
+        interfaceinvoke $r1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r7, $r9);
+
+        goto label1;
+
+     label2:
+        return $r1;
+    }
+
+    private org.json.JSONObject convertLegacyAbtExperiment(e.a.a.d)
+    {
+        e.a.a.d $r2;
+        com.google.firebase.remoteconfig.internal.LegacyConfigsHandler r0;
+        java.lang.ThreadLocal $r4;
+        java.util.Date $r7;
+        long $l0;
+        org.json.JSONObject $r1;
+        java.lang.Object $r5;
+        java.lang.String $r3;
+        java.text.DateFormat $r6;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.LegacyConfigsHandler;
+
+        $r2 := @parameter0: e.a.a.d;
+
+        $r1 = new org.json.JSONObject;
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>()>();
+
+        $r3 = virtualinvoke $r2.<e.a.a.d: java.lang.String b()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("experimentId", $r3);
+
+        $r3 = virtualinvoke $r2.<e.a.a.d: java.lang.String g()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("variantId", $r3);
+
+        $r4 = <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.ThreadLocal protoTimestampStringParser>;
+
+        $r5 = virtualinvoke $r4.<java.lang.ThreadLocal: java.lang.Object get()>();
+
+        $r6 = (java.text.DateFormat) $r5;
+
+        $r7 = new java.util.Date;
+
+        $l0 = virtualinvoke $r2.<e.a.a.d: long c()>();
+
+        specialinvoke $r7.<java.util.Date: void <init>(long)>($l0);
+
+        $r3 = virtualinvoke $r6.<java.text.DateFormat: java.lang.String format(java.util.Date)>($r7);
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("experimentStartTime", $r3);
+
+        $r3 = virtualinvoke $r2.<e.a.a.d: java.lang.String e()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,java.lang.Object)>("triggerEvent", $r3);
+
+        $l0 = virtualinvoke $r2.<e.a.a.d: long f()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,long)>("triggerTimeoutMillis", $l0);
+
+        $l0 = virtualinvoke $r2.<e.a.a.d: long d()>();
+
+        virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject put(java.lang.String,long)>("timeToLiveMillis", $l0);
+
+        return $r1;
+    }
+
+    private org.json.JSONArray convertLegacyAbtExperiments(java.util.List)
+    {
+        e.a.a.d $r6;
+        com.google.firebase.remoteconfig.internal.LegacyConfigsHandler r0;
+        java.util.Iterator $r3;
+        com.google.protobuf.ByteString $r5;
+        java.util.List $r2;
+        org.json.JSONException $r8;
+        org.json.JSONObject $r7;
+        java.lang.Object $r4;
+        org.json.JSONArray $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.LegacyConfigsHandler;
+
+        $r2 := @parameter0: java.util.List;
+
+        $r1 = new org.json.JSONArray;
+
+        specialinvoke $r1.<org.json.JSONArray: void <init>()>();
+
+        $r3 = interfaceinvoke $r2.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label5;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (com.google.protobuf.ByteString) $r4;
+
+        $r6 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: e.a.a.d deserializePayload(com.google.protobuf.ByteString)>($r5);
+
+        if $r6 == null goto label1;
+
+     label2:
+        $r7 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: org.json.JSONObject convertLegacyAbtExperiment(e.a.a.d)>($r6);
+
+        virtualinvoke $r1.<org.json.JSONArray: org.json.JSONArray put(java.lang.Object)>($r7);
+
+     label3:
+        goto label1;
+
+     label4:
+        $r8 := @caughtexception;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String,java.lang.Throwable)>("FirebaseRemoteConfig", "A legacy ABT experiment could not be parsed.", $r8);
+
+        goto label1;
+
+     label5:
+        return $r1;
+
+        catch org.json.JSONException from label2 to label3 with label4;
+    }
+
+    private e.a.a.d deserializePayload(com.google.protobuf.ByteString)
+    {
+        e.a.a.d $r6;
+        byte[] $r3;
+        com.google.protobuf.InvalidProtocolBufferException $r7;
+        com.google.firebase.remoteconfig.internal.LegacyConfigsHandler r0;
+        com.google.protobuf.ByteString $r1;
+        byte $b2;
+        com.google.protobuf.ByteString$ByteIterator $r2;
+        int $i0, $i1;
+        java.lang.Object $r4;
+        java.lang.Byte $r5;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.LegacyConfigsHandler;
+
+        $r1 := @parameter0: com.google.protobuf.ByteString;
+
+     label01:
+        $r2 = virtualinvoke $r1.<com.google.protobuf.ByteString: com.google.protobuf.ByteString$ByteIterator iterator()>();
+
+        $i0 = virtualinvoke $r1.<com.google.protobuf.ByteString: int size()>();
+
+     label02:
+        $r3 = newarray (byte)[$i0];
+
+        $i0 = 0;
+
+     label03:
+        $i1 = lengthof $r3;
+
+        if $i0 >= $i1 goto label08;
+
+     label04:
+        $r4 = interfaceinvoke $r2.<java.util.Iterator: java.lang.Object next()>();
+
+     label05:
+        $r5 = (java.lang.Byte) $r4;
+
+     label06:
+        $b2 = virtualinvoke $r5.<java.lang.Byte: byte byteValue()>();
+
+     label07:
+        $r3[$i0] = $b2;
+
+        $i0 = $i0 + 1;
+
+        goto label03;
+
+     label08:
+        $r6 = staticinvoke <e.a.a.d: e.a.a.d parseFrom(byte[])>($r3);
+
+     label09:
+        return $r6;
+
+     label10:
+        $r7 := @caughtexception;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String,java.lang.Throwable)>("FirebaseRemoteConfig", "Payload was not defined or could not be deserialized.", $r7);
+
+        return null;
+
+        catch com.google.protobuf.InvalidProtocolBufferException from label01 to label02 with label10;
+        catch com.google.protobuf.InvalidProtocolBufferException from label04 to label05 with label10;
+        catch com.google.protobuf.InvalidProtocolBufferException from label06 to label07 with label10;
+        catch com.google.protobuf.InvalidProtocolBufferException from label08 to label09 with label10;
+    }
+
+    private java.util.Map getConvertedLegacyConfigs()
+    {
+        com.google.firebase.remoteconfig.internal.LegacyConfigsHandler r0;
+        java.util.Iterator $r10;
+        java.util.Set $r9;
+        java.util.HashMap $r1;
+        com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs $r2;
+        com.google.firebase.remoteconfig.proto.ConfigPersistence$PersistedConfig $r3;
+        java.util.HashSet $r8;
+        com.google.firebase.remoteconfig.proto.ConfigPersistence$ConfigHolder $r4;
+        java.util.Map $r5, $r6, $r7;
+        java.lang.Object $r11;
+        java.lang.String $r12;
+        com.google.firebase.remoteconfig.internal.ConfigContainer $r13;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.LegacyConfigsHandler;
+
+        $r3 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: com.google.firebase.remoteconfig.proto.ConfigPersistence$PersistedConfig readPersistedConfig()>();
+
+        $r1 = new java.util.HashMap;
+
+        specialinvoke $r1.<java.util.HashMap: void <init>()>();
+
+        if $r3 != null goto label1;
+
+        return $r1;
+
+     label1:
+        $r4 = virtualinvoke $r3.<com.google.firebase.remoteconfig.proto.ConfigPersistence$PersistedConfig: com.google.firebase.remoteconfig.proto.ConfigPersistence$ConfigHolder getActiveConfigHolder()>();
+
+        $r5 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.util.Map convertConfigHolder(com.google.firebase.remoteconfig.proto.ConfigPersistence$ConfigHolder)>($r4);
+
+        $r4 = virtualinvoke $r3.<com.google.firebase.remoteconfig.proto.ConfigPersistence$PersistedConfig: com.google.firebase.remoteconfig.proto.ConfigPersistence$ConfigHolder getFetchedConfigHolder()>();
+
+        $r6 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.util.Map convertConfigHolder(com.google.firebase.remoteconfig.proto.ConfigPersistence$ConfigHolder)>($r4);
+
+        $r4 = virtualinvoke $r3.<com.google.firebase.remoteconfig.proto.ConfigPersistence$PersistedConfig: com.google.firebase.remoteconfig.proto.ConfigPersistence$ConfigHolder getDefaultsConfigHolder()>();
+
+        $r7 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.util.Map convertConfigHolder(com.google.firebase.remoteconfig.proto.ConfigPersistence$ConfigHolder)>($r4);
+
+        $r8 = new java.util.HashSet;
+
+        specialinvoke $r8.<java.util.HashSet: void <init>()>();
+
+        $r9 = interfaceinvoke $r5.<java.util.Map: java.util.Set keySet()>();
+
+        interfaceinvoke $r8.<java.util.Set: boolean addAll(java.util.Collection)>($r9);
+
+        $r9 = interfaceinvoke $r6.<java.util.Map: java.util.Set keySet()>();
+
+        interfaceinvoke $r8.<java.util.Set: boolean addAll(java.util.Collection)>($r9);
+
+        $r9 = interfaceinvoke $r7.<java.util.Map: java.util.Set keySet()>();
+
+        interfaceinvoke $r8.<java.util.Set: boolean addAll(java.util.Collection)>($r9);
+
+        $r10 = interfaceinvoke $r8.<java.util.Set: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r10.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label6;
+
+        $r11 = interfaceinvoke $r10.<java.util.Iterator: java.lang.Object next()>();
+
+        $r12 = (java.lang.String) $r11;
+
+        $r2 = new com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs;
+
+        specialinvoke $r2.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs: void <init>(com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$1)>(null);
+
+        $z0 = interfaceinvoke $r5.<java.util.Map: boolean containsKey(java.lang.Object)>($r12);
+
+        if $z0 == 0 goto label3;
+
+        $r11 = interfaceinvoke $r5.<java.util.Map: java.lang.Object get(java.lang.Object)>($r12);
+
+        $r13 = (com.google.firebase.remoteconfig.internal.ConfigContainer) $r11;
+
+        staticinvoke <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs: void access$400(com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs,com.google.firebase.remoteconfig.internal.ConfigContainer)>($r2, $r13);
+
+     label3:
+        $z0 = interfaceinvoke $r6.<java.util.Map: boolean containsKey(java.lang.Object)>($r12);
+
+        if $z0 == 0 goto label4;
+
+        $r11 = interfaceinvoke $r6.<java.util.Map: java.lang.Object get(java.lang.Object)>($r12);
+
+        $r13 = (com.google.firebase.remoteconfig.internal.ConfigContainer) $r11;
+
+        staticinvoke <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs: void access$500(com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs,com.google.firebase.remoteconfig.internal.ConfigContainer)>($r2, $r13);
+
+     label4:
+        $z0 = interfaceinvoke $r7.<java.util.Map: boolean containsKey(java.lang.Object)>($r12);
+
+        if $z0 == 0 goto label5;
+
+        $r11 = interfaceinvoke $r7.<java.util.Map: java.lang.Object get(java.lang.Object)>($r12);
+
+        $r13 = (com.google.firebase.remoteconfig.internal.ConfigContainer) $r11;
+
+        staticinvoke <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs: void access$600(com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs,com.google.firebase.remoteconfig.internal.ConfigContainer)>($r2, $r13);
+
+     label5:
+        interfaceinvoke $r1.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r12, $r2);
+
+        goto label2;
+
+     label6:
+        return $r1;
+    }
+
+    private com.google.firebase.remoteconfig.proto.ConfigPersistence$PersistedConfig readPersistedConfig()
+    {
+        java.lang.Throwable $r8, $r9;
+        android.content.Context $r1;
+        com.google.firebase.remoteconfig.internal.LegacyConfigsHandler r0;
+        java.io.IOException $r5, $r6, $r10, $r11, $r12;
+        java.io.FileInputStream $r2, $r3;
+        java.io.FileNotFoundException $r7;
+        com.google.firebase.remoteconfig.proto.ConfigPersistence$PersistedConfig $r4;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.LegacyConfigsHandler;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: android.content.Context context>;
+
+        if $r1 != null goto label01;
+
+        return null;
+
+     label01:
+        $r2 = virtualinvoke $r1.<android.content.Context: java.io.FileInputStream openFileInput(java.lang.String)>("persisted_config");
+
+     label02:
+        $r3 = $r2;
+
+     label03:
+        $r4 = staticinvoke <com.google.firebase.remoteconfig.proto.ConfigPersistence$PersistedConfig: com.google.firebase.remoteconfig.proto.ConfigPersistence$PersistedConfig parseFrom(java.io.InputStream)>($r2);
+
+     label04:
+        if $r2 == null goto label29;
+
+     label05:
+        virtualinvoke $r2.<java.io.FileInputStream: void close()>();
+
+     label06:
+        return $r4;
+
+     label07:
+        $r5 := @caughtexception;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String,java.lang.Throwable)>("FirebaseRemoteConfig", "Failed to close persisted config file.", $r5);
+
+        return $r4;
+
+     label08:
+        $r6 := @caughtexception;
+
+        goto label12;
+
+     label09:
+        $r7 := @caughtexception;
+
+        goto label18;
+
+     label10:
+        $r8 := @caughtexception;
+
+        $r9 = $r8;
+
+        $r3 = null;
+
+        goto label24;
+
+     label11:
+        $r6 := @caughtexception;
+
+        $r3 = null;
+
+     label12:
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String,java.lang.Throwable)>("FirebaseRemoteConfig", "Cannot initialize from persisted config.", $r6);
+
+     label13:
+        if $r3 == null goto label30;
+
+     label14:
+        virtualinvoke $r3.<java.io.FileInputStream: void close()>();
+
+     label15:
+        return null;
+
+     label16:
+        $r10 := @caughtexception;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String,java.lang.Throwable)>("FirebaseRemoteConfig", "Failed to close persisted config file.", $r10);
+
+        return null;
+
+     label17:
+        $r7 := @caughtexception;
+
+        $r3 = null;
+
+     label18:
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String,java.lang.Throwable)>("FirebaseRemoteConfig", "Persisted config file was not found.", $r7);
+
+     label19:
+        if $r3 == null goto label30;
+
+     label20:
+        virtualinvoke $r3.<java.io.FileInputStream: void close()>();
+
+     label21:
+        return null;
+
+     label22:
+        $r11 := @caughtexception;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String,java.lang.Throwable)>("FirebaseRemoteConfig", "Failed to close persisted config file.", $r11);
+
+        return null;
+
+     label23:
+        $r9 := @caughtexception;
+
+     label24:
+        if $r3 == null goto label28;
+
+     label25:
+        virtualinvoke $r3.<java.io.FileInputStream: void close()>();
+
+     label26:
+        goto label28;
+
+     label27:
+        $r12 := @caughtexception;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String,java.lang.Throwable)>("FirebaseRemoteConfig", "Failed to close persisted config file.", $r12);
+
+     label28:
+        throw $r9;
+
+     label29:
+        return $r4;
+
+     label30:
+        return null;
+
+        catch java.io.FileNotFoundException from label01 to label02 with label17;
+        catch java.io.IOException from label01 to label02 with label11;
+        catch java.lang.Throwable from label01 to label02 with label10;
+        catch java.io.FileNotFoundException from label03 to label04 with label09;
+        catch java.io.IOException from label03 to label04 with label08;
+        catch java.lang.Throwable from label03 to label04 with label23;
+        catch java.io.IOException from label05 to label06 with label07;
+        catch java.lang.Throwable from label12 to label13 with label23;
+        catch java.io.IOException from label14 to label15 with label16;
+        catch java.lang.Throwable from label18 to label19 with label23;
+        catch java.io.IOException from label20 to label21 with label22;
+        catch java.io.IOException from label25 to label26 with label27;
+    }
+
+    private void saveLegacyConfigs(java.util.Map)
+    {
+        com.google.firebase.remoteconfig.internal.LegacyConfigsHandler r0;
+        java.util.Map$Entry $r5;
+        java.util.Iterator $r3;
+        java.util.Set $r2;
+        com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs $r7;
+        java.util.Map $r1;
+        java.lang.Object $r4;
+        java.lang.String $r6;
+        com.google.firebase.remoteconfig.internal.ConfigCacheClient $r8, $r9, $r10;
+        com.google.firebase.remoteconfig.internal.ConfigContainer $r11;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.LegacyConfigsHandler;
+
+        $r1 := @parameter0: java.util.Map;
+
+        $r2 = interfaceinvoke $r1.<java.util.Map: java.util.Set entrySet()>();
+
+        $r3 = interfaceinvoke $r2.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label4;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (java.util.Map$Entry) $r4;
+
+        $r4 = interfaceinvoke $r5.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r6 = (java.lang.String) $r4;
+
+        $r4 = interfaceinvoke $r5.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r7 = (com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs) $r4;
+
+        $r8 = virtualinvoke r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: com.google.firebase.remoteconfig.internal.ConfigCacheClient getCacheClient(java.lang.String,java.lang.String)>($r6, "fetch");
+
+        $r9 = virtualinvoke r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: com.google.firebase.remoteconfig.internal.ConfigCacheClient getCacheClient(java.lang.String,java.lang.String)>($r6, "activate");
+
+        $r10 = virtualinvoke r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: com.google.firebase.remoteconfig.internal.ConfigCacheClient getCacheClient(java.lang.String,java.lang.String)>($r6, "defaults");
+
+        $r11 = staticinvoke <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs: com.google.firebase.remoteconfig.internal.ConfigContainer access$000(com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs)>($r7);
+
+        if $r11 == null goto label2;
+
+        $r11 = staticinvoke <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs: com.google.firebase.remoteconfig.internal.ConfigContainer access$000(com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs)>($r7);
+
+        virtualinvoke $r8.<com.google.firebase.remoteconfig.internal.ConfigCacheClient: com.google.android.gms.tasks.Task put(com.google.firebase.remoteconfig.internal.ConfigContainer)>($r11);
+
+     label2:
+        $r11 = staticinvoke <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs: com.google.firebase.remoteconfig.internal.ConfigContainer access$100(com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs)>($r7);
+
+        if $r11 == null goto label3;
+
+        $r11 = staticinvoke <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs: com.google.firebase.remoteconfig.internal.ConfigContainer access$100(com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs)>($r7);
+
+        virtualinvoke $r9.<com.google.firebase.remoteconfig.internal.ConfigCacheClient: com.google.android.gms.tasks.Task put(com.google.firebase.remoteconfig.internal.ConfigContainer)>($r11);
+
+     label3:
+        $r11 = staticinvoke <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs: com.google.firebase.remoteconfig.internal.ConfigContainer access$200(com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs)>($r7);
+
+        if $r11 == null goto label1;
+
+        $r11 = staticinvoke <com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs: com.google.firebase.remoteconfig.internal.ConfigContainer access$200(com.google.firebase.remoteconfig.internal.LegacyConfigsHandler$NamespaceLegacyConfigs)>($r7);
+
+        virtualinvoke $r10.<com.google.firebase.remoteconfig.internal.ConfigCacheClient: com.google.android.gms.tasks.Task put(com.google.firebase.remoteconfig.internal.ConfigContainer)>($r11);
+
+        goto label1;
+
+     label4:
+        return;
+    }
+
+    public com.google.firebase.remoteconfig.internal.ConfigCacheClient getCacheClient(java.lang.String, java.lang.String)
+    {
+        android.content.Context $r2;
+        com.google.firebase.remoteconfig.internal.LegacyConfigsHandler r0;
+        java.lang.String $r1, $r3, $r5;
+        com.google.firebase.remoteconfig.internal.ConfigCacheClient $r4;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.LegacyConfigsHandler;
+
+        $r5 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: android.content.Context context>;
+
+        $r3 = r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.lang.String appId>;
+
+        $r4 = staticinvoke <com.google.firebase.remoteconfig.RemoteConfigComponent: com.google.firebase.remoteconfig.internal.ConfigCacheClient getCacheClient(android.content.Context,java.lang.String,java.lang.String,java.lang.String)>($r2, $r3, $r5, $r1);
+
+        return $r4;
+    }
+
+    public boolean saveLegacyConfigsIfNecessary()
+    {
+        android.content.SharedPreferences$Editor $r3;
+        com.google.firebase.remoteconfig.internal.LegacyConfigsHandler r0;
+        android.content.SharedPreferences $r1;
+        java.util.Map $r2;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.remoteconfig.internal.LegacyConfigsHandler;
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: android.content.SharedPreferences legacySettings>;
+
+        $z0 = interfaceinvoke $r1.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("save_legacy_configs", 1);
+
+        if $z0 == 0 goto label1;
+
+        $r2 = specialinvoke r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: java.util.Map getConvertedLegacyConfigs()>();
+
+        specialinvoke r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: void saveLegacyConfigs(java.util.Map)>($r2);
+
+        $r1 = r0.<com.google.firebase.remoteconfig.internal.LegacyConfigsHandler: android.content.SharedPreferences legacySettings>;
+
+        $r3 = interfaceinvoke $r1.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $r3 = interfaceinvoke $r3.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putBoolean(java.lang.String,boolean)>("save_legacy_configs", 0);
+
+        interfaceinvoke $r3.<android.content.SharedPreferences$Editor: boolean commit()>();
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+}

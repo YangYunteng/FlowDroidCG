@@ -1,0 +1,165 @@
+public final class com.google.zxing.client.result.AddressBookAUResultParser extends com.google.zxing.client.result.ResultParser
+{
+
+    public void <init>()
+    {
+        com.google.zxing.client.result.AddressBookAUResultParser r0;
+
+        r0 := @this: com.google.zxing.client.result.AddressBookAUResultParser;
+
+        specialinvoke r0.<com.google.zxing.client.result.ResultParser: void <init>()>();
+
+        return;
+    }
+
+    public static java.lang.String[] matchMultipleValuePrefix(java.lang.String, int, java.lang.String, boolean)
+    {
+        java.lang.Object[] $r6;
+        java.lang.String[] $r5;
+        java.util.ArrayList $r2;
+        int $i0, $i1;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r0, $r1, $r4;
+        boolean $z0;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        $r0 := @parameter2: java.lang.String;
+
+        $z0 := @parameter3: boolean;
+
+        $i1 = 1;
+
+        $r2 = null;
+
+     label1:
+        if $i1 > $i0 goto label4;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r4 = staticinvoke <com.google.zxing.client.result.ResultParser: java.lang.String matchSinglePrefixedField(java.lang.String,java.lang.String,char,boolean)>($r4, $r0, 13, $z0);
+
+        if $r4 != null goto label2;
+
+        goto label4;
+
+     label2:
+        if $r2 != null goto label3;
+
+        $r2 = new java.util.ArrayList;
+
+        specialinvoke $r2.<java.util.ArrayList: void <init>(int)>($i0);
+
+     label3:
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r4);
+
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label4:
+        if $r2 != null goto label5;
+
+        return null;
+
+     label5:
+        $i0 = interfaceinvoke $r2.<java.util.List: int size()>();
+
+        $r5 = newarray (java.lang.String)[$i0];
+
+        $r6 = interfaceinvoke $r2.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($r5);
+
+        $r5 = (java.lang.String[]) $r6;
+
+        return $r5;
+    }
+
+    public com.google.zxing.client.result.AddressBookParsedResult parse(com.google.zxing.Result)
+    {
+        com.google.zxing.Result $r1;
+        java.lang.String[] $r3, $r6, $r7, $r10;
+        com.google.zxing.client.result.AddressBookParsedResult $r9;
+        java.lang.String $r2, $r4, $r5, $r8;
+        com.google.zxing.client.result.AddressBookAUResultParser r0;
+        boolean $z0;
+
+        r0 := @this: com.google.zxing.client.result.AddressBookAUResultParser;
+
+        $r1 := @parameter0: com.google.zxing.Result;
+
+        $r2 = staticinvoke <com.google.zxing.client.result.ResultParser: java.lang.String getMassagedText(com.google.zxing.Result)>($r1);
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean contains(java.lang.CharSequence)>("MEMORY");
+
+        $r3 = null;
+
+        if $z0 == 0 goto label4;
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean contains(java.lang.CharSequence)>("\r\n");
+
+        if $z0 != 0 goto label1;
+
+        return null;
+
+     label1:
+        $r4 = staticinvoke <com.google.zxing.client.result.ResultParser: java.lang.String matchSinglePrefixedField(java.lang.String,java.lang.String,char,boolean)>("NAME1:", $r2, 13, 1);
+
+        $r5 = staticinvoke <com.google.zxing.client.result.ResultParser: java.lang.String matchSinglePrefixedField(java.lang.String,java.lang.String,char,boolean)>("NAME2:", $r2, 13, 1);
+
+        $r6 = staticinvoke <com.google.zxing.client.result.AddressBookAUResultParser: java.lang.String[] matchMultipleValuePrefix(java.lang.String,int,java.lang.String,boolean)>("TEL", 3, $r2, 1);
+
+        $r7 = staticinvoke <com.google.zxing.client.result.AddressBookAUResultParser: java.lang.String[] matchMultipleValuePrefix(java.lang.String,int,java.lang.String,boolean)>("MAIL", 3, $r2, 1);
+
+        $r8 = staticinvoke <com.google.zxing.client.result.ResultParser: java.lang.String matchSinglePrefixedField(java.lang.String,java.lang.String,char,boolean)>("MEMORY:", $r2, 13, 0);
+
+        $r2 = staticinvoke <com.google.zxing.client.result.ResultParser: java.lang.String matchSinglePrefixedField(java.lang.String,java.lang.String,char,boolean)>("ADD:", $r2, 13, 1);
+
+        if $r2 != null goto label2;
+
+        goto label3;
+
+     label2:
+        $r3 = newarray (java.lang.String)[1];
+
+        $r3[0] = $r2;
+
+     label3:
+        $r9 = new com.google.zxing.client.result.AddressBookParsedResult;
+
+        $r10 = staticinvoke <com.google.zxing.client.result.ResultParser: java.lang.String[] maybeWrap(java.lang.String)>($r4);
+
+        specialinvoke $r9.<com.google.zxing.client.result.AddressBookParsedResult: void <init>(java.lang.String[],java.lang.String[],java.lang.String,java.lang.String[],java.lang.String[],java.lang.String[],java.lang.String[],java.lang.String,java.lang.String,java.lang.String[],java.lang.String[],java.lang.String,java.lang.String,java.lang.String,java.lang.String[],java.lang.String[])>($r10, null, $r5, $r6, null, $r7, null, null, $r8, $r3, null, null, null, null, null, null);
+
+        return $r9;
+
+     label4:
+        return null;
+    }
+
+    public volatile com.google.zxing.client.result.ParsedResult parse(com.google.zxing.Result)
+    {
+        com.google.zxing.Result $r2;
+        com.google.zxing.client.result.AddressBookParsedResult $r1;
+        com.google.zxing.client.result.AddressBookAUResultParser r0;
+
+        r0 := @this: com.google.zxing.client.result.AddressBookAUResultParser;
+
+        $r2 := @parameter0: com.google.zxing.Result;
+
+        $r1 = virtualinvoke r0.<com.google.zxing.client.result.AddressBookAUResultParser: com.google.zxing.client.result.AddressBookParsedResult parse(com.google.zxing.Result)>($r2);
+
+        return $r1;
+    }
+}

@@ -1,0 +1,428 @@
+public class com.caremark.caremark.scanner.DecodeHandler extends android.os.Handler
+{
+    public static final java.lang.String BARCODE_FORMAT;
+    public static final java.lang.String BARCODE_IMAGE;
+    public static final java.lang.String BARCODE_TEXT;
+    public static final float CROP_COEFF;
+    public static final java.lang.String TAG;
+    public final com.google.zxing.MultiFormatReader decoder;
+    public boolean isPortrait;
+    public android.graphics.Rect scannerFrame;
+
+    static void <clinit>()
+    {
+        <com.caremark.caremark.scanner.DecodeHandler: java.lang.String TAG> = "DecodeHandler";
+
+        <com.caremark.caremark.scanner.DecodeHandler: float CROP_COEFF> = 2.5F;
+
+        <com.caremark.caremark.scanner.DecodeHandler: java.lang.String BARCODE_TEXT> = "barcode";
+
+        <com.caremark.caremark.scanner.DecodeHandler: java.lang.String BARCODE_IMAGE> = "barcode_bitmap";
+
+        <com.caremark.caremark.scanner.DecodeHandler: java.lang.String BARCODE_FORMAT> = "barcode_format";
+
+        return;
+    }
+
+    public void <init>(c.c.a.m.a, android.os.Looper)
+    {
+        com.google.zxing.BarcodeFormat[] $r6;
+        com.google.zxing.MultiFormatReader $r3;
+        com.google.zxing.DecodeHintType $r8;
+        com.caremark.caremark.scanner.DecodeHandler r0;
+        java.util.List $r7;
+        java.util.Vector $r5;
+        android.os.Looper $r2;
+        java.lang.Boolean $r9;
+        java.util.Hashtable $r4;
+        c.c.a.m.a $r1;
+
+        r0 := @this: com.caremark.caremark.scanner.DecodeHandler;
+
+        $r1 := @parameter0: c.c.a.m.a;
+
+        $r2 := @parameter1: android.os.Looper;
+
+        specialinvoke r0.<android.os.Handler: void <init>(android.os.Looper)>($r2);
+
+        $r3 = new com.google.zxing.MultiFormatReader;
+
+        specialinvoke $r3.<com.google.zxing.MultiFormatReader: void <init>()>();
+
+        r0.<com.caremark.caremark.scanner.DecodeHandler: com.google.zxing.MultiFormatReader decoder> = $r3;
+
+        $r4 = new java.util.Hashtable;
+
+        specialinvoke $r4.<java.util.Hashtable: void <init>()>();
+
+        $r5 = new java.util.Vector;
+
+        $r6 = virtualinvoke $r1.<c.c.a.m.a: com.google.zxing.BarcodeFormat[] a()>();
+
+        $r7 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($r6);
+
+        specialinvoke $r5.<java.util.Vector: void <init>(java.util.Collection)>($r7);
+
+        $r8 = <com.google.zxing.DecodeHintType: com.google.zxing.DecodeHintType POSSIBLE_FORMATS>;
+
+        virtualinvoke $r4.<java.util.Hashtable: java.lang.Object put(java.lang.Object,java.lang.Object)>($r8, $r5);
+
+        $r8 = <com.google.zxing.DecodeHintType: com.google.zxing.DecodeHintType TRY_HARDER>;
+
+        $r9 = <java.lang.Boolean: java.lang.Boolean TRUE>;
+
+        virtualinvoke $r4.<java.util.Hashtable: java.lang.Object put(java.lang.Object,java.lang.Object)>($r8, $r9);
+
+        $r3 = r0.<com.caremark.caremark.scanner.DecodeHandler: com.google.zxing.MultiFormatReader decoder>;
+
+        virtualinvoke $r3.<com.google.zxing.MultiFormatReader: void setHints(java.util.Map)>($r4);
+
+        return;
+    }
+
+    private com.caremark.caremark.scanner.DecodeHandler$a decode(int, int, byte[])
+    {
+        com.google.zxing.Result $r8;
+        java.lang.Throwable $r12;
+        byte[] $r1, $r4;
+        android.graphics.Rect $r2;
+        com.google.zxing.MultiFormatReader $r7;
+        byte $b6;
+        com.caremark.caremark.scanner.DecodeHandler$a $r9, $r16;
+        int $i0, $i1, $i2, $i3, $i4, $i5;
+        java.lang.String $r3;
+        boolean $z0;
+        com.google.zxing.common.HybridBinarizer $r14;
+        com.google.zxing.client.android.PlanarYUVLuminanceSource $r5, $r13;
+        com.caremark.caremark.scanner.DecodeHandler r0;
+        android.graphics.Bitmap $r11;
+        float $f0;
+        com.google.zxing.BinaryBitmap $r6, $r15;
+        com.google.zxing.BarcodeFormat $r10;
+
+        r0 := @this: com.caremark.caremark.scanner.DecodeHandler;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $r1 := @parameter2: byte[];
+
+        $r2 = r0.<com.caremark.caremark.scanner.DecodeHandler: android.graphics.Rect scannerFrame>;
+
+        if $r2 != null goto label01;
+
+        $r3 = <com.caremark.caremark.scanner.DecodeHandler: java.lang.String TAG>;
+
+        staticinvoke <com.caremark.caremark.util.L: void w(java.lang.String,java.lang.String)>($r3, "Scanner frame is not provided. Is to expensive to decode the picture.");
+
+        return null;
+
+     label01:
+        $z0 = r0.<com.caremark.caremark.scanner.DecodeHandler: boolean isPortrait>;
+
+        if $z0 == 0 goto label06;
+
+        $i2 = lengthof $r1;
+
+        $r4 = newarray (byte)[$i2];
+
+        $i2 = 0;
+
+     label02:
+        if $i2 >= $i1 goto label05;
+
+        $i3 = 0;
+
+     label03:
+        if $i3 >= $i0 goto label04;
+
+        $i4 = $i3 * $i1;
+
+        $i4 = $i4 + $i1;
+
+        $i4 = $i4 - $i2;
+
+        $i5 = -1;
+
+        $i4 = $i4 + $i5;
+
+        $i5 = $i2 * $i0;
+
+        $i5 = $i5 + $i3;
+
+        $b6 = $r1[$i5];
+
+        $r4[$i4] = $b6;
+
+        $i3 = $i3 + 1;
+
+        goto label03;
+
+     label04:
+        $i2 = $i2 + 1;
+
+        goto label02;
+
+     label05:
+        $i2 = $i1;
+
+        $r1 = $r4;
+
+        goto label07;
+
+     label06:
+        $i2 = $i0;
+
+        $i0 = $i1;
+
+     label07:
+        $z0 = r0.<com.caremark.caremark.scanner.DecodeHandler: boolean isPortrait>;
+
+        if $z0 == 0 goto label08;
+
+        $f0 = (float) $i0;
+
+        $f0 = $f0 / 2.5F;
+
+        $i5 = (int) $f0;
+
+        $i1 = $i2;
+
+        $i3 = 0;
+
+        $i4 = 0;
+
+        goto label09;
+
+     label08:
+        $r2 = r0.<com.caremark.caremark.scanner.DecodeHandler: android.graphics.Rect scannerFrame>;
+
+        $i3 = $r2.<android.graphics.Rect: int left>;
+
+        $i4 = $r2.<android.graphics.Rect: int top>;
+
+        $i1 = virtualinvoke $r2.<android.graphics.Rect: int width()>();
+
+        $r2 = r0.<com.caremark.caremark.scanner.DecodeHandler: android.graphics.Rect scannerFrame>;
+
+        $i5 = virtualinvoke $r2.<android.graphics.Rect: int height()>();
+
+     label09:
+        $r13 = new com.google.zxing.client.android.PlanarYUVLuminanceSource;
+
+        $r5 = $r13;
+
+        specialinvoke $r13.<com.google.zxing.client.android.PlanarYUVLuminanceSource: void <init>(byte[],int,int,int,int,int,int,boolean)>($r1, $i2, $i0, $i3, $i4, $i1, $i5, 0);
+
+        $r15 = new com.google.zxing.BinaryBitmap;
+
+        $r6 = $r15;
+
+        $r14 = new com.google.zxing.common.HybridBinarizer;
+
+        specialinvoke $r14.<com.google.zxing.common.HybridBinarizer: void <init>(com.google.zxing.LuminanceSource)>($r5);
+
+        specialinvoke $r15.<com.google.zxing.BinaryBitmap: void <init>(com.google.zxing.Binarizer)>($r14);
+
+     label10:
+        $r7 = r0.<com.caremark.caremark.scanner.DecodeHandler: com.google.zxing.MultiFormatReader decoder>;
+
+        $r8 = virtualinvoke $r7.<com.google.zxing.MultiFormatReader: com.google.zxing.Result decodeWithState(com.google.zxing.BinaryBitmap)>($r6);
+
+     label11:
+        if $r8 == null goto label16;
+
+     label12:
+        $r16 = new com.caremark.caremark.scanner.DecodeHandler$a;
+
+     label13:
+        $r9 = $r16;
+
+     label14:
+        specialinvoke $r16.<com.caremark.caremark.scanner.DecodeHandler$a: void <init>(c.c.a.m.h)>(null);
+
+        $r3 = virtualinvoke $r8.<com.google.zxing.Result: java.lang.String getText()>();
+
+        staticinvoke <com.caremark.caremark.scanner.DecodeHandler$a: java.lang.String a(com.caremark.caremark.scanner.DecodeHandler$a,java.lang.String)>($r9, $r3);
+
+        $r10 = virtualinvoke $r8.<com.google.zxing.Result: com.google.zxing.BarcodeFormat getBarcodeFormat()>();
+
+        staticinvoke <com.caremark.caremark.scanner.DecodeHandler$a: com.google.zxing.BarcodeFormat a(com.caremark.caremark.scanner.DecodeHandler$a,com.google.zxing.BarcodeFormat)>($r9, $r10);
+
+        $r11 = virtualinvoke $r5.<com.google.zxing.client.android.PlanarYUVLuminanceSource: android.graphics.Bitmap renderCroppedGreyscaleBitmap()>();
+
+        staticinvoke <com.caremark.caremark.scanner.DecodeHandler$a: android.graphics.Bitmap a(com.caremark.caremark.scanner.DecodeHandler$a,android.graphics.Bitmap)>($r9, $r11);
+
+     label15:
+        goto label17;
+
+     label16:
+        $r9 = null;
+
+     label17:
+        $r7 = r0.<com.caremark.caremark.scanner.DecodeHandler: com.google.zxing.MultiFormatReader decoder>;
+
+        virtualinvoke $r7.<com.google.zxing.MultiFormatReader: void reset()>();
+
+        return $r9;
+
+     label18:
+        $r12 := @caughtexception;
+
+        $r7 = r0.<com.caremark.caremark.scanner.DecodeHandler: com.google.zxing.MultiFormatReader decoder>;
+
+        virtualinvoke $r7.<com.google.zxing.MultiFormatReader: void reset()>();
+
+        goto label19;
+
+     label19:
+        throw $r12;
+
+        catch java.lang.Throwable from label10 to label11 with label18;
+        catch java.lang.Throwable from label12 to label13 with label18;
+        catch java.lang.Throwable from label14 to label15 with label18;
+    }
+
+    public void handleMessage(android.os.Message)
+    {
+        byte[] $r4;
+        android.os.Bundle $r7;
+        android.os.RemoteException $r12;
+        android.os.Messenger $r11;
+        com.caremark.caremark.scanner.DecodeHandler r0;
+        android.os.Message $r2, $r6;
+        com.caremark.caremark.scanner.DecodeHandler$a $r5;
+        android.graphics.Bitmap $r8;
+        int $i0, $i1;
+        java.lang.Object $r3;
+        java.lang.String $r9;
+        com.google.zxing.ReaderException $r1;
+        com.google.zxing.BarcodeFormat $r10;
+
+        r0 := @this: com.caremark.caremark.scanner.DecodeHandler;
+
+        $r2 := @parameter0: android.os.Message;
+
+        $i0 = $r2.<android.os.Message: int what>;
+
+        if $i0 == 2131297780 goto label01;
+
+        specialinvoke r0.<android.os.Handler: void handleMessage(android.os.Message)>($r2);
+
+        return;
+
+     label01:
+        $i0 = $r2.<android.os.Message: int arg1>;
+
+        $i1 = $r2.<android.os.Message: int arg2>;
+
+        $r3 = $r2.<android.os.Message: java.lang.Object obj>;
+
+        $r4 = (byte[]) $r3;
+
+     label02:
+        $r5 = specialinvoke r0.<com.caremark.caremark.scanner.DecodeHandler: com.caremark.caremark.scanner.DecodeHandler$a decode(int,int,byte[])>($i0, $i1, $r4);
+
+     label03:
+        if $r5 != null goto label06;
+
+     label04:
+        $r6 = virtualinvoke r0.<android.os.Handler: android.os.Message obtainMessage(int)>(2131297785);
+
+     label05:
+        goto label11;
+
+     label06:
+        $r6 = virtualinvoke r0.<android.os.Handler: android.os.Message obtainMessage(int)>(2131296848);
+
+     label07:
+        $r7 = new android.os.Bundle;
+
+     label08:
+        specialinvoke $r7.<android.os.Bundle: void <init>()>();
+
+        $r8 = staticinvoke <com.caremark.caremark.scanner.DecodeHandler$a: android.graphics.Bitmap a(com.caremark.caremark.scanner.DecodeHandler$a)>($r5);
+
+        virtualinvoke $r7.<android.os.Bundle: void putParcelable(java.lang.String,android.os.Parcelable)>("barcode_bitmap", $r8);
+
+        $r9 = staticinvoke <com.caremark.caremark.scanner.DecodeHandler$a: java.lang.String b(com.caremark.caremark.scanner.DecodeHandler$a)>($r5);
+
+        virtualinvoke $r7.<android.os.Bundle: void putString(java.lang.String,java.lang.String)>("barcode", $r9);
+
+        $r10 = staticinvoke <com.caremark.caremark.scanner.DecodeHandler$a: com.google.zxing.BarcodeFormat c(com.caremark.caremark.scanner.DecodeHandler$a)>($r5);
+
+        $r9 = virtualinvoke $r10.<java.lang.Enum: java.lang.String name()>();
+
+        virtualinvoke $r7.<android.os.Bundle: void putString(java.lang.String,java.lang.String)>("barcode_format", $r9);
+
+        virtualinvoke $r6.<android.os.Message: void setData(android.os.Bundle)>($r7);
+
+     label09:
+        goto label11;
+
+     label10:
+        $r9 = <com.caremark.caremark.scanner.DecodeHandler: java.lang.String TAG>;
+
+        staticinvoke <com.caremark.caremark.util.L: void e(java.lang.String,java.lang.String)>($r9, "Unable to decode image.");
+
+        $r6 = virtualinvoke r0.<android.os.Handler: android.os.Message obtainMessage(int)>(2131297785);
+
+     label11:
+        $r11 = $r2.<android.os.Message: android.os.Messenger replyTo>;
+
+     label12:
+        virtualinvoke $r11.<android.os.Messenger: void send(android.os.Message)>($r6);
+
+     label13:
+        return;
+
+     label14:
+        $r12 := @caughtexception;
+
+        $r9 = <com.caremark.caremark.scanner.DecodeHandler: java.lang.String TAG>;
+
+        staticinvoke <com.caremark.caremark.util.L: void e(java.lang.String,java.lang.String,java.lang.Throwable)>($r9, "ReplyTo target is no longer exists.", $r12);
+
+        return;
+
+     label15:
+        $r1 := @caughtexception;
+
+        goto label10;
+
+        catch com.google.zxing.ReaderException from label02 to label03 with label15;
+        catch com.google.zxing.ReaderException from label04 to label05 with label15;
+        catch com.google.zxing.ReaderException from label06 to label07 with label15;
+        catch com.google.zxing.ReaderException from label08 to label09 with label15;
+        catch android.os.RemoteException from label12 to label13 with label14;
+    }
+
+    public void setIsPortrait(boolean)
+    {
+        com.caremark.caremark.scanner.DecodeHandler r0;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.scanner.DecodeHandler;
+
+        $z0 := @parameter0: boolean;
+
+        r0.<com.caremark.caremark.scanner.DecodeHandler: boolean isPortrait> = $z0;
+
+        return;
+    }
+
+    public void setScannerFrame(android.graphics.Rect)
+    {
+        com.caremark.caremark.scanner.DecodeHandler r0;
+        android.graphics.Rect $r1;
+
+        r0 := @this: com.caremark.caremark.scanner.DecodeHandler;
+
+        $r1 := @parameter0: android.graphics.Rect;
+
+        r0.<com.caremark.caremark.scanner.DecodeHandler: android.graphics.Rect scannerFrame> = $r1;
+
+        return;
+    }
+}

@@ -1,0 +1,1137 @@
+public final class org.codehaus.jackson.impl.ByteSourceBootstrapper extends java.lang.Object
+{
+    public static final byte UTF8_BOM_1;
+    public static final byte UTF8_BOM_2;
+    public static final byte UTF8_BOM_3;
+    public boolean _bigEndian;
+    public final boolean _bufferRecyclable;
+    public int _bytesPerChar;
+    public final org.codehaus.jackson.io.IOContext _context;
+    public final java.io.InputStream _in;
+    public final byte[] _inputBuffer;
+    public int _inputEnd;
+    public int _inputProcessed;
+    public int _inputPtr;
+
+    public void <init>(org.codehaus.jackson.io.IOContext, java.io.InputStream)
+    {
+        byte[] $r2;
+        org.codehaus.jackson.io.IOContext $r3;
+        org.codehaus.jackson.impl.ByteSourceBootstrapper r0;
+        java.io.InputStream $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.ByteSourceBootstrapper;
+
+        $r3 := @parameter0: org.codehaus.jackson.io.IOContext;
+
+        $r1 := @parameter1: java.io.InputStream;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean _bigEndian> = 1;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _bytesPerChar> = 0;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: org.codehaus.jackson.io.IOContext _context> = $r3;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: java.io.InputStream _in> = $r1;
+
+        $r2 = virtualinvoke $r3.<org.codehaus.jackson.io.IOContext: byte[] allocReadIOBuffer()>();
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: byte[] _inputBuffer> = $r2;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr> = 0;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputEnd> = 0;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputProcessed> = 0;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean _bufferRecyclable> = 1;
+
+        return;
+    }
+
+    public void <init>(org.codehaus.jackson.io.IOContext, byte[], int, int)
+    {
+        byte[] $r1;
+        org.codehaus.jackson.io.IOContext $r2;
+        int $i0, $i1;
+        org.codehaus.jackson.impl.ByteSourceBootstrapper r0;
+
+        r0 := @this: org.codehaus.jackson.impl.ByteSourceBootstrapper;
+
+        $r2 := @parameter0: org.codehaus.jackson.io.IOContext;
+
+        $r1 := @parameter1: byte[];
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean _bigEndian> = 1;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _bytesPerChar> = 0;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: org.codehaus.jackson.io.IOContext _context> = $r2;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: java.io.InputStream _in> = null;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: byte[] _inputBuffer> = $r1;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr> = $i0;
+
+        $i1 = $i1 + $i0;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputEnd> = $i1;
+
+        $i0 = neg $i0;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputProcessed> = $i0;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean _bufferRecyclable> = 0;
+
+        return;
+    }
+
+    private boolean checkUTF16(int)
+    {
+        int $i0, $i1;
+        org.codehaus.jackson.impl.ByteSourceBootstrapper r0;
+
+        r0 := @this: org.codehaus.jackson.impl.ByteSourceBootstrapper;
+
+        $i0 := @parameter0: int;
+
+        $i1 = 65280;
+
+        $i1 = $i1 & $i0;
+
+        if $i1 != 0 goto label1;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean _bigEndian> = 1;
+
+        goto label2;
+
+     label1:
+        $i0 = $i0 & 255;
+
+        if $i0 != 0 goto label3;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean _bigEndian> = 0;
+
+     label2:
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _bytesPerChar> = 2;
+
+        return 1;
+
+     label3:
+        return 0;
+    }
+
+    private boolean checkUTF32(int)
+    {
+        int $i0, $i1;
+        org.codehaus.jackson.impl.ByteSourceBootstrapper r0;
+        java.lang.NullPointerException r1;
+
+        r0 := @this: org.codehaus.jackson.impl.ByteSourceBootstrapper;
+
+        $i0 := @parameter0: int;
+
+        $i1 = $i0 >> 8;
+
+        if $i1 != 0 goto label1;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean _bigEndian> = 1;
+
+        goto label2;
+
+     label1:
+        $i1 = 16777215 & $i0;
+
+        if $i1 != 0 goto label3;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean _bigEndian> = 0;
+
+     label2:
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _bytesPerChar> = 4;
+
+        return 1;
+
+     label3:
+        $i1 = -16711681 & $i0;
+
+        if $i1 == 0 goto label5;
+
+        $i0 = $i0 & -65281;
+
+        if $i0 == 0 goto label4;
+
+        return 0;
+
+     label4:
+        specialinvoke r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: void reportWeirdUCS4(java.lang.String)>("2143");
+
+        r1 = new java.lang.NullPointerException;
+
+        specialinvoke r1.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw r1;
+
+     label5:
+        specialinvoke r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: void reportWeirdUCS4(java.lang.String)>("3412");
+
+        r1 = new java.lang.NullPointerException;
+
+        specialinvoke r1.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw r1;
+    }
+
+    private boolean handleBOM(int)
+    {
+        int $i0, $i1, $i2;
+        org.codehaus.jackson.impl.ByteSourceBootstrapper r0;
+        java.lang.NullPointerException $r1;
+
+        r0 := @this: org.codehaus.jackson.impl.ByteSourceBootstrapper;
+
+        $i0 := @parameter0: int;
+
+        if $i0 == -16842752 goto label7;
+
+        if $i0 == -131072 goto label6;
+
+        $i1 = 65279;
+
+        if $i0 == $i1 goto label5;
+
+        $i1 = 65534;
+
+        if $i0 == $i1 goto label4;
+
+        $i1 = $i0 >>> 16;
+
+        $i2 = 65279;
+
+        if $i1 != $i2 goto label1;
+
+        $i0 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr>;
+
+        $i0 = $i0 + 2;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr> = $i0;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _bytesPerChar> = 2;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean _bigEndian> = 1;
+
+        return 1;
+
+     label1:
+        $i2 = 65534;
+
+        if $i1 != $i2 goto label2;
+
+        $i0 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr>;
+
+        $i0 = $i0 + 2;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr> = $i0;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _bytesPerChar> = 2;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean _bigEndian> = 0;
+
+        return 1;
+
+     label2:
+        $i0 = $i0 >>> 8;
+
+        if $i0 != 15711167 goto label3;
+
+        $i0 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr>;
+
+        $i0 = $i0 + 3;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr> = $i0;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _bytesPerChar> = 1;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean _bigEndian> = 1;
+
+        return 1;
+
+     label3:
+        return 0;
+
+     label4:
+        specialinvoke r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: void reportWeirdUCS4(java.lang.String)>("2143");
+
+        $r1 = new java.lang.NullPointerException;
+
+        specialinvoke $r1.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r1;
+
+     label5:
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean _bigEndian> = 1;
+
+        $i0 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr>;
+
+        $i0 = $i0 + 4;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr> = $i0;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _bytesPerChar> = 4;
+
+        return 1;
+
+     label6:
+        $i0 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr>;
+
+        $i0 = $i0 + 4;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr> = $i0;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _bytesPerChar> = 4;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean _bigEndian> = 0;
+
+        return 1;
+
+     label7:
+        specialinvoke r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: void reportWeirdUCS4(java.lang.String)>("3412");
+
+        $r1 = new java.lang.NullPointerException;
+
+        specialinvoke $r1.<java.lang.NullPointerException: void <init>(java.lang.String)>("Null throw statement replaced by Soot");
+
+        throw $r1;
+    }
+
+    public static org.codehaus.jackson.format.MatchStrength hasJSONFormat(org.codehaus.jackson.format.InputAccessor)
+    {
+        org.codehaus.jackson.format.MatchStrength $r1;
+        byte $b0, $b1;
+        int $i2, $i3;
+        org.codehaus.jackson.format.InputAccessor $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: org.codehaus.jackson.format.InputAccessor;
+
+        $z0 = interfaceinvoke $r0.<org.codehaus.jackson.format.InputAccessor: boolean hasMoreBytes()>();
+
+        if $z0 != 0 goto label01;
+
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength INCONCLUSIVE>;
+
+        return $r1;
+
+     label01:
+        $b0 = interfaceinvoke $r0.<org.codehaus.jackson.format.InputAccessor: byte nextByte()>();
+
+        $b1 = $b0;
+
+        $i2 = (int) $b0;
+
+        $i3 = -17;
+
+        if $i2 != $i3 goto label07;
+
+        $z0 = interfaceinvoke $r0.<org.codehaus.jackson.format.InputAccessor: boolean hasMoreBytes()>();
+
+        if $z0 != 0 goto label02;
+
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength INCONCLUSIVE>;
+
+        return $r1;
+
+     label02:
+        $b1 = interfaceinvoke $r0.<org.codehaus.jackson.format.InputAccessor: byte nextByte()>();
+
+        $i2 = (int) $b1;
+
+        $i3 = -69;
+
+        if $i2 == $i3 goto label03;
+
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength NO_MATCH>;
+
+        return $r1;
+
+     label03:
+        $z0 = interfaceinvoke $r0.<org.codehaus.jackson.format.InputAccessor: boolean hasMoreBytes()>();
+
+        if $z0 != 0 goto label04;
+
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength INCONCLUSIVE>;
+
+        return $r1;
+
+     label04:
+        $b1 = interfaceinvoke $r0.<org.codehaus.jackson.format.InputAccessor: byte nextByte()>();
+
+        $i2 = (int) $b1;
+
+        $i3 = -65;
+
+        if $i2 == $i3 goto label05;
+
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength NO_MATCH>;
+
+        return $r1;
+
+     label05:
+        $z0 = interfaceinvoke $r0.<org.codehaus.jackson.format.InputAccessor: boolean hasMoreBytes()>();
+
+        if $z0 != 0 goto label06;
+
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength INCONCLUSIVE>;
+
+        return $r1;
+
+     label06:
+        $b1 = interfaceinvoke $r0.<org.codehaus.jackson.format.InputAccessor: byte nextByte()>();
+
+     label07:
+        $i2 = staticinvoke <org.codehaus.jackson.impl.ByteSourceBootstrapper: int skipSpace(org.codehaus.jackson.format.InputAccessor,byte)>($r0, $b1);
+
+        if $i2 >= 0 goto label08;
+
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength INCONCLUSIVE>;
+
+        return $r1;
+
+     label08:
+        if $i2 != 123 goto label12;
+
+        $i2 = staticinvoke <org.codehaus.jackson.impl.ByteSourceBootstrapper: int skipSpace(org.codehaus.jackson.format.InputAccessor)>($r0);
+
+        if $i2 >= 0 goto label09;
+
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength INCONCLUSIVE>;
+
+        return $r1;
+
+     label09:
+        if $i2 == 34 goto label11;
+
+        if $i2 != 125 goto label10;
+
+        goto label11;
+
+     label10:
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength NO_MATCH>;
+
+        return $r1;
+
+     label11:
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength SOLID_MATCH>;
+
+        return $r1;
+
+     label12:
+        if $i2 != 91 goto label16;
+
+        $i2 = staticinvoke <org.codehaus.jackson.impl.ByteSourceBootstrapper: int skipSpace(org.codehaus.jackson.format.InputAccessor)>($r0);
+
+        if $i2 >= 0 goto label13;
+
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength INCONCLUSIVE>;
+
+        return $r1;
+
+     label13:
+        if $i2 == 93 goto label15;
+
+        if $i2 != 91 goto label14;
+
+        goto label15;
+
+     label14:
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength SOLID_MATCH>;
+
+        return $r1;
+
+     label15:
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength SOLID_MATCH>;
+
+        return $r1;
+
+     label16:
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength WEAK_MATCH>;
+
+        if $i2 != 34 goto label17;
+
+        return $r1;
+
+     label17:
+        if $i2 > 57 goto label18;
+
+        if $i2 < 48 goto label18;
+
+        return $r1;
+
+     label18:
+        if $i2 != 45 goto label21;
+
+        $i2 = staticinvoke <org.codehaus.jackson.impl.ByteSourceBootstrapper: int skipSpace(org.codehaus.jackson.format.InputAccessor)>($r0);
+
+        if $i2 >= 0 goto label19;
+
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength INCONCLUSIVE>;
+
+        return $r1;
+
+     label19:
+        if $i2 > 57 goto label20;
+
+        if $i2 < 48 goto label20;
+
+        return $r1;
+
+     label20:
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength NO_MATCH>;
+
+        return $r1;
+
+     label21:
+        if $i2 != 110 goto label22;
+
+        $r1 = staticinvoke <org.codehaus.jackson.impl.ByteSourceBootstrapper: org.codehaus.jackson.format.MatchStrength tryMatch(org.codehaus.jackson.format.InputAccessor,java.lang.String,org.codehaus.jackson.format.MatchStrength)>($r0, "ull", $r1);
+
+        return $r1;
+
+     label22:
+        if $i2 != 116 goto label23;
+
+        $r1 = staticinvoke <org.codehaus.jackson.impl.ByteSourceBootstrapper: org.codehaus.jackson.format.MatchStrength tryMatch(org.codehaus.jackson.format.InputAccessor,java.lang.String,org.codehaus.jackson.format.MatchStrength)>($r0, "rue", $r1);
+
+        return $r1;
+
+     label23:
+        if $i2 != 102 goto label24;
+
+        $r1 = staticinvoke <org.codehaus.jackson.impl.ByteSourceBootstrapper: org.codehaus.jackson.format.MatchStrength tryMatch(org.codehaus.jackson.format.InputAccessor,java.lang.String,org.codehaus.jackson.format.MatchStrength)>($r0, "alse", $r1);
+
+        return $r1;
+
+     label24:
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength NO_MATCH>;
+
+        return $r1;
+    }
+
+    private void reportWeirdUCS4(java.lang.String)
+    {
+        java.io.CharConversionException $r1;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r3;
+        org.codehaus.jackson.impl.ByteSourceBootstrapper r0;
+
+        r0 := @this: org.codehaus.jackson.impl.ByteSourceBootstrapper;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r1 = new java.io.CharConversionException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unsupported UCS-4 endianness (");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") detected");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r1.<java.io.CharConversionException: void <init>(java.lang.String)>($r3);
+
+        throw $r1;
+    }
+
+    public static final int skipSpace(org.codehaus.jackson.format.InputAccessor)
+    {
+        byte $b0;
+        int $i1;
+        org.codehaus.jackson.format.InputAccessor $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: org.codehaus.jackson.format.InputAccessor;
+
+        $z0 = interfaceinvoke $r0.<org.codehaus.jackson.format.InputAccessor: boolean hasMoreBytes()>();
+
+        if $z0 != 0 goto label1;
+
+        $i1 = -1;
+
+        return $i1;
+
+     label1:
+        $b0 = interfaceinvoke $r0.<org.codehaus.jackson.format.InputAccessor: byte nextByte()>();
+
+        $i1 = staticinvoke <org.codehaus.jackson.impl.ByteSourceBootstrapper: int skipSpace(org.codehaus.jackson.format.InputAccessor,byte)>($r0, $b0);
+
+        return $i1;
+    }
+
+    public static final int skipSpace(org.codehaus.jackson.format.InputAccessor, byte)
+    {
+        short $s1;
+        byte $b0;
+        int $i2;
+        org.codehaus.jackson.format.InputAccessor $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: org.codehaus.jackson.format.InputAccessor;
+
+        $b0 := @parameter1: byte;
+
+     label1:
+        $s1 = (short) $b0;
+
+        $s1 = $s1 & 255;
+
+        $i2 = (int) $s1;
+
+        if $i2 == 32 goto label2;
+
+        $i2 = (int) $s1;
+
+        if $i2 == 13 goto label2;
+
+        $i2 = (int) $s1;
+
+        if $i2 == 10 goto label2;
+
+        $i2 = (int) $s1;
+
+        if $i2 == 9 goto label2;
+
+        $i2 = (int) $s1;
+
+        return $i2;
+
+     label2:
+        $z0 = interfaceinvoke $r0.<org.codehaus.jackson.format.InputAccessor: boolean hasMoreBytes()>();
+
+        if $z0 != 0 goto label3;
+
+        $i2 = -1;
+
+        return $i2;
+
+     label3:
+        $b0 = interfaceinvoke $r0.<org.codehaus.jackson.format.InputAccessor: byte nextByte()>();
+
+        goto label1;
+    }
+
+    public static final org.codehaus.jackson.format.MatchStrength tryMatch(org.codehaus.jackson.format.InputAccessor, java.lang.String, org.codehaus.jackson.format.MatchStrength)
+    {
+        org.codehaus.jackson.format.MatchStrength $r1;
+        char $c3;
+        org.codehaus.jackson.format.InputAccessor $r2;
+        byte $b2;
+        int $i0, $i1, $i4, $i5;
+        java.lang.String $r0;
+        boolean $z0;
+
+        $r2 := @parameter0: org.codehaus.jackson.format.InputAccessor;
+
+        $r0 := @parameter1: java.lang.String;
+
+        $r1 := @parameter2: org.codehaus.jackson.format.MatchStrength;
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= $i0 goto label4;
+
+        $z0 = interfaceinvoke $r2.<org.codehaus.jackson.format.InputAccessor: boolean hasMoreBytes()>();
+
+        if $z0 != 0 goto label2;
+
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength INCONCLUSIVE>;
+
+        return $r1;
+
+     label2:
+        $b2 = interfaceinvoke $r2.<org.codehaus.jackson.format.InputAccessor: byte nextByte()>();
+
+        $c3 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i1);
+
+        $i4 = (int) $b2;
+
+        $i5 = (int) $c3;
+
+        if $i4 == $i5 goto label3;
+
+        $r1 = <org.codehaus.jackson.format.MatchStrength: org.codehaus.jackson.format.MatchStrength NO_MATCH>;
+
+        return $r1;
+
+     label3:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label4:
+        return $r1;
+    }
+
+    public org.codehaus.jackson.JsonParser constructParser(int, org.codehaus.jackson.ObjectCodec, org.codehaus.jackson.sym.BytesToNameCanonicalizer, org.codehaus.jackson.sym.CharsToNameCanonicalizer)
+    {
+        org.codehaus.jackson.io.IOContext $r8;
+        byte[] $r10;
+        org.codehaus.jackson.impl.Utf8StreamParser $r4;
+        org.codehaus.jackson.sym.BytesToNameCanonicalizer $r2;
+        org.codehaus.jackson.sym.CharsToNameCanonicalizer $r3;
+        org.codehaus.jackson.impl.ReaderBasedParser $r11;
+        org.codehaus.jackson.JsonEncoding $r5, $r7;
+        int $i0, $i1, $i2;
+        boolean $z0, $z1;
+        org.codehaus.jackson.ObjectCodec $r1;
+        java.io.Reader $r12;
+        org.codehaus.jackson.impl.ByteSourceBootstrapper r0;
+        org.codehaus.jackson.JsonParser$Feature $r6;
+        java.io.InputStream $r9;
+
+        r0 := @this: org.codehaus.jackson.impl.ByteSourceBootstrapper;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: org.codehaus.jackson.ObjectCodec;
+
+        $r2 := @parameter2: org.codehaus.jackson.sym.BytesToNameCanonicalizer;
+
+        $r3 := @parameter3: org.codehaus.jackson.sym.CharsToNameCanonicalizer;
+
+        $r5 = virtualinvoke r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: org.codehaus.jackson.JsonEncoding detectEncoding()>();
+
+        $r6 = <org.codehaus.jackson.JsonParser$Feature: org.codehaus.jackson.JsonParser$Feature CANONICALIZE_FIELD_NAMES>;
+
+        $z0 = virtualinvoke $r6.<org.codehaus.jackson.JsonParser$Feature: boolean enabledIn(int)>($i0);
+
+        $r6 = <org.codehaus.jackson.JsonParser$Feature: org.codehaus.jackson.JsonParser$Feature INTERN_FIELD_NAMES>;
+
+        $z1 = virtualinvoke $r6.<org.codehaus.jackson.JsonParser$Feature: boolean enabledIn(int)>($i0);
+
+        $r7 = <org.codehaus.jackson.JsonEncoding: org.codehaus.jackson.JsonEncoding UTF8>;
+
+        if $r5 != $r7 goto label1;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = virtualinvoke $r2.<org.codehaus.jackson.sym.BytesToNameCanonicalizer: org.codehaus.jackson.sym.BytesToNameCanonicalizer makeChild(boolean,boolean)>($z0, $z1);
+
+        $r4 = new org.codehaus.jackson.impl.Utf8StreamParser;
+
+        $r8 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: org.codehaus.jackson.io.IOContext _context>;
+
+        $r9 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: java.io.InputStream _in>;
+
+        $r10 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: byte[] _inputBuffer>;
+
+        $i2 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputEnd>;
+
+        $z0 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean _bufferRecyclable>;
+
+        specialinvoke $r4.<org.codehaus.jackson.impl.Utf8StreamParser: void <init>(org.codehaus.jackson.io.IOContext,int,java.io.InputStream,org.codehaus.jackson.ObjectCodec,org.codehaus.jackson.sym.BytesToNameCanonicalizer,byte[],int,int,boolean)>($r8, $i0, $r9, $r1, $r2, $r10, $i2, $i1, $z0);
+
+        return $r4;
+
+     label1:
+        $r11 = new org.codehaus.jackson.impl.ReaderBasedParser;
+
+        $r8 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: org.codehaus.jackson.io.IOContext _context>;
+
+        $r12 = virtualinvoke r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: java.io.Reader constructReader()>();
+
+        $r3 = virtualinvoke $r3.<org.codehaus.jackson.sym.CharsToNameCanonicalizer: org.codehaus.jackson.sym.CharsToNameCanonicalizer makeChild(boolean,boolean)>($z0, $z1);
+
+        specialinvoke $r11.<org.codehaus.jackson.impl.ReaderBasedParser: void <init>(org.codehaus.jackson.io.IOContext,int,java.io.Reader,org.codehaus.jackson.ObjectCodec,org.codehaus.jackson.sym.CharsToNameCanonicalizer)>($r8, $i0, $r12, $r1, $r3);
+
+        return $r11;
+    }
+
+    public java.io.Reader constructReader()
+    {
+        byte[] $r1;
+        org.codehaus.jackson.io.IOContext $r2;
+        org.codehaus.jackson.io.UTF32Reader $r11;
+        org.codehaus.jackson.io.MergedStream $r9;
+        java.lang.RuntimeException $r7;
+        java.io.InputStreamReader $r10;
+        java.io.ByteArrayInputStream $r8;
+        org.codehaus.jackson.JsonEncoding $r3;
+        int[] $r4;
+        int $i0, $i1;
+        java.lang.String $r6;
+        org.codehaus.jackson.impl.ByteSourceBootstrapper r0;
+        java.io.InputStream $r5;
+        boolean $z0;
+
+        r0 := @this: org.codehaus.jackson.impl.ByteSourceBootstrapper;
+
+        $r2 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: org.codehaus.jackson.io.IOContext _context>;
+
+        $r3 = virtualinvoke $r2.<org.codehaus.jackson.io.IOContext: org.codehaus.jackson.JsonEncoding getEncoding()>();
+
+        $r4 = <org.codehaus.jackson.impl.ByteSourceBootstrapper$1: int[] $SwitchMap$org$codehaus$jackson$JsonEncoding>;
+
+        $i0 = virtualinvoke $r3.<java.lang.Enum: int ordinal()>();
+
+        $i0 = $r4[$i0];
+
+        if $i0 == 1 goto label5;
+
+        if $i0 == 2 goto label5;
+
+        if $i0 == 3 goto label2;
+
+        if $i0 == 4 goto label2;
+
+        if $i0 != 5 goto label1;
+
+        goto label2;
+
+     label1:
+        $r7 = new java.lang.RuntimeException;
+
+        specialinvoke $r7.<java.lang.RuntimeException: void <init>(java.lang.String)>("Internal error");
+
+        throw $r7;
+
+     label2:
+        $r5 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: java.io.InputStream _in>;
+
+        if $r5 != null goto label3;
+
+        $r8 = new java.io.ByteArrayInputStream;
+
+        $r5 = $r8;
+
+        $r1 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: byte[] _inputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputEnd>;
+
+        specialinvoke $r8.<java.io.ByteArrayInputStream: void <init>(byte[],int,int)>($r1, $i0, $i1);
+
+        goto label4;
+
+     label3:
+        $i0 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputEnd>;
+
+        if $i0 >= $i1 goto label4;
+
+        $r9 = new org.codehaus.jackson.io.MergedStream;
+
+        $r2 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: org.codehaus.jackson.io.IOContext _context>;
+
+        $r1 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: byte[] _inputBuffer>;
+
+        specialinvoke $r9.<org.codehaus.jackson.io.MergedStream: void <init>(org.codehaus.jackson.io.IOContext,java.io.InputStream,byte[],int,int)>($r2, $r5, $r1, $i0, $i1);
+
+        $r5 = $r9;
+
+     label4:
+        $r10 = new java.io.InputStreamReader;
+
+        $r6 = virtualinvoke $r3.<org.codehaus.jackson.JsonEncoding: java.lang.String getJavaName()>();
+
+        specialinvoke $r10.<java.io.InputStreamReader: void <init>(java.io.InputStream,java.lang.String)>($r5, $r6);
+
+        return $r10;
+
+     label5:
+        $r11 = new org.codehaus.jackson.io.UTF32Reader;
+
+        $r2 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: org.codehaus.jackson.io.IOContext _context>;
+
+        $r5 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: java.io.InputStream _in>;
+
+        $r1 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: byte[] _inputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr>;
+
+        $i1 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputEnd>;
+
+        $r3 = virtualinvoke $r2.<org.codehaus.jackson.io.IOContext: org.codehaus.jackson.JsonEncoding getEncoding()>();
+
+        $z0 = virtualinvoke $r3.<org.codehaus.jackson.JsonEncoding: boolean isBigEndian()>();
+
+        specialinvoke $r11.<org.codehaus.jackson.io.UTF32Reader: void <init>(org.codehaus.jackson.io.IOContext,java.io.InputStream,byte[],int,int,boolean)>($r2, $r5, $r1, $i0, $i1, $z0);
+
+        return $r11;
+    }
+
+    public org.codehaus.jackson.JsonEncoding detectEncoding()
+    {
+        byte[] $r1;
+        org.codehaus.jackson.io.IOContext $r3;
+        java.lang.RuntimeException $r4;
+        short $s4;
+        byte $b1;
+        org.codehaus.jackson.JsonEncoding $r2;
+        int $i0, $i2, $i3;
+        org.codehaus.jackson.impl.ByteSourceBootstrapper r0;
+        boolean $z0, $z1;
+
+        r0 := @this: org.codehaus.jackson.impl.ByteSourceBootstrapper;
+
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean ensureLoaded(int)>(4);
+
+        $z1 = 1;
+
+        if $z0 == 0 goto label03;
+
+        $r1 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: byte[] _inputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr>;
+
+        $b1 = $r1[$i0];
+
+        $i2 = (int) $b1;
+
+        $i2 = $i2 << 24;
+
+        $i3 = $i0 + 1;
+
+        $b1 = $r1[$i3];
+
+        $s4 = (short) $b1;
+
+        $s4 = $s4 & 255;
+
+        $i3 = (int) $s4;
+
+        $i3 = $i3 << 16;
+
+        $i2 = $i2 | $i3;
+
+        $i3 = $i0 + 2;
+
+        $b1 = $r1[$i3];
+
+        $s4 = (short) $b1;
+
+        $s4 = $s4 & 255;
+
+        $i3 = (int) $s4;
+
+        $i3 = $i3 << 8;
+
+        $i2 = $i2 | $i3;
+
+        $i0 = $i0 + 3;
+
+        $b1 = $r1[$i0];
+
+        $s4 = (short) $b1;
+
+        $s4 = $s4 & 255;
+
+        $i0 = (int) $s4;
+
+        $i0 = $i0 | $i2;
+
+        $z0 = specialinvoke r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean handleBOM(int)>($i0);
+
+        if $z0 == 0 goto label01;
+
+        goto label05;
+
+     label01:
+        $z0 = specialinvoke r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean checkUTF32(int)>($i0);
+
+        if $z0 == 0 goto label02;
+
+        goto label05;
+
+     label02:
+        $i0 = $i0 >>> 16;
+
+        $z0 = specialinvoke r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean checkUTF16(int)>($i0);
+
+        if $z0 == 0 goto label04;
+
+        goto label05;
+
+     label03:
+        $z0 = virtualinvoke r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean ensureLoaded(int)>(2);
+
+        if $z0 == 0 goto label04;
+
+        $r1 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: byte[] _inputBuffer>;
+
+        $i2 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr>;
+
+        $b1 = $r1[$i2];
+
+        $s4 = (short) $b1;
+
+        $s4 = $s4 & 255;
+
+        $i0 = (int) $s4;
+
+        $i0 = $i0 << 8;
+
+        $i2 = $i2 + 1;
+
+        $b1 = $r1[$i2];
+
+        $s4 = (short) $b1;
+
+        $s4 = $s4 & 255;
+
+        $i2 = (int) $s4;
+
+        $i0 = $i2 | $i0;
+
+        $z0 = specialinvoke r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean checkUTF16(int)>($i0);
+
+        if $z0 == 0 goto label04;
+
+        goto label05;
+
+     label04:
+        $z1 = 0;
+
+     label05:
+        if $z1 != 0 goto label06;
+
+        $r2 = <org.codehaus.jackson.JsonEncoding: org.codehaus.jackson.JsonEncoding UTF8>;
+
+        goto label10;
+
+     label06:
+        $i0 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _bytesPerChar>;
+
+        if $i0 != 2 goto label08;
+
+        $z1 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean _bigEndian>;
+
+        if $z1 == 0 goto label07;
+
+        $r2 = <org.codehaus.jackson.JsonEncoding: org.codehaus.jackson.JsonEncoding UTF16_BE>;
+
+        goto label10;
+
+     label07:
+        $r2 = <org.codehaus.jackson.JsonEncoding: org.codehaus.jackson.JsonEncoding UTF16_LE>;
+
+        goto label10;
+
+     label08:
+        if $i0 != 4 goto label11;
+
+        $z1 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: boolean _bigEndian>;
+
+        if $z1 == 0 goto label09;
+
+        $r2 = <org.codehaus.jackson.JsonEncoding: org.codehaus.jackson.JsonEncoding UTF32_BE>;
+
+        goto label10;
+
+     label09:
+        $r2 = <org.codehaus.jackson.JsonEncoding: org.codehaus.jackson.JsonEncoding UTF32_LE>;
+
+     label10:
+        $r3 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: org.codehaus.jackson.io.IOContext _context>;
+
+        virtualinvoke $r3.<org.codehaus.jackson.io.IOContext: void setEncoding(org.codehaus.jackson.JsonEncoding)>($r2);
+
+        return $r2;
+
+     label11:
+        $r4 = new java.lang.RuntimeException;
+
+        specialinvoke $r4.<java.lang.RuntimeException: void <init>(java.lang.String)>("Internal error");
+
+        throw $r4;
+    }
+
+    public boolean ensureLoaded(int)
+    {
+        byte[] $r1;
+        int $i0, $i1, $i2, $i3;
+        org.codehaus.jackson.impl.ByteSourceBootstrapper r0;
+        java.io.InputStream $r2;
+
+        r0 := @this: org.codehaus.jackson.impl.ByteSourceBootstrapper;
+
+        $i1 := @parameter0: int;
+
+        $i2 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputEnd>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputPtr>;
+
+        $i2 = $i2 - $i0;
+
+     label1:
+        if $i2 >= $i1 goto label5;
+
+        $r2 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: java.io.InputStream _in>;
+
+        if $r2 != null goto label2;
+
+        $i0 = -1;
+
+        goto label3;
+
+     label2:
+        $r1 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: byte[] _inputBuffer>;
+
+        $i0 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputEnd>;
+
+        $i3 = lengthof $r1;
+
+        $i3 = $i3 - $i0;
+
+        $i0 = virtualinvoke $r2.<java.io.InputStream: int read(byte[],int,int)>($r1, $i0, $i3);
+
+     label3:
+        if $i0 >= 1 goto label4;
+
+        return 0;
+
+     label4:
+        $i3 = r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputEnd>;
+
+        $i3 = $i3 + $i0;
+
+        r0.<org.codehaus.jackson.impl.ByteSourceBootstrapper: int _inputEnd> = $i3;
+
+        $i2 = $i2 + $i0;
+
+        goto label1;
+
+     label5:
+        return 1;
+    }
+
+    public static void <clinit>()
+    {
+        <org.codehaus.jackson.impl.ByteSourceBootstrapper: byte UTF8_BOM_3> = -65;
+
+        <org.codehaus.jackson.impl.ByteSourceBootstrapper: byte UTF8_BOM_2> = -69;
+
+        <org.codehaus.jackson.impl.ByteSourceBootstrapper: byte UTF8_BOM_1> = -17;
+
+        return;
+    }
+}

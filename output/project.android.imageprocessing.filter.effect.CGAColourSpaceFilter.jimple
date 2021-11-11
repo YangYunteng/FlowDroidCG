@@ -1,0 +1,23 @@
+public class project.android.imageprocessing.filter.effect.CGAColourSpaceFilter extends project.android.imageprocessing.filter.BasicFilter
+{
+
+    public void <init>()
+    {
+        project.android.imageprocessing.filter.effect.CGAColourSpaceFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.CGAColourSpaceFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.BasicFilter: void <init>()>();
+
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.effect.CGAColourSpaceFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.effect.CGAColourSpaceFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nvarying vec2 v_TexCoord;\nvoid main() {\n\thighp vec2 sampleDivisor = vec2(1.0 / 200.0, 1.0 / 320.0);\n\thighp vec2 samplePos = v_TexCoord - mod(v_TexCoord, sampleDivisor);\n\thighp vec4 color = texture2D(u_Texture0, samplePos );\n\tmediump vec4 colorCyan = vec4(85.0 / 255.0, 1.0, 1.0, 1.0);\n\tmediump vec4 colorMagenta = vec4(1.0, 85.0 / 255.0, 1.0, 1.0);\n\tmediump vec4 colorWhite = vec4(1.0, 1.0, 1.0, 1.0);\n\tmediump vec4 colorBlack = vec4(0.0, 0.0, 0.0, 1.0);\n  mediump vec4 endColor;\n  highp float blackDistance = distance(color, colorBlack);\n  highp float whiteDistance = distance(color, colorWhite);\n  highp float magentaDistance = distance(color, colorMagenta);\n  highp float cyanDistance = distance(color, colorCyan);\n  mediump vec4 finalColor;\n  highp float colorDistance = min(magentaDistance, cyanDistance);\n\tcolorDistance = min(colorDistance, whiteDistance);\n  colorDistance = min(colorDistance, blackDistance); \n  if (colorDistance == blackDistance) {\n      finalColor = colorBlack;\n  } else if (colorDistance == whiteDistance) {\n      finalColor = colorWhite;\n  } else if (colorDistance == cyanDistance) {\n      finalColor = colorCyan;\n  } else {\n      finalColor = colorMagenta;\n  }\n\tgl_FragColor = finalColor;\n}\n";
+    }
+}

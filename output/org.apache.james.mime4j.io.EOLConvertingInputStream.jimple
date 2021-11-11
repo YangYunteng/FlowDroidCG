@@ -1,0 +1,157 @@
+public class org.apache.james.mime4j.io.EOLConvertingInputStream extends java.io.InputStream
+{
+    public static final int CONVERT_BOTH;
+    public static final int CONVERT_CR;
+    public static final int CONVERT_LF;
+    public int flags;
+    public java.io.PushbackInputStream in;
+    public int previous;
+
+    public void <init>(java.io.InputStream)
+    {
+        org.apache.james.mime4j.io.EOLConvertingInputStream r0;
+        java.io.InputStream $r1;
+
+        r0 := @this: org.apache.james.mime4j.io.EOLConvertingInputStream;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        specialinvoke r0.<org.apache.james.mime4j.io.EOLConvertingInputStream: void <init>(java.io.InputStream,int)>($r1, 3);
+
+        return;
+    }
+
+    public void <init>(java.io.InputStream, int)
+    {
+        java.io.PushbackInputStream $r2;
+        org.apache.james.mime4j.io.EOLConvertingInputStream r0;
+        int $i0;
+        java.io.InputStream $r1;
+
+        r0 := @this: org.apache.james.mime4j.io.EOLConvertingInputStream;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        $i0 := @parameter1: int;
+
+        specialinvoke r0.<java.io.InputStream: void <init>()>();
+
+        r0.<org.apache.james.mime4j.io.EOLConvertingInputStream: java.io.PushbackInputStream in> = null;
+
+        r0.<org.apache.james.mime4j.io.EOLConvertingInputStream: int previous> = 0;
+
+        r0.<org.apache.james.mime4j.io.EOLConvertingInputStream: int flags> = 3;
+
+        $r2 = new java.io.PushbackInputStream;
+
+        specialinvoke $r2.<java.io.PushbackInputStream: void <init>(java.io.InputStream,int)>($r1, 2);
+
+        r0.<org.apache.james.mime4j.io.EOLConvertingInputStream: java.io.PushbackInputStream in> = $r2;
+
+        r0.<org.apache.james.mime4j.io.EOLConvertingInputStream: int flags> = $i0;
+
+        return;
+    }
+
+    public void close()
+    {
+        org.apache.james.mime4j.io.EOLConvertingInputStream r0;
+        java.io.PushbackInputStream $r1;
+
+        r0 := @this: org.apache.james.mime4j.io.EOLConvertingInputStream;
+
+        $r1 = r0.<org.apache.james.mime4j.io.EOLConvertingInputStream: java.io.PushbackInputStream in>;
+
+        virtualinvoke $r1.<java.io.PushbackInputStream: void close()>();
+
+        return;
+    }
+
+    public int read()
+    {
+        java.io.PushbackInputStream $r1;
+        org.apache.james.mime4j.io.EOLConvertingInputStream r0;
+        int $i0, $i1, $i2;
+
+        r0 := @this: org.apache.james.mime4j.io.EOLConvertingInputStream;
+
+        $r1 = r0.<org.apache.james.mime4j.io.EOLConvertingInputStream: java.io.PushbackInputStream in>;
+
+        $i0 = virtualinvoke $r1.<java.io.PushbackInputStream: int read()>();
+
+        $i1 = $i0;
+
+        $i2 = -1;
+
+        if $i0 != $i2 goto label1;
+
+        $i1 = -1;
+
+        return $i1;
+
+     label1:
+        $i2 = r0.<org.apache.james.mime4j.io.EOLConvertingInputStream: int flags>;
+
+        $i2 = $i2 & 1;
+
+        if $i2 == 0 goto label3;
+
+        if $i0 != 13 goto label3;
+
+        $r1 = r0.<org.apache.james.mime4j.io.EOLConvertingInputStream: java.io.PushbackInputStream in>;
+
+        $i0 = virtualinvoke $r1.<java.io.PushbackInputStream: int read()>();
+
+        $i2 = -1;
+
+        if $i0 == $i2 goto label2;
+
+        $r1 = r0.<org.apache.james.mime4j.io.EOLConvertingInputStream: java.io.PushbackInputStream in>;
+
+        virtualinvoke $r1.<java.io.PushbackInputStream: void unread(int)>($i0);
+
+     label2:
+        if $i0 == 10 goto label4;
+
+        $r1 = r0.<org.apache.james.mime4j.io.EOLConvertingInputStream: java.io.PushbackInputStream in>;
+
+        virtualinvoke $r1.<java.io.PushbackInputStream: void unread(int)>(10);
+
+        goto label4;
+
+     label3:
+        $i2 = r0.<org.apache.james.mime4j.io.EOLConvertingInputStream: int flags>;
+
+        $i2 = $i2 & 2;
+
+        if $i2 == 0 goto label4;
+
+        if $i0 != 10 goto label4;
+
+        $i0 = r0.<org.apache.james.mime4j.io.EOLConvertingInputStream: int previous>;
+
+        if $i0 == 13 goto label4;
+
+        $r1 = r0.<org.apache.james.mime4j.io.EOLConvertingInputStream: java.io.PushbackInputStream in>;
+
+        virtualinvoke $r1.<java.io.PushbackInputStream: void unread(int)>(10);
+
+        $i1 = 13;
+
+     label4:
+        r0.<org.apache.james.mime4j.io.EOLConvertingInputStream: int previous> = $i1;
+
+        return $i1;
+    }
+
+    public static void <clinit>()
+    {
+        <org.apache.james.mime4j.io.EOLConvertingInputStream: int CONVERT_LF> = 2;
+
+        <org.apache.james.mime4j.io.EOLConvertingInputStream: int CONVERT_CR> = 1;
+
+        <org.apache.james.mime4j.io.EOLConvertingInputStream: int CONVERT_BOTH> = 3;
+
+        return;
+    }
+}

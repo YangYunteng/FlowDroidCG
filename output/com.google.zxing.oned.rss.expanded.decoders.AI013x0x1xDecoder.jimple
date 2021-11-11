@@ -1,0 +1,194 @@
+public final class com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder extends com.google.zxing.oned.rss.expanded.decoders.AI01weightDecoder
+{
+    public static final int DATE_SIZE;
+    public static final int HEADER_SIZE;
+    public static final int WEIGHT_SIZE;
+    public final java.lang.String dateCode;
+    public final java.lang.String firstAIdigits;
+
+    public void <init>(com.google.zxing.common.BitArray, java.lang.String, java.lang.String)
+    {
+        java.lang.String $r2, $r3;
+        com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder r0;
+        com.google.zxing.common.BitArray $r1;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder;
+
+        $r1 := @parameter0: com.google.zxing.common.BitArray;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: java.lang.String;
+
+        specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.AI01weightDecoder: void <init>(com.google.zxing.common.BitArray)>($r1);
+
+        r0.<com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder: java.lang.String dateCode> = $r3;
+
+        r0.<com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder: java.lang.String firstAIdigits> = $r2;
+
+        return;
+    }
+
+    private void encodeCompressedDate(java.lang.StringBuilder, int)
+    {
+        com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder $r2;
+        int $i0, $i1, $i2, $i3;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r3;
+        com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder r0;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder;
+
+        $r1 := @parameter0: java.lang.StringBuilder;
+
+        $i1 := @parameter1: int;
+
+        $r2 = virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.AbstractExpandedDecoder: com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder getGeneralDecoder()>();
+
+        $i2 = virtualinvoke $r2.<com.google.zxing.oned.rss.expanded.decoders.GeneralAppIdDecoder: int extractNumericValueFromBitArray(int,int)>($i1, 16);
+
+        $i1 = 38400;
+
+        if $i2 != $i1 goto label1;
+
+        return;
+
+     label1:
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(40);
+
+        $r3 = r0.<com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder: java.lang.String dateCode>;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(41);
+
+        $i1 = $i2 % 32;
+
+        $i0 = $i2 / 32;
+
+        $i2 = $i0 % 12;
+
+        $i2 = $i2 + 1;
+
+        $i3 = $i0 / 12;
+
+        $i0 = $i3 / 10;
+
+        if $i0 != 0 goto label2;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(48);
+
+     label2:
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+
+        $i0 = $i2 / 10;
+
+        if $i0 != 0 goto label3;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(48);
+
+     label3:
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        $i2 = $i1 / 10;
+
+        if $i2 != 0 goto label4;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(48);
+
+     label4:
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        return;
+    }
+
+    public void addWeightCode(java.lang.StringBuilder, int)
+    {
+        int $i0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2;
+        com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder r0;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder;
+
+        $r1 := @parameter0: java.lang.StringBuilder;
+
+        $i0 := @parameter1: int;
+
+        $i0 = $i0 / 100000;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(40);
+
+        $r2 = r0.<com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder: java.lang.String firstAIdigits>;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(41);
+
+        return;
+    }
+
+    public int checkWeight(int)
+    {
+        int $i0;
+        com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder r0;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder;
+
+        $i0 := @parameter0: int;
+
+        $i0 = $i0 % 100000;
+
+        return $i0;
+    }
+
+    public java.lang.String parseInformation()
+    {
+        com.google.zxing.NotFoundException $r4;
+        int $i0;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r3;
+        com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder r0;
+        com.google.zxing.common.BitArray $r1;
+
+        r0 := @this: com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder;
+
+        $r1 = virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.AbstractExpandedDecoder: com.google.zxing.common.BitArray getInformation()>();
+
+        $i0 = virtualinvoke $r1.<com.google.zxing.common.BitArray: int getSize()>();
+
+        if $i0 != 84 goto label1;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.AI01decoder: void encodeCompressedGtin(java.lang.StringBuilder,int)>($r2, 8);
+
+        virtualinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.AI01weightDecoder: void encodeCompressedWeight(java.lang.StringBuilder,int,int)>($r2, 48, 20);
+
+        specialinvoke r0.<com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder: void encodeCompressedDate(java.lang.StringBuilder,int)>($r2, 68);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r3;
+
+     label1:
+        $r4 = staticinvoke <com.google.zxing.NotFoundException: com.google.zxing.NotFoundException getNotFoundInstance()>();
+
+        throw $r4;
+    }
+
+    public static void <clinit>()
+    {
+        <com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder: int WEIGHT_SIZE> = 20;
+
+        <com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder: int HEADER_SIZE> = 8;
+
+        <com.google.zxing.oned.rss.expanded.decoders.AI013x0x1xDecoder: int DATE_SIZE> = 16;
+
+        return;
+    }
+}

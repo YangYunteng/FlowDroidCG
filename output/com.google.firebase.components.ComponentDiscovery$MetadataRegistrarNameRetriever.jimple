@@ -1,0 +1,206 @@
+public class com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever extends java.lang.Object implements com.google.firebase.components.ComponentDiscovery$RegistrarNameRetriever
+{
+    public final java.lang.Class discoveryService;
+
+    public void <init>(java.lang.Class)
+    {
+        com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever r0;
+        java.lang.Class $r1;
+
+        r0 := @this: com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever;
+
+        $r1 := @parameter0: java.lang.Class;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        r0.<com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever: java.lang.Class discoveryService> = $r1;
+
+        return;
+    }
+
+    public void <init>(java.lang.Class, com.google.firebase.components.ComponentDiscovery$1)
+    {
+        com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever r0;
+        java.lang.Class $r1;
+        com.google.firebase.components.ComponentDiscovery$1 $r2;
+
+        r0 := @this: com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever;
+
+        $r1 := @parameter0: java.lang.Class;
+
+        $r2 := @parameter1: com.google.firebase.components.ComponentDiscovery$1;
+
+        specialinvoke r0.<com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever: void <init>(java.lang.Class)>($r1);
+
+        return;
+    }
+
+    private android.os.Bundle getMetadata(android.content.Context)
+    {
+        android.content.Context $r4;
+        android.os.Bundle r9;
+        android.content.pm.PackageManager $r5;
+        android.content.ComponentName $r1;
+        android.content.pm.PackageManager$NameNotFoundException $r3;
+        com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever r0;
+        java.lang.Class $r2;
+        android.content.pm.ServiceInfo $r6;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r8;
+
+        r0 := @this: com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever;
+
+        $r4 := @parameter0: android.content.Context;
+
+     label01:
+        $r5 = virtualinvoke $r4.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+     label02:
+        if $r5 != null goto label05;
+
+     label03:
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ComponentDiscovery", "Context has no PackageManager.");
+
+     label04:
+        return null;
+
+     label05:
+        $r1 = new android.content.ComponentName;
+
+        $r2 = r0.<com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever: java.lang.Class discoveryService>;
+
+     label06:
+        specialinvoke $r1.<android.content.ComponentName: void <init>(android.content.Context,java.lang.Class)>($r4, $r2);
+
+        $r6 = virtualinvoke $r5.<android.content.pm.PackageManager: android.content.pm.ServiceInfo getServiceInfo(android.content.ComponentName,int)>($r1, 128);
+
+     label07:
+        if $r6 != null goto label12;
+
+        $r7 = new java.lang.StringBuilder;
+
+     label08:
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+     label09:
+        $r2 = r0.<com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever: java.lang.Class discoveryService>;
+
+     label10:
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" has no service info.");
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ComponentDiscovery", $r8);
+
+     label11:
+        return null;
+
+     label12:
+        r9 = $r6.<android.content.pm.ServiceInfo: android.os.Bundle metaData>;
+
+        return r9;
+
+     label13:
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ComponentDiscovery", "Application info not found.");
+
+        return null;
+
+     label14:
+        $r3 := @caughtexception;
+
+        goto label13;
+
+        catch android.content.pm.PackageManager$NameNotFoundException from label01 to label02 with label14;
+        catch android.content.pm.PackageManager$NameNotFoundException from label03 to label04 with label14;
+        catch android.content.pm.PackageManager$NameNotFoundException from label06 to label07 with label14;
+        catch android.content.pm.PackageManager$NameNotFoundException from label08 to label09 with label14;
+        catch android.content.pm.PackageManager$NameNotFoundException from label10 to label11 with label14;
+    }
+
+    public java.util.List retrieve(android.content.Context)
+    {
+        android.content.Context $r2;
+        android.os.Bundle $r3;
+        java.util.Iterator $r7;
+        java.util.Set $r6;
+        java.util.ArrayList $r5;
+        java.util.List $r4;
+        com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever r0;
+        java.lang.Object $r8;
+        java.lang.String $r1, $r9;
+        boolean $z0;
+
+        r0 := @this: com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever;
+
+        $r2 := @parameter0: android.content.Context;
+
+        $r3 = specialinvoke r0.<com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever: android.os.Bundle getMetadata(android.content.Context)>($r2);
+
+        if $r3 != null goto label1;
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("ComponentDiscovery", "Could not retrieve metadata, returning empty list of registrars.");
+
+        $r4 = staticinvoke <java.util.Collections: java.util.List emptyList()>();
+
+        return $r4;
+
+     label1:
+        $r5 = new java.util.ArrayList;
+
+        specialinvoke $r5.<java.util.ArrayList: void <init>()>();
+
+        $r6 = virtualinvoke $r3.<android.os.Bundle: java.util.Set keySet()>();
+
+        $r7 = interfaceinvoke $r6.<java.util.Set: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r7.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r8 = interfaceinvoke $r7.<java.util.Iterator: java.lang.Object next()>();
+
+        $r9 = (java.lang.String) $r8;
+
+        $r8 = virtualinvoke $r3.<android.os.Bundle: java.lang.Object get(java.lang.String)>($r9);
+
+        $r1 = "com.google.firebase.components.ComponentRegistrar";
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>($r8);
+
+        if $z0 == 0 goto label2;
+
+        $z0 = virtualinvoke $r9.<java.lang.String: boolean startsWith(java.lang.String)>("com.google.firebase.components:");
+
+        if $z0 == 0 goto label2;
+
+        $r1 = virtualinvoke $r9.<java.lang.String: java.lang.String substring(int)>(31);
+
+        interfaceinvoke $r5.<java.util.List: boolean add(java.lang.Object)>($r1);
+
+        goto label2;
+
+     label3:
+        return $r5;
+    }
+
+    public volatile java.util.List retrieve(java.lang.Object)
+    {
+        android.content.Context $r3;
+        java.util.List $r1;
+        com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever r0;
+        java.lang.Object $r2;
+
+        r0 := @this: com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r3 = (android.content.Context) $r2;
+
+        $r1 = virtualinvoke r0.<com.google.firebase.components.ComponentDiscovery$MetadataRegistrarNameRetriever: java.util.List retrieve(android.content.Context)>($r3);
+
+        return $r1;
+    }
+}

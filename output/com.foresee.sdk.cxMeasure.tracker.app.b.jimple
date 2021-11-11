@@ -1,0 +1,144 @@
+public class com.foresee.sdk.cxMeasure.tracker.app.b extends java.lang.Object
+{
+
+    public static void a(android.app.Application, com.foresee.sdk.cxMeasure.tracker.PersistedState)
+    {
+        android.content.SharedPreferences$Editor $r8;
+        java.lang.Object[] $r6;
+        com.foresee.sdk.common.events.c $r9;
+        com.foresee.sdk.cxMeasure.tracker.state.TrackingStates $r13;
+        com.foresee.sdk.cxMeasure.tracker.PersistedState $r2;
+        android.content.SharedPreferences $r3;
+        android.app.Application $r1;
+        com.foresee.sdk.common.b$a $r5;
+        int $i0;
+        java.lang.StringBuilder $r12;
+        java.lang.String $r0, $r4, $r7;
+        com.foresee.sdk.common.events.LifecycleEvent$EventType $r11;
+        com.foresee.sdk.common.events.LifecycleEvent $r10;
+
+        $r1 := @parameter0: android.app.Application;
+
+        $r2 := @parameter1: com.foresee.sdk.cxMeasure.tracker.PersistedState;
+
+        $r3 = virtualinvoke $r1.<android.app.Application: android.content.SharedPreferences getSharedPreferences(java.lang.String,int)>("TrackingState", 0);
+
+        $r4 = staticinvoke <com.foresee.sdk.cxMeasure.tracker.e: java.lang.String b(com.foresee.sdk.cxMeasure.tracker.PersistedState)>($r2);
+
+        $r5 = <com.foresee.sdk.common.b$a: com.foresee.sdk.common.b$a INFO>;
+
+        $r0 = <com.foresee.sdk.cxMeasure.tracker.logging.LogTags: java.lang.String TRIGGER_CODE>;
+
+        $r6 = newarray (java.lang.Object)[1];
+
+        $r6[0] = $r4;
+
+        $r7 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Saving persistedState: %s", $r6);
+
+        staticinvoke <com.foresee.sdk.common.b: void c(com.foresee.sdk.common.b$a,java.lang.String,java.lang.String)>($r5, $r0, $r7);
+
+        $r8 = interfaceinvoke $r3.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        interfaceinvoke $r8.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putString(java.lang.String,java.lang.String)>("com.foresee.sdk.tracker.TRACKER_STATE_KEY", $r4);
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 < 9 goto label1;
+
+        interfaceinvoke $r8.<android.content.SharedPreferences$Editor: void apply()>();
+
+        goto label2;
+
+     label1:
+        interfaceinvoke $r8.<android.content.SharedPreferences$Editor: boolean commit()>();
+
+     label2:
+        $r9 = new com.foresee.sdk.common.events.c;
+
+        specialinvoke $r9.<com.foresee.sdk.common.events.c: void <init>(android.content.Context)>($r1);
+
+        $r10 = new com.foresee.sdk.common.events.LifecycleEvent;
+
+        $r11 = <com.foresee.sdk.common.events.LifecycleEvent$EventType: com.foresee.sdk.common.events.LifecycleEvent$EventType STATE_UPDATED>;
+
+        $r12 = new java.lang.StringBuilder;
+
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Saved state: ");
+
+        $r13 = virtualinvoke $r2.<com.foresee.sdk.cxMeasure.tracker.PersistedState: com.foresee.sdk.cxMeasure.tracker.state.TrackingStates getState()>();
+
+        virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r13);
+
+        $r0 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r10.<com.foresee.sdk.common.events.LifecycleEvent: void <init>(com.foresee.sdk.common.events.LifecycleEvent$EventType,java.lang.String)>($r11, $r0);
+
+        interfaceinvoke $r9.<com.foresee.sdk.common.events.b: void a(com.foresee.sdk.common.events.LifecycleEvent)>($r10);
+
+        return;
+    }
+
+    public static com.foresee.sdk.cxMeasure.tracker.PersistedState b(android.app.Application)
+    {
+        java.lang.Object[] $r5;
+        java.util.UUID $r8;
+        java.lang.Integer $r6;
+        com.foresee.sdk.cxMeasure.tracker.PersistedState $r3;
+        android.content.SharedPreferences $r1;
+        android.app.Application $r0;
+        int $i0;
+        com.foresee.sdk.common.b$a $r4;
+        java.lang.String $r2, $r7;
+        boolean $z0;
+
+        $r0 := @parameter0: android.app.Application;
+
+        $r1 = virtualinvoke $r0.<android.app.Application: android.content.SharedPreferences getSharedPreferences(java.lang.String,int)>("TrackingState", 0);
+
+        if $r1 == null goto label2;
+
+        $r2 = interfaceinvoke $r1.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>("com.foresee.sdk.tracker.TRACKER_STATE_KEY", "");
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>("");
+
+        if $z0 != 0 goto label2;
+
+        $r3 = staticinvoke <com.foresee.sdk.cxMeasure.tracker.e: com.foresee.sdk.cxMeasure.tracker.PersistedState b(java.lang.String)>($r2);
+
+        $i0 = virtualinvoke $r3.<com.foresee.sdk.cxMeasure.tracker.PersistedState: int getEncodingVersion()>();
+
+        if $i0 != 4 goto label1;
+
+        return $r3;
+
+     label1:
+        $r4 = <com.foresee.sdk.common.b$a: com.foresee.sdk.common.b$a WARN>;
+
+        $r2 = <com.foresee.sdk.cxMeasure.tracker.logging.LogTags: java.lang.String TRIGGER_CODE>;
+
+        $r5 = newarray (java.lang.Object)[1];
+
+        $i0 = virtualinvoke $r3.<com.foresee.sdk.cxMeasure.tracker.PersistedState: int getEncodingVersion()>();
+
+        $r6 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r5[0] = $r6;
+
+        $r7 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("PersistedState, version= %s found, re-initializing", $r5);
+
+        staticinvoke <com.foresee.sdk.common.b: void c(com.foresee.sdk.common.b$a,java.lang.String,java.lang.String)>($r4, $r2, $r7);
+
+     label2:
+        $r3 = new com.foresee.sdk.cxMeasure.tracker.PersistedState;
+
+        $r8 = staticinvoke <java.util.UUID: java.util.UUID randomUUID()>();
+
+        $r2 = virtualinvoke $r8.<java.util.UUID: java.lang.String toString()>();
+
+        specialinvoke $r3.<com.foresee.sdk.cxMeasure.tracker.PersistedState: void <init>(java.lang.String)>($r2);
+
+        return $r3;
+    }
+}

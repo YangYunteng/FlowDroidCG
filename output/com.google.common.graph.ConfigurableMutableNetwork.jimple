@@ -1,0 +1,335 @@
+public final class com.google.common.graph.ConfigurableMutableNetwork extends com.google.common.graph.ConfigurableNetwork implements com.google.common.graph.MutableNetwork
+{
+
+    public void <init>(com.google.common.graph.NetworkBuilder)
+    {
+        com.google.common.graph.ConfigurableMutableNetwork r0;
+        com.google.common.graph.NetworkBuilder $r1;
+
+        r0 := @this: com.google.common.graph.ConfigurableMutableNetwork;
+
+        $r1 := @parameter0: com.google.common.graph.NetworkBuilder;
+
+        specialinvoke r0.<com.google.common.graph.ConfigurableNetwork: void <init>(com.google.common.graph.NetworkBuilder)>($r1);
+
+        return;
+    }
+
+    private com.google.common.graph.NetworkConnections addNodeInternal(java.lang.Object)
+    {
+        com.google.common.graph.ConfigurableMutableNetwork r0;
+        com.google.common.graph.NetworkConnections $r3;
+        java.lang.Object $r2;
+        com.google.common.graph.MapIteratorCache $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.ConfigurableMutableNetwork;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r3 = specialinvoke r0.<com.google.common.graph.ConfigurableMutableNetwork: com.google.common.graph.NetworkConnections newConnections()>();
+
+        $r1 = r0.<com.google.common.graph.ConfigurableNetwork: com.google.common.graph.MapIteratorCache nodeConnections>;
+
+        $r2 = virtualinvoke $r1.<com.google.common.graph.MapIteratorCache: java.lang.Object put(java.lang.Object,java.lang.Object)>($r2, $r3);
+
+        if $r2 != null goto label1;
+
+        $z0 = 1;
+
+        goto label2;
+
+     label1:
+        $z0 = 0;
+
+     label2:
+        staticinvoke <com.google.common.base.Preconditions: void checkState(boolean)>($z0);
+
+        return $r3;
+    }
+
+    private com.google.common.graph.NetworkConnections newConnections()
+    {
+        com.google.common.graph.ConfigurableMutableNetwork r0;
+        com.google.common.graph.UndirectedMultiNetworkConnections $r3;
+        com.google.common.graph.UndirectedNetworkConnections $r4;
+        com.google.common.graph.DirectedNetworkConnections $r2;
+        com.google.common.graph.DirectedMultiNetworkConnections $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.ConfigurableMutableNetwork;
+
+        $z0 = virtualinvoke r0.<com.google.common.graph.ConfigurableNetwork: boolean isDirected()>();
+
+        if $z0 == 0 goto label2;
+
+        $z0 = virtualinvoke r0.<com.google.common.graph.ConfigurableNetwork: boolean allowsParallelEdges()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = staticinvoke <com.google.common.graph.DirectedMultiNetworkConnections: com.google.common.graph.DirectedMultiNetworkConnections of()>();
+
+        return $r1;
+
+     label1:
+        $r2 = staticinvoke <com.google.common.graph.DirectedNetworkConnections: com.google.common.graph.DirectedNetworkConnections of()>();
+
+        return $r2;
+
+     label2:
+        $z0 = virtualinvoke r0.<com.google.common.graph.ConfigurableNetwork: boolean allowsParallelEdges()>();
+
+        if $z0 == 0 goto label3;
+
+        $r3 = staticinvoke <com.google.common.graph.UndirectedMultiNetworkConnections: com.google.common.graph.UndirectedMultiNetworkConnections of()>();
+
+        return $r3;
+
+     label3:
+        $r4 = staticinvoke <com.google.common.graph.UndirectedNetworkConnections: com.google.common.graph.UndirectedNetworkConnections of()>();
+
+        return $r4;
+    }
+
+    public boolean addEdge(java.lang.Object, java.lang.Object, java.lang.Object)
+    {
+        com.google.common.graph.ConfigurableMutableNetwork r0;
+        com.google.common.graph.NetworkConnections $r8;
+        java.util.Set $r9;
+        com.google.common.graph.EndpointPair $r4, $r5;
+        com.google.common.graph.MapIteratorCache $r6;
+        java.lang.Object $r1, $r2, $r3, $r7;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.common.graph.ConfigurableMutableNetwork;
+
+        $r2 := @parameter0: java.lang.Object;
+
+        $r3 := @parameter1: java.lang.Object;
+
+        $r1 := @parameter2: java.lang.Object;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r2, "nodeU");
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r3, "nodeV");
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r1, "edge");
+
+        $z0 = virtualinvoke r0.<com.google.common.graph.ConfigurableNetwork: boolean containsEdge(java.lang.Object)>($r1);
+
+        $z1 = 0;
+
+        if $z0 == 0 goto label1;
+
+        $r4 = virtualinvoke r0.<com.google.common.graph.ConfigurableNetwork: com.google.common.graph.EndpointPair incidentNodes(java.lang.Object)>($r1);
+
+        $r5 = staticinvoke <com.google.common.graph.EndpointPair: com.google.common.graph.EndpointPair of(com.google.common.graph.Network,java.lang.Object,java.lang.Object)>(r0, $r2, $r3);
+
+        $z1 = virtualinvoke $r4.<com.google.common.graph.EndpointPair: boolean equals(java.lang.Object)>($r5);
+
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.String,java.lang.Object,java.lang.Object,java.lang.Object)>($z1, "Edge %s already exists between the following nodes: %s, so it cannot be reused to connect the following nodes: %s.", $r1, $r4, $r5);
+
+        return 0;
+
+     label1:
+        $r6 = r0.<com.google.common.graph.ConfigurableNetwork: com.google.common.graph.MapIteratorCache nodeConnections>;
+
+        $r7 = virtualinvoke $r6.<com.google.common.graph.MapIteratorCache: java.lang.Object get(java.lang.Object)>($r2);
+
+        $r8 = (com.google.common.graph.NetworkConnections) $r7;
+
+        $z0 = virtualinvoke r0.<com.google.common.graph.ConfigurableNetwork: boolean allowsParallelEdges()>();
+
+        if $z0 != 0 goto label4;
+
+        if $r8 == null goto label2;
+
+        $r9 = interfaceinvoke $r8.<com.google.common.graph.NetworkConnections: java.util.Set successors()>();
+
+        $z0 = interfaceinvoke $r9.<java.util.Set: boolean contains(java.lang.Object)>($r3);
+
+        if $z0 != 0 goto label3;
+
+     label2:
+        $z1 = 1;
+
+     label3:
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.String,java.lang.Object,java.lang.Object)>($z1, "Nodes %s and %s are already connected by a different edge. To construct a graph that allows parallel edges, call allowsParallelEdges(true) on the Builder.", $r2, $r3);
+
+     label4:
+        $z1 = virtualinvoke $r2.<java.lang.Object: boolean equals(java.lang.Object)>($r3);
+
+        $z0 = virtualinvoke r0.<com.google.common.graph.ConfigurableNetwork: boolean allowsSelfLoops()>();
+
+        if $z0 != 0 goto label5;
+
+        $z0 = $z1 ^ 1;
+
+        staticinvoke <com.google.common.base.Preconditions: void checkArgument(boolean,java.lang.String,java.lang.Object)>($z0, "Cannot add self-loop edge on node %s, as self-loops are not allowed. To construct a graph that allows self-loops, call allowsSelfLoops(true) on the Builder.", $r2);
+
+     label5:
+        if $r8 != null goto label6;
+
+        $r8 = specialinvoke r0.<com.google.common.graph.ConfigurableMutableNetwork: com.google.common.graph.NetworkConnections addNodeInternal(java.lang.Object)>($r2);
+
+     label6:
+        interfaceinvoke $r8.<com.google.common.graph.NetworkConnections: void addOutEdge(java.lang.Object,java.lang.Object)>($r1, $r3);
+
+        $r6 = r0.<com.google.common.graph.ConfigurableNetwork: com.google.common.graph.MapIteratorCache nodeConnections>;
+
+        $r7 = virtualinvoke $r6.<com.google.common.graph.MapIteratorCache: java.lang.Object get(java.lang.Object)>($r3);
+
+        $r8 = (com.google.common.graph.NetworkConnections) $r7;
+
+        if $r8 != null goto label7;
+
+        $r8 = specialinvoke r0.<com.google.common.graph.ConfigurableMutableNetwork: com.google.common.graph.NetworkConnections addNodeInternal(java.lang.Object)>($r3);
+
+     label7:
+        interfaceinvoke $r8.<com.google.common.graph.NetworkConnections: void addInEdge(java.lang.Object,java.lang.Object,boolean)>($r1, $r2, $z1);
+
+        $r6 = r0.<com.google.common.graph.ConfigurableNetwork: com.google.common.graph.MapIteratorCache edgeToReferenceNode>;
+
+        virtualinvoke $r6.<com.google.common.graph.MapIteratorCache: java.lang.Object put(java.lang.Object,java.lang.Object)>($r1, $r2);
+
+        return 1;
+    }
+
+    public boolean addNode(java.lang.Object)
+    {
+        com.google.common.graph.ConfigurableMutableNetwork r0;
+        java.lang.Object $r1;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.ConfigurableMutableNetwork;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r1, "node");
+
+        $z0 = virtualinvoke r0.<com.google.common.graph.ConfigurableNetwork: boolean containsNode(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        return 0;
+
+     label1:
+        specialinvoke r0.<com.google.common.graph.ConfigurableMutableNetwork: com.google.common.graph.NetworkConnections addNodeInternal(java.lang.Object)>($r1);
+
+        return 1;
+    }
+
+    public boolean removeEdge(java.lang.Object)
+    {
+        com.google.common.graph.ConfigurableMutableNetwork r0;
+        com.google.common.graph.NetworkConnections $r5, $r7;
+        com.google.common.graph.MapIteratorCache $r2;
+        java.lang.Object $r1, $r3, $r4, $r6;
+        boolean $z0, $z1;
+
+        r0 := @this: com.google.common.graph.ConfigurableMutableNetwork;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r1, "edge");
+
+        $r2 = r0.<com.google.common.graph.ConfigurableNetwork: com.google.common.graph.MapIteratorCache edgeToReferenceNode>;
+
+        $r3 = virtualinvoke $r2.<com.google.common.graph.MapIteratorCache: java.lang.Object get(java.lang.Object)>($r1);
+
+        $z0 = 0;
+
+        if $r3 != null goto label1;
+
+        return 0;
+
+     label1:
+        $r2 = r0.<com.google.common.graph.ConfigurableNetwork: com.google.common.graph.MapIteratorCache nodeConnections>;
+
+        $r4 = virtualinvoke $r2.<com.google.common.graph.MapIteratorCache: java.lang.Object get(java.lang.Object)>($r3);
+
+        $r5 = (com.google.common.graph.NetworkConnections) $r4;
+
+        $r4 = interfaceinvoke $r5.<com.google.common.graph.NetworkConnections: java.lang.Object adjacentNode(java.lang.Object)>($r1);
+
+        $r2 = r0.<com.google.common.graph.ConfigurableNetwork: com.google.common.graph.MapIteratorCache nodeConnections>;
+
+        $r6 = virtualinvoke $r2.<com.google.common.graph.MapIteratorCache: java.lang.Object get(java.lang.Object)>($r4);
+
+        $r7 = (com.google.common.graph.NetworkConnections) $r6;
+
+        interfaceinvoke $r5.<com.google.common.graph.NetworkConnections: java.lang.Object removeOutEdge(java.lang.Object)>($r1);
+
+        $z1 = virtualinvoke r0.<com.google.common.graph.ConfigurableNetwork: boolean allowsSelfLoops()>();
+
+        if $z1 == 0 goto label2;
+
+        $z1 = virtualinvoke $r3.<java.lang.Object: boolean equals(java.lang.Object)>($r4);
+
+        if $z1 == 0 goto label2;
+
+        $z0 = 1;
+
+     label2:
+        interfaceinvoke $r7.<com.google.common.graph.NetworkConnections: java.lang.Object removeInEdge(java.lang.Object,boolean)>($r1, $z0);
+
+        $r2 = r0.<com.google.common.graph.ConfigurableNetwork: com.google.common.graph.MapIteratorCache edgeToReferenceNode>;
+
+        virtualinvoke $r2.<com.google.common.graph.MapIteratorCache: java.lang.Object remove(java.lang.Object)>($r1);
+
+        return 1;
+    }
+
+    public boolean removeNode(java.lang.Object)
+    {
+        com.google.common.graph.ConfigurableMutableNetwork r0;
+        com.google.common.graph.NetworkConnections $r4;
+        java.util.Set $r5;
+        com.google.common.graph.MapIteratorCache $r2;
+        com.google.common.collect.ImmutableList $r6;
+        java.lang.Object $r1, $r3;
+        com.google.common.collect.UnmodifiableIterator $r7;
+        boolean $z0;
+
+        r0 := @this: com.google.common.graph.ConfigurableMutableNetwork;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        staticinvoke <com.google.common.base.Preconditions: java.lang.Object checkNotNull(java.lang.Object,java.lang.Object)>($r1, "node");
+
+        $r2 = r0.<com.google.common.graph.ConfigurableNetwork: com.google.common.graph.MapIteratorCache nodeConnections>;
+
+        $r3 = virtualinvoke $r2.<com.google.common.graph.MapIteratorCache: java.lang.Object get(java.lang.Object)>($r1);
+
+        $r4 = (com.google.common.graph.NetworkConnections) $r3;
+
+        if $r4 != null goto label1;
+
+        return 0;
+
+     label1:
+        $r5 = interfaceinvoke $r4.<com.google.common.graph.NetworkConnections: java.util.Set incidentEdges()>();
+
+        $r6 = staticinvoke <com.google.common.collect.ImmutableList: com.google.common.collect.ImmutableList copyOf(java.util.Collection)>($r5);
+
+        $r7 = virtualinvoke $r6.<com.google.common.collect.ImmutableList: com.google.common.collect.UnmodifiableIterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r7.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r3 = interfaceinvoke $r7.<java.util.Iterator: java.lang.Object next()>();
+
+        virtualinvoke r0.<com.google.common.graph.ConfigurableMutableNetwork: boolean removeEdge(java.lang.Object)>($r3);
+
+        goto label2;
+
+     label3:
+        $r2 = r0.<com.google.common.graph.ConfigurableNetwork: com.google.common.graph.MapIteratorCache nodeConnections>;
+
+        virtualinvoke $r2.<com.google.common.graph.MapIteratorCache: java.lang.Object remove(java.lang.Object)>($r1);
+
+        return 1;
+    }
+}

@@ -1,0 +1,1047 @@
+public class org.dom4j.io.HTMLWriter extends org.dom4j.io.XMLWriter
+{
+    public static final org.dom4j.io.OutputFormat DEFAULT_HTML_FORMAT;
+    public static final java.util.HashSet DEFAULT_PREFORMATTED_TAGS;
+    public static java.lang.String lineSeparator;
+    public java.util.Stack formatStack;
+    public java.lang.String lastText;
+    public int newLineAfterNTags;
+    public java.util.HashSet omitElementCloseSet;
+    public java.util.HashSet preformattedTags;
+    public int tagsOuput;
+
+    static void <clinit>()
+    {
+        java.util.HashSet $r1;
+        org.dom4j.io.OutputFormat $r2;
+        java.lang.String $r0;
+
+        $r0 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("line.separator");
+
+        <org.dom4j.io.HTMLWriter: java.lang.String lineSeparator> = $r0;
+
+        $r1 = new java.util.HashSet;
+
+        specialinvoke $r1.<java.util.HashSet: void <init>()>();
+
+        <org.dom4j.io.HTMLWriter: java.util.HashSet DEFAULT_PREFORMATTED_TAGS> = $r1;
+
+        $r1 = <org.dom4j.io.HTMLWriter: java.util.HashSet DEFAULT_PREFORMATTED_TAGS>;
+
+        virtualinvoke $r1.<java.util.HashSet: boolean add(java.lang.Object)>("PRE");
+
+        $r1 = <org.dom4j.io.HTMLWriter: java.util.HashSet DEFAULT_PREFORMATTED_TAGS>;
+
+        virtualinvoke $r1.<java.util.HashSet: boolean add(java.lang.Object)>("SCRIPT");
+
+        $r1 = <org.dom4j.io.HTMLWriter: java.util.HashSet DEFAULT_PREFORMATTED_TAGS>;
+
+        virtualinvoke $r1.<java.util.HashSet: boolean add(java.lang.Object)>("STYLE");
+
+        $r1 = <org.dom4j.io.HTMLWriter: java.util.HashSet DEFAULT_PREFORMATTED_TAGS>;
+
+        virtualinvoke $r1.<java.util.HashSet: boolean add(java.lang.Object)>("TEXTAREA");
+
+        $r2 = new org.dom4j.io.OutputFormat;
+
+        specialinvoke $r2.<org.dom4j.io.OutputFormat: void <init>(java.lang.String,boolean)>("  ", 1);
+
+        <org.dom4j.io.HTMLWriter: org.dom4j.io.OutputFormat DEFAULT_HTML_FORMAT> = $r2;
+
+        $r2 = <org.dom4j.io.HTMLWriter: org.dom4j.io.OutputFormat DEFAULT_HTML_FORMAT>;
+
+        virtualinvoke $r2.<org.dom4j.io.OutputFormat: void setTrimText(boolean)>(1);
+
+        $r2 = <org.dom4j.io.HTMLWriter: org.dom4j.io.OutputFormat DEFAULT_HTML_FORMAT>;
+
+        virtualinvoke $r2.<org.dom4j.io.OutputFormat: void setSuppressDeclaration(boolean)>(1);
+
+        return;
+    }
+
+    public void <init>()
+    {
+        java.util.HashSet $r2;
+        org.dom4j.io.HTMLWriter r0;
+        int $i0;
+        org.dom4j.io.OutputFormat $r1;
+        java.util.Stack $r3;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r1 = <org.dom4j.io.HTMLWriter: org.dom4j.io.OutputFormat DEFAULT_HTML_FORMAT>;
+
+        specialinvoke r0.<org.dom4j.io.XMLWriter: void <init>(org.dom4j.io.OutputFormat)>($r1);
+
+        $r3 = new java.util.Stack;
+
+        specialinvoke $r3.<java.util.Stack: void <init>()>();
+
+        r0.<org.dom4j.io.HTMLWriter: java.util.Stack formatStack> = $r3;
+
+        r0.<org.dom4j.io.HTMLWriter: java.lang.String lastText> = "";
+
+        r0.<org.dom4j.io.HTMLWriter: int tagsOuput> = 0;
+
+        $i0 = -1;
+
+        r0.<org.dom4j.io.HTMLWriter: int newLineAfterNTags> = $i0;
+
+        $r2 = <org.dom4j.io.HTMLWriter: java.util.HashSet DEFAULT_PREFORMATTED_TAGS>;
+
+        r0.<org.dom4j.io.HTMLWriter: java.util.HashSet preformattedTags> = $r2;
+
+        return;
+    }
+
+    public void <init>(java.io.OutputStream)
+    {
+        java.io.OutputStream $r2;
+        java.util.HashSet $r3;
+        org.dom4j.io.HTMLWriter r0;
+        int $i0;
+        org.dom4j.io.OutputFormat $r1;
+        java.util.Stack $r4;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r2 := @parameter0: java.io.OutputStream;
+
+        $r1 = <org.dom4j.io.HTMLWriter: org.dom4j.io.OutputFormat DEFAULT_HTML_FORMAT>;
+
+        specialinvoke r0.<org.dom4j.io.XMLWriter: void <init>(java.io.OutputStream,org.dom4j.io.OutputFormat)>($r2, $r1);
+
+        $r4 = new java.util.Stack;
+
+        specialinvoke $r4.<java.util.Stack: void <init>()>();
+
+        r0.<org.dom4j.io.HTMLWriter: java.util.Stack formatStack> = $r4;
+
+        r0.<org.dom4j.io.HTMLWriter: java.lang.String lastText> = "";
+
+        r0.<org.dom4j.io.HTMLWriter: int tagsOuput> = 0;
+
+        $i0 = -1;
+
+        r0.<org.dom4j.io.HTMLWriter: int newLineAfterNTags> = $i0;
+
+        $r3 = <org.dom4j.io.HTMLWriter: java.util.HashSet DEFAULT_PREFORMATTED_TAGS>;
+
+        r0.<org.dom4j.io.HTMLWriter: java.util.HashSet preformattedTags> = $r3;
+
+        return;
+    }
+
+    public void <init>(java.io.OutputStream, org.dom4j.io.OutputFormat)
+    {
+        java.io.OutputStream $r2;
+        java.util.HashSet $r3;
+        org.dom4j.io.HTMLWriter r0;
+        int $i0;
+        org.dom4j.io.OutputFormat $r1;
+        java.util.Stack $r4;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r2 := @parameter0: java.io.OutputStream;
+
+        $r1 := @parameter1: org.dom4j.io.OutputFormat;
+
+        specialinvoke r0.<org.dom4j.io.XMLWriter: void <init>(java.io.OutputStream,org.dom4j.io.OutputFormat)>($r2, $r1);
+
+        $r4 = new java.util.Stack;
+
+        specialinvoke $r4.<java.util.Stack: void <init>()>();
+
+        r0.<org.dom4j.io.HTMLWriter: java.util.Stack formatStack> = $r4;
+
+        r0.<org.dom4j.io.HTMLWriter: java.lang.String lastText> = "";
+
+        r0.<org.dom4j.io.HTMLWriter: int tagsOuput> = 0;
+
+        $i0 = -1;
+
+        r0.<org.dom4j.io.HTMLWriter: int newLineAfterNTags> = $i0;
+
+        $r3 = <org.dom4j.io.HTMLWriter: java.util.HashSet DEFAULT_PREFORMATTED_TAGS>;
+
+        r0.<org.dom4j.io.HTMLWriter: java.util.HashSet preformattedTags> = $r3;
+
+        return;
+    }
+
+    public void <init>(java.io.Writer)
+    {
+        java.util.HashSet $r3;
+        org.dom4j.io.HTMLWriter r0;
+        java.io.Writer $r2;
+        int $i0;
+        org.dom4j.io.OutputFormat $r1;
+        java.util.Stack $r4;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r2 := @parameter0: java.io.Writer;
+
+        $r1 = <org.dom4j.io.HTMLWriter: org.dom4j.io.OutputFormat DEFAULT_HTML_FORMAT>;
+
+        specialinvoke r0.<org.dom4j.io.XMLWriter: void <init>(java.io.Writer,org.dom4j.io.OutputFormat)>($r2, $r1);
+
+        $r4 = new java.util.Stack;
+
+        specialinvoke $r4.<java.util.Stack: void <init>()>();
+
+        r0.<org.dom4j.io.HTMLWriter: java.util.Stack formatStack> = $r4;
+
+        r0.<org.dom4j.io.HTMLWriter: java.lang.String lastText> = "";
+
+        r0.<org.dom4j.io.HTMLWriter: int tagsOuput> = 0;
+
+        $i0 = -1;
+
+        r0.<org.dom4j.io.HTMLWriter: int newLineAfterNTags> = $i0;
+
+        $r3 = <org.dom4j.io.HTMLWriter: java.util.HashSet DEFAULT_PREFORMATTED_TAGS>;
+
+        r0.<org.dom4j.io.HTMLWriter: java.util.HashSet preformattedTags> = $r3;
+
+        return;
+    }
+
+    public void <init>(java.io.Writer, org.dom4j.io.OutputFormat)
+    {
+        java.util.HashSet $r3;
+        org.dom4j.io.HTMLWriter r0;
+        java.io.Writer $r2;
+        int $i0;
+        org.dom4j.io.OutputFormat $r1;
+        java.util.Stack $r4;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r2 := @parameter0: java.io.Writer;
+
+        $r1 := @parameter1: org.dom4j.io.OutputFormat;
+
+        specialinvoke r0.<org.dom4j.io.XMLWriter: void <init>(java.io.Writer,org.dom4j.io.OutputFormat)>($r2, $r1);
+
+        $r4 = new java.util.Stack;
+
+        specialinvoke $r4.<java.util.Stack: void <init>()>();
+
+        r0.<org.dom4j.io.HTMLWriter: java.util.Stack formatStack> = $r4;
+
+        r0.<org.dom4j.io.HTMLWriter: java.lang.String lastText> = "";
+
+        r0.<org.dom4j.io.HTMLWriter: int tagsOuput> = 0;
+
+        $i0 = -1;
+
+        r0.<org.dom4j.io.HTMLWriter: int newLineAfterNTags> = $i0;
+
+        $r3 = <org.dom4j.io.HTMLWriter: java.util.HashSet DEFAULT_PREFORMATTED_TAGS>;
+
+        r0.<org.dom4j.io.HTMLWriter: java.util.HashSet preformattedTags> = $r3;
+
+        return;
+    }
+
+    public void <init>(org.dom4j.io.OutputFormat)
+    {
+        java.util.HashSet $r2;
+        org.dom4j.io.HTMLWriter r0;
+        int $i0;
+        org.dom4j.io.OutputFormat $r1;
+        java.util.Stack $r3;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r1 := @parameter0: org.dom4j.io.OutputFormat;
+
+        specialinvoke r0.<org.dom4j.io.XMLWriter: void <init>(org.dom4j.io.OutputFormat)>($r1);
+
+        $r3 = new java.util.Stack;
+
+        specialinvoke $r3.<java.util.Stack: void <init>()>();
+
+        r0.<org.dom4j.io.HTMLWriter: java.util.Stack formatStack> = $r3;
+
+        r0.<org.dom4j.io.HTMLWriter: java.lang.String lastText> = "";
+
+        r0.<org.dom4j.io.HTMLWriter: int tagsOuput> = 0;
+
+        $i0 = -1;
+
+        r0.<org.dom4j.io.HTMLWriter: int newLineAfterNTags> = $i0;
+
+        $r2 = <org.dom4j.io.HTMLWriter: java.util.HashSet DEFAULT_PREFORMATTED_TAGS>;
+
+        r0.<org.dom4j.io.HTMLWriter: java.util.HashSet preformattedTags> = $r2;
+
+        return;
+    }
+
+    private java.util.HashSet internalGetOmitElementCloseSet()
+    {
+        java.util.HashSet $r1;
+        org.dom4j.io.HTMLWriter r0;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r1 = r0.<org.dom4j.io.HTMLWriter: java.util.HashSet omitElementCloseSet>;
+
+        if $r1 != null goto label1;
+
+        $r1 = new java.util.HashSet;
+
+        specialinvoke $r1.<java.util.HashSet: void <init>()>();
+
+        r0.<org.dom4j.io.HTMLWriter: java.util.HashSet omitElementCloseSet> = $r1;
+
+        $r1 = r0.<org.dom4j.io.HTMLWriter: java.util.HashSet omitElementCloseSet>;
+
+        virtualinvoke r0.<org.dom4j.io.HTMLWriter: void loadOmitElementCloseSet(java.util.Set)>($r1);
+
+     label1:
+        $r1 = r0.<org.dom4j.io.HTMLWriter: java.util.HashSet omitElementCloseSet>;
+
+        return $r1;
+    }
+
+    private java.lang.String justSpaces(java.lang.String)
+    {
+        org.dom4j.io.HTMLWriter r0;
+        char $c2;
+        java.lang.StringBuffer $r1, $r3;
+        int $i0, $i1, $i3;
+        java.lang.String $r2;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $i0 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        $r3 = new java.lang.StringBuffer;
+
+        $r1 = $r3;
+
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>(int)>($i0);
+
+        $i1 = 0;
+
+     label1:
+        if $i1 < $i0 goto label2;
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        return $r2;
+
+     label2:
+        $c2 = virtualinvoke $r2.<java.lang.String: char charAt(int)>($i1);
+
+        $i3 = (int) $c2;
+
+        if $i3 == 10 goto label3;
+
+        $i3 = (int) $c2;
+
+        if $i3 == 13 goto label3;
+
+        virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c2);
+
+     label3:
+        $i1 = $i1 + 1;
+
+        goto label1;
+    }
+
+    private void lazyInitNewLinesAfterNTags()
+    {
+        org.dom4j.io.HTMLWriter r0;
+        int $i0;
+        org.dom4j.io.OutputFormat $r1;
+        boolean $z0;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r1 = virtualinvoke r0.<org.dom4j.io.XMLWriter: org.dom4j.io.OutputFormat getOutputFormat()>();
+
+        $z0 = virtualinvoke $r1.<org.dom4j.io.OutputFormat: boolean isNewlines()>();
+
+        if $z0 == 0 goto label1;
+
+        r0.<org.dom4j.io.HTMLWriter: int newLineAfterNTags> = 0;
+
+        return;
+
+     label1:
+        $r1 = virtualinvoke r0.<org.dom4j.io.XMLWriter: org.dom4j.io.OutputFormat getOutputFormat()>();
+
+        $i0 = virtualinvoke $r1.<org.dom4j.io.OutputFormat: int getNewLineAfterNTags()>();
+
+        r0.<org.dom4j.io.HTMLWriter: int newLineAfterNTags> = $i0;
+
+        return;
+    }
+
+    public static java.lang.String prettyPrintHTML(java.lang.String)
+    {
+        java.lang.String $r0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r0 = staticinvoke <org.dom4j.io.HTMLWriter: java.lang.String prettyPrintHTML(java.lang.String,boolean,boolean,boolean,boolean)>($r0, 1, 1, 0, 1);
+
+        return $r0;
+    }
+
+    public static java.lang.String prettyPrintHTML(java.lang.String, boolean, boolean, boolean, boolean)
+    {
+        org.dom4j.Document $r4;
+        org.dom4j.io.HTMLWriter $r3;
+        java.io.StringWriter $r0;
+        org.dom4j.io.OutputFormat $r2;
+        java.lang.String $r1;
+        boolean $z0, $z1, $z2, $z3;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $z3 := @parameter1: boolean;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 := @parameter3: boolean;
+
+        $z2 := @parameter4: boolean;
+
+        $r0 = new java.io.StringWriter;
+
+        specialinvoke $r0.<java.io.StringWriter: void <init>()>();
+
+        $r2 = staticinvoke <org.dom4j.io.OutputFormat: org.dom4j.io.OutputFormat createPrettyPrint()>();
+
+        virtualinvoke $r2.<org.dom4j.io.OutputFormat: void setNewlines(boolean)>($z3);
+
+        virtualinvoke $r2.<org.dom4j.io.OutputFormat: void setTrimText(boolean)>($z0);
+
+        virtualinvoke $r2.<org.dom4j.io.OutputFormat: void setXHTML(boolean)>($z1);
+
+        virtualinvoke $r2.<org.dom4j.io.OutputFormat: void setExpandEmptyElements(boolean)>($z2);
+
+        $r3 = new org.dom4j.io.HTMLWriter;
+
+        specialinvoke $r3.<org.dom4j.io.HTMLWriter: void <init>(java.io.Writer,org.dom4j.io.OutputFormat)>($r0, $r2);
+
+        $r4 = staticinvoke <org.dom4j.DocumentHelper: org.dom4j.Document parseText(java.lang.String)>($r1);
+
+        virtualinvoke $r3.<org.dom4j.io.XMLWriter: void write(org.dom4j.Document)>($r4);
+
+        virtualinvoke $r3.<org.dom4j.io.XMLWriter: void flush()>();
+
+        $r1 = virtualinvoke $r0.<java.io.StringWriter: java.lang.String toString()>();
+
+        return $r1;
+    }
+
+    public static java.lang.String prettyPrintXHTML(java.lang.String)
+    {
+        java.lang.String $r0;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r0 = staticinvoke <org.dom4j.io.HTMLWriter: java.lang.String prettyPrintHTML(java.lang.String,boolean,boolean,boolean,boolean)>($r0, 1, 1, 1, 0);
+
+        return $r0;
+    }
+
+    public void endCDATA()
+    {
+        org.dom4j.io.HTMLWriter r0;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        return;
+    }
+
+    public java.util.Set getOmitElementCloseSet()
+    {
+        java.util.HashSet $r1;
+        org.dom4j.io.HTMLWriter r0;
+        java.util.Set $r3;
+        java.lang.Object $r2;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r1 = specialinvoke r0.<org.dom4j.io.HTMLWriter: java.util.HashSet internalGetOmitElementCloseSet()>();
+
+        $r2 = virtualinvoke $r1.<java.util.HashSet: java.lang.Object clone()>();
+
+        $r3 = (java.util.Set) $r2;
+
+        return $r3;
+    }
+
+    public java.util.Set getPreformattedTags()
+    {
+        java.util.HashSet $r2;
+        org.dom4j.io.HTMLWriter r0;
+        java.util.Set $r3;
+        java.lang.Object $r1;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r2 = r0.<org.dom4j.io.HTMLWriter: java.util.HashSet preformattedTags>;
+
+        $r1 = virtualinvoke $r2.<java.util.HashSet: java.lang.Object clone()>();
+
+        $r3 = (java.util.Set) $r1;
+
+        return $r3;
+    }
+
+    public boolean isPreformattedTag(java.lang.String)
+    {
+        java.util.HashSet $r1;
+        org.dom4j.io.HTMLWriter r0;
+        java.lang.String $r2;
+        boolean $z0;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r2 := @parameter0: java.lang.String;
+
+        $r1 = r0.<org.dom4j.io.HTMLWriter: java.util.HashSet preformattedTags>;
+
+        if $r1 == null goto label1;
+
+        $r2 = virtualinvoke $r2.<java.lang.String: java.lang.String toUpperCase()>();
+
+        $z0 = virtualinvoke $r1.<java.util.HashSet: boolean contains(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public void loadOmitElementCloseSet(java.util.Set)
+    {
+        java.util.Set $r1;
+        org.dom4j.io.HTMLWriter r0;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r1 := @parameter0: java.util.Set;
+
+        interfaceinvoke $r1.<java.util.Set: boolean add(java.lang.Object)>("AREA");
+
+        interfaceinvoke $r1.<java.util.Set: boolean add(java.lang.Object)>("BASE");
+
+        interfaceinvoke $r1.<java.util.Set: boolean add(java.lang.Object)>("BR");
+
+        interfaceinvoke $r1.<java.util.Set: boolean add(java.lang.Object)>("COL");
+
+        interfaceinvoke $r1.<java.util.Set: boolean add(java.lang.Object)>("HR");
+
+        interfaceinvoke $r1.<java.util.Set: boolean add(java.lang.Object)>("IMG");
+
+        interfaceinvoke $r1.<java.util.Set: boolean add(java.lang.Object)>("INPUT");
+
+        interfaceinvoke $r1.<java.util.Set: boolean add(java.lang.Object)>("LINK");
+
+        interfaceinvoke $r1.<java.util.Set: boolean add(java.lang.Object)>("META");
+
+        interfaceinvoke $r1.<java.util.Set: boolean add(java.lang.Object)>("P");
+
+        interfaceinvoke $r1.<java.util.Set: boolean add(java.lang.Object)>("PARAM");
+
+        return;
+    }
+
+    public boolean omitElementClose(java.lang.String)
+    {
+        java.util.HashSet $r2;
+        org.dom4j.io.HTMLWriter r0;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = specialinvoke r0.<org.dom4j.io.HTMLWriter: java.util.HashSet internalGetOmitElementCloseSet()>();
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String toUpperCase()>();
+
+        $z0 = virtualinvoke $r2.<java.util.HashSet: boolean contains(java.lang.Object)>($r1);
+
+        return $z0;
+    }
+
+    public void setOmitElementCloseSet(java.util.Set)
+    {
+        java.util.HashSet $r1;
+        java.util.Iterator $r3;
+        org.dom4j.io.HTMLWriter r0;
+        java.util.Set $r2;
+        java.lang.Object $r4;
+        java.lang.String $r5;
+        boolean $z0;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r2 := @parameter0: java.util.Set;
+
+        $r1 = new java.util.HashSet;
+
+        specialinvoke $r1.<java.util.HashSet: void <init>()>();
+
+        r0.<org.dom4j.io.HTMLWriter: java.util.HashSet omitElementCloseSet> = $r1;
+
+        if $r2 == null goto label3;
+
+        $r1 = new java.util.HashSet;
+
+        specialinvoke $r1.<java.util.HashSet: void <init>()>();
+
+        r0.<org.dom4j.io.HTMLWriter: java.util.HashSet omitElementCloseSet> = $r1;
+
+        $r3 = interfaceinvoke $r2.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 != 0 goto label2;
+
+        return;
+
+     label2:
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        if $r4 == null goto label1;
+
+        $r1 = r0.<org.dom4j.io.HTMLWriter: java.util.HashSet omitElementCloseSet>;
+
+        $r5 = virtualinvoke $r4.<java.lang.Object: java.lang.String toString()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.String: java.lang.String toUpperCase()>();
+
+        virtualinvoke $r1.<java.util.HashSet: boolean add(java.lang.Object)>($r5);
+
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    public void setPreformattedTags(java.util.Set)
+    {
+        java.util.HashSet $r1;
+        java.util.Iterator $r3;
+        org.dom4j.io.HTMLWriter r0;
+        java.util.Set $r2;
+        java.lang.Object $r4;
+        java.lang.String $r5;
+        boolean $z0;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r2 := @parameter0: java.util.Set;
+
+        $r1 = new java.util.HashSet;
+
+        specialinvoke $r1.<java.util.HashSet: void <init>()>();
+
+        r0.<org.dom4j.io.HTMLWriter: java.util.HashSet preformattedTags> = $r1;
+
+        if $r2 == null goto label3;
+
+        $r3 = interfaceinvoke $r2.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 != 0 goto label2;
+
+        return;
+
+     label2:
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        if $r4 == null goto label1;
+
+        $r1 = r0.<org.dom4j.io.HTMLWriter: java.util.HashSet preformattedTags>;
+
+        $r5 = virtualinvoke $r4.<java.lang.Object: java.lang.String toString()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.String: java.lang.String toUpperCase()>();
+
+        virtualinvoke $r1.<java.util.HashSet: boolean add(java.lang.Object)>($r5);
+
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    public void startCDATA()
+    {
+        org.dom4j.io.HTMLWriter r0;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        return;
+    }
+
+    public void writeCDATA(java.lang.String)
+    {
+        org.dom4j.io.HTMLWriter r0;
+        java.io.Writer $r3;
+        org.dom4j.io.OutputFormat $r2;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = virtualinvoke r0.<org.dom4j.io.XMLWriter: org.dom4j.io.OutputFormat getOutputFormat()>();
+
+        $z0 = virtualinvoke $r2.<org.dom4j.io.OutputFormat: boolean isXHTML()>();
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke r0.<org.dom4j.io.XMLWriter: void writeCDATA(java.lang.String)>($r1);
+
+        goto label2;
+
+     label1:
+        $r3 = r0.<org.dom4j.io.XMLWriter: java.io.Writer writer>;
+
+        virtualinvoke $r3.<java.io.Writer: void write(java.lang.String)>($r1);
+
+     label2:
+        r0.<org.dom4j.io.XMLWriter: int lastOutputNodeType> = 4;
+
+        return;
+    }
+
+    public void writeClose(java.lang.String)
+    {
+        java.lang.String $r1;
+        org.dom4j.io.HTMLWriter r0;
+        boolean $z0;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $z0 = virtualinvoke r0.<org.dom4j.io.HTMLWriter: boolean omitElementClose(java.lang.String)>($r1);
+
+        if $z0 != 0 goto label1;
+
+        specialinvoke r0.<org.dom4j.io.XMLWriter: void writeClose(java.lang.String)>($r1);
+
+     label1:
+        return;
+    }
+
+    public void writeDeclaration()
+    {
+        org.dom4j.io.HTMLWriter r0;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        return;
+    }
+
+    public void writeElement(org.dom4j.Element)
+    {
+        java.lang.Throwable $r10;
+        org.dom4j.io.OutputFormat $r7;
+        java.util.Stack $r1;
+        int $i0, $i1;
+        java.lang.String $r5, $r6, $r8;
+        boolean $z0, $z1;
+        org.dom4j.io.HTMLWriter r0;
+        org.dom4j.io.HTMLWriter$FormatState $r2, $r11;
+        java.io.Writer $r4;
+        org.dom4j.Element $r3;
+        java.lang.Object $r9;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r3 := @parameter0: org.dom4j.Element;
+
+        $i0 = r0.<org.dom4j.io.HTMLWriter: int newLineAfterNTags>;
+
+        $i1 = -1;
+
+        if $i0 != $i1 goto label01;
+
+        specialinvoke r0.<org.dom4j.io.HTMLWriter: void lazyInitNewLinesAfterNTags()>();
+
+     label01:
+        $i0 = r0.<org.dom4j.io.HTMLWriter: int newLineAfterNTags>;
+
+        if $i0 <= 0 goto label02;
+
+        $i1 = r0.<org.dom4j.io.HTMLWriter: int tagsOuput>;
+
+        if $i1 <= 0 goto label02;
+
+        $i0 = $i1 % $i0;
+
+        if $i0 != 0 goto label02;
+
+        $r4 = r0.<org.dom4j.io.XMLWriter: java.io.Writer writer>;
+
+        $r5 = <org.dom4j.io.HTMLWriter: java.lang.String lineSeparator>;
+
+        virtualinvoke $r4.<java.io.Writer: void write(java.lang.String)>($r5);
+
+     label02:
+        $i0 = r0.<org.dom4j.io.HTMLWriter: int tagsOuput>;
+
+        $i0 = $i0 + 1;
+
+        r0.<org.dom4j.io.HTMLWriter: int tagsOuput> = $i0;
+
+        $r6 = interfaceinvoke $r3.<org.dom4j.Element: java.lang.String getQualifiedName()>();
+
+        $r5 = r0.<org.dom4j.io.HTMLWriter: java.lang.String lastText>;
+
+        interfaceinvoke $r3.<org.dom4j.Branch: int nodeCount()>();
+
+        $z0 = virtualinvoke r0.<org.dom4j.io.HTMLWriter: boolean isPreformattedTag(java.lang.String)>($r6);
+
+        if $z0 == 0 goto label11;
+
+        $r7 = virtualinvoke r0.<org.dom4j.io.XMLWriter: org.dom4j.io.OutputFormat getOutputFormat()>();
+
+        $z0 = virtualinvoke $r7.<org.dom4j.io.OutputFormat: boolean isNewlines()>();
+
+        $z1 = virtualinvoke $r7.<org.dom4j.io.OutputFormat: boolean isTrimText()>();
+
+        $r6 = virtualinvoke $r7.<org.dom4j.io.OutputFormat: java.lang.String getIndent()>();
+
+        $r1 = r0.<org.dom4j.io.HTMLWriter: java.util.Stack formatStack>;
+
+        $r11 = new org.dom4j.io.HTMLWriter$FormatState;
+
+        specialinvoke $r11.<org.dom4j.io.HTMLWriter$FormatState: void <init>(org.dom4j.io.HTMLWriter,boolean,boolean,java.lang.String)>(r0, $z0, $z1, $r6);
+
+        virtualinvoke $r1.<java.util.Stack: java.lang.Object push(java.lang.Object)>($r11);
+
+     label03:
+        specialinvoke r0.<org.dom4j.io.XMLWriter: void writePrintln()>();
+
+        $r8 = virtualinvoke $r5.<java.lang.String: java.lang.String trim()>();
+
+        $i0 = virtualinvoke $r8.<java.lang.String: int length()>();
+
+     label04:
+        if $i0 != 0 goto label08;
+
+        if $r6 == null goto label08;
+
+     label05:
+        $i0 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+     label06:
+        if $i0 <= 0 goto label08;
+
+     label07:
+        $r4 = r0.<org.dom4j.io.XMLWriter: java.io.Writer writer>;
+
+        $r5 = specialinvoke r0.<org.dom4j.io.HTMLWriter: java.lang.String justSpaces(java.lang.String)>($r5);
+
+        virtualinvoke $r4.<java.io.Writer: void write(java.lang.String)>($r5);
+
+     label08:
+        virtualinvoke $r7.<org.dom4j.io.OutputFormat: void setNewlines(boolean)>(0);
+
+        virtualinvoke $r7.<org.dom4j.io.OutputFormat: void setTrimText(boolean)>(0);
+
+        virtualinvoke $r7.<org.dom4j.io.OutputFormat: void setIndent(java.lang.String)>("");
+
+        specialinvoke r0.<org.dom4j.io.XMLWriter: void writeElement(org.dom4j.Element)>($r3);
+
+     label09:
+        $r1 = r0.<org.dom4j.io.HTMLWriter: java.util.Stack formatStack>;
+
+        $r9 = virtualinvoke $r1.<java.util.Stack: java.lang.Object pop()>();
+
+        $r2 = (org.dom4j.io.HTMLWriter$FormatState) $r9;
+
+        $z0 = virtualinvoke $r2.<org.dom4j.io.HTMLWriter$FormatState: boolean isNewlines()>();
+
+        virtualinvoke $r7.<org.dom4j.io.OutputFormat: void setNewlines(boolean)>($z0);
+
+        $z0 = virtualinvoke $r2.<org.dom4j.io.HTMLWriter$FormatState: boolean isTrimText()>();
+
+        virtualinvoke $r7.<org.dom4j.io.OutputFormat: void setTrimText(boolean)>($z0);
+
+        $r5 = virtualinvoke $r2.<org.dom4j.io.HTMLWriter$FormatState: java.lang.String getIndent()>();
+
+        virtualinvoke $r7.<org.dom4j.io.OutputFormat: void setIndent(java.lang.String)>($r5);
+
+        return;
+
+     label10:
+        $r10 := @caughtexception;
+
+        $r1 = r0.<org.dom4j.io.HTMLWriter: java.util.Stack formatStack>;
+
+        $r9 = virtualinvoke $r1.<java.util.Stack: java.lang.Object pop()>();
+
+        $r2 = (org.dom4j.io.HTMLWriter$FormatState) $r9;
+
+        $z0 = virtualinvoke $r2.<org.dom4j.io.HTMLWriter$FormatState: boolean isNewlines()>();
+
+        virtualinvoke $r7.<org.dom4j.io.OutputFormat: void setNewlines(boolean)>($z0);
+
+        $z0 = virtualinvoke $r2.<org.dom4j.io.HTMLWriter$FormatState: boolean isTrimText()>();
+
+        virtualinvoke $r7.<org.dom4j.io.OutputFormat: void setTrimText(boolean)>($z0);
+
+        $r5 = virtualinvoke $r2.<org.dom4j.io.HTMLWriter$FormatState: java.lang.String getIndent()>();
+
+        virtualinvoke $r7.<org.dom4j.io.OutputFormat: void setIndent(java.lang.String)>($r5);
+
+        throw $r10;
+
+     label11:
+        specialinvoke r0.<org.dom4j.io.XMLWriter: void writeElement(org.dom4j.Element)>($r3);
+
+        return;
+
+        catch java.lang.Throwable from label03 to label04 with label10;
+        catch java.lang.Throwable from label05 to label06 with label10;
+        catch java.lang.Throwable from label07 to label09 with label10;
+    }
+
+    public void writeEmptyElementClose(java.lang.String)
+    {
+        org.dom4j.io.HTMLWriter r0;
+        java.io.Writer $r3;
+        org.dom4j.io.OutputFormat $r2;
+        java.lang.String $r1;
+        boolean $z0;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = virtualinvoke r0.<org.dom4j.io.XMLWriter: org.dom4j.io.OutputFormat getOutputFormat()>();
+
+        $z0 = virtualinvoke $r2.<org.dom4j.io.OutputFormat: boolean isXHTML()>();
+
+        if $z0 == 0 goto label2;
+
+        $z0 = virtualinvoke r0.<org.dom4j.io.HTMLWriter: boolean omitElementClose(java.lang.String)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        $r3 = r0.<org.dom4j.io.XMLWriter: java.io.Writer writer>;
+
+        virtualinvoke $r3.<java.io.Writer: void write(java.lang.String)>(" />");
+
+        return;
+
+     label1:
+        specialinvoke r0.<org.dom4j.io.XMLWriter: void writeEmptyElementClose(java.lang.String)>($r1);
+
+        return;
+
+     label2:
+        $z0 = virtualinvoke r0.<org.dom4j.io.HTMLWriter: boolean omitElementClose(java.lang.String)>($r1);
+
+        if $z0 == 0 goto label3;
+
+        $r3 = r0.<org.dom4j.io.XMLWriter: java.io.Writer writer>;
+
+        virtualinvoke $r3.<java.io.Writer: void write(java.lang.String)>(">");
+
+        return;
+
+     label3:
+        specialinvoke r0.<org.dom4j.io.XMLWriter: void writeEmptyElementClose(java.lang.String)>($r1);
+
+        return;
+    }
+
+    public void writeEntity(org.dom4j.Entity)
+    {
+        org.dom4j.Entity $r3;
+        org.dom4j.io.HTMLWriter r0;
+        java.io.Writer $r1;
+        java.lang.String $r2;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r3 := @parameter0: org.dom4j.Entity;
+
+        $r1 = r0.<org.dom4j.io.XMLWriter: java.io.Writer writer>;
+
+        $r2 = interfaceinvoke $r3.<org.dom4j.Node: java.lang.String getText()>();
+
+        virtualinvoke $r1.<java.io.Writer: void write(java.lang.String)>($r2);
+
+        r0.<org.dom4j.io.XMLWriter: int lastOutputNodeType> = 5;
+
+        return;
+    }
+
+    public void writeString(java.lang.String)
+    {
+        org.dom4j.io.HTMLWriter r0;
+        java.lang.String $r1;
+        java.util.Stack $r2;
+        boolean $z0;
+
+        r0 := @this: org.dom4j.io.HTMLWriter;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>("\n");
+
+        if $z0 == 0 goto label1;
+
+        $r2 = r0.<org.dom4j.io.HTMLWriter: java.util.Stack formatStack>;
+
+        $z0 = virtualinvoke $r2.<java.util.Stack: boolean empty()>();
+
+        if $z0 != 0 goto label3;
+
+        $r1 = <org.dom4j.io.HTMLWriter: java.lang.String lineSeparator>;
+
+        specialinvoke r0.<org.dom4j.io.XMLWriter: void writeString(java.lang.String)>($r1);
+
+        return;
+
+     label1:
+        r0.<org.dom4j.io.HTMLWriter: java.lang.String lastText> = $r1;
+
+        $r2 = r0.<org.dom4j.io.HTMLWriter: java.util.Stack formatStack>;
+
+        $z0 = virtualinvoke $r2.<java.util.Stack: boolean empty()>();
+
+        if $z0 == 0 goto label2;
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String trim()>();
+
+        specialinvoke r0.<org.dom4j.io.XMLWriter: void writeString(java.lang.String)>($r1);
+
+        return;
+
+     label2:
+        specialinvoke r0.<org.dom4j.io.XMLWriter: void writeString(java.lang.String)>($r1);
+
+     label3:
+        return;
+    }
+}

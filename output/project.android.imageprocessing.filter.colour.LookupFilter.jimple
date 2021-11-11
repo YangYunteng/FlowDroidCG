@@ -1,0 +1,132 @@
+public class project.android.imageprocessing.filter.colour.LookupFilter extends project.android.imageprocessing.filter.MultiInputFilter
+{
+    public android.graphics.Bitmap lookupBitmap;
+    public int lookup_texture;
+
+    public void <init>(android.content.Context, int)
+    {
+        android.content.Context $r1;
+        android.graphics.Bitmap $r4;
+        int $i0;
+        project.android.imageprocessing.filter.colour.LookupFilter r0;
+        android.graphics.BitmapFactory$Options $r2;
+        android.content.res.Resources $r3;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.LookupFilter;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $i0 := @parameter1: int;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void <init>(int)>(2);
+
+        $r2 = new android.graphics.BitmapFactory$Options;
+
+        specialinvoke $r2.<android.graphics.BitmapFactory$Options: void <init>()>();
+
+        $r2.<android.graphics.BitmapFactory$Options: boolean inScaled> = 0;
+
+        $r3 = virtualinvoke $r1.<android.content.Context: android.content.res.Resources getResources()>();
+
+        $r4 = staticinvoke <android.graphics.BitmapFactory: android.graphics.Bitmap decodeResource(android.content.res.Resources,int,android.graphics.BitmapFactory$Options)>($r3, $i0, $r2);
+
+        r0.<project.android.imageprocessing.filter.colour.LookupFilter: android.graphics.Bitmap lookupBitmap> = $r4;
+
+        return;
+    }
+
+    public void destroy()
+    {
+        int $i0;
+        project.android.imageprocessing.filter.colour.LookupFilter r0;
+        int[] $r1;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.LookupFilter;
+
+        specialinvoke r0.<project.android.imageprocessing.input.GLTextureOutputRenderer: void destroy()>();
+
+        $i0 = r0.<project.android.imageprocessing.filter.colour.LookupFilter: int lookup_texture>;
+
+        if $i0 == 0 goto label1;
+
+        $r1 = newarray (int)[1];
+
+        $r1[0] = $i0;
+
+        staticinvoke <android.opengl.GLES20: void glDeleteTextures(int,int[],int)>(1, $r1, 0);
+
+        r0.<project.android.imageprocessing.filter.colour.LookupFilter: int lookup_texture> = 0;
+
+     label1:
+        return;
+    }
+
+    public java.lang.String getFragmentShader()
+    {
+        project.android.imageprocessing.filter.colour.LookupFilter r0;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.LookupFilter;
+
+        return "precision mediump float;\nuniform sampler2D u_Texture0;\nuniform sampler2D u_Texture1;\nvarying vec2 v_TexCoord;\nvoid main(){\n  vec4 texColour = texture2D(u_Texture0,v_TexCoord);\n  float blueColor = texColour.b * 63.0;\n  vec2 quad1;\n  quad1.y = floor(floor(blueColor) / 8.0);\n  quad1.x = floor(blueColor) - (quad1.y * 8.0);\n  vec2 quad2;\n  quad2.y = floor(ceil(blueColor) / 8.0);\n  quad2.x = ceil(blueColor) - (quad2.y * 8.0);\n  vec2 texPos1;\n  texPos1.x = (quad1.x * 0.125) + 0.5/512.0 + ((0.125 - 1.0/512.0) * texColour.r);\n  texPos1.y = (quad1.y * 0.125) + 0.5/512.0 + ((0.125 - 1.0/512.0) * texColour.g);\n  vec2 texPos2;\n  texPos2.x = (quad2.x * 0.125) + 0.5/512.0 + ((0.125 - 1.0/512.0) * texColour.r);\n  texPos2.y = (quad2.y * 0.125) + 0.5/512.0 + ((0.125 - 1.0/512.0) * texColour.g);\n  vec4 newColor1 = texture2D(u_Texture1, texPos1);\n  vec4 newColor2 = texture2D(u_Texture1, texPos2);\n  vec4 newColor = mix(newColor1, newColor2, fract(blueColor));\n  gl_FragColor = vec4(newColor.rgb, texColour.a);\n}\n";
+    }
+
+    public void newTextureReady(int, project.android.imageprocessing.input.GLTextureOutputRenderer, boolean)
+    {
+        project.android.imageprocessing.input.GLTextureOutputRenderer $r1;
+        project.android.imageprocessing.filter.colour.LookupFilter r0;
+        java.util.List $r2;
+        android.graphics.Bitmap $r4;
+        int $i0, $i1;
+        java.lang.Object $r3;
+        boolean $z0, $z1;
+
+        r0 := @this: project.android.imageprocessing.filter.colour.LookupFilter;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: project.android.imageprocessing.input.GLTextureOutputRenderer;
+
+        $z0 := @parameter2: boolean;
+
+        $r2 = r0.<project.android.imageprocessing.filter.MultiInputFilter: java.util.List filterLocations>;
+
+        $i1 = interfaceinvoke $r2.<java.util.List: int size()>();
+
+        if $i1 < 2 goto label1;
+
+        $r2 = r0.<project.android.imageprocessing.filter.MultiInputFilter: java.util.List filterLocations>;
+
+        $r3 = interfaceinvoke $r2.<java.util.List: java.lang.Object get(int)>(0);
+
+        $z1 = virtualinvoke $r1.<java.lang.Object: boolean equals(java.lang.Object)>($r3);
+
+        if $z1 != 0 goto label2;
+
+     label1:
+        virtualinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void clearRegisteredFilterLocations()>();
+
+        virtualinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void registerFilterLocation(project.android.imageprocessing.input.GLTextureOutputRenderer,int)>($r1, 0);
+
+        virtualinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void registerFilterLocation(project.android.imageprocessing.input.GLTextureOutputRenderer,int)>(r0, 1);
+
+     label2:
+        $i1 = r0.<project.android.imageprocessing.filter.colour.LookupFilter: int lookup_texture>;
+
+        if $i1 != 0 goto label3;
+
+        $r4 = r0.<project.android.imageprocessing.filter.colour.LookupFilter: android.graphics.Bitmap lookupBitmap>;
+
+        $i1 = staticinvoke <project.android.imageprocessing.helper.ImageHelper: int bitmapToTexture(android.graphics.Bitmap)>($r4);
+
+        r0.<project.android.imageprocessing.filter.colour.LookupFilter: int lookup_texture> = $i1;
+
+     label3:
+        $i1 = r0.<project.android.imageprocessing.filter.colour.LookupFilter: int lookup_texture>;
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void newTextureReady(int,project.android.imageprocessing.input.GLTextureOutputRenderer,boolean)>($i1, r0, $z0);
+
+        specialinvoke r0.<project.android.imageprocessing.filter.MultiInputFilter: void newTextureReady(int,project.android.imageprocessing.input.GLTextureOutputRenderer,boolean)>($i0, $r1, $z0);
+
+        return;
+    }
+}

@@ -1,0 +1,1874 @@
+public class com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity extends com.caremark.caremark.ui.rxclaims.RxBaseActivity
+{
+    public java.lang.String differentPharmacy;
+    public java.lang.String lastPharmacy;
+    public c.c.a.o.a.j mPharmacyPreviousSearchRecyclerViewAdapter;
+    public android.widget.Button mSelectButton;
+    public java.lang.String mustSelect;
+    public java.lang.String mustSelectPharmacy;
+    public com.caremark.caremark.views.CVSHelveticaTextView newPharmacyBtn;
+    public java.util.ArrayList pharmacyAddressArray;
+    public androidx.recyclerview.widget.RecyclerView pharmacyAddressRecyclerView;
+    public com.caremark.caremark.ui.rxclaims.RxClaimProgressDialogView rxClaimProgressDialogView;
+    public java.lang.String searchDifferentPharmacy;
+    public java.lang.String searchedPharmacy;
+    public java.lang.String select;
+    public java.lang.String selectPharmacy;
+    public java.lang.String selectPharmacyError;
+    public java.lang.String yes;
+
+    public void <init>()
+    {
+        com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity r0;
+
+        r0 := @this: com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity;
+
+        specialinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: void <init>()>();
+
+        return;
+    }
+
+    public static com.caremark.caremark.ui.rxclaims.RxClaimProgressDialogView access$000(com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity)
+    {
+        com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity $r0;
+        com.caremark.caremark.ui.rxclaims.RxClaimProgressDialogView r1;
+
+        $r0 := @parameter0: com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity;
+
+        r1 = $r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: com.caremark.caremark.ui.rxclaims.RxClaimProgressDialogView rxClaimProgressDialogView>;
+
+        return r1;
+    }
+
+    public static void access$100(com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity)
+    {
+        com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity $r0;
+
+        $r0 := @parameter0: com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity;
+
+        specialinvoke $r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: void navigationCheck()>();
+
+        return;
+    }
+
+    private void navigationCheck()
+    {
+        com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity r0;
+        c.c.a.c.b $r1;
+        c.c.a.c.b$c $r3;
+        android.content.Intent $r5;
+        java.lang.String $r2, $r4;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity;
+
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = $r1.<c.c.a.c.b: java.lang.String U>;
+
+        $r3 = <c.c.a.c.b$c: c.c.a.c.b$c a>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r4);
+
+        if $z0 == 0 goto label1;
+
+        $r5 = new android.content.Intent;
+
+        specialinvoke $r5.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>(r0, class "Lcom/caremark/caremark/ui/rxclaims/RxCompoundDrugDetailActivity;");
+
+        virtualinvoke r0.<android.app.Activity: void startActivity(android.content.Intent)>($r5);
+
+        return;
+
+     label1:
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = $r1.<c.c.a.c.b: java.lang.String U>;
+
+        $r3 = <c.c.a.c.b$c: c.c.a.c.b$c b>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r4);
+
+        if $z0 == 0 goto label2;
+
+        $r5 = new android.content.Intent;
+
+        specialinvoke $r5.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>(r0, class "Lcom/caremark/caremark/ui/rxclaims/RxAllergenDrugDetailActivity;");
+
+        virtualinvoke r0.<android.app.Activity: void startActivity(android.content.Intent)>($r5);
+
+        return;
+
+     label2:
+        $r5 = new android.content.Intent;
+
+        specialinvoke $r5.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>(r0, class "Lcom/caremark/caremark/ui/rxclaims/RxDrugsLookUpActivity;");
+
+        virtualinvoke r0.<android.app.Activity: void startActivity(android.content.Intent)>($r5);
+
+        return;
+    }
+
+    private void parseNetworkResponse()
+    {
+        com.caremark.caremark.views.CVSHelveticaTextView $r11;
+        java.util.ArrayList $r2;
+        c.c.a.c.b $r1;
+        com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy $r4;
+        int $i0, $i1;
+        android.view.View $r10;
+        android.widget.Button $r12;
+        java.lang.String $r5, $r6, $r7;
+        com.caremark.caremark.model.rxclaims.findpharmacies.PharmaciesPreviousSearchModel $r9;
+        boolean $z0;
+        com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity r0;
+        java.lang.Object $r3;
+        java.lang.StringBuilder $r8;
+
+        r0 := @this: com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity;
+
+        $i0 = 0;
+
+     label01:
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $i1 = virtualinvoke $r2.<java.util.ArrayList: int size()>();
+
+        if $i0 >= $i1 goto label10;
+
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r4 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r3;
+
+        $r5 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyName()>();
+
+        $r6 = "";
+
+        if $r5 == null goto label02;
+
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r4 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r3;
+
+        $r5 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyName()>();
+
+        goto label03;
+
+     label02:
+        $r5 = "";
+
+     label03:
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r4 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r3;
+
+        $r7 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyAddress1()>();
+
+        if $r7 == null goto label04;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("");
+
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r4 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r3;
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyAddress1()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n");
+
+        $r6 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label04:
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r4 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r3;
+
+        $r7 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyAddress2()>();
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r7);
+
+        if $z0 != 0 goto label05;
+
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r4 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r3;
+
+        $r7 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyAddress2()>();
+
+        if $r7 == null goto label05;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r4 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r3;
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyAddress2()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n");
+
+        $r6 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label05:
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r4 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r3;
+
+        $r7 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyCity()>();
+
+        if $r7 == null goto label06;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r4 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r3;
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyCity()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $r6 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label06:
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r4 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r3;
+
+        $r7 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyState()>();
+
+        if $r7 == null goto label07;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r4 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r3;
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyState()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $r6 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label07:
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r4 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r3;
+
+        $r7 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyZip()>();
+
+        if $r7 == null goto label08;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r4 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r3;
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyZip()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n");
+
+        $r6 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label08:
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r4 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r3;
+
+        $r7 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyPhoneNumber()>();
+
+        if $r7 == null goto label09;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Phone number: ");
+
+        $r1 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r1.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r4 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r3;
+
+        $r6 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyPhoneNumber()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r6 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label09:
+        $r2 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.util.ArrayList pharmacyAddressArray>;
+
+        $r9 = new com.caremark.caremark.model.rxclaims.findpharmacies.PharmaciesPreviousSearchModel;
+
+        specialinvoke $r9.<com.caremark.caremark.model.rxclaims.findpharmacies.PharmaciesPreviousSearchModel: void <init>(java.lang.String,java.lang.String)>($r5, $r6);
+
+        virtualinvoke $r2.<java.util.ArrayList: boolean add(java.lang.Object)>($r9);
+
+        $i0 = $i0 + 1;
+
+        goto label01;
+
+     label10:
+        $r2 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.util.ArrayList pharmacyAddressArray>;
+
+        if $r2 == null goto label26;
+
+        $i0 = virtualinvoke $r2.<java.util.ArrayList: int size()>();
+
+        if $i0 <= 1 goto label26;
+
+        $r2 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.util.ArrayList pharmacyAddressArray>;
+
+        $i0 = virtualinvoke $r2.<java.util.ArrayList: int size()>();
+
+        if $i0 != 1 goto label17;
+
+        $r2 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.util.ArrayList pharmacyAddressArray>;
+
+        $r3 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>(0);
+
+        $r9 = (com.caremark.caremark.model.rxclaims.findpharmacies.PharmaciesPreviousSearchModel) $r3;
+
+        virtualinvoke $r9.<com.caremark.caremark.model.rxclaims.findpharmacies.PharmaciesPreviousSearchModel: void setSelected(boolean)>(1);
+
+        $r10 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131298188);
+
+        $r11 = (com.caremark.caremark.views.CVSHelveticaTextView) $r10;
+
+        $z0 = <c.c.a.o.e.Kc: boolean b>;
+
+        if $z0 == 0 goto label11;
+
+        $r5 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822254);
+
+        goto label12;
+
+     label11:
+        $r5 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String lastPharmacy>;
+
+     label12:
+        virtualinvoke $r11.<com.caremark.caremark.views.CVSHelveticaTextView: void setText(java.lang.String)>($r5);
+
+        $r10 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297208);
+
+        $r11 = (com.caremark.caremark.views.CVSHelveticaTextView) $r10;
+
+        virtualinvoke $r11.<android.widget.TextView: void setVisibility(int)>(8);
+
+        $r12 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: android.widget.Button mSelectButton>;
+
+        $z0 = <c.c.a.o.e.Kc: boolean b>;
+
+        if $z0 == 0 goto label13;
+
+        $r5 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821980);
+
+        goto label14;
+
+     label13:
+        $r5 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String yes>;
+
+     label14:
+        virtualinvoke $r12.<android.widget.Button: void setText(java.lang.CharSequence)>($r5);
+
+        $r11 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: com.caremark.caremark.views.CVSHelveticaTextView newPharmacyBtn>;
+
+        $z0 = <c.c.a.o.e.Kc: boolean b>;
+
+        if $z0 == 0 goto label15;
+
+        $r5 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821978);
+
+        goto label16;
+
+     label15:
+        $r5 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String differentPharmacy>;
+
+     label16:
+        virtualinvoke $r11.<com.caremark.caremark.views.CVSHelveticaTextView: void setText(java.lang.String)>($r5);
+
+        return;
+
+     label17:
+        $r10 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131298188);
+
+        $r11 = (com.caremark.caremark.views.CVSHelveticaTextView) $r10;
+
+        $z0 = <c.c.a.o.e.Kc: boolean b>;
+
+        if $z0 == 0 goto label18;
+
+        $r5 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822260);
+
+        goto label19;
+
+     label18:
+        $r5 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String searchedPharmacy>;
+
+     label19:
+        virtualinvoke $r11.<com.caremark.caremark.views.CVSHelveticaTextView: void setText(java.lang.String)>($r5);
+
+        $r10 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297208);
+
+        $r11 = (com.caremark.caremark.views.CVSHelveticaTextView) $r10;
+
+        virtualinvoke $r11.<android.widget.TextView: void setVisibility(int)>(0);
+
+        $r10 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297208);
+
+        $r11 = (com.caremark.caremark.views.CVSHelveticaTextView) $r10;
+
+        $z0 = <c.c.a.o.e.Kc: boolean b>;
+
+        if $z0 == 0 goto label20;
+
+        $r5 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822259);
+
+        goto label21;
+
+     label20:
+        $r5 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String mustSelectPharmacy>;
+
+     label21:
+        virtualinvoke $r11.<com.caremark.caremark.views.CVSHelveticaTextView: void setText(java.lang.String)>($r5);
+
+        $r12 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: android.widget.Button mSelectButton>;
+
+        $z0 = <c.c.a.o.e.Kc: boolean b>;
+
+        if $z0 == 0 goto label22;
+
+        $r5 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822428);
+
+        goto label23;
+
+     label22:
+        $r5 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String select>;
+
+     label23:
+        virtualinvoke $r12.<android.widget.Button: void setText(java.lang.CharSequence)>($r5);
+
+        $r11 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: com.caremark.caremark.views.CVSHelveticaTextView newPharmacyBtn>;
+
+        $z0 = <c.c.a.o.e.Kc: boolean b>;
+
+        if $z0 == 0 goto label24;
+
+        $r5 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821979);
+
+        goto label25;
+
+     label24:
+        $r5 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String searchDifferentPharmacy>;
+
+     label25:
+        virtualinvoke $r11.<com.caremark.caremark.views.CVSHelveticaTextView: void setText(java.lang.String)>($r5);
+
+     label26:
+        return;
+    }
+
+    private void sendAdobeEventTrackStateForAddressSelection()
+    {
+        android.content.Context $r8;
+        c.c.a.n.a.c $r3;
+        c.c.a.n.a.d $r5;
+        c.c.a.n.a.e $r15;
+        java.util.HashMap $r1;
+        java.lang.String[] $r13;
+        c.c.a.n.c$a $r16;
+        com.caremark.caremark.util.IceUtil $r14;
+        c.c.a.d.c $r2;
+        int $i0;
+        java.lang.String $r4, $r6;
+        c.c.a.d.l $r7;
+        c.c.a.d.i $r11;
+        boolean $z0;
+        com.caremark.caremark.core.CaremarkApp $r9;
+        com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity r0;
+        com.caremark.caremark.synclib.dao.ResponseData $r10;
+        android.content.res.Resources $r12;
+
+        r0 := @this: com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity;
+
+        $r1 = new java.util.HashMap;
+
+        specialinvoke $r1.<java.util.HashMap: void <init>()>();
+
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c a>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r5 = <c.c.a.n.a.d: c.c.a.n.a.d Rc>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.a.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+        $r7 = r0.<com.caremark.caremark.BaseActivity: c.c.a.d.l sessionManager>;
+
+        $z0 = virtualinvoke $r7.<c.c.a.d.l: boolean d()>();
+
+        if $z0 == 0 goto label3;
+
+        $r8 = staticinvoke <com.caremark.caremark.core.CaremarkApp: android.content.Context getAppContext()>();
+
+        $r9 = (com.caremark.caremark.core.CaremarkApp) $r8;
+
+        $r10 = virtualinvoke $r9.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.synclib.dao.ResponseData getResponseData()>();
+
+        $z0 = virtualinvoke $r10.<com.caremark.caremark.synclib.dao.ResponseData: boolean isSensitiveDataEnabled()>();
+
+        if $z0 == 0 goto label1;
+
+        $r11 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $r4 = virtualinvoke $r11.<c.c.a.d.i: java.lang.String G()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>("");
+
+        if $z0 != 0 goto label1;
+
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c ea>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r11 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $r2 = <c.c.a.d.c: c.c.a.d.c F>;
+
+        $r6 = virtualinvoke $r11.<c.c.a.d.i: java.lang.String a(c.c.a.d.c)>($r2);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c v>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r11 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $r6 = virtualinvoke $r11.<c.c.a.d.i: java.lang.String G()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+     label1:
+        $r11 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $r2 = <c.c.a.d.c: c.c.a.d.c y>;
+
+        $r4 = virtualinvoke $r11.<c.c.a.d.i: java.lang.String a(c.c.a.d.c)>($r2);
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>("");
+
+        if $z0 != 0 goto label2;
+
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c x>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r11 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $r2 = <c.c.a.d.c: c.c.a.d.c y>;
+
+        $r6 = virtualinvoke $r11.<c.c.a.d.i: java.lang.String a(c.c.a.d.c)>($r2);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+     label2:
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c d>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r5 = <c.c.a.n.a.d: c.c.a.n.a.d b>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.a.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c ia>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r5 = <c.c.a.n.a.d: c.c.a.n.a.d e>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.a.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+     label3:
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c fa>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r5 = <c.c.a.n.a.d: c.c.a.n.a.d nb>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.a.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c f>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r5 = <c.c.a.n.a.d: c.c.a.n.a.d g>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.a.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c g>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r5 = <c.c.a.n.a.d: c.c.a.n.a.d Jb>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.a.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c h>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r5 = <c.c.a.n.a.d: c.c.a.n.a.d Jb>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.a.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c i>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r5 = <c.c.a.n.a.d: c.c.a.n.a.d Jb>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.a.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c j>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r5 = <c.c.a.n.a.d: c.c.a.n.a.d Jb>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.a.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c k>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r5 = <c.c.a.n.a.d: c.c.a.n.a.d Sc>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.a.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+        $r12 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.content.res.Resources getResources()>();
+
+        $r13 = virtualinvoke $r12.<android.content.res.Resources: java.lang.String[] getStringArray(int)>(2130903040);
+
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c ba>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r11 = staticinvoke <c.c.a.d.i: c.c.a.d.i s()>();
+
+        $i0 = virtualinvoke $r11.<c.c.a.d.i: int k()>();
+
+        $r6 = $r13[$i0];
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+        $r8 = staticinvoke <com.caremark.caremark.core.CaremarkApp: android.content.Context getAppContext()>();
+
+        $r9 = (com.caremark.caremark.core.CaremarkApp) $r8;
+
+        $r10 = virtualinvoke $r9.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.synclib.dao.ResponseData getResponseData()>();
+
+        $z0 = virtualinvoke $r10.<com.caremark.caremark.synclib.dao.ResponseData: boolean isSensitiveDataEnabled()>();
+
+        if $z0 == 0 goto label4;
+
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c ca>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r6 = staticinvoke <c.c.a.n.c: java.lang.String b(android.content.Context)>(r0);
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+     label4:
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c da>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r5 = <c.c.a.n.a.d: c.c.a.n.a.d jb>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.a.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+        $r14 = virtualinvoke $r9.<com.caremark.caremark.core.CaremarkApp: com.caremark.caremark.util.IceUtil getIceUtil()>();
+
+        $z0 = virtualinvoke $r14.<com.caremark.caremark.util.IceUtil: boolean isIceEnabledAfterLogin()>();
+
+        if $z0 == 0 goto label5;
+
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c w>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r5 = <c.c.a.n.a.d: c.c.a.n.a.d t>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.a.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+        goto label6;
+
+     label5:
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c w>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r5 = <c.c.a.n.a.d: c.c.a.n.a.d u>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.a.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+     label6:
+        $r3 = <c.c.a.n.a.c: c.c.a.n.a.c la>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.a.c: java.lang.String a()>();
+
+        $r6 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: java.lang.String getDeviceName()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r6);
+
+        $r15 = <c.c.a.n.a.e: c.c.a.n.a.e Y>;
+
+        $r4 = virtualinvoke $r15.<c.c.a.n.a.e: java.lang.String a()>();
+
+        $r16 = <c.c.a.n.c$a: c.c.a.n.c$a d>;
+
+        staticinvoke <c.c.a.n.c: void c(java.lang.String,java.util.HashMap,c.c.a.n.c$a)>($r4, $r1, $r16);
+
+        return;
+    }
+
+    private void showError(java.util.List)
+    {
+        android.widget.LinearLayout $r3;
+        c.c.a.o.a.j $r12;
+        com.caremark.caremark.views.CVSHelveticaTextView $r6, $r13;
+        int $i0, $i1, $i2, $i3, $i4;
+        android.view.View $r2;
+        android.widget.LinearLayout$LayoutParams $r8, $r14;
+        java.lang.String $r11;
+        android.text.method.MovementMethod $r7;
+        boolean $z0;
+        com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity r0;
+        java.lang.CharSequence $r10;
+        android.util.DisplayMetrics $r5;
+        java.util.List $r1;
+        float $f0;
+        java.lang.Object $r9;
+        android.content.res.Resources $r4;
+
+        r0 := @this: com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity;
+
+        $r1 := @parameter0: java.util.List;
+
+        $r2 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297060);
+
+        virtualinvoke $r2.<android.view.View: void setVisibility(int)>(0);
+
+        $r2 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297061);
+
+        $r3 = (android.widget.LinearLayout) $r2;
+
+        virtualinvoke $r3.<android.widget.LinearLayout: void removeAllViews()>();
+
+        $f0 = 5.0F;
+
+        $r4 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.content.res.Resources getResources()>();
+
+        $r5 = virtualinvoke $r4.<android.content.res.Resources: android.util.DisplayMetrics getDisplayMetrics()>();
+
+        $f0 = staticinvoke <android.util.TypedValue: float applyDimension(int,float,android.util.DisplayMetrics)>(1, $f0, $r5);
+
+        $i0 = (int) $f0;
+
+        $r4 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.content.res.Resources getResources()>();
+
+        $r5 = virtualinvoke $r4.<android.content.res.Resources: android.util.DisplayMetrics getDisplayMetrics()>();
+
+        $f0 = staticinvoke <android.util.TypedValue: float applyDimension(int,float,android.util.DisplayMetrics)>(1, 3.0F, $r5);
+
+        $i1 = (int) $f0;
+
+        $i2 = 0;
+
+     label1:
+        $i3 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        if $i2 >= $i3 goto label4;
+
+        $r13 = new com.caremark.caremark.views.CVSHelveticaTextView;
+
+        $r6 = $r13;
+
+        specialinvoke $r13.<com.caremark.caremark.views.CVSHelveticaTextView: void <init>(android.content.Context)>(r0);
+
+        $r7 = staticinvoke <android.text.method.LinkMovementMethod: android.text.method.MovementMethod getInstance()>();
+
+        virtualinvoke $r6.<android.widget.TextView: void setMovementMethod(android.text.method.MovementMethod)>($r7);
+
+        $r4 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.content.res.Resources getResources()>();
+
+        $i3 = virtualinvoke $r4.<android.content.res.Resources: int getColor(int)>(2131099701);
+
+        virtualinvoke $r6.<android.widget.TextView: void setTextColor(int)>($i3);
+
+        $r4 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.content.res.Resources getResources()>();
+
+        $f0 = virtualinvoke $r4.<android.content.res.Resources: float getDimension(int)>(2131165383);
+
+        virtualinvoke $r6.<androidx.appcompat.widget.AppCompatTextView: void setTextSize(int,float)>(0, $f0);
+
+        $r14 = new android.widget.LinearLayout$LayoutParams;
+
+        $r8 = $r14;
+
+        $i3 = -2;
+
+        $i4 = -2;
+
+        specialinvoke $r14.<android.widget.LinearLayout$LayoutParams: void <init>(int,int)>($i3, $i4);
+
+        if $i2 != 0 goto label2;
+
+        virtualinvoke $r8.<android.widget.LinearLayout$LayoutParams: void setMargins(int,int,int,int)>(0, 0, 0, $i1);
+
+        goto label3;
+
+     label2:
+        virtualinvoke $r8.<android.widget.LinearLayout$LayoutParams: void setMargins(int,int,int,int)>(0, $i0, 0, 0);
+
+     label3:
+        virtualinvoke $r6.<android.widget.TextView: void setLayoutParams(android.view.ViewGroup$LayoutParams)>($r8);
+
+        $r9 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i2);
+
+        $r10 = (java.lang.CharSequence) $r9;
+
+        virtualinvoke $r6.<android.widget.TextView: void setText(java.lang.CharSequence)>($r10);
+
+        virtualinvoke $r3.<android.widget.LinearLayout: void addView(android.view.View)>($r6);
+
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label4:
+        $r2 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297059);
+
+        virtualinvoke $r2.<android.view.View: void setVisibility(int)>(0);
+
+        $r2 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297059);
+
+        $r6 = (com.caremark.caremark.views.CVSHelveticaTextView) $r2;
+
+        $z0 = <c.c.a.o.e.Kc: boolean b>;
+
+        if $z0 == 0 goto label5;
+
+        $r11 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821976);
+
+        goto label6;
+
+     label5:
+        $r11 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String selectPharmacy>;
+
+     label6:
+        virtualinvoke $r6.<com.caremark.caremark.views.CVSHelveticaTextView: void setText(java.lang.String)>($r11);
+
+        $r12 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: c.c.a.o.a.j mPharmacyPreviousSearchRecyclerViewAdapter>;
+
+        virtualinvoke $r12.<c.c.a.o.a.j: void a(boolean)>(1);
+
+        $r2 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297060);
+
+        virtualinvoke $r2.<android.view.View: void sendAccessibilityEvent(int)>(8);
+
+        return;
+    }
+
+    public int getContentViewId()
+    {
+        com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity r0;
+
+        r0 := @this: com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity;
+
+        return 2131492937;
+    }
+
+    public void onClick(android.view.View)
+    {
+        com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity$a $r13;
+        android.content.Intent $r11;
+        java.lang.String[] $r14;
+        java.util.ArrayList $r2;
+        c.c.a.c.b $r3, $r4;
+        com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy $r6;
+        int $i0;
+        com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint $r12;
+        android.view.View $r1;
+        java.lang.String $r8, $r10, $r15;
+        boolean $z0;
+        com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity r0;
+        c.c.a.c.b$a $r7;
+        c.c.a.c.b$c $r9;
+        java.util.List $r16;
+        java.lang.Object $r5;
+
+        r0 := @this: com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity;
+
+        $r1 := @parameter0: android.view.View;
+
+        $i0 = virtualinvoke $r1.<android.view.View: int getId()>();
+
+        if $i0 == 2131298024 goto label01;
+
+        return;
+
+     label01:
+        $r2 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.util.ArrayList pharmacyAddressArray>;
+
+        $i0 = virtualinvoke $r2.<java.util.ArrayList: int size()>();
+
+        if $i0 != 1 goto label02;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r4 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r2 = virtualinvoke $r4.<c.c.a.c.b: java.util.ArrayList y()>();
+
+        $r5 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>(0);
+
+        $r6 = (com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy) $r5;
+
+        virtualinvoke $r3.<c.c.a.c.b: void a(com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy)>($r6);
+
+     label02:
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r6 = virtualinvoke $r3.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy x()>();
+
+        if $r6 == null goto label07;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r7 = <c.c.a.c.b$a: c.c.a.c.b$a b>;
+
+        virtualinvoke $r3.<c.c.a.c.b: void a(c.c.a.c.b$a)>($r7);
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $z0 = $r3.<c.c.a.c.b: boolean X>;
+
+        if $z0 == 0 goto label05;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r3.<c.c.a.c.b: boolean X> = 0;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r8 = $r3.<c.c.a.c.b: java.lang.String U>;
+
+        $r9 = <c.c.a.c.b$c: c.c.a.c.b$c a>;
+
+        $r10 = virtualinvoke $r9.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r8.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r10);
+
+        if $z0 != 0 goto label04;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r8 = $r3.<c.c.a.c.b: java.lang.String U>;
+
+        $r9 = <c.c.a.c.b$c: c.c.a.c.b$c b>;
+
+        $r10 = virtualinvoke $r9.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r8.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r10);
+
+        if $z0 == 0 goto label03;
+
+        goto label04;
+
+     label03:
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r8 = $r3.<c.c.a.c.b: java.lang.String U>;
+
+        $r9 = <c.c.a.c.b$c: c.c.a.c.b$c c>;
+
+        $r10 = virtualinvoke $r9.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r8.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r10);
+
+        if $z0 == 0 goto label14;
+
+        $r11 = new android.content.Intent;
+
+        specialinvoke $r11.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>(r0, class "Lcom/caremark/caremark/ui/rxclaims/RxReviewClaimDetailActivity;");
+
+        virtualinvoke r0.<android.app.Activity: void startActivity(android.content.Intent)>($r11);
+
+        return;
+
+     label04:
+        $r11 = new android.content.Intent;
+
+        specialinvoke $r11.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>(r0, class "Lcom/caremark/caremark/ui/rxclaims/RxCompoundReviewClaimDetailActivity;");
+
+        virtualinvoke r0.<android.app.Activity: void startActivity(android.content.Intent)>($r11);
+
+        virtualinvoke r0.<android.app.Activity: void finish()>();
+
+        return;
+
+     label05:
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $z0 = $r3.<c.c.a.c.b: boolean aa>;
+
+        if $z0 == 0 goto label06;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r3.<c.c.a.c.b: boolean aa> = 0;
+
+        $r11 = new android.content.Intent;
+
+        specialinvoke $r11.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>(r0, class "Lcom/caremark/caremark/ui/rxclaims/RxPrescriptionClaimReviewActivity;");
+
+        virtualinvoke r0.<android.app.Activity: void startActivity(android.content.Intent)>($r11);
+
+        virtualinvoke r0.<android.app.Activity: void finish()>();
+
+        return;
+
+     label06:
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r12 = <com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint kSavePoint1_Pharmacy_History>;
+
+        $r8 = virtualinvoke $r12.<com.caremark.caremark.model.rxclaims.RxSaveDraftHelper$SavePoint: java.lang.String getScreen()>();
+
+        $r3.<c.c.a.c.b: java.lang.String ca> = $r8;
+
+        $r13 = new com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity$a;
+
+        specialinvoke $r13.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity$a: void <init>(com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity)>(r0);
+
+        $r14 = newarray (java.lang.String)[0];
+
+        virtualinvoke $r13.<android.os.AsyncTask: android.os.AsyncTask execute(java.lang.Object[])>($r14);
+
+        return;
+
+     label07:
+        $z0 = <c.c.a.o.e.Kc: boolean b>;
+
+        if $z0 == 0 goto label08;
+
+        $r8 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821977);
+
+        goto label09;
+
+     label08:
+        $r8 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String selectPharmacyError>;
+
+     label09:
+        $z0 = <c.c.a.o.e.Kc: boolean b>;
+
+        if $z0 == 0 goto label10;
+
+        $r10 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821975);
+
+        goto label11;
+
+     label10:
+        $r10 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String mustSelect>;
+
+     label11:
+        $z0 = <c.c.a.o.e.Kc: boolean b>;
+
+        if $z0 == 0 goto label12;
+
+        $r15 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131821976);
+
+        goto label13;
+
+     label12:
+        $r15 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String selectPharmacy>;
+
+     label13:
+        $r16 = staticinvoke <com.caremark.caremark.util.RxClaimErrorMessageUtils: java.util.List errorScreenHistoryPage(android.app.Activity,java.lang.String,java.lang.String,java.lang.String,boolean)>(r0, $r8, $r10, $r15, 1);
+
+        specialinvoke r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: void showError(java.util.List)>($r16);
+
+     label14:
+        return;
+    }
+
+    public void onCreate(android.os.Bundle)
+    {
+        com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity r0;
+        android.os.Bundle $r1;
+        com.caremark.caremark.ui.rxclaims.RxClaimProgressDialogView $r4;
+        c.c.a.o.a.j $r11;
+        com.caremark.caremark.views.CVSHelveticaTextView $r7;
+        c.c.a.o.e.Ga $r12;
+        c.c.a.o.e.Ha $r13;
+        java.util.ArrayList $r2;
+        android.view.View $r3;
+        android.widget.Button $r8;
+        java.lang.String $r5, $r6;
+        androidx.recyclerview.widget.RecyclerView $r9;
+        androidx.recyclerview.widget.LinearLayoutManager $r10;
+
+        r0 := @this: com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        specialinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: void onCreate(android.os.Bundle)>($r1);
+
+        $r2 = new java.util.ArrayList;
+
+        specialinvoke $r2.<java.util.ArrayList: void <init>()>();
+
+        r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.util.ArrayList pharmacyAddressArray> = $r2;
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297943);
+
+        $r4 = (com.caremark.caremark.ui.rxclaims.RxClaimProgressDialogView) $r3;
+
+        r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: com.caremark.caremark.ui.rxclaims.RxClaimProgressDialogView rxClaimProgressDialogView> = $r4;
+
+        $r4 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: com.caremark.caremark.ui.rxclaims.RxClaimProgressDialogView rxClaimProgressDialogView>;
+
+        $r5 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822394);
+
+        $r6 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822393);
+
+        virtualinvoke $r4.<com.caremark.caremark.ui.rxclaims.RxClaimProgressDialogView: void setLoadingInfoTxt(java.lang.String,java.lang.String)>($r5, $r6);
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297444);
+
+        $r7 = (com.caremark.caremark.views.CVSHelveticaTextView) $r3;
+
+        r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: com.caremark.caremark.views.CVSHelveticaTextView newPharmacyBtn> = $r7;
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131298024);
+
+        $r8 = (android.widget.Button) $r3;
+
+        r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: android.widget.Button mSelectButton> = $r8;
+
+        $r3 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131296865);
+
+        $r9 = (androidx.recyclerview.widget.RecyclerView) $r3;
+
+        r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: androidx.recyclerview.widget.RecyclerView pharmacyAddressRecyclerView> = $r9;
+
+        $r9 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: androidx.recyclerview.widget.RecyclerView pharmacyAddressRecyclerView>;
+
+        virtualinvoke $r9.<androidx.recyclerview.widget.RecyclerView: void setHasFixedSize(boolean)>(1);
+
+        $r10 = new androidx.recyclerview.widget.LinearLayoutManager;
+
+        specialinvoke $r10.<androidx.recyclerview.widget.LinearLayoutManager: void <init>(android.content.Context)>(r0);
+
+        $r9 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: androidx.recyclerview.widget.RecyclerView pharmacyAddressRecyclerView>;
+
+        virtualinvoke $r9.<androidx.recyclerview.widget.RecyclerView: void setLayoutManager(androidx.recyclerview.widget.RecyclerView$i)>($r10);
+
+        specialinvoke r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: void parseNetworkResponse()>();
+
+        $r11 = new c.c.a.o.a.j;
+
+        $r2 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.util.ArrayList pharmacyAddressArray>;
+
+        $r12 = new c.c.a.o.e.Ga;
+
+        specialinvoke $r12.<c.c.a.o.e.Ga: void <init>(com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity)>(r0);
+
+        specialinvoke $r11.<c.c.a.o.a.j: void <init>(android.content.Context,java.util.List,c.c.a.o.a.j$a)>(r0, $r2, $r12);
+
+        r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: c.c.a.o.a.j mPharmacyPreviousSearchRecyclerViewAdapter> = $r11;
+
+        $r8 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: android.widget.Button mSelectButton>;
+
+        virtualinvoke $r8.<android.widget.Button: void setOnClickListener(android.view.View$OnClickListener)>(r0);
+
+        $r9 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: androidx.recyclerview.widget.RecyclerView pharmacyAddressRecyclerView>;
+
+        $r11 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: c.c.a.o.a.j mPharmacyPreviousSearchRecyclerViewAdapter>;
+
+        virtualinvoke $r9.<androidx.recyclerview.widget.RecyclerView: void setAdapter(androidx.recyclerview.widget.RecyclerView$a)>($r11);
+
+        $r7 = r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: com.caremark.caremark.views.CVSHelveticaTextView newPharmacyBtn>;
+
+        $r13 = new c.c.a.o.e.Ha;
+
+        specialinvoke $r13.<c.c.a.o.e.Ha: void <init>(com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity)>(r0);
+
+        virtualinvoke $r7.<android.widget.TextView: void setOnClickListener(android.view.View$OnClickListener)>($r13);
+
+        virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: void setUiLanguage()>();
+
+        return;
+    }
+
+    public void onStart()
+    {
+        com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity r0;
+
+        r0 := @this: com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity;
+
+        specialinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: void onStart()>();
+
+        specialinvoke r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: void sendAdobeEventTrackStateForAddressSelection()>();
+
+        return;
+    }
+
+    public void sendECCRTaggingForPharmacyLookUp(java.lang.String, com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy)
+    {
+        com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity r0;
+        c.c.a.n.b.d $r5;
+        com.caremark.caremark.model.rxclaims.SClaimDetails $r10;
+        c.c.a.n.b.e $r11;
+        c.c.a.c.b$c $r12;
+        java.util.HashMap $r1, $r2;
+        c.c.a.n.c$a $r13;
+        c.c.a.d.d $r8;
+        com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy $r4;
+        c.c.a.c.b $r9;
+        java.lang.String $r3, $r6, $r7;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity;
+
+        $r3 := @parameter0: java.lang.String;
+
+        $r4 := @parameter1: com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy;
+
+        $r1 = new java.util.HashMap;
+
+        specialinvoke $r1.<java.util.HashMap: void <init>()>();
+
+        $r2 = new java.util.HashMap;
+
+        specialinvoke $r2.<java.util.HashMap: void <init>()>();
+
+        $r5 = <c.c.a.n.b.d: c.c.a.n.b.d y>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r5 = <c.c.a.n.b.d: c.c.a.n.b.d c>;
+
+        $r7 = virtualinvoke $r5.<c.c.a.n.b.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r6, $r7);
+
+        $r5 = <c.c.a.n.b.d: c.c.a.n.b.d z>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r5 = <c.c.a.n.b.d: c.c.a.n.b.d s>;
+
+        $r7 = virtualinvoke $r5.<c.c.a.n.b.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r6, $r7);
+
+        $r5 = <c.c.a.n.b.d: c.c.a.n.b.d u>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r8 = staticinvoke <c.c.a.d.d: c.c.a.d.d w()>();
+
+        $r7 = virtualinvoke $r8.<c.c.a.d.d: java.lang.String f()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r6, $r7);
+
+        $r5 = <c.c.a.n.b.d: c.c.a.n.b.d La>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r9 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r10 = virtualinvoke $r9.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.SClaimDetails M()>();
+
+        $r7 = virtualinvoke $r10.<com.caremark.caremark.model.rxclaims.SClaimDetails: java.lang.String getParentID()>();
+
+        $z0 = staticinvoke <android.text.TextUtils: boolean isEmpty(java.lang.CharSequence)>($r7);
+
+        if $z0 != 0 goto label1;
+
+        $r11 = <c.c.a.n.b.e: c.c.a.n.b.e o>;
+
+        goto label2;
+
+     label1:
+        $r11 = <c.c.a.n.b.e: c.c.a.n.b.e n>;
+
+     label2:
+        $r7 = virtualinvoke $r11.<c.c.a.n.b.e: java.lang.String a()>();
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r6, $r7);
+
+        $r5 = <c.c.a.n.b.d: c.c.a.n.b.d ia>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r7 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyName()>();
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r6, $r7);
+
+        $r5 = <c.c.a.n.b.d: c.c.a.n.b.d ja>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r7 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyCity()>();
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r6, $r7);
+
+        $r5 = <c.c.a.n.b.d: c.c.a.n.b.d ka>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r7 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyState()>();
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r6, $r7);
+
+        $r5 = <c.c.a.n.b.d: c.c.a.n.b.d la>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r7 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyPhoneNumber()>();
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r6, $r7);
+
+        $r5 = <c.c.a.n.b.d: c.c.a.n.b.d ma>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r7 = virtualinvoke $r4.<com.caremark.caremark.model.rxclaims.findpharmacies.Pharmacy: java.lang.String getPharmacyNCPDPNbr()>();
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r6, $r7);
+
+        $r5 = <c.c.a.n.b.d: c.c.a.n.b.d na>;
+
+        $r6 = virtualinvoke $r5.<c.c.a.n.b.d: java.lang.String a()>();
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r6, $r3);
+
+        $r9 = staticinvoke <c.c.a.c.b: c.c.a.c.b t()>();
+
+        virtualinvoke $r9.<c.c.a.c.b: void n(java.lang.String)>($r3);
+
+        $r9 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r3 = $r9.<c.c.a.c.b: java.lang.String U>;
+
+        $r12 = <c.c.a.c.b$c: c.c.a.c.b$c a>;
+
+        $r6 = virtualinvoke $r12.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r6);
+
+        if $z0 == 0 goto label3;
+
+        $r5 = <c.c.a.n.b.d: c.c.a.n.b.d Ma>;
+
+        $r3 = virtualinvoke $r5.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r6 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820988);
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r3, $r6);
+
+        goto label5;
+
+     label3:
+        $r9 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r3 = $r9.<c.c.a.c.b: java.lang.String U>;
+
+        $r12 = <c.c.a.c.b$c: c.c.a.c.b$c b>;
+
+        $r6 = virtualinvoke $r12.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r6);
+
+        if $z0 == 0 goto label4;
+
+        $r5 = <c.c.a.n.b.d: c.c.a.n.b.d Ma>;
+
+        $r3 = virtualinvoke $r5.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r6 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820662);
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r3, $r6);
+
+        goto label5;
+
+     label4:
+        $r9 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r3 = $r9.<c.c.a.c.b: java.lang.String U>;
+
+        $r12 = <c.c.a.c.b$c: c.c.a.c.b$c c>;
+
+        $r6 = virtualinvoke $r12.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r6);
+
+        if $z0 == 0 goto label5;
+
+        $r5 = <c.c.a.n.b.d: c.c.a.n.b.d Ma>;
+
+        $r3 = virtualinvoke $r5.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r6 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822153);
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r3, $r6);
+
+     label5:
+        $r13 = <c.c.a.n.c$a: c.c.a.n.c$a e>;
+
+        staticinvoke <c.c.a.n.c: void a(java.util.HashMap,java.util.HashMap,c.c.a.n.c$a)>($r1, $r2, $r13);
+
+        return;
+    }
+
+    public void sendECCRTaggingForSavePointOnePharmacyHistory()
+    {
+        com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity r0;
+        c.c.a.n.b.d $r3;
+        c.c.a.n.b.e $r7;
+        c.c.a.c.b$c $r10;
+        java.util.HashMap $r1, $r2;
+        c.c.a.n.c$a $r11;
+        com.caremark.caremark.model.rxclaims.draftclaim.SaveDraftResponse $r9;
+        c.c.a.d.d $r6;
+        c.c.a.c.b $r8;
+        int $i0;
+        java.lang.String $r4, $r5;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity;
+
+        $r1 = new java.util.HashMap;
+
+        specialinvoke $r1.<java.util.HashMap: void <init>()>();
+
+        $r2 = new java.util.HashMap;
+
+        specialinvoke $r2.<java.util.HashMap: void <init>()>();
+
+        $r3 = <c.c.a.n.b.d: c.c.a.n.b.d y>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r3 = <c.c.a.n.b.d: c.c.a.n.b.d m>;
+
+        $r5 = virtualinvoke $r3.<c.c.a.n.b.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r5);
+
+        $r3 = <c.c.a.n.b.d: c.c.a.n.b.d z>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r3 = <c.c.a.n.b.d: c.c.a.n.b.d s>;
+
+        $r5 = virtualinvoke $r3.<c.c.a.n.b.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r5);
+
+        $r4 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: java.lang.String getIPAddress()>();
+
+        if $r4 == null goto label1;
+
+        $i0 = virtualinvoke $r4.<java.lang.String: int length()>();
+
+        if $i0 <= 0 goto label1;
+
+        $r3 = <c.c.a.n.b.d: c.c.a.n.b.d B>;
+
+        $r5 = virtualinvoke $r3.<c.c.a.n.b.d: java.lang.String a()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r5, $r4);
+
+     label1:
+        $r3 = <c.c.a.n.b.d: c.c.a.n.b.d u>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r6 = staticinvoke <c.c.a.d.d: c.c.a.d.d w()>();
+
+        $r5 = virtualinvoke $r6.<c.c.a.d.d: java.lang.String f()>();
+
+        virtualinvoke $r1.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r5);
+
+        $r3 = <c.c.a.n.b.d: c.c.a.n.b.d Fa>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r7 = <c.c.a.n.b.e: c.c.a.n.b.e l>;
+
+        $r5 = virtualinvoke $r7.<c.c.a.n.b.e: java.lang.String a()>();
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r5);
+
+        $r3 = <c.c.a.n.b.d: c.c.a.n.b.d Ra>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r7 = <c.c.a.n.b.e: c.c.a.n.b.e D>;
+
+        $r5 = virtualinvoke $r7.<c.c.a.n.b.e: java.lang.String a()>();
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r5);
+
+        $r3 = <c.c.a.n.b.d: c.c.a.n.b.d Sa>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r7 = <c.c.a.n.b.e: c.c.a.n.b.e x>;
+
+        $r5 = virtualinvoke $r7.<c.c.a.n.b.e: java.lang.String a()>();
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r5);
+
+        $r3 = <c.c.a.n.b.d: c.c.a.n.b.d Ta>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r7 = <c.c.a.n.b.e: c.c.a.n.b.e z>;
+
+        $r5 = virtualinvoke $r7.<c.c.a.n.b.e: java.lang.String a()>();
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r5);
+
+        $r3 = <c.c.a.n.b.d: c.c.a.n.b.d Qa>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r8 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r9 = virtualinvoke $r8.<c.c.a.c.b: com.caremark.caremark.model.rxclaims.draftclaim.SaveDraftResponse I()>();
+
+        $r5 = virtualinvoke $r9.<com.caremark.caremark.model.rxclaims.draftclaim.SaveDraftResponse: java.lang.String getDraftId()>();
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r5);
+
+        $r8 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r4 = $r8.<c.c.a.c.b: java.lang.String U>;
+
+        $r10 = <c.c.a.c.b$c: c.c.a.c.b$c a>;
+
+        $r5 = virtualinvoke $r10.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r5);
+
+        if $z0 == 0 goto label2;
+
+        $r3 = <c.c.a.n.b.d: c.c.a.n.b.d Ma>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r5 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820988);
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r5);
+
+        goto label4;
+
+     label2:
+        $r8 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r4 = $r8.<c.c.a.c.b: java.lang.String U>;
+
+        $r10 = <c.c.a.c.b$c: c.c.a.c.b$c b>;
+
+        $r5 = virtualinvoke $r10.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r5);
+
+        if $z0 == 0 goto label3;
+
+        $r3 = <c.c.a.n.b.d: c.c.a.n.b.d Ma>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r5 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131820662);
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r5);
+
+        goto label4;
+
+     label3:
+        $r8 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: c.c.a.c.b getUserDetailObject()>();
+
+        $r4 = $r8.<c.c.a.c.b: java.lang.String U>;
+
+        $r10 = <c.c.a.c.b$c: c.c.a.c.b$c c>;
+
+        $r5 = virtualinvoke $r10.<c.c.a.c.b$c: java.lang.String a()>();
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($r5);
+
+        if $z0 == 0 goto label4;
+
+        $r3 = <c.c.a.n.b.d: c.c.a.n.b.d Ma>;
+
+        $r4 = virtualinvoke $r3.<c.c.a.n.b.d: java.lang.String a()>();
+
+        $r5 = virtualinvoke r0.<android.app.Activity: java.lang.String getString(int)>(2131822153);
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r5);
+
+     label4:
+        $r11 = <c.c.a.n.c$a: c.c.a.n.c$a e>;
+
+        staticinvoke <c.c.a.n.c: void a(java.util.HashMap,java.util.HashMap,c.c.a.n.c$a)>($r1, $r2, $r11);
+
+        return;
+    }
+
+    public void setUiLanguage()
+    {
+        com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity r0;
+        com.caremark.caremark.views.CVSHelveticaTextView $r5;
+        c.c.a.o.e.Kc $r2;
+        java.lang.Exception $r7;
+        org.json.JSONObject $r1;
+        android.view.View $r4;
+        android.widget.Button $r6;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity;
+
+        $z0 = <c.c.a.o.e.Kc: boolean b>;
+
+        if $z0 != 0 goto label6;
+
+        $r1 = new org.json.JSONObject;
+
+     label1:
+        $r2 = staticinvoke <c.c.a.o.e.Kc: c.c.a.o.e.Kc a()>();
+
+        $r3 = virtualinvoke $r2.<c.c.a.o.e.Kc: java.lang.String c()>();
+
+        specialinvoke $r1.<org.json.JSONObject: void <init>(java.lang.String)>($r3);
+
+        $z0 = virtualinvoke $r1.<org.json.JSONObject: boolean has(java.lang.String)>("PharmacyHistory");
+
+     label2:
+        if $z0 == 0 goto label6;
+
+     label3:
+        $r1 = virtualinvoke $r1.<org.json.JSONObject: org.json.JSONObject getJSONObject(java.lang.String)>("PharmacyHistory");
+
+        $r4 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131298188);
+
+        $r5 = (com.caremark.caremark.views.CVSHelveticaTextView) $r4;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: java.lang.String getDataForKey(java.lang.String,org.json.JSONObject)>("title", $r1);
+
+        virtualinvoke $r5.<com.caremark.caremark.views.CVSHelveticaTextView: void setText(java.lang.String)>($r3);
+
+        $r4 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131298024);
+
+        $r6 = (android.widget.Button) $r4;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: java.lang.String getDataForKey(java.lang.String,org.json.JSONObject)>("yes", $r1);
+
+        virtualinvoke $r6.<android.widget.Button: void setText(java.lang.CharSequence)>($r3);
+
+        $r4 = virtualinvoke r0.<androidx.appcompat.app.AppCompatActivity: android.view.View findViewById(int)>(2131297444);
+
+        $r6 = (android.widget.Button) $r4;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: java.lang.String getDataForKey(java.lang.String,org.json.JSONObject)>("differentPharmacy", $r1);
+
+        virtualinvoke $r6.<android.widget.Button: void setText(java.lang.CharSequence)>($r3);
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: java.lang.String getDataForKey(java.lang.String,org.json.JSONObject)>("selectPharmacy", $r1);
+
+        r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String selectPharmacy> = $r3;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: java.lang.String getDataForKey(java.lang.String,org.json.JSONObject)>("selectPharmacyError", $r1);
+
+        r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String selectPharmacyError> = $r3;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: java.lang.String getDataForKey(java.lang.String,org.json.JSONObject)>("mustSelect", $r1);
+
+        r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String mustSelect> = $r3;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: java.lang.String getDataForKey(java.lang.String,org.json.JSONObject)>("differentPharmacy", $r1);
+
+        r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String differentPharmacy> = $r3;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: java.lang.String getDataForKey(java.lang.String,org.json.JSONObject)>("searchDifferentPharmacy", $r1);
+
+        r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String searchDifferentPharmacy> = $r3;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: java.lang.String getDataForKey(java.lang.String,org.json.JSONObject)>("select", $r1);
+
+        r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String select> = $r3;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: java.lang.String getDataForKey(java.lang.String,org.json.JSONObject)>("mustSelectPharmacy", $r1);
+
+        r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String mustSelectPharmacy> = $r3;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: java.lang.String getDataForKey(java.lang.String,org.json.JSONObject)>("yes", $r1);
+
+        r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String yes> = $r3;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: java.lang.String getDataForKey(java.lang.String,org.json.JSONObject)>("lastPharmacy", $r1);
+
+        r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String lastPharmacy> = $r3;
+
+        $r3 = virtualinvoke r0.<com.caremark.caremark.ui.rxclaims.RxBaseActivity: java.lang.String getDataForKey(java.lang.String,org.json.JSONObject)>("searchedPharmacy", $r1);
+
+        r0.<com.caremark.caremark.ui.rxclaims.RxClaimPharmacyHistoryActivity: java.lang.String searchedPharmacy> = $r3;
+
+     label4:
+        return;
+
+     label5:
+        $r7 := @caughtexception;
+
+        virtualinvoke $r7.<java.lang.Exception: void printStackTrace()>();
+
+     label6:
+        return;
+
+        catch java.lang.Exception from label1 to label2 with label5;
+        catch java.lang.Exception from label3 to label4 with label5;
+    }
+}

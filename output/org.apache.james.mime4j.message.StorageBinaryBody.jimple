@@ -1,0 +1,117 @@
+public class org.apache.james.mime4j.message.StorageBinaryBody extends org.apache.james.mime4j.message.BinaryBody
+{
+    public org.apache.james.mime4j.storage.MultiReferenceStorage storage;
+
+    public void <init>(org.apache.james.mime4j.storage.MultiReferenceStorage)
+    {
+        org.apache.james.mime4j.message.StorageBinaryBody r0;
+        org.apache.james.mime4j.storage.MultiReferenceStorage $r1;
+
+        r0 := @this: org.apache.james.mime4j.message.StorageBinaryBody;
+
+        $r1 := @parameter0: org.apache.james.mime4j.storage.MultiReferenceStorage;
+
+        specialinvoke r0.<org.apache.james.mime4j.message.BinaryBody: void <init>()>();
+
+        r0.<org.apache.james.mime4j.message.StorageBinaryBody: org.apache.james.mime4j.storage.MultiReferenceStorage storage> = $r1;
+
+        return;
+    }
+
+    public volatile org.apache.james.mime4j.message.SingleBody copy()
+    {
+        org.apache.james.mime4j.message.StorageBinaryBody r0;
+
+        r0 := @this: org.apache.james.mime4j.message.StorageBinaryBody;
+
+        r0 = virtualinvoke r0.<org.apache.james.mime4j.message.StorageBinaryBody: org.apache.james.mime4j.message.StorageBinaryBody copy()>();
+
+        return r0;
+    }
+
+    public org.apache.james.mime4j.message.StorageBinaryBody copy()
+    {
+        org.apache.james.mime4j.message.StorageBinaryBody r0, $r2;
+        org.apache.james.mime4j.storage.MultiReferenceStorage $r1;
+
+        r0 := @this: org.apache.james.mime4j.message.StorageBinaryBody;
+
+        $r1 = r0.<org.apache.james.mime4j.message.StorageBinaryBody: org.apache.james.mime4j.storage.MultiReferenceStorage storage>;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.storage.MultiReferenceStorage: void addReference()>();
+
+        $r2 = new org.apache.james.mime4j.message.StorageBinaryBody;
+
+        $r1 = r0.<org.apache.james.mime4j.message.StorageBinaryBody: org.apache.james.mime4j.storage.MultiReferenceStorage storage>;
+
+        specialinvoke $r2.<org.apache.james.mime4j.message.StorageBinaryBody: void <init>(org.apache.james.mime4j.storage.MultiReferenceStorage)>($r1);
+
+        return $r2;
+    }
+
+    public void dispose()
+    {
+        org.apache.james.mime4j.message.StorageBinaryBody r0;
+        org.apache.james.mime4j.storage.MultiReferenceStorage $r1;
+
+        r0 := @this: org.apache.james.mime4j.message.StorageBinaryBody;
+
+        $r1 = r0.<org.apache.james.mime4j.message.StorageBinaryBody: org.apache.james.mime4j.storage.MultiReferenceStorage storage>;
+
+        if $r1 == null goto label1;
+
+        virtualinvoke $r1.<org.apache.james.mime4j.storage.MultiReferenceStorage: void delete()>();
+
+        r0.<org.apache.james.mime4j.message.StorageBinaryBody: org.apache.james.mime4j.storage.MultiReferenceStorage storage> = null;
+
+     label1:
+        return;
+    }
+
+    public java.io.InputStream getInputStream()
+    {
+        org.apache.james.mime4j.message.StorageBinaryBody r0;
+        org.apache.james.mime4j.storage.MultiReferenceStorage $r2;
+        java.io.InputStream $r1;
+
+        r0 := @this: org.apache.james.mime4j.message.StorageBinaryBody;
+
+        $r2 = r0.<org.apache.james.mime4j.message.StorageBinaryBody: org.apache.james.mime4j.storage.MultiReferenceStorage storage>;
+
+        $r1 = virtualinvoke $r2.<org.apache.james.mime4j.storage.MultiReferenceStorage: java.io.InputStream getInputStream()>();
+
+        return $r1;
+    }
+
+    public void writeTo(java.io.OutputStream)
+    {
+        java.io.OutputStream $r2;
+        org.apache.james.mime4j.message.StorageBinaryBody r0;
+        java.lang.IllegalArgumentException $r4;
+        org.apache.james.mime4j.storage.MultiReferenceStorage $r3;
+        java.io.InputStream $r1;
+
+        r0 := @this: org.apache.james.mime4j.message.StorageBinaryBody;
+
+        $r2 := @parameter0: java.io.OutputStream;
+
+        if $r2 == null goto label1;
+
+        $r3 = r0.<org.apache.james.mime4j.message.StorageBinaryBody: org.apache.james.mime4j.storage.MultiReferenceStorage storage>;
+
+        $r1 = virtualinvoke $r3.<org.apache.james.mime4j.storage.MultiReferenceStorage: java.io.InputStream getInputStream()>();
+
+        staticinvoke <org.apache.james.mime4j.codec.CodecUtil: void copy(java.io.InputStream,java.io.OutputStream)>($r1, $r2);
+
+        virtualinvoke $r1.<java.io.InputStream: void close()>();
+
+        return;
+
+     label1:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r4;
+    }
+}
